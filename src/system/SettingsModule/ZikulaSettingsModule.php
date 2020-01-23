@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule;
 
-use Zikula\ExtensionsModule\Bundle\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractCoreModule;
 
 /**
  * Base module definition for the settings module.

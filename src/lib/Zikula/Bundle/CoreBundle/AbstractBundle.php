@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ExtensionsModule\Bundle;
+namespace Zikula\Bundle\CoreBundle;
 
 use InvalidArgumentException;
 use LogicException;
@@ -19,6 +19,8 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\Scanner;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Engine\Asset;

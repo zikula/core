@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Base;
 
-use Zikula\ExtensionsModule\Bundle\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractCoreModule;
 
 /**
  * Module base class.

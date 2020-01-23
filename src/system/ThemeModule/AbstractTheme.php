@@ -17,8 +17,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Bundle\AbstractBundle;
 
 abstract class AbstractTheme extends AbstractBundle
 {

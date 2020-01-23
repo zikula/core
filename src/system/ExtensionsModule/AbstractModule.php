@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ExtensionsModule\Bundle;
+namespace Zikula\ExtensionsModule;
+
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 
 abstract class AbstractModule extends AbstractBundle
 {

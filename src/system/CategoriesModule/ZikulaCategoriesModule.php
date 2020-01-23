@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule;
 
-use Zikula\ExtensionsModule\Bundle\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractCoreModule;
 
 /**
  * Base module definition for the categories module.

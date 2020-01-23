@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Api\Fixture;
 
-use Zikula\ExtensionsModule\Bundle\AbstractModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
 class AcmeFooModule extends AbstractModule
 {

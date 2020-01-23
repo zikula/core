@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ExtensionsModule\Bundle\Helper;
+namespace Zikula\Bundle\CoreBundle\Helper;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\ExtensionsModule\Bundle\MetaData;
-use Zikula\ExtensionsModule\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\Scanner;
 
 class BundlesSchemaHelper
 {
@@ -58,7 +58,7 @@ class BundlesSchemaHelper
     /**
      * Sync the filesystem scan and the bundles table.
      * This is a 'dumb' scan - there is no state management here.
-     * State management occurs in the module and theme management and is checked in CoreBundle\Bundle\PersistedBundleHandler.
+     * State management occurs in the module and theme management and is checked in CoreBundle\Helper\PersistedBundleHelper.
      */
     private function sync(array $fileExtensions = []): void
     {

@@ -15,7 +15,7 @@ namespace Zikula\Bundle\CoreBundle\Tests\Bundle;
 
 use PHPUnit\Framework\TestCase;
 use Zikula\AdminModule\ZikulaAdminModule;
-use Zikula\ExtensionsModule\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
 
 class MetaDataTest extends TestCase
 {

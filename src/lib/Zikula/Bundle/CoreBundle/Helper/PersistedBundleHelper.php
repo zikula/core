@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ExtensionsModule\Bundle;
+namespace Zikula\Bundle\CoreBundle\Helper;
 
 use function Composer\Autoload\includeFile;
 use Doctrine\DBAL\Configuration;
@@ -23,7 +23,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
-class PersistedBundleHandler
+class PersistedBundleHelper
 {
     /**
      * @var array the active/inactive state of each extension (extension state !== bundle state)

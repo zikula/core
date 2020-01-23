@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
-use Zikula\ExtensionsModule\Bundle\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractCoreModule;
 
 /**
  * Base module definition for the extensions module.

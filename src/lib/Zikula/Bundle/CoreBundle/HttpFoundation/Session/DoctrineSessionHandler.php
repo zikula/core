@@ -68,6 +68,9 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         $this->installed = $installed;
     }
 
+    /**
+     * @Required
+     */
     public function setStorage(SessionStorageInterface $storage): void
     {
         $this->storage = $storage;

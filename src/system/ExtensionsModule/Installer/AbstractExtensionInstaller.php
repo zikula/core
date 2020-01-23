@@ -17,10 +17,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Bundle\AbstractBundle;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
 /**

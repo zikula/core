@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule;
 
 use Exception;
-use Zikula\ExtensionsModule\Bundle\MetaData;
-use Zikula\ExtensionsModule\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\Scanner;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;

@@ -21,9 +21,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Bundle\AbstractBundle;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
