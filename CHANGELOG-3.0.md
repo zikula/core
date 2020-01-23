@@ -7,7 +7,6 @@
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
     - Namespace changes
         - `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
-        - `Zikula\Bundle\CoreBundle\Bundle\` moved to `Zikula\ExtensionsModule\Bundle\`.
         - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule` moved into `Zikula\ExtensionsModule\`.
         - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme` moved into `Zikula\ThemeModule\`.
         - `Zikula\Bundle\CoreBundle\Bundle\Bootstrap` moved and renamed to `Bundle\CoreBundle\Helper\PersistedBundleHelper`.
