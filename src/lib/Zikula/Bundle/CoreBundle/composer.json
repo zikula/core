@@ -33,7 +33,6 @@
         "sensiolabs/security-checker" : "6.*",
 
         "symfony/polyfill-intl-messageformatter": "1.*",
-        "php-translation/extractor": "dev-master",
         "php-translation/symfony-bundle": "0.*",
         "php-translation/symfony-storage": "dev-master",
         "nikic/php-parser": "4.*",
