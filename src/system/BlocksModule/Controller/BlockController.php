@@ -95,12 +95,12 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createForm(BlockType::class, $blockEntity, ['locale' => $request->getLocale()]);
-        if (($blockInstance instanceof BlockHandlerInterface) && (null !== $blockInstance->getFormClassName())) {
+        if (($blockInstance instanceof BlockHandlerInterface) && ('' !== $blockInstance->getFormClassName())) {
             $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
         }
         $form->handleRequest($request);
 
-        list($moduleName) = explode(':', $blockEntity->getBkey());
+        $moduleName = $blockInstance->getBundle()->getName();
         if ($form->isSubmitted()) {
             if ($form->isValid() && $form->get('save')->isClicked()) {
                 // sort filter array so keys are always sequential.
