@@ -119,15 +119,10 @@ class BundleSyncHelper
      *
      * @throws Exception Thrown if the user doesn't have admin permissions over the bundle
      */
-    public function scanForBundles(array $directories = []): array
+    public function scanForBundles(array $directories = ['modules']): array
     {
-        $directories = empty($directories) ? ['system', 'modules'] : $directories;
-
         // sync the filesystem and the bundles table
         $this->bundlesSchemaHelper->load();
-
-        // Get all bundles on filesystem
-        $bundles = [];
 
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
@@ -137,7 +132,7 @@ class BundleSyncHelper
         }
         $newModules = $scanner->getModulesMetaData();
 
-        // scan for all bundle-type bundles (psr-4) in either /system or /bundles
+        $bundles = [];
         /** @var MetaData $bundleMetaData */
         foreach ($newModules as $name => $bundleMetaData) {
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {
@@ -305,7 +300,7 @@ class BundleSyncHelper
     private function syncLostExtensions(array $extensionsFromFile, array &$extensionsFromDB): void
     {
         foreach ($extensionsFromDB as $name => $unusedVariable) {
-            if (array_key_exists($name, $extensionsFromFile)) {
+            if ($this->kernel::isCoreModule($name) || array_key_exists($name, $extensionsFromFile)) {
                 continue;
             }
 

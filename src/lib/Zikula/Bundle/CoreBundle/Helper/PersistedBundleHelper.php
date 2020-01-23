@@ -67,8 +67,7 @@ class PersistedBundleHelper
                 $this->addAutoloaders($kernel, $autoload);
 
                 if (class_exists($class)) {
-                    $bundle = $class;
-                    $bundles[] = $bundle;
+                    $bundles[$class] = ['all' => true];
                 }
             } catch (Exception $exception) {
                 // unable to autoload $prefix / $path

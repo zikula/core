@@ -199,9 +199,8 @@ class StageHelper
     private function createBundles(): bool
     {
         $this->bundlesSchemaHelper->load();
-        $handler = new PersistedBundleHelper();
-        $bundles = [];
-        $handler->getPersistedBundles($this->kernel, $bundles);
+        $bundleHelper = new PersistedBundleHelper();
+        $bundleHelper->getPersistedBundles($this->kernel, $bundles = []); // adds autoloaders
 
         return true;
     }

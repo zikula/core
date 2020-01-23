@@ -20,45 +20,13 @@ class ZikulaKernel extends Kernel
 {
     public function registerBundles(): iterable
     {
-        $bundles = [
-            Symfony\Bundle\FrameworkBundle\FrameworkBundle::class,
-            Symfony\Bundle\SecurityBundle\SecurityBundle::class,
-            Symfony\Bundle\TwigBundle\TwigBundle::class,
-            Symfony\Bundle\MonologBundle\MonologBundle::class,
-            Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class,
-            Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class,
-            Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class,
-            Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class,
-            Twig\Extra\TwigExtraBundle\TwigExtraBundle::class,
-            Zikula\Bundle\CoreBundle\CoreBundle::class,
-            Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle::class,
-            Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle::class,
-            Zikula\Bundle\HookBundle\ZikulaHookBundle::class,
-            JMS\I18nRoutingBundle\JMSI18nRoutingBundle::class,
-            FOS\JsRoutingBundle\FOSJsRoutingBundle::class,
-            Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle::class,
-            Knp\Bundle\MenuBundle\KnpMenuBundle::class,
-            Liip\ImagineBundle\LiipImagineBundle::class,
-            Translation\Bundle\TranslationBundle::class,
-            Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class,
-            Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle::class,
-        ];
-
-        foreach (self::$coreModules as $bundleClass) {
-            $bundles[] = $bundleClass;
-        }
-        $handler = new PersistedBundleHelper();
-        $handler->getPersistedBundles($this, $bundles);
-
-        if (in_array($this->getEnvironment(), ['dev', 'test'])) {
-            $bundles[] = Symfony\Bundle\DebugBundle\DebugBundle::class;
-            $bundles[] = Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class;
-            $bundles[] = Elao\WebProfilerExtraBundle\WebProfilerExtraBundle::class;
-            $bundles[] = Symfony\Bundle\MakerBundle\MakerBundle::class;
-        }
-
-        foreach ($bundles as $class) {
-            yield new $class();
+        $bundleHelper = new PersistedBundleHelper();
+        $bundles = require $this->getProjectDir() . '/app/config/bundles.php';
+        $bundleHelper->getPersistedBundles($this, $bundles);
+        foreach ($bundles as $class => $envs) {
+            if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+                yield new $class();
+            }
         }
     }
 
