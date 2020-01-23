@@ -91,6 +91,7 @@
     - Removed custom translation system (#4042).
     - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
     - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
+    - Setting `composer.json` >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.

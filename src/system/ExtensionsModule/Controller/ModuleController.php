@@ -104,20 +104,12 @@ class ModuleController extends AbstractController
                 continue;
             }
 
-            $adminCapabilityInfo = $module['capabilities']['admin'];
-            $adminUrl = '';
-            if (isset($adminCapabilityInfo['route'])) {
+            if (isset($module['capabilities']['admin']['route'])) {
                 try {
-                    $adminUrl = $router->generate($adminCapabilityInfo['route']);
+                    $adminRoutes[$module['name']] = $router->generate($module['capabilities']['admin']['route']);
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     // do nothing, just skip this link
                 }
-            } elseif (isset($adminCapabilityInfo['url'])) {
-                $adminUrl = $adminCapabilityInfo['url'];
-            }
-
-            if (!empty($adminUrl)) {
-                $adminRoutes[$module['name']] = $adminUrl;
             }
         }
 
