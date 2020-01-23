@@ -164,7 +164,7 @@ class AbstractMenuBuilder
                         'title',
                         'Reuse for new route'
                     )
-                    ->setAttribute('icon', 'fas fa-files-o')
+                    ->setAttribute('icon', 'fas fa-copy')
                 ;
             }
             if ('display' === $context) {
