@@ -10,9 +10,8 @@
 'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.': null
 'You did not provide the correct answer for the security question. Try %answer%!': null
 'Sorry! The domain of the e-mail address you specified is banned.': null
-'The emails  must match!': null
-'The passwords must match!': null
 'The emails must match!': null
+'The passwords must match!': null
 'The selected item does not exist': null
 'Could not json_decode the string you entered.': null
 'The user name you entered is reserved. It cannot be used.': null

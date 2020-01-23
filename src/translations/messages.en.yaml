@@ -3,8 +3,6 @@
 'Zikula Core': null
 Modules: null
 Themes: null
-'no title defined': null
-'Error! Could not resolve %template% template.': null
 'Workflow editor': null
 'Decrease zoom level': null
 'Reset zoom level': null
@@ -111,6 +109,7 @@ Guest: null
 'You do not have permission. You must login first.': null
 'You do not have permission for that action.': null
 'Admin credentials required when site is disabled.': null
+'Page not found': null
 'Yes': null
 'No': null
 'Function does not exist or is not callable.': null
@@ -401,7 +400,6 @@ Provision: null
 'Module "%name%" is not a valid provider.': null
 'Provider module "%name%" is not available.': null
 'Providers'' areas order is not an array.': null
-'Page not found': null
 Settings: null
 'Native authorisation settings': null
 'User Credential Settings': null
@@ -834,7 +832,7 @@ Menu: null
 'Menu list': null
 Menus: null
 Children: null
-plural_n.direct.child: null
+plural_n.direct.child: "{count, plural,\n  one   {one direct child}\n  other {# direct children}\n}"
 'Delete Root': null
 'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?': null
 'Create or Edit Root Node': null
@@ -1046,8 +1044,6 @@ authenticationMethodsStatus: null
 'Name displayed for anonymous user': null
 'Number of users displayed per page': null
 'Display graphics on user''s account page': null
-'Path to account page images': null
-'Number of links per page': null
 'Allow new user account registrations': null
 'Statement displayed if registration disabled': null
 'E-mail address to notify of registrations': null
@@ -1096,7 +1092,7 @@ Approve: null
 'Done! %sub% has been approved.': null
 'No users selected.': null
 'You are not allowed to delete user id %uid%': null
-plural_n.users.deleted: null
+plural_n.users.deleted: '{count, plural,\n  one   {User deleted!}\n  other {# users deleted!}\n}'
 'No users found.': null
 'Done! Mail sent.': null
 'Could not send mail.': null
@@ -1353,9 +1349,11 @@ dependencies: null
 URL: null
 'Reload defaults': null
 'Reset all extensions to default values': null
+'no title defined': null
+'Error! Could not resolve %template% template.': null
 'WARNING: %extension% has an invalid composer.json file which could not be decoded.': null
 'Cannot load %extension% because the composer file is invalid.': null
-'Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]': null
+'Fatal error: Two extensions share the same %field%. [%ext1%] and [%ext2%]': null
 'Error! Could not load data for %extension%.': null
 'Error! Invalid module state transition.': null
 'Error! Not allowed to install %extension%.': null

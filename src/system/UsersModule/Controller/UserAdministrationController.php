@@ -24,6 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
@@ -360,8 +361,9 @@ class UserAdministrationController extends AbstractController
                 }
                 $this->addFlash(
                     'success',
+                    /** @Desc("{count, plural,\n  one   {User deleted!}\n  other {# users deleted!}\n}") */
                     $this->getTranslator()->trans(
-                        'plural_n.users.deleted'/* User deleted!|n users deleted!*/,
+                        'plural_n.users.deleted',
                         ['%count%' => count($deletedUsers)]
                     )
                 );

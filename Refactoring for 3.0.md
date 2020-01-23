@@ -74,7 +74,8 @@ $this->trans('Hello', [], 'acmefoomodule')      // new
 
 // 4. With plural forms and advanced substitution (see note below)
 $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]);
-$this->getTranslator()->trans('plural_n.users.deleted'/* User deleted!|n users deleted!*/, ['%count%' => count($deletedUsers)]);
+/** @Desc("{count, plural,\n  one   {User deleted!}\n  other {# users deleted!}\n}") */
+$this->getTranslator()->trans('plural_n.users.deleted', ['%count%' => count($deletedUsers)]);
 ```
 
 You can still use `Zikula\Bundle\CoreBundle\Translation\TranslatorTrait`, but it has only one method left now:
