@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Common\ColumnExistsTrait;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\CoreEvents;
+use Zikula\Bundle\CoreBundle\Doctrine\ColumnExistsTrait;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 
 class Core3UpgradeListener implements EventSubscriberInterface
 {

@@ -1,5 +1,0 @@
-services:
-    session.attribute_bag:
-        # default class is Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag
-        class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
-        public: false

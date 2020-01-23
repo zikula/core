@@ -6,7 +6,7 @@ pending content items like news submissions, user verifications or similar.
 Modules needing to publish pending content information should create an event handler for `get.pending_content` using
 the DependencyInjection (DI) component of Symfony.
 
-First create a class to handle the event:
+Create a class like this to handle the event:
 
 ```php
 // file: FooModule/EventListener/PendingContentListener.php
@@ -14,9 +14,9 @@ First create a class to handle the event:
 namespace Acme\FooModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Common\Collection\Container;
-use Zikula\Common\Collection\Collectible\PendingContentCollectible;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Collection\Container;
+use Zikula\Bundle\CoreBundle\Collection\Collectible\PendingContentCollectible;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 
 class PendingContentListener implements EventSubscriberInterface
 {
@@ -24,8 +24,8 @@ class PendingContentListener implements EventSubscriberInterface
     {
         $collection = new Container('AcmeFooModule');
         // PendingContentCollectible(<type>, <description>, <number>, <route>)
-        $collection->add(new PendingContentCollectible('foo', __('Pending foo'), 5, 'acmefoomodule_admin_viewfoo'));
-        $collection->add(new PendingContentCollectible('bar', __('Pending bar'), 7, 'acmefoomodule_admin_viewbar'));
+        $collection->add(new PendingContentCollectible('foo', $this->translator->trans('Pending foo'), 5, 'acmefoomodule_admin_viewfoo'));
+        $collection->add(new PendingContentCollectible('bar', $this->translator->trans('Pending bar'), 7, 'acmefoomodule_admin_viewbar'));
         $event->getSubject()->add($collection);
     }
 
@@ -39,15 +39,6 @@ class PendingContentListener implements EventSubscriberInterface
     }
 }
 ```
-
-Second, register the class as an event listener in the module's service definitions:
-
-```yaml
-Acme\FooModule\EventListener\PendingContentListener:
-    tags: ['kernel.event_subscriber']
-```
-
-Note that the module must have the DependencyInjection component set up in the bundle to function.
 
 ## How it is used
 

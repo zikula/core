@@ -15,10 +15,10 @@ namespace Zikula\Bundle\HookBundle;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
-use Zikula\Core\Doctrine\Helper\SchemaHelper;
-use Zikula\Core\InstallerInterface;
+use Zikula\ExtensionsModule\Installer\InstallerInterface;
 
 /**
  * Class HookBundleInstaller

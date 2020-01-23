@@ -17,11 +17,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Zikula\Bundle\CoreBundle\RouteUrl;
+use Zikula\Bundle\CoreBundle\UrlInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\FilterHook;
-use Zikula\Core\RouteUrl;
-use Zikula\Core\UrlInterface;
 
 class HookExtension extends AbstractExtension
 {
@@ -67,7 +67,7 @@ class HookExtension extends AbstractExtension
             return trigger_error('Error! "eventname" must be set in notifydisplayhooks');
         }
         if ($urlObject && !($urlObject instanceof UrlInterface)) {
-            return trigger_error('Error! "urlobject" must be an instance of Zikula\Core\UrlInterface');
+            return trigger_error('Error! "urlobject" must be an instance of Zikula\Bundle\CoreBundle\UrlInterface');
         }
 
         // create event and notify

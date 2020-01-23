@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\PermissionHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;

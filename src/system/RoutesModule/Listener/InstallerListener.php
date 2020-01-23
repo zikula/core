@@ -15,9 +15,9 @@ namespace Zikula\RoutesModule\Listener;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
@@ -57,9 +57,9 @@ class InstallerListener extends AbstractInstallerListener
     {
         // override subscription to ALL available events to only needed events.
         return [
-            CoreEvents::MODULE_POSTINSTALL => ['modulePostInstalled', 5],
-            CoreEvents::MODULE_UPGRADE => ['moduleUpgraded', 5],
-            CoreEvents::MODULE_REMOVE => ['moduleRemoved', 5],
+            ExtensionEvents::MODULE_POSTINSTALL => ['modulePostInstalled', 5],
+            ExtensionEvents::MODULE_UPGRADE => ['moduleUpgraded', 5],
+            ExtensionEvents::MODULE_REMOVE => ['moduleRemoved', 5],
             'new.routes.avail' => ['newRoutesAvail', 5]
         ];
     }

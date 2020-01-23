@@ -17,7 +17,7 @@ use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * SearchStat

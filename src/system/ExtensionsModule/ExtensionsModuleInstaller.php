@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule;
 
 use Exception;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\Scanner;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 /**
  * Installation and upgrade routines for the extensions module.

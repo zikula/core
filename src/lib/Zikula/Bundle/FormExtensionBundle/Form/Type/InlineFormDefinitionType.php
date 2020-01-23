@@ -22,8 +22,8 @@ use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Form type for embedding dynamic fields.

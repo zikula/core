@@ -16,4 +16,4 @@ In your constructor, you are required to set the following properties included i
 - $extensionName
   - Must be set to the "common name" of the extension (e.g. `ZikulaBlocksModule`)
 
-See `\Zikula\Core\AbstractExtensionInstaller` for usage example.
+See `\Zikula\Bundle\CoreBundle\AbstractExtensionInstaller` for usage example.

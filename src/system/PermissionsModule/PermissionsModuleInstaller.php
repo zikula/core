@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsModule;
 
 use Exception;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\Repository\PermissionRepository;
 

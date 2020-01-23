@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\BlocksModule\Api\BlockApi;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**

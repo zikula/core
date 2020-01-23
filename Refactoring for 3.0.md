@@ -40,13 +40,11 @@ Module services should be registered by their classname (automatically as above)
 `service.class.dot.notation`.
 
 ### Blocks
-
 BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface` as in Core-2.0 but there is no longer
 a need to tag these classes in your services file as they are auto-tagged. Also - as above, the classname should be
 used as the service name.
 
 ### Extension menus
-
 `Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
 removed. Extension menus are not implemented using Knp Menu instead. See docs and system modules for further
 information and examples.
@@ -79,7 +77,7 @@ $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => 
 $this->getTranslator()->trans('plural_n.users.deleted'/* User deleted!|n users deleted!*/, ['%count%' => count($deletedUsers)]);
 ```
 
-You can still use `Zikula\Common\Translator\TranslatorTrait`, but it has only one method left now:
+You can still use `Zikula\Bundle\CoreBundle\Translation\TranslatorTrait`, but it has only one method left now:
 ```php
 public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
 ```

@@ -42,4 +42,34 @@ class ExtensionEvents
      * The args of the event are an array with ['state' => <value>], where the state is the 'proposed' new state
      */
     public const UPDATE_STATE = 'extensions_module.extension_events.update_state';
+
+    /**
+     * Occurs when a module has been installed.
+     */
+    public const MODULE_INSTALL = 'module.install';
+
+    /**
+     * Occurs after a module has been installed (on reload of the extensions view).
+     */
+    public const MODULE_POSTINSTALL = 'module.postinstall';
+
+    /**
+     * Occurs when a module has been upgraded to a newer version.
+     */
+    public const MODULE_UPGRADE = 'module.upgrade';
+
+    /**
+     * Occurs when a module has been enabled after it has been disabled before.
+     */
+    public const MODULE_ENABLE = 'module.enable';
+
+    /**
+     * Occurs when a module has been disabled.
+     */
+    public const MODULE_DISABLE = 'module.disable';
+
+    /**
+     * Occurs when a module has been removed entirely.
+     */
+    public const MODULE_REMOVE = 'module.remove';
 }

@@ -20,11 +20,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
 {
@@ -93,7 +93,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
         }
 
         $event = new ModuleStateEvent($this->kernel->getModule($extension->getName()), $extension->toArray());
-        $this->eventDispatcher->dispatch($event, CoreEvents::MODULE_POSTINSTALL);
+        $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_POSTINSTALL);
 
         if ($input->isInteractive()) {
             $io->success('Extension installed');

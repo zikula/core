@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Zikula\PermissionsModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Exception\FatalErrorException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
@@ -172,8 +172,8 @@ class PermissionController extends AbstractController
      * Delete a permission.
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @throws FatalErrorException Thrown if the requested permission rule is the default admin rule or if
-     *                                    if the permission rule couldn't be deleted
+     * @throws FatalError Thrown if the requested permission rule is the default admin rule
+     *                           or if the permission rule couldn't be deleted
      */
     public function deleteAction(
         PermissionEntity $permissionEntity,
@@ -188,7 +188,7 @@ class PermissionController extends AbstractController
             && '.*' === $permissionEntity->getComponent()
             && '.*' === $permissionEntity->getInstance()
         ) {
-            throw new FatalErrorException($this->trans('Notice: You cannot delete the main administration permission rule.'));
+            throw new FatalError($this->trans('Notice: You cannot delete the main administration permission rule.'));
         }
 
         $this->getDoctrine()->getManager()->remove($permissionEntity);

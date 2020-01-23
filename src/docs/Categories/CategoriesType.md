@@ -18,7 +18,7 @@ Assuming your Entities are set up like this:
 ### PageEntity
 
 ```php
-class PageEntity extends \Zikula\Core\Doctrine\EntityAccess
+class PageEntity extends \Zikula\Bundle\CoreBundle\Doctrine\EntityAccess
 {
     /**
      * @ORM\Id

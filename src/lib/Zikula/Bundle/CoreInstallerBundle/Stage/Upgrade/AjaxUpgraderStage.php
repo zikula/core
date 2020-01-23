@@ -16,8 +16,8 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class AjaxUpgraderStage implements AjaxStageInterface
 {

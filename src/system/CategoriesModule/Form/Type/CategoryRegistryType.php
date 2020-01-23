@@ -25,9 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Class CategoryRegistryType

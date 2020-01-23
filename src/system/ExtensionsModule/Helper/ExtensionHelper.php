@@ -23,21 +23,20 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Console\Application;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\AbstractBundle;
-use Zikula\Core\AbstractModule;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\Core\ExtensionInstallerInterface;
+use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 
 class ExtensionHelper
 {
@@ -122,7 +121,7 @@ class ExtensionHelper
         $this->cacheClearer->clear('symfony.config');
 
         $event = new ModuleStateEvent($bundle, $extension->toArray());
-        $this->eventDispatcher->dispatch($event, CoreEvents::MODULE_INSTALL);
+        $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_INSTALL);
 
         return true;
     }
@@ -170,7 +169,7 @@ class ExtensionHelper
         if ($this->container->getParameter('installed')) {
             // Upgrade succeeded, issue event.
             $event = new ModuleStateEvent($bundle, $extension->toArray());
-            $this->eventDispatcher->dispatch($event, CoreEvents::MODULE_UPGRADE);
+            $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_UPGRADE);
         }
 
         return true;
@@ -213,7 +212,7 @@ class ExtensionHelper
         $this->cacheClearer->clear('symfony.config');
 
         $event = new ModuleStateEvent($bundle, $extension->toArray());
-        $this->eventDispatcher->dispatch($event, CoreEvents::MODULE_REMOVE);
+        $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_REMOVE);
 
         return true;
     }

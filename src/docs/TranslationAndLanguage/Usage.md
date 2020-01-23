@@ -19,7 +19,7 @@ Translation example
 $translated = $this->translator->trans('Hello World');
 ```
 
-When using `\Zikula\Common\Translation\TranslatorTrait` also a shortcut method becomes available:
+When using `\Zikula\Bundle\CoreBundle\Translation\TranslatorTrait` also a shortcut method becomes available:
 
 ```php
 $translated = $this->trans('Page');

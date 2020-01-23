@@ -22,7 +22,7 @@ use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;

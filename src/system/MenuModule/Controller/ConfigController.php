@@ -15,7 +15,7 @@ namespace Zikula\MenuModule\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 
 /**
  * Class ConfigController

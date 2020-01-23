@@ -18,8 +18,8 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
-use Zikula\Core\Response\PlainResponse;
 
 /**
  * Class AbstractController

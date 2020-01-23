@@ -22,9 +22,9 @@ use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\BlocksModule\Form\Type\AdminViewFilterType;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\FormAwareHook;
 
 use Symfony\Component\Form\FormInterface;
+use Zikula\Bundle\CoreBundle\UrlInterface;
 use Zikula\Bundle\HookBundle\Hook\Hook;
-use Zikula\Core\UrlInterface;
 
 class FormAwareResponse extends Hook
 {

@@ -1,6 +1,6 @@
 # WhereFromFilterTrait
 
-The trait implemented by `\Zikula\Core\Doctrine\WhereFromFilterTrait` adds the following methods to your class:
+The trait implemented by `\Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait` adds the following methods to your class:
 
 - `whereFromFilter(QueryBuilder $qb, array $filter, $exprType = 'and')`
 

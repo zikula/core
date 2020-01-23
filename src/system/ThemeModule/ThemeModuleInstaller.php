@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule;
 
 use Exception;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 use Zikula\ThemeModule\Helper\BundleSyncHelper;

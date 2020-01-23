@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule\Tests\Api\Fixtures;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
 class FilterTestSubscriber implements EventSubscriberInterface

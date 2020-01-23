@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Entity\Repository\MenuItemRepository;
 use Zikula\MenuModule\Form\Type\DeleteMenuItemType;

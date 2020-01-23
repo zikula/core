@@ -16,8 +16,8 @@ namespace Zikula\SearchModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 
 /**
@@ -48,10 +48,10 @@ class ModuleEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::MODULE_INSTALL => ['moduleEnable'],
-            CoreEvents::MODULE_ENABLE => ['moduleEnable'],
-            CoreEvents::MODULE_DISABLE => ['moduleDisable'],
-            CoreEvents::MODULE_REMOVE => ['moduleRemove']
+            ExtensionEvents::MODULE_INSTALL => ['moduleEnable'],
+            ExtensionEvents::MODULE_ENABLE => ['moduleEnable'],
+            ExtensionEvents::MODULE_DISABLE => ['moduleDisable'],
+            ExtensionEvents::MODULE_REMOVE => ['moduleRemove']
         ];
     }
 

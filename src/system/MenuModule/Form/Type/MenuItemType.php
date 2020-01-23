@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
 use Zikula\MenuModule\Form\EventListener\KeyValueFixerListener;

@@ -16,7 +16,7 @@ namespace Zikula\SecurityCenterModule\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**

@@ -16,18 +16,18 @@ namespace Zikula\ExtensionsModule\Helper;
 use Composer\Semver\Semver;
 use Exception;
 use RuntimeException;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\Scanner;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\AbstractModule;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Exception\FatalErrorException;
+use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
@@ -179,7 +179,7 @@ class BundleSyncHelper
     /**
      * Validate the extensions and ensure there are no duplicate names, display names or urls.
      *
-     * @throws FatalErrorException
+     * @throws FatalError
      */
     private function validate(array $extensions = []): void
     {
@@ -195,12 +195,12 @@ class BundleSyncHelper
             foreach ($fieldNames as $fieldName) {
                 $key = mb_strtolower($modInfo[$fieldName]);
                 if (isset($moduleValues[$fieldName][$key])) {
-                    $message = $this->translator->trans('Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]', [
+                    $message = $this->translator->trans('Fatal error: Two extensions share the same %field%. [%ext1%] and [%ext2%]', [
                         '%field%' => $fieldName,
                         '%ext1%' => $modInfo['name'],
                         '%ext2%' => $moduleValues[$fieldName][$key]
                     ]);
-                    throw new FatalErrorException($message, 500, error_get_last());
+                    throw new FatalError($message, 500, error_get_last());
                 }
                 $moduleValues[$fieldName][$key] = $dir;
             }

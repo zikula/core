@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener;
 
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\RoutesModule\Listener\Base\AbstractEntityLifecycleListener;
 
 /**

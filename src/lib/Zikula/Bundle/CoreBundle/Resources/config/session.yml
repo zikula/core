@@ -4,26 +4,31 @@ services:
         autoconfigure: true
         public: false
 
-    Zikula\Bridge\:
-        resource: '../../../../Bridge/*'
+    session.attribute_bag:
+        # default class is Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag
+        class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag
+        public: false
 
-    Zikula\Bridge\HttpFoundation\DoctrineSessionHandler:
+    Zikula\Bundle\CoreBundle\HttpFoundation\Session\:
+        resource: '../../HttpFoundation/Session/*'
+
+    Zikula\Bundle\CoreBundle\HttpFoundation\Session\DoctrineSessionHandler:
         arguments:
           $installed: '%installed%'
         calls:
             - setStorage: ['@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine']
     zikula_core.bridge.http_foundation.doctrine_session_handler:
-        alias: Zikula\Bridge\HttpFoundation\DoctrineSessionHandler
+        alias: Zikula\Bundle\CoreBundle\HttpFoundation\Session\DoctrineSessionHandler
 
     zikula_core.bridge.http_foundation.zikula_session_storage_doctrine:
-        class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
+        class: Zikula\Bundle\CoreBundle\HttpFoundation\Session\ZikulaSessionStorage
         arguments:
           $options: '%session.storage.options%'
         calls:
-            - setSaveHandler: ['@Zikula\Bridge\HttpFoundation\DoctrineSessionHandler']
+            - setSaveHandler: ['@Zikula\Bundle\CoreBundle\HttpFoundation\Session\DoctrineSessionHandler']
 
     zikula_core.bridge.http_foundation.zikula_session_storage_file:
-        class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
+        class: Zikula\Bundle\CoreBundle\HttpFoundation\Session\ZikulaSessionStorage
         arguments:
           $options: '%session.storage.options%'
         calls:

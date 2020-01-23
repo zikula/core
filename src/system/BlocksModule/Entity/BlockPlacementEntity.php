@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * BlockPlacement entity class.

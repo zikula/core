@@ -15,14 +15,14 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
-use Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler;
+use Zikula\Bundle\CoreBundle\CoreEvents;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
+use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Component\Wizard\StageInterface;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 
 class StageHelper
@@ -199,7 +199,7 @@ class StageHelper
     private function createBundles(): bool
     {
         $this->bundlesSchemaHelper->load();
-        $handler = new PersistedBundleHandler();
+        $handler = new PersistedBundleHelper();
         $bundles = [];
         $handler->getPersistedBundles($this->kernel, $bundles);
 
