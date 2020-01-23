@@ -204,7 +204,7 @@
     - symfony/polyfill-php73 installed in 1.13.1
     - symfony/profiler-pack installed in 1.0.4
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
-    - symfony/symfony updated from 3.4.35 to 5.0.3 (temporarily [this patch](https://github.com/symfony/symfony/pull/35370) is required in addition!)
+    - symfony/symfony updated from 3.4.35 to 5.0.3
     - thomaspark/bootswatch installed in 4.4.1
     - tijsverkoyen/css-to-inline-styles installed in 2.2.2
     - twig/extra-bundle installed in 3.0.1
