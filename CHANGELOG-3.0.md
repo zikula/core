@@ -95,7 +95,6 @@
     - Changes regarding directory layout
         - The `app/config/` directory has been moved to `config/`.
         - The `app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
-        - The `app/Resources/` directory became `Resources/`.
         - The `app/Resources/translations/` directory became `translations/`.
         - The `app/Resources/views/` directory became `templates/`.
         - The `lib/Zikula/Bundle/` directory has been moved to `Zikula/`.
