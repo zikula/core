@@ -21,7 +21,7 @@ class Kernel extends ZikulaKernel
     public function registerBundles(): iterable
     {
         $bundleHelper = new PersistedBundleHelper();
-        $bundles = require $this->getProjectDir() . '/config/bundles.php';
+        $bundles = require_once $this->getProjectDir() . '/config/bundles.php';
         $bundleHelper->getPersistedBundles($this, $bundles);
         foreach ($bundles as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
