@@ -21,7 +21,7 @@ class ZikulaKernel extends Kernel
     public function registerBundles(): iterable
     {
         $bundleHelper = new PersistedBundleHelper();
-        $bundles = require $this->getProjectDir() . '/app/config/bundles.php';
+        $bundles = require $this->getProjectDir() . '/config/bundles.php';
         $bundleHelper->getPersistedBundles($this, $bundles);
         foreach ($bundles as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
@@ -32,7 +32,7 @@ class ZikulaKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $configDir = $this->getProjectDir() . '/app/config/';
+        $configDir = $this->getProjectDir() . '/config/';
         $loader->load($configDir . 'config_' . $this->getEnvironment() . '.yml');
 
         $loader->load($configDir . 'parameters.yml');

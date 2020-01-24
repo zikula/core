@@ -82,7 +82,7 @@ class LocaleConfigHelper
         }
         if ($defaultLocale !== $this->defaultLocale) {
             // update locale parameter in custom_parameters.yml
-            $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/app/config');
+            $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config');
             $yamlManager->setParameter('locale', $defaultLocale);
         }
 

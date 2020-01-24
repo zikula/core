@@ -62,26 +62,26 @@ class ZikulaRequirements
     {
         $src = dirname(__DIR__, 5) . '/';
         $symfonyRequirements->addRequirement(
-            is_writable($src . '/app/config'),
-            'app/config/ directory must be writable',
-            'Change the permissions of "<strong>app/config/</strong>" directory so that the web server can write into it.'
+            is_writable($src . '/config'),
+            'config/ directory must be writable',
+            'Change the permissions of "<strong>config/</strong>" directory so that the web server can write into it.'
         );
         $symfonyRequirements->addRequirement(
-            is_writable($src . '/app/config/dynamic'),
-            'app/config/dynamic/ directory must be writable',
-            'Change the permissions of "<strong>app/config/dynamic/</strong>" directory so that the web server can write into it.'
+            is_writable($src . '/config/dynamic'),
+            'config/dynamic/ directory must be writable',
+            'Change the permissions of "<strong>config/dynamic/</strong>" directory so that the web server can write into it.'
         );
         $symfonyRequirements->addRequirement(
             is_writable($src . '/' . $parameters['datadir']),
             $parameters['datadir'] . '/ directory must be writable',
             'Change the permissions of "<strong>' . $parameters['datadir'] . '</strong>" directory so that the web server can write into it.'
         );
-        $customParametersPath = $src . '/app/config/custom_parameters.yml';
+        $customParametersPath = $src . '/config/custom_parameters.yml';
         if (file_exists($customParametersPath)) {
             $symfonyRequirements->addRequirement(
                 is_writable($customParametersPath),
-                'app/config/custom_parameters.yml file must be writable',
-                'Change the permissions of "<strong>app/config/custom_parameters.yml</strong>" so that the web server can write into it.'
+                'config/custom_parameters.yml file must be writable',
+                'Change the permissions of "<strong>config/custom_parameters.yml</strong>" so that the web server can write into it.'
             );
         }
     }

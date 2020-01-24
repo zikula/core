@@ -35,7 +35,7 @@ services:
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         public: true
         arguments:
-          $configDir: '%kernel.project_dir%/app/config'
+          $configDir: '%kernel.project_dir%/config'
 
     # public because Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand accesses this using container
     Zikula\Bundle\CoreBundle\CacheClearer:

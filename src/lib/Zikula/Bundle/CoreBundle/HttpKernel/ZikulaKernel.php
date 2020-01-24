@@ -205,8 +205,8 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 
     public function getConnectionConfig(): array
     {
-        $config = Yaml::parse(file_get_contents($this->getProjectDir() . '/app/config/parameters.yml'));
-        if (is_readable($file = $this->getProjectDir() . '/app/config/custom_parameters.yml')) {
+        $config = Yaml::parse(file_get_contents($this->getProjectDir() . '/config/parameters.yml'));
+        if (is_readable($file = $this->getProjectDir() . '/config/custom_parameters.yml')) {
             $config = array_merge($config, Yaml::parse(file_get_contents($file)));
         }
 

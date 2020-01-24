@@ -124,7 +124,7 @@ abstract class AbstractCoreInstallerCommand extends Command
             'pcreUnicodePropertiesEnabled' => $this->translator->trans("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
             'json_encode' => $this->translator->trans('Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.'),
             'config_personal_config_php' => $this->translator->trans("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => 'config/personal_config.php'])/*,
-            'custom_parameters_yml' => $this->translator->trans("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml")*/
+            'custom_parameters_yml' => $this->translator->trans("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "config/custom_parameters.yml")*/
         ];
         if (array_key_exists($key, $messages)) {
             return $messages[$key];

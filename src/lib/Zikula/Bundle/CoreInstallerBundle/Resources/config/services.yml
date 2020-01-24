@@ -20,7 +20,7 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper:
         arguments:
-            $configDir: '%kernel.project_dir%/app/config'
+            $configDir: '%kernel.project_dir%/config'
 
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
