@@ -150,12 +150,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $this->migrateUsers($io, $output);
 
-        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-        // session before regeneration happens (e.g. by an event listener executed before a login)
-        // see issue #3898 for the details
-        $reportingLevel = error_reporting();
-        error_reporting($reportingLevel & ~E_WARNING);
-
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
             'choices' => $this->localeApi->getSupportedLocaleNames(),
@@ -188,8 +182,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         // upgrade!
         $ajaxStage = new AjaxUpgraderStage($this->translator, $this->params);
         $this->stageHelper->handleAjaxStage($ajaxStage, $io);
-
-        error_reporting($reportingLevel);
 
         $io->success($this->translator->trans('UPGRADE COMPLETE!'));
 

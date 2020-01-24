@@ -110,6 +110,7 @@
     - Fixed admin notification email for new registrations which was not done in some cases.
     - Improved asset merger with regards to negative weights (#3978).
     - Fixed broken JavaScript in ZAuth user modification form (#3992).
+    - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).

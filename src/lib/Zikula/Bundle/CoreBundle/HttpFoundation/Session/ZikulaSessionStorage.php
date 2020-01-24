@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\HttpFoundation\Session;
 
 use SessionHandlerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionUtils;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -63,6 +64,12 @@ class ZikulaSessionStorage extends NativeSessionStorage
      */
     private $cookieLifeTime = 604800;
 
+    /**
+     * @var string|null
+     * remove again when https://github.com/symfony/symfony/issues/35460 is solved
+     */
+    private $emulateSameSite;
+
     public function __construct(
         VariableApiInterface $variableApi,
         array $options = [],
@@ -78,11 +85,6 @@ class ZikulaSessionStorage extends NativeSessionStorage
 
     public function start()
     {
-        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-        // session before regeneration happens (e.g. by an event listener executed before a login)
-        // see issue #3898 for the details
-        $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
-
         $result = parent::start();
 
         if (true === $result) {
@@ -101,34 +103,85 @@ class ZikulaSessionStorage extends NativeSessionStorage
                     break;
                 case self::SECURITY_LEVEL_MEDIUM:
                     if ((!$rememberMe && $cookieExpired) || $cookieAgedOut || (Constant::USER_ID_ANONYMOUS === $uid && $cookieExpired)) {
-                        parent::regenerate(true, 2 * 365 * 24 * 60 * 60); // two years
+                        $this->regenerate(true, 2 * 365 * 24 * 60 * 60); // two years
                     }
                     break;
                 case self::SECURITY_LEVEL_HIGH:
                 default:
                     if ($cookieExpired) {
-                        parent::regenerate(true, $this->cookieLifeTime);
+                        $this->regenerate(true, $this->cookieLifeTime);
                     }
                     break;
             }
         }
 
-        error_reporting($reportingLevel);
+        // remove again when https://github.com/symfony/symfony/issues/35460 is solved
+        if (null !== $this->emulateSameSite) {
+            $originalCookie = SessionUtils::popSessionCookie(session_name(), session_id());
+            if (null !== $originalCookie) {
+                header(sprintf('%s; SameSite=%s', $originalCookie, $this->emulateSameSite), false);
+            }
+        }
 
         return $result;
     }
 
     public function regenerate($destroy = false, $lifetime = null)
     {
-        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-        // session before regeneration happens (e.g. by an event listener executed before a login)
-        // see issue #3898 for the details
-        $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
+        // Cannot regenerate the session ID for non-active sessions.
+        if (\PHP_SESSION_ACTIVE !== session_status()) {
+            return false;
+        }
 
-        $result = parent::regenerate($destroy, $lifetime);
+        if (headers_sent()) {
+            return false;
+        }
 
-        error_reporting($reportingLevel);
+        if (null !== $lifetime) {
+            // added due to https://github.com/symfony/symfony/issues/28577
+            session_destroy();
 
-        return $result;
+            ini_set('session.cookie_lifetime', strval($lifetime));
+
+            // added due to https://github.com/symfony/symfony/issues/28577
+            session_start();
+        }
+
+        if ($destroy) {
+            $this->metadataBag->stampNew();
+        }
+
+        $isRegenerated = session_regenerate_id($destroy);
+
+        // The reference to $_SESSION in session bags is lost in PHP7 and we need to re-create it.
+        // @see https://bugs.php.net/70013
+        $this->loadSession();
+
+        if (null !== $this->emulateSameSite) {
+            $originalCookie = SessionUtils::popSessionCookie(session_name(), session_id());
+            if (null !== $originalCookie) {
+                header(sprintf('%s; SameSite=%s', $originalCookie, $this->emulateSameSite), false);
+            }
+        }
+
+        return $isRegenerated;
+    }
+
+    // remove again when https://github.com/symfony/symfony/issues/35460 is solved
+    public function setOptions(array $options)
+    {
+        parent::setOptions($options);
+
+        foreach ($options as $key => $value) {
+            if (isset($validOptions[$key])) {
+                if ('cookie_samesite' === $key && \PHP_VERSION_ID < 70300) {
+                    // PHP < 7.3 does not support same_site cookies. We will emulate it in
+                    // the start() method instead.
+                    $this->emulateSameSite = $value;
+                    continue;
+                }
+                ini_set('url_rewriter.tags' !== $key ? 'session.'.$key : $key, $value);
+            }
+        }
     }
 }
