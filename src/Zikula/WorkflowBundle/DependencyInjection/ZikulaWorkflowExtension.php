@@ -52,7 +52,8 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
         }
 
         // also it is possible to define custom workflows in: src/Resources/workflows/
-        $this->workflowDirectories[] = $container->getParameter('kernel.project_dir') . '/Resources/workflows';
+        // disabled for the moment
+        // $this->workflowDirectories[] = $container->getParameter('kernel.project_dir') . '/Resources/workflows';
 
         $this->loadWorkflowDefinitions($container);
     }
