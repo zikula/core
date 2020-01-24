@@ -3,11 +3,11 @@ Disallow: /bin
 Disallow: /config
 Disallow: /docs
 Disallow: /modules
-Disallow: /Resources
 Disallow: /system
 Disallow: /templates
 Disallow: /themes
 Disallow: /translations
 Disallow: /var
 Disallow: /vendor
+Disallow: /workflows
 Disallow: /Zikula
