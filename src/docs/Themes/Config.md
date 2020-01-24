@@ -1,6 +1,6 @@
 # Theme configuration
 
-File: `/Resources/config/theme.yml`
+File: `/Resources/config/theme.yaml`
 
 Status: Required
 

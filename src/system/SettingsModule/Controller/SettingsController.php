@@ -140,7 +140,7 @@ class SettingsController extends AbstractController
                 foreach ($data as $name => $value) {
                     $variableApi->set(VariableApi::CONFIG, $name, $value);
                 }
-                // resets config/dynamic/generated.yml and custom_parameters.yml
+                // resets config/dynamic/generated.yaml and config/services_custom.yaml
                 $localeApi->getSupportedLocales(true);
 
                 if ($request->hasSession() && ($session = $request->getSession())) {

@@ -43,13 +43,13 @@ application "Routes" targets ZK30 {
         Listener/InstallerListener.php,
         Menu/ExtensionMenu.php,
         README.md,
-        Resources/workflows/none.yml,
+        Resources/workflows/none.yaml,
         RoutesModuleInstaller.php,
         Twig/TwigExtension.php
     "
     markFiles "
         composer.json,
-        Resources/config/services.yml,
+        Resources/config/services.yaml,
         Resources/views/Config/config.html.twig,
         Resources/views/Route/display.html.twig,
         Resources/views/Route/edit.html.twig,

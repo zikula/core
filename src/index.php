@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 use Symfony\Component\HttpFoundation\Request;
 
-require 'app/config/bootstrap.php';
+require 'config/bootstrap.php';
 
 $request = Request::createFromGlobals();
 

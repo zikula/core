@@ -38,13 +38,13 @@ abstract class AbstractTheme extends AbstractBundle
     }
 
     /**
-     * Load the theme configuration from the config/theme.yml file.
+     * Load the theme configuration from the config/theme.yaml file.
      */
     public function __construct()
     {
         $this->config = [];
 
-        $configPath = $this->getConfigPath() . '/theme.yml';
+        $configPath = $this->getConfigPath() . '/theme.yaml';
         if (!file_exists($configPath)) {
             return;
         }
@@ -133,7 +133,7 @@ abstract class AbstractTheme extends AbstractBundle
     }
 
     /**
-     * Get the theme variables from both the DB and the .yml file.
+     * Get the theme variables from both the DB and the YAML file.
      */
     public function getThemeVars(): array
     {
@@ -145,7 +145,7 @@ abstract class AbstractTheme extends AbstractBundle
         $defaultVars = $this->getDefaultThemeVars();
         $combinedVars = array_merge($defaultVars, $dbVars);
         if (array_keys($dbVars) !== array_keys($combinedVars)) {
-            // First load of file or vars have been added to the .yml file.
+            // First load of file or vars have been added to the YAML file.
             $variableApi->setAll($this->name, $combinedVars);
         }
 
@@ -153,12 +153,12 @@ abstract class AbstractTheme extends AbstractBundle
     }
 
     /**
-     * Get the default values from variables.yml.
+     * Get the default values from variables.yaml.
      */
     public function getDefaultThemeVars(): array
     {
         $defaultVars = [];
-        $themeVarsPath = $this->getConfigPath() . '/variables.yml';
+        $themeVarsPath = $this->getConfigPath() . '/variables.yaml';
         if (!file_exists($themeVarsPath)) {
             return $defaultVars;
         }

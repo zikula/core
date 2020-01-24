@@ -4,7 +4,7 @@ Imagine is implemented in Zikula Core by the installation and pre-configuration 
 
 Documentation: https://symfony.com/doc/current/bundles/LiipImagineBundle/index.html
 
-Configuration is located at `src/app/config/imagine.yml`
+Configuration is located at `src/config/packages/imagine.yaml`
 
 In order for the developer to create their own filter(s), one must edit this config file directly.
 
@@ -20,7 +20,7 @@ Zikula Core provides a default cache resolver. By default images are cached to `
 Zikula Core provides a `zikula_root` loader if it is required to load images from locations other than `/web`.
 Use this loader to locate images from the `web/uploads` directory:
 ```yaml
-# src/app/config/imagine.yml
+# src/config/packages/imagine.yaml
 filter_sets:
     my_uploads_filter:
         data_loader: zikula_root

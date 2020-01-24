@@ -7,9 +7,9 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Zikula\\": ["build", "src/system", "src/themes", "src/lib/Zikula"]
+            "Zikula\\": ["build", "src/system", "src/themes", "src/Zikula"]
         },
-        "files": ["src/app/ZikulaKernel.php"]
+        "files": ["src/Kernel.php"]
     },
     "authors": [
         {
@@ -54,7 +54,7 @@
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
-            "file": "src/app/config/parameters.yml"
+            "file": "src/config/parameters.yml"
         },
         "installer-paths": {
             "src/modules/{$vendor}/{$name}": ["type:zikula-module"],
@@ -62,7 +62,7 @@
         },
         "merge-plugin": {
             "require": [
-                "src/lib/Zikula/Bundle/*/composer.json",
+                "src/Zikula/*/composer.json",
                 "src/system/*/composer.json"
             ],
             "include": [

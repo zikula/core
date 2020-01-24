@@ -1,0 +1,13 @@
+web_profiler_extra:
+    routing:
+        enabled:        false
+        display_in_wdt: true
+    container:
+        enabled:        false
+        display_in_wdt: true
+    twig:
+        enabled:        false
+        display_in_wdt: true
+    assetic:
+        enabled:        false
+        display_in_wdt: false

@@ -40,7 +40,7 @@ class BootstrapThemeExtension extends AbstractExtension
     public function getStyleChoices(): array
     {
         $themeBundle = $this->kernel->getBundle('ZikulaBootstrapTheme');
-        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
+        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
 
         return $variableDefinitions['theme_style']['options']['choices'];

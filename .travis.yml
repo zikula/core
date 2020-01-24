@@ -33,11 +33,11 @@ before_install:
 
     - cd src
     - php bin/console lint:container
-    - php bin/console lint:yaml app/config/
+    - php bin/console lint:yaml config/
     - php bin/console lint:yaml system/ --parse-tags
     - php bin/console lint:yaml themes/
-    - php bin/console lint:yaml lib/Zikula/ --parse-tags
-    - php bin/console lint:twig --show-deprecations system/ lib/Zikula/
+    - php bin/console lint:yaml Zikula/ --parse-tags
+    - php bin/console lint:twig --show-deprecations system/ Zikula/
     # twig linting in themes won't work because the themes are not active bundles
 
     - cd ../
@@ -60,7 +60,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core143.sql
     # run the upgrade from the 143 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.3''/" app/config/custom_parameters.yml'
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.3''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -69,7 +69,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core144.sql
     # run the upgrade from the 144 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.4''/" app/config/custom_parameters.yml'
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.4''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -78,7 +78,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core145.sql
     # run the upgrade from the 145 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.5''/" app/config/custom_parameters.yml'
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.5''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -87,7 +87,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core146.sql
     # run the upgrade from the 146 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.6''/" app/config/custom_parameters.yml'
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.6''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -96,7 +96,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core159.sql
   # run the upgrade from the 1.5.9 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.5.9''/" app/config/custom_parameters.yml'
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.5.9''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
   # drop the test db
     - mysql -e 'drop database zk_test'
@@ -105,7 +105,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core2015.sql
   # run the upgrade from the 2.0.15 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''2.0.15''/" app/config/custom_parameters.yml'
+    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''2.0.15''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
   # drop the test db
     - mysql -e 'drop database zk_test'

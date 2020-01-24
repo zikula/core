@@ -1,0 +1,8 @@
+imports:
+    - { resource: config.yaml }
+    - { resource: 'packages/dev/framework.yaml' }
+    - { resource: 'packages/dev/web_profiler.yaml' }
+    - { resource: 'packages/dev/web_profiler_extra.yaml' }
+    - { resource: 'packages/dev/php_translation.yaml' }
+    - { resource: 'packages/dev/maker.yaml' }
+    - { resource: 'packages/dev/monolog.yaml' }

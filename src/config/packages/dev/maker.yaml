@@ -1,0 +1,3 @@
+maker:
+    # this value must be changed reflecting the intended destination bundle of the maker
+    root_namespace: 'Zikula\ExtensionsModule'
