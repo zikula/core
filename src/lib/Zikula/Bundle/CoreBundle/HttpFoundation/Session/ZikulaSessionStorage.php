@@ -175,7 +175,7 @@ class ZikulaSessionStorage extends NativeSessionStorage
         if (isset($options['cookie_samesite']) && \PHP_VERSION_ID < 70300) {
             // PHP < 7.3 does not support same_site cookies. We will emulate it in
             // the start() method instead.
-            $this->emulateSameSite = $value;
+            $this->emulateSameSite = $options['cookie_samesite'];
         }
     }
 }
