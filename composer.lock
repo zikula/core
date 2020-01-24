@@ -4522,6 +4522,7 @@
                 }
             ],
             "description": "Allows installation of Components via Composer.",
+            "abandoned": "oomphinc/composer-installers-extender",
             "time": "2015-08-10T12:35:38+00:00"
         },
         {
@@ -6764,12 +6765,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "bee36a4867f1fe64f73f9c56a7e433efaa204c4b"
+                "reference": "e4c244fffde80286ac6f93b957a66935c64acf42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/bee36a4867f1fe64f73f9c56a7e433efaa204c4b",
-                "reference": "bee36a4867f1fe64f73f9c56a7e433efaa204c4b",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/e4c244fffde80286ac6f93b957a66935c64acf42",
+                "reference": "e4c244fffde80286ac6f93b957a66935c64acf42",
                 "shasum": ""
             },
             "require": {
@@ -6822,7 +6823,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-01-24T12:36:34+00:00"
+            "time": "2020-01-24T17:23:27+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6830,12 +6831,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "ff69206089db87fbf20bc8f3864d2e695620cf0b"
+                "reference": "97a0bb885d631bbc0359c0906e8403257d756b07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/ff69206089db87fbf20bc8f3864d2e695620cf0b",
-                "reference": "ff69206089db87fbf20bc8f3864d2e695620cf0b",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/97a0bb885d631bbc0359c0906e8403257d756b07",
+                "reference": "97a0bb885d631bbc0359c0906e8403257d756b07",
                 "shasum": ""
             },
             "require": {
@@ -6870,6 +6871,7 @@
                     "Zikula\\OAuthModule\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6880,11 +6882,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "support": {
-                "source": "https://github.com/zikula/OAuth/tree/master",
-                "issues": "https://github.com/zikula/OAuth/issues"
-            },
-            "time": "2020-01-23T07:11:30+00:00"
+            "time": "2020-01-24T17:23:48+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6892,12 +6890,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "e8d74ec59037637f1679907a3095cd9de7d3cf1b"
+                "reference": "49f9d95f472d657f8ed44135881a12867b02b23e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/e8d74ec59037637f1679907a3095cd9de7d3cf1b",
-                "reference": "e8d74ec59037637f1679907a3095cd9de7d3cf1b",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/49f9d95f472d657f8ed44135881a12867b02b23e",
+                "reference": "49f9d95f472d657f8ed44135881a12867b02b23e",
                 "shasum": ""
             },
             "require": {
@@ -6925,6 +6923,7 @@
                     "Zikula\\PageLockModule\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-3.0+"
             ],
@@ -6935,11 +6934,7 @@
                 }
             ],
             "description": "Page locking support",
-            "support": {
-                "source": "https://github.com/zikula-modules/PageLock/tree/master",
-                "issues": "https://github.com/zikula-modules/PageLock/issues"
-            },
-            "time": "2020-01-23T07:11:59+00:00"
+            "time": "2020-01-24T17:23:05+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6947,12 +6942,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "740ed2e44b90e01bd8e269373fa95855a928fd72"
+                "reference": "b9cc114eed65579492a683c3c5d7e6f27f122776"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/740ed2e44b90e01bd8e269373fa95855a928fd72",
-                "reference": "740ed2e44b90e01bd8e269373fa95855a928fd72",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b9cc114eed65579492a683c3c5d7e6f27f122776",
+                "reference": "b9cc114eed65579492a683c3c5d7e6f27f122776",
                 "shasum": ""
             },
             "require": {
@@ -6997,6 +6992,7 @@
                     "Zikula\\ProfileModule\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "LGPL-3.0+"
             ],
@@ -7007,11 +7003,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/master",
-                "issues": "https://github.com/zikula-modules/Profile/issues"
-            },
-            "time": "2020-01-23T07:12:08+00:00"
+            "time": "2020-01-24T17:24:04+00:00"
         },
         {
             "name": "zikula/sortable-columns",
