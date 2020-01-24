@@ -54,7 +54,7 @@
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
-            "file": "src/app/config/parameters.yml"
+            "file": "src/config/parameters.yml"
         },
         "installer-paths": {
             "src/modules/{$vendor}/{$name}": ["type:zikula-module"],
