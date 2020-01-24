@@ -33,10 +33,10 @@ $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
 </tr>
 ```
 
-## Added in Core-1.4.2
 
-Additional shortcut methods `$sortableColumns->addColumns()` and `$sortableColumns->setOrderByFromRequest()` 
-were added in Core-1.4.2.
+Additional shortcut methods are available: 
+  - `$sortableColumns->addColumns()`
+  - `$sortableColumns->setOrderByFromRequest()`
 
 ```php
 $sortableColumns->addColumns([new Column('pageid'), new Column('title'), new Column('cr_date')]);
