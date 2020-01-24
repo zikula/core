@@ -47,22 +47,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/zikula-modules/Legal"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula-modules/Profile"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula-modules/PageLock"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula/OAuth"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/Guite/WebProfilerExtraBundle"
         }
     ],
