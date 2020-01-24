@@ -36,8 +36,8 @@ before_install:
     - php bin/console lint:yaml config/
     - php bin/console lint:yaml system/ --parse-tags
     - php bin/console lint:yaml themes/
-    - php bin/console lint:yaml lib/Zikula/ --parse-tags
-    - php bin/console lint:twig --show-deprecations system/ lib/Zikula/
+    - php bin/console lint:yaml Zikula/ --parse-tags
+    - php bin/console lint:twig --show-deprecations system/ Zikula/
     # twig linting in themes won't work because the themes are not active bundles
 
     - cd ../
