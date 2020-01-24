@@ -3,9 +3,9 @@
 /bin/
 /src/bin/*
 !/src/bin/console
-/src/config/*_custom.yml
+/src/config/*_custom.yaml
 /src/config/dynamic/*
-!/src/config/dynamic/default.yml
+!/src/config/dynamic/default.yaml
 /src/modules/*
 /src/themes/*
 !/src/themes/AtomTheme
@@ -26,6 +26,5 @@
 #for working between master and 1.4 branches
 /src/var/
 !/src/var/cache/.htaccess
-!/src/var/log/.htaccess
 !/src/var/logs/.htaccess
 *.phpunit.result.cache
