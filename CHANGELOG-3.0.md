@@ -97,6 +97,7 @@
         - The `app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
         - The `app/Resources/translations/` directory became `translations/`.
         - The `app/Resources/views/` directory became `templates/`.
+        - The `app/Resources/workflows/` directory became `workflows/`.
         - The `lib/Zikula/Bundle/` directory has been moved to `Zikula/`.
     - Changes regarding configuration files
         - Configuration for specific packages has been moved into `config/packages/*.yaml`.
