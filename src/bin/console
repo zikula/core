@@ -29,8 +29,8 @@ if ($debug) {
 }
 
 // on install or upgrade, check if system requirements are met.
-$kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters.yml'));
-if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
+$kernelConfig = Yaml::parse(file_get_contents(__DIR__ . '/../config/parameters.yml'));
+if (is_readable($file = __DIR__ . '/../config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
 $requirementChecker = new RequirementChecker();
