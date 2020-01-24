@@ -112,8 +112,7 @@ ratings:
   - "**.php"
 
 exclude_paths:
-- "src/lib/Zikula/Bundle/WorkflowBundle/Resources/public/js/jsPlumb/"
-- "src/themes/BootstrapTheme/Resources/public/css/cerulean.css"
+- "src/Zikula/WorkflowBundle/Resources/public/js/jsPlumb/"
 - "*.min.js"
 - "**/tests/"
 - "**/vendor/"

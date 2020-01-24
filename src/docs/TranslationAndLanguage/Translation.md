@@ -49,7 +49,7 @@ Let's look at a website with 3 languages: `en` (strings are in `en`), `de` and `
 All languages are enabled but some translations are missing for some strings.
 
 Normally it would show English as default because strings are in English.
-The fallback locale is a feature that reads translator 'fallback' setting from config.yml
+The fallback locale is a feature that reads translator 'fallback' setting from config.yaml
 and sets this as locale to show instead the one that is missing.
 So when viewing a German site in Polish language and Polish translations are not complete
 while the German is, it will show German translations instead. This will happen only

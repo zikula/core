@@ -88,12 +88,22 @@
     - `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
     - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
-    - Removed custom translation system (#4042).
+    - Removed custom translation system (#4042). Use Symfony's translation system directly.
     - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
     - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
     - Setting `composer.json` >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
-    - Changes regarding directory layout and configuration files
+    - Changes regarding directory layout
         - The `app/config/` directory has been moved to `config/`.
+        - The `app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
+        - The `app/Resources/` directory became `Resources/`.
+        - The `app/Resources/translations/` directory became `translations/`.
+        - The `app/Resources/views/` directory became `templates/`.
+        - The `lib/Zikula/Bundle/` directory has been moved to `Zikula/`.
+    - Changes regarding configuration files
+        - Configuration for specific packages has been moved into `config/packages/*.yaml`.
+        - The `parameters.yml` file has been renamed to `services.yaml`.
+        - The `custom_parameters.yaml` file has been renamed to `services_custom.yaml`.
+        - YAML files use the `.yaml` extension instead of `.yml`.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.

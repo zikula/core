@@ -26,7 +26,7 @@ locale in the path!
 ## themevars
 
 The `themevars` variable makes the theme's variables available in the template. These are assigned in the
-`variables.yml` file for the theme and editable in the theme's config UI.
+`variables.yaml` file for the theme and editable in the theme's config UI.
 
 ```twig
 {{ themevars.<variablename> }}

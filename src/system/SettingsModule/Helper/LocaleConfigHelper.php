@@ -81,7 +81,7 @@ class LocaleConfigHelper
             $this->variableApi->set(VariableApi::CONFIG, 'locale', $defaultLocale);
         }
         if ($defaultLocale !== $this->defaultLocale) {
-            // update locale parameter in custom_parameters.yml
+            // update locale parameter in config/services_custom.yaml
             $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config');
             $yamlManager->setParameter('locale', $defaultLocale);
         }

@@ -7,4 +7,4 @@ This functionality is modified for Core-2.0 compatible Twig-based themes.
 
 Now template names are exposed in the HTML source automatically by a listener
 `Zikula\ThemeModule\EventListener\TemplateNameExposeListener` whenever the `env` parameter is set to `dev` inside
-the `app/config/custom_parameters.yml` file.
+the `config/services_custom.yaml` file.

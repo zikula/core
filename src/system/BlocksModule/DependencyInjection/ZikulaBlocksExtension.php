@@ -24,9 +24,9 @@ class ZikulaBlocksExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
         if ('test' === $container->getParameter('kernel.environment')) {
-            $loader->load('test_services.yml');
+            $loader->load('test_services.yaml');
         }
 
         $container->registerForAutoconfiguration(BlockHandlerInterface::class)

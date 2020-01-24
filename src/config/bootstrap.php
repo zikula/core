@@ -16,10 +16,10 @@ use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\Yaml\Yaml;
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../lib/RequirementChecker.php';
+require __DIR__ . '/../RequirementChecker.php';
 
-$kernelConfig = Yaml::parse(file_get_contents(realpath(__DIR__ . '/parameters.yml')));
-if (is_readable($file = __DIR__ . '/custom_parameters.yml')) {
+$kernelConfig = Yaml::parse(file_get_contents(realpath(__DIR__ . '/services.yaml')));
+if (is_readable($file = __DIR__ . '/services_custom.yaml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
 $parameters = $kernelConfig['parameters'];
@@ -43,5 +43,5 @@ AnnotationReader::addGlobalIgnoredName('type');
 $requirementChecker = new RequirementChecker();
 $requirementChecker->verify($parameters);
 
-$kernel = new ZikulaKernel($parameters['env'], $parameters['debug']);
+$kernel = new Kernel($parameters['env'], $parameters['debug']);
 $kernel->boot();

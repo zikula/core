@@ -20,9 +20,9 @@ It seems that usually workflow definitions can only be stored at a central locat
 2. Modules can define their own workflows in: `modules/Acme/MyBundle/Resources/workflows/`
 3. Also it is possible to define custom workflows (or override existing ones) in: `app/Resources/workflows/`
 
-Each of these directories may contain several YML (`*.yml`) or XML (`*.xml`) files.
+Each of these directories may contain several YML (`*.yaml`) or XML (`*.xml`) files.
 
-**Caution:** when overriding existing workflows in `app/Resources/workflows/someFile.yml` (or `someFile.xml`) ensure that these workflows get new, unique names. Otherwise transitions will be added to the original workflow instead of redefining a custom workflow.
+**Caution:** when overriding existing workflows in `app/Resources/workflows/someFile.yaml` (or `someFile.xml`) ensure that these workflows get new, unique names. Otherwise transitions will be added to the original workflow instead of redefining a custom workflow.
 
 ### Workflow editor
 

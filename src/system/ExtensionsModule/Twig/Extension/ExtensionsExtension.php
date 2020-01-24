@@ -42,7 +42,7 @@ class ExtensionsExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('isCoreModule', ['ZikulaKernel', 'isCoreModule'])
+            new TwigFilter('isCoreModule', ['Kernel', 'isCoreModule'])
         ];
     }
 

@@ -39,7 +39,7 @@ class AjaxController extends AbstractController
         }
 
         $themeBundle = $kernel->getBundle('ZikulaBootstrapTheme');
-        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
+        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
         $availableStyles = $variableDefinitions['theme_style']['options']['choices'];
 

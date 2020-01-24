@@ -20,6 +20,6 @@ and (without changing anything unless you want to), click 'save'
 
 This will alter the 
 
-    src/app/config/dynamic/generated.yml
+    src/config/dynamic/generated.yaml
 
 file in order to indicate to the system that your new locale/translation is available.

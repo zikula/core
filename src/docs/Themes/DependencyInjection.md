@@ -8,13 +8,13 @@ Status: Optional
 
 The DependencyInjection component of Symfony can be quite complex, but the initial implementation of it can be
 done quite simply. Here, the extension file must be named `<Vendor><Name>Extension.php` and simply
-creates a loader and loads the `services.yml` file.
+creates a loader and loads the `services.yaml` file.
 
 ----
 
-Filename: `services.yml`
+Filename: `services.yaml`
 
 Status: Optional
 
 Description: The DependencyInjection component of Symfony can be quite complex. Several filetypes can be used
-(.yml, .xml, etc). Please see the symfony documentation for further information.
+(.yaml, .xml, etc). Please see the symfony documentation for further information.

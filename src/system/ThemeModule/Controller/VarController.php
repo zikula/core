@@ -29,7 +29,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class VarController extends AbstractController
 {
     /**
-     * Configure a theme's variables based on provided .yml definitions for each field.
+     * Configure a theme's variables based on provided YAML definitions for each field.
      *
      * @Route("/admin/var/{themeName}")
      * @Theme("admin")
@@ -46,7 +46,7 @@ class VarController extends AbstractController
         string $themeName
     ) {
         $themeBundle = $kernel->getBundle($themeName);
-        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
+        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->trans('%theme% has no configuration.', ['%theme%' => $themeName]));
 

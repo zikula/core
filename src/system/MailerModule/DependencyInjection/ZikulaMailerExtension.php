@@ -23,7 +23,6 @@ class ZikulaMailerExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
-
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
     }
 }

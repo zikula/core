@@ -4,7 +4,7 @@ Zikula Core provides functionality to combine both CSS and JavScript files into 
 which can improve performance of your website. Additionally, one can further minify the css files and also compress the
 response to even further improve performance.
 
-To enable the features, modify these parameters in the `app/config/custom_parameters.yml` file:
+To enable the features, modify these parameters in the `config/services_custom.yaml` file:
 
 | parameter                     | possible values
 | ----------------------------- | --------------------------------

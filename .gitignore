@@ -3,16 +3,16 @@
 /bin/
 /src/bin/*
 !/src/bin/console
-/src/app/config/custom_*.yml
-/src/app/config/dynamic/*
-!/src/app/config/dynamic/default.yml
+/src/config/*_custom.yml
+/src/config/dynamic/*
+!/src/config/dynamic/default.yml
 /src/modules/*
 /src/themes/*
 !/src/themes/AtomTheme
 !/src/themes/BootstrapTheme
 !/src/themes/PrinterTheme
 !/src/themes/RssTheme
-/src/app/Resources/translations/*
+/src/translations/*
 /src/vendor/
 /vendor/
 /src/web/*
@@ -21,10 +21,11 @@
 
 
 !/test_dbs/*.sql
-/src/lib/Zikula/Bundle/CoreBundle/Tests/Functional/cache/
+/src/Zikula/CoreBundle/Tests/Functional/cache/
 
 #for working between master and 1.4 branches
 /src/var/
 !/src/var/cache/.htaccess
+!/src/var/log/.htaccess
 !/src/var/logs/.htaccess
 *.phpunit.result.cache

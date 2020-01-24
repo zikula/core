@@ -2,7 +2,7 @@
 
 The dynamic configuration dumper is implemented by the `\Zikula\Bundle\CoreBundle\DynamicConfigDumper` class
 and intended to be used for dynamically generating Symfony configuration, which would typically be placed
-statically in `app/config/config.yml`. The dumper provides methods for setting, getting and deleting
+statically in `config/config.yaml`. The dumper provides methods for setting, getting and deleting
 configuration values and parameters.
 
 The ZikulaRoutesModule is using it to generate the multilingual routing configuration for the [JMSI18nRoutingBundle](https://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration). An example configuration might look like so:
@@ -30,6 +30,6 @@ $configDumper->setConfiguration('jms_i18n_routing',
 This will update the configuration file. Note that the configuration becomes active as of **the next page load**.
 Use `setParameter()` to set a parameter.
 
-The configuration is written into the `app/config/dynamic/generated.yml` file. Core bundles might specify a default
-configuration in the `app/config/dynamic/default.yml` file, which will be used until there is a generated configuration
+The configuration is written into the `config/dynamic/generated.yaml` file. Core bundles might specify a default
+configuration in the `config/dynamic/default.yaml` file, which will be used until there is a generated configuration
 available.

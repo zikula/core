@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Yaml;
 set_time_limit(0);
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../lib/RequirementChecker.php';
+require __DIR__ . '/../RequirementChecker.php';
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
@@ -29,14 +29,14 @@ if ($debug) {
 }
 
 // on install or upgrade, check if system requirements are met.
-$kernelConfig = Yaml::parse(file_get_contents(__DIR__ . '/../config/parameters.yml'));
-if (is_readable($file = __DIR__ . '/../config/custom_parameters.yml')) {
+$kernelConfig = Yaml::parse(file_get_contents(__DIR__ . '/../config/services.yaml'));
+if (is_readable($file = __DIR__ . '/../config/services_custom.yaml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
 $requirementChecker = new RequirementChecker();
 $requirementChecker->verify($kernelConfig['parameters']);
 
-$kernel = new ZikulaKernel($env, $debug);
+$kernel = new Kernel($env, $debug);
 $kernel->boot();
 
 $application = new Application($kernel);
