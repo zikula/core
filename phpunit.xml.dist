@@ -9,18 +9,12 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
     <php>
-        <server name="KERNEL_CLASS" value="ZikulaKernel" />
+        <server name="KERNEL_CLASS" value="Kernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled=1"/>
     </php>
     <testsuites>
         <testsuite name="Zikula Bundle Tests">
-            <directory>./src/lib/Zikula/Bundle/*/Tests/</directory>
-        </testsuite>
-        <testsuite name="Zikula Component Tests">
-            <directory>./src/lib/Zikula/Component/*/Tests/</directory>
-        </testsuite>
-        <testsuite name="Zikula Core Tests">
-            <directory>./src/lib/Zikula/Core/Tests/</directory>
+            <directory>./src/Zikula/*/Tests/</directory>
         </testsuite>
         <testsuite name="Zikula System Tests">
             <directory>./src/system/*/Tests/</directory>
