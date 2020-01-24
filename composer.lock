@@ -6748,15 +6748,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "https://ziku.la/"
+                    "homepage": "http://zikula.org/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "info@ziku.la"
+                    "email": "drak@zikula.org"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "https://ziku.la",
+            "homepage": "http://zikula.org",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -7056,16 +7056,16 @@
         },
         {
             "name": "zikula/wizard",
-            "version": "3.0.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "121b37b90d88821d06dadf8bde55650e28191792"
+                "reference": "b820ce4f62aff9a6d37b4d4cc394fac12797b726"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/121b37b90d88821d06dadf8bde55650e28191792",
-                "reference": "121b37b90d88821d06dadf8bde55650e28191792",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/b820ce4f62aff9a6d37b4d4cc394fac12797b726",
+                "reference": "b820ce4f62aff9a6d37b4d4cc394fac12797b726",
                 "shasum": ""
             },
             "require": {
@@ -7078,6 +7078,7 @@
                     "Zikula\\Component\\Wizard\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -7090,17 +7091,13 @@
             "description": "Wizard for multi-stage interaction including Symfony Forms",
             "homepage": "https://ziku.la",
             "keywords": [
-                "forms",
+                "Forms",
+                "Symfony2",
                 "stage",
                 "step",
-                "symfony2",
                 "wizard"
             ],
-            "support": {
-                "source": "https://github.com/zikula/Wizard/tree/3.0.3",
-                "issues": "https://github.com/zikula/Wizard/issues"
-            },
-            "time": "2019-12-27T05:58:04+00:00"
+            "time": "2020-01-24T21:21:21+00:00"
         }
     ],
     "packages-dev": [
@@ -7180,6 +7177,7 @@
         "php-translation/symfony-storage": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
+        "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20
     },

@@ -17,13 +17,9 @@
         "symfony/framework-bundle": "5.*",
         "symfony/requirements-checker": "dev-patch-1 as 1.1.6",
         "matthiasnoback/symfony-console-form": "dev-symfony-5",
-        "zikula/wizard": "3.*"
+        "zikula/wizard": "dev-master"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula/Wizard"
-        },
         {
             "type": "git",
             "url": "https://github.com/craigh/requirements-checker"
