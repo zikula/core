@@ -72,7 +72,7 @@ class Scanner
     public function decode(string $jsonFilePath)
     {
         $base = str_replace('\\', '/', dirname($jsonFilePath));
-        $zkRoot = dirname(__DIR__, 5) . '/';
+        $zkRoot = dirname(__DIR__, 3) . '/';
         $base = mb_substr($base, mb_strlen($zkRoot));
 
         $json = json_decode($this->getFileContents($jsonFilePath), true);
