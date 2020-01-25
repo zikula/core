@@ -12,14 +12,6 @@ e.g.
     translations/zikula.de.po
     translations/zikula_javascript.de.po
 
-After the files have been placed, you must 'install' them by going to 
+After the files have been placed, you must 'install' them by going to _"General Settings > Localisation settings"_.
 
-General Settings > Localization Settings
-
-and (without changing anything unless you want to), click 'save'
-
-This will alter the 
-
-    src/config/dynamic/generated.yaml
-
-file in order to indicate to the system that your new locale/translation is available.
+This will update the `src/config/dynamic/generated.yaml` file in order to indicate to the system that your new locale/translation is available.

@@ -1,5 +1,4 @@
 # Javascript translation
-
 Zikula includes `willdurand/js-translation-bundle` also known as [BazingaJsTranslationBundle](https://github.com/willdurand/BazingaJsTranslationBundle).
 
 Bazinga adds native symfony translation support like so:
@@ -15,6 +14,8 @@ The methods are defined like so:
 Translator.trans(key, params, domain, locale);
 Translator.transChoice(key, count, params, domain, locale);
 ```
+
+See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
 
 ## Extraction from Javascript files
 
