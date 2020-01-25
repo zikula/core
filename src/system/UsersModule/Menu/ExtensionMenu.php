@@ -124,7 +124,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         $menu->addChild('Log out', [
             'route' => 'zikulausersmodule_access_logout',
         ])->setAttribute('icon', 'fas fa-power-off')
-        ->setAttribute('class', 'text-danger');
+        ->setLinkAttribute('class', 'text-danger');
 
         return 0 === $menu->count() ? null : $menu;
     }
