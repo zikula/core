@@ -4,7 +4,32 @@
 
  - BC Breaks:
     - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
-    - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
+    - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
+    - Namespace changes
+        - `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
+        - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule` moved into `Zikula\ExtensionsModule\`.
+        - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme` moved into `Zikula\ThemeModule\`.
+        - `Zikula\Bundle\CoreBundle\Bundle\Bootstrap` moved and renamed to `Bundle\CoreBundle\Helper\PersistedBundleHelper`.
+        - `Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper` moved and renamed to `Bundle\CoreBundle\Helper\BundlesSchemaHelper`.
+        - `Zikula\Bundle\CoreBundle\Bundle\MetaData` moved into `Zikula\Bundle\CoreBundle\Composer\`.
+        - `Zikula\Bundle\CoreBundle\Bundle\Scanner` moved into `Zikula\Bundle\CoreBundle\Composer\`.
+        - `Zikula\Common\Collection\` moved into `Zikula\Bundle\CoreBundle\Collection\`.
+        - `Zikula\Common\Content\` moved into `Zikula\ExtensionsModule\ModuleInterface\Content\`.
+        - `Zikula\Common\MultiHook\` moved into `Zikula\ExtensionsModule\ModuleInterface\MultiHook\`.
+        - `Zikula\Common\Translator\` moved into `Zikula\Bundle\CoreBundle\Translation\`.
+        - `Zikula\Common\ColumnExistsTrait` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
+        - `Zikula\Core\Controller\` moved into `Zikula\Bundle\CoreBundle\Controller\`.
+        - `Zikula\Core\Doctrine\` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
+        - `Zikula\Core\Event\GenericEvent` moved into `Zikula\Bundle\CoreBundle\Event\`.
+        - `Zikula\Core\Event\ModuleStateEvent` moved into `Zikula\ExtensionsModule\Event\`.
+        - `Zikula\Core\Response\` moved into `Zikula\Bundle\CoreBundle\Response\`.
+        - `Zikula\Core\AbstractExtensionInstaller` moved into `Zikula\ExtensionsModule\Installer\`.
+        - `Zikula\Core\AbstractModule` moved into `Zikula\ExtensionsModule\`.
+        - `Zikula\Core\CoreEvents` was split into `Zikula\Bundle\CoreBundle\CoreEvents` and `Zikula\ExtensionsModule\ExtensionEvents`.
+        - `Zikula\Core\ExtensionInstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
+        - `Zikula\Core\InstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
+        - `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
+        - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
     - Interface extensions and amendments
         - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
         - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
@@ -34,6 +59,7 @@
         - Removed afarkas/webshim (#3925)
         - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
         - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
+        - Removed jms/translation-bundle (in favour of php-translation/*)
         - Removed oyejorge/less.php
         - Removed ramsey/array_column
         - Removed sensio/distribution-bundle (in favour of Flex)
@@ -52,19 +78,32 @@
         - Removed zikula/seabreeze-theme (in favour of different styles in bootstrap theme)
         - Replaced by stof/doctrine-extensions-bundle by antishov/doctrine-extensions-bundle
         - Downgraded kriswallsmith/assetic from 1.4.0 to 1.0.5
+    - Removed `Zikula\Core\Exception\FatalErrorException` in favour of direct usage of `Symfony\Component\ErrorHandler\Error\FatalError`
     - Removed the `polyfill` Twig tag (#3925).
     - Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
     - Removed `ZikulaKernel::VERSION_SUB` constant.
     - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
-    - Zikula\Bundle\CoreBundle\Bundle\Bootstrap renamed to Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler
-    - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::getConnection visibility set to private
-    - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::addAutoloaders visibility set to private
-    - Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper renamed to Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper
-    - Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper::createSchema visibility set to private
+    - `Bundle\CoreBundle\Helper\PersistedBundleHelper::getConnection` visibility set to private
+    - `Bundle\CoreBundle\Helper\PersistedBundleHelper::addAutoloaders` visibility set to private
+    - `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
     - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
-    - Removed custom translation system (#4042).
+    - Removed custom translation system (#4042). Use Symfony's translation system directly.
     - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
+    - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
+    - Setting `composer.json` >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
+    - Changes regarding directory layout
+        - The `app/config/` directory has been moved to `config/`.
+        - The `app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
+        - The `app/Resources/translations/` directory became `translations/`.
+        - The `app/Resources/views/` directory became `templates/`.
+        - The `app/Resources/workflows/` directory became `workflows/`.
+        - The `lib/Zikula/Bundle/` directory has been moved to `Zikula/`.
+    - Changes regarding configuration files
+        - Configuration for specific packages has been moved into `config/packages/*.yaml`.
+        - The `parameters.yml` file has been renamed to `services.yaml`.
+        - The `custom_parameters.yaml` file has been renamed to `services_custom.yaml`.
+        - YAML files use the `.yaml` extension instead of `.yml`.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
@@ -83,6 +122,7 @@
     - Fixed admin notification email for new registrations which was not done in some cases.
     - Improved asset merger with regards to negative weights (#3978).
     - Fixed broken JavaScript in ZAuth user modification form (#3992).
+    - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -99,44 +139,48 @@
     - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
     - More user-friendly response messages during account information recovery (#3723).
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
-    - Added CLI Commands to manage extension installation, upgrade & uninstall (#3517)
-    - Added ability to choose a Font Awesome icon for admin categories and categories (#3598)
+    - Added CLI Commands to manage extension installation, upgrade and uninstall (#3517).
+    - Added ability to choose a Font Awesome icon for admin categories and categories (#3598).
+    - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
+    - `LocaleApi` is now able to work with regions, too (#4012, #2425).
+    - New and removed locales are automatically reflected in the configuration (#4012, #2425).
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
+    - behat/transliterator updated from 1.2.0 to 1.3.0
     - components/bootstrap updated from 3.4.1 to 4.4.1
     - components/font-awesome updated from 4.7.0 to 5.12.0
-    - composer/ca-bundle updated from 1.2.4 to 1.2.5
-    - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
+    - composer/ca-bundle updated from 1.2.4 to 1.2.6
+    - composer/composer installed in 1.9.1 (temporarily using dev-master b9d0015)
+    - composer/semver updated from 1.5.0 to 1.5.1
     - composer/spdx-licenses installed in 1.5.2
     - composer/xdebug-handler installed in 1.4.0
     - doctrine/annotations updated from 1.2.7 to 1.8.0
     - doctrine/collections updated from 1.3.0 to 1.6.4
     - doctrine/common updated from 2.6.2 to 2.12.0
     - doctrine/dbal updated from 2.5.13 to 2.10.1
-    - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.6
+    - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.7
     - doctrine/event-manager installed in 1.1.0
     - doctrine/inflector updated from 1.1.0 to 1.3.1
     - doctrine/instantiator updated from 1.0.5 to 1.3.0
     - doctrine/lexer updated from 1.0.2 to 1.2.0
     - doctrine/orm updated from 2.5.14 to 2.7.0
-    - doctrine/persistence installed in 1.3.3
+    - doctrine/persistence installed in 1.3.6
     - doctrine/reflection installed in 1.1.0
-    - egulias/email-validator installed in 2.1.14
+    - egulias/email-validator installed in 2.1.15
     - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
     - erusev/parsedown installed in 1.7.4
-    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.1
-    - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.38
+    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
+    - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.39
     - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
     - imagine/imagine updated from 0.7.1 to 1.3.3
     - itsjavi/fontawesome-iconpicker installed in 3.2.0
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using remmel/i18n-routing-bundle dev-master instead)
-    - jms/translation-bundle updated from 1.3.2 to 1.4.4 (temporarily using prolix/1.4.11 instead)
     - jquery.mmenu updated from 7.3.3 to mmenu.js 8.4.5
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
     - knplabs/knp-menu updated from 2.2.0 to 3.1.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
-    - league/commonmark installed in 1.2.0
+    - league/commonmark installed in 1.2.2
     - league/html-to-markdown installed in 4.9.1
     - liip/imagine-bundle updated from 1.9.1 to 2.3.0
     - lorenzo/pinky installed in 1.0.5
@@ -146,21 +190,21 @@
     - nikic/php-parser updated from 1.4.1 to 4.3.0
     - nyholm/nsa installed in 1.1.0
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
-    - php-translation/common installed in 3.0.0
-    - php-translation/extractor installed in 2.0.0
-    - php-translation/symfony-bundle installed in 0.11.0
-    - php-translation/symfony-storage installed in 2.1.0
+    - php-translation/common installed in 3.0.1
+    - php-translation/extractor installed in 2.0.1
+    - php-translation/symfony-bundle installed in 0.11.3
+    - php-translation/symfony-storage installed in 2.1.0 (temporarily using dev-master)
     - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - seld/jsonlint installed in 1.7.2
-    - seld/phar-utils installed in 1.0.1
+    - seld/phar-utils installed in 1.0.2
     - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.3
     - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
     - symfony/contracts installed in 2.0.1
     - symfony/maker-bundle installed in 1.14.3
     - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
-    - symfony/phpunit-bridge updated from 3.4.14 to 5.0.2
+    - symfony/phpunit-bridge updated from 3.4.14 to 5.0.3
     - symfony/polyfill-ctype updated from v1.12.0 to v1.13.1
     - symfony/polyfill-iconv installed in 1.13.1
     - symfony/polyfill-intl-grapheme installed in 1.13.1
@@ -173,7 +217,7 @@
     - symfony/polyfill-php73 installed in 1.13.1
     - symfony/profiler-pack installed in 1.0.4
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
-    - symfony/symfony updated from 3.4.35 to 5.0.2
+    - symfony/symfony updated from 3.4.35 to 5.0.3
     - thomaspark/bootswatch installed in 4.4.1
     - tijsverkoyen/css-to-inline-styles installed in 2.2.2
     - twig/extra-bundle installed in 3.0.1
@@ -185,7 +229,7 @@
     - twig/string-extra installed in 3.0.1
     - twig/twig updated from 1.42.4 to 3.0.1
     - webmozart/assert updated from 1.5.0 to 1.6.0
-    - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0 (temporarily using vanputten's fork)
+    - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0
     - zikula/legal-module updated from 3.1.2 to dev-master
     - zikula/oauth-module updated from 1.0.4 to dev-master
     - zikula/pagelock-module updated from 1.2.3 to dev-master

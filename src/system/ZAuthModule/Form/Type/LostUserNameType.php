@@ -25,12 +25,14 @@ class LostUserNameType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'Email address',
-                'input_group' => ['left' => '<i class="fa fa-at"></i>'],
+                'input_group' => ['left' => '<i class="fas fa-at"></i>'],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
     }

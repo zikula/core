@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -58,10 +58,9 @@ class ConfigController extends AbstractController
                 $data = $form->getData();
                 $this->setVars($data);
                 $eventDispatcher->dispatch(new GenericEvent(null, [], $data), UserEvents::CONFIG_UPDATED);
-                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
         }
 
@@ -113,10 +112,16 @@ class ConfigController extends AbstractController
                 if (!in_array(true, $data['authenticationMethodsStatus'], true)) {
                     // do not allow all methods to be inactive.
                     $data['authenticationMethodsStatus']['native_uname'] = true;
-                    $this->addFlash('info', $this->trans('All methods cannot be inactive. At least one methods must be enabled. (%m has been enabled).', ['%m' => $allMethods['native_uname']->getDisplayName()]));
+                    $this->addFlash(
+                        'info',
+                        $this->trans(
+                            'All methods cannot be inactive. At least one methods must be enabled (%method% has been enabled).',
+                            ['%method%' => $allMethods['native_uname']->getDisplayName()]
+                        )
+                    );
                 }
                 $variableApi->set(VariableApi::CONFIG, 'authenticationMethodsStatus', $data['authenticationMethodsStatus']);
-                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
 
                 // clear cache to reflect the updated state (#3936)
                 $cacheClearer->clear('symfony');
@@ -125,7 +130,7 @@ class ConfigController extends AbstractController
                 return $this->redirectToRoute('zikulausersmodule_config_authenticationmethods');
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
         }
 

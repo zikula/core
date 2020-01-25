@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**

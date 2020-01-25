@@ -1,6 +1,6 @@
 # Theme variables
 
-File path: `/Resources/config/variables.yml`
+File path: `/Resources/config/variables.yaml`
 
 The contents of this file can vary. At the very least, it can be a list of variables and values
 that will be passed along to the theme engine as global variables within your theme, e.g.:

@@ -23,9 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
@@ -305,7 +305,7 @@ abstract class AbstractRouteController extends AbstractController
             }
         
             if ('delete' === $action) {
-                $this->addFlash('status', $this->trans('Done! Item deleted.'));
+                $this->addFlash('status', 'Done! Item deleted.');
                 $logger->notice(
                     '{app}: User {user} deleted the {entity} with id {id}.',
                     [
@@ -316,7 +316,7 @@ abstract class AbstractRouteController extends AbstractController
                     ]
                 );
             } else {
-                $this->addFlash('status', $this->trans('Done! Item updated.'));
+                $this->addFlash('status', 'Done! Item updated.');
                 $logger->notice(
                     '{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.',
                     [

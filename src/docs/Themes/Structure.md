@@ -12,8 +12,8 @@ SpecTheme/
         FooListener.php
     Resources/
         config/
-            theme.yml (required)
-            services.yml (required if services are used)
+            theme.yaml (required)
+            services.yaml (required if services are used)
         docs/
             index.rst
         meta/

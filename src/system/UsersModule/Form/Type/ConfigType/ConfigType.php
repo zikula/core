@@ -25,6 +25,8 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class ConfigType extends AbstractType
@@ -60,27 +62,6 @@ class ConfigType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH, TextType::class, [
-                'label' => 'Path to account page images',
-                'constraints' => [
-                    new NotBlank(),
-                    new Type('string')
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE, IntegerType::class, [
-                'label' => 'Number of links per page',
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 1])
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW, IntegerType::class, [
-                'label' => 'Number of links per page',
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 1])
-                ]
-            ])
             /**
              * Registration Settings
              */
@@ -100,7 +81,7 @@ class ConfigType extends AbstractType
                 'label' => 'E-mail address to notify of registrations',
                 'required' => false,
                 'help' => 'A notification is sent to this e-mail address for each registration. Leave blank for no notifications.',
-                'input_group' => ['left' => '<i class="fa fa-at"></i>'],
+                'input_group' => ['left' => '<i class="fas fa-at"></i>'],
                 'constraints' => [
                     new Type('string')
                 ]
@@ -120,8 +101,11 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, TextType::class, [
                 'label' => 'Reserved user names',
                 'required' => false,
+                /** @Ignore */
                 'help' => [
+                    /** @Translate */
                     'Separate each user name with a comma.',
+                    /** @Translate */
                     'Each user name on this list is not allowed to be chosen by someone registering for a new account.'
                 ],
                 'constraints' => [
@@ -147,10 +131,13 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, TextareaType::class, [
                 'label' => 'Banned e-mail address domains',
                 'required' => false,
+                /** @Ignore */
                 'help' => [
+                    /** @Translate */
                     'Separate each domain with a comma.',
+                    /** @Translate */
                     'Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.'
-                    ],
+                ],
                 'constraints' => [
                     new Type('string'),
                     new Regex([
@@ -186,12 +173,13 @@ class ConfigType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'icon' => 'fa-times'
             ])
         ;
     }

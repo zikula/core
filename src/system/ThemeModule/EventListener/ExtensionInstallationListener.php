@@ -15,7 +15,7 @@ namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Core\CoreEvents;
+use Zikula\ExtensionsModule\ExtensionEvents;
 
 /**
  * Clear the combined asset cache when a module or theme state is changed
@@ -41,11 +41,11 @@ class ExtensionInstallationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::MODULE_INSTALL => ['clearCombinedAssetCache'],
-            CoreEvents::MODULE_UPGRADE => ['clearCombinedAssetCache'],
-            CoreEvents::MODULE_ENABLE => ['clearCombinedAssetCache'],
-            CoreEvents::MODULE_DISABLE => ['clearCombinedAssetCache'],
-            CoreEvents::MODULE_REMOVE => ['clearCombinedAssetCache']
+            ExtensionEvents::MODULE_INSTALL => ['clearCombinedAssetCache'],
+            ExtensionEvents::MODULE_UPGRADE => ['clearCombinedAssetCache'],
+            ExtensionEvents::MODULE_ENABLE => ['clearCombinedAssetCache'],
+            ExtensionEvents::MODULE_DISABLE => ['clearCombinedAssetCache'],
+            ExtensionEvents::MODULE_REMOVE => ['clearCombinedAssetCache']
         ];
     }
 

@@ -20,9 +20,10 @@ use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\AbstractBundle;
-use Zikula\Core\AbstractModule;
+use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
@@ -311,7 +312,7 @@ class RouteLoader extends Loader
             return;
         }
 
-        // get url from MetaData first. May be empty.
+        // get url from bundle meta data first. May be empty.
         $untranslatedPrefix = $bundle->getMetaData()->getUrl(false);
         if (!empty($untranslatedPrefix)) {
             if ($this->translator->getCatalogue($this->locale)->has($untranslatedPrefix, strtolower($bundle->getName()))) {

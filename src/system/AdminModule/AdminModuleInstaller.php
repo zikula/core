@@ -16,7 +16,7 @@ namespace Zikula\AdminModule;
 use Exception;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 /**
  * Installation and upgrade routines for the admin module.

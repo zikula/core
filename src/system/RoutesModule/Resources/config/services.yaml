@@ -1,0 +1,58 @@
+parameters:
+    jms_i18n_routing.route_exclusion_strategy.class: Zikula\RoutesModule\Translation\DefaultRouteExclusionStrategy
+    jms_i18n_routing.pattern_generation_strategy.class: Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
+    jms_i18n_routing.route_translation_extractor.class: Zikula\RoutesModule\Translation\ZikulaRouteTranslationExtractor
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\RoutesModule\ZikulaRoutesModule'
+            $twigLoader: '@twig.loader'
+
+    Zikula\RoutesModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Base/bootstrap.php,Tests,vendor}'
+
+    Zikula\RoutesModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    # public because EntityLifecycleListener accesses this using container
+    Zikula\RoutesModule\Entity\Factory\EntityFactory:
+        public: true
+
+    Zikula\RoutesModule\Form\Handler\:
+        resource: '../../Form/Handler'
+        calls:
+            - setLockingApi: ['@?Zikula\PageLockModule\Api\LockingApi']
+
+    # public because installer accesses this using container
+    Zikula\RoutesModule\Helper\MultilingualRoutingHelper:
+        public: true
+        arguments:
+          $installed: '%installed%'
+
+    Zikula\RoutesModule\Helper\RouteDumperHelper:
+        arguments:
+            $dumpCommand: '@fos_js_routing.dump_command'
+
+    Zikula\RoutesModule\Listener\EntityLifecycleListener:
+        tags: ['doctrine.event_subscriber']
+
+    Zikula\RoutesModule\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: zikulaRoutesMenuItemActions }
+            - { name: knp_menu.menu_builder, method: createViewActionsMenu, alias: zikulaRoutesMenuViewActions }
+
+    jms_i18n_routing.route_exclusion_strategy:
+        class: '%jms_i18n_routing.route_exclusion_strategy.class%'
+    JMS\I18nRoutingBundle\Router\RouteExclusionStrategyInterface:
+        '@jms_i18n_routing.route_exclusion_strategy'
+
+    Zikula\RoutesModule\Routing\RouteLoader:
+        arguments:
+            $locale: '%locale%'
+        tags: ['routing.loader']

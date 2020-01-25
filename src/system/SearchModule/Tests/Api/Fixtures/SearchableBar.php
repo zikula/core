@@ -15,7 +15,7 @@ namespace Zikula\SearchModule\Tests\Api\Fixtures;
 
 use DateTime;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Core\RouteUrl;
+use Zikula\Bundle\CoreBundle\RouteUrl;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
 

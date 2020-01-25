@@ -22,11 +22,11 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\PlainResponse;
 use Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogExportType;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType;
@@ -230,7 +230,7 @@ class IdsLogController extends AbstractController
                 return $response;
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
 
                 return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');
             }
@@ -264,9 +264,9 @@ class IdsLogController extends AbstractController
                 // delete all entries
                 $repository->truncateTable();
 
-                $this->addFlash('status', $this->trans('Done! Purged IDS Log.'));
+                $this->addFlash('status', 'Done! Purged IDS log.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');

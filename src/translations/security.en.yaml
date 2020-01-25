@@ -1,0 +1,125 @@
+'Allowed HTML settings': null
+'Filtering of allowed HTML occurs when a template string or variable is modified with the \''safeHtml\'' filter, or when a module asks for similar processing from within its functions.': null
+'HTML entities': null
+'Translate embedded HTML entities into real characters': null
+'Yes': null
+'No': null
+'HTML tags': null
+'Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to ''Not allowed'' unless you are sure that you really understand the consequences of enabling them.': null
+'HTML Purifier output filter': null
+'''Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).': null
+Tag: null
+'Check all': null
+'Not allowed': null
+Allowed: null
+'Allowed with attributes': null
+'Tag usage (from %link%)': null
+About: null
+Save: null
+Cancel: null
+'HTMLPurifier settings': null
+'HTMLPurifier filtering occurs when a template string or variable is modified with the \''safehtml\'' modifier, or when a module asks for similar processing from within its functions.': null
+Warning: null
+'Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.': null
+'will be applied after HTMLPurifier processing is completed.': null
+'HTMLPurifier %s configuration directives': null
+'Use default value (if checked) or override value': null
+'(Place each value on a separate line.)': null
+'(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)': null
+'(Modification not supported.)': null
+'Value:': null
+'Reset to default values': null
+'Security settings': null
+'Automatic update settings': null
+'Host settings': null
+'Cookies settings': null
+'Session settings': null
+'Intrusion Detection System': null
+'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.': null
+'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.': null
+'Output filter settings': null
+'View IDS log': null
+'Download the entire log to a CSV file': null
+'Export IDS Log': null
+'Delete the entire log.': null
+'Purge IDS Log': null
+Filter: null
+'Clear filter': null
+'Sort by %s': null
+Name: null
+Value: null
+Page: null
+'User Name': null
+IP: null
+Impact: null
+'PHPIDS filters used': null
+Date: null
+Actions: null
+'PHPIDS filter %s': null
+Description: null
+Rule: null
+'No logged intrusions found.': null
+'Purge IDS log': null
+'Confirmation prompt': null
+'Do you really want to delete the entire IDS log?': null
+'Export IDS log': null
+'Export Options': null
+All: null
+'Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the ''Secure host name'' box, make sure you include a trailing slash at the end of the address.': null
+'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': null
+'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions''': null
+'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.': null
+'days (if ''Remember me'' is activated)': null
+'minutes of inactivity': null
+Monthly: null
+Weekly: null
+Daily: null
+'High (user is logged-out after X minutes of inactivity)': null
+'Medium (user is logged-out after X minutes of inactivity, unless ''Remember me'' checkbox is activated during log-in)': null
+'Low (user stays logged-in until he logs-out)': null
+File: null
+'Database (recommended)': null
+'Warn only': null
+Block: null
+XML: null
+JSON: null
+'React on impact per request (uses the values from above)': null
+'React on impact sum per session [loose] (uses the values from above * 10)': null
+'React on impact sum per session [strict] (uses the values from above * 5)': null
+'Use internal output filter only': null
+'Use ''HTML Purifier'' + internal mechanism as output filter': null
+'More information in <a href=''%url%'' target="_blank">PHP documentation</a>.': null
+'Default: <code>Resources/config/phpids_zikula_default.xml</code>': null
+'Check for updates': null
+'How often': null
+'Secure host name': null
+'Sign cookies': null
+'Signing key': null
+'Security level': null
+'Automatically log user out after': null
+'Expire session after': null
+'Store sessions': null
+'Path for saving session files': null
+'Session cookie name': null
+'Use PHPIDS': null
+'Block action': null
+'Send email on block action': null
+'Select filter rules to use': null
+'IDS rule path': null
+'Minimum impact to log intrusion in the database': null
+'Minimum impact to email the administrator': null
+'Minimum impact to block the request': null
+'Minimum impact to kick the user (destroy the session)': null
+'Select the way the impact thresholds are used in Zikula': null
+'Define which fields contain HTML and need preparation': null
+'Define which fields contain JSON data and should be treated as such': null
+'Define which fields should not be monitored': null
+'Select output filter': null
+'Comma (,)': null
+'Semicolon (;)': null
+'Colon (:)': null
+Tab: null
+'Export title row': null
+'CSV filename': null
+'CSV delimiter': null
+Export: null

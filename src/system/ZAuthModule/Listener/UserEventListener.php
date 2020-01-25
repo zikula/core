@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -80,7 +80,10 @@ class UserEventListener implements EventSubscriberInterface
                 $session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
                 $session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
 
-                $session->getFlashBag()->add('error', $this->translator->trans("Your log-in request was not completed. You must change your web site account's password first."));
+                $session->getFlashBag()->add(
+                    'error',
+                    "Your log-in request was not completed. You must change your web site account's password first."
+                );
             }
         }
     }

@@ -25,13 +25,13 @@ use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Helper\UpdateCheckHelper;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ThemeModule\Engine\Asset;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 
 /**
  * @Route("/admininterface")
@@ -196,11 +196,10 @@ class AdminInterfaceController extends AbstractController
         RequestStack $requestStack,
         RouterInterface $router,
         ExtensionRepositoryInterface $extensionRepository,
-        LinkContainerCollector $linkContainerCollector,
+        ExtensionMenuCollector $extensionMenuCollector,
         CapabilityApiInterface $capabilityApi,
         AdminModuleRepositoryInterface $adminModuleRepository,
-        AdminCategoryRepositoryInterface $adminCategoryRepository,
-        Asset $assetHelper
+        AdminCategoryRepositoryInterface $adminCategoryRepository
     ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -268,14 +267,19 @@ class AdminInterfaceController extends AbstractController
 
             // url
             try {
-                $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $router->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['route'])
+                    ? $router->generate($adminModule['capabilities']['admin']['route'])
+                    : '';
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
+                $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
             }
 
             $moduleName = (string)$adminModule['name'];
-            $links = $linkContainerCollector->getLinks($moduleName, 'admin');
+            $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
+            if (isset($extensionMenu) && 'modules' === $mode && 'tabs' === $template) {
+                $extensionMenu->setChildrenAttribute('class', 'dropdown-menu');
+            }
 
             $module = [
                 'menutexturl' => $menuTextUrl,
@@ -284,7 +288,7 @@ class AdminInterfaceController extends AbstractController
                 'modname' => $adminModule['name'],
                 'order' => $order,
                 'id' => $adminModule['id'],
-                'links' => $links,
+                'extensionMenu' => $extensionMenu,
                 'icon' => $adminModule['capabilities']['admin']['icon'] ?? '',
             ];
 

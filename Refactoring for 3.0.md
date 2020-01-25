@@ -2,6 +2,30 @@
 
 ## Modules
 
+### Composer file
+
+Add the following capability for defining the (default) admin icon:
+
+```json
+    ...
+    "extra": {
+        "zikula": {
+            ...
+            "capabilities": {
+                ...
+                "admin": {
+                    ...
+                    "icon": "fas fa-star"
+                },
+                ...
+            },
+        },
+    },
+
+```
+
+You can remove the old `admin.png` file afterwards.
+
 ### Interfaces
 
 In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said
@@ -16,83 +40,19 @@ Module services should be registered by their classname (automatically as above)
 `service.class.dot.notation`.
 
 ### Blocks
-
 BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface` as in Core-2.0 but there is no longer
 a need to tag these classes in your services file as they are auto-tagged. Also - as above, the classname should be
 used as the service name.
 
+### Extension menus
+`Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
+removed. Extension menus are not implemented using Knp Menu instead. See docs and system modules for further
+information and examples.
+
 ## Translations
 All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.
 
-### PHP files
-Some examples for how to convert translations in PHP files:
-
-```php
-// import
-use Zikula\Common\Translator\TranslatorInterface;       // old
-use Symfony\Contracts\Translation\TranslatorInterface;  // new
-
-// 1. Simple:
-$this->__('Hello')      // old
-$this->trans('Hello')   // new
-
-// 2. With simple substitution parameters
-$this->__f('Hello %userName%', ['%userName%' => 'Mark Smith'])      // old
-$this->trans('Hello %userName%', ['%userName%' => 'Mark Smith'])    // new
-
-// 3. With explicit domain
-$this->__('Hello', 'acmefoomodule')             // old
-$this->trans('Hello', [], 'acmefoomodule')      // new
-
-// 4. With plural forms and advanced substitution (see note below)
-$this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]);
-$this->getTranslator()->trans('plural_n.users.deleted'/* User deleted!|n users deleted!*/, ['%count%' => count($deletedUsers)]);
-```
-
-You can still use `Zikula\Common\Translator\TranslatorTrait`, but it has only one method left now:
-```php
-public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
-```
-You can/should remove the `setTranslator` method from your using class though.
-
-### JavaScript files
-Follows basically the same rules as translations in PHP files shown above. See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
-
-### Twig template files
-Some examples for how to convert translations in templates:
-
-```twig
-1. Simple:
-Old: {{ __('Hello') }}
-New: {% trans %}Hello{% endtrans %} or {{ 'Hello'|trans }}
-
-2. With simple substitution parameters
-Old: {{ __f('Hello %userName%', {'%userName%': 'Mark Smith'}) }}
-New: {% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
-
-3. With explicit domain and locale
-Old: {{ __('Hello', 'acmefoomodule', 'fr') }}
-New: {% trans with {} from 'acmefoomodule' into 'fr' %}Hello{% endtrans %} or {{ 'Hello'|trans({}, 'acmefoomodule', 'fr' }}
-
-4. With plural forms and advanced substitution (see note below)
-Old: {% set amountOfMembers = _fn('%amount% registered user', '%amount% registered users', users|length, {'%amount%': users|length}) %}
-New: {% trans count users|length %}plural_n.registered.user{# one registered user|n registered users #}{% endtrans %}
-```
-
-See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.
-
-### About plural forms
-The `plural_n` portion of the translation key is simply a convention established to note that this key requires plural translation.
-The comments `{# ... #}` are examples of what the translation should appear like in English. Unfortunately, we don't know how to communicate
-this comment in the translation file at this time.
-
-The translation of this would look something like:
-```yaml
-#messages+intl-icu.en.yaml
-plural_n.registered.user: "{count, plural,\n  one   {one registered user}\n  other {# registered users}\n}"
-```
-
-More advanced translation like plurals and other substitutions require using the Symfony ICU MessageFormatter. See [How to Translate Messages using the ICU MessageFormat](https://symfony.com/doc/current/translation/message_format.html). This requires a specific name format on the translation file and other adjustments.
+For more information please refer to the documents in `docs/TranslationAndLanguage/`.
 
 ## Twig
 

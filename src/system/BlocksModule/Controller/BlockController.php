@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,8 +24,9 @@ use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Form\Type\BlockType;
+use Zikula\BlocksModule\Form\Type\NewBlockType;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -46,21 +45,7 @@ class BlockController extends AbstractController
      */
     public function newAction(Request $request, BlockApiInterface $blockApi): Response
     {
-        $form = $this->createFormBuilder()
-            ->add('bkey', ChoiceType::class, [
-                'label' => 'Block type',
-                'placeholder' => 'Choose a block type',
-                'choices' => array_flip($blockApi->getAvailableBlockTypes())
-            ])
-            ->add('choose', SubmitType::class, [
-                'label' => 'Choose',
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->getForm()
-        ;
+        $form = $this->createForm(NewBlockType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $bkey = json_encode($form->getData()['bkey']);
@@ -110,12 +95,12 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createForm(BlockType::class, $blockEntity, ['locale' => $request->getLocale()]);
-        if (($blockInstance instanceof BlockHandlerInterface) && (null !== $blockInstance->getFormClassName())) {
+        if (($blockInstance instanceof BlockHandlerInterface) && ('' !== $blockInstance->getFormClassName())) {
             $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
         }
         $form->handleRequest($request);
 
-        list($moduleName) = explode(':', $blockEntity->getBkey());
+        $moduleName = $blockInstance->getBundle()->getName();
         if ($form->isSubmitted()) {
             if ($form->isValid() && $form->get('save')->isClicked()) {
                 // sort filter array so keys are always sequential.
@@ -131,15 +116,12 @@ class BlockController extends AbstractController
 
                 $em->persist($blockEntity);
                 $em->flush();
-                $this->addFlash('status', $this->trans('Block saved!'));
-
-                return $this->redirectToRoute('zikulablocksmodule_admin_view');
+                $this->addFlash('status', 'Done! Block saved.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
 
-                return $this->redirectToRoute('zikulablocksmodule_admin_view');
-            }
+            return $this->redirectToRoute('zikulablocksmodule_admin_view');
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/edit.html.twig', [
@@ -170,9 +152,9 @@ class BlockController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($blockEntity);
                 $em->flush();
-                $this->addFlash('status', $this->trans('Done! Block deleted.'));
+                $this->addFlash('status', 'Done! Block deleted.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');

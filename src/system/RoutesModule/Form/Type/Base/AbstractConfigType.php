@@ -21,8 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 use Zikula\RoutesModule\AppSettings;
 
 /**
@@ -30,12 +30,9 @@ use Zikula\RoutesModule\AppSettings;
  */
 abstract class AbstractConfigType extends AbstractType
 {
-    use TranslatorTrait;
 
     public function __construct(
-        TranslatorInterface $translator
     ) {
-        $this->setTranslator($translator);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -53,31 +50,31 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('routeEntriesPerPage', IntegerType::class, [
-            'label' => $this->trans('Route entries per page') . ':',
+            'label' => 'Route entries per page:',
             'label_attr' => [
                 'class' => 'tooltips',
-                'title' => $this->trans('The amount of routes shown per page')
+                'title' => 'The amount of routes shown per page'
             ],
-            'help' => $this->trans('The amount of routes shown per page'),
+            'help' => 'The amount of routes shown per page',
             'empty_data' => 10,
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
-                'title' => $this->trans('Enter the route entries per page.') . ' ' . $this->trans('Only digits are allowed.')
+                'title' => 'Enter the route entries per page. Only digits are allowed.'
             ],
             'required' => true,
         ]);
         
         $builder->add('showOnlyOwnEntries', CheckboxType::class, [
-            'label' => $this->trans('Show only own entries') . ':',
+            'label' => 'Show only own entries:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
-                'title' => $this->trans('Whether only own entries should be shown on view pages by default or not')
+                'title' => 'Whether only own entries should be shown on view pages by default or not'
             ],
-            'help' => $this->trans('Whether only own entries should be shown on view pages by default or not'),
+            'help' => 'Whether only own entries should be shown on view pages by default or not',
             'attr' => [
                 'class' => '',
-                'title' => $this->trans('The show only own entries option')
+                'title' => 'The show only own entries option'
             ],
             'required' => false,
         ]);
@@ -90,29 +87,29 @@ abstract class AbstractConfigType extends AbstractType
     {
         
         $builder->add('allowModerationSpecificCreatorForRoute', CheckboxType::class, [
-            'label' => $this->trans('Allow moderation specific creator for route') . ':',
+            'label' => 'Allow moderation specific creator for route:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
-                'title' => $this->trans('Whether to allow moderators choosing a user which will be set as creator.')
+                'title' => 'Whether to allow moderators choosing a user which will be set as creator.'
             ],
-            'help' => $this->trans('Whether to allow moderators choosing a user which will be set as creator.'),
+            'help' => 'Whether to allow moderators choosing a user which will be set as creator.',
             'attr' => [
                 'class' => '',
-                'title' => $this->trans('The allow moderation specific creator for route option')
+                'title' => 'The allow moderation specific creator for route option'
             ],
             'required' => false,
         ]);
         
         $builder->add('allowModerationSpecificCreationDateForRoute', CheckboxType::class, [
-            'label' => $this->trans('Allow moderation specific creation date for route') . ':',
+            'label' => 'Allow moderation specific creation date for route:',
             'label_attr' => [
                 'class' => 'tooltips switch-custom',
-                'title' => $this->trans('Whether to allow moderators choosing a custom creation date.')
+                'title' => 'Whether to allow moderators choosing a custom creation date.'
             ],
-            'help' => $this->trans('Whether to allow moderators choosing a custom creation date.'),
+            'help' => 'Whether to allow moderators choosing a custom creation date.',
             'attr' => [
                 'class' => '',
-                'title' => $this->trans('The allow moderation specific creation date for route option')
+                'title' => 'The allow moderation specific creation date for route option'
             ],
             'required' => false,
         ]);
@@ -124,27 +121,23 @@ abstract class AbstractConfigType extends AbstractType
     public function addSubmitButtons(FormBuilderInterface $builder, array $options = []): void
     {
         $builder->add('save', SubmitType::class, [
-            'label' => $this->trans('Update configuration'),
+            'label' => 'Update configuration',
             'icon' => 'fa-check',
             'attr' => [
-                'class' => 'btn btn-success'
+                'class' => 'btn-success'
             ]
         ]);
         $builder->add('reset', ResetType::class, [
-            'label' => $this->trans('Reset'),
+            'label' => 'Reset',
             'icon' => 'fa-sync',
             'attr' => [
-                'class' => 'btn btn-default',
                 'formnovalidate' => 'formnovalidate'
             ]
         ]);
         $builder->add('cancel', SubmitType::class, [
-            'label' => $this->trans('Cancel'),
+            'label' => 'Cancel',
             'validate' => false,
-            'icon' => 'fa-times',
-            'attr' => [
-                'class' => 'btn btn-default'
-            ]
+            'icon' => 'fa-times'
         ]);
     }
 
@@ -155,10 +148,9 @@ abstract class AbstractConfigType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                // define class for underlying data
-                'data_class' => AppSettings::class,
-            ]);
+        $resolver->setDefaults([
+            // define class for underlying data
+            'data_class' => AppSettings::class,
+        ]);
     }
 }

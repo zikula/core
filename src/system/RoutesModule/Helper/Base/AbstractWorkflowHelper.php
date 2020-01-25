@@ -19,7 +19,7 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
@@ -212,11 +212,11 @@ abstract class AbstractWorkflowHelper
             $buttonClass = 'success';
         }
     
-        if (empty($buttonClass)) {
-            $buttonClass = 'default';
+        if (!empty($buttonClass)) {
+            $buttonClass = 'btn-' . $buttonClass;
         }
     
-        return 'btn btn-' . $buttonClass;
+        return $buttonClass;
     }
     
     /**

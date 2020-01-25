@@ -22,7 +22,7 @@ use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -61,8 +61,9 @@ class AjaxController extends AbstractController
 
         // get the module name
         $displayname = $module->getDisplayName();
-        $url = $module['capabilities']['admin']['url']
-            ?? $router->generate($module['capabilities']['admin']['route']);
+        $url = isset($module['capabilities']['admin']['route'])
+            ? $router->generate($module['capabilities']['admin']['route'])
+            : '';
         $oldCategory = $adminCategoryRepository->getModuleCategory($moduleId);
         $sortOrder = $adminModuleRepository->countModulesByCategory($newParentCat);
 

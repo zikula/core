@@ -2,12 +2,12 @@
     <tr>
         <td headers="hUser">{{ mapping.uname }}</td>
         <td headers="hEmail">{{ mapping.email }}</td>
-        <td headers="hVerified">{% if mapping.verifiedEmail %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
+        <td headers="hVerified">{% if mapping.verifiedEmail %}<i class="fas fa-check text-success"></i>{% else %}<i class="fas fa-times text-danger"></i>{% endif %}</td>
         <td headers="hId">{{ mapping.uid }}</td>
         <td headers="hMethod">{{ mapping.method }}</td>
         <td headers="hActions" class="actions">
             {% for action in actionsHelper.user(mapping) %}
-                <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
+                <a class="fas fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
             {% endfor %}
         </td>
     </tr>

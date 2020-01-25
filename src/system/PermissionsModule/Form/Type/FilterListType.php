@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 class FilterListType extends AbstractType
 {
@@ -26,14 +27,14 @@ class FilterListType extends AbstractType
         $builder
             ->add('filterGroup', ChoiceType::class, [
                 'label' => 'Filter group',
-                'choices' => array_flip($options['groupChoices']),
+                'choices' => /** @Ignore */array_flip($options['groupChoices']),
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('filterComponent', ChoiceType::class, [
                 'label' => 'Filter component',
-                'choices' => $options['componentChoices'],
+                'choices' => /** @Ignore */$options['componentChoices'],
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
@@ -42,7 +43,7 @@ class FilterListType extends AbstractType
                 'label' => 'Reset',
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn btn-default btn-sm'
+                    'class' => 'btn-default btn-sm'
                 ]
             ])
         ;

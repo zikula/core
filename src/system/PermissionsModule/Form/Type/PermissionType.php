@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 class PermissionType extends AbstractType
@@ -29,7 +30,7 @@ class PermissionType extends AbstractType
             ->add('pid', HiddenType::class)
             ->add('gid', ChoiceType::class, [
                 'label' => 'Group',
-                'choices' => array_flip($options['groups'])
+                'choices' => /** @Ignore */array_flip($options['groups'])
             ])
             ->add('sequence', HiddenType::class)
             ->add('component', TextType::class, [
@@ -40,7 +41,7 @@ class PermissionType extends AbstractType
             ])
             ->add('level', ChoiceType::class, [
                 'label' => 'Level',
-                'choices' => array_flip($options['permissionLevels'])
+                'choices' => /** @Ignore */array_flip($options['permissionLevels'])
             ])
         ;
     }

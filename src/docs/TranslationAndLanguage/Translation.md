@@ -1,25 +1,20 @@
-# Zikula translation
+# Translation in Zikula
 
-Zikula translation *is* Symfony translation, with some added bonus features. Please refer to 
-https://symfony.com/doc/current/translation.html for more information about Symfony features.
+Zikula uses the native Symfony translation system. Please refer to https://symfony.com/doc/current/translation.html for more information about Symfony features.
 
-**Paths and file names used by the Symfony Translator**
+**Paths and file names used by the Symfony Translator - core system**
 
-    `app/Resources/translations/<domain>.<locale>.<loader>`
-    
+    `translations/<domain>.<locale>.<loader>`
+
     e.g.
-    
-    `app/Resources/translations/zikula.en.po`
 
-Note: BOTH are loaded and the legacy overwrites the symfony/Core-2.0 type values if the keys are the same in the same
-domain because it is loaded second.
-Using a *partial* overwrite is possible if you only define the keys you wish to overwrite.
+    `translations/zikula.en.po`
 
 **Paths and file names used by Symfony Translator - bundles (modules, themes etc.)**
 
-    `.../Resources/translations/<domain>.<locale>.<loader>` where domain is `modulebundlename` or `themebundlename`
+    `<bundle folder>/Resources/translations/<domain>.<locale>.<loader>`
 
-## Symfony Translator Loaders
+## Symfony translator loaders
 
 Symfony comes with standard file format loaders:
  * ArrayLoader - to load catalogs from PHP arrays.
@@ -36,12 +31,11 @@ Symfony comes with standard file format loaders:
  * YamlFileLoader - to load catalogs from Yaml files.
 
 ## Important notes
-
 From Symfony translator documentation
 > Each time you create a new translation resource (or install a bundle that includes a translation resource), be sure to
 clear your cache so that Symfony can discover the new translation resources.
 
-Translations are cached in `app/cache/<env>/translations/catalogue.<locale>.<key>`
+Translations are cached in `var/cache/<env>/translations/catalogue.<locale>.<key>`
 
 ### Fallback locale
 There is something new in Symfony translator that was not available with legacy mode.
@@ -49,7 +43,7 @@ Let's look at a website with 3 languages: `en` (strings are in `en`), `de` and `
 All languages are enabled but some translations are missing for some strings.
 
 Normally it would show English as default because strings are in English.
-The fallback locale is a feature that reads translator 'fallback' setting from config.yml
+The fallback locale is a feature that reads translator 'fallback' setting from config.yaml
 and sets this as locale to show instead the one that is missing.
 So when viewing a German site in Polish language and Polish translations are not complete
 while the German is, it will show German translations instead. This will happen only

@@ -19,9 +19,9 @@ use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\MailerModule\Form\Type\ConfigType;
@@ -97,7 +97,7 @@ class ConfigController extends AbstractController
                     'port' => $formData['port'],
                     'encryption' => $formData['encryption'],
                     'auth_mode' => $formData['auth_mode'],
-                    // the items below can be configured by modifying the app/config/dynamic/generated.yml file
+                    // the items below can be configured by modifying the /src/config/dynamic/generated.yaml file
                     // 'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : ['type' => 'memory'],
                     'delivery_addresses' => $deliveryAddresses,
                     'disable_delivery' => $disableDelivery
@@ -110,10 +110,9 @@ class ConfigController extends AbstractController
                 }
                 $configDumper->setConfiguration('swiftmailer', $config);
 
-                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
         }
 
@@ -189,17 +188,17 @@ class ConfigController extends AbstractController
 
                     // check our result and return the correct error code
                     if (true === $result) {
-                        // Success
-                        $this->addFlash('status', $this->trans('Done! Message sent.'));
+                        // success
+                        $this->addFlash('status', 'Done! Message sent.');
                     } else {
-                        $this->addFlash('error', $this->trans('It looks like the message could not be sent properly.'));
+                        $this->addFlash('error', 'It looks like the message could not be sent properly.');
                     }
                 } catch (RuntimeException $exception) {
-                    $this->addFlash('error', $this->trans('The message could not be sent properly.'));
+                    $this->addFlash('error', 'The message could not be sent properly.');
                 }
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
         }
 

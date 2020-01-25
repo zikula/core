@@ -40,7 +40,7 @@
                 <a href="{{ path('zikulagroupsmodule_group_adminlist') }}"><span class="badge badge-info tooltips" title="{% trans %}This user cannot be edited. Group memberships can be edited in the groups module. Click here.{% endtrans %}">{% trans %}Edit?{% endtrans %}</span></a>
             {% endif %}
             {% for action in actionsHelper.user(user) %}
-                <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
+                <a class="fas fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
             {% endfor %}
         </td>
     </tr>

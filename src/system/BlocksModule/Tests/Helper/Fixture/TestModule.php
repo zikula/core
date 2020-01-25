@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Helper\Fixture;
 
-use Zikula\Core\AbstractModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
 class TestModule extends AbstractModule
 {

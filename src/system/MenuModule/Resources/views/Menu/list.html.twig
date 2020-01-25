@@ -1,6 +1,6 @@
 {{ adminHeader() }}
 {{ pageSetVar('title', 'Menu list'|trans) }}
-<h3><span class="fa fa-list"></span> {% trans %}Menus{% endtrans %}</h3>
+<h3><span class="fas fa-list"></span> {% trans %}Menus{% endtrans %}</h3>
 <table id="menu-list" class="table table-bordered table-striped">
     <colgroup>
         <col id="cMenuId" />
@@ -21,7 +21,9 @@
         <tr>
             <td headers="hMenuId">{{ node.id }}</td>
             <td headers="hMenuTitle"><strong>{{ node.title }}</strong></td>
-            <td headers="hMenuChildCount">{% trans count node.children.count %}plural_n.direct.child{# one direct child|n direct children #}{% endtrans %}</td>
+            <td headers="hMenuChildCount">
+                {{ 'plural_n.direct.child'|trans({count: node.children.count})|desc('{count, plural,\n  one   {one direct child}\n  other {# direct children}\n}') }}
+            </td>
             <td headers="hMenuActions" class="actions">
                 {% set rowActions = knp_menu_get('zikulaMenuAdminActionsMenu', [], {id: node.id}) %}
                 {{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}

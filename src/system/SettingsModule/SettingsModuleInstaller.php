@@ -15,10 +15,10 @@ namespace Zikula\SettingsModule;
 
 use DateTimeZone;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
@@ -33,12 +33,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('adminmail', 'example@example.com');
         $this->setSystemVar('Default_Theme', 'ZikulaBootstrapTheme');
         $this->setSystemVar('timezone', date_default_timezone_get());
-        $this->setSystemVar('funtext', '1');
-        $this->setSystemVar('reportlevel', '0');
         $this->setSystemVar('Version_Num', ZikulaKernel::VERSION);
-        $this->setSystemVar('debug_sql', '0');
         $this->setSystemVar('multilingual', '1');
-        $this->setSystemVar('useflags', '0');
         $this->setSystemVar('theme_change', '0');
         $this->setSystemVar('UseCompression', '0');
         $this->setSystemVar('siteoff', 0);
@@ -66,7 +62,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
         $locale = $this->container->getParameter('locale');
         $this->setSystemVar('locale', $locale);
-        $this->setSystemVar('language_i18n', $locale);
 
         // Initialisation successful
         return true;
@@ -130,7 +125,17 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $variableApi->del(VariableApi::CONFIG, 'Version_Sub');
                 $this->setSystemVar('startController'); // reset to blank because of new format FQCN::method
             case '2.9.15':
-                $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, 'idnnames');
+                $varsToRemove = [
+                    'funtext',
+                    'reportlevel',
+                    'idnnames',
+                    'debug_sql',
+                    'useflags',
+                    'language_i18n'
+                ];
+                foreach ($varsToRemove as $varName) {
+                    $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, $varName);
+                }
             case '2.9.16': // ship with Core-3.0.0
                 // current version
         }

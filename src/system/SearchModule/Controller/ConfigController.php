@@ -17,8 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -84,10 +84,9 @@ class ConfigController extends AbstractController
                 }
                 unset($formData['plugins']);
                 $this->setVars($formData);
-                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
         }
 

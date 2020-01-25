@@ -27,11 +27,11 @@ class EitherLoginType extends AbstractType
         $builder
             ->add('either', TextType::class, [
                 'label' => 'User name or email',
-                'input_group' => ['left' => '<i class="fa fa-fw fa-sign-in-alt"></i>']
+                'input_group' => ['left' => '<i class="fas fa-fw fa-sign-in-alt"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => 'Password',
-                'input_group' => ['left' => '<i class="fa fa-fw fa-key"></i>']
+                'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
@@ -41,7 +41,9 @@ class EitherLoginType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Login',
                 'icon' => 'fa-angle-double-right',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
     }

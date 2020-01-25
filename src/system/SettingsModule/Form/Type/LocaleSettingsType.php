@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 /**
  * Locale settings form type.
@@ -49,9 +50,9 @@ class LocaleSettingsType extends AbstractType
                 'required' => false,
                 'help' => 'If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.'
             ])
-            ->add('language_i18n', ChoiceType::class, [
+            ->add('locale', ChoiceType::class, [
                 'label' => 'Default language to use for this site',
-                'choices' => $options['languages']
+                'choices' => /** @Ignore */$options['languages']
             ])
             ->add('timezone', TimezoneType::class, [
                 'label' => 'Time zone for anonymous guests',
@@ -59,22 +60,19 @@ class LocaleSettingsType extends AbstractType
                 'help_translation_parameters' => [
                     '%tz%' => date_default_timezone_get() . ' (' . date('T') . ')'
                 ],
-                'choice_translation_locale' => $options['locale'],
-                'intl' => true
+                'choice_translation_locale' => extension_loaded('intl') ? $options['locale'] : null,
+                'intl' => extension_loaded('intl')
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
     }

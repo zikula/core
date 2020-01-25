@@ -5,7 +5,7 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-edit"></span>
+    <span class="fas fa-edit"></span>
     {% if form.vars.value.bid %}
         {% trans %}Modify block{% endtrans %}
         {{ pageSetVar('title', 'Modify block'|trans) }}
@@ -42,16 +42,16 @@
     <div class="form-group row">
         {{ form_label(form.filters) }}
         <div class="col-md-9">
-            <ul id="filters" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.filters.vars.prototype.attribute, {attr: {class: 'form-control-sm attribute-selector'}})|e }} {{ form_widget(form.filters.vars.prototype.queryParameter, {attr: {disabled: true, class: 'form-control-sm queryParameter'}})|e }} {{ form_widget(form.filters.vars.prototype.comparator, {attr: {class: 'form-control-sm'}})|e }} {{ form_widget(form.filters.vars.prototype.value, {attr: {class: 'form-control-sm'}})|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-filter fa fa-trash-alt fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
+            <ul id="filters" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.filters.vars.prototype.attribute, {attr: {class: 'form-control-sm attribute-selector'}})|e }} {{ form_widget(form.filters.vars.prototype.queryParameter, {attr: {disabled: true, class: 'form-control-sm queryParameter'}})|e }} {{ form_widget(form.filters.vars.prototype.comparator, {attr: {class: 'form-control-sm'}})|e }} {{ form_widget(form.filters.vars.prototype.value, {attr: {class: 'form-control-sm'}})|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-filter fas fa-trash-alt fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
                 {% for filter in form.filters %}
                 {% form_theme form _self %}
                 {% block _filters_entry_widget %}
-                <li class="form-inline">{{ form_widget(filter.attribute, {attr: {class: 'form-control-sm attribute-selector'}}) }} {{ form_widget(filter.queryParameter, {attr: {disabled: filter.vars.value.queryParameter is empty, class: 'form-control-sm queryParameter'}}) }} {{ form_widget(filter.comparator, {attr: {class: 'form-control-sm'}}) }} {{ form_widget(filter.value, {attr: {class: 'form-control-sm'}}) }}&nbsp;&nbsp;<a href="#" class="delete-filter fa fa-trash-alt fa-lg text-danger"></a></li>
+                <li class="form-inline">{{ form_widget(filter.attribute, {attr: {class: 'form-control-sm attribute-selector'}}) }} {{ form_widget(filter.queryParameter, {attr: {disabled: filter.vars.value.queryParameter is empty, class: 'form-control-sm queryParameter'}}) }} {{ form_widget(filter.comparator, {attr: {class: 'form-control-sm'}}) }} {{ form_widget(filter.value, {attr: {class: 'form-control-sm'}}) }}&nbsp;&nbsp;<a href="#" class="delete-filter fas fa-trash-alt fa-lg text-danger"></a></li>
                 {% endblock %}
                 {% endfor %}
                 <li class="d-none">{{ form_row(form.filters) }}</li>{# hack to hide repeated display of filters label #}
             </ul>
-            <a href="#" id="add-filter" class="btn btn-secondary btn-sm fa fa-plus"> {% trans %}Add filter{% endtrans %}</a>
+            <a href="#" id="add-filter" class="btn btn-secondary btn-sm fas fa-plus"> {% trans %}Add filter{% endtrans %}</a>
         </div>
     </div>
 </fieldset>

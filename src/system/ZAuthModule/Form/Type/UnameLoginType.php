@@ -27,11 +27,11 @@ class UnameLoginType extends AbstractType
         $builder
             ->add('uname', TextType::class, [
                 'label' => 'User name',
-                'input_group' => ['left' => '<i class="fa fa-fw fa-user"></i>']
+                'input_group' => ['left' => '<i class="fas fa-fw fa-user"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => 'Password',
-                'input_group' => ['left' => '<i class="fa fa-fw fa-key"></i>']
+                'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
@@ -41,7 +41,9 @@ class UnameLoginType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Login',
                 'icon' => 'fa-angle-double-right',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
     }

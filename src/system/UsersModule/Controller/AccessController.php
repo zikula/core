@@ -20,11 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
@@ -176,7 +176,7 @@ class AccessController extends AbstractController
         }
         // login failed
         // implement auto-register setting here. If true, do so and proceed. #2915
-        $this->addFlash('error', $this->trans('Login failed.'));
+        $this->addFlash('error', 'Login failed.');
         if (null !== $session) {
             $session->remove('authenticationMethod');
         }
@@ -247,7 +247,7 @@ class AccessController extends AbstractController
                 ]);
                 $eventDispatcher->dispatch($event, AccessEvents::LOGOUT_SUCCESS);
             } else {
-                $this->addFlash('error', $this->trans('Error! You have not been logged out.'));
+                $this->addFlash('error', 'Error! You have not been logged out.');
             }
         }
 

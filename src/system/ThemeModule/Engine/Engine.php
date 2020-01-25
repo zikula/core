@@ -229,7 +229,7 @@ class Engine
     }
 
     /**
-     * Find the realm in the theme.yml that matches the given path, route or module.
+     * Find the realm in the theme.yaml that matches the given path, route or module.
      * Three 'alias' realms may be defined and do not require a pattern:
      *  1) 'master' (required) this is the default realm. any non-matching value will utilize the master realm
      *  2) 'home' (optional) will be used when the path matches `^/$`

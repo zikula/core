@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\BlocksModule\Api\BlockApi;
 
 class AdminViewFilterType extends AbstractType
@@ -30,7 +31,7 @@ class AdminViewFilterType extends AbstractType
             ->add('sort-direction', HiddenType::class)
             ->add('position', ChoiceType::class, [
                 'label' => 'Position',
-                'choices' => $options['positionChoices'],
+                'choices' => /** @Ignore */$options['positionChoices'],
                 'required' => false,
                 'placeholder' => 'All',
                 'attr' => [
@@ -39,7 +40,7 @@ class AdminViewFilterType extends AbstractType
             ])
             ->add('module', ChoiceType::class, [
                 'label' => 'Module',
-                'choices' => $options['moduleChoices'],
+                'choices' => /** @Ignore */$options['moduleChoices'],
                 'required' => false,
                 'placeholder' => 'All',
                 'attr' => [
@@ -48,7 +49,7 @@ class AdminViewFilterType extends AbstractType
             ])
             ->add('language', ChoiceType::class, [
                 'label' => 'Language',
-                'choices' => $options['localeChoices'],
+                'choices' => /** @Ignore */$options['localeChoices'],
                 'required' => false,
                 'placeholder' => 'All',
                 'attr' => [
@@ -71,7 +72,7 @@ class AdminViewFilterType extends AbstractType
                 'label' => 'Filter',
                 'icon' => 'fa-filter fa-lg',
                 'attr' => [
-                    'class' => 'btn btn-default btn-sm'
+                    'class' => 'btn-sm'
                 ]
             ])
         ;

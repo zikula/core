@@ -4,7 +4,7 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-wrench"></span>
+    <span class="fas fa-wrench"></span>
     {% trans %}Settings{% endtrans %}
     {{ pageSetVar('title', 'Permission settings'|trans) }}
 </h3>
@@ -16,8 +16,6 @@
     {{ form_row(form.lockadmin) }}
     {{ form_row(form.adminid) }}
     {{ form_row(form.filter) }}
-    {{ form_row(form.rowview) }}
-    {{ form_row(form.rowedit) }}
 </fieldset>
 <div class="form-group row">
     <div class="col-md-9 offset-md-3">

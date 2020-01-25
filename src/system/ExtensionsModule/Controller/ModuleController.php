@@ -24,21 +24,20 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\Core\AbstractBundle;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
 use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
@@ -103,6 +102,7 @@ class ModuleController extends AbstractController
             if (Constant::STATE_ACTIVE !== $module['state'] || !isset($module['capabilities']['admin']) || empty($module['capabilities']['admin'])) {
                 continue;
             }
+
             if (isset($module['capabilities']['admin']['route'])) {
                 try {
                     $adminRoutes[$module['name']] = $router->generate($module['capabilities']['admin']['route']);
@@ -191,7 +191,7 @@ class ModuleController extends AbstractController
                 // Update state
                 $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
                 $cacheClearer->clear('symfony.routing');
-                $this->addFlash('status', $this->trans('Done! Deactivated module.'));
+                $this->addFlash('status', 'Done! Deactivated module.');
             }
         }
 
@@ -233,7 +233,7 @@ class ModuleController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('defaults')->isClicked()) {
-                $this->addFlash('info', $this->trans('Default values reloaded. Save to confirm.'));
+                $this->addFlash('info', 'Default values reloaded. Save to confirm.');
 
                 return $this->redirectToRoute('zikulaextensionsmodule_module_modify', ['id' => $extension->getId(), 'forceDefaults' => 1]);
             }
@@ -243,10 +243,9 @@ class ModuleController extends AbstractController
                 $em->flush();
 
                 $cacheClearer->clear('symfony.routing');
-                $this->addFlash('status', $this->trans('Done! Extension updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Extension updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
@@ -352,7 +351,7 @@ class ModuleController extends AbstractController
             }
             if ($form->get('cancel')->isClicked()) {
                 $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
@@ -390,7 +389,7 @@ class ModuleController extends AbstractController
                     continue;
                 }
                 $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
-                $eventDispatcher->dispatch($event, CoreEvents::MODULE_POSTINSTALL);
+                $eventDispatcher->dispatch($event, ExtensionEvents::MODULE_POSTINSTALL);
             }
             // currently commented out because it takes a long time.
             //$extensionHelper->installAssets();
@@ -440,7 +439,7 @@ class ModuleController extends AbstractController
         if ($result) {
             $this->addFlash('status', $this->trans('%name% upgraded to new version and activated.', ['%name%' => $extension->getDisplayname()]));
         } else {
-            $this->addFlash('error', $this->trans('Extension upgrade failed!'));
+            $this->addFlash('error', 'Extension upgrade failed!');
         }
 
         return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
@@ -491,7 +490,7 @@ class ModuleController extends AbstractController
             if ($form->get('delete')->isClicked()) {
                 // remove dependent extensions
                 if (!$extensionHelper->uninstallArray($requiredDependents)) {
-                    $this->addFlash('error', $this->trans('Error: Could not uninstall dependent extensions.'));
+                    $this->addFlash('error', 'Error: Could not uninstall dependent extensions.');
 
                     return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
                 }
@@ -500,13 +499,12 @@ class ModuleController extends AbstractController
 
                 // remove the extension
                 if ($extensionHelper->uninstall($extension)) {
-                    $this->addFlash('status', $this->trans('Done! Uninstalled extension.'));
+                    $this->addFlash('status', 'Done! Uninstalled extension.');
                 } else {
-                    $this->addFlash('error', $this->trans('Extension removal failed! (note: blocks and dependents may have been removed)'));
+                    $this->addFlash('error', 'Extension removal failed! (note: blocks and dependents may have been removed)');
                 }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');

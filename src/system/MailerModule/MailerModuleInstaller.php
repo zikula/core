@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\MailerModule;
 
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 /**
  * Installation and upgrade routines for the mailer module.

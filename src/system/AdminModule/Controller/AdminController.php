@@ -28,13 +28,13 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterfa
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\AdminCategoryType;
 use Zikula\AdminModule\Helper\AdminLinksHelper;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\ThemeModule\Engine\Asset;
 
 /**
  * NOTE: intentionally no class level route setting here
@@ -113,10 +113,9 @@ class AdminController extends AbstractController
                 $adminCategory = $form->getData();
                 $this->getDoctrine()->getManager()->persist($adminCategory);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->trans('Done! Created new category.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Created new category.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -152,10 +151,9 @@ class AdminController extends AbstractController
                     throw new AccessDeniedException();
                 }
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->trans('Done! Saved category.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Saved category.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -189,9 +187,9 @@ class AdminController extends AbstractController
                 $category = $form->getData();
                 $this->getDoctrine()->getManager()->remove($category);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->trans('Done! Category deleted.'));
+                $this->addFlash('status', 'Done! Category deleted.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -220,8 +218,7 @@ class AdminController extends AbstractController
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
         AdminLinksHelper $adminLinksHelper,
-        Asset $assetHelper,
-        LinkContainerCollector $linkContainerCollector,
+        ExtensionMenuCollector $extensionMenuCollector,
         int $acid = null
     ) {
         if (!$this->hasPermission('::', '::', ACCESS_EDIT)) {
@@ -257,7 +254,6 @@ class AdminController extends AbstractController
                 $capabilityApi,
                 $router,
                 $adminLinksHelper,
-                $assetHelper,
                 $acid
             )->getContent()
         ];
@@ -324,14 +320,20 @@ class AdminController extends AbstractController
                 }
 
                 try {
-                    $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
+                    $menuTextUrl = isset($adminModule['capabilities']['admin']['route'])
+                        ? $router->generate($adminModule['capabilities']['admin']['route'])
+                        : '';
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
-                    $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
+                    $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
                 }
 
                 $moduleName = (string)$adminModule['name'];
-                $links = $linkContainerCollector->getLinks($moduleName, 'admin');
+                /** @var \Knp\Menu\ItemInterface $extensionMenu */
+                $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
+                if (isset($extensionMenu)) {
+                    $extensionMenu->setChildrenAttribute('class', 'dropdown-menu');
+                }
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,
@@ -341,7 +343,7 @@ class AdminController extends AbstractController
                     'adminIcon' => $adminModule['capabilities']['admin']['icon'] ?? '',
                     'id' => $adminModule['id'],
                     'order' => $sortOrder,
-                    'links' => $links
+                    'extensionMenu' => $extensionMenu
                 ];
             }
         }
@@ -362,7 +364,6 @@ class AdminController extends AbstractController
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
         AdminLinksHelper $adminLinksHelper,
-        Asset $assetHelper,
         int $acid = null
     ): Response {
         $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
@@ -388,10 +389,12 @@ class AdminController extends AbstractController
 
             $menuText = $adminModule['displayname'];
             try {
-                $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['route'])
+                    ? $router->generate($adminModule['capabilities']['admin']['route'])
+                    : '';
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
+                $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
             }
 
             $moduleId = (int)$adminModule['id'];

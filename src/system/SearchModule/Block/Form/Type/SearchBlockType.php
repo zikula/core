@@ -18,26 +18,18 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Translation\Extractor\Annotation\Ignore;
 
 /**
  * Class SearchBlockType
  */
 class SearchBlockType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('displaySearchBtn', CheckboxType::class, [
-                'label' => $this->trans('Show \'Search now\' button'),
+                'label' => 'Show \'Search now\' button',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
@@ -46,7 +38,7 @@ class SearchBlockType extends AbstractType
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
-                'choices' => $options['activeModules']
+                'choices' => /** @Ignore */$options['activeModules']
             ])
         ;
     }

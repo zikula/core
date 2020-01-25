@@ -17,8 +17,8 @@ use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Core\AbstractBundle;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -131,8 +131,6 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
      */
     public function renderView(string $view, array $parameters = []): string
     {
-        $parameters['domain'] = $this->bundle->getTranslationDomain();
-
         return $this->twig->render($view, $parameters);
     }
 

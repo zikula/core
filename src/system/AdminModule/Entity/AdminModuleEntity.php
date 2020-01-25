@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\AdminModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * AdminModule entity class.

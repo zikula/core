@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
@@ -58,13 +59,13 @@ class CreateGroupType extends AbstractType
             ])
             ->add('gtype', ChoiceType::class, [
                 'label' => 'Type',
-                'choices' => $typeChoices,
+                'choices' => /** @Ignore */$typeChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('state', ChoiceType::class, [
                 'label' => 'State',
-                'choices' => $stateChoices,
+                'choices' => /** @Ignore */$stateChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
@@ -83,15 +84,12 @@ class CreateGroupType extends AbstractType
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
     }

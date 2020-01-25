@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
@@ -55,7 +56,7 @@ class BlockType extends AbstractType
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('language', ChoiceType::class, [
                 'label' => 'Language',
-                'choices' => $this->localeApi->getSupportedLocaleNames(null, $options['locale']),
+                'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(null, $options['locale']),
                 'required' => false,
                 'placeholder' => 'All'
             ])->addModelTransformer(new NullToEmptyTransformer()))
@@ -78,15 +79,12 @@ class BlockType extends AbstractType
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
     }

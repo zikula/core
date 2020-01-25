@@ -10,7 +10,7 @@
             var a = $(this);
             var bid = a.data('bid');
 
-            a.after('<i id="spin' + bid + '" class="fa fa-cog fa-spin"></i>');
+            a.after('<i id="spin' + bid + '" class="fas fa-cog fa-spin"></i>');
 
             $.ajax({
                 url: Routing.generate('zikulablocksmodule_block_toggleblock'),

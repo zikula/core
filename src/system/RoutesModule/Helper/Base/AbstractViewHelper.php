@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Twig\Loader\LoaderInterface;
-use Zikula\Core\Response\PlainResponse;
+use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\AssetFilter;
 use Zikula\RoutesModule\Helper\ControllerHelper;

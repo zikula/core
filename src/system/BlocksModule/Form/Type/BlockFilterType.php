@@ -17,6 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 
 class BlockFilterType extends AbstractType
@@ -36,7 +37,7 @@ class BlockFilterType extends AbstractType
         $builder
             ->add('attribute', ChoiceType::class, [
                 'label' => 'Attribute',
-                'choices' => $this->blockFilterApi->getFilterAttributeChoices()
+                'choices' => /** @Ignore */$this->blockFilterApi->getFilterAttributeChoices()
             ])
             ->add('queryParameter', TextType::class, [
                 'label' => 'Query parameter',

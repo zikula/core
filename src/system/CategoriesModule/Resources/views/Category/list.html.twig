@@ -15,7 +15,7 @@
 {{ pageAddAsset('header', customStyle) }}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-list"></span>
+    <span class="fas fa-list"></span>
     {% trans %}Categories list{% endtrans %}
     {{ pageSetVar('title', 'Categories list'|trans) }}
 </h3>
@@ -32,12 +32,12 @@
 
 <div class="btn-toolbar" role="toolbar" aria-label="category button toolbar">
     <div class="btn-group btn-group-sm" role="group" aria-label="category buttons">
-        <button type="button" class="btn btn-info btn-disabled" disabled="disabled"><i class="fa fa-tree"></i></button>
-        <button type="button" id="catExpand" class="btn btn-info"><i class="fa fa-expand"></i> {% trans %}Expand{% endtrans %}</button>
-        <button type="button" id="catCollapse"class="btn btn-info"><i class="fa fa-compress"></i> {% trans %}Collapse{% endtrans %}</button>
+        <button type="button" class="btn btn-info btn-disabled" disabled="disabled"><i class="fas fa-tree"></i></button>
+        <button type="button" id="catExpand" class="btn btn-info"><i class="fas fa-expand"></i> {% trans %}Expand{% endtrans %}</button>
+        <button type="button" id="catCollapse"class="btn btn-info"><i class="fas fa-compress"></i> {% trans %}Collapse{% endtrans %}</button>
     </div>
     <div class="btn-group btn-group-sm" role="group" aria-label="category buttons">
-        <button type="button" id="newCategory" class="btn btn-success"><i class="fa fa-plus"></i> {% trans %}New Category{% endtrans %}</button>
+        <button type="button" id="newCategory" class="btn btn-success"><i class="fas fa-plus"></i> {% trans %}New Category{% endtrans %}</button>
     </div>
 </div>
 
@@ -55,8 +55,8 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" value="Submit" class="btn btn-success"><i class="fa fa-check"></i> {% trans %}Submit{% endtrans %}</button>
-                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {% trans %}Cancel{% endtrans %}</button>
+                <button type="button" value="Submit" class="btn btn-success"><i class="fas fa-check"></i> {% trans %}Submit{% endtrans %}</button>
+                <button type="button" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times"></i> {% trans %}Cancel{% endtrans %}</button>
             </div>
         </div>
     </div>
@@ -76,11 +76,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="node_delete" value="Delete" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {% trans %}Delete{% endtrans %}</button>
-                <button type="button" id="node_delete_all" value="Delete" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {% trans %}Delete all sub-categories{% endtrans %}</button>
-                <button type="button" id="node_delete_move" value="DeleteAndMove" class="btn btn-success"><i class="fa fa-arrow-circle-right"></i> {% trans %}Move all sub-categories{% endtrans %}</button>
-                <button type="button" id="node_delete_move_action" value="DeleteAndMoveAction" class="btn btn-success"><i class="fa fa-trash-alt"></i> <i class="fa fa-arrow-circle-right"></i> {% trans %}Move and delete{% endtrans %}</button>
-                <button type="button" id="node_cancel" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {% trans %}Cancel{% endtrans %}</button>
+                <button type="button" id="node_delete" value="Delete" class="btn btn-danger"><i class="fas fa-trash-alt"></i> {% trans %}Delete{% endtrans %}</button>
+                <button type="button" id="node_delete_all" value="Delete" class="btn btn-danger"><i class="fas fa-trash-alt"></i> {% trans %}Delete all sub-categories{% endtrans %}</button>
+                <button type="button" id="node_delete_move" value="DeleteAndMove" class="btn btn-success"><i class="fas fa-arrow-circle-right"></i> {% trans %}Move all sub-categories{% endtrans %}</button>
+                <button type="button" id="node_delete_move_action" value="DeleteAndMoveAction" class="btn btn-success"><i class="fas fa-trash-alt"></i> <i class="fas fa-arrow-circle-right"></i> {% trans %}Move and delete{% endtrans %}</button>
+                <button type="button" id="node_cancel" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fas fa-times"></i> {% trans %}Cancel{% endtrans %}</button>
             </div>
         </div>
     </div>

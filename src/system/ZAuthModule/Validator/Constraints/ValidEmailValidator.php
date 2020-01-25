@@ -72,7 +72,7 @@ class ValidEmailValidator extends ConstraintValidator
         if (!empty($illegalDomains)) {
             $emailDomain = mb_strstr($value, '@');
             if (preg_match("/@({$illegalDomains})/iD", $emailDomain)) {
-                $this->context->buildViolation($this->translator->trans('Sorry! The domain of the e-mail address you specified is banned.'))
+                $this->context->buildViolation($this->translator->trans('Sorry! The domain of the e-mail address you specified is banned.', [], 'validators'))
                     ->setParameter('%string%', $value)
                     ->addViolation();
             }

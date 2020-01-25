@@ -15,8 +15,7 @@ namespace Zikula\UsersModule\Helper;
 
 use DateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
+use Zikula\Bundle\CoreBundle\HttpFoundation\Session\ZikulaSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -45,57 +44,47 @@ class AccessHelper
      */
     private $variableApi;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
         RequestStack $requestStack,
         UserRepositoryInterface $userRepository,
         PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi,
-        TranslatorInterface $translator
+        VariableApiInterface $variableApi
     ) {
         $this->requestStack = $requestStack;
         $this->userRepository = $userRepository;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
-        $this->translator = $translator;
     }
 
     public function loginAllowed(UserEntity $user): bool
     {
-        $flashBag = null;
         $request = $this->requestStack->getCurrentRequest();
-        if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
-            $flashBag = $session->getFlashBag();
-        }
+        $session = null !== $request && $request->hasSession() ? $request->getSession() : null;
 
         switch ($user->getActivated()) {
             case UsersConstant::ACTIVATED_ACTIVE:
                 return true;
             case UsersConstant::ACTIVATED_INACTIVE:
-                if (null !== $flashBag) {
-                    $flashBag->add('error', $this->translator->trans('Login Denied: Your account has been disabled. Please contact a site administrator for more information.'));
+                if (null !== $session) {
+                    $session->getFlashBag()->add('error', 'Login denied: Your account has been disabled. Please contact a site administrator for more information.');
                 }
 
                 return false;
             case UsersConstant::ACTIVATED_PENDING_DELETE:
-                if (null !== $flashBag) {
-                    $flashBag->add('error', $this->translator->trans('Login Denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.'));
+                if (null !== $session) {
+                    $session->getFlashBag()->add('error', 'Login denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.');
                 }
 
                 return false;
             case UsersConstant::ACTIVATED_PENDING_REG:
-                if (null !== $flashBag) {
-                    $flashBag->add('error', $this->translator->trans('Login Denied: Your request to register with this site is pending or awaiting verification.'));
+                if (null !== $session) {
+                    $session->getFlashBag()->add('error', 'Login denied: Your request to register with this site is pending or awaiting verification.');
                 }
 
                 return false;
             default:
-                if (null !== $flashBag) {
-                    $flashBag->add('error', $this->translator->trans('Login Denied!'));
+                if (null !== $session) {
+                    $session->getFlashBag()->add('error', 'Login denied!');
                 }
         }
 

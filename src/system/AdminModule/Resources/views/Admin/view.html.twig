@@ -1,6 +1,6 @@
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-list"></span>
+    <span class="fas fa-list"></span>
     {% trans %}Module categories list{% endtrans %}
     {{ pageSetVar('title', 'Module categories list'|trans) }}
 </h3>
@@ -38,10 +38,10 @@
                 </td>
                 <td headers="category{{ category.cid}} hActions" class="actions">
                     {% if accessEdit %}
-                        <a href="{{ path('zikulaadminmodule_admin_modify', {cid: category.cid}) }}" title="{% trans %}Edit{% endtrans %}" class="tooltips fa fa-pencil-alt"></a>
+                        <a href="{{ path('zikulaadminmodule_admin_modify', {cid: category.cid}) }}" title="{% trans %}Edit{% endtrans %}" class="tooltips fas fa-pencil-alt"></a>
                     {% endif %}
                     {% if accessDelete %}
-                        <a href="{{ path('zikulaadminmodule_admin_delete', {cid: category.cid}) }}" title="{% trans %}Delete{% endtrans %}" class="tooltips fa fa-trash-alt"></a>
+                        <a href="{{ path('zikulaadminmodule_admin_delete', {cid: category.cid}) }}" title="{% trans %}Delete{% endtrans %}" class="tooltips fas fa-trash-alt"></a>
                     {% endif %}
                 </td>
             </tr>

@@ -2,7 +2,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.View.js')) }}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-list"></span>
+    <span class="fas fa-list"></span>
     {% trans %}Blocks list{% endtrans %}
     {{ pageSetVar('title', 'Blocks list'|trans) }}
 </h3>
@@ -52,10 +52,10 @@
                     <td headers="hBlockType">{{ block.blocktype }}</td>
                     <td headers="hBlockPositions">
                         {% for position in block.positions %}
-                            {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{% trans %}Position not available in current default theme.{% endtrans %}"></i>{% endif %}
+                            {% if not positionavailable(position.name) %} <i class="fas fa-exclamation-triangle text-danger tooltips" title="{% trans %}Position not available in current default theme.{% endtrans %}"></i>{% endif %}
                             <a href="{{ path('zikulablocksmodule_placement_edit', {pid: position.pid}) }}">{{ position.name }}</a>{% if not loop.last %}, {% endif %}
                         {% endfor %}
-                        {% if block.filters|length > 0 %} <i class="fa fa-filter fa-lg text-success float-right" title="{% trans %}This block has filters{% endtrans %}"></i>{% endif %}
+                        {% if block.filters|length > 0 %} <i class="fas fa-filter fa-lg text-success float-right" title="{% trans %}This block has filters{% endtrans %}"></i>{% endif %}
                     </td>
                     <td headers="hBlockLanguage">{{ block.language|default( 'All'|trans ) }}</td>
                     <td headers="hBlockState">
@@ -63,9 +63,9 @@
                         <a href="#" class="block-state-switch badge badge-danger{{ block.active ? ' d-none' : '' }} tooltips" title="{% trans %}Click to activate block{% endtrans %}" data-bid="{{ block.bid }}">{% trans %}Inactive{% endtrans %}</a>
                     </td>
                     <td headers="hBlockActions" class="actions">
-                        <a class="fa fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid: block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="{% trans %}Preview block{% endtrans %}"></a>
-                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity: block.bid}) }}" title="{% trans %}Edit block{% endtrans %}"></a>
-                        <a class="fa fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid: block.bid}) }}" title="{% trans %}Delete block{% endtrans %}"></a>
+                        <a class="fas fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid: block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="{% trans %}Preview block{% endtrans %}"></a>
+                        <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity: block.bid}) }}" title="{% trans %}Edit block{% endtrans %}"></a>
+                        <a class="fas fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid: block.bid}) }}" title="{% trans %}Delete block{% endtrans %}"></a>
                     </td>
                 </tr>
             {% else %}
@@ -104,14 +104,14 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
         <tr{% if not positionavailable(position.name) %} class="danger"{% endif %}>
             <td headers="hPosName">
                 {{ position.name }}
-                {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{% trans %}Position not available in current default theme.{% endtrans %}"></i>{% endif %}
+                {% if not positionavailable(position.name) %} <i class="fas fa-exclamation-triangle text-danger tooltips" title="{% trans %}Position not available in current default theme.{% endtrans %}"></i>{% endif %}
             </td>
             <td headers="hPosDescription">{{ position.description|slice(0, 25)|safeHtml }}</td>
             <td headers="hPosTwig"><code>&#123;&#123; showblockposition('{{ position.name }}') &#125;&#125;</code></td>
             <td headers="hPosActions" class="actions">
-                <a class="fa fa-cubes tooltips" href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}" title="{% trans %}Edit block placements{% endtrans %}"></a>
-                <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_position_edit', {positionEntity:position.pid}) }}" title="{% trans %}Edit block position{% endtrans %}"></a>
-                <a class="fa fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_position_delete', {pid:position.pid}) }}" title="{% trans %}Delete block position{% endtrans %}"></a>
+                <a class="fas fa-cubes tooltips" href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}" title="{% trans %}Edit block placements{% endtrans %}"></a>
+                <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_position_edit', {positionEntity:position.pid}) }}" title="{% trans %}Edit block position{% endtrans %}"></a>
+                <a class="fas fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_position_delete', {pid:position.pid}) }}" title="{% trans %}Delete block position{% endtrans %}"></a>
             </td>
         </tr>
         {% else %}
@@ -120,7 +120,7 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
         </tbody>
     </table>
 </div>
-<p class="alert alert-warning"><i class="fa fa-exclamation-triangle text-danger"></i> {% trans %}Marked positions are not available in the current default theme.{% endtrans %}</p>
+<p class="alert alert-warning"><i class="fas fa-exclamation-triangle text-danger"></i> {% trans %}Marked positions are not available in the current default theme.{% endtrans %}</p>
 
 {{ adminFooter() }}
 
@@ -133,7 +133,7 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="text-center"><i class="fa fa-spin fa-3x fa-spinner"></i></div>
+                <div class="text-center"><i class="fas fa-spin fa-3x fa-spinner"></i></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>

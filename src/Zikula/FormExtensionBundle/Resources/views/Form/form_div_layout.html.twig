@@ -1,0 +1,20 @@
+{# overrides button_widget to add icon parameter @see \Zikula\Bundle\FormExtensionBundle\Form\Extension\ButtonTypeIconExtension #}
+{% block button_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' btn')|trim}) %}
+    {% if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+            '%name%': name,
+            '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    {% if icon|default %}
+        {% set iconHtml = '<i class="fa ' ~ icon ~ '"></i> ' %}
+    {% else %}
+        {% set iconHtml = '' %}
+    {% endif %}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ iconHtml|raw }}{{ translation_domain is same as(false) ? label : label|trans(label_translation_parameters, translation_domain) }}</button>
+{%- endblock button_widget %}

@@ -98,13 +98,13 @@
                     <td id="itemActions{{ route.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap">
                         {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'view'}) %}
                         <div class="dropdown item-actions">
-                            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i></a>
+                            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fas fa-tasks"></i></a>
                             {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                         </div>
                     </td>
                     {% if activateSortable %}
                         <td headers="hSortable" class="text-center">
-                            <i class="fa fa-arrows-alt sort-handle pointer" title="{{ 'Drag to reorder'|trans|e('html_attr') }}"></i>
+                            <i class="fas fa-arrows-alt sort-handle pointer" title="{{ 'Drag to reorder'|trans|e('html_attr') }}"></i>
                         </td>
                     {% endif %}
                     <td headers="hBundle" class="text-left">
@@ -124,16 +124,16 @@
                     </td>
                     <td headers="hPrependBundlePrefix" class="text-center">
                         {% if route.prependBundlePrefix %}
-                            <i class="fa fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
+                            <i class="fas fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
                         {% else %}
-                            <i class="fa fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
+                            <i class="fas fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
                         {% endif %}
                     </td>
                     <td headers="hTranslatable" class="text-center">
                         {% if route.translatable %}
-                            <i class="fa fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
+                            <i class="fas fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
                         {% else %}
-                            <i class="fa fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
+                            <i class="fas fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
                         {% endif %}
                     </td>
                     <td headers="hTranslationPrefix" class="text-left">
@@ -169,7 +169,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <input type="submit" value="{{ 'Submit'|trans|e('html_attr') }}" class="btn btn-primary btn-sm" />
+                            <input type="submit" value="{{ 'Submit'|trans|e('html_attr') }}" class="btn btn-secondary btn-sm" />
                         </div>
                     </div>
                 </fieldset>

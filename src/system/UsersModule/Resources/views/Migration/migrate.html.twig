@@ -1,6 +1,6 @@
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-cogs"></span>
+    <span class="fas fa-cogs"></span>
     {% trans %}Migrate Users to ZAuth{% endtrans %}
     {{ pageSetVar('title', 'Migrate Users to ZAuth'|trans) }}
 </h3>
@@ -11,7 +11,7 @@
     <p><em>{% trans %}Invalid users cannot be migrated unless their data is manually corrected. The errors are posted to the logfile.{% endtrans %}</em></p>
 </div>
 <div class="alert alert-danger">
-    <i class="fa fa-exclamation-triangle fa-2x"></i> {% trans %}This action cannot be undone.{% endtrans %}
+    <i class="fas fa-exclamation-triangle fa-2x"></i> {% trans %}This action cannot be undone.{% endtrans %}
 </div>
 <div class="progress" id="progress-bar">
     <div class="progress-bar bg-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="alert alert-info">{% trans with {'%f': count} %}There are %f users to try to migrate.{% endtrans %}</div>
-<div class="text-center"><i id='spinner' class="fa fa-cog fa-2x fa-spin fa-fw" style="display: none"></i> <button id="migrate" class="btn btn-lg btn-success">{% trans %}Begin Migration{% endtrans %}</button></div>
+<div class="text-center"><i id='spinner' class="fas fa-cog fa-2x fa-spin fa-fw" style="display: none"></i> <button id="migrate" class="btn btn-lg btn-success">{% trans %}Begin Migration{% endtrans %}</button></div>
 {{ adminFooter() }}
 {% set customScript %}
 <script>

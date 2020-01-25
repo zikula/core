@@ -16,10 +16,10 @@ namespace Zikula\SettingsModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleListener implements EventSubscriberInterface
 {
@@ -51,7 +51,7 @@ class ModuleListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::MODULE_DISABLE => ['moduleDeactivated']
+            ExtensionEvents::MODULE_DISABLE => ['moduleDeactivated']
         ];
     }
 
@@ -71,7 +71,7 @@ class ModuleListener implements EventSubscriberInterface
             $this->variableApi->set(VariableApi::CONFIG, 'startargs');
             $request = $this->requestStack->getCurrentRequest();
             if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
-                $session->getFlashBag()->add('info', $this->translator->trans('The startController was reset to a static frontpage.'));
+                $session->getFlashBag()->add('info', 'The startController was reset to a static frontpage.');
             }
         }
     }

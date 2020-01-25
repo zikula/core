@@ -21,15 +21,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 class VarController extends AbstractController
 {
     /**
-     * Configure a theme's variables based on provided .yml definitions for each field.
+     * Configure a theme's variables based on provided YAML definitions for each field.
      *
      * @Route("/admin/var/{themeName}")
      * @Theme("admin")
@@ -46,7 +46,7 @@ class VarController extends AbstractController
         string $themeName
     ) {
         $themeBundle = $kernel->getBundle($themeName);
-        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
+        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->trans('%theme% has no configuration.', ['%theme%' => $themeName]));
 
@@ -63,21 +63,21 @@ class VarController extends AbstractController
         }
         $formBuilder
             ->add('save', SubmitType::class, [
-                'label' => 'Save',
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check fa-lg',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('toDefault', SubmitType::class, [
-                'label' => 'Set to defaults',
+                'label' => $this->trans('Set to defaults'),
                 'icon' => 'fa-refresh fa-lg',
                 'attr' => [
                     'class' => 'btn btn-primary'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => 'Cancel',
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times fa-lg',
                 'attr' => [
                     'class' => 'btn btn-danger'
@@ -90,12 +90,12 @@ class VarController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 // pseudo-hack to save theme vars in to modvars table
                 $variableApi->setAll($themeName, $form->getData());
-                $this->addFlash('status', $this->trans('Done! Theme configuration updated.'));
+                $this->addFlash('status', 'Done! Theme configuration updated.');
             } elseif ($form->get('toDefault')->isClicked()) {
                 $variableApi->setAll($themeName, $themeBundle->getDefaultThemeVars());
-                $this->addFlash('status', $this->trans('Done! Theme configuration updated to default values.'));
+                $this->addFlash('status', 'Done! Theme configuration updated to default values.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulathememodule_theme_view');

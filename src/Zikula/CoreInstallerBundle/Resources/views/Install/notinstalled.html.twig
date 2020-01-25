@@ -1,0 +1,40 @@
+{% extends '@ZikulaCoreInstaller/theme.html.twig' %}
+
+{% block title 'Zikula is not installed!'|trans %}
+
+{% block body %}
+<div class="container">
+    <div id="cell">
+        <div id="content">
+            <div id="maincontent">
+                <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
+                <h2>{% trans %}Zikula Core is not installed!{% endtrans %}</h2>
+                <p>
+                    {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': path('doc', {'name': 'INSTALL-2.0.md'}), '%text%': 'installation instructions'|trans }) %}
+                    {% set docs = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
+                    {% trans with { '%inst%': inst, '%docs%': docs } %}'You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking
+                    on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
+                </p>
+                <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>
+                <div id="startButton" class="row">
+                    <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        <a class="btn btn-success btn-lg d-flex align-items-center" href="{{ path('install', {'stage': 'locale' }) }}">
+                            <i class="fas fa-thumbs-up fa-3x float-left mr-3"></i> {% trans %}Install Zikula!{% endtrans %}<br />{% trans %}Version{% endtrans %} {{ version }}
+                        </a>
+                    </div>
+                </div>
+                <br />
+                <p class="text-muted">
+                    {% trans %}Zikula is free software released under the GPL license!{% endtrans %}<br />
+                    {% trans with { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage" class="external">https://ziku.la</a>'}|raw %}For more information, please visit %link%.{% endtrans %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function( $ ) {
+        $('#startButton').removeClass('d-none');
+    });
+</script>
+{% endblock %}

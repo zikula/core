@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule;
 
 use Exception;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -68,7 +68,7 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $usersGroup = $this->container->get(GroupRepository::class)->find(GroupsConstant::GROUP_ID_USERS);
                 $anonymousUser->getGroups()->removeElement($usersGroup);
                 $this->entityManager->flush();
-                $this->addFlash('info', $this->trans('NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.'));
+                $this->addFlash('info', 'NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.');
             case '2.4.2':
             // future upgrade routines
         }

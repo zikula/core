@@ -21,8 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
@@ -80,16 +80,16 @@ class AccountController extends AbstractController
                 if ($sent) {
                     $this->addFlash('status', $this->trans('Done! The account information for %email% has been sent via e-mail.', ['%email%' => $data['email']]));
                 } else {
-                    $this->addFlash('error', $this->trans('Unable to send email to the requested address. Please contact a site administrator for assistance.'));
+                    $this->addFlash('error', 'Unable to send email to the requested address. Please contact a site administrator for assistance.');
                 }
             } elseif (1 < count($mapping)) {
-                $this->addFlash('error', $this->trans('There are too many users registered with that address. Please contact a site administrator for assistance.'));
+                $this->addFlash('error', 'There are too many users registered with that address. Please contact a site administrator for assistance.');
             } else {
                 $hasRegistration = $variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED);
                 if ($hasRegistration) {
                     $this->addFlash('error', $this->trans('A user with this address does not exist at this site.') . ' ' . $this->trans('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $router->generate('zikulausersmodule_registration_register')]));
                 } else {
-                    $this->addFlash('error', $this->trans('A user with this address does not exist at this site.'));
+                    $this->addFlash('error', 'A user with this address does not exist at this site.');
                 }
             }
         }
@@ -153,23 +153,23 @@ class AccountController extends AbstractController
                         break;
                     case UsersConstant::ACTIVATED_INACTIVE:
                         if ($this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_INACTIVE_STATUS)) {
-                            $this->addFlash('error', $this->trans('Sorry! Your account is marked as inactive. Please contact a site administrator for more information.'));
+                            $this->addFlash('error', 'Sorry! Your account is marked as inactive. Please contact a site administrator for more information.');
                         }
                         break;
                     case UsersConstant::ACTIVATED_PENDING_REG:
                         $displayPendingApproval = $this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS);
                         $displayPendingVerification = $this->getVar(UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, UsersConstant::DEFAULT_LOGIN_DISPLAY_VERIFY_STATUS);
                         if ($displayPendingApproval || $displayPendingVerification) {
-                            $this->addFlash('error', $this->trans('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'));
+                            $this->addFlash('error', 'Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.');
                         } else {
-                            $this->addFlash('error', $this->trans('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
+                            $this->addFlash('error', 'Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.');
                         }
                         break;
                     default:
-                        $this->addFlash('error', $this->trans('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
+                        $this->addFlash('error', 'Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.');
                 }
             } elseif (1 < count($mapping)) {
-                $this->addFlash('error', $this->trans('There are too many users registered with that address. Please contact a site administrator for assistance.'));
+                $this->addFlash('error', 'There are too many users registered with that address. Please contact a site administrator for assistance.');
             } else {
                 $message = $this->trans('A user with this %property% does not exist at this site.', ['%property%' => $map[$field]]);
 
@@ -213,7 +213,7 @@ class AccountController extends AbstractController
         }
 
         if (!$request->query->has('id')) {
-            $this->addFlash('error', $this->trans('Your request could not be processed due to missing arguments.'));
+            $this->addFlash('error', 'Your request could not be processed due to missing arguments.');
 
             return $this->redirectToRoute($redirectToRoute);
         }
@@ -227,7 +227,7 @@ class AccountController extends AbstractController
         }
 
         if ('' === $requestDetails['userId'] || '' === $requestDetails['userName'] || '' === $requestDetails['emailAddress']) {
-            $this->addFlash('error', $this->trans('Your request could not be processed due to invalid arguments.'));
+            $this->addFlash('error', 'Your request could not be processed due to invalid arguments.');
 
             return $this->redirectToRoute($redirectToRoute);
         }
@@ -235,13 +235,13 @@ class AccountController extends AbstractController
         /** @var UserEntity $user */
         $user = $userRepository->find($requestDetails['userId']);
         if (null === $user) {
-            $this->addFlash('error', $this->trans('User not found. Please contact a site administrator for assistance.'));
+            $this->addFlash('error', 'User not found. Please contact a site administrator for assistance.');
 
             return $this->redirectToRoute($redirectToRoute);
         }
 
         if (!$lostPasswordVerificationHelper->checkConfirmationCode($user->getUid(), $requestDetails['confirmationCode'])) {
-            $this->addFlash('error', $this->trans('Your request could not be processed due to invalid arguments. Maybe your link is expired?'));
+            $this->addFlash('error', 'Your request could not be processed due to invalid arguments. Maybe your link is expired?');
 
             return $this->redirectToRoute($redirectToRoute);
         }
@@ -272,7 +272,7 @@ class AccountController extends AbstractController
             $mapping->setPass($passwordApi->getHashedPassword($data['pass']));
             $authenticationMappingRepository->persistAndFlush($mapping);
             $accessHelper->login($user);
-            $this->addFlash('success', $this->trans('Your change has been successfully saved. You are now logged in with your new password.'));
+            $this->addFlash('success', 'Your change has been successfully saved. You are now logged in with your new password.');
 
             return $this->redirectToRoute($redirectToRoute);
         }
@@ -316,9 +316,9 @@ class AccountController extends AbstractController
             ];
             $sent = $mailHelper->sendNotification($data['email'], 'userverifyemail', $templateArgs);
             if ($sent) {
-                $this->addFlash('success', $this->trans('Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'));
+                $this->addFlash('success', 'Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.');
             } else {
-                $this->addFlash('error', $this->trans('Error! There was a problem saving your new e-mail address or sending you a verification message.'));
+                $this->addFlash('error', 'Error! There was a problem saving your new e-mail address or sending you a verification message.');
             }
 
             return $this->redirectToRoute('zikulausersmodule_account_menu');
@@ -382,7 +382,7 @@ class AccountController extends AbstractController
         $userRepository->persistAndFlush($user);
 
         $userVerificationRepository->resetVerifyChgFor($user->getUid(), [ZAuthConstant::VERIFYCHGTYPE_EMAIL]);
-        $this->addFlash('success', $this->trans('Done! Changed your e-mail address.'));
+        $this->addFlash('success', 'Done! Changed your e-mail address.');
 
         return $this->redirectToRoute('zikulausersmodule_account_menu');
     }
@@ -437,7 +437,7 @@ class AccountController extends AbstractController
             $user = $userRepository->find($mapping->getUid());
             $user->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
             $authenticationMappingRepository->persistAndFlush($mapping);
-            $this->addFlash('success', $this->trans('Password successfully changed.'));
+            $this->addFlash('success', 'Password successfully changed.');
             if ($data['login']) {
                 $accessHelper->login($user);
             }

@@ -17,8 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**

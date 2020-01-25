@@ -20,8 +20,8 @@ use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Block\SearchBlock;
 use Zikula\UsersModule\Block\LoginBlock;
 
@@ -169,7 +169,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                         'Locale',
                         'a:0:{}'
                     ]);
-                    $this->addFlash('success', $this->trans('All instances of LangBlock have been converted to LocaleBlock.'));
+                    $this->addFlash('success', 'All instances of LangBlock have been converted to LocaleBlock.');
                 }
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':

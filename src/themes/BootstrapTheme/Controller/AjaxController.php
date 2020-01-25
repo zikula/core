@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\Controller\AbstractController;
 
 /**
  * Theme specific ajax controller implementation class.
@@ -39,7 +39,7 @@ class AjaxController extends AbstractController
         }
 
         $themeBundle = $kernel->getBundle('ZikulaBootstrapTheme');
-        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
+        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
         $availableStyles = $variableDefinitions['theme_style']['options']['choices'];
 

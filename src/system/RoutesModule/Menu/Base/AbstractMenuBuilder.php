@@ -18,8 +18,6 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -36,8 +34,6 @@ use Zikula\RoutesModule\Helper\PermissionHelper;
  */
 class AbstractMenuBuilder
 {
-    use TranslatorTrait;
-    
     /**
      * @var FactoryInterface
      */
@@ -79,7 +75,6 @@ class AbstractMenuBuilder
     protected $modelHelper;
     
     public function __construct(
-        TranslatorInterface $translator,
         FactoryInterface $factory,
         EventDispatcherInterface $eventDispatcher,
         RequestStack $requestStack,
@@ -89,7 +84,6 @@ class AbstractMenuBuilder
         VariableApiInterface $variableApi,
         ModelHelper $modelHelper
     ) {
-        $this->setTranslator($translator);
         $this->factory = $factory;
         $this->eventDispatcher = $eventDispatcher;
         $this->requestStack = $requestStack;
@@ -124,62 +118,61 @@ class AbstractMenuBuilder
             $routePrefix = 'zikularoutesmodule_route_';
             
             if ('admin' === $routeArea) {
-                $title = $this->trans('Preview', [], 'zikularoutesmodule');
                 $previewRouteParameters = $entity->createUrlArgs();
                 $previewRouteParameters['preview'] = 1;
-                $menu->addChild($title, [
+                $menu->addChild('Preview', [
                     'route' => $routePrefix . 'display',
                     'routeParameters' => $previewRouteParameters
-                ]);
-                $menu[$title]->setLinkAttribute('target', '_blank');
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    $this->trans('Open preview page', [], 'zikularoutesmodule')
-                );
-                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
+                ])
+                    ->setLinkAttribute('target', '_blank')
+                    ->setLinkAttribute(
+                        'title',
+                        'Open preview page'
+                    )
+                    ->setAttribute('icon', 'fas fa-search-plus')
+                ;
             }
             if ('display' !== $context) {
-                $title = $this->trans('Details', [], 'zikularoutesmodule');
-                $menu->addChild($title, [
+                $entityTitle = $this->entityDisplayHelper->getFormattedTitle($entity);
+                $menu->addChild('Details', [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ]);
-                $entityTitle = $this->entityDisplayHelper->getFormattedTitle($entity);
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    str_replace('"', '', $entityTitle)
-                );
-                $menu[$title]->setAttribute('icon', 'fa fa-eye');
+                ])
+                    ->setLinkAttribute(
+                        'title',
+                        str_replace('"', '', $entityTitle)
+                    )
+                    ->setAttribute('icon', 'fas fa-eye')
+                ;
             }
             if ($this->permissionHelper->mayEdit($entity)) {
-                $title = $this->trans('Edit', [], 'zikularoutesmodule');
-                $menu->addChild($title, [
+                $menu->addChild('Edit', [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs()
-                ]);
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    $this->trans('Edit this route', [], 'zikularoutesmodule')
-                );
-                $menu[$title]->setAttribute('icon', 'fa fa-edit');
-                $title = $this->trans('Reuse', [], 'zikularoutesmodule');
-                $menu->addChild($title, [
+                ])
+                    ->setLinkAttribute(
+                        'title',
+                        'Edit this route'
+                    )
+                    ->setAttribute('icon', 'fas fa-edit')
+                ;
+                $menu->addChild('Reuse', [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
-                ]);
-                $menu[$title]->setLinkAttribute(
-                    'title',
-                    $this->trans('Reuse for new route', [], 'zikularoutesmodule')
-                );
-                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
+                ])
+                    ->setLinkAttribute(
+                        'title',
+                        'Reuse for new route'
+                    )
+                    ->setAttribute('icon', 'fas fa-copy')
+                ;
             }
             if ('display' === $context) {
-                $title = $this->trans('Routes list', [], 'zikularoutesmodule');
-                $menu->addChild($title, [
+                $menu->addChild('Routes list', [
                     'route' => $routePrefix . $routeArea . 'view'
-                ]);
-                $menu[$title]->setLinkAttribute('title', $title);
-                $menu[$title]->setAttribute('icon', 'fa fa-reply');
+                ])
+                    ->setAttribute('icon', 'fas fa-reply')
+                ;
             }
         }
     
@@ -218,12 +211,11 @@ class AbstractMenuBuilder
                 $canBeCreated = $this->modelHelper->canBeCreated($objectType);
                 if ($canBeCreated) {
                     if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_EDIT)) {
-                        $title = $this->trans('Create route', [], 'zikularoutesmodule');
-                        $menu->addChild($title, [
+                        $menu->addChild('Create route', [
                             'route' => $routePrefix . $routeArea . 'edit'
-                        ]);
-                        $menu[$title]->setLinkAttribute('title', $title);
-                        $menu[$title]->setAttribute('icon', 'fa fa-plus');
+                        ])
+                            ->setAttribute('icon', 'fas fa-plus')
+                        ;
                     }
                 }
                 $routeParameters = $query->all();
@@ -234,34 +226,40 @@ class AbstractMenuBuilder
                 }
                 if (1 === $query->getInt('all')) {
                     unset($routeParameters['all']);
-                    $title = $this->trans('Back to paginated view', [], 'zikularoutesmodule');
+                    $menu->addChild('Back to paginated view', [
+                        'route' => $routePrefix . $routeArea . 'view',
+                        'routeParameters' => $routeParameters
+                    ])
+                        ->setAttribute('icon', 'fas fa-table')
+                    ;
                 } else {
                     $routeParameters['all'] = 1;
-                    $title = $this->trans('Show all entries', [], 'zikularoutesmodule');
+                    $menu->addChild('Show all entries', [
+                        'route' => $routePrefix . $routeArea . 'view',
+                        'routeParameters' => $routeParameters
+                    ])
+                        ->setAttribute('icon', 'fas fa-table')
+                    ;
                 }
-                $menu->addChild($title, [
-                    'route' => $routePrefix . $routeArea . 'view',
-                    'routeParameters' => $routeParameters
-                ]);
-                $menu[$title]->setLinkAttribute('title', $title);
-                $menu[$title]->setAttribute('icon', 'fa fa-table');
                 if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_EDIT)) {
                     $routeParameters = $query->all();
                     if (1 === $query->getInt('own')) {
                         unset($routeParameters['own']);
-                        $title = $this->trans('Show also entries from other users', [], 'zikularoutesmodule');
-                        $icon = 'users';
+                        $menu->addChild('Show also entries from other users', [
+                            'route' => $routePrefix . $routeArea . 'view',
+                            'routeParameters' => $routeParameters
+                        ])
+                            ->setAttribute('icon', 'fas fa-users')
+                        ;
                     } else {
                         $routeParameters['own'] = 1;
-                        $title = $this->trans('Show only own entries', [], 'zikularoutesmodule');
-                        $icon = 'user';
+                        $menu->addChild('Show only own entries', [
+                            'route' => $routePrefix . $routeArea . 'view',
+                            'routeParameters' => $routeParameters
+                        ])
+                            ->setAttribute('icon', 'fas fa-user')
+                        ;
                     }
-                    $menu->addChild($title, [
-                        'route' => $routePrefix . $routeArea . 'view',
-                        'routeParameters' => $routeParameters
-                    ]);
-                    $menu[$title]->setLinkAttribute('title', $title);
-                    $menu[$title]->setAttribute('icon', 'fa fa-' . $icon);
                 }
             }
         }

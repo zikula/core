@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\LinkContainer\LinkContainerCollector;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeModule\Engine\Asset;
 
 /**
@@ -99,29 +99,32 @@ class ExtensionsInterfaceController extends AbstractController
     public function linksAction(
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository,
-        LinkContainerCollector $linkCollector
+        ExtensionMenuCollector $extensionMenuCollector
     ): Response {
         /** @var Request $masterRequest */
         $masterRequest = $requestStack->getMasterRequest();
         /** @var Request $currentRequest */
         $currentRequest = $requestStack->getCurrentRequest();
-        $caller = $requestStack->getMasterRequest()->attributes->all();
+        $caller = $masterRequest->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
         // your own links array
         $links = '' !== $currentRequest->attributes->get('links') ? $currentRequest->attributes->get('links') : '';
         // you can pass module name you want to get links for but
-        $modname = '' !== $currentRequest->attributes->get('modname') ? $currentRequest->attributes->get('modname') : $caller['_zkModule'];
+        $moduleName = '' !== $currentRequest->attributes->get('modname') ? $currentRequest->attributes->get('modname') : $caller['_zkModule'];
 
         // no own links array
         if (empty($links)) {
             // define type - default
-            $links_type = 'user';
+            $linksType = 'user';
             // detect from masterRequest
-            $links_type = '' !== $masterRequest->attributes->get('type') ? $masterRequest->attributes->get('type') : $links_type;
+            $linksType = '' !== $masterRequest->attributes->get('type') ? $masterRequest->attributes->get('type') : $linksType;
             // passed to currentRequest most important
-            $links_type = '' !== $currentRequest->attributes->get('type') ? $currentRequest->attributes->get('type') : $links_type;
+            $linksType = '' !== $currentRequest->attributes->get('type') ? $currentRequest->attributes->get('type') : $linksType;
             // get the menu links
-            $links = $linkCollector->getLinks($modname, $links_type);
+            $extensionMenu = $extensionMenuCollector->get($moduleName, $linksType);
+            if (isset($extensionMenu)) {
+                $extensionMenu->setChildrenAttribute('class', 'nav nav-modulelinks');
+            }
         }
 
         // menu css
@@ -140,7 +143,7 @@ class ExtensionsInterfaceController extends AbstractController
         return $this->render($template, [
             'caller' => $caller,
             'menu_css' => $menu_css,
-            'links' => $links,
+            'extensionMenu' => $extensionMenu,
             'current_path' => $masterRequest->getPathInfo()
         ]);
     }

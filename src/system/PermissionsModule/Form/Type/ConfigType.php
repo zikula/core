@@ -15,7 +15,6 @@ namespace Zikula\PermissionsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,14 +26,6 @@ class ConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $amountChoices = [
-            20 => 20,
-            25 => 25,
-            30 => 30,
-            35 => 35,
-            40 => 40
-        ];
-
         $builder
             ->add('lockadmin', CheckboxType::class, [
                 'label' => 'Lock main administration permission rule',
@@ -53,31 +44,16 @@ class ConfigType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
-            ->add('rowview', ChoiceType::class, [
-                'label' => 'Minimum row height for permission rules list view',
-                'empty_data' => 25,
-                'choices' => $amountChoices,
-                'input_group' => ['right' => 'pixels']
-            ])
-            ->add('rowedit', ChoiceType::class, [
-                'label' => 'Minimum row height for rule editing view',
-                'empty_data' => 35,
-                'choices' => $amountChoices,
-                'input_group' => ['right' => 'pixels']
-            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
     }

@@ -16,18 +16,18 @@ namespace Zikula\ExtensionsModule\Helper;
 use Composer\Semver\Semver;
 use Exception;
 use RuntimeException;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\Scanner;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\AbstractModule;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Exception\FatalErrorException;
+use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
@@ -119,15 +119,10 @@ class BundleSyncHelper
      *
      * @throws Exception Thrown if the user doesn't have admin permissions over the bundle
      */
-    public function scanForBundles(array $directories = []): array
+    public function scanForBundles(array $directories = ['modules']): array
     {
-        $directories = empty($directories) ? ['system', 'modules', 'themes'] : $directories;
-
         // sync the filesystem and the bundles table
         $this->bundlesSchemaHelper->load();
-
-        // Get all bundles on filesystem
-        $bundles = [];
 
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
@@ -138,7 +133,7 @@ class BundleSyncHelper
         $newModules = $scanner->getModulesMetaData();
         $extensions = $scanner->getExtensionsMetaData();
 
-        // scan for all bundle-type bundles (psr-4) in either /system or /bundles
+        $bundles = [];
         /** @var MetaData $bundleMetaData */
         foreach ($extensions as $name => $bundleMetaData) {
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {
@@ -180,7 +175,7 @@ class BundleSyncHelper
     /**
      * Validate the extensions and ensure there are no duplicate names, display names or urls.
      *
-     * @throws FatalErrorException
+     * @throws FatalError
      */
     private function validate(array $extensions = []): void
     {
@@ -195,13 +190,13 @@ class BundleSyncHelper
         foreach ($extensions as $dir => $modInfo) {
             foreach ($fieldNames as $fieldName) {
                 $key = mb_strtolower($modInfo[$fieldName]);
-                if (!empty($moduleValues[$fieldName][$key]) && !empty($modInfo[$fieldName])) {
-                    $message = $this->translator->trans('Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]', [
+                if (isset($moduleValues[$fieldName][$key])) {
+                    $message = $this->translator->trans('Fatal error: Two extensions share the same %field%. [%ext1%] and [%ext2%]', [
                         '%field%' => $fieldName,
                         '%ext1%' => $modInfo['name'],
                         '%ext2%' => $moduleValues[$fieldName][$key]
                     ]);
-                    throw new FatalErrorException($message, 500, error_get_last());
+                    throw new FatalError($message, 500, error_get_last());
                 }
                 $moduleValues[$fieldName][$key] = $dir;
             }
@@ -306,7 +301,7 @@ class BundleSyncHelper
     private function syncLostExtensions(array $extensionsFromFile, array &$extensionsFromDB): void
     {
         foreach ($extensionsFromDB as $name => $unusedVariable) {
-            if (array_key_exists($name, $extensionsFromFile)) {
+            if ($this->kernel::isCoreModule($name) || array_key_exists($name, $extensionsFromFile)) {
                 continue;
             }
 

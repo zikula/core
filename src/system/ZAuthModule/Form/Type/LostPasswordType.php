@@ -35,12 +35,12 @@ class LostPasswordType extends AbstractType
                 ->add('uname', TextType::class, [
                     'required' => false,
                     'label' => 'User name',
-                    'input_group' => ['left' => '<i class="fa fa-user"></i>'],
+                    'input_group' => ['left' => '<i class="fas fa-user"></i>'],
                 ])
                 ->add('email', EmailType::class, [
                     'required' => false,
                     'label' => 'Email address',
-                    'input_group' => ['left' => '<i class="fa fa-at"></i>'],
+                    'input_group' => ['left' => '<i class="fas fa-at"></i>'],
                 ])
             ;
         } else {
@@ -49,11 +49,11 @@ class LostPasswordType extends AbstractType
                     'type' => PasswordType::class,
                     'first_options' => [
                         'label' => 'Create new password',
-                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                        'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
                     ],
                     'second_options' => [
                         'label' => 'Repeat new password',
-                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                        'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
                     ],
                     'invalid_message' => 'The passwords must match!',
                     'constraints' => [
@@ -67,7 +67,9 @@ class LostPasswordType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
     }

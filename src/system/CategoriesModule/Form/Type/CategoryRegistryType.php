@@ -24,9 +24,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Class CategoryRegistryType
@@ -52,7 +53,7 @@ class CategoryRegistryType extends AbstractType
         $builder
             ->add('modname', ChoiceType::class, [
                 'label' => 'Module',
-                'choices' => $options['categorizableModules'],
+                'choices' => /** @Ignore */$options['categorizableModules'],
                 'placeholder' => 'Select module'
             ])
             ->add('property', TextType::class, [
@@ -68,15 +69,12 @@ class CategoryRegistryType extends AbstractType
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
 
@@ -84,8 +82,9 @@ class CategoryRegistryType extends AbstractType
         $formModifier = function(FormInterface $form, string $modName = null) use ($translator) {
             $entities = null === $modName ? [] : $this->entitySelectionBuilder->buildFor($modName);
             $form->add('entityname', ChoiceType::class, [
+                /** @Ignore */
                 'label' => $translator->trans('Entity'),
-                'choices' => $entities
+                'choices' => /** @Ignore */$entities
             ]);
         };
 

@@ -1,0 +1,19 @@
+imports:
+    - { resource: 'packages/security.yaml' }
+    - { resource: 'packages/framework.yaml' }
+    - { resource: 'packages/doctrine.yaml' }
+    - { resource: 'packages/imagine.yaml' }
+    - { resource: 'packages/workflow.yaml' }
+    - { resource: 'packages/cache.yaml' }
+    - { resource: 'packages/php_translation.yaml' }
+    - { resource: 'packages/jms_i18n_routing.yaml' }
+    - { resource: 'packages/bazinga_js_translation.yaml' }
+    - { resource: services.yaml }
+
+parameters:
+    container.dumper.inline_class_loader: true
+    # all paths below are resolved as assets (in /web)
+    # stylesheet and javascript component locations
+    zikula.javascript.bootstrap.min.path: '/bootstrap/js/bootstrap.bundle.min.js'
+    zikula.stylesheet.bootstrap.min.path: '/bootstrap/css/bootstrap.min.css'
+    zikula.stylesheet.fontawesome.min.path: '/font-awesome/css/all.min.css'

@@ -18,7 +18,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\AppSettings;
 use Zikula\RoutesModule\Form\Type\ConfigType;
@@ -52,14 +52,14 @@ abstract class AbstractConfigController extends AbstractController
                 $appSettings = $form->getData();
                 $appSettings->save();
         
-                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
                 $userName = $currentUserApi->get('uname');
                 $logger->notice(
                     '{app}: User {user} updated the configuration.',
                     ['app' => 'ZikulaContentModule', 'user' => $userName]
                 );
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
         
             // redirect to config page again (to show with GET request)

@@ -1,11 +1,10 @@
 # Debugging translations
 
 Symfony comes with `bin/console debug:translation` command line tool to debug translations.
-**This tool work only with Symfony and Zikula Core-2.0 translation paths.**
 
-Example output for more information please check https://symfony.com/doc/current/translation.html#debugging-translations
+Example output:
 
-    %> php bin/console debug:translation pl KaikmediaPagesModule
+    %> php bin/console debug:translation pl --domain=mydomain
     +----------+-------------+----------------------+
     | State(s) | Id          | Message Preview (pl) |
     +----------+-------------+----------------------+
@@ -23,7 +22,11 @@ Example output for more information please check https://symfony.com/doc/current
      o Unused message
      = Same as the fallback message
 
+For more information please check https://symfony.com/doc/current/translation.html#debugging-translations
+
 ## Important notes
-From Symfony translator documentation
+
+From Symfony translator documentation:
+
 > Each time you create a new translation resource (or install a bundle that includes a translation resource), be sure to
 clear your cache so that Symfony can discover the new translation resources.

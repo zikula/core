@@ -1,0 +1,28 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\MenuModule\ZikulaMenuModule'
+
+    Zikula\MenuModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface: '@Zikula\MenuModule\Entity\Repository\MenuItemRepository'
+
+    Zikula\MenuModule\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaMenuAdminMenu }
+            - { name: knp_menu.menu_builder, method: createAdminActionsMenu, alias: zikulaMenuAdminActionsMenu }
+
+    Zikula\MenuModule\Provider\DoctrineTreeProvider:
+        tags: ['knp_menu.provider']
+
+    Zikula\MenuModule\Voter\RequestVoter:
+        tags: ['knp_menu.voter']
+
+    Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector:
+        arguments:
+            $extensionMenus: !tagged_iterator zikula.extension_menu

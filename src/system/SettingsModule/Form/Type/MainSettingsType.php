@@ -28,7 +28,10 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Translation\Extractor\Annotation\Ignore;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\SettingsModule\Validator\Constraints\ValidController;
 
 /**
@@ -38,9 +41,17 @@ class MainSettingsType extends AbstractType
 {
     use TranslatorTrait;
 
-    public function __construct(TranslatorInterface $translator)
-    {
+    /**
+     * @var ExtensionRepositoryInterface
+     */
+    private $extensionRepository;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        ExtensionRepositoryInterface $extensionRepository
+    ) {
         $this->setTranslator($translator);
+        $this->extensionRepository = $extensionRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -123,13 +134,13 @@ class MainSettingsType extends AbstractType
             ])
             ->add('profilemodule', ChoiceType::class, [
                 'label' => 'Module used for managing user profiles',
-                'choices' => $options['profileModules'],
+                'choices' => /** @Ignore */$this->formatModuleArrayForSelect($options['profileModules']),
                 'placeholder' => 'No profile module',
                 'required' => false
             ])
             ->add('messagemodule', ChoiceType::class, [
                 'label' => 'Module used for private messaging',
-                'choices' => $options['messageModules'],
+                'choices' => /** @Ignore */$this->formatModuleArrayForSelect($options['messageModules']),
                 'placeholder' => 'No message module',
                 'required' => false
             ])
@@ -160,15 +171,12 @@ class MainSettingsType extends AbstractType
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
         foreach ($options['languages'] as $language => $languageCode) {
@@ -223,5 +231,22 @@ class MainSettingsType extends AbstractType
         if ($permareplaceCount !== $permasearchCount) {
             $context->addViolation($this->trans('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
         }
+    }
+
+    /**
+     * Prepare an array of module names and displaynames for dropdown usage.
+     */
+    private function formatModuleArrayForSelect(array $modules = []): array
+    {
+        $return = [];
+        foreach ($modules as $module) {
+            if (!($module instanceof ExtensionEntity)) {
+                $module = $this->extensionRepository->get($module);
+            }
+            $return[$module->getDisplayname()] = $module->getName();
+        }
+        ksort($return);
+
+        return $return;
     }
 }

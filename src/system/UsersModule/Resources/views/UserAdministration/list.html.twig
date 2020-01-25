@@ -1,7 +1,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Admin.View.js')) }}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-list"></span>
+    <span class="fas fa-list"></span>
     {% trans %}Users list{% endtrans %}
     {{ pageSetVar('title', 'Users list'|trans) }}
 </h3>
@@ -10,7 +10,7 @@
     <div class="input-group">
         <input placeholder="{% trans %}Search{% endtrans %}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulausersmodule_useradministration_getusersbyfragmentastable" />
         <div class="input-group-append">
-            <span class="input-group-text"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
+            <span class="input-group-text"><i class="fas fa-times pointer" id="user-search-discard"></i></span>
         </div>
     </div>
 </div>

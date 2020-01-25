@@ -2,7 +2,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Modifyposition.js')) }}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-cubes"></span>
+    <span class="fas fa-cubes"></span>
     {% trans %}Block placements{% endtrans %}
     {{ pageSetVar('title', 'Block placements'|trans) }}
 </h3>
@@ -22,7 +22,7 @@
 
 <h4 id="position" data-position="{{ position.pid }}">{% trans with {'%name%': position.name} %}Blocks placed in the '%name%' position{% endtrans %} <span id="feedback" class="badge badge-success" style="display: none">Placements updated!</span></h4>
 
-{% if not positionavailable(position.name) %}<div class="alert alert-warning"><i class="fa fa-exclamation-triangle fa-2x text-danger text-left"></i> {% trans with {'%name%':position.name} %}WARNING: The "%name%" block position is not available in the current default theme.{% endtrans %}</div>{% endif %}
+{% if not positionavailable(position.name) %}<div class="alert alert-warning"><i class="fas fa-exclamation-triangle fa-2x text-danger text-left"></i> {% trans with {'%name%':position.name} %}WARNING: The "%name%" block position is not available in the current default theme.{% endtrans %}</div>{% endif %}
 <table id="assignedblocklist" class="table table-bordered table-striped">
     <colgroup>
         <col id="cAssignedDnd" />
@@ -50,7 +50,7 @@
         </tr>
         {% for block in assignedblocks %}
         <tr style="cursor: move" data-bid="{{ block.bid }}">
-            <td headers="hAssignedDnd"><span class="fa fa-arrows-alt"></span></td>
+            <td headers="hAssignedDnd"><span class="fas fa-arrows-alt"></span></td>
             <td headers="hAssignedId">{{ block.bid }}</td>
             <td headers="hAssignedTitle" id="blockdrag_{{ block.bid }}">
                 {{ block.title|safeHtml|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description|safeHtml }}
@@ -95,7 +95,7 @@
         </tr>
         {% for block in unassignedblocks %}
         <tr style="cursor: move" data-bid="{{ block.bid }}">
-            <td headers="hUnassignedDnd"><span class="fa fa-arrows-alt"></span></td>
+            <td headers="hUnassignedDnd"><span class="fas fa-arrows-alt"></span></td>
             <td headers="hUnassignedId">{{ block.bid }}</td>
             <td headers="hUnassignedTitle" id="blockdrag_{{ block.bid }}">
                 {{ block.title|safeHtml|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description|safeHtml }}

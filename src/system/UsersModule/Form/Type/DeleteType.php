@@ -18,19 +18,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\UsersModule\Entity\UserEntity;
 
 class DeleteType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -39,17 +31,17 @@ class DeleteType extends AbstractType
                     return ['class' => 'user-checkboxes'];
                 },
                 'class' => UserEntity::class,
-                'choices' => $options['choices'],
+                'choices' => /** @Ignore */$options['choices'],
                 'expanded' => true,
                 'multiple' => true,
                 'choice_label' => 'uname'
             ])
             ->add('delete', SubmitType::class, [
-                'label' => $this->trans('Delete selected users'),
+                'label' => 'Delete selected users',
                 'icon' => 'fa-trash-alt',
                 'attr' => [
-                    'class' => 'btn btn-danger'
-                ],
+                    'class' => 'btn-danger'
+                ]
             ])
         ;
     }

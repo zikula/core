@@ -83,7 +83,7 @@ class RouteDumperHelper
                 $langs = $installedLanguages;
             } else {
                 // get only the default locale
-                $langs = [$this->variableApi->getSystemVar('language_i18n', 'en')]; //$this->container->getParameter('locale');
+                $langs = [$this->variableApi->getSystemVar('locale', 'en')]; //$this->container->getParameter('locale');
             }
         }
 

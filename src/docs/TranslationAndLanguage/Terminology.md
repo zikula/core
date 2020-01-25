@@ -4,14 +4,15 @@ The technology for translations used in this guide is simple - anywhere in proje
 These are translated to other language stored in files or database and loaded on demand instead of English strings. 
 
 ## Terminology
- * **Symfony Translator** - Symfony gettext technology used for translations 
- * **Zikula Symfony Translator** - Extends Symfony Translator to support Zikula translation conventions. 
- * **message** -  in basic it is translation array element example: 'English string' => 'Translated string'
- * **translation template** - .pot file for gettext used only in process of creating new translations. Not used in actual translating. 
- * **domain** - An optional way to organize messages into groups (e.g. Symfony admin, navigation or the default messages
-   Zikula zikula, theme_themename, module_modulename and bundlename)
- * **catalogue** - Gettext way to organize messages into groups (LC_MESSAGES, LC_TYPE, LC_ALL) 
- * **locale** - The locale that the translations are for (e.g. en_GB, en, etc);
- * **loader** - How Symfony/Zikula should load and parse the file (e.g. xlf, php, yml, etc Zikula .po .mo). 
+
+- **Symfony Translator** - Symfony gettext technology used for translations 
+- **message** -  in basic it is an translation array element; for example: 'English string' => 'Translated string'
+- **domain** - An optional way to organize messages into groups (e.g. `admin`, `navigation`, `validators`; default value is `messages`)
+- **catalogue** - Gettext way to organize messages into groups (LC_MESSAGES, LC_TYPE, LC_ALL) 
+- **locale** - The locale that the translations are for (e.g. `en_GB`, `en`, etc);
+- **loader** - How Symfony/Zikula should load and parse the file (e.g. `xlf`, `php`, `yml`, `po`, `mo`, etc.). 
 
 For more information please refer to https://symfony.com/doc/current/translation.html
+
+## Translation domains
+Earlier we used the bundle name as translation domain. The new translation system uses different configurations for different bundles though. You are encouraged to use multiple translation domains now. They should cover different semantical topics and act as a context for translators, like for example `mail`, `messages`, `navigation`, `validators` and `admin`).

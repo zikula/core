@@ -19,11 +19,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoryRegistryType;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -67,9 +67,9 @@ class RegistryController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $entityManager->persist($registryEntity);
                 $entityManager->flush();
-                $this->addFlash('success', $this->trans('Registry updated'));
+                $this->addFlash('success', 'Done! Registry updated.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulacategoriesmodule_registry_edit');
@@ -117,9 +117,9 @@ class RegistryController extends AbstractController
             if ($form->get('delete')->isClicked()) {
                 $entityManager->remove($registry);
                 $entityManager->flush();
-                $this->addFlash('success', $this->trans('Done! Registry entry deleted.'));
+                $this->addFlash('success', 'Done! Registry entry deleted.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulacategoriesmodule_registry_edit');

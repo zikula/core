@@ -17,7 +17,7 @@ namespace Zikula\RoutesModule\Entity\Base;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\RoutesModule\Traits\StandardFieldsTrait;
 use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
 

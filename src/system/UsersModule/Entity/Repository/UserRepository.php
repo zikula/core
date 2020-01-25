@@ -20,7 +20,7 @@ use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\Core\Doctrine\WhereFromFilterTrait;
+use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserAttributeEntity;

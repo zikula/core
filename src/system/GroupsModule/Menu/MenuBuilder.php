@@ -18,8 +18,6 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -31,8 +29,6 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class MenuBuilder
 {
-    use TranslatorTrait;
-
     /**
      * @var FactoryInterface
      */
@@ -74,7 +70,6 @@ class MenuBuilder
     private $router;
 
     public function __construct(
-        TranslatorInterface $translator,
         FactoryInterface $factory,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
@@ -84,7 +79,6 @@ class MenuBuilder
         GroupApplicationRepository $groupApplicationRepository,
         RouterInterface $router
     ) {
-        $this->setTranslator($translator);
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
@@ -104,22 +98,22 @@ class MenuBuilder
         $routeParams = ['gid' => $gid];
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $menu->addChild($this->trans('Edit "%name%" group', ['%name%' => $group->getName()]), [
+        $menu->addChild('Edit group', [
             'route' => 'zikulagroupsmodule_group_edit',
             'routeParameters' => $routeParams,
-        ])->setAttribute('icon', 'fa fa-pencil-alt');
+        ])->setAttribute('icon', 'fas fa-pencil-alt');
         if (Constant::GROUP_ID_ADMIN !== $gid
             && $defaultGroup !== $gid
             && $this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
-            $menu->addChild($this->trans('Delete "%name%" group', ['%name%' => $group->getName()]), [
+            $menu->addChild('Delete group', [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
-            ])->setAttribute('icon', 'fa fa-trash-alt');
+            ])->setAttribute('icon', 'fas fa-trash-alt');
         }
-        $menu->addChild($this->trans('Group membership'), [
+        $menu->addChild('Group membership', [
             'route' => 'zikulagroupsmodule_membership_adminlist',
             'routeParameters' => $routeParams,
-        ])->setAttribute('icon', 'fa fa-users');
+        ])->setAttribute('icon', 'fas fa-users');
 
         return $menu;
     }
@@ -142,39 +136,39 @@ class MenuBuilder
             && (CommonHelper::GTYPE_PUBLIC === $group->getGtype()
                 || (CommonHelper::GTYPE_PRIVATE === $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
         ) {
-            $menu->addChild($this->trans('View membership of "%name%" group', ['%name%' => $group->getName()]), [
+            $menu->addChild('View membership of group', [
                 'route' => 'zikulagroupsmodule_membership_list',
                 'routeParameters' => ['gid' => $gid],
-            ])->setAttribute('icon', 'fa fa-users');
+            ])->setAttribute('icon', 'fas fa-users');
         }
         if (isset($currentUser)) {
             if ($group->getUsers()->contains($currentUser)) {
-                $menu->addChild($this->trans('Leave "%name%" group', ['%name%' => $group->getName()]), [
+                $menu->addChild('Leave group', [
                     'route' => 'zikulagroupsmodule_membership_leave',
                     'routeParameters' => ['gid' => $gid],
-                ])->setAttribute('icon', 'fa fa-user-times text-danger');
+                ])->setAttribute('icon', 'fas fa-user-times text-danger');
             } elseif (CommonHelper::GTYPE_PRIVATE === $group->getGtype()) {
                 $existingApplication = $this->groupApplicationRepository->findOneBy(['group' => $group, 'user' => $currentUser]);
                 if ($existingApplication) {
-                    $menu->addChild($this->trans('Applied!'));
+                    $menu->addChild('Applied!');
                 } else {
-                    $menu->addChild($this->trans('Apply to membership of "%name%" group', ['%name%' => $group->getName()]), [
+                    $menu->addChild('Apply to membership of group', [
                         'route' => 'zikulagroupsmodule_application_create',
                         'routeParameters' => ['gid' => $gid],
-                    ])->setAttribute('icon', 'fa fa-paper-plane');
+                    ])->setAttribute('icon', 'fas fa-paper-plane');
                 }
             } elseif (CommonHelper::STATE_CLOSED !== $group->getState()) {
-                $menu->addChild($this->trans('Join "%name%" group', ['%name%' => $group->getName()]), [
+                $menu->addChild('Join group', [
                     'route' => 'zikulagroupsmodule_membership_join',
                     'routeParameters' => ['gid' => $gid],
-                ])->setAttribute('icon', 'fa fa-user-plus text-success');
+                ])->setAttribute('icon', 'fas fa-user-plus text-success');
             }
         } else {
             $returnUrl = $this->router->generate('zikulagroupsmodule_membership_list', ['gid' => $gid], UrlGeneratorInterface::ABSOLUTE_URL);
-            $menu->addChild($this->trans('Log in or register'), [
+            $menu->addChild('Log in or register', [
                 'route' => 'zikulausersmodule_access_login',
                 'routeParameters' => ['returnUrl' => $returnUrl]
-            ])->setAttribute('icon', 'fa fa-key');
+            ])->setAttribute('icon', 'fas fa-key');
         }
 
         return $menu;

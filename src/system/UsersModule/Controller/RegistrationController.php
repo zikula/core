@@ -22,12 +22,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
@@ -174,7 +174,7 @@ class RegistrationController extends AbstractController
                     $externalRegistrationSuccess = $authenticationMethod->register($formData);
                     if (true !== $externalRegistrationSuccess) {
                         // revert registration
-                        $this->addFlash('error', $this->trans('The registration process failed.'));
+                        $this->addFlash('error', 'The registration process failed.');
                         $userRepository->removeAndFlush($userEntity);
                         $eventDispatcher->dispatch(new GenericEvent($userEntity->getUid()), RegistrationEvents::DELETE_REGISTRATION);
 
@@ -254,15 +254,15 @@ class RegistrationController extends AbstractController
     private function generateRegistrationFlashMessage(int $activatedStatus, bool $autoLogIn = false): void
     {
         if (UsersConstant::ACTIVATED_PENDING_REG === $activatedStatus) {
-            $this->addFlash('status', $this->trans('Done! Your registration request has been saved and is pending. Please check your e-mail periodically for a message from us.'));
+            $this->addFlash('status', 'Done! Your registration request has been saved and is pending. Please check your e-mail periodically for a message from us.');
         } elseif (UsersConstant::ACTIVATED_ACTIVE === $activatedStatus) {
             // The account is saved, and is active.
             if ($autoLogIn) {
                 // No errors and auto-login is turned on. A simple post-log-in message.
-                $this->addFlash('status', $this->trans('Done! Your account has been created.'));
+                $this->addFlash('status', 'Done! Your account has been created.');
             } else {
                 // No errors, and no auto-login. A simple message telling the user he may log in.
-                $this->addFlash('status', $this->trans('Done! Your account has been created and you may now log in.'));
+                $this->addFlash('status', 'Done! Your account has been created and you may now log in.');
             }
         }
     }

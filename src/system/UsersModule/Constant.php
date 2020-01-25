@@ -97,36 +97,6 @@ namespace Zikula\UsersModule
         public const DEFAULT_ACCOUNT_DISPLAY_GRAPHICS = true;
 
         /**
-         * Module variable key for the number of items to display on the account page.
-         */
-        public const MODVAR_ACCOUNT_ITEMS_PER_PAGE = 'accountitemsperpage';
-
-        /**
-         * Default value for the number of items to display on the account page.
-         */
-        public const DEFAULT_ACCOUNT_ITEMS_PER_PAGE = 25;
-
-        /**
-         * Module variable key for the number of items per row to display on the account page.
-         */
-        public const MODVAR_ACCOUNT_ITEMS_PER_ROW = 'accountitemsperrow';
-
-        /**
-         * Default value for the number of items per row to display on the account page.
-         */
-        public const DEFAULT_ACCOUNT_ITEMS_PER_ROW = 5;
-
-        /**
-         * Module variable key for the account page image path.
-         */
-        public const MODVAR_ACCOUNT_PAGE_IMAGE_PATH = 'userimg';
-
-        /**
-         * Default value for the account page image path.
-         */
-        public const DEFAULT_ACCOUNT_PAGE_IMAGE_PATH = 'images/menu';
-
-        /**
          * Module variable key for the guest account (anonymous account) display name.
          */
         public const MODVAR_ANONYMOUS_DISPLAY_NAME = 'anonymous';

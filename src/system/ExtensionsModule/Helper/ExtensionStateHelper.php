@@ -17,13 +17,12 @@ use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ExtensionStateHelper
@@ -79,12 +78,12 @@ class ExtensionStateHelper
         // Check valid state transition
         switch ($state) {
             case Constant::STATE_INACTIVE:
-                $eventName = CoreEvents::MODULE_DISABLE;
+                $eventName = ExtensionEvents::MODULE_DISABLE;
                 break;
             case Constant::STATE_ACTIVE:
                 if (Constant::STATE_INACTIVE === $extension->getState()) {
                     // ACTIVE is used for freshly installed modules, so only register the transition if previously inactive.
-                    $eventName = CoreEvents::MODULE_ENABLE;
+                    $eventName = ExtensionEvents::MODULE_ENABLE;
                 }
                 break;
             case Constant::STATE_UPGRADED:

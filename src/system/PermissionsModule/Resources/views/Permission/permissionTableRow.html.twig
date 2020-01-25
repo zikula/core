@@ -1,9 +1,9 @@
 <tr{% if lockadmin and adminId == permission.pid %} class="warning"{% endif %} data-id="{{ permission.pid }}">
     <td headers="hPosition" style="width: 1px; white-space: nowrap">
         {% if lockadmin and adminId == permission.pid %}
-            <i class="fa fa-lock" title="{% trans %}This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.{% endtrans %}"></i>
+            <i class="fas fa-lock" title="{% trans %}This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.{% endtrans %}"></i>
         {% else %}
-            <i class="fa fa-arrows-alt"></i>
+            <i class="fas fa-arrows-alt"></i>
         {% endif %}
     </td>
     <td class="text-right" style="width: 1px; white-space: nowrap">{{ permission.pid }}</td>

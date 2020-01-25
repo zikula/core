@@ -15,7 +15,7 @@ namespace Zikula\ExtensionsModule\Helper;
 
 use Composer\Semver\Semver;
 use InvalidArgumentException;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;

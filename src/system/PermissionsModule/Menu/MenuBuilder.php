@@ -15,15 +15,11 @@ namespace Zikula\PermissionsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 class MenuBuilder
 {
-    use TranslatorTrait;
-
     /**
      * @var FactoryInterface
      */
@@ -35,11 +31,9 @@ class MenuBuilder
     private $variableApi;
 
     public function __construct(
-        TranslatorInterface $translator,
         FactoryInterface $factory,
         VariableApiInterface $variableApi
     ) {
-        $this->setTranslator($translator);
         $this->factory = $factory;
         $this->variableApi = $variableApi;
     }
@@ -52,27 +46,35 @@ class MenuBuilder
         $adminPermId = $this->variableApi->get('ZikulaPermissionsModule', 'adminid', 1);
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $menu->addChild($this->trans('Insert permission rule before %pid%', ['%pid%' => $permission->getPid()]), [
-                'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-plus')
-            ->setLinkAttributes(['class' => 'create-new-permission insertBefore pointer tooltips']);
+        $menu->addChild('Insert permission rule before this one', [
+            'uri' => '#'
+        ])
+            ->setAttribute('icon', 'fas fa-plus')
+            ->setLinkAttributes(['class' => 'create-new-permission insertBefore pointer tooltips'])
+        ;
 
         if (!$lockAdmin || $adminPermId !== $permission->getPid()) {
-            $menu->addChild($this->trans('Edit permission %pid%', ['%pid%' => $permission->getPid()]), [
+            $menu->addChild('Edit this permission rule', [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-pencil-alt')
-                ->setLinkAttributes(['class' => 'edit-permission pointer tooltips']);
+            ])
+                ->setAttribute('icon', 'fas fa-pencil-alt')
+                ->setLinkAttributes(['class' => 'edit-permission pointer tooltips'])
+            ;
 
-            $menu->addChild($this->trans('Delete permission %pid%', ['%pid%' => $permission->getPid()]), [
+            $menu->addChild('Delete this permission rule', [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-trash-alt')
-                ->setLinkAttributes(['class' => 'delete-permission pointer tooltips']);
+            ])
+                ->setAttribute('icon', 'fas fa-trash-alt')
+                ->setLinkAttributes(['class' => 'delete-permission pointer tooltips'])
+            ;
         }
 
-        $menu->addChild($this->trans('Check a users permission'), [
-                'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-key')
-            ->setLinkAttributes(['class' => 'test-permission pointer tooltips']);
+        $menu->addChild('Check a users permission', [
+            'uri' => '#'
+        ])
+            ->setAttribute('icon', 'fas fa-key')
+            ->setLinkAttributes(['class' => 'test-permission pointer tooltips'])
+        ;
 
         return $menu;
     }

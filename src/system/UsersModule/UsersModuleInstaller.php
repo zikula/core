@@ -15,8 +15,8 @@ namespace Zikula\UsersModule;
 
 use DateTime;
 use Exception;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserAttributeEntity;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -152,6 +152,10 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '3.0.4':
                 $this->schemaTool->update([UserEntity::class]);
             case '3.0.5':
+                $this->delVar('accountitemsperpage');
+                $this->delVar('accountitemsperrow');
+                $this->delVar('userimg');
+            case '3.0.6':
                 // current version
         }
 
@@ -172,9 +176,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
     {
         return [
             UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => UsersConstant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
-            UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
-            UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
-            UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => UsersConstant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
             UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->trans(/* Anonymous (guest) account display name */'Guest'),
             UsersConstant::MODVAR_ITEMS_PER_PAGE                        => UsersConstant::DEFAULT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,

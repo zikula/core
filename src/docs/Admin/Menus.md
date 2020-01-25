@@ -19,7 +19,7 @@ You will notice that a 'dummy child' has been auto-created for you. This is simp
 you to easily add more children via the context menu (right-click on the dummy child to view
 the context menu). First *edit* the dummy child to create your first item. Rename it to "Google"
 and *add* an **URI** option - enter `https://www.google.com/` as the value. Add another option
-and select **attributes**. Set the value to `{"icon": "fa fa-google"}` (include the braces `{}`
+and select **attributes**. Set the value to `{"icon": "fas fa-google"}` (include the braces `{}`
 and also notice that double-quotes are used).
 
 Note: The value of **attributes** as well as several other options (indicated with an asterisk *)

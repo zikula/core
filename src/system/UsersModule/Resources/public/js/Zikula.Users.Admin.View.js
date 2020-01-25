@@ -77,7 +77,7 @@
             }
 
             // waiting icon
-            userSearchListTable.find('tbody').empty().append('<tr><td colspan="7"><i class="fa fa-spinner fa-spin"></i></td></tr>');
+            userSearchListTable.find('tbody').empty().append('<tr><td colspan="7"><i class="fas fa-spinner fa-spin"></i></td></tr>');
 
             // get search result from database
             // route must be defined as a data-attribute of the text field e.g. data-route="my_special_route"

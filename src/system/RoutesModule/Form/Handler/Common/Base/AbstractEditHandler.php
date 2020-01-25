@@ -24,9 +24,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
@@ -285,6 +285,9 @@ abstract class AbstractEditHandler
                     && null !== $this->lockingApi
                     && $this->kernel->isBundle('ZikulaPageLockModule')
                 ) {
+                    // save entity reference for later reuse
+                    $this->entityRef = $entity;
+                
                     // try to guarantee that only one person at a time can be editing this entity
                     $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $entity->getKey();
                     $this->lockingApi->addLock($lockName, $this->getRedirectUrl(['commandName' => '']));
@@ -317,7 +320,7 @@ abstract class AbstractEditHandler
     
         if (null === $entity) {
             if (null !== $session) {
-                $session->getFlashBag()->add('error', $this->trans('No such item found.'));
+                $session->getFlashBag()->add('error', 'No such item found.');
             }
     
             return new RedirectResponse($this->getRedirectUrl(['commandName' => 'cancel']), 302);
@@ -332,7 +335,7 @@ abstract class AbstractEditHandler
             if (null !== $session) {
                 $session->getFlashBag()->add(
                     'error',
-                    $this->trans('Error! Could not determine workflow actions.')
+                    'Error! Could not determine workflow actions.'
                 );
             }
             $logArgs = [

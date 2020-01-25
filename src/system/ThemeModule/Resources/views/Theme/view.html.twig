@@ -1,7 +1,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaThemeModule:js/ZikulaThemeModule.Admin.View.js')) }}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-list"></span>
+    <span class="fas fa-list"></span>
     {% trans %}Themes list{% endtrans %}
     {{ pageSetVar('title', 'Themes list'|trans) }}
 </h3>
@@ -45,21 +45,21 @@
             <td headers="hActions" class="actions">
                 {% set themeArg = {'themeName': theme.name} %}
                 {% if theme.state != 1 %}
-                    <a href="{{ path('zikulathememodule_theme_activate', themeArg) }}"><span class="fa fa-cog tooltips" title="{% trans with {'%theme%': theme.displayname} %}Activate %theme%{% endtrans %}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_activate', themeArg) }}"><span class="fas fa-cog tooltips" title="{% trans with {'%theme%': theme.displayname} %}Activate %theme%{% endtrans %}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.user and theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_setasdefault', themeArg) }}"><span class="fa fa-check tooltips" title="{% trans with {'%theme%': theme.displayname} %}Set %theme% as site theme{% endtrans %}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_setasdefault', themeArg) }}"><span class="fas fa-check tooltips" title="{% trans with {'%theme%': theme.displayname} %}Set %theme% as site theme{% endtrans %}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_preview', themeArg) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{% trans %}Preview{% endtrans %} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_preview', themeArg) }}" title="{{ theme.displayname }}" target="_blank"><span class="fas fa-eye tooltips" title="{% trans %}Preview{% endtrans %} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 and theme.vars %}
-                    <a href="{{ path('zikulathememodule_var_var', themeArg) }}"><span class="fa fa-pencil-alt tooltips" title="{% trans %}Edit{% endtrans %} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_var_var', themeArg) }}"><span class="fas fa-pencil-alt tooltips" title="{% trans %}Edit{% endtrans %} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_delete', themeArg) }}"><span class="fa fa-trash-alt tooltips" title="{% trans %}Delete or deactivate{% endtrans %} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_delete', themeArg) }}"><span class="fas fa-trash-alt tooltips" title="{% trans %}Delete or deactivate{% endtrans %} {{ theme.displayname }}"></span></a>
                 {% endif %}
-                <a href="{{ path('zikulathememodule_theme_credits', themeArg) }}"><span class="fa fa-info-circle tooltips" title="{% trans %}Credits for{% endtrans %} {{ theme.displayname }}"></span></a>
+                <a href="{{ path('zikulathememodule_theme_credits', themeArg) }}"><span class="fas fa-info-circle tooltips" title="{% trans %}Credits for{% endtrans %} {{ theme.displayname }}"></span></a>
             </td>
         </tr>
         {% else %}

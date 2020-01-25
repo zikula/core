@@ -9,7 +9,7 @@
     {% if not isQuickView %}
         {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'display'}) %}
         <div class="dropdown item-actions">
-            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="d-none dropdown-toggle"><i class="fa fa-tasks"></i> {% trans %}Actions{% endtrans %}</a>
+            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="d-none dropdown-toggle"><i class="fas fa-tasks"></i> {% trans %}Actions{% endtrans %}</a>
             {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
         </div>
     {% endif %}
@@ -45,16 +45,16 @@
             {% endif %#}
             <dt>{% trans %}Prepend bundle prefix{% endtrans %}</dt>
             <dd>{% if route.prependBundlePrefix %}
-                <i class="fa fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
+                <i class="fas fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
             {% else %}
-                <i class="fa fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
             {% endif %}
             </dd>
             <dt>{% trans %}Translatable{% endtrans %}</dt>
             <dd>{% if route.translatable %}
-                <i class="fa fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
+                <i class="fas fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
             {% else %}
-                <i class="fa fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
+                <i class="fas fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
             {% endif %}
             </dd>
             {% if route.translationPrefix is not empty %}

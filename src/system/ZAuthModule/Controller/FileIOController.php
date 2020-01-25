@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -55,13 +55,12 @@ class FileIOController extends AbstractController
                 $data = $form->getData();
                 $importErrors = $ioHelper->importUsersFromFile($data['file'], $data['delimiter']);
                 if (empty($importErrors)) {
-                    $this->addFlash('status', $this->trans('Done! Users imported.'));
+                    $this->addFlash('status', 'Done! Users imported.');
                 } else {
                     $this->addFlash('error', $importErrors);
                 }
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             $this->redirectToRoute('zikulazauthmodule_useradministration_list');

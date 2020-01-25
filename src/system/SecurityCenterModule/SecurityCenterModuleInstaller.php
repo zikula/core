@@ -17,8 +17,8 @@ use Exception;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
@@ -232,7 +232,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                     $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
                 }
             case '1.5.1':
-                // set the session information in /src/app/config/dynamic/generated.yml
+                // set the session information in /src/config/dynamic/generated.yaml
                 $configDumper = $this->container->get(DynamicConfigDumper::class);
                 $sessionStoreToFile = $variableApi->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
                 $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';

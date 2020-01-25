@@ -23,9 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Response\PlainResponse;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
@@ -130,11 +130,11 @@ class MembershipController extends AbstractController
         }
 
         if ($userEntity->getGroups()->contains($group)) {
-            $this->addFlash('warning', $this->trans('The selected user is already a member of this group.'));
+            $this->addFlash('warning', 'The selected user is already a member of this group.');
         } else {
             $userEntity->addGroup($group);
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('status', $this->trans('Done! The user was added to the group.'));
+            $this->addFlash('status', 'Done! The user was added to the group.');
             // Let other modules know that we have updated a group.
             $addUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
             $eventDispatcher->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
@@ -170,7 +170,10 @@ class MembershipController extends AbstractController
         $groupCountIsLimit = 0 < $group->getNbumax() && $group->getUsers()->count() > $group->getNbumax();
         $alreadyGroupMember = $group->getUsers()->contains($userEntity);
         if ($groupTypeIsPrivate || $groupTypeIsCore || $groupStateIsClosed || $groupCountIsLimit || $alreadyGroupMember) {
-            $this->addFlash('error', $this->getSpecificGroupMessage($groupTypeIsPrivate, $groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember));
+            $this->addFlash(
+                'error',
+                $this->getSpecificGroupMessage($groupTypeIsPrivate, $groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember)
+            );
         } else {
             $userEntity->addGroup($group);
             $this->getDoctrine()->getManager()->flush();
@@ -232,12 +235,11 @@ class MembershipController extends AbstractController
             if ($form->get('remove')->isClicked()) {
                 $user->removeGroup($group);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->trans('Done! The user was removed from the group.'));
+                $this->addFlash('status', 'Done! The user was removed from the group.');
                 $removeUserEvent = new g(null, ['gid' => $gid, 'uid' => $uid]);
                 $eventDispatcher->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_membership_adminlist', ['gid' => $group->getGid()]);
