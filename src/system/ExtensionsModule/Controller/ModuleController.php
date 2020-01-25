@@ -58,6 +58,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/list/{pos}")
      * @Theme("admin")
+     * @Template("@ZikulaExtensionsModule/Module/viewModuleList.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
@@ -68,7 +69,7 @@ class ModuleController extends AbstractController
         BundleSyncHelper $bundleSyncHelper,
         RouterInterface $router,
         int $pos = 1
-    ): Response {
+    ): array {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -112,7 +113,7 @@ class ModuleController extends AbstractController
             }
         }
 
-        return $this->render('@ZikulaExtensionsModule/Module/viewModuleList.html.twig', [
+        return [
             'sort' => $sortableColumns->generateSortableColumns(),
             'pager' => [
                 'limit' => $this->getVar('itemsperpage'),
@@ -121,7 +122,7 @@ class ModuleController extends AbstractController
             'modules' => $pagedResult,
             'adminRoutes' => $adminRoutes,
             'upgradedExtensions' => $upgradedExtensions
-        ]);
+        ];
     }
 
     /**
