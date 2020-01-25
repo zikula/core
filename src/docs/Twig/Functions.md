@@ -33,19 +33,6 @@ to access the core root directory e.g. `asset('images/logo_with_title.png', 'zik
  * notifyDisplayHooks(eventName, id = null, urlObject = null)
  * routeUrl(routeName, routeParameters = [], fragment = null)
 
-### Translation/Language
-
- * __(message, domain = null, locale = null)
- * __f(message, params, domain = null, locale = null)
- * __fp(context, message, params, domain = null)
- * __p(context, message, domain = null)
- * _fn(singular, plural, count, params, domain = null, locale = null)
- * _fnp(context, singular, plural, count, params, domain = null)
- * _n(singular, plural, count, domain = null, locale = null)
- * no__(msgid)
- * lang(fs = false)
- * langdirection()
-
 ### Admin Interface
 
  * adminHeader()
