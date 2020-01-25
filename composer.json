@@ -53,9 +53,6 @@
         "symfony-bin-dir": "src/bin",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "src/config/parameters.yml"
-        },
         "installer-paths": {
             "src/modules/{$vendor}/{$name}": ["type:zikula-module"],
             "src/themes/{$vendor}/{$name}": ["type:zikula-theme"]
