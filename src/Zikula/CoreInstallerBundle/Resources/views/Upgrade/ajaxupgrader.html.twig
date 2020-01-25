@@ -20,7 +20,7 @@
     </div>
 
     <div class="text-center">
-        <a href="#upgrade-card" id="beginUpgrade" class="btn btn-lg btn-success">{% trans %}Begin Upgrader{% endtrans %}<br />{% trans %}be patient!{% endtrans %} <i class="far fa-clock"></i></a>
+        <a href="#upgrade-card" id="beginUpgrade" class="btn btn-lg btn-success">{% trans %}Begin Upgrader{% endtrans %}<br />{% trans %}be patient!{% endtrans %} <i class="fas fa-clock"></i></a>
     </div>
 
     <div class="card" id="upgrade-card">
@@ -31,7 +31,7 @@
             <ul id="ajaxList" class="fa-ul text-left">
                 {% for stage in stages %}
                 <li id="{{ stage.name }}" class="text-muted col-sm-12 col-md-5 offset-md-1 float-left">
-                    <span class="fa-li"><i class="far fa-circle"></i></span>
+                    <span class="fa-li"><i class="fas fa-circle"></i></span>
                     <span class="pre">{{ stage.pre }}</span>
                     <span class="during d-none">{{ stage.during }} </span>
                     <span class="success d-none">{{ stage.success }}</span>
