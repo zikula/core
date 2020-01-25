@@ -52,7 +52,7 @@ information and examples.
 ## Translations
 All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.
 
-For more information please refer to the documents in `docs/TranslationAndLanguage/`.
+For more information please refer to the documents in `docs/Translation/`.
 
 ## Twig
 

@@ -200,7 +200,8 @@ class StageHelper
     {
         $this->bundlesSchemaHelper->load();
         $bundleHelper = new PersistedBundleHelper();
-        $bundleHelper->getPersistedBundles($this->kernel, $bundles = []); // adds autoloaders
+        $bundles = [];
+        $bundleHelper->getPersistedBundles($this->kernel, $bundles); // adds autoloaders
 
         return true;
     }

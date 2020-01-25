@@ -10,7 +10,7 @@ are synced so that patch releases for both occur simultaneously.
 
 ## Development Version
 
-3.0.0 - Currently scheduled for July 2019 but this is not a fixed release yet.
+3.0.0 - Currently being worked on. Not a fixed release date yet.
 
 ## Long Term Support versions
 
