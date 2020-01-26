@@ -1,13 +1,11 @@
 User-agent: *
 Disallow: /bin
+Disallow: /build
 Disallow: /config
 Disallow: /docs
-Disallow: /modules
-Disallow: /system
+Disallow: /src
 Disallow: /templates
-Disallow: /themes
+Disallow: /test_dbs
 Disallow: /translations
 Disallow: /var
 Disallow: /vendor
-Disallow: /workflows
-Disallow: /Zikula

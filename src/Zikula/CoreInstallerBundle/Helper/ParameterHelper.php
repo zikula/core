@@ -117,7 +117,7 @@ class ParameterHelper
 
         // add remaining parameters and remove unneeded ones
         unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);
-        $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'web/uploads';
+        $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'public/uploads';
 
         $RandomLibFactory = new Factory();
         $generator = $RandomLibFactory->getMediumStrengthGenerator();

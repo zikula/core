@@ -63,7 +63,7 @@ class BuildPackageCommand extends Command
         $writableArray = [
             "${buildDir}/${name}/var/cache",
             "${buildDir}/${name}/var/log",
-            "${buildDir}/${name}/web/uploads",
+            "${buildDir}/${name}/public/uploads",
         ];
         $filesystem->chmod($writableArray, 0777);
         $progress->advance();

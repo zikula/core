@@ -60,7 +60,7 @@ abstract class AbstractBundle extends Bundle
     }
 
     /**
-     * Get the asset path relative to /web e.g. /modules/acmefoo.
+     * Get the asset path relative to /public e.g. /modules/acmefoo.
      */
     public function getRelativeAssetPath(): string
     {

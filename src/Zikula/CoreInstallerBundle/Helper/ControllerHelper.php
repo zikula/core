@@ -100,7 +100,7 @@ class ControllerHelper
     public function requirementsMet()
     {
         // several other requirements are checked before Symfony is loaded.
-        // @see app/SymfonyRequirements.php
+        // @see /var/SymfonyRequirements.php
         // @see \Zikula\Bundle\CoreInstallerBundle\Util\ZikulaRequirements::runSymfonyChecks
         $results = [];
 

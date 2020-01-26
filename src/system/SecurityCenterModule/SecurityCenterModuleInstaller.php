@@ -232,7 +232,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                     $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
                 }
             case '1.5.1':
-                // set the session information in /src/config/dynamic/generated.yaml
+                // set the session information in /config/dynamic/generated.yaml
                 $configDumper = $this->container->get(DynamicConfigDumper::class);
                 $sessionStoreToFile = $variableApi->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
                 $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';

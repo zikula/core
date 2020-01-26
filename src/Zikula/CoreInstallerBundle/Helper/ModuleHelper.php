@@ -224,17 +224,17 @@ class ModuleHelper
                 $variableApi->del(VariableApi::CONFIG, 'startfunc');
                 $variableApi->del(VariableApi::CONFIG, 'starttype');
                 if ('userdata' === $this->container->getParameter('datadir')) {
-                    $this->yamlHelper->setParameter('datadir', 'web/uploads');
+                    $this->yamlHelper->setParameter('datadir', 'public/uploads');
                     $fs = $this->container->get('filesystem');
                     $src = dirname(__DIR__, 5) . '/';
                     try {
                         if ($fs->exists($src . '/userdata')) {
-                            $fs->mirror($src . '/userdata', $src . '/web/uploads');
+                            $fs->mirror($src . '/userdata', $src . '/public/uploads');
                         }
                     } catch (\Exception $exception) {
                         $this->container->get('session')->getFlashBag()->add(
                             'info',
-                            'Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'
+                            'Attempt to copy files from `userdata` to `public/uploads` failed. You must manually copy the contents.'
                         );
                     }
                 }

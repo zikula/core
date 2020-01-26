@@ -28,6 +28,6 @@ class CopyRequirementsFile
             return;
         }
         $fs = new Filesystem();
-        $fs->copy(__DIR__ . '/../../src/vendor/symfony/requirements-checker/src/SymfonyRequirements.php', $varDir . '/SymfonyRequirements.php', true);
+        $fs->copy(__DIR__ . '/../../vendor/symfony/requirements-checker/src/SymfonyRequirements.php', $varDir . '/SymfonyRequirements.php', true);
     }
 }

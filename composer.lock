@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07351f1d2c3db7df3396d38c8ba0e594",
+    "content-hash": "5087557583e8b9df18c1519f9828653a",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -1997,7 +1997,7 @@
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "v2.5.3",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
@@ -2055,7 +2055,7 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2020-01-12T22:12:55+00:00"
+            "time": "2020-01-13T14:06:12+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -5639,11 +5639,17 @@
         },
         {
             "name": "symfony/requirements-checker",
-            "version": "dev-patch-1",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/craigh/requirements-checker",
-                "reference": "7149dcfdac06eec8c6f7efc0b1e2ecb4e0d25261"
+                "url": "https://github.com/symfony/requirements-checker.git",
+                "reference": "991978163f5a653a17e7b7592157c096c2afd2f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/requirements-checker/zipball/991978163f5a653a17e7b7592157c096c2afd2f7",
+                "reference": "991978163f5a653a17e7b7592157c096c2afd2f7",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9"
@@ -5662,6 +5668,7 @@
                     "Symfony\\Requirements\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5676,7 +5683,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2019-11-23T18:04:06+00:00"
+            "time": "2019-06-25T16:43:49+00:00"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -6719,12 +6726,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "e4c244fffde80286ac6f93b957a66935c64acf42"
+                "reference": "588ea6b36aff677516f8122c0488d6c826af0d9a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/e4c244fffde80286ac6f93b957a66935c64acf42",
-                "reference": "e4c244fffde80286ac6f93b957a66935c64acf42",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/588ea6b36aff677516f8122c0488d6c826af0d9a",
+                "reference": "588ea6b36aff677516f8122c0488d6c826af0d9a",
                 "shasum": ""
             },
             "require": {
@@ -6777,7 +6784,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-01-24T17:23:27+00:00"
+            "time": "2020-01-26T12:50:19+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6785,12 +6792,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "97a0bb885d631bbc0359c0906e8403257d756b07"
+                "reference": "748af29e42bbcd6ca8b0c321e3145e325dac980b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/97a0bb885d631bbc0359c0906e8403257d756b07",
-                "reference": "97a0bb885d631bbc0359c0906e8403257d756b07",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/748af29e42bbcd6ca8b0c321e3145e325dac980b",
+                "reference": "748af29e42bbcd6ca8b0c321e3145e325dac980b",
                 "shasum": ""
             },
             "require": {
@@ -6836,7 +6843,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-01-24T17:23:48+00:00"
+            "time": "2020-01-26T12:50:28+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6844,12 +6851,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "49f9d95f472d657f8ed44135881a12867b02b23e"
+                "reference": "75b809ee0aa73231c53cc72de185a69e634aab9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/49f9d95f472d657f8ed44135881a12867b02b23e",
-                "reference": "49f9d95f472d657f8ed44135881a12867b02b23e",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/75b809ee0aa73231c53cc72de185a69e634aab9b",
+                "reference": "75b809ee0aa73231c53cc72de185a69e634aab9b",
                 "shasum": ""
             },
             "require": {
@@ -6888,7 +6895,7 @@
                 }
             ],
             "description": "Page locking support",
-            "time": "2020-01-24T17:23:05+00:00"
+            "time": "2020-01-26T12:49:23+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6896,12 +6903,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "b9cc114eed65579492a683c3c5d7e6f27f122776"
+                "reference": "eb9862182032e7a5b2e5e44d9d88f3166e7a2535"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b9cc114eed65579492a683c3c5d7e6f27f122776",
-                "reference": "b9cc114eed65579492a683c3c5d7e6f27f122776",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/eb9862182032e7a5b2e5e44d9d88f3166e7a2535",
+                "reference": "eb9862182032e7a5b2e5e44d9d88f3166e7a2535",
                 "shasum": ""
             },
             "require": {
@@ -6957,7 +6964,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-01-24T17:24:04+00:00"
+            "time": "2020-01-26T12:57:54+00:00"
         },
         {
             "name": "zikula/sortable-columns",
@@ -7129,7 +7136,6 @@
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
         "php-translation/symfony-storage": 20,
-        "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,

@@ -16,7 +16,7 @@ use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\Yaml\Yaml;
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../RequirementChecker.php';
+require __DIR__ . '/../src/RequirementChecker.php';
 
 $kernelConfig = Yaml::parse(file_get_contents(realpath(__DIR__ . '/services.yaml')));
 if (is_readable($file = __DIR__ . '/services_custom.yaml')) {

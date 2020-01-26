@@ -17,7 +17,7 @@ In a Controller or Listener, you can access either of the services and add an as
 
 ```php
 $this->get('zikula_core.common.theme.assets_js')
-    ->add($request->getBasePath() . '/web/modules/acmefoo/mysript.js')
+    ->add($request->getBasePath() . '/modules/acmefoo/mysript.js')
 ;
 ```
 
@@ -35,7 +35,7 @@ above since no weight is set. To set the weight for an asset, add it like this:
 
 ```php
 $this->get('zikula_core.common.theme.assets_js')->add([
-    $request->getBasePath() . '/web/modules/acmefoo/mysript.js' => 200
+    $request->getBasePath() . '/modules/acmefoo/mysript.js' => 200
 ]);
 ```
 
