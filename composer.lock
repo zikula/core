@@ -6851,12 +6851,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "49f9d95f472d657f8ed44135881a12867b02b23e"
+                "reference": "75b809ee0aa73231c53cc72de185a69e634aab9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/49f9d95f472d657f8ed44135881a12867b02b23e",
-                "reference": "49f9d95f472d657f8ed44135881a12867b02b23e",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/75b809ee0aa73231c53cc72de185a69e634aab9b",
+                "reference": "75b809ee0aa73231c53cc72de185a69e634aab9b",
                 "shasum": ""
             },
             "require": {
@@ -6895,7 +6895,7 @@
                 }
             ],
             "description": "Page locking support",
-            "time": "2020-01-24T17:23:05+00:00"
+            "time": "2020-01-26T12:49:23+00:00"
         },
         {
             "name": "zikula/profile-module",
