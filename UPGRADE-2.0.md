@@ -1,17 +1,13 @@
 # Upgrading Zikula
 
-1. [Test Environment](#testenv)
+1. [Test Environment](#test-environment)
 2. [Before upgrading](#download)
 3. [Upgrading](#upgrading)
-
-<a name="testenv"></a>
 
 ## Test Environment
 
 The Zikula team strongly recommends having a duplicate testing environment of the live site in which all
 changes including upgrades are tested on before application to the live site.
-
-<a name="download"></a>
 
 ## Download
 
@@ -19,8 +15,6 @@ changes including upgrades are tested on before application to the live site.
 
 Download the current release from [GitHub releases](https://github.com/zikula/core/releases/)
 All the dependencies and requirements are included in this package.
-
-<a name="upgrading"></a>
 
 ## Upgrading
 

@@ -32,7 +32,8 @@ engines:
       MD013: # line length
         enabled: false
       MD029: # ordered lists
-        style: ordered
+        config:
+          style: ordered
   phan:
     enabled: true
     config:

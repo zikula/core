@@ -18,7 +18,6 @@ assignees: ''
 
 [NOTE]: # ( Tell us what you expected to happen )
 
-
 ## Current Behavior
 
 [NOTE]: # ( Tell us what actually happens )

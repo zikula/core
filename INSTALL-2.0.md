@@ -1,11 +1,9 @@
 # Zikula installation instructions
 
 1. [Install by uploading package](#upload)
-2. [Install via Composer](#composer)
-3. [Install with Vagrant](#vagrant)
-4. [Finish Installation](#install)
-
-<a name="upload"></a>
+2. [Install via Composer](#installing-using-composer-for-developers)
+3. [Install with Vagrant](#vagrant-installation)
+4. [Finish Installation](#finish-installation)
 
 ## Install by uploading package
 
@@ -38,8 +36,6 @@ prior to installing so that your webserver's user has write access:
 You normally do so using `chmod 777 var/cache` and so on. (`.tgz` archives maintain
 the permission settings as they were set correctly by the development team, if you unpacked it using the `-p` flag).
 
-<a name="composer"></a>
-
 ## Installing using Composer (for developers)
 
 Zikula makes use of [Composer](https://getcomposer.org/) to manage and download all dependencies.
@@ -53,8 +49,6 @@ composer install
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`
 to avoid your IDE reading the package contents.
 
-<a name="vagrant"></a>
-
 ## Vagrant installation
 
 You can use vagrant to easily setup a complete Zikula development environment.
@@ -64,8 +58,6 @@ cloned repository and wait for the machine to boot (first time booting might
 take several minutes). Then head over to `localhost:8080` and install Zikula.
 Database user, password and table are all set to `zikula`. PHPMyAdmin is
 accessible from `localhost:8081`.
-
-<a name="install"></a>
 
 ## Finish Installation
 
