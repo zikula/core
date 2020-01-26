@@ -15,13 +15,14 @@ are synced so that patch releases for both occur simultaneously.
 ## Long Term Support versions
 
 1.5.x - LTS (inc. Symfony 2.8.x LTS)
-  - Bug Fix support ending **31 August 2018**
-  - Security Fix support ending **31 August 2019** (EOL)
-  - Technical Support (without commits) ending **31 August 2020**
-  - Paid support beyond the posted dates _may_ be available. Please contact the team for information.
 
+- Bug Fix support ending **31 August 2018**
+- Security Fix support ending **31 August 2019** (EOL)
+- Technical Support (without commits) ending **31 August 2020**
+- Paid support beyond the posted dates _may_ be available. Please contact the team for information.
 
-## Our Backward compatibility promise
+## Our backward compatibility promise
+
 Ensuring smooth upgrades of your projects is our first priority.
 That's why we promise you backward compatibility (BC) for all minor Zikula releases. You probably recognize this
 strategy as [Semantic Versioning](https://semver.org/). In short, Semantic Versioning means that only major releases

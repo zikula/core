@@ -8,4 +8,4 @@ Use like:
 * @ORM\Column(type="utcdatetime")
 ```
 
-Refs: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
+Refs: [Working with DateTime Instances](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html).

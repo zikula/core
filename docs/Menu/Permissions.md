@@ -4,11 +4,15 @@ The permission schema for **dynamic** menu items is `ZikulaMenuModule::id`.
 
 In order to hide menu items from user groups, you must create a new permission rule like:
 
-    Unregistered    ZikulaMenuModule::id    ::9     No access
+```
+Unregistered    ZikulaMenuModule::id    ::9     No access
+```
 
 you can add multiple ids to the same rule like so:
 
-    Unregistered    ZikulaMenuModule::id    ::(9|11)     No access
+```
+Unregistered    ZikulaMenuModule::id    ::(9|11)     No access
+```
 
 The `ID` of any given menu item is available in the MenuModule where the item was created.
 

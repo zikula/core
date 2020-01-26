@@ -4,7 +4,6 @@
   2. [Before upgrading](#download)
   3. [Upgrading](#upgrading)
 
-
 <a name="testenv"></a>
 
 ## Test Environment

@@ -40,7 +40,7 @@ to access the core root directory e.g. `asset('images/logo_with_title.png', 'zik
 - adminBreadcrumbs()
 - adminMenu(mode, template)
 - adminPanelMenu(mode)
-    - this function is a short-cut to  `adminMenu(mode, 'panel')`
+  - this function is a short-cut to  `adminMenu(mode, 'panel')`
 - adminDeveloperNotices()
 - adminSecurityAnalyzer()
 - adminUpdateCheck()

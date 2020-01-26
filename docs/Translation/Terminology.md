@@ -12,7 +12,7 @@ These are translated to other language stored in files or database and loaded on
 - **locale** - The locale that the translations are for (e.g. `en_GB`, `en`, etc);
 - **loader** - How Symfony/Zikula should load and parse the file (e.g. `xlf`, `php`, `yml`, `po`, `mo`, etc.). 
 
-For more information please refer to https://symfony.com/doc/current/translation.html
+For more information please refer to [Symfony docs](https://symfony.com/doc/current/translation.html).
 
 ## Translation domains
 

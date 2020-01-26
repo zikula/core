@@ -2,7 +2,6 @@
 
 ## 3.0.0 (unreleased)
 
-<<<<<<< HEAD
 - BC Breaks:
   - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
   - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.

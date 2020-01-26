@@ -6,11 +6,13 @@
 4. [Use namespace notation for templates](#usenamespacenotation)
 
 <a name="introduction"></a>
+
 ## Introduction
 
 This document collects some developer hints for improving performance of your code.
 
 <a name="usedqljoins"></a>
+
 ## Use DQL Joins
 
 Doctrine fetches related items lazily by default. While this saves performance in cases you do not need them,
@@ -21,6 +23,7 @@ So if you know that you need access to some relationships add corresponding DQL 
 Read more about this [here](https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/reference/dql-doctrine-query-language.html#joins).
 
 <a name="usethetwigservice"></a>
+
 ## Use the Twig service
 
 Since Zikula always uses Twig templates you should use the `twig` service instead of the `templating` abstraction.
@@ -28,6 +31,7 @@ The latter is just overhead we do not need.
 Read more about this [here](https://symfony.com/blog/new-in-symfony-2-7-twig-as-a-first-class-citizen).
 
 <a name="usenamespacenotation"></a>
+
 ## Use namespace notation for templates
 
 You must always use namespaced pathes for your templates which is faster than the normal notation because Twig

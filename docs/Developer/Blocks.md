@@ -20,17 +20,17 @@ responsibility to display and modify the properties using a Symfony Form class.
 - `Zikula\BlocksModule\AbstractBlockHandler` is available if desired.
 - BlockHandlers must register their permission schema as part of the owning module's array (in `composer.json`).
 - BlockHandler must define a Symfony FormType class to allow editing of the block properties if this is needed.
-   Otherwise the `getFormClassName` method must return `null`.
-    - A simple Twig template is available as a default `@ZikulaBlocksModule/Block/default_modify.html.twig`.
-        - if you implement your own modify template, **do not** render the `form_start(form)` or `form_end(form)`
-          tags within your template.
+  Otherwise the `getFormClassName` method must return `null`.
+  - A simple Twig template is available as a default `@ZikulaBlocksModule/Block/default_modify.html.twig`.
+    - if you implement your own modify template, **do not** render the `form_start(form)` or `form_end(form)`
+      tags within your template.
 - The `$properties` parameter in the `display` method is an array from BlockEntity.
 
 ### Differences from Core 1.x Block classes 
 
 - The old "info" array of the block has been eliminated.
-    - `module` is inferred from providing module.
-    - `text_type` is replaced by `getType()`.
-    - `allow_multiple` is always `true`.
-    - `form_content` is no longer allowed (blocks MUST implement their own content control).
+  - `module` is inferred from providing module.
+  - `text_type` is replaced by `getType()`.
+  - `allow_multiple` is always `true`.
+  - `form_content` is no longer allowed (blocks MUST implement their own content control).
 - The `init` and `modify` methods have been eliminated.

@@ -27,7 +27,7 @@ When using `\Zikula\Bundle\CoreBundle\Translation\TranslatorTrait` also a shortc
 $translated = $this->trans('Page');
 ```
 
-### Convert from earlier versions
+### Convert translations in PHP from earlier versions
 
 Some examples for how to convert translations in PHP files:
 
@@ -93,7 +93,7 @@ For translations in Twig Zikula uses native Symfony Twig trans functionality ([d
 {% trans %}Error! That cannot be done.{% endtrans %}
 ```
 
-### Convert from earlier versions
+### Convert translations in Twig from earlier versions
 
 Some examples for how to convert translations in templates:
 

@@ -20,12 +20,11 @@ Do not duplicate realm names or later entries will override previous entries
 
 ## Optional Values
 
-- bootstrapPath
-    set a zasset-type path to override the core bootstrap.css - the file is then stored in your Theme's
-    `Resources/public/css/` directory
-    - e.g.: `bootstrapPath: "@ZikulaBootstrapTheme:css/cerulean.min.css"`
-- blockWrapping
-    set a boolean value to indicate whether ALL blocks will be wrapped with a unique container `<div>`
-     - e.g. `blockWrapping: false`
-     - default: `true` (if no parameter is set)
-     - WARNING: certain core functionalities (e.g. collapseable blocks) require this `<div>` and break without it.
+- bootstrapPath: set a zasset-type path to override the core bootstrap.css - the file is then
+  stored in your Theme's `Resources/public/css/` directory
+  - e.g.: `bootstrapPath: "@ZikulaBootstrapTheme:css/cerulean.min.css"`
+- blockWrapping: set a boolean value to indicate whether ALL blocks will be wrapped with a unique
+  container `<div>`
+  - e.g. `blockWrapping: false`
+  - default: `true` (if no parameter is set)
+  - WARNING: certain core functionalities (e.g. collapseable blocks) require this `<div>` and break without it.

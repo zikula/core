@@ -10,9 +10,11 @@
 | Changelog updated | [yes/no]
 
 ## Description
+
 A few sentences describing the overall goals of the pull request's commits.
 
 ## Todos
+
 - [ ] Tests
 - [ ] Documentation
 - [ ] Changelog

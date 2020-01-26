@@ -20,9 +20,11 @@ A filter might be used to sanitize HTML content, format text in some way, or oth
 
 There is only one kind of hook type in a filter bundle:
 
-    filter   - This is a filter to be applied in a given area.  Filters should probably
-               Have their own separate area(s) as it would give a user more control over
-               what filters are applied and where.
+```
+filter   - This is a filter to be applied in a given area.  Filters should probably
+            Have their own separate area(s) as it would give a user more control over
+            what filters are applied and where.
+```
 
 ## Subscriber implementation
 

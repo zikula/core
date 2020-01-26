@@ -2,7 +2,7 @@
 
 Just like any Symfony bundle, Zikula themes are allowed to utilize the DIC (Dependency Injection Container). 
 
-Reference: https://symfony.com/doc/current/components/dependency_injection.html
+[Reference docs](https://symfony.com/doc/current/components/dependency_injection.html)
 
 Status: Optional
 

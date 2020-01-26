@@ -1,4 +1,5 @@
 # Translation extraction
+
 To extract translations use the console command `translation:extract`.
 
 To see all of it's option, do this:

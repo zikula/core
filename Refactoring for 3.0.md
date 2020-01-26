@@ -40,16 +40,19 @@ Module services should be registered by their classname (automatically as above)
 `service.class.dot.notation`.
 
 ### Blocks
+
 BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface` as in Core-2.0 but there is no longer
 a need to tag these classes in your services file as they are auto-tagged. Also - as above, the classname should be
 used as the service name.
 
 ### Extension menus
+
 `Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
 removed. Extension menus are not implemented using Knp Menu instead. See docs and system modules for further
 information and examples.
 
 ## Translations
+
 All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.
 
 For more information please refer to the documents in `docs/Translation/`.

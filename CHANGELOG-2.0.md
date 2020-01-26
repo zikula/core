@@ -5,7 +5,6 @@
 - Fixes:
   - ...
 
-
 ## 2.0.15 (2019-11-18)
 
 - Fixes:
@@ -13,7 +12,6 @@
   - Updated listener priorities in Settings module to fix non-working variable localisation (#3934).
   - Fixed regression in settings page (#3983).
   - Updated obsolete HTML Purifier constant names.
-
 
 ## 2.0.14 (2019-11-13)
 
@@ -55,7 +53,6 @@
   - vakata/jstree updated from 3.3.7 to 3.3.8
   - webmozart/assert updated from 1.4.0 to 1.5.0
 
-
 ## 2.0.13 (2019-04-17)
 
 - Security fixes from Symfony:
@@ -86,7 +83,6 @@
   - twig/twig updated from 1.35.4 to 1.39.1
   - webmozart/assert updated from 1.3.0 to 1.4.0
   - zikula/profile-module updated from 3.0.5 to 3.0.6
-
 
 ## 2.0.12 (2018-12-06)
 
@@ -134,7 +130,6 @@
   - phpspec/prophecy updated from 1.7.6 to 1.8.0
   - symfony/phpunit-bridge updated from 3.4.13 to 3.4.14
   - symfony/polyfill-* updated from 1.8.0 to 1.9.0
-
 
 ## 2.0.9 (2018-08-06)
 

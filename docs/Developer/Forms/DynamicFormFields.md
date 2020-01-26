@@ -45,19 +45,19 @@ The `FormExtensionsBundle` needs to receive different information though.
 Hence, there are two interfaces used for proper communication:
 
 1. `Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface`
-   - Represents a form object (“data_class”) containing dynamic fields.
-   - Provides a list of field specifications by implementing a `getDynamicFieldsSpecification()` method.
+ - Represents a form object (“data_class”) containing dynamic fields.
+ - Provides a list of field specifications by implementing a `getDynamicFieldsSpecification()` method.
 2. `Zikula\Bundle\FormExtensionBundle\DynamicFieldInterface`
-   - Represents a single field specification.
-   - Provides detail information for the form handling with the following methods:
-       - `getName()` (returns name of form field)
-       - `getPrefix()` (returns optional prefix of form field)
-       - `getLabels()` (returns a list of labels per locale)
-       - `getLabel($locale = '', $default = 'en')` (returns label for a specific locale)
-       - `getFormType()` (returns the FqCN of the form class (e.g. `return IntegerType::class;`))
-       - `getFormOptions()` (returns an array of form options)
-       - `getWeight()` (returns a weighting number for sorting fields; this is currently not utilised, but reserved for future usage)
-       - `getGroupNames()` (returns a list of group names per locale; may optionally be used for dividing fields into several fieldsets)
+ - Represents a single field specification.
+ - Provides detail information for the form handling with the following methods:
+    - `getName()` (returns name of form field)
+    - `getPrefix()` (returns optional prefix of form field)
+    - `getLabels()` (returns a list of labels per locale)
+    - `getLabel($locale = '', $default = 'en')` (returns label for a specific locale)
+    - `getFormType()` (returns the FqCN of the form class (e.g. `return IntegerType::class;`))
+    - `getFormOptions()` (returns an array of form options)
+    - `getWeight()` (returns a weighting number for sorting fields; this is currently not utilised, but reserved for future usage)
+    - `getGroupNames()` (returns a list of group names per locale; may optionally be used for dividing fields into several fieldsets)
 
 This way any module has complete freedom about loading and saving the data (database, YAML file, web service, and so on). At the same time the dynamic fields information are ensured to be provided properly.
 

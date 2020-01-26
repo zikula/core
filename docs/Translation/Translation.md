@@ -2,7 +2,9 @@
 
 Zikula uses the native Symfony translation system. Please refer to https://symfony.com/doc/current/translation.html for more information about Symfony features.
 
-**Paths and file names used by the Symfony Translator - core system**
+## Paths and file names used by Symfony translator
+
+### Zikula core system
 
     `translations/<domain>.<locale>.<loader>`
 
@@ -10,7 +12,7 @@ Zikula uses the native Symfony translation system. Please refer to https://symfo
 
     `translations/zikula.en.po`
 
-**Paths and file names used by Symfony Translator - bundles (modules, themes etc.)**
+### Bundles (modules, themes etc.)
 
     `<bundle folder>/Resources/translations/<domain>.<locale>.<loader>`
 

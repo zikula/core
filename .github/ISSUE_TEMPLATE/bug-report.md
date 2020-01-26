@@ -24,11 +24,9 @@ assignees: ''
 [NOTE]: # ( Tell us what actually happens )
 [TIP]:  # ( If possible include screenshots of your problem! )
 
-
 ## Possible Solution
 
 [NOTE]: # ( Not required, but suggest a fix/reason for the bug )
-
 
 ## Steps to Reproduce
 
@@ -41,4 +39,3 @@ assignees: ''
 ## Context
 
 [NOTE]: # ( How has this issue affected you? What unique circumstances do you have? )
-

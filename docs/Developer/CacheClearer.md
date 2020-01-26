@@ -5,12 +5,12 @@ for clearing (parts of) the Symfony cache. The cache clearer provides one method
 argument determines what part of the cache shall be deleted. The following types are supported:
 
 1. `symfony`
-    - `symfony.routing.generator`: Deletes the url generator files.
-    - `symfony.routing.matcher`:   Deletes the url matcher files.
-    - `symfony.routing.fosjs`:     Deletes the cache files for route generation in javascript (using the FOSJsRoutingBundle)
-    - `symfony.config`:            Deletes the container configuration cache files.
-    - `symfony.annotations`
-    - `symfony.translations`
+  - `symfony.routing.generator`: Deletes the url generator files.
+  - `symfony.routing.matcher`:   Deletes the url matcher files.
+  - `symfony.routing.fosjs`:     Deletes the cache files for route generation in javascript (using the FOSJsRoutingBundle)
+  - `symfony.config`:            Deletes the container configuration cache files.
+  - `symfony.annotations`
+  - `symfony.translations`
 2. `twig`
 3. `purifier`
 4. `assets`
