@@ -97,7 +97,7 @@ class ConfigController extends AbstractController
                     'port' => $formData['port'],
                     'encryption' => $formData['encryption'],
                     'auth_mode' => $formData['auth_mode'],
-                    // the items below can be configured by modifying the /src/config/dynamic/generated.yaml file
+                    // the items below can be configured by modifying the /config/dynamic/generated.yaml file
                     // 'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : ['type' => 'memory'],
                     'delivery_addresses' => $deliveryAddresses,
                     'disable_delivery' => $disableDelivery

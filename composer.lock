@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07351f1d2c3db7df3396d38c8ba0e594",
+    "content-hash": "5087557583e8b9df18c1519f9828653a",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -1997,7 +1997,7 @@
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "v2.5.3",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
@@ -2055,7 +2055,7 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2020-01-12T22:12:55+00:00"
+            "time": "2020-01-13T14:06:12+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -5639,11 +5639,17 @@
         },
         {
             "name": "symfony/requirements-checker",
-            "version": "dev-patch-1",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/craigh/requirements-checker",
-                "reference": "7149dcfdac06eec8c6f7efc0b1e2ecb4e0d25261"
+                "url": "https://github.com/symfony/requirements-checker.git",
+                "reference": "991978163f5a653a17e7b7592157c096c2afd2f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/requirements-checker/zipball/991978163f5a653a17e7b7592157c096c2afd2f7",
+                "reference": "991978163f5a653a17e7b7592157c096c2afd2f7",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3.9"
@@ -5662,6 +5668,7 @@
                     "Symfony\\Requirements\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5676,7 +5683,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2019-11-23T18:04:06+00:00"
+            "time": "2019-06-25T16:43:49+00:00"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -7129,7 +7136,6 @@
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
         "php-translation/symfony-storage": 20,
-        "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,

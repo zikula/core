@@ -31,7 +31,7 @@ class ZikulaRequirements
     public function runSymfonyChecks(array $parameters = []): void
     {
         try {
-            $rootDir = dirname(__DIR__, 3);
+            $rootDir = dirname(__DIR__, 4);
             $path = $rootDir . '/var/SymfonyRequirements.php';
             require_once $path;
             $symfonyRequirements = new SymfonyRequirements($rootDir);
@@ -60,23 +60,23 @@ class ZikulaRequirements
 
     private function addZikulaPathRequirements(SymfonyRequirements $symfonyRequirements, array $parameters = []): void
     {
-        $src = dirname(__DIR__, 3) . '/';
+        $rootDir = dirname(__DIR__, 4) . '/';
         $symfonyRequirements->addRequirement(
-            is_writable($src . '/config'),
+            is_writable($rootDir . 'config'),
             'config/ directory must be writable',
             'Change the permissions of "<strong>config/</strong>" directory so that the web server can write into it.'
         );
         $symfonyRequirements->addRequirement(
-            is_writable($src . '/config/dynamic'),
+            is_writable($rootDir . 'config/dynamic'),
             'config/dynamic/ directory must be writable',
             'Change the permissions of "<strong>config/dynamic/</strong>" directory so that the web server can write into it.'
         );
         $symfonyRequirements->addRequirement(
-            is_writable($src . '/' . $parameters['datadir']),
+            is_writable($rootDir . $parameters['datadir']),
             $parameters['datadir'] . '/ directory must be writable',
             'Change the permissions of "<strong>' . $parameters['datadir'] . '</strong>" directory so that the web server can write into it.'
         );
-        $customParametersPath = $src . '/config/services_custom.yaml';
+        $customParametersPath = $rootDir . 'config/services_custom.yaml';
         if (file_exists($customParametersPath)) {
             $symfonyRequirements->addRequirement(
                 is_writable($customParametersPath),

@@ -31,18 +31,15 @@ before_install:
     - composer run-script post-autoload-dump
     - composer run-script post-install-cmd
 
-    - cd src
     - php bin/console lint:container
     - php bin/console lint:yaml config/
-    - php bin/console lint:yaml system/ --parse-tags
-    - php bin/console lint:yaml themes/
-    - php bin/console lint:yaml Zikula/ --parse-tags
-    - php bin/console lint:twig --show-deprecations system/ Zikula/
+    - php bin/console lint:yaml src/system/ --parse-tags
+    - php bin/console lint:yaml src/themes/
+    - php bin/console lint:yaml src/Zikula/ --parse-tags
+    - php bin/console lint:twig --show-deprecations src/system/ src/Zikula/
     # twig linting in themes won't work because the themes are not active bundles
 
-    - cd ../
-    - php src/bin/simple-phpunit
-    - cd src
+    - php bin/simple-phpunit
 
     # extract en translations
     - php bin/console translation:extract zikula en
@@ -58,7 +55,7 @@ install:
 
     # create an upgrade db for 143
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core143.sql
+    - mysql zk_test < tests/test_dbs/core143.sql
     # run the upgrade from the 143 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.3''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
@@ -67,7 +64,7 @@ install:
 
     # create an upgrade db for 144
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core144.sql
+    - mysql zk_test < tests/test_dbs/core144.sql
     # run the upgrade from the 144 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.4''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
@@ -76,7 +73,7 @@ install:
 
     # create an upgrade db for 145
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core145.sql
+    - mysql zk_test < tests/test_dbs/core145.sql
     # run the upgrade from the 145 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.5''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
@@ -85,7 +82,7 @@ install:
 
     # create an upgrade db for 146
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core146.sql
+    - mysql zk_test < tests/test_dbs/core146.sql
     # run the upgrade from the 146 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.6''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
@@ -94,7 +91,7 @@ install:
 
   # create an upgrade db for 1.5.9
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core159.sql
+    - mysql zk_test < tests/test_dbs/core159.sql
   # run the upgrade from the 1.5.9 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.5.9''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
@@ -103,7 +100,7 @@ install:
 
   # create an upgrade db for 2.0.15
     - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core2015.sql
+    - mysql zk_test < tests/test_dbs/core2015.sql
   # run the upgrade from the 2.0.15 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''2.0.15''/" config/services_custom.yaml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
@@ -111,9 +108,8 @@ install:
     - mysql -e 'drop database zk_test'
 
 script:
-  - cd ..
   # execute Symfony deprecation detector
   - git clone https://github.com/sensiolabs-de/deprecation-detector.git
   - cd deprecation-detector
   - composer install
-  - ./bin/deprecation-detector check ../src ../src/vendor
+  - ./bin/deprecation-detector check src vendor

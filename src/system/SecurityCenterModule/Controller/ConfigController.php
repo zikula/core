@@ -154,7 +154,7 @@ class ConfigController extends AbstractController
                     $causeLogout = true;
                 }
 
-                // set the session information in /src/config/dynamic/generated.yaml
+                // set the session information in /config/dynamic/generated.yaml
                 $configDumper->setParameter('zikula.session.name', $newSessionName);
                 $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
                 $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);

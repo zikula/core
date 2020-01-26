@@ -15,15 +15,11 @@
         "php": ">=7.2.5",
         "symfony/console": "5.*",
         "symfony/framework-bundle": "5.*",
-        "symfony/requirements-checker": "dev-patch-1 as 1.1.6",
+        "symfony/requirements-checker": "1.*",
         "matthiasnoback/symfony-console-form": "dev-symfony-5",
         "zikula/wizard": "dev-master"
     },
     "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/craigh/requirements-checker"
-        },
         {
             "type": "vcs",
             "url": "https://github.com/Jeroeny/symfony-console-form"

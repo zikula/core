@@ -58,8 +58,6 @@ done
 
 echo "Purging tests from vendors..."
 ${PHP_BUILD} build:purge_vendors "${PACKAGE_PATH}/vendor"
-echo "Fixing autoloader paths..."
-${PHP_BUILD} build:fix_autoloader "${PACKAGE_PATH}/vendor"
 
 echo "Creating translation files..."
 php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract template --output-format=po --output-dir="${PACKAGE_PATH}/app/Resources/translations" --enable-extractor=jms_i18n_routing --dir="${PACKAGE_PATH}/system" --dir="${PACKAGE_PATH}/lib/Zikula/Bundle"

@@ -8,7 +8,7 @@ framework:
     csrf_protection: ~
     validation:      { enable_annotations: true }
     assets:
-        base_path: web/
+        base_path: public/
         version: '%assets_version%'
         packages:
             zikula_default:
