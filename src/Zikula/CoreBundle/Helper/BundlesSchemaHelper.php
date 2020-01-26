@@ -50,7 +50,7 @@ class BundlesSchemaHelper
         $this->verifySchema();
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
-        $scanner->scan(['src/modules', 'src/themes']);
+        $scanner->scan(['modules', 'themes']);
         $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
         $this->sync($array);
     }
