@@ -1,6 +1,6 @@
 # Translation in Zikula
 
-Zikula uses the native Symfony translation system. Please refer to https://symfony.com/doc/current/translation.html for more information about Symfony features.
+Zikula uses the native Symfony translation system. Please refer to [Symfony docs](https://symfony.com/doc/current/translation.html) for more information about Symfony features.
 
 ## Paths and file names used by Symfony translator
 
