@@ -40,7 +40,7 @@ The following process should be followed for all upgrades even small point relea
       recommended, please use the Web Installer.
   - Copy your previous installation's `app/config/custom_parameters.yml` to the same location in your new installation.
       - **Add an entry named `core_installed_version: a.b.c`** whereby `a.b.c` should be your old version if it does not exist yet.
-      - **Change the value of `datadir` to `web/uploads`** if upgrading from Core-1.x.
+      - **Change the value of `datadir` to `public/uploads`** if upgrading from Core-1.x.
     - Do not change any other values.
 
 ### Continue:
@@ -49,7 +49,7 @@ The following process should be followed for all upgrades even small point relea
     backup.
   - Return compatible modules to the `/modules` directory.
     - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
-  - Copy your backup contents of `/userdata` into `/web/uploads`
+  - Copy your backup contents of `/userdata` into `/public/uploads`
 
   - **Upgrade: (do one or the other)**
     - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.

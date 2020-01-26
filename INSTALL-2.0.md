@@ -25,13 +25,13 @@ to the server check if your longest path length is longer than Windows/FTP-Softw
 ### Set file permissions (Critical)
 If you installed from a `.zip` archive or uploaded the files via FTP, the permissions for some folders must be changed 
 prior to installing so that your webserver's user has write access:
-- `app/config`
-- `app/config/dynamic`
+- `config`
+- `config/dynamic`
 - `var/cache`
-- `var/logs`
-- `web`
+- `var/log`
+- `public`
 
-You normally do so using `chmod 777 app/cache` and so on. (`.tgz` archives maintain
+You normally do so using `chmod 777 var/cache` and so on. (`.tgz` archives maintain
 the permission settings as they were set correctly by the development team, if you unpacked it using the `-p` flag).
 
 <a name="composer"></a>
