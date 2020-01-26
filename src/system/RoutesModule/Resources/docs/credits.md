@@ -1,2 +1,2 @@
-# CREDITS
+# Credits
 

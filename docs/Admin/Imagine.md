@@ -2,7 +2,7 @@
 
 Imagine is implemented in Zikula Core by the installation and pre-configuration of the [LiipImagineBundle](https://github.com/liip/LiipImagineBundle).
 
-Documentation: https://symfony.com/doc/current/bundles/LiipImagineBundle/index.html
+Documentation: <https://symfony.com/doc/current/bundles/LiipImagineBundle/index.html>
 
 Configuration is located at `/config/packages/imagine.yaml`
 

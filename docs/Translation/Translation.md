@@ -6,15 +6,21 @@ Zikula uses the native Symfony translation system. Please refer to [Symfony docs
 
 ### Zikula core system
 
-    `translations/<domain>.<locale>.<loader>`
+```
+translations/<domain>.<locale>.<loader>
+```
 
-    e.g.
+e.g.
 
-    `translations/zikula.en.po`
+```
+translations/zikula.en.yaml
+```
 
 ### Bundles (modules, themes etc.)
 
-    `<bundle folder>/Resources/translations/<domain>.<locale>.<loader>`
+```
+<bundle folder>/Resources/translations/<domain>.<locale>.<loader>
+```
 
 ## Symfony translator loaders
 
