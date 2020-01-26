@@ -130,7 +130,6 @@ class BundleSyncHelper
         foreach ($scanner->getInvalid() as $invalidName) {
             $this->session->getFlashBag()->add('warning', $this->translator->trans('WARNING: %extension% has an invalid composer.json file which could not be decoded.', ['%extension%' => $invalidName]));
         }
-        $newModules = $scanner->getModulesMetaData();
         $extensions = $scanner->getExtensionsMetaData();
 
         $bundles = [];
@@ -142,7 +141,7 @@ class BundleSyncHelper
 
             $bundleClass = $bundleMetaData->getClass();
 
-            /** @var $bundle \Zikula\Core\AbstractBundle */
+            /** @var $bundle \Zikula\Bundle\CoreBundle\AbstractBundle */
             $bundle = new $bundleClass();
             $bundleMetaData->setTranslator($this->translator);
             $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
@@ -190,7 +189,7 @@ class BundleSyncHelper
         foreach ($extensions as $dir => $modInfo) {
             foreach ($fieldNames as $fieldName) {
                 $key = mb_strtolower($modInfo[$fieldName]);
-                if (isset($moduleValues[$fieldName][$key])) {
+                if (!empty($moduleValues[$fieldName][$key]) && !empty($modInfo[$fieldName])) {
                     $message = $this->translator->trans('Fatal error: Two extensions share the same %field%. [%ext1%] and [%ext2%]', [
                         '%field%' => $fieldName,
                         '%ext1%' => $modInfo['name'],

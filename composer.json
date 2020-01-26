@@ -54,7 +54,7 @@
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "installer-paths": {
-            "src/modules/{$vendor}/{$name}": ["type:zikula-module"],
+            "src/extensions/{$vendor}/{$name}": ["type:zikula-module"],
             "src/themes/{$vendor}/{$name}": ["type:zikula-theme"]
         },
         "merge-plugin": {

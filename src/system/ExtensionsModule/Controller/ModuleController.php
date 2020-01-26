@@ -89,7 +89,7 @@ class ModuleController extends AbstractController
         $eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
         if (1 === $pos && !$vetoEvent->isPropagationStopped()) {
             // regenerate the extension list only when viewing the first page
-            $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
+            $extensionsInFileSystem = $bundleSyncHelper->scanForBundles(['extensions', 'themes']);
             $upgradedExtensions = $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
         }
 

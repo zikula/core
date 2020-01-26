@@ -50,8 +50,8 @@ class BundlesSchemaHelper
         $this->verifySchema();
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
-        $scanner->scan(['modules', 'themes']);
-        $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
+        $scanner->scan(['extensions', 'themes']);
+        $array = array_merge($scanner->getExtensionsMetaData(), $scanner->getThemesMetaData());
         $this->sync($array);
     }
 

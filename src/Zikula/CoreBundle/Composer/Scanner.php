@@ -75,19 +75,15 @@ class Scanner
         $zkRoot = dirname(__DIR__, 3) . '/';
         $base = mb_substr($base, mb_strlen($zkRoot));
 
-        $json = json_decode($this->getFileContents($jsonFilePath), true);
+        $json = json_decode(file_get_contents($jsonFilePath), true);
         if (JSON_ERROR_NONE === json_last_error()) {
-            // add base-path for future use
-            $json['extra']['zikula']['base-path'] = $base;
-
             // calculate PSR-4 autoloading path for this namespace
             $class = $json['extra']['zikula']['class'];
             $ns = mb_substr($class, 0, mb_strrpos($class, '\\') + 1);
             if (false === isset($json['autoload']['psr-4'][$ns])) {
                 return false;
             }
-            $path = $json['extra']['zikula']['root-path'] = $base;
-            $json['autoload']['psr-4'][$ns] = $path;
+            $json['autoload']['psr-4'][$ns] = $base;
             $json['extra']['zikula']['short-name'] = mb_substr($class, mb_strrpos($class, '\\') + 1, mb_strlen($class));
             $json['extensionType'] = ZikulaKernel::isCoreModule($json['extra']['zikula']['short-name']) ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
 
@@ -95,16 +91,6 @@ class Scanner
         }
 
         return false;
-    }
-
-    public function getFileContents(string $file): string
-    {
-        return file_get_contents($file);
-    }
-
-    public function getModulesMetaData(bool $indexByShortName = false): array
-    {
-        return $this->getMetaData('zikula-module', $indexByShortName);
     }
 
     public function getThemesMetaData(bool $indexByShortName = false): array

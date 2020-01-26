@@ -6,7 +6,7 @@
 /src/config/*_custom.yaml
 /src/config/dynamic/*
 !/src/config/dynamic/default.yaml
-/src/modules/*
+/src/extensions/*
 /src/themes/*
 !/src/themes/AtomTheme
 !/src/themes/BootstrapTheme
