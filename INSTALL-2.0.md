@@ -9,6 +9,7 @@
 ## Install by uploading package
 
 ### Upload
+
 If you obtained Zikula Core from the CI server, then you can upload the entire archive (`.zip` or `.tgz` file)
 to your server and then `unzip` them there. (This is faster and much more reliable than uploading many small
 files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the correct permissions
@@ -23,8 +24,10 @@ Windows/FTP users: Take care about copying all files. If there are some files yo
 to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
 
 ### Set file permissions (Critical)
+
 If you installed from a `.zip` archive or uploaded the files via FTP, the permissions for some folders must be changed 
 prior to installing so that your webserver's user has write access:
+
 - `app/config`
 - `app/config/dynamic`
 - `var/cache`
@@ -36,6 +39,7 @@ the permission settings as they were set correctly by the development team, if y
 
 <a name="composer"></a>
 ## Installing using Composer (for developers)
+
 Zikula makes use of [Composer](https://getcomposer.org/) to manage and download all dependencies.
 If cloning via GitHub, Composer must be run prior to installation. Run:
 
@@ -47,6 +51,7 @@ to avoid your IDE reading the package contents.
 
 <a name="vagrant"></a>
 ## Vagrant installation
+
 You can use vagrant to easily setup a complete Zikula development environment.
 All you need to do is install [Vagrant](https://vagrantup.com) and
 [VirtualBox](https://www.virtualbox.org/). Then run `vagrant up` inside the
@@ -67,25 +72,32 @@ check your phpinfo.) `mod_suexec` often is used in shared hosting environments. 
 recommended, please use the Web Installer. 
 
 ### Create the Database
+
 Create a database on your server. Take note of the database **name** as well as the database **username** and
 **password** which are possibly given by your provider. These will be needed during install. You can use an existing
 database, but this is not recommended unless Zikula will be the only application using that database. In this case,
 remove all existing tables from the existing database.
 
-### Install by the Web installer or Command Line (not both!):
+### Install by the Web installer or Command Line (not both!)
 
 #### Web Installer
+
 To begin the installer, simply visit the root directory with your browser, e.g. `http://www.example.com/`.
 If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.example.com/foo/`. You will be
 automatically redirected to the installer.
 
 #### Command Line Installer
+
 Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
+
 ```Shell
 $ php bin/console zikula:install:start
 ```
+
 Follow the prompts and complete that step. When you are finished, you are directed to run the next command:
+
 ```Shell
 $ php bin/console zikula:install:finish
 ```
+
 Open your browser and login!

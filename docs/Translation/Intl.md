@@ -11,10 +11,11 @@ will be used instead as a polyfill. These will enable the functions to work with
 Support in enabling this PHP extension should be obtained through your web provider. This is not something Zikula can help with. 
 
 Symfony's `Intl` class is used as a wrapper to access
- - Country Names
- - Currencies
- - Language and Script Names
- - Locales
- - Timezones
 
-For further information read https://symfony.com/doc/current/components/intl.html#accessing-icu-data
+- Country Names
+- Currencies
+- Language and Script Names
+- Locales
+- Timezones
+
+For further information read [Accessing ICU Data](https://symfony.com/doc/current/components/intl.html#accessing-icu-data).

@@ -50,9 +50,11 @@ $this->trans('Hello', [], 'acmefoomodule')      // new
 ```
 
 You can still use `Zikula\Bundle\CoreBundle\Translation\TranslatorTrait`, but it has only one method left now:
+
 ```php
 public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
 ```
+
 You can/should remove the `setTranslator` method from your class which uses the trait. It is not needed anymore.
 
 ### Automatic translations
