@@ -31,7 +31,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
  * Assets that do not contain `@` are passed through to the standard symfony asset management.
  *
  * Overrides are in this order:
- *  1) app/Resources/$bundleName/public/* @todo
+ *  1) public/overrides/$bundleName/public/*
  *  2) $theme/Resources/$bundleName/public/*
  *  3) $bundleName/Resources/public/*
  */
@@ -67,35 +67,62 @@ class Asset
      */
     public function resolve(string $path): string
     {
+        $projectDir = $this->kernel->getProjectDir();
+        $basePath = $this->router->getContext()->getBaseUrl();
+        $httpRootDir = str_replace($basePath, '', $projectDir);
+
         // return immediately for straight asset paths
         // doesn't check if file exists
         if ('@' !== $path[0]) {
             if (0 === mb_strpos($path, '/')) {
                 $path = mb_substr($path, 1);
             }
-
-            return $this->assetPackages->getUrl($path);
-        }
-        [$bundleName, $originalPath] = explode(':', $path);
-        $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
-
-        $projectDir = $this->kernel->getProjectDir();
-        // try to find the asset in the global override path. @todo update for Symfony 5 structure #4028
-        if (false === $fullPath = realpath($projectDir . '/app/Resources/' . mb_substr($bundleName, 1) . '/public/' . $originalPath)) {
-            // if file exists in /web, then use it first
-            $httpRootDir = str_replace($this->router->getContext()->getBaseUrl(), '', $projectDir);
-            $webPath = $this->assetPackages->getUrl($path);
-            if (false !== realpath($httpRootDir . $webPath)) {
-                return $webPath;
+            $publicPath = $this->assetPackages->getUrl($path);
+            // TODO remove temporary hack
+            if ('/src' === mb_substr($publicPath, 0, 4)) {
+                $publicPath = mb_substr($publicPath, 4);
             }
-
-            // try to locate the asset in the bundle directory
-            $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
+            if (false !== realpath($httpRootDir . $publicPath)) {
+                return $publicPath;
+            }
         }
 
-        $basePath = $this->router->getContext()->getBaseUrl();
+        [$bundleName, $originalPath] = explode(':', $path);
+
+        // try to locate asset in public override path
+        $overridePath = $projectDir . '/public/overrides/' . mb_substr($bundleName, 1) . '/' . $originalPath;
+        if (false !== $fullPath = realpath($overridePath)) {
+            $publicPath = $this->assetPackages->getUrl($overridePath);
+            // TODO remove temporary hack
+            if ('/src' === mb_substr($publicPath, 0, 4)) {
+                $publicPath = mb_substr($publicPath, 4);
+            }
+            if (false !== realpath($httpRootDir . $publicPath)) {
+                return $publicPath;
+            }
+        }
+
+        // try to locate asset in it's normal public directory
+        $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
+        if (false === $fullPath = realpath($overridePath)) {
+            $publicPath = $this->assetPackages->getUrl($path);
+            // TODO remove temporary hack
+            if ('/src' === mb_substr($publicPath, 0, 4)) {
+                $publicPath = mb_substr($publicPath, 4);
+            }
+            if (false !== realpath($httpRootDir . $publicPath)) {
+                return $publicPath;
+            }
+        }
+
+        // try to locate asset in the bundle directory
+        $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
         $resultPath = false !== mb_strpos($fullPath, $projectDir) ? str_replace($projectDir, '', $fullPath) : $fullPath;
         $resultPath = $basePath . str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
+        // TODO remove temporary hack
+        if ('/src/src' === mb_substr($resultPath, 0, 8)) {
+            $resultPath = mb_substr($resultPath, 4);
+        }
 
         return $this->assetPackages->getUrl($resultPath, 'zikula_default');
     }

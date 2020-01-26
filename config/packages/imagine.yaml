@@ -3,7 +3,7 @@ liip_imagine:
         default:
             web_path:
                 web_root: "%kernel.project_dir%/"
-                cache_prefix: "web/imagine/cache"
+                cache_prefix: "public/imagine/cache"
     loaders:
         zikula_root:
             filesystem:

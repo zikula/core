@@ -93,12 +93,13 @@
     - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
     - Setting `composer.json` >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
     - Changes regarding directory layout
-        - The `app/config/` directory has been moved to `config/`.
-        - The `app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
-        - The `app/Resources/translations/` directory became `translations/`.
-        - The `app/Resources/views/` directory became `templates/`.
-        - The `app/Resources/workflows/` directory became `workflows/`.
-        - The `lib/Zikula/Bundle/` directory has been moved to `Zikula/`.
+        - The `src/app/config/` directory has been moved to `config/`.
+        - The `src/app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
+        - The `src/app/Resources/translations/` directory became `translations/`.
+        - The `src/app/Resources/views/` directory became `templates/`.
+        - The `src/app/Resources/workflows/` directory became `config/workflows/`.
+        - The `src/lib/Zikula/Bundle/` directory has been moved to `src/Zikula/`.
+        - The `src/web/` directory has been moved to `public/`.
     - Changes regarding configuration files
         - Configuration for specific packages has been moved into `config/packages/*.yaml`.
         - The `parameters.yml` file has been renamed to `services.yaml`.

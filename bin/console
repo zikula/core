@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Yaml;
 set_time_limit(0);
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../RequirementChecker.php';
+require __DIR__ . '/../src/RequirementChecker.php';
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');

@@ -61,8 +61,8 @@ class RequireJsConfigGenerator
         }
 
         // move files into subfolder
-        $webDir = 'src/web/';
-        $requireDir = $webDir . 'require/';
+        $publicDir = 'public/';
+        $requireDir = $publicDir . 'require/';
         if (!file_exists($requireDir) && !mkdir($requireDir, 0755) && !is_dir($requireDir)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $requireDir));
         }
@@ -73,10 +73,10 @@ class RequireJsConfigGenerator
             'require-built.js'
         ];
         foreach ($requireJsFiles as $fileName) {
-            if (!file_exists($webDir . $fileName)) {
+            if (!file_exists($publicDir . $fileName)) {
                 continue;
             }
-            rename($webDir . $fileName, $requireDir . $fileName);
+            rename($publicDir . $fileName, $requireDir . $fileName);
         }
     }
 }

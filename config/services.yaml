@@ -10,7 +10,7 @@ parameters:
     script_position:  foot
     # script_position defines the location where javascripts will be placed in the page
     # choices are `head` or `foot`
-    datadir:          web/uploads
+    datadir:          public/uploads
     system.chmod_dir: 0777
 
     database_driver:   pdo_mysql
