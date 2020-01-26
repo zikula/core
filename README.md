@@ -21,7 +21,7 @@ For more information visit [ziku.la](https://ziku.la/).
 ## Requirements
 
 - Zikula Core requires PHP >= 7.2.5 (same as Symfony 5)
-- Additional server considerations can be found on [the Symfony site](https://symfony.com/doc/current/reference/requirements.html).
+- Additional server considerations can be found on [the Symfony site](https://symfony.com/doc/current/setup.html#technical-requirements).
 - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
   to 128 MB for the installation process.
 - Zikula requires that `date.timezone` be set in the `php.ini` configuration file (or `.htaccess`).
