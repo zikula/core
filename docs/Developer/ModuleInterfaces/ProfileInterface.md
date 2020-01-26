@@ -4,6 +4,7 @@ Modules that want the Core to identify the module as Profile-capable must provid
 `\Zikula\UsersModule\ProfileModule\ProfileModuleInterface`.
 
 This interface requires:
+
 ```php
 /**
  * Display a module-defined user display name (e.g. set by the user) or display the uname as defined by the UserModule

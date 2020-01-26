@@ -15,4 +15,5 @@ These are translated to other language stored in files or database and loaded on
 For more information please refer to https://symfony.com/doc/current/translation.html
 
 ## Translation domains
+
 Earlier we used the bundle name as translation domain. The new translation system uses different configurations for different bundles though. You are encouraged to use multiple translation domains now. They should cover different semantical topics and act as a context for translators, like for example `mail`, `messages`, `navigation`, `validators` and `admin`).

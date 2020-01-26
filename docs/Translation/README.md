@@ -1,6 +1,7 @@
 # Translations
 
 ## Basic topics
+
 - [Translation terminology](Terminology.md)
 - [Installation of translations](Installation.md)
 - [Translator usage](Usage.md)
@@ -9,6 +10,7 @@
 - [UI-based translations](UserInterface.md)
 
 ## Specific and advanced topics
+
 - [Translation in Zikula](Translation.md)
 - [Javascript translation](Javascript.md)
 - [Debugging translations](Debugging.md)

@@ -18,7 +18,9 @@ Once this is done, use the provided Twig filter to create the images you require
 Zikula Core provides a default cache resolver. By default images are cached to `/public/imagine/cache/<filterName>`.
 
 Zikula Core provides a `zikula_root` loader if it is required to load images from locations other than `/public/`.
+
 Use this loader to locate images from the `/public/uploads` directory:
+
 ```yaml
 # /config/packages/imagine.yaml
 filter_sets:

@@ -2,6 +2,7 @@
 To extract translations use the console command `translation:extract`.
 
 To see all of it's option, do this:
+
 ```
 php bin/console translation:extract -h
 # or
@@ -9,6 +10,7 @@ php bin/console translation:extract --help
 ```
 
 Example for Zikula core:
+
 ```
 # extract for all configured locales
 php bin/console translation:extract zikula
@@ -19,6 +21,7 @@ php bin/console translation:extract zikula en
 Note `zikula` is the name of our configuration.
 
 Examples for a module or a theme:
+
 ```
 php bin/console translation:extract -b AcmeFooModule extension
 php bin/console translation:extract --bundle AcmeFooModule extension en
@@ -37,6 +40,7 @@ Check the available options using `-h` or `--help` like shown above.
 
 To influence the extraction behaviour you can utilise some annotations from the `Translation\Extractor\Annotation` namespace.
 Import them like any other php class:
+
 ```php
 use Translation\Extractor\Annotation\Desc;
 use Translation\Extractor\Annotation\Ignore;
@@ -61,6 +65,7 @@ $errors[] = $this->translator->trans(
 ```
 
 ### desc filter in Twig
+
 There is also a `desc` filter for specifying a default translation for a key in Twig.
 
 Use it like this:
@@ -71,6 +76,7 @@ Use it like this:
 ```
 
 ### `@Ignore`
+
 The `@Ignore` annotation allows ignoring extracting translation subjects which are not a string, but a variable.
 You can use it for example for `trans()` calls, form labels and form choices.
 
@@ -88,6 +94,7 @@ $builder->add('modulecategory' . $module['name'], ChoiceType::class, [
 ```
 
 ### `@Translate`
+
 With the `/** @Translate */` you can explicitly add phrases to the dictionary. This helps to extract strings
 which would have been skipped otherwise.
 

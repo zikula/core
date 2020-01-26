@@ -34,7 +34,7 @@ interfaces, etc. Extensions must update their implementation of any core/system 
 ### Service registration
 
 Please use `autowire` and `autoconfigure` as this will magically solve most issues.
-refs: https://symfony.com/doc/current/service_container/3.3-di-changes.html#step-1-adding-defaults
+Further information can be found [in Symfony docs](https://symfony.com/doc/current/service_container/3.3-di-changes.html#step-1-adding-defaults).
 
 Module services should be registered by their classname (automatically as above) and not with old-fashioned
 `service.class.dot.notation`.
