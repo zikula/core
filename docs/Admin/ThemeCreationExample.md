@@ -19,7 +19,8 @@ class CompanyPaulaTheme extends AbstractCoreTheme
 }
 ```
 
-* next the ``composer.json`` file must be changed. It is also located inside the theme root. It should look like:
+- Next the `composer.json` file must be changed. It is also located inside the theme root.
+  It should look like:
 
 ```json
 {
@@ -54,15 +55,15 @@ class CompanyPaulaTheme extends AbstractCoreTheme
 }
 ```
 
-- in `home.html.twig`, `master.html.twig` and `admin.html.twig` you have to change all instance of `@ZikulaBoostrapTheme`
-to `@CompanyPaulaTheme`. They are located in `theme/Company/Paula/Resources/views`
+- In `home.html.twig`, `master.html.twig` and `admin.html.twig` you have to change all instance of `@ZikulaBoostrapTheme`
+  to `@CompanyPaulaTheme`. They are located in `theme/Company/Paula/Resources/views`
 - Do the same in `header.html.twig` which is located in `theme/Company/Paula/Resources/views/include`
-- next change `{{ knp_menu_render('ZikulaBootstrapTheme:AdminMenu:menu') }}` with 
-`{{ knp_menu_render('CompanyPaulaTheme:AdminMenu:menu') }}`
+- Next change `{{ knp_menu_render('ZikulaBootstrapTheme:AdminMenu:menu') }}` with 
+  `{{ knp_menu_render('CompanyPaulaTheme:AdminMenu:menu') }}`
 - There is a file named `AdminMenu` in the `/Menu` directory. Inside this file you will find the namespace. You have to adjust
   this accordingly: `namespace Company\PaulaTheme\Menu;`
-- at the end you have to adjust the bootstrap css file. It is located inside `config/theme.yaml`. Normally it looks 
-like `bootstrapPath: "@ZikulaBootstrapTheme:css/cerulean.min.css"`. It should get the right path:
-`bootstrapPath: "@CompanyPaulaTheme:css/cerulean.min.css`
+- at the end you have to adjust the bootstrap css file. It is located inside `config/theme.yaml`.
+  Normally it looks like `bootstrapPath: "@ZikulaBootstrapTheme:css/cerulean.min.css"`.
+  It should get the right path: `bootstrapPath: "@CompanyPaulaTheme:css/cerulean.min.css`
 
 Now you should be able to activate your theme.

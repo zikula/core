@@ -6,6 +6,7 @@
   4.  [Finish Installation](#install)
 
 <a name="upload"></a>
+
 ## Install by uploading package
 
 ### Upload
@@ -38,18 +39,22 @@ You normally do so using `chmod 777 app/cache` and so on. (`.tgz` archives maint
 the permission settings as they were set correctly by the development team, if you unpacked it using the `-p` flag).
 
 <a name="composer"></a>
+
 ## Installing using Composer (for developers)
 
 Zikula makes use of [Composer](https://getcomposer.org/) to manage and download all dependencies.
 If cloning via GitHub, Composer must be run prior to installation. Run:
 
-    composer self-update
-    composer install
+```
+composer self-update
+composer install
+```
 
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`
 to avoid your IDE reading the package contents.
 
 <a name="vagrant"></a>
+
 ## Vagrant installation
 
 You can use vagrant to easily setup a complete Zikula development environment.
@@ -61,6 +66,7 @@ Database user, password and table are all set to `zikula`. PHPMyAdmin is
 accessible from `localhost:8081`.
 
 <a name="install"></a>
+
 ## Finish Installation
 
 *Note 1:* One common issue when installing is that the `var/cache` and `var/log` directories must be writable both by the 
@@ -91,13 +97,13 @@ automatically redirected to the installer.
 Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
 
 ```Shell
-$ php bin/console zikula:install:start
+php bin/console zikula:install:start
 ```
 
 Follow the prompts and complete that step. When you are finished, you are directed to run the next command:
 
 ```Shell
-$ php bin/console zikula:install:finish
+php bin/console zikula:install:finish
 ```
 
 Open your browser and login!

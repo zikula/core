@@ -12,29 +12,29 @@
 ### Extensions and bundles
 
 - Modular development system
-    - Modules are bundles which can be installed/uninstalled during runtime
+  - Modules are bundles which can be installed/uninstalled during runtime
 - Hook system for connecting module features with each other
-    - Hooks are a dynamic event dispatcher, allowing the administrator to choose which listeners respond to events.
+  - Hooks are a dynamic event dispatcher, allowing the administrator to choose which listeners respond to events.
 
 ### Themes and templating
 
 - Twig-based theme engine for site-wide theming
-    - Themes are bundles which can be installed/uninstalled during runtime
+  - Themes are bundles which can be installed/uninstalled during runtime
 - Integration of de-facto frontend technologies
-    - Twitter Bootstrap
-    - Font Awesome
-    - jQuery
+  - Twitter Bootstrap
+  - Font Awesome
+  - jQuery
 
 ### Users and security
 
 - Users and Groups management
-    - OAuth integration
-    - Extensible/customizable User authorization API
+  - OAuth integration
+  - Extensible/customizable User authorization API
 - Dynamic user rights/permissions management by group
 - Included add-ons
-    - OAuth module (allows login via Facebook, Github, Google or LinkedIn Credentials)
-    - Profile module (user profile information)
-    - Legal module (TOS, Age Check, etc)
+  - OAuth module (allows login via Facebook, Github, Google or LinkedIn Credentials)
+  - Profile module (user profile information)
+  - Legal module (TOS, Age Check, etc)
 
 ### Administration
 
@@ -58,9 +58,9 @@
 ### ModuleStudio (MOST)
 
 - Model-Driven Software Development tool
-    - rapid prototyping
-    - easy customization
-    - quick updating
+  - rapid prototyping
+  - easy customization
+  - quick updating
 - Creates models describing your extensions
 - Generates the Zikula module implementation
 - Read more at the [project's website](https://modulestudio.de/en)
