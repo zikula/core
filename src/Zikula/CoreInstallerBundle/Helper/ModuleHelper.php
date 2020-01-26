@@ -130,7 +130,7 @@ class ModuleHelper
     public function reSyncAndActivateModules(): bool
     {
         $bundleSyncHelper = $this->container->get(BundleSyncHelper::class);
-        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles(['system', 'modules']);
+        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles(['src/system', 'src/modules']);
         $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
 
         $doctrine = $this->container->get('doctrine');

@@ -92,7 +92,7 @@ class BundleSyncHelper
 
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
-        $scanner->scan(['themes']);
+        $scanner->scan(['src/themes']);
         $newThemes = $scanner->getThemesMetaData();
 
         /** @var MetaData $themeMetaData */
