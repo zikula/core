@@ -1,8 +1,8 @@
 # Upgrading Zikula
 
-  1. [Test Environment](#testenv)
-  2. [Before upgrading](#download)
-  3. [Upgrading](#upgrading)
+1. [Test Environment](#testenv)
+2. [Before upgrading](#download)
+3. [Upgrading](#upgrading)
 
 <a name="testenv"></a>
 

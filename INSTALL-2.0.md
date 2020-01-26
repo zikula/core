@@ -1,9 +1,9 @@
-## Zikula installation instructions
+# Zikula installation instructions
 
-  1.  [Install by uploading package](#upload)
-  2.  [Install via Composer](#composer)
-  3.  [Install with Vagrant](#vagrant)
-  4.  [Finish Installation](#install)
+1. [Install by uploading package](#upload)
+2. [Install via Composer](#composer)
+3. [Install with Vagrant](#vagrant)
+4. [Finish Installation](#install)
 
 <a name="upload"></a>
 

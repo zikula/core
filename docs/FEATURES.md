@@ -77,7 +77,7 @@
 - [Formicula](https://github.com/zikula-ev/Formicula) (Contact form generator)
 - [Piwik](https://github.com/Guite/Piwik) (Piwik/Matomo integration)
 
-##### Legacy Modules not yet converted but intended to be done
+#### Legacy Modules not yet converted but intended to be done
 
 - [Multisites](https://github.com/zikula-modules/Multisites) (Multisites system)
 - [PostCalendar](https://github.com/craigh/PostCalendar) (Calendar and event system)

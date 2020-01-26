@@ -16,7 +16,7 @@ and module development called [ModuleStudio](https://modulestudio.de/en/) or MOS
 
 Zikula can quickly become a Content Management System utilizing community-driven modules.
 
-For more information visit https://ziku.la/
+For more information visit [ziku.la](https://ziku.la/).
 
 ## Requirements
 

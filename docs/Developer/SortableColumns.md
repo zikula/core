@@ -33,7 +33,6 @@ $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
 </tr>
 ```
 
-
 Additional shortcut methods are available:
 
 - `$sortableColumns->addColumns()`
