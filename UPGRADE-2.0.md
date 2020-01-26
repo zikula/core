@@ -30,7 +30,7 @@ to Core-2.0.x.
 
 The following process should be followed for all upgrades even small point releases (e.g. `2.0.x`).
 
-- **Backup all your files and database.**
+- First: **Backup all your files and database.**
 - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
 - All blocks using MenuTree, ExtMenu or Menu will be DELETED during the upgrade as these are no longer available in Core-2.0.
   You should consider deleting and replacing these with a MenuModule block before upgrading.
@@ -54,7 +54,7 @@ The following process should be followed for all upgrades even small point relea
 - Return compatible modules to the `/modules` directory.
   - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
 - Copy your backup contents of `/userdata` into `/web/uploads`
-- **Upgrade: (do one or the other)**
+- Then **start the upgrade (do one or the other)**
   - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.
   - Via CLI:
     - Access your main zikula directory (`/src` if a Github clone) and run this command:
