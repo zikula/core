@@ -3,13 +3,11 @@
 If you want to create your own theme, the starting point of reusing the ZikulaBoostrapTheme is a good idea. This 
 example is based on the ZikulaBoostrapTheme of Zikula 1.4.5
 
-* First create a new vendor folder inside the themes folder. It should start with a capital letter. For our 
-example we should start with `Company`
-* In this folder we will now create a theme folder. Let us name it `Paula`. So we now have the following: 
-`themes/Company/Paula`.
-* Copy all the files and folder of the folder ZikulaBootstrapTheme into the folder `Paula`.
-* Rename `Company/Paula/ZikulaBootstrapTheme.php` to `Company/Paula/CompanyPaulaTheme.php`
-* Change the content as follows:
+- First create a new vendor folder inside the themes folder. It should start with a capital letter. For our example we should start with `Company`.
+- In this folder we will now create a theme folder. Let us name it `Paula`. So we now have the following: `themes/Company/Paula`.
+- Copy all the files and folder of the folder ZikulaBootstrapTheme into the folder `Paula`.
+- Rename `Company/Paula/ZikulaBootstrapTheme.php` to `Company/Paula/CompanyPaulaTheme.php`.
+- Change the content as follows:
 
 ```php
 namespace Company\PaulaTheme;

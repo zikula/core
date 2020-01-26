@@ -7,13 +7,13 @@ functions, filters, tags, tests and global variables.
 
 ## Filters
 
- * isCoreModule
- * notifyFilters(filterEventName)
- * php(func)
- * profileLinkByUserId
- * profileLinkByUserName
- * protectMail
- * safeHtml
- * urldecode
- * yesNo
- * onlineSince(minutes)
+- isCoreModule
+- notifyFilters(filterEventName)
+- php(func)
+- profileLinkByUserId
+- profileLinkByUserName
+- protectMail
+- safeHtml
+- urldecode
+- yesNo
+- onlineSince(minutes)

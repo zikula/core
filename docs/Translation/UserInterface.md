@@ -1,9 +1,11 @@
 # UI-based translations
+
 Zikula 3 introduces two new abilities for creating and changing translations.
 
 Both can be accessed in the Settings module at the localisation settings if the environment is set to `dev`.
 
 ## Edit in place functionality
+
 Allows to edit translations directly in the context of a page ([demo](https://php-translation.readthedocs.io/en/latest/_images/edit-in-place-demo.gif)).
 
 Edit in place has some limitations you should be aware of:

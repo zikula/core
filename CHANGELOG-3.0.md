@@ -2,7 +2,7 @@
 
 ## 3.0.0 (unreleased)
 
- - BC Breaks:
+- BC Breaks:
     - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
     - Namespace changes
@@ -47,10 +47,10 @@
         - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
     - Entity changes
-      - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
-      - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `bond` property.
-      - `Zikula\ThemeModule\Entity\ThemeEntity` removed the `xhtml` property.
-      - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
+        - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
+        - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `bond` property.
+        - `Zikula\ThemeModule\Entity\ThemeEntity` removed the `xhtml` property.
+        - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
     - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
     - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
     - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
@@ -105,7 +105,7 @@
         - The `custom_parameters.yaml` file has been renamed to `services_custom.yaml`.
         - YAML files use the `.yaml` extension instead of `.yml`.
 
- - Fixes:
+- Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
     - Updated listener priorities in Settings module to fix non-working variable localisation (#3934).
     - Fixed broken functionality of hiding submit button in search block.
@@ -124,7 +124,7 @@
     - Fixed broken JavaScript in ZAuth user modification form (#3992).
     - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
 
- - Features:
+- Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
     - Migrated all templates to Bootstrap 4 and Font Awesome 5 (#3530, #4037).
     - Added all styles from Bootswatch to the Bootstrap theme (#4037).
@@ -145,7 +145,7 @@
     - `LocaleApi` is now able to work with regions, too (#4012, #2425).
     - New and removed locales are automatically reflected in the configuration (#4012, #2425).
 
- - Vendor updates:
+- Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
     - behat/transliterator updated from 1.2.0 to 1.3.0
     - components/bootstrap updated from 3.4.1 to 4.4.1
@@ -235,4 +235,3 @@
     - zikula/pagelock-module updated from 1.2.3 to dev-master
     - zikula/profile-module updated from 3.0.6 to dev-master
     - zikula/wizard updated from 2.0 to 3.0.3
-

@@ -4,6 +4,7 @@ Modules that want the Core to identify the module as Message-capable must provid
 `\Zikula\UsersModule\MessageModule\MessageModuleInterface`.
 
 This interface requires:
+
 ```php
 /**
  * Get the url to a user's inbox.

@@ -1,18 +1,18 @@
 # Conventions
 
-## Service Names
+## Service names
 
 Zikula Core uses classes for service definitions where appropriate. Otherwise service names must adhere to this naming scheme.
 
 ```
-zikula_core.internal.<servicename>
-zikula_core.legacy.<servicename>
-zikula_core.common.<servicename>
+zikula_core.internal.service_name
+zikula_core.legacy.service_name
+zikula_core.common.service_name
 ```
 
 All extensions must prefix their service names with the full extension name, replacing camel-case with underscores.
 ```
-<vendor>_<extensionname>_module.<servicename>
+vendor_extensionname_module.service_name
 ```
 
 for example:
@@ -27,6 +27,7 @@ Extensions are responsible to provide/include their own dependencies or create c
 ## Translation Provision Responsibility
 
 ### Core
+
 The core will be released with only English. Translations will be provided as secondary downloads.
 
 ### Third Party Extensions

@@ -15,7 +15,8 @@ This document collects some developer hints for improving performance of your co
 
 Doctrine fetches related items lazily by default. While this saves performance in cases you do not need them,
 this behaviour becomes worse if you access a few relationships though. The reason is that several single queries
-are slower than one combined query.  
+are slower than one combined query.
+
 So if you know that you need access to some relationships add corresponding DQL joins to your query builder.
 Read more about this [here](https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/reference/dql-doctrine-query-language.html#joins).
 
@@ -30,5 +31,6 @@ Read more about this [here](https://symfony.com/blog/new-in-symfony-2-7-twig-as-
 ## Use namespace notation for templates
 
 You must always use namespaced pathes for your templates which is faster than the normal notation because Twig
-does not need to convert it when resolving/reading the template file.  
+does not need to convert it when resolving/reading the template file.
+
 So for example use `@AcmeFooModule/Person/index.html.twig` instead of `AcmeFooModule:Person:index.html.twig`.
