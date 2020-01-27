@@ -9,7 +9,7 @@
 /public/*
 !/public/index.php
 !/public/uploads/
-/src/modules/*
+/src/extensions/*
 /src/themes/*
 !/src/themes/AtomTheme
 !/src/themes/BootstrapTheme
