@@ -53,7 +53,7 @@ class Kernel extends ZikulaKernel
         $container->import('../config/{packages}/' . $this->environment . '/*.yaml');
         $container->import('../config/{services}.yaml');
         $container->import('../config/{services}_' . $this->environment . '.yaml');
-        */
+         */
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', $this->debug);
         $container->setParameter('container.dumper.inline_factories', true);
@@ -87,7 +87,7 @@ class Kernel extends ZikulaKernel
         $routes->import($configDir . '{routes}/' . $this->environment . '/*.yaml');
         $routes->import($configDir . '{routes}/*.yaml');
         $routes->import($configDir . '{routes}.yaml');
-        */
+         */
 
         $routes->import($configDir . '{routes}/' . $this->environment . '/*.yaml', '/', 'glob');
         $routes->import($configDir . '{routes}/*.yaml', '/', 'glob');
