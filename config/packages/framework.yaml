@@ -1,16 +1,15 @@
 framework:
-    translator:      { fallbacks: en }
     secret:          '%secret%'
-    router:
-        resource: '%kernel.project_dir%/config/routing.yaml'
-        strict_requirements: '%kernel.debug%'
-    form:            ~
     csrf_protection: ~
+    #http_method_override: true
+
+    form:            ~
     validation:      { enable_annotations: true }
     assets:
         base_path: ''
         version: '%assets_version%'
     default_locale: '%locale%'
+    translator:      { fallbacks: en }
     session:
         name: '%zikula.session.name%'
         handler_id: '%zikula.session.handler_id%'
@@ -19,6 +18,7 @@ framework:
         cookie_httponly: true
         cookie_secure: auto
         cookie_samesite: lax
+
     #esi: true
     #fragments: true
     php_errors:

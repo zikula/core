@@ -59,6 +59,7 @@
     - Removed afarkas/webshim (#3925)
     - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
     - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
+    - Removed elao/web-profiler-extra-bundle
     - Removed jms/translation-bundle (in favour of php-translation/*)
     - Removed oyejorge/less.php
     - Removed ramsey/array_column

@@ -28,7 +28,6 @@
         "sensio/framework-extra-bundle": "5.*",
         "symfony/maker-bundle": "1.*",
         "symfony/profiler-pack": "^1.0",
-        "elao/web-profiler-extra-bundle" : "2.*",
         "sensiolabs/security-checker" : "6.*",
 
         "symfony/polyfill-intl-messageformatter": "1.*",
