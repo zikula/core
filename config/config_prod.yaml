@@ -1,4 +1,0 @@
-imports:
-    - { resource: config.yaml }
-    - { resource: 'packages/prod/framework.yaml' }
-    - { resource: 'packages/prod/monolog.yaml' }

@@ -1,6 +1,0 @@
-imports:
-    - { resource: config_dev.yaml }
-    - { resource: 'packages/test/framework.yaml' }
-    - { resource: 'packages/test/web_profiler.yaml' }
-    - { resource: 'packages/test/swiftmailer.yaml' }
-    - { resource: 'packages/test/monolog.yaml' }
