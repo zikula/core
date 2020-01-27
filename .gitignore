@@ -7,6 +7,7 @@
 /config/dynamic/*
 !/config/dynamic/default.yaml
 /public/*
+!/public/index.php
 !/public/uploads/
 /src/modules/*
 /src/themes/*
