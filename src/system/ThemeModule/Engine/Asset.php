@@ -130,11 +130,11 @@ class Asset
         }
 
         // Asset not found in public.
-        // copy the asset from the Bundle directory to /public and then call this method again
+        // copy the asset from the Bundle directory to /public and then locate asset in it's normal public directory
         $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
         $this->fileSystem->copy($fullPath, $publicDir . '/' . $path);
 
-        return $this->resolve($bundleName . ':' . $originalPath);
+        return $this->assetPackages->getUrl($path);
     }
 
     /**
