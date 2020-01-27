@@ -112,7 +112,7 @@ class Asset
 
         // try to locate asset in public theme path
         $themeName = $this->themeEngine->getTheme()->getName();
-        $overridePath = $publicDir . '/themes/' . strtolower($themeName) . '/' . mb_substr($bundleName, 1) . '/' . $originalPath;
+        $overridePath = $publicDir . '/themes/' . mb_strtolower($themeName) . '/' . mb_substr($bundleName, 1) . '/' . $originalPath;
         if (false !== $fullPath = realpath($overridePath)) {
             $publicPath = $this->assetPackages->getUrl($overridePath);
             if (false !== realpath($httpRootDir . $publicPath)) {
