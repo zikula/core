@@ -51,7 +51,7 @@ parameters:
 
     #container.dumper.inline_class_loader: true
 
-    # all paths below are resolved as assets (in /web)
+    # all paths below are resolved as assets (in /public)
     # stylesheet and javascript component locations
     zikula.javascript.bootstrap.min.path: '/bootstrap/js/bootstrap.bundle.min.js'
     zikula.stylesheet.bootstrap.min.path: '/bootstrap/css/bootstrap.min.css'
