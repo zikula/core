@@ -12,36 +12,47 @@ declare(strict_types=1);
  */
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Yaml\Yaml;
 
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../src/RequirementChecker.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/src/RequirementChecker.php';
+
+// Load cached env vars if the .env.local.php file exists
+// Run "composer dump-env prod" to create it (requires symfony/flex >=1.2)
+if (
+    is_array($env = @include dirname(__DIR__) . '/.env.local.php')
+    && (!isset($env['APP_ENV']) || ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? $env['APP_ENV']) === $env['APP_ENV'])
+) {
+    foreach ($env as $k => $v) {
+        $_ENV[$k] = $_ENV[$k] ?? (isset($_SERVER[$k]) && 0 !== mb_strpos($k, 'HTTP_') ? $_SERVER[$k] : $v);
+    }
+} elseif (!class_exists(Dotenv::class)) {
+    throw new RuntimeException('Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.');
+} else {
+    // load all the .env files
+    (new Dotenv(false))->loadEnv(dirname(__DIR__).'/.env');
+}
+
+$_SERVER += $_ENV;
+$_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? null) ?: 'dev';
+$_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? 'prod' !== $_SERVER['APP_ENV'];
+$_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = (int) $_SERVER['APP_DEBUG'] || filter_var($_SERVER['APP_DEBUG'], FILTER_VALIDATE_BOOLEAN) ? '1' : '0';
 
 $kernelConfig = Yaml::parse(file_get_contents(realpath(__DIR__ . '/services.yaml')));
 if (is_readable($file = __DIR__ . '/services_custom.yaml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
 $parameters = $kernelConfig['parameters'];
-if (true === $parameters['debug']) {
-    Debug::enable();
-}
-
-if (isset($parameters['umask']) && null !== $parameters['umask']) {
-    umask($parameters['umask']);
-}
 
 // set default locale for Intl classes
 if (extension_loaded('intl')) {
     Locale::setDefault($parameters['locale']);
 }
 
-// Globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
+// globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
 AnnotationReader::addGlobalIgnoredName('type');
 
 // on install or upgrade, check if system requirements are met.
 $requirementChecker = new RequirementChecker();
 $requirementChecker->verify($parameters);
-
-$kernel = new Kernel($parameters['env'], $parameters['debug']);
-$kernel->boot();

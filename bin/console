@@ -6,10 +6,13 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\Yaml\Yaml;
 
+if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+    echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+}
+
 set_time_limit(0);
 
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../src/RequirementChecker.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
@@ -17,27 +20,29 @@ $getZikulaEnv = function(ArgvInput $input) {
     $isInstallUpgradeCommand = ((strpos($input->getFirstArgument(), 'zikula:install') !== false)
         || (strpos($input->getFirstArgument(), 'zikula:upgrade') !== false));
     $env = $isInstallUpgradeCommand ? 'prod' : $defaultEnv;
+
     return $env;
 };
 
 $input = new ArgvInput();
-$env = $getZikulaEnv($input);
-$debug = getenv('ZIKULA_DEBUG') !== '0' && !$input->hasParameterOption(['--no-debug', '']) && 'prod' !== $env;
-
-if ($debug) {
-    Debug::enable();
+if (null !== $env = $getZikulaEnv($input)) {
+    putenv('APP_ENV=' . $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
 }
 
-// on install or upgrade, check if system requirements are met.
-$kernelConfig = Yaml::parse(file_get_contents(__DIR__ . '/../config/services.yaml'));
-if (is_readable($file = __DIR__ . '/../config/services_custom.yaml')) {
-    $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
+if ($input->hasParameterOption('--no-debug', true)) {
+    putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
 }
-$requirementChecker = new RequirementChecker();
-$requirementChecker->verify($kernelConfig['parameters']);
 
-$kernel = new Kernel($env, $debug);
-$kernel->boot();
+require dirname(__DIR__) . '/config/bootstrap.php';
 
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
+
+    if (class_exists(Debug::class)) {
+        Debug::enable();
+    }
+}
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 $application = new Application($kernel);
 $application->run($input);

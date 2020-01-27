@@ -37,7 +37,6 @@ return [
     // dev-only bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
-    Elao\WebProfilerExtraBundle\WebProfilerExtraBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
 
     // System Extensions - always installed
