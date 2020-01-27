@@ -1,4 +1,6 @@
 liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: 'gd'
     resolvers:
         default:
             web_path:
