@@ -34,22 +34,25 @@ interfaces, etc. Extensions must update their implementation of any core/system 
 ### Service registration
 
 Please use `autowire` and `autoconfigure` as this will magically solve most issues.
-refs: https://symfony.com/doc/current/service_container/3.3-di-changes.html#step-1-adding-defaults
+Further information can be found [in Symfony docs](https://symfony.com/doc/current/service_container/3.3-di-changes.html#step-1-adding-defaults).
 
 Module services should be registered by their classname (automatically as above) and not with old-fashioned
 `service.class.dot.notation`.
 
 ### Blocks
+
 BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface` as in Core-2.0 but there is no longer
 a need to tag these classes in your services file as they are auto-tagged. Also - as above, the classname should be
 used as the service name.
 
 ### Extension menus
+
 `Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
 removed. Extension menus are not implemented using Knp Menu instead. See docs and system modules for further
 information and examples.
 
 ## Translations
+
 All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.
 
 For more information please refer to the documents in `docs/Translation/`.

@@ -4,25 +4,27 @@ Symfony comes with `bin/console debug:translation` command line tool to debug tr
 
 Example output:
 
-    %> php bin/console debug:translation pl --domain=mydomain
-    +----------+-------------+----------------------+
-    | State(s) | Id          | Message Preview (pl) |
-    +----------+-------------+----------------------+
-    | o        | Pages       | Strony               |
-    | o        | Page        | Strona               |
-    | o        | pages       | strony               |
-    | o        | page        | strona               |
-    | o        | read more   | czytaj więcej        |
-    | o        | title       | tytuł                |
-    | o        | description | opis                 |
-    +----------+-------------+----------------------+
-    
-    Legend:
-     x Missing message
-     o Unused message
-     = Same as the fallback message
+```
+%> php bin/console debug:translation pl --domain=mydomain
++----------+-------------+----------------------+
+| State(s) | Id          | Message Preview (pl) |
++----------+-------------+----------------------+
+| o        | Pages       | Strony               |
+| o        | Page        | Strona               |
+| o        | pages       | strony               |
+| o        | page        | strona               |
+| o        | read more   | czytaj więcej        |
+| o        | title       | tytuł                |
+| o        | description | opis                 |
++----------+-------------+----------------------+
 
-For more information please check https://symfony.com/doc/current/translation.html#debugging-translations
+Legend:
+    x Missing message
+    o Unused message
+    = Same as the fallback message
+```
+
+For more information please check [Debugging Translations](https://symfony.com/doc/current/translation.html#debugging-translations).
 
 ## Important notes
 

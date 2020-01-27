@@ -1,4 +1,5 @@
-# Javascript translation
+# JavaScript translation
+
 Zikula includes `willdurand/js-translation-bundle` also known as [BazingaJsTranslationBundle](https://github.com/willdurand/BazingaJsTranslationBundle).
 
 Bazinga adds native symfony translation support like so:
@@ -17,7 +18,7 @@ Translator.transChoice(key, count, params, domain, locale);
 
 See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
 
-## Extraction from Javascript files
+## Extraction from JavaScript files
 
 Zikula also provides an Extractor for both native Symfony and Zikula translation functions. This is run automatically
 when translations are extracted. By default, **all javascript translations** are added to the `zikula_javascript` domain. 
@@ -39,7 +40,7 @@ Then, your extension **must** manually include each of these files in the requir
 {{ pageAddAsset('javascript', url('bazinga_jstranslation_js', {domain: 'my_special_domain'}), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JS_TRANSLATIONS')) }}
 ```
 
-## Javascripts in Twig templates
+## JavaScripts in Twig templates
 
 Translation usage in scripts that are created *within* a twig template (not a standalone file) should utilize standard
 Twig template translation and not utilize javascript translation.

@@ -51,6 +51,6 @@ class Kernel extends ZikulaKernel
 
     public function getProjectDir()
     {
-        return __DIR__;
+        return dirname(__DIR__);
     }
 }

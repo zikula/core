@@ -27,5 +27,4 @@ Symfony has a system in place to override Resources of any Bundle. See
 
 ## Override references
 
-- See `\Zikula\Bundle\CoreBundle\EventListener\ThemeListener::setUpThemePathOverrides` (for @ZikulaFoo/Bar/index.html.twig type notation)
-- See `\Symfony\Component\HttpKernel\Kernel::locateResource` (for ZikulaFooBundle:Bar:index.html.twig type notation)
+- See `\Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides`

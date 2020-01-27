@@ -17,6 +17,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 ```
 
 Possible values are:
+
 - "admin"
 - "print"
 - "atom"

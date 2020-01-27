@@ -26,7 +26,7 @@ public function edit()
 }
 ```
 
-## Controller edit method
+## Controller delete method
 
 ```php
 public function delete()

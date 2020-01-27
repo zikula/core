@@ -138,7 +138,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addFosJsRouting(): void
     {
         // commented out as a workaround for #3807 until #3804 is solved
-        /*if ($this->params['env'] != 'dev' && file_exists(realpath('web/js/fos_js_routes.js'))) {
+        /*if ($this->params['env'] != 'dev' && file_exists(realpath('public/js/fos_js_routes.js'))) {
             $this->jsAssetBag->add([
                 $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
                 $this->assetHelper->resolve('js/fos_js_routes.js') => AssetBag::WEIGHT_ROUTES_JS
@@ -154,7 +154,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJsTranslation(): void
     {
-        // consider option of dumping the translations to /web
+        // consider option of dumping the translations to /public
         // add bundle translations? need domain name e.g. zikulapagesmodule
         // #3650
         $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula_javascript'], RouterInterface::ABSOLUTE_URL);

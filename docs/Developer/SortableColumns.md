@@ -2,7 +2,7 @@
 
 SortableColumns is a zikula component to help manage data table column headings that can be clicked to sort the data.
 
-## Controller:
+## Controller
 
 ```php
 use Zikula\Component\SortableColumns\SortableColumns;
@@ -23,7 +23,7 @@ $sortableColumns->setAdditionalUrlParameters(array(
 $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
 ```
 
-## Twig template:
+## Twig template
 
 ```twig
 <tr>
@@ -33,10 +33,10 @@ $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
 </tr>
 ```
 
+Additional shortcut methods are available:
 
-Additional shortcut methods are available: 
-  - `$sortableColumns->addColumns()`
-  - `$sortableColumns->setOrderByFromRequest()`
+- `$sortableColumns->addColumns()`
+- `$sortableColumns->setOrderByFromRequest()`
 
 ```php
 $sortableColumns->addColumns([new Column('pageid'), new Column('title'), new Column('cr_date')]);

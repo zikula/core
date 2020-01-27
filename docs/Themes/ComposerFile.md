@@ -20,11 +20,10 @@ Please see the [Official JSON Schema](https://getcomposer.org/doc/04-schema.md) 
 - autoload: (required) object defining psr-4 namespace object
 - require: (required) object defining bundle dependencies
 - extra: (required) the zikula object with required keys
-   - zikula: (required)
-     - core-compatibility: (required) a [version compatibility string](https://getcomposer.org/doc/01-basic-usage.md#package-versions) defining core compatibility
-     - class: (required) the fully qualified name of the Bundle class
-     - displayname: (required) the common name for the bundle (translatable)
-     - capabilities: (required if controllers are used) an object of objects defining capabilities of the extension
-         - user: true|false
-         - admin: true|false
-         - xhtml: true|false
+  - zikula: (required)
+    - core-compatibility: (required) a [version compatibility string](https://getcomposer.org/doc/01-basic-usage.md#package-versions) defining core compatibility
+    - class: (required) the fully qualified name of the Bundle class
+    - displayname: (required) the common name for the bundle (translatable)
+    - capabilities: (required if controllers are used) an object of objects defining capabilities of the extension
+      - user: true|false
+      - admin: true|false

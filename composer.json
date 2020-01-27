@@ -28,9 +28,9 @@
         "zikula-scripts": [
             "Zikula\\Composer\\CopyRequirementsFile::copy",
             "composer dump-autoload",
-            "src/bin/console cache:clear --env prod",
-            "src/bin/console cache:clear",
-            "src/bin/console assets:install --relative src/web",
+            "bin/console cache:clear --env prod",
+            "bin/console cache:clear",
+            "bin/console assets:install --relative public",
             "Zikula\\Composer\\ManuallyInstallAssets::install",
             "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
         ],
@@ -42,15 +42,15 @@
         ]
     },
     "config": {
-        "vendor-dir": "src/vendor",
-        "bin-dir": "src/bin",
-        "component-dir": "src/web"
+        "vendor-dir": "vendor",
+        "bin-dir": "bin",
+        "component-dir": "public"
     },
     "extra": {
-        "symfony-app-dir": "src/app",
-        "symfony-web-dir": "src/web",
-        "symfony-var-dir": "src/var",
-        "symfony-bin-dir": "src/bin",
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "public",
+        "symfony-var-dir": "var",
+        "symfony-bin-dir": "bin",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "installer-paths": {

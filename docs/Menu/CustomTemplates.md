@@ -9,7 +9,7 @@ ZikulaMenuModule provides two custom overrides:
 
 Both of these templates extend the original.
 
-The first (`bootstrap_fontawesome`) is provided by [https://gist.github.com/nateevans/9958390]
+The first (`bootstrap_fontawesome`) is provided by [this gist](https://gist.github.com/nateevans/9958390)
 and provides bootstrap and fontawesome functionality built in and should be used as the standard
 template unless you are certain these features are not needed (note that some provided attributes
 or options will not work without this template).

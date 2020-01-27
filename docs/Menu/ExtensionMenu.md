@@ -17,6 +17,7 @@ See the `ExtensionMenuInterface` and `ExtensionMenuCollector` and examples in al
 ## General structure
 
 Menus in the module's ExtensionMenu should be structured like so:
+
 ```php
     $menu = $this->factory->createItem('fooAdminMenu');
     if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
@@ -26,7 +27,7 @@ Menus in the module's ExtensionMenu should be structured like so:
     }
 ```
 
-The `icon` attribute is the a font-awesome icon identifier. 
+The `icon` attribute is a FontAwesome icon identifier. 
 
 ## KnpMenuBundle
 

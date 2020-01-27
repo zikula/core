@@ -47,5 +47,4 @@ plus an additional `loggedIn` property (boolean).
 
 ## Symfony global variables
 
-For more information about the global variables provided by symfony, please see
-https://symfony.com/doc/current/templates.html#the-app-global-variable
+For more information about the global variables provided by symfony, please see [this doc](https://symfony.com/doc/current/templates.html#the-app-global-variable).

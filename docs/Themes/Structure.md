@@ -1,6 +1,6 @@
 # Theme file structure
 
-Reference: https://symfony.com/doc/current/bundles/best_practices.html
+[Reference in Symfony docs](https://symfony.com/doc/current/bundles/best_practices.html).
 
 ```
 SpecTheme/
