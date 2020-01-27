@@ -2,7 +2,7 @@
 
 ## Theme resource overrides
 
-Placed within the theme `Resources` directory under the target FQ Module name.
+Placed within the theme `Resources` directory under the target FQ module name.
 
 ```
 Resources/
@@ -20,7 +20,7 @@ Resources/
 
 ## System resource overrides
 
-Symfony has a system in place to override Resources of any Bundle. See 
+Symfony has a system in place to override Resources of any bundle. See 
 [Overriding Resources](https://symfony.com/doc/current/bundles/override.html#templates).
 
 **Note that in Zikula, System resource overrides take precedence over Theme resource overrides.**
