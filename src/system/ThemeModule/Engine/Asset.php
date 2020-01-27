@@ -15,6 +15,7 @@ namespace Zikula\ThemeModule\Engine;
 
 use InvalidArgumentException;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\AbstractBundle;
@@ -23,7 +24,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 /**
  * Class Asset
  *
- * This class locates assets accounting for possible overrides in app/Resources/$bundleName or in the
+ * This class locates assets accounting for possible overrides in public/overrides/$bundleName or in the
  * active theme. It is foremost used by the zasset() Twig template plugin, but can be utilized as a standalone
  * service as well. All asset types (js, css, images) will work.
  *
@@ -31,9 +32,9 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
  * Assets that do not contain `@` are passed through to the standard symfony asset management.
  *
  * Overrides are in this order:
- *  1) public/overrides/$bundleName/public/*
- *  2) $theme/Resources/$bundleName/public/*
- *  3) $bundleName/Resources/public/*
+ *  1) public/overrides/$bundleName/*
+ *  2) public/themes/$theme/$bundleName/*
+ *  3) public/modules/$bundleName/*
  */
 class Asset
 {
@@ -52,36 +53,47 @@ class Asset
      */
     private $router;
 
+    /**
+     * @var Filesystem
+     */
+    private $fileSystem;
+
+    /**
+     * @var Engine
+     */
+    private $themeEngine;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         Packages $assetPackages,
-        RouterInterface $router
+        RouterInterface $router,
+        Filesystem $fileSystem,
+        Engine $themeEngine
     ) {
         $this->kernel = $kernel;
         $this->assetPackages = $assetPackages;
         $this->router = $router;
+        $this->fileSystem = $fileSystem;
+        $this->themeEngine = $themeEngine;
     }
 
     /**
      * Returns path for asset.
+     * Confirms actual file existence before returning path
      */
     public function resolve(string $path): string
     {
         $projectDir = $this->kernel->getProjectDir();
+        $publicDir = $projectDir . '/public';
         $basePath = $this->router->getContext()->getBaseUrl();
-        $httpRootDir = str_replace($basePath, '', $projectDir);
+        $httpRootDir = str_replace($basePath, '', $publicDir);
 
         // return immediately for straight asset paths
-        // doesn't check if file exists
         if ('@' !== $path[0]) {
             if (0 === mb_strpos($path, '/')) {
                 $path = mb_substr($path, 1);
             }
             $publicPath = $this->assetPackages->getUrl($path);
-            // TODO remove temporary hack
-            if ('/src' === mb_substr($publicPath, 0, 4)) {
-                $publicPath = mb_substr($publicPath, 4);
-            }
             if (false !== realpath($httpRootDir . $publicPath)) {
                 return $publicPath;
             }
@@ -90,13 +102,19 @@ class Asset
         [$bundleName, $originalPath] = explode(':', $path);
 
         // try to locate asset in public override path
-        $overridePath = $projectDir . '/public/overrides/' . mb_substr($bundleName, 1) . '/' . $originalPath;
+        $overridePath = $publicDir . '/overrides/' . mb_substr($bundleName, 1) . '/' . $originalPath;
         if (false !== $fullPath = realpath($overridePath)) {
             $publicPath = $this->assetPackages->getUrl($overridePath);
-            // TODO remove temporary hack
-            if ('/src' === mb_substr($publicPath, 0, 4)) {
-                $publicPath = mb_substr($publicPath, 4);
+            if (false !== realpath($httpRootDir . $publicPath)) {
+                return $publicPath;
             }
+        }
+
+        // try to locate asset in public theme path
+        $themeName = $this->themeEngine->getTheme()->getName();
+        $overridePath = $publicDir . '/themes/' . strtolower($themeName) . '/' . mb_substr($bundleName, 1) . '/' . $originalPath;
+        if (false !== $fullPath = realpath($overridePath)) {
+            $publicPath = $this->assetPackages->getUrl($overridePath);
             if (false !== realpath($httpRootDir . $publicPath)) {
                 return $publicPath;
             }
@@ -104,27 +122,19 @@ class Asset
 
         // try to locate asset in it's normal public directory
         $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
-        if (false === $fullPath = realpath($overridePath)) {
+        if (false !== $fullPath = realpath($publicDir . '/' . $path)) {
             $publicPath = $this->assetPackages->getUrl($path);
-            // TODO remove temporary hack
-            if ('/src' === mb_substr($publicPath, 0, 4)) {
-                $publicPath = mb_substr($publicPath, 4);
-            }
             if (false !== realpath($httpRootDir . $publicPath)) {
                 return $publicPath;
             }
         }
 
-        // try to locate asset in the bundle directory
+        // Asset not found in public.
+        // copy the asset from the Bundle directory to /public and then call this method again
         $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
-        $resultPath = false !== mb_strpos($fullPath, $projectDir) ? str_replace($projectDir, '', $fullPath) : $fullPath;
-        $resultPath = $basePath . str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
-        // TODO remove temporary hack
-        if ('/src/src' === mb_substr($resultPath, 0, 8)) {
-            $resultPath = mb_substr($resultPath, 4);
-        }
+        $this->fileSystem->copy($fullPath, $publicDir . '/' . $path);
 
-        return $this->assetPackages->getUrl($resultPath, 'zikula_default');
+        return $this->resolve($bundleName . ':' . $originalPath);
     }
 
     /**
