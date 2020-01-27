@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $installed: '%installed%'
+            $projectDir: '%kernel.project_dir%'
 
     # alias interface to doctrine service
     Doctrine\Persistence\ManagerRegistry: '@doctrine'

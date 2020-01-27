@@ -119,8 +119,9 @@ class BundleSyncHelper
      *
      * @throws Exception Thrown if the user doesn't have admin permissions over the bundle
      */
-    public function scanForBundles(array $directories = ['src/modules']): array
+    public function scanForBundles(?array $directories = null): array
     {
+        $directories = $directories ?? [$this->kernel->getProjectDir() . '/src/modules'];
         // sync the filesystem and the bundles table
         $this->bundlesSchemaHelper->load();
 

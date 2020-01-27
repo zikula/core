@@ -38,11 +38,21 @@ class BundlesSchemaHelper
      */
     private $cacheClearer;
 
-    public function __construct(Connection $conn, TranslatorInterface $translator, CacheClearer $cacheClearer)
-    {
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    public function __construct(
+        Connection $conn,
+        TranslatorInterface $translator,
+        CacheClearer $cacheClearer,
+        $projectDir
+    ) {
         $this->conn = $conn;
         $this->translator = $translator;
         $this->cacheClearer = $cacheClearer;
+        $this->projectDir = $projectDir;
     }
 
     public function load(): void
@@ -50,7 +60,7 @@ class BundlesSchemaHelper
         $this->verifySchema();
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
-        $scanner->scan(['src/modules', 'src/themes']);
+        $scanner->scan([$this->projectDir . '/src/modules', $this->projectDir . '/src/themes']);
         $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
         $this->sync($array);
     }
