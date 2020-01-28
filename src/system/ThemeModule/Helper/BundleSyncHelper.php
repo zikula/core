@@ -95,7 +95,7 @@ class BundleSyncHelper
         $scanner->scan([$this->kernel->getProjectDir() . '/src/themes']);
         $newThemes = $scanner->getThemesMetaData();
 
-        $srcDir = dirname(dirname(dirname(__DIR__))) . '/';
+        $srcDir = $this->kernel->getProjectDir() . '/src/';
         /** @var MetaData $themeMetaData */
         foreach ($newThemes as $name => $themeMetaData) {
             foreach ($themeMetaData->getPsr4() as $ns => $path) {

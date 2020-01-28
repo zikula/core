@@ -140,7 +140,7 @@ class BundleSyncHelper
         $newModules = $scanner->getModulesMetaData();
 
         $bundles = [];
-        $srcDir = dirname(dirname(dirname(__DIR__))) . '/';
+        $srcDir = $this->kernel->getProjectDir() . '/src/';
         /** @var MetaData $bundleMetaData */
         foreach ($newModules as $name => $bundleMetaData) {
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {

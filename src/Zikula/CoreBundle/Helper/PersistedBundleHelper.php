@@ -120,7 +120,7 @@ class PersistedBundleHelper
      */
     public function addAutoloaders(ZikulaHttpKernelInterface $kernel, array $autoload = []): void
     {
-        $srcDir = dirname(dirname(dirname(__DIR__))) . '/';
+        $srcDir = $kernel->getProjectDir() . '/src/';
         if (isset($autoload['psr-0'])) {
             foreach ($autoload['psr-0'] as $prefix => $path) {
                 $kernel->getAutoloader()->add($prefix, $srcDir . $path);
