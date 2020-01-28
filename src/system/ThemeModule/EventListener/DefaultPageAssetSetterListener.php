@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
@@ -29,6 +30,11 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class DefaultPageAssetSetterListener implements EventSubscriberInterface
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
     /**
      * @var AssetBag
      */
@@ -65,6 +71,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private $params;
 
     public function __construct(
+        ZikulaHttpKernelInterface $kernel,
         AssetBag $jsAssetBag,
         AssetBag $cssAssetBag,
         RouterInterface $router,
@@ -77,6 +84,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         string $bootstrapStylesheetPath,
         string $fontAwesomePath
     ) {
+        $this->kernel = $kernel;
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
         $this->router = $router;
@@ -137,19 +145,15 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addFosJsRouting(): void
     {
-        // commented out as a workaround for #3807 until #3804 is solved
-        /*if ($this->params['env'] != 'dev' && file_exists(realpath('public/js/fos_js_routes.js'))) {
-            $this->jsAssetBag->add([
-                $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
-                $this->assetHelper->resolve('js/fos_js_routes.js') => AssetBag::WEIGHT_ROUTES_JS
-            ]);
-        } else {*/
-        $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
+        if ('dev' !== $this->params['env'] && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
+            $routeScript = $this->assetHelper->resolve('js/fos_js_routes.js');
+        } else {
+            $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
+        }
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
             $routeScript => AssetBag::WEIGHT_ROUTES_JS
         ]);
-        /*}*/
     }
 
     private function addJsTranslation(): void
