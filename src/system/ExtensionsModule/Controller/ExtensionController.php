@@ -49,7 +49,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ExtensionController
- * @Route("/extension")
+ * @Route("")
  */
 class ExtensionController extends AbstractController
 {
@@ -80,7 +80,7 @@ class ExtensionController extends AbstractController
             $eventDispatcher->dispatch($event, self::NEW_ROUTES_AVAIL);
         }
 
-        $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_module_viewmodulelist');
+        $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_extension_viewmodulelist');
         $sortableColumns->addColumns([new Column('displayname'), new Column('state')]);
         $sortableColumns->setOrderByFromRequest($request);
 
@@ -158,7 +158,7 @@ class ExtensionController extends AbstractController
             $this->addFlash('status', $this->trans('Done! Activated %name% module.', ['%name%' => $extension->getName()]));
         }
 
-        return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
     }
 
     /**
@@ -196,7 +196,7 @@ class ExtensionController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
     }
 
     /**
@@ -236,7 +236,7 @@ class ExtensionController extends AbstractController
             if ($form->get('defaults')->isClicked()) {
                 $this->addFlash('info', 'Default values reloaded. Save to confirm.');
 
-                return $this->redirectToRoute('zikulaextensionsmodule_module_modify', ['id' => $extension->getId(), 'forceDefaults' => 1]);
+                return $this->redirectToRoute('zikulaextensionsmodule_extension_modify', ['id' => $extension->getId(), 'forceDefaults' => 1]);
             }
             if ($form->get('save')->isClicked()) {
                 $em = $this->getDoctrine()->getManager();
@@ -249,7 +249,7 @@ class ExtensionController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
         }
 
         return [
@@ -311,7 +311,7 @@ class ExtensionController extends AbstractController
             $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
             $cacheClearer->clear('symfony');
 
-            return $this->redirectToRoute('zikulaextensionsmodule_module_install', ['id' => $id, 'token' => $token]);
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_install', ['id' => $id, 'token' => $token]);
         }
         $unsatisfiedDependencies = $dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
         $form = $this->createForm(ExtensionInstallType::class, [
@@ -332,7 +332,7 @@ class ExtensionController extends AbstractController
                         if (!$extensionHelper->install($dependencyExtensionEntity)) {
                             $this->addFlash('error', $this->trans('Failed to install dependency "%name%"!', ['%name%' => $dependencyExtensionEntity->getName()]));
 
-                            return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+                            return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
                         }
                         $extensionsInstalled[] = $dependencyExtensionEntity->getId();
                         $this->addFlash('status', $this->trans('Installed dependency "%name%".', ['%name%' => $dependencyExtensionEntity->getName()]));
@@ -345,7 +345,7 @@ class ExtensionController extends AbstractController
                     $extensionsInstalled[] = $id;
                     $cacheClearer->clear('symfony');
 
-                    return $this->redirectToRoute('zikulaextensionsmodule_module_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
+                    return $this->redirectToRoute('zikulaextensionsmodule_extension_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
                 }
                 $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
                 $this->addFlash('error', $this->trans('Initialization of "%name%" failed!', ['%name%' => $extension->getName()]));
@@ -355,7 +355,7 @@ class ExtensionController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
         }
 
         return [
@@ -396,7 +396,7 @@ class ExtensionController extends AbstractController
             //$extensionHelper->installAssets();
         }
 
-        return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist', ['justinstalled' => json_encode($extensions)]);
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist', ['justinstalled' => json_encode($extensions)]);
     }
 
     /**
@@ -443,7 +443,7 @@ class ExtensionController extends AbstractController
             $this->addFlash('error', 'Extension upgrade failed!');
         }
 
-        return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
     }
 
     /**
@@ -493,7 +493,7 @@ class ExtensionController extends AbstractController
                 if (!$extensionHelper->uninstallArray($requiredDependents)) {
                     $this->addFlash('error', 'Error: Could not uninstall dependent extensions.');
 
-                    return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+                    return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
                 }
                 // remove blocks
                 $blockRepository->remove($blocks);
@@ -508,7 +508,7 @@ class ExtensionController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_viewmodulelist');
         }
 
         return [

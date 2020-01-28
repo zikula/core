@@ -54,7 +54,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         }
         $menu = $this->factory->createItem('extensionsAdminMenu');
         $menu->addChild('Extension List', [
-            'route' => 'zikulaextensionsmodule_module_viewmodulelist',
+            'route' => 'zikulaextensionsmodule_extension_viewmodulelist',
         ])->setAttribute('icon', 'fas fa-list');
         $menu->addChild('Settings', [
             'route' => 'zikulaextensionsmodule_config_config',

@@ -46,7 +46,7 @@ class MenuBuilder
             $menu->addChild('Settings', ['route' => 'zikulasettingsmodule_settings_main']);
         }
         if ($this->permissionApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Extensions', ['route' => 'zikulaextensionsmodule_module_viewmodulelist']);
+            $menu->addChild('Extensions', ['route' => 'zikulaextensionsmodule_extension_viewmodulelist']);
         }
         if ($this->permissionApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             $menu->addChild('Blocks', ['route' => 'zikulablocksmodule_admin_view']);

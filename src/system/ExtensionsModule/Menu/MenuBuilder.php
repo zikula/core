@@ -64,7 +64,7 @@ class MenuBuilder
                 if (!ZikulaKernel::isCoreModule($extension->getName())) {
                     $csrfToken = $this->getCsrfToken('deactivate-extension');
                     $menu->addChild('Deactivate extension', [
-                        'route' => 'zikulaextensionsmodule_module_deactivate',
+                        'route' => 'zikulaextensionsmodule_extension_deactivate',
                         'routeParameters' => [
                             'id' => $id,
                             'token' => $csrfToken
@@ -77,13 +77,13 @@ class MenuBuilder
             case Constant::STATE_INACTIVE:
                 $csrfToken = $this->getCsrfToken('activate-extension');
                 $menu->addChild('Activate extension', [
-                    'route' => 'zikulaextensionsmodule_module_activate',
+                    'route' => 'zikulaextensionsmodule_extension_activate',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-plus-square')
                     ->setLinkAttribute('class', 'text-success');
                 $csrfToken = $this->getCsrfToken('uninstall-extension');
                 $menu->addChild('Uninstall extension', [
-                    'route' => 'zikulaextensionsmodule_module_uninstall',
+                    'route' => 'zikulaextensionsmodule_extension_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-trash-alt')
                     ->setLinkAttribute('style', 'color: #c00');
@@ -94,7 +94,7 @@ class MenuBuilder
             case Constant::STATE_UPGRADED:
                 $csrfToken = $this->getCsrfToken('upgrade-extension');
                 $menu->addChild('Upgrade extension', [
-                    'route' => 'zikulaextensionsmodule_module_upgrade',
+                    'route' => 'zikulaextensionsmodule_extension_upgrade',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-sync')
                     ->setLinkAttribute('style', 'color: #00c');
@@ -106,7 +106,7 @@ class MenuBuilder
             case Constant::STATE_NOTALLOWED:
                 $csrfToken = $this->getCsrfToken('uninstall-extension');
                 $menu->addChild('Remove extension', [
-                    'route' => 'zikulaextensionsmodule_module_uninstall',
+                    'route' => 'zikulaextensionsmodule_extension_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-trash-alt')
                     ->setLinkAttribute('style', 'color: #c00');
@@ -116,7 +116,7 @@ class MenuBuilder
                 if ($extension->getState() < 10) {
                     $csrfToken = $this->getCsrfToken('install-extension');
                     $menu->addChild('Install extension', [
-                        'route' => 'zikulaextensionsmodule_module_install',
+                        'route' => 'zikulaextensionsmodule_extension_install',
                         'routeParameters' => [
                             'id' => $id,
                             'token' => $csrfToken
@@ -125,7 +125,7 @@ class MenuBuilder
                         ->setLinkAttribute('class', 'text-success');
                 } else {
                     $menu->addChild('Core compatibility information', [
-                        'route' => 'zikulaextensionsmodule_module_compatibility',
+                        'route' => 'zikulaextensionsmodule_extension_compatibility',
                         'routeParameters' => ['id' => $id]
                     ])->setAttribute('icon', 'fas fa-info-circle')
                         ->setLinkAttribute('style', 'color: #000');
@@ -139,7 +139,7 @@ class MenuBuilder
             Constant::STATE_MISSING,
         ], true)) {
             $menu->addChild('Edit extension', [
-                'route' => 'zikulaextensionsmodule_module_modify',
+                'route' => 'zikulaextensionsmodule_extension_modify',
                 'routeParameters' => ['id' => $id]
             ])->setAttribute('icon', 'fas fa-wrench')
                 ->setLinkAttribute('style', 'color: #000');
