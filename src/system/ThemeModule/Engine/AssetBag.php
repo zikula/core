@@ -46,9 +46,9 @@ class AssetBag implements IteratorAggregate, Countable
 
     public const WEIGHT_JS_TRANSLATOR = 26;
 
-    public const WEIGHT_JS_TRANSLATIONS = 28;
-
     public const WEIGHT_DEFAULT = 100;
+
+    public const WEIGHT_JS_TRANSLATIONS = 110;
 
     public const WEIGHT_THEME_STYLESHEET = 120;
 
