@@ -121,7 +121,7 @@ class BundleSyncHelper
      */
     public function scanForBundles(?array $directories = null): array
     {
-        $directories = $directories ?? [$this->kernel->getProjectDir() . '/src/modules'];
+        $directories = $directories ?? [$this->kernel->getProjectDir() . '/src/extensions'];
         // sync the filesystem and the bundles table
         $this->bundlesSchemaHelper->load();
 
