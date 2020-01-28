@@ -5,9 +5,6 @@ by the Twig package itself. See [Twig documentation](https://twig.symfony.com) f
 Also see [standard Symfony functions](https://symfony.com/doc/current/reference/twig_reference.html) for additional
 functions, filters, tags, tests and global variables.
 
-**Note:** Zikula Core provides a `zikula_default` package for use in the `asset()` twig function which allows the developer
-to access the core root directory e.g. `asset('images/logo_with_title.png', 'zikula_default')`
-
 ## Functions
 
 ### Useful
