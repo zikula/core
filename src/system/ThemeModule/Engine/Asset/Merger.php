@@ -95,7 +95,7 @@ class Merger implements MergerInterface
                 false !== $path
                 && is_file($path)
                 && !in_array($asset, $this->skipFiles)
-                && false === strpos($asset, '/public/bootswatch')
+                && false === mb_strpos($asset, '/public/bootswatch')
             ) {
                 $cachedFiles[] = $path;
             } elseif ($weight < 0) {
