@@ -42,12 +42,6 @@
         "gedmo/doctrine-extensions": "2.*",
         "liip/imagine-bundle": "2.*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Guite/WebProfilerExtraBundle"
-        }
-    ],
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreBundle\\": "" }
     }

@@ -42,9 +42,10 @@
         ]
     },
     "config": {
-        "vendor-dir": "vendor",
         "bin-dir": "bin",
-        "component-dir": "public"
+        "component-dir": "public",
+        "public-dir": "public",
+        "vendor-dir": "vendor"
     },
     "extra": {
         "symfony-app-dir": "app",

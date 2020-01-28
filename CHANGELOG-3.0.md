@@ -4,6 +4,10 @@
 
 - BC Breaks:
   - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
+  - The directory structure is dramatically different (reflecting changes from Symfony).
+    - The `public/` directory is now the *web root*. Set your server/htaccess/etc accordingly.
+    - `public/index.php` is the entry point to the site.
+    - See https://symfony.com/doc/current/setup/web_server_configuration.html for more information.
   - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
   - Namespace changes
     - `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
@@ -170,7 +174,6 @@
   - doctrine/persistence installed in 1.3.6
   - doctrine/reflection installed in 1.1.0
   - egulias/email-validator installed in 2.1.15
-  - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
   - erusev/parsedown installed in 1.7.4
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
   - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.39

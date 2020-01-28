@@ -51,12 +51,18 @@ class Merger implements MergerInterface
      */
     private $compress;
 
+    /**
+     * @var string[]
+     */
+    private $skipFiles;
+
     public function __construct(
         RouterInterface $router,
         ZikulaHttpKernelInterface $kernel,
         string $lifetime = '1 day',
         bool $minify = false,
-        bool $compress = false
+        bool $compress = false,
+        array $skipFiles = []
     ) {
         $this->router = $router;
         $this->kernel = $kernel;
@@ -65,6 +71,11 @@ class Merger implements MergerInterface
         $this->lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
         $this->minify = $minify;
         $this->compress = $compress;
+
+        $this->skipFiles = [];
+        foreach ($skipFiles as $path) {
+            $this->skipFiles[] = '/public' . $path;
+        }
     }
 
     public function merge(array $assets, $type = 'js'): array
@@ -76,13 +87,21 @@ class Merger implements MergerInterface
         $preCachedFiles = [];
         $cachedFiles = [];
         $outputFiles = [];
-        // skip remote files from combining
+        $postCachedFiles = [];
         foreach ($assets as $asset => $weight) {
             $path = realpath($this->rootDir . $asset);
-            if (false !== $path && is_file($path)) {
+            // skip remote files and specific unwanted ones from combining
+            if (
+                false !== $path
+                && is_file($path)
+                && !in_array($asset, $this->skipFiles)
+                && false === mb_strpos($asset, '/public/bootswatch')
+            ) {
                 $cachedFiles[] = $path;
             } elseif ($weight < 0) {
                 $preCachedFiles[$asset] = $weight;
+            } elseif ($weight > AssetBag::WEIGHT_DEFAULT) {
+                $postCachedFiles[$asset] = $weight;
             } else {
                 $outputFiles[$asset] = $weight;
             }
@@ -115,7 +134,7 @@ class Merger implements MergerInterface
         $route = $this->router->generate('zikulathememodule_combinedasset_asset', ['type' => $type, 'key' => $key]);
         $outputFiles[$route] = AssetBag::WEIGHT_DEFAULT;
 
-        $outputFiles = array_merge($preCachedFiles, $outputFiles);
+        $outputFiles = array_merge($preCachedFiles, $outputFiles, $postCachedFiles);
 
         return $outputFiles;
     }
@@ -139,7 +158,7 @@ class Merger implements MergerInterface
         $relativePath = end($pathParts);
         $contents[] = "/* --- Source file: {$relativePath} */\n\n";
         $inMultilineComment = false;
-        $importsAllowd = true;
+        $importsAllowed = true;
         $wasCommentHack = false;
         while (!feof($source)) {
             if ('css' === $ext) {
@@ -167,7 +186,7 @@ class Merger implements MergerInterface
                             $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
                         }
                         $i++;
-                    } elseif ($importsAllowd && '@' === $char && '@import' === mb_substr($lineParse, $i, 7)) {
+                    } elseif ($importsAllowed && '@' === $char && '@import' === mb_substr($lineParse, $i, 7)) {
                         // an @import starts here
                         $lineParseRest = trim(mb_substr($lineParse, $i + 7));
                         if (0 === mb_stripos($lineParseRest, 'url')) {
@@ -179,19 +198,23 @@ class Merger implements MergerInterface
                                 $start = mb_strpos($lineParseRest, '(') + 1;
                                 $end = mb_strpos($lineParseRest, ')');
                                 $url = mb_substr($lineParseRest, $start, $end - $start);
-                                if (0 === mb_strpos($url, '"') | 0 === mb_strpos($url, "'")) {
+                                if (0 === mb_strpos($url, '"')) {
                                     $url = mb_substr($url, 1, -1);
                                 }
                                 // fix url
-                                $url = dirname($file) . '/' . $url;
-                                if (!$wasCommentHack) {
-                                    // clear buffer
-                                    $contents[] = $newLine;
-                                    $newLine = '';
-                                    // process include
-                                    $this->readFile($contents, $url, $ext);
-                                } else {
+                                if ('http' === mb_substr($url, 0, 4)) {
                                     $newLine .= '@import url("' . $url . '");';
+                                } else {
+                                    $url = dirname($file) . '/' . $url;
+                                    if (!$wasCommentHack) {
+                                        // clear buffer
+                                        $contents[] = $newLine;
+                                        $newLine = '';
+                                        // process include
+                                        $this->readFile($contents, $url, $ext);
+                                    } else {
+                                        $newLine .= '@import url("' . $url . '");';
+                                    }
                                 }
                                 // skip @import statement
                                 $i += $posEnd - $i;
@@ -232,20 +255,24 @@ class Merger implements MergerInterface
                         }
                     } elseif (!$inMultilineComment && ' ' !== $char && "\n" !== $char && "\r\n" !== $char && "\r" !== $char) {
                         // css rule found -> stop processing of @import statements
-                        $importsAllowd = false;
+                        $importsAllowed = false;
                         $newLine .= $char;
                     } else {
                         $newLine .= $char;
                     }
                 }
                 // fix other paths after @import processing
-                if (!$importsAllowd) {
+                if (!$importsAllowed) {
                     $relativePath = str_replace(realpath($this->rootDir), '', $file);
                     $newLine = $this->cssFixPath($newLine, explode('/', dirname($relativePath)));
                 }
                 $contents[] = $newLine;
             } else {
-                $contents[] = fgets($source, 4096);
+                $line = fgets($source, 4096);
+                if (false === $line || 0 === mb_strpos($line, '//# sourceMappingURL=')) {
+                    continue;
+                }
+                $contents[] = $line;
             }
         }
         fclose($source);

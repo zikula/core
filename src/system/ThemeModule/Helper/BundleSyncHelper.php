@@ -95,10 +95,11 @@ class BundleSyncHelper
         $scanner->scan([$this->kernel->getProjectDir() . '/src/themes']);
         $newThemes = $scanner->getThemesMetaData();
 
+        $srcDir = $this->kernel->getProjectDir() . '/src/';
         /** @var MetaData $themeMetaData */
         foreach ($newThemes as $name => $themeMetaData) {
             foreach ($themeMetaData->getPsr4() as $ns => $path) {
-                $this->kernel->getAutoloader()->addPsr4($ns, $path);
+                $this->kernel->getAutoloader()->addPsr4($ns, $srcDir . $path);
             }
 
             $bundleClass = $themeMetaData->getClass();
@@ -121,7 +122,13 @@ class BundleSyncHelper
                 if ($this->composerValidationHelper->isValid()) {
                     $bundleThemes[$bundle->getName()] = $themeVersionArray;
                 } else {
-                    $this->session->getFlashBag()->add('error', $this->translator->trans('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
+                    $this->session->getFlashBag()->add(
+                        'error',
+                        $this->translator->trans(
+                            'Cannot load %extension because the composer file is invalid.',
+                            ['%extension' => $bundle->getName()]
+                        )
+                    );
                     foreach ($this->composerValidationHelper->getErrors() as $error) {
                         $this->session->getFlashBag()->add('error', $error);
                     }
