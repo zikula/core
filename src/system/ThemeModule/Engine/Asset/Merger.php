@@ -97,6 +97,7 @@ class Merger implements MergerInterface
                 && is_file($path)
                 && !in_array($asset, $this->skipFiles)
                 && false === mb_strpos($asset, '/public/bootswatch')
+                && !in_array($weight, [AssetBag::WEIGHT_ROUTER_JS, AssetBag::WEIGHT_ROUTES_JS])
             ) {
                 $cachedFiles[] = $path;
             } elseif ($weight < 0) {
