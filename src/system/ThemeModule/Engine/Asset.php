@@ -99,63 +99,57 @@ class Asset
             }
         }
 
-        [$bundleName, $originalPath] = explode(':', $path);
+        [$bundleName, $relativeAssetPath] = explode(':', $path);
 
-        // try to locate asset in public override path
-        $overridePath = $publicDir . '/overrides/' . mb_substr($bundleName, 1) . '/' . $originalPath;
-        if (false !== $fullPath = realpath($overridePath)) {
-            $publicPath = $this->assetPackages->getUrl($overridePath);
-            if (false !== realpath($httpRootDir . $publicPath)) {
-                return $publicPath;
-            }
-        }
-
-        // try to locate asset in public theme path
+        $bundleNameForAssetPath = mb_strtolower(mb_substr($bundleName, 1));
+        $bundleAssetPath = $this->getBundleAssetPath($bundleName);
         $themeName = $this->themeEngine->getTheme()->getName();
-        $overridePath = $publicDir . '/themes/' . mb_strtolower($themeName) . '/' . mb_substr($bundleName, 1) . '/' . $originalPath;
-        if (false !== $fullPath = realpath($overridePath)) {
-            $publicPath = $this->assetPackages->getUrl($overridePath);
-            if (false !== realpath($httpRootDir . $publicPath)) {
-                return $publicPath;
+
+        $foldersToCheck = [
+            // public override path (e.g. public/overrides/zikulacontentmodule)
+            'overrides/' . $bundleNameForAssetPath,
+            // public theme path (e.g. public/themes/zikulabootstraptheme/zikulacontentmodule)
+            'themes/' . mb_strtolower($themeName) . '/' . $bundleNameForAssetPath,
+            // public bundle directory (e.g. public/modules/zikulacontent)
+            $bundleAssetPath
+        ];
+
+        foreach ($foldersToCheck as $folder) {
+            $fullPath = $publicDir . '/' . $folder . '/' . $relativeAssetPath;
+            if (false !== realpath($fullPath)) {
+                return str_replace($httpRootDir, '', $fullPath);
             }
         }
 
-        // try to locate asset in it's normal public directory
-        $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
-        if (false !== $fullPath = realpath($publicDir . '/' . $path)) {
-            $publicPath = $this->assetPackages->getUrl($path);
-            if (false !== realpath($httpRootDir . $publicPath)) {
-                return $publicPath;
-            }
-        }
-
-        // Asset not found in public.
-        // copy the asset from the Bundle directory to /public and then locate asset in it's normal public directory
-        $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
-        $this->fileSystem->copy($fullPath, $publicDir . '/' . $path);
+        // asset not found in public/.
+        // copy the asset from the bundle directory to /public
+        // and then locate it in the bundle's normal public directory
+        $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $relativeAssetPath);
+        $this->fileSystem->copy($fullPath, $publicDir . '/' . $bundleAssetPath . '/' . $relativeAssetPath);
 
         return $this->assetPackages->getUrl($path);
     }
 
     /**
-     * Maps zasset path argument
-     * e.g. "@AcmeBundle:css/foo.css" to `AcmeBundle/Resources/public/css/foo.css`
+     * Maps and returns zasset base path.
+     * e.g. "@AcmeNewsModule" to `modules/acmenews`
+     * e.g. "@AcmeCustomTheme" to `themes/acmecustom`
+     * e.g. "@SomeBundle" to `bundles/some`
      */
-    private function mapZikulaAssetPath(?string $bundleName, ?string $path): string
+    private function getBundleAssetPath(?string $bundleName): string
     {
-        if (!isset($bundleName) || !isset($path)) {
-            throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
+        if (!isset($bundleName)) {
+            throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle"');
         }
         $bundle = $this->kernel->getBundle(mb_substr($bundleName, 1));
-        if ($bundle instanceof Bundle) {
-            $path = '/' . $path;
-            if ($bundle instanceof AbstractBundle) {
-                $path = $bundle->getRelativeAssetPath() . $path;
-            } else {
-                $path = mb_strtolower('Bundles/' . mb_substr($bundle->getName(), 0, -mb_strlen('Bundle'))) . $path;
-            }
+        if (!$bundle instanceof Bundle) {
+            throw new InvalidArgumentException('Bundle ' . $bundleName . ' not found.');
         }
 
-        return $path;
+        if ($bundle instanceof AbstractBundle) {
+            return $bundle->getRelativeAssetPath();
+        }
+
+        return 'bundles/' . mb_strtolower(mb_substr($bundle->getName(), 0, -mb_strlen('bundle')));
     }
 }
