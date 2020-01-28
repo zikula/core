@@ -129,15 +129,22 @@ class BundleSyncHelper
         $scanner->setTranslator($this->translator);
         $scanner->scan($directories, 5);
         foreach ($scanner->getInvalid() as $invalidName) {
-            $this->session->getFlashBag()->add('warning', $this->translator->trans('WARNING: %extension% has an invalid composer.json file which could not be decoded.', ['%extension%' => $invalidName]));
+            $this->session->getFlashBag()->add(
+                'warning',
+                $this->translator->trans(
+                    'WARNING: %extension% has an invalid composer.json file which could not be decoded.',
+                    ['%extension%' => $invalidName]
+                )
+            );
         }
         $newModules = $scanner->getModulesMetaData();
 
         $bundles = [];
+        $srcDir = $this->kernel->getProjectDir() . '/src/';
         /** @var MetaData $bundleMetaData */
         foreach ($newModules as $name => $bundleMetaData) {
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {
-                $this->kernel->getAutoloader()->addPsr4($ns, $path);
+                $this->kernel->getAutoloader()->addPsr4($ns, $srcDir . $path);
             }
 
             $bundleClass = $bundleMetaData->getClass();
@@ -159,7 +166,13 @@ class BundleSyncHelper
                     $bundles[$bundle->getName()] = $bundleVersionArray;
                     $bundles[$bundle->getName()]['oldnames'] = $bundleVersionArray['oldnames'] ?? '';
                 } else {
-                    $this->session->getFlashBag()->add('error', $this->translator->trans('Cannot load %extension% because the composer file is invalid.', ['%extension%' => $bundle->getName()]));
+                    $this->session->getFlashBag()->add(
+                        'error',
+                        $this->translator->trans(
+                            'Cannot load %extension% because the composer file is invalid.',
+                            ['%extension%' => $bundle->getName()]
+                        )
+                    );
                     foreach ($this->composerValidationHelper->getErrors() as $error) {
                         $this->session->getFlashBag()->add('error', $error);
                     }
