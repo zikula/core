@@ -10,11 +10,6 @@
 !/public/index.php
 !/public/uploads/
 /src/extensions/*
-/src/themes/*
-!/src/themes/AtomTheme
-!/src/themes/BootstrapTheme
-!/src/themes/PrinterTheme
-!/src/themes/RssTheme
 !/tests/test_dbs/*.sql
 /translations/*
 /var/
