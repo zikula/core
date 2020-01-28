@@ -3,11 +3,11 @@
 ## 3.0.0 (unreleased)
 
 - BC Breaks:
-  - The directory structure is dramatically difference (reflecting changes from Symfony).
+  - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
+  - The directory structure is dramatically different (reflecting changes from Symfony).
     - The `public/` directory is now the *web root*. Set your server/htaccess/etc accordingly.
     - `public/index.php` is the entry point to the site.
     - See https://symfony.com/doc/current/setup/web_server_configuration.html for more information.
-  - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
   - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
   - Namespace changes
     - `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
