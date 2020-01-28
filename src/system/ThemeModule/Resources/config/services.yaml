@@ -78,6 +78,12 @@ services:
           $lifetime: '%zikula_asset_manager.lifetime%'
           $minify: '%zikula_asset_manager.minify%'
           $compress: '%zikula_asset_manager.compress%'
+          $skipFiles:
+            - '/jquery/jquery.min.js'
+            - '%zikula.stylesheet.bootstrap.min.path%'
+            - '%zikula.stylesheet.fontawesome.min.path%'
+            - '/mmenu/css/mmenu.css'
+            - '/mmenu/js/mmenu.js'
 
     Zikula\ThemeModule\Engine\Asset\JsResolver:
         arguments:
