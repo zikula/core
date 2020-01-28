@@ -268,7 +268,11 @@ class Merger implements MergerInterface
                 }
                 $contents[] = $newLine;
             } else {
-                $contents[] = fgets($source, 4096);
+                $line = fgets($source, 4096);
+                if (false === $line || 0 === mb_strpos($line, '//# sourceMappingURL=')) {
+                    continue;
+                }
+                $contents[] = $line;
             }
         }
         fclose($source);
