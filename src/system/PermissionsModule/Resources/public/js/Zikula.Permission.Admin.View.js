@@ -2,9 +2,120 @@
 
 var currentDelete;
 (function ($) {
-    $(document).ready(function () {
 
-        /* --- init --------------------------------------------------------------------------------------------------------- */
+    function initRowHandlers() {
+        $('.edit-permission').unbind('click').on('click', {action: 'edit'}, editPermissionHandler);
+        $('.create-new-permission').unbind('click').on('click', {action: 'new'}, editPermissionHandler);
+        $('.delete-permission').unbind('click').click(startDeletePermission);
+        $('.test-permission').unbind('click').click(startTestPermission);
+    }
+
+    /* --- edit or create permission ---------------------------------------------------------------------------------------------- */
+    /* Open modal to edit permission */
+    function editPermissionHandler(event) {
+        event.preventDefault();
+        $(this).find('.fa').addClass('fa-spin');
+        var pars = {};
+        var id = 'edit' === event.data.action ? $(this).parents("tr").data('id') : 'undefined';
+        if ('new' === event.data.action) {
+            pars.sequence = $(this).hasClass('insertBefore') ? $(this).parents("tr").data("id") : -1;
+        }
+        $.ajax({
+            type: 'POST',
+            url: Routing.generate('zikulapermissionsmodule_permission_edit', {pid: id}),
+            data: pars
+        }).done(function (data) {
+            var modal = $('#editModal');
+            modal.find('.modal-body').html(data.view);
+            modal.modal();
+        }).fail(function (jqXHR, textStatus) {
+            alert('Request failed: ' + textStatus);
+        }).always(function () {
+        });
+    }
+
+    function savePermission() {
+        var pid = $('#zikulapermissionsmodule_permission_pid').val();
+        if (pid === '') {
+            pid = '-1';
+        } else if (pid === adminpermission && lockadmin === 1) {
+            return;
+        }
+        // fetch each input and hidden field and store the value to POST
+        var pars = {};
+        $.each($(':input, :hidden').serializeArray(), function(i, field) {
+            pars[field.name] = field.value;
+        });
+        $.ajax({
+            type: 'POST',
+            url: Routing.generate('zikulapermissionsmodule_permission_edit', {
+                pid: pid
+            }),
+            data: pars
+        }).done(function (data) {
+            if (data.view) {
+                // validation failed
+                $('#edit-form-container').replaceWith(data.view).show();
+            } else {
+                if (pid !== '-1') {
+                    // update existing row
+                    $('#permission-component-' + pid).text(data.permission.component);
+                    $('#permission-instance-' + pid).text(data.permission.instance);
+                    $('#permission-group-' + pid).data('id', data.permission.gid);
+                    $('#permission-group-' + pid).text($('#zikulapermissionsmodule_permission_gid').find('option:selected').text());
+                    $('#permission-level-' + pid).data('id', data.permission.level);
+                    $('#permission-level-' + pid).text($('#zikulapermissionsmodule_permission_level').find('option:selected').text());
+                } else {
+                    var existingIndexRow = $('#permission-list tr').eq(data.permission.sequence);
+                    if (existingIndexRow.length !== 0) {
+                        // insert new row above it
+                        existingIndexRow.before(data.row);
+                    } else {
+                        // append new row
+                        $('#permission-list').append(data.row);
+                    }
+                    initRowHandlers();
+                }
+            }
+        }).fail(function (jqXHR, textStatus) {
+            alert('Request failed: ' + textStatus);
+        }).always(function () {
+            $('#editModal').modal('hide');
+        });
+    }
+
+    /* --- delete permission -------------------------------------------------------------------------------------------- */
+    /* Open modal  */
+    function startDeletePermission(event) {
+        event.preventDefault();
+        $(this).find('.fa').addClass('fa-spin');
+        currentDelete = $(this).parents('tr');
+        $('#deleteModal').modal();
+    }
+
+    function deletePermission() {
+        $.ajax({
+            url: Routing.generate('zikulapermissionsmodule_permission_delete', {pid: currentDelete.data('id')}),
+            type: 'POST'
+        }).done(function () {
+            currentDelete.remove();
+        });
+    }
+
+    /* --- test permission ---------------------------------------------------------------------------------------------- */
+    /* Copies the component, instance and level to the permission test form */
+    function startTestPermission() {
+        var pid = $(this).parents('tr').data('id');
+        $('#zikulapermissionsmodule_permissioncheck_user').val('');
+        $('#zikulapermissionsmodule_permissioncheck_component').val($('#permission-component-' + pid).text());
+        $('#zikulapermissionsmodule_permissioncheck_instance').val($('#permission-instance-' + pid).text());
+        $('#permission-test-info').html('&nbsp;');
+        $('html, body').animate({
+            scrollTop: $('#testpermform').offset().top
+        }, 500);
+    }
+
+    $(document).ready(function () {
         var $sortable = $('#permission-list > tbody');
 
         // Return a helper with preserved width of cells
@@ -36,116 +147,11 @@ var currentDelete;
         });
         $sortable.disableSelection();
 
-        /* --- edit or create permission ---------------------------------------------------------------------------------------------- */
-        /* Open modal to edit permission */
-        function editPermissionHandler(event) {
-            event.preventDefault();
-            $(this).find('.fa').addClass('fa-spin');
-            var pars = {};
-            var id = 'edit' === event.data.action ? $(this).parents("tr").data('id') : 'undefined';
-            if ('new' === event.data.action) {
-                pars.sequence = $(this).hasClass('insertBefore') ? $(this).parents("tr").data("id") : -1;
-            }
-            $.ajax({
-                type: 'POST',
-                url: Routing.generate('zikulapermissionsmodule_permission_edit', {pid: id}),
-                data: pars
-            }).done(function (data) {
-                var modal = $('#editModal');
-                modal.find('.modal-body').html(data.view);
-                modal.modal();
-            }).fail(function (jqXHR, textStatus) {
-                alert('Request failed: ' + textStatus);
-            }).always(function () {
-            });
-        }
-
-        function updateEditForm(view) {
-            $('#edit-form-container').replaceWith(view).show();
-        }
-
         /* Save permission changes */
-        $('#save-permission').click(function () {
-            var pid = $('#zikulapermissionsmodule_permission_pid').val();
-            if (pid === '') {
-                pid = '-1';
-            } else if (pid === adminpermission && lockadmin === 1) {
-                return;
-            }
-            // fetch each input and hidden field and store the value to POST
-            var pars = {};
-            $.each($(':input, :hidden').serializeArray(), function(i, field) {
-                pars[field.name] = field.value;
-            });
-            $.ajax({
-                type: 'POST',
-                url: Routing.generate('zikulapermissionsmodule_permission_edit', {
-                    pid: pid
-                }),
-                data: pars
-            }).done(function (data) {
-                if (data.view) {
-                    // validation failed
-                    updateEditForm(data.view);
-                } else {
-                    if (pid !== '-1') {
-                        // update existing row
-                        $('#permission-component-' + pid).text(data.permission.component);
-                        $('#permission-instance-' + pid).text(data.permission.instance);
-                        $('#permission-group-' + pid).data('id', data.permission.gid);
-                        $('#permission-group-' + pid).text($('#zikulapermissionsmodule_permission_gid').find('option:selected').text());
-                        $('#permission-level-' + pid).data('id', data.permission.level);
-                        $('#permission-level-' + pid).text($('#zikulapermissionsmodule_permission_level').find('option:selected').text());
-                    } else {
-                        var existingIndexRow = $('#permission-list tr').eq(data.permission.sequence);
-                        if (existingIndexRow.length !== 0) {
-                            // insert new row above it
-                            existingIndexRow.before(data.row);
-                        } else {
-                            // append new row
-                            $('#permission-list').append(data.row);
-                        }
-                        initRowHandlers();
-                    }
-                }
-            }).fail(function (jqXHR, textStatus) {
-                alert('Request failed: ' + textStatus);
-            }).always(function () {
-                $('#editModal').modal('hide');
-            });
-        });
-
-        /* --- delete permission -------------------------------------------------------------------------------------------- */
-        /* Open modal  */
-        function startDeletePermission(event) {
-            event.preventDefault();
-            $(this).find('.fa').addClass('fa-spin');
-            currentDelete = $(this).parents('tr');
-            $('#deleteModal').modal();
-        }
+        $('#save-permission').click(savePermission);
 
         /* Delete a permission */
-        $('#confirm-delete-permission').click(function () {
-            $.ajax({
-                url: Routing.generate('zikulapermissionsmodule_permission_delete', {pid: currentDelete.data('id')}),
-                type: 'POST'
-            }).done(function () {
-                currentDelete.remove();
-            });
-        });
-
-        /* --- test permission ---------------------------------------------------------------------------------------------- */
-        /* Copies the component, instance and level to the permission test form */
-        function startTestPermission() {
-            var pid = $(this).parents('tr').data('id');
-            $('#zikulapermissionsmodule_permissioncheck_user').val('');
-            $('#zikulapermissionsmodule_permissioncheck_component').val($('#permission-component-' + pid).text());
-            $('#zikulapermissionsmodule_permissioncheck_instance').val($('#permission-instance-' + pid).text());
-            $('#permission-test-info').html('&nbsp;');
-            $('html, body').animate({
-                scrollTop: $('#testpermform').offset().top
-            }, 500);
-        }
+        $('#confirm-delete-permission').click(deletePermission);
 
         /* Test a permission for a user */
         $('#zikulapermissionsmodule_permissioncheck_check').click(function (event) {
@@ -173,18 +179,10 @@ var currentDelete;
             $('#zikulapermissionsmodule_permissioncheck_instance').val('');
         });
 
-        function initRowHandlers() {
-            $('.edit-permission').unbind('click').on('click', {action: 'edit'}, editPermissionHandler);
-            $('.create-new-permission').unbind('click').on('click', {action: 'new'}, editPermissionHandler);
-            $('.delete-permission').unbind('click').click(startDeletePermission);
-            $('.test-permission').unbind('click').click(startTestPermission);
-        }
-
         initRowHandlers();
 
         /* --- View instance info ------------------------------------------------------------------------------------------- */
-        /* Open modal */
-        $('#view-instance-info').click(function (event) {
+        $('.view-instance-info').click(function (event) {
             event.preventDefault();
             $('#instanceInfoModal').modal();
         });
