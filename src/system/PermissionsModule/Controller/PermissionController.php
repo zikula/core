@@ -97,7 +97,7 @@ class PermissionController extends AbstractController
         if (!isset($permissionEntity)) {
             $permissionEntity = new PermissionEntity();
             if ($request->request->has('sequence')) {
-                $permissionEntity->setSequence($request->request->get('sequence'));
+                $permissionEntity->setSequence($request->request->getInt('sequence'));
             }
         }
 
