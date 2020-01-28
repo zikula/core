@@ -98,7 +98,7 @@
 {{ form_end(permissionCheckForm) }}
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">{% trans %}Permission{% endtrans %}</h5>
@@ -108,14 +108,14 @@
                 {# empty #}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fas fa-times'></i> {% trans %}Close{% endtrans %}</button>
                 <button id="save-permission" type="button" class="btn btn-success" data-dismiss="modal"><i class='fas fa-check'></i> {% trans %}Save{% endtrans %}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fas fa-times'></i> {% trans %}Close{% endtrans %}</button>
             </div>
         </div>
     </div>
 </div>
 <div class="modal fade" id="instanceInfoModal" tabindex="-1" role="dialog" aria-labelledby="instanceInfoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="instanceInfoModalLabel">{% trans %}Permission rule information{% endtrans %}</h5>
@@ -136,7 +136,7 @@
             </div>
             <div class="modal-footer">
                 <button id="confirm-delete-permission" type="button" class="btn btn-danger" data-dismiss="modal">{% trans %}Yes{% endtrans %}</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}No{% endtrans %}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}No{% endtrans %}</button>
             </div>
         </div>
     </div>

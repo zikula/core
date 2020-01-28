@@ -66,15 +66,16 @@ class Merger implements MergerInterface
     ) {
         $this->router = $router;
         $this->kernel = $kernel;
-        $projectDir = realpath($kernel->getProjectDir() . '/');
-        $this->rootDir = str_replace($router->getContext()->getBaseUrl(), '', $projectDir);
+        $publicDir = realpath($kernel->getProjectDir() . '/public');
+        $basePath = $router->getContext()->getBaseUrl();
+        $this->rootDir = str_replace($basePath, '', $publicDir);
         $this->lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
         $this->minify = $minify;
         $this->compress = $compress;
 
         $this->skipFiles = [];
         foreach ($skipFiles as $path) {
-            $this->skipFiles[] = '/public' . $path;
+            $this->skipFiles[] = $basePath . $path;
         }
     }
 
@@ -96,6 +97,7 @@ class Merger implements MergerInterface
                 && is_file($path)
                 && !in_array($asset, $this->skipFiles)
                 && false === mb_strpos($asset, '/public/bootswatch')
+                && !in_array($weight, [AssetBag::WEIGHT_ROUTER_JS, AssetBag::WEIGHT_ROUTES_JS])
             ) {
                 $cachedFiles[] = $path;
             } elseif ($weight < 0) {
