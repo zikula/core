@@ -15,20 +15,20 @@ namespace Zikula\RoutesModule\Helper;
 use Exception;
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use JMS\I18nRoutingBundle\Router\I18nLoader;
-use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class RouteDumperHelper
 {
     /**
-     * @var ContainerInterface
+     * @var ZikulaHttpKernelInterface
      */
-    private $container;
+    private $kernel;
 
     /**
      * @var VariableApiInterface
@@ -51,13 +51,13 @@ class RouteDumperHelper
     private $dumpCommand;
 
     public function __construct(
-        ContainerInterface $container,
+        ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
         LocaleApiInterface $localeApi,
         TranslatorInterface $translator,
         DumpCommand $dumpCommand
     ) {
-        $this->container = $container;
+        $this->kernel = $kernel;
         $this->variableApi = $variableApi;
         $this->localeApi = $localeApi;
         $this->translator = $translator;
@@ -83,27 +83,38 @@ class RouteDumperHelper
                 $langs = $installedLanguages;
             } else {
                 // get only the default locale
-                $langs = [$this->variableApi->getSystemVar('locale', 'en')]; //$this->container->getParameter('locale');
+                $langs = [$this->variableApi->getSystemVar('locale', 'en')];
             }
         }
 
         $errors = '';
-
-        // force deletion of existing file
-        $targetPath = sprintf('%s/public/js/fos_js_routes.js', $this->container->getParameter('kernel.project_dir'));
-        if (file_exists($targetPath)) {
-            try {
-                unlink($targetPath);
-            } catch (Exception $exception) {
-                $errors .= $this->translator->trans('Error: Could not delete "%path%" because %message%.', [
-                    '%path%' => $targetPath,
-                    '%message%' => $exception->getMessage()
-                ]);
-            }
-        }
-
+        $format = 'js';
+        $domain = '';
         foreach ($langs as $locale) {
-            $input = new ArrayInput(['--locale' => $locale . I18nLoader::ROUTING_PREFIX]);
+            // force deletion of existing file
+            $targetPath = sprintf(
+                '%s/public/js/fos_js_routes%s.%s',
+                $this->kernel->getProjectDir(),
+                empty($domain) ? '' : ('_' . implode('_', $domain)),
+                $format
+            );
+            if (file_exists($targetPath)) {
+                try {
+                    unlink($targetPath);
+                } catch (Exception $exception) {
+                    $errors .= $this->translator->trans('Error: Could not delete "%path%" because %message%.', [
+                        '%path%' => $targetPath,
+                        '%message%' => $exception->getMessage()
+                    ]);
+                }
+            }
+
+            // call dump command
+            $input = new ArrayInput([
+                '--format' => $format,
+                '--locale' => $locale . I18nLoader::ROUTING_PREFIX,
+                '--target' => $targetPath
+            ]);
             $output = new NullOutput();
             try {
                 $this->dumpCommand->run($input, $output);
