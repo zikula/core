@@ -158,4 +158,4 @@ services:
 
     Zikula\ThemeModule\EventListener\ExtensionInstallationListener:
         arguments:
-          $active: '%zikula_asset_manager.combine%'
+          $mergerActive: '%zikula_asset_manager.combine%'
