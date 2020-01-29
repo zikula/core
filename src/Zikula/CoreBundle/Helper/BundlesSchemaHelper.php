@@ -29,11 +29,6 @@ class BundlesSchemaHelper
     private $conn;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var CacheClearer
      */
     private $cacheClearer;
@@ -43,6 +38,11 @@ class BundlesSchemaHelper
      */
     private $projectDir;
 
+    /**
+     * @var Scanner
+     */
+    private $scanner;
+
     public function __construct(
         Connection $conn,
         TranslatorInterface $translator,
@@ -50,19 +50,23 @@ class BundlesSchemaHelper
         $projectDir
     ) {
         $this->conn = $conn;
-        $this->translator = $translator;
         $this->cacheClearer = $cacheClearer;
         $this->projectDir = $projectDir;
+        $this->scanner = new Scanner();
+        $this->scanner->setTranslator($translator);
     }
 
-    public function load(): void
+    public function load(?array $directories = null): void
     {
+        $directories = $directories ?? [$this->projectDir . '/src/extensions'];
         $this->verifySchema();
-        $scanner = new Scanner();
-        $scanner->setTranslator($this->translator);
-        $scanner->scan([$this->projectDir . '/src/extensions', $this->projectDir . '/src/themes']);
-        $array = array_merge($scanner->getExtensionsMetaData(), $scanner->getThemesMetaData());
-        $this->sync($array);
+        $this->scanner->scan($directories);
+        $this->sync($this->scanner->getExtensionsMetaData());
+    }
+
+    public function getScanner(): Scanner
+    {
+        return $this->scanner;
     }
 
     /**

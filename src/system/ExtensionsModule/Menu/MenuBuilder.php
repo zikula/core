@@ -61,7 +61,7 @@ class MenuBuilder
 
         switch ($extension->getState()) {
             case Constant::STATE_ACTIVE:
-                if (!ZikulaKernel::isCoreModule($extension->getName())) {
+                if (!ZikulaKernel::isCoreExtension($extension->getName())) {
                     $csrfToken = $this->getCsrfToken('deactivate-extension');
                     $menu->addChild('Deactivate extension', [
                         'route' => 'zikulaextensionsmodule_extension_deactivate',

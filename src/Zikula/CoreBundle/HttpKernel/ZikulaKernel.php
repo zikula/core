@@ -20,7 +20,9 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\AdminModule\ZikulaAdminModule;
+use Zikula\AtomTheme\ZikulaAtomTheme;
 use Zikula\BlocksModule\ZikulaBlocksModule;
+use Zikula\BootstrapTheme\ZikulaBootstrapTheme;
 use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\CategoriesModule\ZikulaCategoriesModule;
 use Zikula\ExtensionsModule\AbstractModule;
@@ -29,7 +31,9 @@ use Zikula\GroupsModule\ZikulaGroupsModule;
 use Zikula\MailerModule\ZikulaMailerModule;
 use Zikula\MenuModule\ZikulaMenuModule;
 use Zikula\PermissionsModule\ZikulaPermissionsModule;
+use Zikula\PrinterTheme\ZikulaPrinterTheme;
 use Zikula\RoutesModule\ZikulaRoutesModule;
+use Zikula\RssTheme\ZikulaRssTheme;
 use Zikula\SearchModule\ZikulaSearchModule;
 use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\SettingsModule\ZikulaSettingsModule;
@@ -73,7 +77,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * Public list of core modules and their bundle class.
      * @var array
      */
-    public static $coreModules = [
+    public static $coreExtension = [
         'ZikulaAdminModule' => ZikulaAdminModule::class,
         'ZikulaBlocksModule' => ZikulaBlocksModule::class,
         'ZikulaCategoriesModule' => ZikulaCategoriesModule::class,
@@ -88,7 +92,11 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaSettingsModule' => ZikulaSettingsModule::class,
         'ZikulaThemeModule' => ZikulaThemeModule::class,
         'ZikulaUsersModule' => ZikulaUsersModule::class,
-        'ZikulaZAuthModule' => ZikulaZAuthModule::class
+        'ZikulaZAuthModule' => ZikulaZAuthModule::class,
+        'ZikulaAtomTheme' => ZikulaAtomTheme::class,
+        'ZikulaBootstrapTheme' => ZikulaBootstrapTheme::class,
+        'ZikulaPrinterTheme' => ZikulaPrinterTheme::class,
+        'ZikulaRssTheme' => ZikulaRssTheme::class
     ];
 
     /**
@@ -137,9 +145,9 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         return $this->modules;
     }
 
-    public static function isCoreModule(string $moduleName): bool
+    public static function isCoreExtension(string $extensionName): bool
     {
-        return array_key_exists($moduleName, self::$coreModules);
+        return array_key_exists($extensionName, self::$coreExtension);
     }
 
     public function getTheme(string $themeName): AbstractTheme

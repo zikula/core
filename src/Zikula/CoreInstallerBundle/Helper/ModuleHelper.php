@@ -98,7 +98,7 @@ class ModuleHelper
 
     public function categorizeModules(): bool
     {
-        reset(ZikulaKernel::$coreModules);
+        reset(ZikulaKernel::$coreExtension);
         $systemModulesCategories = [
             'ZikulaExtensionsModule' => $this->translator->trans('System'),
             'ZikulaPermissionsModule' => $this->translator->trans('Users'),
@@ -117,7 +117,7 @@ class ModuleHelper
             'ZikulaMenuModule' => $this->translator->trans('Content'),
         ];
 
-        foreach (ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
+        foreach (ZikulaKernel::$coreExtension as $systemModule => $bundleClass) {
             $this->setModuleCategory($systemModule, $systemModulesCategories[$systemModule]);
         }
 
@@ -131,14 +131,14 @@ class ModuleHelper
     {
         $bundleSyncHelper = $this->container->get(BundleSyncHelper::class);
         $projectDir = $this->container->get('kernel')->getProjectDir();
-        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles([$projectDir . '/src/system', $projectDir . '/src/modules']);
+        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles([$projectDir . '/src/system', $projectDir . '/src/extensions']);
         $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
 
         $doctrine = $this->container->get('doctrine');
 
         /** @var ExtensionEntity[] $extensions */
         $extensions = $doctrine->getRepository('ZikulaExtensionsModule:ExtensionEntity')
-            ->findBy(['name' => array_keys(ZikulaKernel::$coreModules)]);
+            ->findBy(['name' => array_keys(ZikulaKernel::$coreExtension)]);
         foreach ($extensions as $extension) {
             $extension->setState(Constant::STATE_ACTIVE);
         }

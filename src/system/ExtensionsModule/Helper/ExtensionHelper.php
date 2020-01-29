@@ -181,7 +181,7 @@ class ExtensionHelper
     public function uninstall(ExtensionEntity $extension): bool
     {
         if (Constant::STATE_NOTALLOWED === $extension->getState()
-            || ZikulaKernel::isCoreModule($extension->getName())) {
+            || ZikulaKernel::isCoreExtension($extension->getName())) {
             throw new RuntimeException($this->translator->trans('Error! No permission to uninstall %extension%.', ['%extension%' => $extension->getDisplayname()]));
         }
         if (Constant::STATE_UNINITIALISED === $extension->getState()) {

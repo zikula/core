@@ -22,12 +22,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
-use Zikula\Bundle\CoreBundle\Composer\Scanner;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
@@ -123,11 +121,8 @@ class BundleSyncHelper
     {
         $directories = $directories ?? [$this->kernel->getProjectDir() . '/src/extensions'];
         // sync the filesystem and the bundles table
-        $this->bundlesSchemaHelper->load();
-
-        $scanner = new Scanner();
-        $scanner->setTranslator($this->translator);
-        $scanner->scan($directories, 5);
+        $this->bundlesSchemaHelper->load($directories);
+        $scanner = $this->bundlesSchemaHelper->getScanner();
         foreach ($scanner->getInvalid() as $invalidName) {
             $this->session->getFlashBag()->add(
                 'warning',
@@ -217,7 +212,7 @@ class BundleSyncHelper
     }
 
     /**
-     * Sync extensions in the filesystem and the database.
+     * Sync extensions in the filesystem and the extensions table.
      *
      * @return array $upgradedExtensions[<name>] = <version>
      */
@@ -259,9 +254,9 @@ class BundleSyncHelper
                 if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array)$extensionFromFile['oldnames'], true)) {
                     // migrate its modvars
                     $this->extensionVarRepository->updateName($dbname, $name);
-                    // rename the module register
+                    // rename the extension register
                     $this->extensionRepository->updateName($dbname, $name);
-                    // replace the old module with the new one in the $extensionsFromDB array
+                    // replace the old extension with the new one in the $extensionsFromDB array
                     $extensionsFromDB[$name] = $extensionFromDB;
                     unset($extensionsFromDB[$dbname]);
                 }
@@ -313,33 +308,33 @@ class BundleSyncHelper
      */
     private function syncLostExtensions(array $extensionsFromFile, array &$extensionsFromDB): void
     {
-        foreach ($extensionsFromDB as $name => $unusedVariable) {
-            if ($this->kernel::isCoreModule($name) || array_key_exists($name, $extensionsFromFile)) {
+        foreach ($extensionsFromDB as $extensionName => $unusedVariable) {
+            if ($this->kernel::isCoreExtension($extensionName) || array_key_exists($extensionName, $extensionsFromFile)) {
                 continue;
             }
 
-            $lostModule = $this->extensionRepository->get($name); // must obtain Entity because value from $extensionsFromDB is only an array
-            if (!$lostModule) {
-                throw new RuntimeException($this->translator->trans('Error! Could not load data for %extension%.', ['%extension%' => $name]));
+            $lostExtension = $this->extensionRepository->get($extensionName); // must obtain Entity because value from $extensionsFromDB is only an array
+            if (!$lostExtension) {
+                throw new RuntimeException($this->translator->trans('Error! Could not load data for %extension%.', ['%extension%' => $extensionName]));
             }
-            $lostModuleState = $lostModule->getState();
-            if ((Constant::STATE_INVALID === $lostModuleState)
-                || ($lostModuleState === Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT)) {
+            $lostExtensionState = $lostExtension->getState();
+            if ((Constant::STATE_INVALID === $lostExtensionState)
+                || ($lostExtensionState === Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was invalid and subsequently removed from file system,
                 // or extension was incompatible with core and subsequently removed, delete it
-                $this->extensionRepository->removeAndFlush($lostModule);
-            } elseif ((Constant::STATE_UNINITIALISED === $lostModuleState)
-                || ($lostModuleState === Constant::STATE_UNINITIALISED + Constant::INCOMPATIBLE_CORE_SHIFT)) {
+                $this->extensionRepository->removeAndFlush($lostExtension);
+            } elseif ((Constant::STATE_UNINITIALISED === $lostExtensionState)
+                || ($lostExtensionState === Constant::STATE_UNINITIALISED + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was uninitialised and subsequently removed from file system, delete it
-                $this->extensionRepository->removeAndFlush($lostModule);
+                $this->extensionRepository->removeAndFlush($lostExtension);
             } else {
-                // Set state of module to 'missing'
+                // Set state of extension to 'missing'
                 // This state cannot be reached in with an ACTIVE bundle. - ACTIVE bundles are part of the pre-compiled Kernel.
                 // extensions that are inactive can be marked as missing.
-                $this->extensionStateHelper->updateState($lostModule->getId(), Constant::STATE_MISSING);
+                $this->extensionStateHelper->updateState($lostExtension->getId(), Constant::STATE_MISSING);
             }
 
-            unset($extensionsFromDB[$name]);
+            unset($extensionsFromDB[$extensionName]);
         }
     }
 
@@ -362,7 +357,7 @@ class BundleSyncHelper
                     $extensionFromFile['state'] = Constant::STATE_INVALID;
                 } else {
                     $coreCompatibility = $extensionFromFile['coreCompatibility'];
-                    // shift state if module is incompatible with core version
+                    // shift state if extension is incompatible with core version
                     $extensionFromFile['state'] = Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)
                         ? $extensionFromFile['state']
                         : $extensionFromFile['state'] + Constant::INCOMPATIBLE_CORE_SHIFT;
@@ -375,7 +370,7 @@ class BundleSyncHelper
                 $extensionFromFile['capabilities'] = unserialize($extensionFromFile['capabilities']);
                 $extensionFromFile['securityschema'] = unserialize($extensionFromFile['securityschema']);
 
-                // insert new module to db
+                // insert new extension to db
                 $newExtension = new ExtensionEntity();
                 $newExtension->merge($extensionFromFile);
                 $vetoEvent = new GenericEvent($newExtension);

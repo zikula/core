@@ -85,17 +85,12 @@ class Scanner
             }
             $json['autoload']['psr-4'][$ns] = $base;
             $json['extra']['zikula']['short-name'] = mb_substr($class, mb_strrpos($class, '\\') + 1, mb_strlen($class));
-            $json['extensionType'] = ZikulaKernel::isCoreModule($json['extra']['zikula']['short-name']) ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
+            $json['extensionType'] = ZikulaKernel::isCoreExtension($json['extra']['zikula']['short-name']) ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
 
             return $json;
         }
 
         return false;
-    }
-
-    public function getThemesMetaData(bool $indexByShortName = false): array
-    {
-        return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
     public function getExtensionsMetaData(): array
@@ -107,9 +102,10 @@ class Scanner
     {
         $array = [];
         foreach ($this->jsons as $json) {
-            if ('zikula-extension' !== $type && $json['type'] !== $type) {
-                continue;
-            }
+            // @temp
+//            if ('zikula-extension' !== $type && $json['type'] !== $type) {
+//                continue;
+//            }
             $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
             $array[$indexField] = new MetaData($json);
             $array[$indexField]->setTranslator($this->translator);
