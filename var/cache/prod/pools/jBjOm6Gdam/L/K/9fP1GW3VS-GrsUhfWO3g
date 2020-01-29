@@ -1,0 +1,29 @@
+<?php //%255BZikula%255CCategoriesModule%255CEntity%255CCategoryEntity%2524parent%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Gedmo\\Mapping\\Annotation\\TreeParent'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Gedmo\\Mapping\\Annotation\\TreeParent')),
+        clone ($p['Doctrine\\ORM\\Mapping\\ManyToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToOne')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'targetEntity' => [
+                1 => 'CategoryEntity',
+            ],
+            'inversedBy' => [
+                1 => 'children',
+            ],
+            'name' => [
+                2 => 'parent_id',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

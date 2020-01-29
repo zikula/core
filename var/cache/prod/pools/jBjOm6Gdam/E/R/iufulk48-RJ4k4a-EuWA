@@ -1,0 +1,48 @@
+<?php //%255BZikula%255CUsersModule%255CEntity%255CUserEntity%2524groups%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ManyToMany'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToMany')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinTable'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinTable')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
+        clone $p['Doctrine\\ORM\\Mapping\\JoinColumn'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            'targetEntity' => [
+                'Zikula\\GroupsModule\\Entity\\GroupEntity',
+            ],
+            'inversedBy' => [
+                'users',
+            ],
+            'indexBy' => [
+                'gid',
+            ],
+            'name' => [
+                1 => 'group_membership',
+                'uid',
+                'gid',
+            ],
+            'joinColumns' => [
+                1 => [
+                    $o[2],
+                ],
+            ],
+            'inverseJoinColumns' => [
+                1 => [
+                    $o[3],
+                ],
+            ],
+            'referencedColumnName' => [
+                2 => 'uid',
+                'gid',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+); }];

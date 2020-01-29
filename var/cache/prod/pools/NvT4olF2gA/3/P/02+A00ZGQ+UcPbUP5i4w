@@ -1,0 +1,3 @@
+<?php //%255BZikula%255CPermissionsModule%255CPermissionsModuleInstaller%2523createDefaultData%255D%255B1%255D
+
+return [PHP_INT_MAX, []];

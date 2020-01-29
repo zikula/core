@@ -1,0 +1,140 @@
+<?php //%255BZikula%255CBundle%255CHookBundle%255CDispatcher%255CStorage%255CDoctrine%255CEntity%255CHookBindingEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity\\HookBindingEntity',
+            ],
+            'namespace' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity\\HookBindingEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity\\Repository\\HookBindingRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'sowner' => [
+                        'fieldName' => 'sowner',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 40,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sowner',
+                    ],
+                    'powner' => [
+                        'fieldName' => 'powner',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 40,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'powner',
+                    ],
+                    'sareaid' => [
+                        'fieldName' => 'sareaid',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 512,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sareaid',
+                    ],
+                    'pareaid' => [
+                        'fieldName' => 'pareaid',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 512,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'pareaid',
+                    ],
+                    'category' => [
+                        'fieldName' => 'category',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 20,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'category',
+                    ],
+                    'sortorder' => [
+                        'fieldName' => 'sortorder',
+                        'type' => 'smallint',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sortorder',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'sowner' => 'sowner',
+                    'powner' => 'powner',
+                    'sareaid' => 'sareaid',
+                    'pareaid' => 'pareaid',
+                    'category' => 'category',
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'sowner' => 'sowner',
+                    'powner' => 'powner',
+                    'sareaid' => 'sareaid',
+                    'pareaid' => 'pareaid',
+                    'category' => 'category',
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'hook_binding',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

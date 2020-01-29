@@ -1,0 +1,224 @@
+<?php //%255BZikula%255CMenuModule%255CEntity%255CMenuItemEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+            ],
+            'namespace' => [
+                'Zikula\\MenuModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\MenuModule\\Entity\\Repository\\MenuItemRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'id',
+                    ],
+                    'title' => [
+                        'fieldName' => 'title',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 64,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'title',
+                    ],
+                    'lft' => [
+                        'fieldName' => 'lft',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'lft',
+                    ],
+                    'lvl' => [
+                        'fieldName' => 'lvl',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'lvl',
+                    ],
+                    'rgt' => [
+                        'fieldName' => 'rgt',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'rgt',
+                    ],
+                    'options' => [
+                        'fieldName' => 'options',
+                        'type' => 'array',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'options',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'title' => 'title',
+                    'lft' => 'lft',
+                    'lvl' => 'lvl',
+                    'rgt' => 'rgt',
+                    'options' => 'options',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'title' => 'title',
+                    'lft' => 'lft',
+                    'lvl' => 'lvl',
+                    'rgt' => 'rgt',
+                    'options' => 'options',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'menu_items',
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'root' => [
+                        'fieldName' => 'root',
+                        'joinColumns' => [
+                            [
+                                'name' => 'root_id',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => 'CASCADE',
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'id',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => null,
+                        'targetEntity' => 'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'root_id' => 'id',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'root_id' => 'root_id',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'id' => 'root_id',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                    'parent' => [
+                        'fieldName' => 'parent',
+                        'joinColumns' => [
+                            [
+                                'name' => 'parent_id',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => 'CASCADE',
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'id',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => 'children',
+                        'targetEntity' => 'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'parent_id' => 'id',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'parent_id' => 'parent_id',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'id' => 'parent_id',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                    'children' => [
+                        'fieldName' => 'children',
+                        'mappedBy' => 'parent',
+                        'targetEntity' => 'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+                        'cascade' => [],
+                        'orphanRemoval' => false,
+                        'fetch' => 2,
+                        'orderBy' => [
+                            'lft' => 'ASC',
+                        ],
+                        'type' => 4,
+                        'inversedBy' => null,
+                        'isOwningSide' => false,
+                        'sourceEntity' => 'Zikula\\MenuModule\\Entity\\MenuItemEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

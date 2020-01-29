@@ -1,0 +1,21 @@
+<?php //%255BZikula%255CMenuModule%255CEntity%255CMenuItemEntity%2524rgt%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Gedmo\\Mapping\\Annotation\\TreeRight'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Gedmo\\Mapping\\Annotation\\TreeRight')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Column'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Column')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'type' => [
+                1 => 'integer',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+); }];

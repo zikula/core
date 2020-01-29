@@ -1,0 +1,195 @@
+<?php //%255BZikula%255CGroupsModule%255CEntity%255CGroupEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\GroupsModule\\Entity\\GroupEntity',
+            ],
+            'namespace' => [
+                'Zikula\\GroupsModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\GroupsModule\\Entity\\GroupEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\GroupsModule\\Entity\\Repository\\GroupRepository',
+            ],
+            'identifier' => [
+                [
+                    'gid',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'gid' => [
+                        'fieldName' => 'gid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'gid',
+                    ],
+                    'name' => [
+                        'fieldName' => 'name',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => true,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'name',
+                    ],
+                    'gtype' => [
+                        'fieldName' => 'gtype',
+                        'type' => 'smallint',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'gtype',
+                    ],
+                    'description' => [
+                        'fieldName' => 'description',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 200,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'description',
+                    ],
+                    'state' => [
+                        'fieldName' => 'state',
+                        'type' => 'smallint',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'state',
+                    ],
+                    'nbumax' => [
+                        'fieldName' => 'nbumax',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'nbumax',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'gid' => 'gid',
+                    'name' => 'name',
+                    'gtype' => 'gtype',
+                    'description' => 'description',
+                    'state' => 'state',
+                    'nbumax' => 'nbumax',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'gid' => 'gid',
+                    'name' => 'name',
+                    'gtype' => 'gtype',
+                    'description' => 'description',
+                    'state' => 'state',
+                    'nbumax' => 'nbumax',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'groups',
+                    'quoted' => true,
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'users' => [
+                        'fieldName' => 'users',
+                        'joinTable' => [
+                            'name' => 'group_membership',
+                            'schema' => null,
+                            'joinColumns' => [
+                                [
+                                    'name' => 'gid',
+                                    'unique' => false,
+                                    'nullable' => true,
+                                    'onDelete' => 'CASCADE',
+                                    'columnDefinition' => null,
+                                    'referencedColumnName' => 'gid',
+                                ],
+                            ],
+                            'inverseJoinColumns' => [
+                                [
+                                    'name' => 'uid',
+                                    'unique' => false,
+                                    'nullable' => true,
+                                    'onDelete' => null,
+                                    'columnDefinition' => null,
+                                    'referencedColumnName' => 'uid',
+                                ],
+                            ],
+                        ],
+                        'targetEntity' => 'Zikula\\UsersModule\\Entity\\UserEntity',
+                        'mappedBy' => 'groups',
+                        'inversedBy' => null,
+                        'cascade' => [],
+                        'indexBy' => 'uid',
+                        'orphanRemoval' => false,
+                        'fetch' => 2,
+                        'orderBy' => [
+                            'uname' => 'ASC',
+                        ],
+                        'type' => 8,
+                        'isOwningSide' => false,
+                        'sourceEntity' => 'Zikula\\GroupsModule\\Entity\\GroupEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                    ],
+                    'applications' => [
+                        'fieldName' => 'applications',
+                        'mappedBy' => 'group',
+                        'targetEntity' => 'Zikula\\GroupsModule\\Entity\\GroupApplicationEntity',
+                        'cascade' => [],
+                        'orphanRemoval' => false,
+                        'fetch' => 2,
+                        'type' => 4,
+                        'inversedBy' => null,
+                        'isOwningSide' => false,
+                        'sourceEntity' => 'Zikula\\GroupsModule\\Entity\\GroupEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

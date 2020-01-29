@@ -1,0 +1,3 @@
+<?php //%255BZikula%255CCategoriesModule%255CEntity%255CCategoryAttributeEntity%255C%2524GEDMO_REFERENCEINTEGRITY_CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, []];

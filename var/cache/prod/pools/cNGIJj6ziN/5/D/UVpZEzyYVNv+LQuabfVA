@@ -1,0 +1,260 @@
+<?php //%255BZikula%255CCategoriesModule%255CEntity%255CCategoryRegistryEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\CategoriesModule\\Entity\\CategoryRegistryEntity',
+            ],
+            'namespace' => [
+                'Zikula\\CategoriesModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\CategoriesModule\\Entity\\CategoryRegistryEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\CategoriesModule\\Entity\\Repository\\CategoryRegistryRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'id',
+                    ],
+                    'modname' => [
+                        'fieldName' => 'modname',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 60,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'modname',
+                    ],
+                    'entityname' => [
+                        'fieldName' => 'entityname',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 60,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'entityname',
+                    ],
+                    'property' => [
+                        'fieldName' => 'property',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'property',
+                    ],
+                    'cr_date' => [
+                        'fieldName' => 'cr_date',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'cr_date',
+                    ],
+                    'lu_date' => [
+                        'fieldName' => 'lu_date',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'lu_date',
+                    ],
+                    'obj_status' => [
+                        'fieldName' => 'obj_status',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 1,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'obj_status',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'modname' => 'modname',
+                    'entityname' => 'entityname',
+                    'property' => 'property',
+                    'cr_date' => 'cr_date',
+                    'lu_date' => 'lu_date',
+                    'obj_status' => 'obj_status',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'modname' => 'modname',
+                    'entityname' => 'entityname',
+                    'property' => 'property',
+                    'cr_date' => 'cr_date',
+                    'lu_date' => 'lu_date',
+                    'obj_status' => 'obj_status',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'categories_registry',
+                    'indexes' => [
+                        'idx_categories_registry' => [
+                            'columns' => [
+                                'modname',
+                                'entityname',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'category' => [
+                        'fieldName' => 'category',
+                        'joinColumns' => [
+                            [
+                                'name' => 'category_id',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'id',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => 'attributes',
+                        'targetEntity' => 'Zikula\\CategoriesModule\\Entity\\CategoryEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\CategoriesModule\\Entity\\CategoryRegistryEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'category_id' => 'id',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'category_id' => 'category_id',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'id' => 'category_id',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                    'cr_uid' => [
+                        'fieldName' => 'cr_uid',
+                        'joinColumns' => [
+                            [
+                                'name' => 'cr_uid',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'uid',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => null,
+                        'targetEntity' => 'Zikula\\UsersModule\\Entity\\UserEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\CategoriesModule\\Entity\\CategoryRegistryEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'cr_uid' => 'uid',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'cr_uid' => 'cr_uid',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'uid' => 'cr_uid',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                    'lu_uid' => [
+                        'fieldName' => 'lu_uid',
+                        'joinColumns' => [
+                            [
+                                'name' => 'lu_uid',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'uid',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => null,
+                        'targetEntity' => 'Zikula\\UsersModule\\Entity\\UserEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\CategoriesModule\\Entity\\CategoryRegistryEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'lu_uid' => 'uid',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'lu_uid' => 'lu_uid',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'uid' => 'lu_uid',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

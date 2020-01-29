@@ -1,0 +1,49 @@
+<?php //%255BZikula%255CUsersModule%255CEntity%255CUserEntity%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Table'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Table')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Index'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Index')),
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone ($p['Zikula\\UsersModule\\Validator\\Constraints\\ValidUserFields'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Zikula\\UsersModule\\Validator\\Constraints\\ValidUserFields')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'repositoryClass' => [
+                'Zikula\\UsersModule\\Entity\\Repository\\UserRepository',
+            ],
+            'name' => [
+                1 => 'users',
+                'uname',
+                'email',
+            ],
+            'indexes' => [
+                1 => [
+                    $o[2],
+                    $o[3],
+                ],
+            ],
+            'columns' => [
+                2 => [
+                    'uname',
+                ],
+                [
+                    'email',
+                ],
+            ],
+            'groups' => [
+                4 => [
+                    'Default',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[4],
+    ],
+    []
+); }];

@@ -1,0 +1,207 @@
+body {
+    font-size: 16px;
+    line-height: 1.6em;
+    color: #444;
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding-top: 40px;
+}
+
+#cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#content {
+    background: #fafafa;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
+    -moz-box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
+    margin: 0 auto;
+    padding: 1% 0;
+    color: #444;
+    text-align: center;
+}
+a {
+    color: #0092D0;
+    border: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+img {
+    border: none;
+}
+
+h1 {
+    background: url('../images/logo_with_title.png') no-repeat scroll 50% 50% transparent;
+    font-size: 24px;
+    line-height: 100px;
+    height: 100px;
+    margin: 0.5em 0;
+    padding: 0;
+    text-indent: -9000px;
+}
+
+h2 {
+    color: #E5352C;
+    font-size: 24px;
+    line-height: 26px;
+    text-shadow: 1px 1px 1px rgba(128, 128, 128, 0.5);
+    text-transform: uppercase;
+}
+#header h2 {
+    color: #333333;
+    font-size: 24px;
+    letter-spacing: 3px;
+    margin: 0.5em 0 1em;
+    padding: 0;
+}
+
+#header {
+    text-align: center;
+}
+
+#header a {
+    text-decoration: none;
+}
+
+#header a:hover {
+    text-decoration: underline;
+}
+
+#header p {
+    margin: 1em 0;
+}
+
+#footer {
+    text-align: center;
+}
+
+#footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px;
+}
+
+#footer ul li {
+    display: inline;
+    padding: 0;
+}
+
+#maincontent {
+    margin: 1em auto;
+    width: 80%;
+    padding: 1em;
+}
+
+#maincontent h2 {
+    color: #444;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0.5em 0;
+    padding: 5px 0;
+    text-align: center;
+}
+
+ul#upgradeList,
+ul.systemrequirements {
+    margin-left: 0;
+    padding-left: 0;
+    padding-bottom: 1em;
+    list-style: none;
+}
+
+ul#upgradeList li,
+ul.systemrequirements li {
+  background-position: left 2px;
+  background-repeat: no-repeat;
+  margin: 0.5em 0;
+  padding-left: 25px;
+}
+
+.installguide {
+    font-size: 1.2em;
+}
+
+/*****************************
+ * WIZARD STYLES (breadcrumbs)
+ ****************************/
+
+.wizard {
+    margin-left: -50px;
+    font-size: 14px;
+}
+
+.wizard a {
+    color: black;
+}
+
+.wizard li:first-child {
+    -moz-border-radius: 4px 0 0 4px;
+    -webkit-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+}
+
+.wizard .active {
+    background: #0092D0;
+    color: white;
+    font-weight: bold;
+}
+
+.wizard .active > a {
+    color: white;
+}
+
+.wizard li {
+    display: inline-block;
+    position: relative;
+    margin-right: 5px;
+    line-height: 18px;
+    list-style: none;
+    padding: 12px 17px 10px 30px;
+    background: #efefef;
+    zoom: 1;
+}
+
+.wizard li:first-child:before {
+    border: 0;
+}
+
+.wizard li:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 0;
+    width: 0;
+    border-bottom: 20px inset transparent;
+    border-left: 20px solid #FAFAFA;
+    border-top: 20px inset transparent;
+    content: "";
+}
+
+.wizard .active:after {
+    border-left-color: #0092D0;
+}
+
+.wizard li:after {
+    position: absolute;
+    right: -20px;
+    top: 0;
+    height: 0;
+    width: 0;
+    border-bottom: 20px inset transparent;
+    border-left: 20px solid #efefef;
+    border-top: 20px inset transparent;
+    content: "";
+    z-index: 2;
+}

@@ -1,0 +1,22 @@
+<?php //%255BGedmo%255CTranslatable%255CEntity%255CMappedSuperclass%255CAbstractTranslation%2524objectClass%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Doctrine\\ORM\\Mapping\\Column'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Column')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'object_class',
+            ],
+            'length' => [
+                255,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

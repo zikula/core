@@ -1,0 +1,35 @@
+<?php //%255BZikula%255CUsersModule%255CEntity%255CUserAttributeEntity%2524user%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Id'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Id')),
+        clone ($p['Doctrine\\ORM\\Mapping\\ManyToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToOne')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'targetEntity' => [
+                1 => 'UserEntity',
+            ],
+            'inversedBy' => [
+                1 => 'attributes',
+            ],
+            'name' => [
+                2 => 'user_id',
+            ],
+            'referencedColumnName' => [
+                2 => 'uid',
+            ],
+            'onDelete' => [
+                2 => 'CASCADE',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

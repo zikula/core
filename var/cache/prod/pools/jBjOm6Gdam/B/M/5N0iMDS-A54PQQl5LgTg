@@ -1,0 +1,37 @@
+<?php //%255BZikula%255CAdminModule%255CEntity%255CAdminModuleEntity%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Table'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Table')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Index'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Index')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'repositoryClass' => [
+                'Zikula\\AdminModule\\Entity\\Repository\\AdminModuleRepository',
+            ],
+            'name' => [
+                1 => 'admin_module',
+                'mid_cid',
+            ],
+            'indexes' => [
+                1 => [
+                    $o[2],
+                ],
+            ],
+            'columns' => [
+                2 => [
+                    'mid',
+                    'cid',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+); }];

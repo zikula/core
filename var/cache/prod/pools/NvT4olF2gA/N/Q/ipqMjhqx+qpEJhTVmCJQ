@@ -1,0 +1,24 @@
+<?php //%255BZikula%255CBundle%255CHookBundle%255CDispatcher%255CStorage%255CDoctrine%255CEntity%255CHookRuntimeEntity%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Table'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Table')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'hook_runtime',
+            ],
+            'repositoryClass' => [
+                1 => 'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity\\Repository\\HookRuntimeRepository',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+); }];

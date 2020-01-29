@@ -1,0 +1,125 @@
+<?php //%255BZikula%255CBlocksModule%255CEntity%255CBlockPositionEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\BlocksModule\\Entity\\BlockPositionEntity',
+            ],
+            'namespace' => [
+                'Zikula\\BlocksModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\BlocksModule\\Entity\\BlockPositionEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\BlocksModule\\Entity\\Repository\\BlockPositionRepository',
+            ],
+            'identifier' => [
+                [
+                    'pid',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'pid' => [
+                        'fieldName' => 'pid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'pid',
+                    ],
+                    'name' => [
+                        'fieldName' => 'name',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'name',
+                    ],
+                    'description' => [
+                        'fieldName' => 'description',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'description',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'pid' => 'pid',
+                    'name' => 'name',
+                    'description' => 'description',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'pid' => 'pid',
+                    'name' => 'name',
+                    'description' => 'description',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'block_positions',
+                    'indexes' => [
+                        'name_idx' => [
+                            'columns' => [
+                                'name',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'placements' => [
+                        'fieldName' => 'placements',
+                        'mappedBy' => 'position',
+                        'targetEntity' => 'Zikula\\BlocksModule\\Entity\\BlockPlacementEntity',
+                        'cascade' => [
+                            'remove',
+                        ],
+                        'orphanRemoval' => false,
+                        'fetch' => 2,
+                        'orderBy' => [
+                            'sortorder' => 'ASC',
+                        ],
+                        'type' => 4,
+                        'inversedBy' => null,
+                        'isOwningSide' => false,
+                        'sourceEntity' => 'Zikula\\BlocksModule\\Entity\\BlockPositionEntity',
+                        'isCascadeRemove' => true,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

@@ -1,0 +1,198 @@
+#tools {
+    position: relative;
+    z-index: 5;
+}
+
+.jtk-main {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    max-width: 1200px;
+    position: relative;
+    margin-top: 20px;
+}
+
+.jtk-canvas {
+    position: relative;
+    margin-left: 160px;
+    height: 540px;
+    max-height: 700px;
+    border: 1px solid #CCC;
+    background-color: white;
+}
+@media (max-width: 600px) {
+    .jtk-canvas {
+        margin-left: 0;
+        margin-top: 10px;
+        height: 364px;
+    }
+}
+
+.canvas-wide {
+    margin-left:0;
+}
+
+/** ELEMENTS **/
+.jtk-canvas .node { 
+    min-width: 120px;
+    height: 70px;
+    line-height: 70px;
+    background-color: white;
+    text-align: center;
+    -o-box-shadow: 2px 2px 19px #aaa;
+    -webkit-box-shadow: 2px 2px 19px #aaa;
+    -moz-box-shadow: 2px 2px 19px #aaa;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    box-shadow: 2px 2px 19px #aaa;
+    border-radius: 5px;
+    position: absolute;
+    color: black;
+    font-family: helvetica, sans-serif;
+    font-weight: 700;
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-transition: -webkit-box-shadow 0.15s ease-in;
+    -moz-transition: -moz-box-shadow 0.15s ease-in;
+    -o-transition: -o-box-shadow 0.15s ease-in;
+    transition: box-shadow 0.15s ease-in;
+    opacity: 0.8;
+    border: 2px solid #9c435e;
+    cursor: move;
+}
+.jtk-canvas .node.state {
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #E2EDF0));
+    background-image: -o-linear-gradient(right bottom, #FFFFFF 0%, #E2EDF0 100%);
+    background-image: -moz-linear-gradient(right bottom, #FFFFFF 0%, #E2EDF0 100%);
+    background-image: -webkit-linear-gradient(right bottom, #FFFFFF 0%, #E2EDF0 100%);
+    background-image: -ms-linear-gradient(right bottom, #FFFFFF 0%, #E2EDF0 100%);
+    background-image: linear-gradient(to right bottom, #FFFFFF 0%, #E2EDF0 100%);
+}
+.jtk-canvas .node.transition {
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #E1F2EB));
+    background-image: -o-linear-gradient(right bottom, #FFFFFF 0%, #E1F2EB 100%);
+    background-image: -moz-linear-gradient(right bottom, #FFFFFF 0%, #E1F2EB 100%);
+    background-image: -webkit-linear-gradient(right bottom, #FFFFFF 0%, #E1F2EB 100%);
+    background-image: -ms-linear-gradient(right bottom, #FFFFFF 0%, #E1F2EB 100%);
+    background-image: linear-gradient(to right bottom, #FFFFFF 0%, #E1F2EB 100%);
+}
+
+.jtk-canvas .node.state.jtk-connected {
+    border: 2px solid #5f72c7;
+}
+.jtk-canvas .node.transition.jtk-connected {
+    border: 2px solid #4dd1a3;
+}
+
+/** HOVER EFFECTS **/
+.jtk-canvas .node:hover,
+.jtk-canvas .node.jtk-source-hover,
+.jtk-canvas .node.jtk-target-hover {
+    -o-box-shadow: 2px 2px 19px #444;
+    -webkit-box-shadow: 2px 2px 19px #444;
+    -moz-box-shadow: 2px 2px 19px #fff;
+    box-shadow: 2px 2px 19px #444;
+    opacity: 0.6;
+    border: 2px solid orange !important;
+}
+.jtk-canvas .node.state:hover,
+.jtk-canvas .node.state.jtk-source-hover,
+.jtk-canvas .node.state.jtk-target-hover {
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #C3DAE0));
+    background-image: -o-linear-gradient(right bottom, #FFFFFF 0%, #C3DAE0 100%);
+    background-image: -moz-linear-gradient(right bottom, #FFFFFF 0%, #C3DAE0 100%);
+    background-image: -webkit-linear-gradient(right bottom, #FFFFFF 0%, #C3DAE0 100%);
+    background-image: -ms-linear-gradient(right bottom, #FFFFFF 0%, #C3DAE0 100%);
+    background-image: linear-gradient(to right bottom, #FFFFFF 0%, #C3DAE0 100%);
+}
+.jtk-canvas .node.transition:hover,
+.jtk-canvas .node.transition.jtk-source-hover,
+.jtk-canvas .node.transition.jtk-target-hover {
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #BFDBCF));
+    background-image: -o-linear-gradient(right bottom, #FFFFFF 0%, #BFDBCF 100%);
+    background-image: -moz-linear-gradient(right bottom, #FFFFFF 0%, #BFDBCF 100%);
+    background-image: -webkit-linear-gradient(right bottom, #FFFFFF 0%, #BFDBCF 100%);
+    background-image: -ms-linear-gradient(right bottom, #FFFFFF 0%, #BFDBCF 100%);
+    background-image: linear-gradient(to right bottom, #FFFFFF 0%, #BFDBCF 100%);
+}
+
+.node p.node-tools {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    margin-left: -20px;
+    cursor: pointer;
+}
+.node p.node-tools i {
+    margin: 0 4px;
+}
+.node i.ep:hover {
+    color: green;
+}
+.node i.fa-trash-alt:hover {
+    color: red;
+}
+
+/* ENDPOINT STYLES */
+.jtk-endpoint circle {
+    fill: #7AB02C;
+}
+.jtk-endpoint.jtk-hover circle {
+    fill: #db6c28;
+}
+
+/** DRAG/DROP CLASSES **/
+.jtk-canvas .jtk-drag {
+    border: 3px solid orange !important;
+}
+.jtk-canvas .drop-active {
+    border: 1px dotted green;
+}
+.jtk-canvas .drop-hover {
+    border: 2px solid orange;
+}
+
+/** JSPLUMB ARTIFACTS **/
+.node {
+    z-index: 20;
+}
+.jtk-connector {
+    z-index: 4;
+}
+.jtk-endpoint {
+    z-index: 5;
+}
+.jtk-overlay {
+    z-index: 6;
+    background-color: transparent;
+}
+
+/* prevent selection while dragging */
+.jtk-drag-select * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;    
+}
+
+path,
+.jtk-endpoint {
+    cursor: pointer;
+}
+
+#outputTabPanels div.tab-pane {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-top-width: 0;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+#outputTabPanels div.tab-pane pre code {
+    font-family: fixed;
+}

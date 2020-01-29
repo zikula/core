@@ -1,0 +1,35 @@
+<?php //%255BZikula%255CAdminModule%255CEntity%255CAdminCategoryEntity%2524icon%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Column'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Column')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\Length'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Length')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'length' => [
+                50,
+            ],
+            'max' => [
+                1 => '50',
+            ],
+            'min' => [
+                1 => '0',
+            ],
+            'allowEmptyString' => [
+                1 => 'true',
+            ],
+            'groups' => [
+                1 => [
+                    'Default',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+    ],
+    []
+); }];

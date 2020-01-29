@@ -1,0 +1,35 @@
+<?php //%255BZikula%255CRoutesModule%255CEntity%255CBase%255CAbstractRouteEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\RoutesModule\\Entity\\Base\\AbstractRouteEntity',
+            ],
+            'namespace' => [
+                'Zikula\\RoutesModule\\Entity\\Base',
+            ],
+            'rootEntityName' => [
+                'Zikula\\RoutesModule\\Entity\\Base\\AbstractRouteEntity',
+            ],
+            'isMappedSuperclass' => [
+                true,
+            ],
+            'table' => [
+                [
+                    'name' => 'AbstractRouteEntity',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

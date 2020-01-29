@@ -1,0 +1,3 @@
+<?php //%255B%255BC%255DSymfony%255CComponent%255CHttpKernel%255CDataCollector%255CDataCollector%2523getCasters%255D%255B1%255D
+
+return [PHP_INT_MAX, 1580299428];

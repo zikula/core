@@ -1,0 +1,51 @@
+/* Index page */
+.total-progressbar {
+    width: 100%;
+}
+
+.domain-table .progressbar-cell {
+    width: 60%;
+}
+
+.message-delete {
+    float: right;
+}
+
+.locales-item {
+    padding: .25rem;
+    display: inline-block;
+}
+
+.locales-item.active {
+    color: rgba(0, 0, 0, .5);
+}
+
+pre a {
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.location-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ajax results */
+
+.ajax-result.success {
+    width: 100%;
+    padding: .25rem .5rem;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    border-radius: .25rem;
+}
+
+.ajax-result.error {
+    width: 100%;
+    padding: .25rem .5rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}

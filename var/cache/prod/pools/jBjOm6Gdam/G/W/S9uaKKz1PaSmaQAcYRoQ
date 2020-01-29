@@ -1,0 +1,31 @@
+<?php //%255BZikula%255CBlocksModule%255CEntity%255CBlockEntity%2524placements%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Doctrine\\ORM\\Mapping\\OneToMany'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\OneToMany')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'mappedBy' => [
+                'block',
+            ],
+            'targetEntity' => [
+                'Zikula\\BlocksModule\\Entity\\BlockPlacementEntity',
+            ],
+            'cascade' => [
+                [
+                    'remove',
+                    'persist',
+                ],
+            ],
+            'orphanRemoval' => [
+                true,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+    ],
+    []
+); }];

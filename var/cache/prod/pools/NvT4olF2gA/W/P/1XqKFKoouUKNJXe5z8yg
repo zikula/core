@@ -1,0 +1,43 @@
+<?php //%255BZikula%255CRoutesModule%255CBase%255CAbstractAppSettings%2524routeEntriesPerPage%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Validator\\Constraints\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Type')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\NotBlank'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotBlank')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\NotEqualTo'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotEqualTo')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\LessThan'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\LessThan')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'type' => [
+                'integer',
+            ],
+            'groups' => [
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+            ],
+            'value' => [
+                2 => 0,
+                100000000000,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+        $o[3],
+    ],
+    []
+); }];

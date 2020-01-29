@@ -1,0 +1,3 @@
+<?php //%255BSymfony%255CComponent%255CHttpKernel%255CKernel%2523getContainerBuilder%255D%255B1%255D
+
+return [PHP_INT_MAX, []];

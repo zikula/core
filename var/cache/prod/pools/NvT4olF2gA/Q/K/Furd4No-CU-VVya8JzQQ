@@ -1,0 +1,3 @@
+<?php //%255BZikula%255CMailerModule%255CDependencyInjection%255CZikulaMailerExtension%2523load%255D%255B1%255D
+
+return [PHP_INT_MAX, []];

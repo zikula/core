@@ -1,0 +1,204 @@
+<?php //%255BZikula%255CSecurityCenterModule%255CEntity%255CIntrusionEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\SecurityCenterModule\\Entity\\IntrusionEntity',
+            ],
+            'namespace' => [
+                'Zikula\\SecurityCenterModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\SecurityCenterModule\\Entity\\IntrusionEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\SecurityCenterModule\\Entity\\Repository\\IntrusionRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'name' => [
+                        'fieldName' => 'name',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 128,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'name',
+                    ],
+                    'tag' => [
+                        'fieldName' => 'tag',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 40,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'tag',
+                    ],
+                    'value' => [
+                        'fieldName' => 'value',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'value',
+                    ],
+                    'page' => [
+                        'fieldName' => 'page',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'page',
+                    ],
+                    'ip' => [
+                        'fieldName' => 'ip',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 40,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'ip',
+                    ],
+                    'impact' => [
+                        'fieldName' => 'impact',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'impact',
+                    ],
+                    'filters' => [
+                        'fieldName' => 'filters',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'filters',
+                    ],
+                    'date' => [
+                        'fieldName' => 'date',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'date',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'name' => 'name',
+                    'tag' => 'tag',
+                    'value' => 'value',
+                    'page' => 'page',
+                    'ip' => 'ip',
+                    'impact' => 'impact',
+                    'filters' => 'filters',
+                    'date' => 'date',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'name' => 'name',
+                    'tag' => 'tag',
+                    'value' => 'value',
+                    'page' => 'page',
+                    'ip' => 'ip',
+                    'impact' => 'impact',
+                    'filters' => 'filters',
+                    'date' => 'date',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'sc_intrusion',
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'user' => [
+                        'fieldName' => 'user',
+                        'joinColumns' => [
+                            [
+                                'name' => 'uid',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'uid',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => null,
+                        'targetEntity' => 'Zikula\\UsersModule\\Entity\\UserEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\SecurityCenterModule\\Entity\\IntrusionEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'uid' => 'uid',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'uid' => 'uid',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'uid' => 'uid',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

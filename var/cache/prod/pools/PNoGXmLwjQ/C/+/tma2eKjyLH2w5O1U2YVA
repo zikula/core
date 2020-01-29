@@ -1,0 +1,168 @@
+<?php //%255BZikula%255CGroupsModule%255CEntity%255CGroupApplicationEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\GroupsModule\\Entity\\GroupApplicationEntity',
+            ],
+            'namespace' => [
+                'Zikula\\GroupsModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\GroupsModule\\Entity\\GroupApplicationEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\GroupsModule\\Entity\\Repository\\GroupApplicationRepository',
+            ],
+            'identifier' => [
+                [
+                    'app_id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'app_id' => [
+                        'fieldName' => 'app_id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'app_id',
+                    ],
+                    'application' => [
+                        'fieldName' => 'application',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'application',
+                    ],
+                    'status' => [
+                        'fieldName' => 'status',
+                        'type' => 'smallint',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'status',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'app_id' => 'app_id',
+                    'application' => 'application',
+                    'status' => 'status',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'app_id' => 'app_id',
+                    'application' => 'application',
+                    'status' => 'status',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'group_applications',
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'user' => [
+                        'fieldName' => 'user',
+                        'joinColumns' => [
+                            [
+                                'name' => 'uid',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'uid',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => null,
+                        'targetEntity' => 'Zikula\\UsersModule\\Entity\\UserEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\GroupsModule\\Entity\\GroupApplicationEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'uid' => 'uid',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'uid' => 'uid',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'uid' => 'uid',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                    'group' => [
+                        'fieldName' => 'group',
+                        'joinColumns' => [
+                            [
+                                'name' => 'gid',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'gid',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => 'applications',
+                        'targetEntity' => 'Zikula\\GroupsModule\\Entity\\GroupEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\GroupsModule\\Entity\\GroupApplicationEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'gid' => 'gid',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'gid' => 'gid',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'gid' => 'gid',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

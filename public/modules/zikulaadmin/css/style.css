@@ -1,0 +1,283 @@
+/******************************************************************************
+ * Admin area (introduced in Core 1.3)
+ ******************************************************************************/
+
+#z-maincontent div.z-admin-content {
+    background: #fff;
+    color: #333;
+    width: auto;
+    border: 1px solid #ccc;
+    border-top: none;
+    padding: 5px 1%;
+}
+
+#z-maincontent div.z-admin-content .navbar .navbar-default {
+    margin: 0.5em 0;
+}
+
+/******************************************************************************
+* Styling for all general headers in the entire admin box.
+******************************************************************************/
+
+#z-maincontent div.z-admin-content h2,
+#z-maincontent div.z-admin-content h3 {
+    background: none;
+    color: #333;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    margin-top: 0;
+}
+
+/******************************************************************************
+* Module- and pageheaders (iconheader)
+******************************************************************************/
+
+#z-maincontent div.z-admin-content-modtitle {
+    padding: 5px 0;
+}
+
+#z-maincontent div.z-admin-content-modtitle:after,
+#z-maincontent div.z-admin-content-pagetitle:after {
+    /* clearfix */
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#z-maincontent div.z-admin-content-modtitle img {
+    float: left;
+    margin-right: 10px;
+}
+
+#z-maincontent div.z-admin-content-pagetitle img {
+    float: left;
+    margin-right: 5px;
+}
+
+#z-maincontent div.z-admin-content-modtitle h2 {
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 36px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+#z-maincontent div.z-admin-content-pagetitle {
+    padding: 10px 0;
+}
+
+#z-maincontent div.z-admin-content-pagetitle h3 {
+    background: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 22px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+#z-maincontent .z-admin-content .nav.nav-modulelinks {
+    margin-bottom: 10px;
+}
+
+/******************************************************************************
+* Styling for status security analyzer, update checker and more
+******************************************************************************/
+
+/*#z-maincontent #admin-systemnotices div div {
+    margin-top: -1.15em;
+}*/
+
+/* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
+#z-maincontent div#z-adminwarning {
+    background: url('../images/error.png') #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url('../images/error.png') 99% 0.35em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url('../images/error.png') 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url('../images/error.png') 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
+    border: 2px solid #990000;
+}
+
+div#z-developernotices strong:hover,
+div#z-developernotices span:hover,
+div#z-securityanalyzer strong:hover,
+div#z-updatechecker strong:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+div#z-developernotices a,
+div#z-adminwarning a,
+div#z-updatechecker a,
+div#z-securityanalyzer a {
+    color: #444;
+    padding: 0;
+    margin: 0;
+}
+
+div#z-developernotices a:hover,
+div#z-adminwarning a:hover,
+div#z-updatechecker a:hover,
+div#z-securityanalyzer a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+div#z-developernotices ul,
+div#z-adminwarning ul,
+div#z-updatechecker ul,
+div#z-securityanalyzer ul {
+    list-style-position: outside;
+    list-style-type: disc;
+    margin: 0 1em;
+    padding: 0 1em;
+}
+
+/**
+ * This centers the close icon.
+ */
+div#z-developernotices > i.close,
+div#z-securityanalyzer > i.close,
+div#z-updatechecker > i.close {
+   margin-top: -2px;
+}
+
+/******************************************************************************
+* Admin category description
+******************************************************************************/
+
+div.z-admincategorydescription {
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+/******************************************************************************
+* Styling for core version
+******************************************************************************/
+
+#z-maincontent .z-admin-coreversion {
+    color: #999;
+    font-size: 0.9em;
+    margin: 0 0 1.25em;
+    text-align: right;
+}
+
+/******************************************************************************
+* Admin tab
+******************************************************************************/
+
+.nav-tabs-admin > li > a {
+    padding: 5px 10px;
+    color: #000;
+}
+
+.nav-tabs-admin > li {
+    margin: 0 2px -1px 0;
+}
+
+.nav-tabs-admin > li > .active {
+    font-weight: 700;
+}
+
+.nav-tabs-admin .popover {
+    width: 300px;
+}
+
+.admintabs-dropover {
+    background-color: orange !important;
+}
+
+.admintabs-lock {
+    display: none !important;
+}
+
+#admintabs > li {
+    /* required for sortable */
+    float: left;
+}
+
+#admintabs .ui-state-highlight {
+    min-width: 100px;
+}
+
+#admintabs .dropdown-menu {
+    font-size: 95%;
+    z-index: 1002; /* modulelinks */
+}
+
+#admintabs .dropdown-menu > li {
+    padding: 0;
+}
+#admintabs .dropdown-menu > li > a {
+    display: block;
+    padding: 4px 10px;
+}
+
+/******************************************************************************
+* Module list
+******************************************************************************/
+
+#modulelist {
+    padding-left: 0;
+    padding-bottom: 0px;
+    margin-bottom: 20px;
+    list-style: none;
+}
+
+#modulelist > li {
+    float: left;
+    width: 100%;
+    padding: 10px;
+    margin: 0 -1px 10px 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#modulelist i {
+    float: left;
+    display: block;
+    padding: 4px;
+    margin-right: 5px;
+}
+
+#modulelist .ui-state-highlight {
+    min-height: 60px;
+}
+
+#modulelist > li > div {
+    margin-left: 68px;
+    text-align: left;
+}
+
+#modulelist .dropdown-menu {
+    margin: 0;
+    padding: 3px;
+    font-size: 95%;
+}
+#modulelist .dropdown-menu > li {
+    padding: 0;
+}
+
+#modulelist .dropdown-menu > li > a {
+    display: block;
+    padding: 2px 7px;
+}
+
+@media (min-width: 550px) {
+    #modulelist > li {
+        width: 50%;
+    }
+}
+
+@media (min-width: 950px) {
+    #modulelist > li {
+        width: 33%;
+    }
+}

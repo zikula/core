@@ -1,0 +1,164 @@
+<?php //%255BZikula%255CBundle%255CHookBundle%255CDispatcher%255CStorage%255CDoctrine%255CEntity%255CHookRuntimeEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity\\HookRuntimeEntity',
+            ],
+            'namespace' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity\\HookRuntimeEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\Bundle\\HookBundle\\Dispatcher\\Storage\\Doctrine\\Entity\\Repository\\HookRuntimeRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'sowner' => [
+                        'fieldName' => 'sowner',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 60,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sowner',
+                    ],
+                    'powner' => [
+                        'fieldName' => 'powner',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 60,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'powner',
+                    ],
+                    'sareaid' => [
+                        'fieldName' => 'sareaid',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 512,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sareaid',
+                    ],
+                    'pareaid' => [
+                        'fieldName' => 'pareaid',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 512,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'pareaid',
+                    ],
+                    'eventname' => [
+                        'fieldName' => 'eventname',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 120,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'eventname',
+                    ],
+                    'classname' => [
+                        'fieldName' => 'classname',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 120,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'classname',
+                    ],
+                    'method' => [
+                        'fieldName' => 'method',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 60,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'method',
+                    ],
+                    'priority' => [
+                        'fieldName' => 'priority',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'priority',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'sowner' => 'sowner',
+                    'powner' => 'powner',
+                    'sareaid' => 'sareaid',
+                    'pareaid' => 'pareaid',
+                    'eventname' => 'eventname',
+                    'classname' => 'classname',
+                    'method' => 'method',
+                    'priority' => 'priority',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'sowner' => 'sowner',
+                    'powner' => 'powner',
+                    'sareaid' => 'sareaid',
+                    'pareaid' => 'pareaid',
+                    'eventname' => 'eventname',
+                    'classname' => 'classname',
+                    'method' => 'method',
+                    'priority' => 'priority',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'hook_runtime',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

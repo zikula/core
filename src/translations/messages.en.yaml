@@ -1235,6 +1235,7 @@ parent: null
 value: null
 key: null
 'That entity does not exist!': null
+'The directory %directory% could not be removed. Please remove it manually. Error message: %message%': null
 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.': null
 'Done! Changed default theme.': null
 'Sorry! No such theme found.': null
@@ -1362,7 +1363,7 @@ dependencies: null
 'Could not set %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': null
 'Cannot write parameters to %fileName% file.': null
 'Main menu': null
-'Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.': null
+'Attempt to copy files from `userdata` to `public/uploads` failed. You must manually copy the contents.': null
 'Reinitialize parameters': null
 'Reinitializing parameters': null
 'Reinitialized parameters': null
@@ -1716,3 +1717,4 @@ Provision: null
 'To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.': null
 Connections: null
 '%1$s module can\''t connect to %2$s module. No connections are supported': null
+'Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.': null

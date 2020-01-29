@@ -1,0 +1,161 @@
+<?php //%255BZikula%255CBlocksModule%255CEntity%255CBlockPlacementEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\BlocksModule\\Entity\\BlockPlacementEntity',
+            ],
+            'namespace' => [
+                'Zikula\\BlocksModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\BlocksModule\\Entity\\BlockPlacementEntity',
+            ],
+            'identifier' => [
+                [
+                    'position',
+                    'block',
+                ],
+            ],
+            'fieldMappings' => [
+                [
+                    'sortorder' => [
+                        'fieldName' => 'sortorder',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sortorder',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'block_placements',
+                    'indexes' => [
+                        'bid_pid_idx' => [
+                            'columns' => [
+                                'bid',
+                                'pid',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'lifecycleCallbacks' => [
+                [
+                    'preRemove' => [
+                        'preRemoveCallback',
+                    ],
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'position' => [
+                        'fieldName' => 'position',
+                        'id' => true,
+                        'joinColumns' => [
+                            [
+                                'name' => 'pid',
+                                'unique' => false,
+                                'nullable' => false,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'pid',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => 'placements',
+                        'targetEntity' => 'Zikula\\BlocksModule\\Entity\\BlockPositionEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\BlocksModule\\Entity\\BlockPlacementEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'pid' => 'pid',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'pid' => 'pid',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'pid' => 'pid',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                    'block' => [
+                        'fieldName' => 'block',
+                        'id' => true,
+                        'joinColumns' => [
+                            [
+                                'name' => 'bid',
+                                'unique' => false,
+                                'nullable' => false,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'bid',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => 'placements',
+                        'targetEntity' => 'Zikula\\BlocksModule\\Entity\\BlockEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\BlocksModule\\Entity\\BlockPlacementEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'bid' => 'bid',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'bid' => 'bid',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'bid' => 'bid',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                ],
+            ],
+            'isIdentifierComposite' => [
+                true,
+            ],
+            'containsForeignIdentifier' => [
+                true,
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

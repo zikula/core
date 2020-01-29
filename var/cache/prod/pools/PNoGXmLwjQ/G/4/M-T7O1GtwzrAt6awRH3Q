@@ -1,0 +1,3 @@
+<?php //%255BZikula%255CZAuthModule%255CEntity%255CUserVerificationEntity%255C%2524GEDMO_SOFTDELETEABLE_CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, []];

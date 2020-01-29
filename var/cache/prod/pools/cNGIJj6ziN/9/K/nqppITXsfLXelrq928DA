@@ -1,0 +1,35 @@
+<?php //%255BGedmo%255CTranslatable%255CEntity%255CMappedSuperclass%255CAbstractPersonalTranslation%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Gedmo\\Translatable\\Entity\\MappedSuperclass\\AbstractPersonalTranslation',
+            ],
+            'namespace' => [
+                'Gedmo\\Translatable\\Entity\\MappedSuperclass',
+            ],
+            'rootEntityName' => [
+                'Gedmo\\Translatable\\Entity\\MappedSuperclass\\AbstractPersonalTranslation',
+            ],
+            'isMappedSuperclass' => [
+                true,
+            ],
+            'table' => [
+                [
+                    'name' => 'AbstractPersonalTranslation',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

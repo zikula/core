@@ -1,0 +1,40 @@
+<?php //%255BZikula%255CBlocksModule%255CEntity%255CBlockPositionEntity%2524name%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Symfony\\Component\\Validator\\Constraints\\Regex'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Regex')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\Length'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Length')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Column'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Column')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'pattern' => [
+                '/^[a-zA-Z0-9\\-\\_]+$/',
+            ],
+            'groups' => [
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+            ],
+            'max' => [
+                1 => '255',
+            ],
+            'allowEmptyString' => [
+                1 => 'false',
+            ],
+            'length' => [
+                2 => 255,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

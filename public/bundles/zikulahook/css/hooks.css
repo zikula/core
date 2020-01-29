@@ -1,0 +1,117 @@
+/******************************************************************************
+* Hooks UI styles
+*******************************************************************************/
+
+#hookSubscriber,
+#hookProvider {
+    margin-bottom: 1%;
+    padding: 1%;
+}
+
+/* COMMON */
+.sarea_wrapper ol,
+.sarea_wrapper ol li,
+.pareas_category ol,
+.pareas_category ol li {
+    border: none;
+    margin: 0 !important;
+}
+
+#hookSubscriber .sub {
+    display: block;
+}
+
+/* SUBSCRIPTION */
+
+/* subscriber areas */
+#hookSubscriber .sareas_category {
+    padding-bottom: 1em !important;
+}
+
+#hookProviderAreas .parea_wrapper,
+#hookSubscriber .sareas_category .sarea_wrapper {
+    border: 1px solid #ccc;
+}
+
+#hookSubscriber .sarea_wrapper h4 {
+    background-color: #ddd;
+    color: inherit;
+    font-size: 1.1em;
+    margin: 2px;
+    padding: 3px 3px 3px 14px;
+}
+
+#hookSubscriber .sarea_wrapper h4:hover {
+    background-color: #ccc;
+    color: #666;
+}
+
+#hookSubscriber .sarea_wrapper h4.active {
+    background-color: #ddd;
+    border-bottom: 1px solid #ccc;
+}
+
+#hookSubscriber .sarea_wrapper h4.active:hover {
+    background-color: #ccc;
+}
+
+#hookSubscriber .sarea_wrapper ol li {
+    background-color: #fff;
+    line-height: 1em;
+    padding: 0.8em;
+}
+
+#hookSubscriber .sarea_wrapper ol li:hover {
+    background-color: #f9f9f9;
+}
+
+#hookSubscriber .sarea_wrapper ol li a.detachlink {
+    position: absolute;
+    right: 0.5em;
+    top: 0.65em;
+}
+
+#hookSubscriber .sarea_wrapper ol li.attachedarea_detach,
+#hookSubscriber .sarea_wrapper ol li.attachedarea_detach span {
+    background-color: #F7CBCA;
+    color: #880000;
+}
+
+/* droppable active*/
+#hookSubscriber .sarea_wrapper.z-hook-droppable-active h4,
+#hookSubscriber .sarea_wrapper.z-hook-droppable-active span,
+#hookSubscriber .sarea_wrapper.z-hook-droppable-active ol li {
+    background-color: #DFF2BF;
+    color: #264409 !important;
+}
+
+/* provider areas */
+#hookProviderAreas h4 {
+    background-color: #ddd;
+    color: inherit;
+    border: none;
+    font-size: 1.1em;
+    margin: 2px;
+    padding: 3px 3px 3px 14px !important;
+}
+
+#hookProviderAreas h4:hover {
+    background-color: #ccc;
+    color: #666;
+}
+
+#hookProviderAreas .panel-content {
+    border: none;
+    padding: 0.3em 0.7em 0.1em;
+}
+
+#hookSubscriber .pareas_category ol li {
+    border: 1px solid #DDD;
+    line-height: 1.4em;
+}
+
+/* PROVISION */
+
+#registeredProviderAreas ol {
+    margin-bottom: 0;
+}

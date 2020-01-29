@@ -1,0 +1,56 @@
+<?php //%255BGedmo%255CTranslatable%255CEntity%255CTranslation%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Table'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Table')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Index'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Index')),
+        clone ($p['Doctrine\\ORM\\Mapping\\UniqueConstraint'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\UniqueConstraint')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'ext_translations',
+                'translations_lookup_idx',
+                'lookup_unique_idx',
+            ],
+            'indexes' => [
+                [
+                    $o[1],
+                ],
+            ],
+            'uniqueConstraints' => [
+                [
+                    $o[2],
+                ],
+            ],
+            'options' => [
+                [
+                    'row_format' => 'DYNAMIC',
+                ],
+            ],
+            'columns' => [
+                1 => [
+                    'locale',
+                    'object_class',
+                    'foreign_key',
+                ],
+                [
+                    'locale',
+                    'object_class',
+                    'field',
+                    'foreign_key',
+                ],
+            ],
+            'repositoryClass' => [
+                3 => 'Gedmo\\Translatable\\Entity\\Repository\\TranslationRepository',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[3],
+    ],
+    []
+); }];

@@ -1,0 +1,116 @@
+<?php //%255BZikula%255CAdminModule%255CEntity%255CAdminCategoryEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\AdminModule\\Entity\\AdminCategoryEntity',
+            ],
+            'namespace' => [
+                'Zikula\\AdminModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\AdminModule\\Entity\\AdminCategoryEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\AdminModule\\Entity\\Repository\\AdminCategoryRepository',
+            ],
+            'identifier' => [
+                [
+                    'cid',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'cid' => [
+                        'fieldName' => 'cid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'cid',
+                    ],
+                    'name' => [
+                        'fieldName' => 'name',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 32,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'name',
+                    ],
+                    'description' => [
+                        'fieldName' => 'description',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'description',
+                    ],
+                    'icon' => [
+                        'fieldName' => 'icon',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 50,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'icon',
+                    ],
+                    'sortorder' => [
+                        'fieldName' => 'sortorder',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sortorder',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'cid' => 'cid',
+                    'name' => 'name',
+                    'description' => 'description',
+                    'icon' => 'icon',
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'cid' => 'cid',
+                    'name' => 'name',
+                    'description' => 'description',
+                    'icon' => 'icon',
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'admin_category',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

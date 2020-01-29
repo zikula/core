@@ -1,0 +1,104 @@
+<?php //%255BZikula%255CExtensionsModule%255CEntity%255CExtensionVarEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\ExtensionsModule\\Entity\\ExtensionVarEntity',
+            ],
+            'namespace' => [
+                'Zikula\\ExtensionsModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\ExtensionsModule\\Entity\\ExtensionVarEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\ExtensionsModule\\Entity\\Repository\\ExtensionVarRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'id',
+                    ],
+                    'modname' => [
+                        'fieldName' => 'modname',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 64,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'modname',
+                    ],
+                    'name' => [
+                        'fieldName' => 'name',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 64,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'name',
+                    ],
+                    'value' => [
+                        'fieldName' => 'value',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => 512,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'value',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'modname' => 'modname',
+                    'name' => 'name',
+                    'value' => 'value',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'modname' => 'modname',
+                    'name' => 'name',
+                    'value' => 'value',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'module_vars',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

@@ -1,0 +1,125 @@
+<?php //%255BZikula%255CUsersModule%255CEntity%255CUserSessionEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\UsersModule\\Entity\\UserSessionEntity',
+            ],
+            'namespace' => [
+                'Zikula\\UsersModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\UsersModule\\Entity\\UserSessionEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\UsersModule\\Entity\\Repository\\UserSessionRepository',
+            ],
+            'identifier' => [
+                [
+                    'sessid',
+                ],
+            ],
+            'fieldMappings' => [
+                [
+                    'sessid' => [
+                        'fieldName' => 'sessid',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 60,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'sessid',
+                    ],
+                    'ipaddr' => [
+                        'fieldName' => 'ipaddr',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 40,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'ipaddr',
+                    ],
+                    'lastused' => [
+                        'fieldName' => 'lastused',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'lastused',
+                    ],
+                    'uid' => [
+                        'fieldName' => 'uid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'uid',
+                    ],
+                    'remember' => [
+                        'fieldName' => 'remember',
+                        'type' => 'smallint',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'remember',
+                    ],
+                    'vars' => [
+                        'fieldName' => 'vars',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'vars',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'sessid' => 'sessid',
+                    'ipaddr' => 'ipaddr',
+                    'lastused' => 'lastused',
+                    'uid' => 'uid',
+                    'remember' => 'remember',
+                    'vars' => 'vars',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'sessid' => 'sessid',
+                    'ipaddr' => 'ipaddr',
+                    'lastused' => 'lastused',
+                    'uid' => 'uid',
+                    'remember' => 'remember',
+                    'vars' => 'vars',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'session_info',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

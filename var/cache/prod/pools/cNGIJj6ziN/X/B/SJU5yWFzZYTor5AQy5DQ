@@ -1,0 +1,150 @@
+<?php //%255BGedmo%255CTranslatable%255CEntity%255CTranslation%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Gedmo\\Translatable\\Entity\\Translation',
+            ],
+            'namespace' => [
+                'Gedmo\\Translatable\\Entity',
+            ],
+            'rootEntityName' => [
+                'Gedmo\\Translatable\\Entity\\Translation',
+            ],
+            'customRepositoryClassName' => [
+                'Gedmo\\Translatable\\Entity\\Repository\\TranslationRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'id',
+                    ],
+                    'locale' => [
+                        'fieldName' => 'locale',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 8,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'locale',
+                    ],
+                    'objectClass' => [
+                        'fieldName' => 'objectClass',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'object_class',
+                    ],
+                    'field' => [
+                        'fieldName' => 'field',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 32,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'field',
+                    ],
+                    'foreignKey' => [
+                        'fieldName' => 'foreignKey',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 64,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'foreign_key',
+                    ],
+                    'content' => [
+                        'fieldName' => 'content',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'content',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'locale' => 'locale',
+                    'object_class' => 'objectClass',
+                    'field' => 'field',
+                    'foreign_key' => 'foreignKey',
+                    'content' => 'content',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'locale' => 'locale',
+                    'objectClass' => 'object_class',
+                    'field' => 'field',
+                    'foreignKey' => 'foreign_key',
+                    'content' => 'content',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'ext_translations',
+                    'indexes' => [
+                        'translations_lookup_idx' => [
+                            'columns' => [
+                                'locale',
+                                'object_class',
+                                'foreign_key',
+                            ],
+                        ],
+                    ],
+                    'uniqueConstraints' => [
+                        'lookup_unique_idx' => [
+                            'columns' => [
+                                'locale',
+                                'object_class',
+                                'field',
+                                'foreign_key',
+                            ],
+                        ],
+                    ],
+                    'options' => [
+                        'row_format' => 'DYNAMIC',
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

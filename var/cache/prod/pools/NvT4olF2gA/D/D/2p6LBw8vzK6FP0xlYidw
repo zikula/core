@@ -1,0 +1,3 @@
+<?php //%255BZikula%255CThemeModule%255CEntity%255CThemeEntity%2523setUser%255D%255B1%255D
+
+return [PHP_INT_MAX, []];

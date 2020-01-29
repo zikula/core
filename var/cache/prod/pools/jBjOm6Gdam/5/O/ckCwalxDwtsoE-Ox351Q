@@ -1,0 +1,29 @@
+<?php //%255BZikula%255CCategoriesModule%255CEntity%255CCategoryEntity%2524lu_uid%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Gedmo\\Mapping\\Annotation\\Blameable'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Gedmo\\Mapping\\Annotation\\Blameable')),
+        clone ($p['Doctrine\\ORM\\Mapping\\ManyToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToOne')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'targetEntity' => [
+                1 => 'Zikula\\UsersModule\\Entity\\UserEntity',
+            ],
+            'name' => [
+                2 => 'lu_uid',
+            ],
+            'referencedColumnName' => [
+                2 => 'uid',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

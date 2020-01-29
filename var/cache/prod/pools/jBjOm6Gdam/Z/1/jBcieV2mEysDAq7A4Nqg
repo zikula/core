@@ -1,0 +1,42 @@
+<?php //%255BZikula%255CRoutesModule%255CEntity%255CBase%255CAbstractRouteEntity%2524sort%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Gedmo\\Mapping\\Annotation\\SortablePosition'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Gedmo\\Mapping\\Annotation\\SortablePosition')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Column'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Column')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\Type'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\Type')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\NotNull'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotNull')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\LessThan'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\LessThan')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'type' => [
+                1 => 'integer',
+                'integer',
+            ],
+            'groups' => [
+                2 => [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+            ],
+            'value' => [
+                4 => 100000000000,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+        $o[3],
+        $o[4],
+    ],
+    []
+); }];

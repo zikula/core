@@ -1,0 +1,164 @@
+<?php //%255BZikula%255CSearchModule%255CEntity%255CSearchResultEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\SearchModule\\Entity\\SearchResultEntity',
+            ],
+            'namespace' => [
+                'Zikula\\SearchModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\SearchModule\\Entity\\SearchResultEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\SearchModule\\Entity\\Repository\\SearchResultRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'title' => [
+                        'fieldName' => 'title',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'title',
+                    ],
+                    'text' => [
+                        'fieldName' => 'text',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'text',
+                    ],
+                    'module' => [
+                        'fieldName' => 'module',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 100,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'module',
+                    ],
+                    'extra' => [
+                        'fieldName' => 'extra',
+                        'type' => 'array',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'extra',
+                    ],
+                    'created' => [
+                        'fieldName' => 'created',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'created',
+                    ],
+                    'found' => [
+                        'fieldName' => 'found',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'found',
+                    ],
+                    'sesid' => [
+                        'fieldName' => 'sesid',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 50,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'sesid',
+                    ],
+                    'url' => [
+                        'fieldName' => 'url',
+                        'type' => 'object',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'url',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'title' => 'title',
+                    'text' => 'text',
+                    'module' => 'module',
+                    'extra' => 'extra',
+                    'created' => 'created',
+                    'found' => 'found',
+                    'sesid' => 'sesid',
+                    'url' => 'url',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'title' => 'title',
+                    'text' => 'text',
+                    'module' => 'module',
+                    'extra' => 'extra',
+                    'created' => 'created',
+                    'found' => 'found',
+                    'sesid' => 'sesid',
+                    'url' => 'url',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'search_result',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

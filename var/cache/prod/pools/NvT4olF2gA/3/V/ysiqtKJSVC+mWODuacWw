@@ -1,0 +1,3 @@
+<?php //%255BDoctrine%255CDBAL%255CTypes%255CDateTimeType%2523convertToPHPValue%255D%255B1%255D
+
+return [PHP_INT_MAX, []];

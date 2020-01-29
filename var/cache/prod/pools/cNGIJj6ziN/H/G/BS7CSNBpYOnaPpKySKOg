@@ -1,0 +1,14 @@
+<?php //%255BZikula%255CCategoriesModule%255CEntity%255CCategoryEntity%255C%2524GEDMO_TREE_CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, [
+    'strategy' => 'nested',
+    'activate_locking' => false,
+    'locking_timeout' => 3,
+    'left' => 'lft',
+    'level' => 'lvl',
+    'right' => 'rgt',
+    'rootIdentifierMethod' => null,
+    'root' => 'root',
+    'parent' => 'parent',
+    'useObjectClass' => 'Zikula\\CategoriesModule\\Entity\\CategoryEntity',
+]];

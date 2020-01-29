@@ -1,0 +1,140 @@
+<?php //%255BZikula%255CZAuthModule%255CEntity%255CAuthenticationMappingEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\ZAuthModule\\Entity\\AuthenticationMappingEntity',
+            ],
+            'namespace' => [
+                'Zikula\\ZAuthModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\ZAuthModule\\Entity\\AuthenticationMappingEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\ZAuthModule\\Entity\\Repository\\AuthenticationMappingRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'id',
+                    ],
+                    'method' => [
+                        'fieldName' => 'method',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'method',
+                    ],
+                    'uid' => [
+                        'fieldName' => 'uid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'uid',
+                    ],
+                    'uname' => [
+                        'fieldName' => 'uname',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'uname',
+                    ],
+                    'email' => [
+                        'fieldName' => 'email',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'email',
+                    ],
+                    'verifiedEmail' => [
+                        'fieldName' => 'verifiedEmail',
+                        'type' => 'boolean',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'verifiedEmail',
+                    ],
+                    'pass' => [
+                        'fieldName' => 'pass',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'pass',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'method' => 'method',
+                    'uid' => 'uid',
+                    'uname' => 'uname',
+                    'email' => 'email',
+                    'verifiedEmail' => 'verifiedEmail',
+                    'pass' => 'pass',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'method' => 'method',
+                    'uid' => 'uid',
+                    'uname' => 'uname',
+                    'email' => 'email',
+                    'verifiedEmail' => 'verifiedEmail',
+                    'pass' => 'pass',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'zauth_authentication_mapping',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

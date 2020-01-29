@@ -1,0 +1,179 @@
+<?php //%255BGedmo%255CLoggable%255CEntity%255CLogEntry%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Gedmo\\Loggable\\Entity\\LogEntry',
+            ],
+            'namespace' => [
+                'Gedmo\\Loggable\\Entity',
+            ],
+            'rootEntityName' => [
+                'Gedmo\\Loggable\\Entity\\LogEntry',
+            ],
+            'customRepositoryClassName' => [
+                'Gedmo\\Loggable\\Entity\\Repository\\LogEntryRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'id',
+                    ],
+                    'action' => [
+                        'fieldName' => 'action',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 8,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'action',
+                    ],
+                    'loggedAt' => [
+                        'fieldName' => 'loggedAt',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'logged_at',
+                    ],
+                    'objectId' => [
+                        'fieldName' => 'objectId',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 64,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'object_id',
+                    ],
+                    'objectClass' => [
+                        'fieldName' => 'objectClass',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'object_class',
+                    ],
+                    'version' => [
+                        'fieldName' => 'version',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'version',
+                    ],
+                    'data' => [
+                        'fieldName' => 'data',
+                        'type' => 'array',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'data',
+                    ],
+                    'username' => [
+                        'fieldName' => 'username',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 255,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'username',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'action' => 'action',
+                    'logged_at' => 'loggedAt',
+                    'object_id' => 'objectId',
+                    'object_class' => 'objectClass',
+                    'version' => 'version',
+                    'data' => 'data',
+                    'username' => 'username',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'action' => 'action',
+                    'loggedAt' => 'logged_at',
+                    'objectId' => 'object_id',
+                    'objectClass' => 'object_class',
+                    'version' => 'version',
+                    'data' => 'data',
+                    'username' => 'username',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'ext_log_entries',
+                    'indexes' => [
+                        'log_class_lookup_idx' => [
+                            'columns' => [
+                                'object_class',
+                            ],
+                        ],
+                        'log_date_lookup_idx' => [
+                            'columns' => [
+                                'logged_at',
+                            ],
+                        ],
+                        'log_user_lookup_idx' => [
+                            'columns' => [
+                                'username',
+                            ],
+                        ],
+                        'log_version_lookup_idx' => [
+                            'columns' => [
+                                'object_id',
+                                'object_class',
+                                'version',
+                            ],
+                        ],
+                    ],
+                    'options' => [
+                        'row_format' => 'DYNAMIC',
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

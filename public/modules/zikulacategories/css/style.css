@@ -1,0 +1,14 @@
+/* style.css */
+
+.jstree-contextmenu li {
+margin: 0;
+text-align: left;
+}
+.tooltip-inner {
+padding: 3px 5px;
+text-align: left;
+}
+
+.z-tree-unactive {
+color: #BBB;
+}

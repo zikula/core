@@ -1,0 +1,31 @@
+<?php //%255BZikula%255CZAuthModule%255CEntity%255CAuthenticationMappingEntity%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Table'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Table')),
+        clone ($p['Zikula\\ZAuthModule\\Validator\\Constraints\\ValidUserFields'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Zikula\\ZAuthModule\\Validator\\Constraints\\ValidUserFields')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'repositoryClass' => [
+                'Zikula\\ZAuthModule\\Entity\\Repository\\AuthenticationMappingRepository',
+            ],
+            'name' => [
+                1 => 'zauth_authentication_mapping',
+            ],
+            'groups' => [
+                2 => [
+                    'Default',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

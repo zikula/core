@@ -1,0 +1,122 @@
+<?php //%255BZikula%255CCategoriesModule%255CEntity%255CCategoryAttributeEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\AssignedGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\AssignedGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\CategoriesModule\\Entity\\CategoryAttributeEntity',
+            ],
+            'namespace' => [
+                'Zikula\\CategoriesModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\CategoriesModule\\Entity\\CategoryAttributeEntity',
+            ],
+            'identifier' => [
+                [
+                    'category',
+                    'name',
+                ],
+            ],
+            'fieldMappings' => [
+                [
+                    'name' => [
+                        'fieldName' => 'name',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 80,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'name',
+                    ],
+                    'value' => [
+                        'fieldName' => 'value',
+                        'type' => 'text',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'value',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'name' => 'name',
+                    'value' => 'value',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'name' => 'name',
+                    'value' => 'value',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'categories_attributes',
+                ],
+            ],
+            'associationMappings' => [
+                [
+                    'category' => [
+                        'fieldName' => 'category',
+                        'id' => true,
+                        'joinColumns' => [
+                            [
+                                'name' => 'category_id',
+                                'unique' => false,
+                                'nullable' => true,
+                                'onDelete' => null,
+                                'columnDefinition' => null,
+                                'referencedColumnName' => 'id',
+                            ],
+                        ],
+                        'cascade' => [],
+                        'inversedBy' => 'attributes',
+                        'targetEntity' => 'Zikula\\CategoriesModule\\Entity\\CategoryEntity',
+                        'fetch' => 2,
+                        'type' => 2,
+                        'mappedBy' => null,
+                        'isOwningSide' => true,
+                        'sourceEntity' => 'Zikula\\CategoriesModule\\Entity\\CategoryAttributeEntity',
+                        'isCascadeRemove' => false,
+                        'isCascadePersist' => false,
+                        'isCascadeRefresh' => false,
+                        'isCascadeMerge' => false,
+                        'isCascadeDetach' => false,
+                        'sourceToTargetKeyColumns' => [
+                            'category_id' => 'id',
+                        ],
+                        'joinColumnFieldNames' => [
+                            'category_id' => 'category_id',
+                        ],
+                        'targetToSourceKeyColumns' => [
+                            'id' => 'category_id',
+                        ],
+                        'orphanRemoval' => false,
+                    ],
+                ],
+            ],
+            'isIdentifierComposite' => [
+                true,
+            ],
+            'containsForeignIdentifier' => [
+                true,
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

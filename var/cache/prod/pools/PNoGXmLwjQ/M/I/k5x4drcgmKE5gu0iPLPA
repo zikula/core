@@ -1,0 +1,112 @@
+<?php //%255BZikula%255CAdminModule%255CEntity%255CAdminModuleEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\AdminModule\\Entity\\AdminModuleEntity',
+            ],
+            'namespace' => [
+                'Zikula\\AdminModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\AdminModule\\Entity\\AdminModuleEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\AdminModule\\Entity\\Repository\\AdminModuleRepository',
+            ],
+            'identifier' => [
+                [
+                    'amid',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'amid' => [
+                        'fieldName' => 'amid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'amid',
+                    ],
+                    'mid' => [
+                        'fieldName' => 'mid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'mid',
+                    ],
+                    'cid' => [
+                        'fieldName' => 'cid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'cid',
+                    ],
+                    'sortorder' => [
+                        'fieldName' => 'sortorder',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'sortorder',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'amid' => 'amid',
+                    'mid' => 'mid',
+                    'cid' => 'cid',
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'amid' => 'amid',
+                    'mid' => 'mid',
+                    'cid' => 'cid',
+                    'sortorder' => 'sortorder',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'admin_module',
+                    'indexes' => [
+                        'mid_cid' => [
+                            'columns' => [
+                                'mid',
+                                'cid',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

@@ -1,0 +1,50 @@
+<?php //%255BZikula%255CCategoriesModule%255CEntity%255CCategoryEntity%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Gedmo\\Mapping\\Annotation\\Tree'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Gedmo\\Mapping\\Annotation\\Tree')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Entity'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Entity')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Table'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Table')),
+        clone ($p['Doctrine\\ORM\\Mapping\\Index'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Index')),
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+        clone $p['Doctrine\\ORM\\Mapping\\Index'],
+    ],
+    null,
+    [
+        'stdClass' => [
+            'repositoryClass' => [
+                1 => 'Zikula\\CategoriesModule\\Entity\\Repository\\CategoryRepository',
+            ],
+            'name' => [
+                2 => 'categories_category',
+                'idx_categories_is_leaf',
+                'idx_categories_name',
+                'idx_categories_status',
+            ],
+            'indexes' => [
+                2 => [
+                    $o[3],
+                    $o[4],
+                    $o[5],
+                ],
+            ],
+            'columns' => [
+                3 => [
+                    'is_leaf',
+                ],
+                [
+                    'name',
+                ],
+                [
+                    'status',
+                ],
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

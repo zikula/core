@@ -1,0 +1,35 @@
+<?php //%255BZikula%255CBlocksModule%255CEntity%255CBlockPlacementEntity%2524position%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Id'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Id')),
+        clone ($p['Doctrine\\ORM\\Mapping\\ManyToOne'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ManyToOne')),
+        clone ($p['Doctrine\\ORM\\Mapping\\JoinColumn'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\JoinColumn')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'targetEntity' => [
+                1 => 'Zikula\\BlocksModule\\Entity\\BlockPositionEntity',
+            ],
+            'inversedBy' => [
+                1 => 'placements',
+            ],
+            'name' => [
+                2 => 'pid',
+            ],
+            'referencedColumnName' => [
+                2 => 'pid',
+            ],
+            'nullable' => [
+                2 => false,
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];

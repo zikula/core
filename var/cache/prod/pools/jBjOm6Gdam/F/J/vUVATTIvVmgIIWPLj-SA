@@ -1,0 +1,13 @@
+<?php //%255BGedmo%255CTree%255CEntity%255CMappedSuperclass%255CAbstractClosure%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (\Symfony\Component\VarExporter\Internal\Registry::$prototypes['Doctrine\\ORM\\Mapping\\MappedSuperclass'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\MappedSuperclass')),
+    ],
+    null,
+    [],
+    [
+        $o[0],
+    ],
+    []
+); }];

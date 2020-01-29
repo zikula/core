@@ -1,0 +1,128 @@
+<?php //%255BZikula%255CZAuthModule%255CEntity%255CUserVerificationEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\ZAuthModule\\Entity\\UserVerificationEntity',
+            ],
+            'namespace' => [
+                'Zikula\\ZAuthModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\ZAuthModule\\Entity\\UserVerificationEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\ZAuthModule\\Entity\\Repository\\UserVerificationRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'id' => true,
+                        'columnName' => 'id',
+                    ],
+                    'changetype' => [
+                        'fieldName' => 'changetype',
+                        'type' => 'smallint',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'changetype',
+                    ],
+                    'uid' => [
+                        'fieldName' => 'uid',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'uid',
+                    ],
+                    'newemail' => [
+                        'fieldName' => 'newemail',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 60,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'newemail',
+                    ],
+                    'verifycode' => [
+                        'fieldName' => 'verifycode',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 138,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'verifycode',
+                    ],
+                    'created_dt' => [
+                        'fieldName' => 'created_dt',
+                        'type' => 'datetime',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'created_dt',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'changetype' => 'changetype',
+                    'uid' => 'uid',
+                    'newemail' => 'newemail',
+                    'verifycode' => 'verifycode',
+                    'created_dt' => 'created_dt',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'changetype' => 'changetype',
+                    'uid' => 'uid',
+                    'newemail' => 'newemail',
+                    'verifycode' => 'verifycode',
+                    'created_dt' => 'created_dt',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'users_verifychg',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

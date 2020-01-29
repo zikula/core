@@ -1,0 +1,104 @@
+<?php //%255BZikula%255CSearchModule%255CEntity%255CSearchStatEntity%2524CLASSMETADATA%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\ClassMetadata'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\ClassMetadata')),
+        clone ($p['Doctrine\\ORM\\Id\\IdentityGenerator'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Id\\IdentityGenerator')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'name' => [
+                'Zikula\\SearchModule\\Entity\\SearchStatEntity',
+            ],
+            'namespace' => [
+                'Zikula\\SearchModule\\Entity',
+            ],
+            'rootEntityName' => [
+                'Zikula\\SearchModule\\Entity\\SearchStatEntity',
+            ],
+            'customRepositoryClassName' => [
+                'Zikula\\SearchModule\\Entity\\Repository\\SearchStatRepository',
+            ],
+            'identifier' => [
+                [
+                    'id',
+                ],
+            ],
+            'generatorType' => [
+                4,
+            ],
+            'fieldMappings' => [
+                [
+                    'id' => [
+                        'fieldName' => 'id',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'id',
+                        'id' => true,
+                    ],
+                    'search' => [
+                        'fieldName' => 'search',
+                        'type' => 'string',
+                        'scale' => 0,
+                        'length' => 50,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'search',
+                    ],
+                    'scount' => [
+                        'fieldName' => 'scount',
+                        'type' => 'integer',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => false,
+                        'precision' => 0,
+                        'columnName' => 'scount',
+                    ],
+                    'date' => [
+                        'fieldName' => 'date',
+                        'type' => 'date',
+                        'scale' => 0,
+                        'length' => null,
+                        'unique' => false,
+                        'nullable' => true,
+                        'precision' => 0,
+                        'columnName' => 'date',
+                    ],
+                ],
+            ],
+            'fieldNames' => [
+                [
+                    'id' => 'id',
+                    'search' => 'search',
+                    'scount' => 'scount',
+                    'date' => 'date',
+                ],
+            ],
+            'columnNames' => [
+                [
+                    'id' => 'id',
+                    'search' => 'search',
+                    'scount' => 'scount',
+                    'date' => 'date',
+                ],
+            ],
+            'table' => [
+                [
+                    'name' => 'search_stat',
+                ],
+            ],
+            'idGenerator' => [
+                $o[1],
+            ],
+        ],
+    ],
+    $o[0],
+    []
+); }];

@@ -1,0 +1,37 @@
+<?php //%255BZikula%255CRoutesModule%255CEntity%255CBase%255CAbstractRouteEntity%2524workflowState%255D%255B1%255D
+
+return [PHP_INT_MAX, static function () { return \Symfony\Component\VarExporter\Internal\Hydrator::hydrate(
+    $o = [
+        clone (($p = &\Symfony\Component\VarExporter\Internal\Registry::$prototypes)['Doctrine\\ORM\\Mapping\\Column'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Doctrine\\ORM\\Mapping\\Column')),
+        clone ($p['Symfony\\Component\\Validator\\Constraints\\NotBlank'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Symfony\\Component\\Validator\\Constraints\\NotBlank')),
+        clone ($p['Zikula\\RoutesModule\\Validator\\Constraints\\ListEntry'] ?? \Symfony\Component\VarExporter\Internal\Registry::p('Zikula\\RoutesModule\\Validator\\Constraints\\ListEntry')),
+    ],
+    null,
+    [
+        'stdClass' => [
+            'length' => [
+                20,
+            ],
+            'groups' => [
+                1 => [
+                    'Default',
+                ],
+                [
+                    'Default',
+                ],
+            ],
+            'entityName' => [
+                2 => 'route',
+            ],
+            'propertyName' => [
+                2 => 'workflowState',
+            ],
+        ],
+    ],
+    [
+        $o[0],
+        $o[1],
+        $o[2],
+    ],
+    []
+); }];
