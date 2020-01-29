@@ -115,6 +115,10 @@ class ModuleHelper
             'ZikulaSettingsModule' => $this->translator->trans('System'),
             'ZikulaRoutesModule' => $this->translator->trans('System'),
             'ZikulaMenuModule' => $this->translator->trans('Content'),
+            'ZikulaAtomTheme' => $this->translator->trans('Layout'),
+            'ZikulaBootstrapTheme' => $this->translator->trans('Layout'),
+            'ZikulaPrinterTheme' => $this->translator->trans('Layout'),
+            'ZikulaRssTheme' => $this->translator->trans('Layout'),
         ];
 
         foreach (ZikulaKernel::$coreExtension as $systemModule => $bundleClass) {
