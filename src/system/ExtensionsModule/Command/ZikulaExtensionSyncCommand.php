@@ -37,16 +37,16 @@ class ZikulaExtensionSyncCommand extends Command
     {
         $this
             ->setDescription('Sync bundles in a directory with the bundles table and the extensions table.')
-            ->addArgument('directory', InputArgument::REQUIRED, 'directory to scan e.g. src/system')
+            ->addArgument('directory', InputArgument::OPTIONAL, 'Directory to scan e.g. src/system. Optional: (default \'src/extensions\')')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $directory = $input->getArgument('directory');
+        $directory = null !== $input->getArgument('directory') ? $input->getArgument('directory') : 'src/extensions';
         if (!is_dir($directory)) {
-            $io->error('Directoy is invalid');
+            $io->error('Directory is invalid (`' . $directory . '`)');
 
             return 1;
         }
