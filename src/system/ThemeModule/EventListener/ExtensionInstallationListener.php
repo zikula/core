@@ -20,8 +20,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 
 /**
  * Clear the combined asset cache when a module or theme state is changed
