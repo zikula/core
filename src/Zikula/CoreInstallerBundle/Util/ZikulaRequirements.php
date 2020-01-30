@@ -101,11 +101,21 @@ class ZikulaRequirements
             }
         }
         if (file_exists($customEnvVarsPath)) {
-            $symfonyRequirements->addRequirement(
-                is_writable($customEnvVarsPath),
-                '.env.local file must be writable',
-                'Change the permissions of "<strong>.env.local</strong>" so that the web server can write into it.'
-            );
+            $content = file_get_contents($customEnvVarsPath);
+            if (false === mb_strpos($content, 'DATABASE_URL')) {
+                // no database credentials are set yet
+                $fileSystem = new Filesystem();
+                try {
+                    $fileSystem->dumpFile($customEnvVarsPath, 'Test');
+                    $fileSystem->dumpFile($customEnvVarsPath, '');
+                } catch (IOExceptionInterface $exception) {
+                    $symfonyRequirements->addRequirement(
+                        false,
+                        '.env.local file must be writable',
+                        'Change the permissions of "<strong>.env.local</strong>" so that the web server can write into it.'
+                    );
+                }
+            }
         }
     }
 }

@@ -17,7 +17,8 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -39,10 +40,17 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
      */
     private $container;
 
+    /**
+     * @var string
+     */
+    private $localEnvFile;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/config', 'services_custom.yaml');
+        $projectDir = $this->container->get('kernel')->getProjectDir();
+        $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
+        $this->localEnvFile = $projectDir . '/.env.local';
     }
 
     public function getName(): string
@@ -68,8 +76,12 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     public function isNecessary(): bool
     {
         $params = $this->yamlManager->getParameters();
-        $databaseUrl = $_ENV['DATABASE_URL'] ?? $params['database_url'] ?? '';
-        if (!empty($databaseUrl)) {
+        $databaseUrl = $_ENV['DATABASE_URL'] ?? '';
+        if (empty($databaseUrl) || 'nothing' === $databaseUrl) {
+            // check if credentials are temporarily stored as parameter during installation
+            $databaseUrl = $params['database_url'] ?? '';
+        }
+        if (!empty($databaseUrl) && 'nothing' !== $databaseUrl) {
             // test the connection here.
             $test = $this->testDBConnection($databaseUrl);
             if (true !== $test) {
@@ -90,7 +102,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     public function handleFormResult(FormInterface $form): bool
     {
         $data = $form->getData();
-        $databaseUrl = 'pdo_' . $data['database_driver']
+        $databaseUrl = $data['database_driver']
             . '://' . $data['database_user'] . ':' . $data['database_password']
             . '@' . $data['database_host'] . (!empty($data['database_port']) ? ':' . $data['database_port'] : '')
             . '/' . $data['database_name']
@@ -98,22 +110,23 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         $databaseUrl .= '?charset=UTF8';
         $databaseUrl .= '&serverVersion=5.7'; // any value will work (bypasses DBALException)
 
-        $dbParams = [
-            'database_url' => $databaseUrl
-        ];
-        $params = array_merge($this->yamlManager->getParameters(), $dbParams);
-        $this->writeParams($params);
+        $this->writeDatabaseUrl($databaseUrl);
 
         return true;
     }
 
-    private function writeParams($params): void
+    private function writeDatabaseUrl(string $databaseUrl): void
     {
+        // write env vars into .env.local
+        $content = 'DATABASE_URL=\'' . $databaseUrl . "'\n";
+
+        $fileSystem = new Filesystem();
         try {
-            $this->yamlManager->setParameters($params);
-        } catch (IOException $e) {
-            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', 'services_custom.yaml'));
+            $fileSystem->dumpFile($this->localEnvFile, $content);
+        } catch (IOExceptionInterface $exception) {
+            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', $this->localEnvFile) . ' ' . $exception->getMessage());
         }
+
         // clear the cache
         $this->container->get(CacheClearer::class)->clear('symfony.config');
     }
@@ -125,7 +138,10 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         ];
 
         try {
-            DriverManager::getConnection($connectionParams, new Configuration());
+            $connection = DriverManager::getConnection($connectionParams, new Configuration());
+            if ($connection->connect()) {
+                return true;
+            }
         } catch (DBALException $exception) {
             return $exception->getMessage();
         }

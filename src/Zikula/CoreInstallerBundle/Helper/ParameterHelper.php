@@ -161,24 +161,24 @@ class ParameterHelper
             unset($params['upgrading']);
         }
 
-        $databaseUrl = $params['database_url'];
-        unset($params['database_url']);
-
         // write parameters into config/services_custom.yaml
         $yamlHelper->setParameters($params);
 
         // write env vars into .env.local
+        $content = explode("\n", file_get_contents($this->localEnvFile));
+        $databaseSetting = $content[0];
+
         $randomLibFactory = new Factory();
         $generator = $randomLibFactory->getMediumStrengthGenerator();
         $lines = [];
         $lines[] = 'APP_ENV=prod';
         $lines[] = 'APP_DEBUG=0';
         $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
-        $lines[] = 'DATABASE_URL=\'' . $databaseUrl . '\'';
+        $lines[] = $databaseSetting;
 
         $fileSystem = new Filesystem();
         try {
-            $fileSystem->dumpFile($this->localEnvFile, 'Hello World');
+            $fileSystem->dumpFile($this->localEnvFile, implode("\n", $lines));
         } catch (IOExceptionInterface $exception) {
             throw $exception;
         }
@@ -194,7 +194,7 @@ class ParameterHelper
         // protect services_custom.yaml files
         $files = array_diff(scandir($this->configDir), ['.', '..']);
         foreach ($files as $file) {
-            $this->protectFile($file);
+            $this->protectFile($this->configDir . '/' . $file);
         }
 
         $this->protectFile($this->localEnvFile);
