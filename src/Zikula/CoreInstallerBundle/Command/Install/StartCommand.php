@@ -59,6 +59,11 @@ class StartCommand extends AbstractCoreInstallerCommand
      */
     private $parameterHelper;
 
+    /**
+     * @var string
+     */
+    private $localEnvFile;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         bool $installed,
@@ -73,6 +78,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
+        $this->localEnvFile = $kernel->getProjectDir() . '/.env.local';
     }
 
     protected function configure()
