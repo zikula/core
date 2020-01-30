@@ -172,7 +172,7 @@ class ParameterHelper
         $generator = $randomLibFactory->getMediumStrengthGenerator();
         $lines = [];
         $lines[] = 'APP_ENV=prod';
-        $lines[] = 'APP_DEBUG=0';
+        $lines[] = 'APP_DEBUG=1';
         $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
         $lines[] = $databaseSetting;
 
