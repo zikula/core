@@ -8,9 +8,6 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
-    <php>
-        <server name="KERNEL_CLASS" value="Kernel" />
-    </php>
     <testsuites>
         <testsuite name="Zikula Categories Module Test Suite">
             <directory>./Tests/</directory>
@@ -18,7 +15,6 @@
             <exclude>./Tests/Form/Type/CategoriesTypeTest.php</exclude>
         </testsuite>
     </testsuites>
-
     <filter>
         <whitelist>
             <directory>./</directory>

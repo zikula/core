@@ -8,10 +8,6 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
-    <php>
-        <server name="KERNEL_CLASS" value="Kernel" />
-    </php>
-
     <testsuites>
         <testsuite name="HookBundle Test Suite">
             <directory>./Tests/</directory>
