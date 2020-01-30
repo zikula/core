@@ -83,8 +83,7 @@ class Asset
      */
     public function resolve(string $path): string
     {
-        $projectDir = $this->kernel->getProjectDir();
-        $publicDir = $projectDir . '/public';
+        $publicDir = $this->kernel->getProjectDir() . '/public';
         $basePath = $this->router->getContext()->getBaseUrl();
         $httpRootDir = str_replace($basePath, '', $publicDir);
 

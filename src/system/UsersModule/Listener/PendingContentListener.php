@@ -39,8 +39,11 @@ class PendingContentListener implements EventSubscriberInterface
      */
     private $translator;
 
-    public function __construct(PermissionApiInterface $permissionApi, UserRepositoryInterface $userRepository, TranslatorInterface $translator)
-    {
+    public function __construct(
+        PermissionApiInterface $permissionApi,
+        UserRepositoryInterface $userRepository,
+        TranslatorInterface $translator
+    ) {
         $this->permissionApi = $permissionApi;
         $this->userRepository = $userRepository;
         $this->translator = $translator;

@@ -22,16 +22,16 @@ use Zikula\ExtensionsModule\AbstractModule;
 class ModuleStateEvent extends Event
 {
     /**
+     * @var null|AbstractModule The module instance. Null when Module object is not available
+     */
+    private $module;
+
+    /**
      * An array of info for the module. Possibly a result of calling $extensionEntity->toArray().
      *
      * @var null|array
      */
     private $modInfo;
-
-    /**
-     * @var null|AbstractModule The module instance. Null when Module object is not available
-     */
-    private $module;
 
     public function __construct(AbstractModule $module = null, array $modInfo = null)
     {
