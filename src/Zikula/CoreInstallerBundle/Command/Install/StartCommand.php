@@ -26,6 +26,7 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -132,7 +133,11 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
         $settings = array_merge($settings, $data);
         $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
-        $settings = array_merge($settings, $data);
+
+        $dbCredsHelper = new DbCredsHelper();
+        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
+        $this->writeDatabaseUrl($databaseUrl);
+
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
@@ -163,5 +168,21 @@ class StartCommand extends AbstractCoreInstallerCommand
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
 
         return 0;
+    }
+
+    private function writeDatabaseUrl(string $databaseUrl): void
+    {
+        // write env vars into .env.local
+        $content = 'DATABASE_URL=\'' . $databaseUrl . "'\n";
+
+        $fileSystem = new Filesystem();
+        try {
+            $fileSystem->dumpFile($this->localEnvFile, $content);
+        } catch (IOExceptionInterface $exception) {
+            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', $this->localEnvFile) . ' ' . $exception->getMessage());
+        }
+
+        // clear the cache
+        $this->container->get(CacheClearer::class)->clear('symfony.config');
     }
 }

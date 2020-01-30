@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
+use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -101,14 +102,8 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     public function handleFormResult(FormInterface $form): bool
     {
-        $data = $form->getData();
-        $databaseUrl = $data['database_driver']
-            . '://' . $data['database_user'] . ':' . $data['database_password']
-            . '@' . $data['database_host'] . (!empty($data['database_port']) ? ':' . $data['database_port'] : '')
-            . '/' . $data['database_name']
-        ;
-        $databaseUrl .= '?charset=UTF8';
-        $databaseUrl .= '&serverVersion=5.7'; // any value will work (bypasses DBALException)
+        $dbCredsHelper = new DbCredsHelper();
+        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($form->getData());
 
         $this->writeDatabaseUrl($databaseUrl);
 
