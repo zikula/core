@@ -144,7 +144,7 @@ class StartCommand extends AbstractCoreInstallerCommand
 
         $dbCredsHelper = new DbCredsHelper();
         $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
-        $this->writeDatabaseUrl($databaseUrl);
+        $this->writeDatabaseUrl($io, $databaseUrl);
 
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
         foreach ($data as $k => $v) {
@@ -178,7 +178,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         return 0;
     }
 
-    private function writeDatabaseUrl(string $databaseUrl): void
+    private function writeDatabaseUrl(SymfonyStyle $io, string $databaseUrl): void
     {
         // write env vars into .env.local
         $content = 'DATABASE_URL=\'' . $databaseUrl . "'\n";
@@ -187,10 +187,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         try {
             $fileSystem->dumpFile($this->localEnvFile, $content);
         } catch (IOExceptionInterface $exception) {
-            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', $this->localEnvFile) . ' ' . $exception->getMessage());
+            $io->error(sprintf('Cannot write parameters to %s file.', $this->localEnvFile) . ' ' . $exception->getMessage());
         }
-
-        // clear the cache
-        $this->container->get(CacheClearer::class)->clear('symfony.config');
     }
 }
