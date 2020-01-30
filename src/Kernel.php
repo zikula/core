@@ -48,6 +48,9 @@ class Kernel extends ZikulaKernel
     //protected function configureContainer(ContainerConfigurator $container): void
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
+        // remove when upgrading to Symfony 5.1.0
+        $container->setParameter('kernel.secret', '%env(APP_SECRET)%');
+
         /** use with Symfony 5.1.0
         $container->import('../config/{packages}/*.yaml');
         $container->import('../config/{packages}/' . $this->environment . '/*.yaml');

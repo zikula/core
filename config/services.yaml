@@ -9,19 +9,7 @@ parameters:
     # script_position defines the location where javascripts will be placed in the page
     # choices are `head` or `foot`
     datadir:          public/uploads
-
-    database_driver:   pdo_mysql
-    database_host:     localhost
-    database_port:     ~
-    database_name:     ~
-    database_user:     ~
-    database_password: ~
-    database_path:     ~
-    database_socket:   ~
-    database_server_version: '5.7' # any value will work (bypasses DBALException)
-
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
+    locale:           en
 
     assets_version: ~ #e.g. 'v1'
     zikula_asset_manager.combine: true
@@ -38,14 +26,11 @@ parameters:
     # is recommended when you have access to them on your server, because changing
     # the umask is not thread-safe. Set this value to "~" (NULL), to disable support
     # for umask.
-    umask:             ~
+    umask: ~
 
     # the following parameter is used in the clickjacking protection listener
     # it accepts any values allowed for X-Frame-Options
     security.x_frame_options: SAMEORIGIN
-
-
-    #container.dumper.inline_class_loader: true
 
     # all paths below are resolved as assets (in /public)
     # stylesheet and javascript component locations

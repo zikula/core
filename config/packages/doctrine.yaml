@@ -1,21 +1,9 @@
 doctrine:
     dbal:
-        default_connection: default
+        url: '%env(resolve:DATABASE_URL)%'
         types:
             utcdatetime:
-                class:     "Zikula\\Bundle\\CoreBundle\\Doctrine\\DBAL\\Type\\UTCDateTimeType"
-        connections:
-            default:
-                driver:   '%database_driver%'
-                host:     '%database_host%'
-                port:     '%database_port%'
-                dbname:   '%database_name%'
-                user:     '%database_user%'
-                password: '%database_password%'
-                charset:  UTF8
-                path:     '%database_path%'
-                server_version: '%database_server_version%'
-
+                class: Zikula\Bundle\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
     orm:
         proxy_namespace: DoctrineProxy
         proxy_dir: '%kernel.cache_dir%/doctrine/orm/DoctrineProxy'
@@ -26,9 +14,9 @@ doctrine:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:
                 auto_mapping: true
-#                metadata_cache_driver: array
-#                query_cache_driver: array
-#                result_cache_driver: array
+                #metadata_cache_driver: array
+                #query_cache_driver: array
+                #result_cache_driver: array
                 mappings:
                     zikula_hookstorage:
                         type: annotation
@@ -60,33 +48,3 @@ doctrine:
                         dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
-
-stof_doctrine_extensions:
-    default_locale: en_US
-    #default_locale: '%locale%'
-    persist_default_translation: false
-    translation_fallback: true
-    orm:
-        default:
-            # if removed these values default to false
-            translatable: true
-            timestampable: true
-            blameable: true
-            sluggable: true
-            tree: true
-            loggable: true
-            sortable: true
-            softdeleteable: true
-            uploadable: true
-            reference_integrity: true
-    class:
-        translatable:         Gedmo\Translatable\TranslatableListener
-        timestampable:        Gedmo\Timestampable\TimestampableListener
-        blameable:            Gedmo\Blameable\BlameableListener
-        sluggable:            Gedmo\Sluggable\SluggableListener
-        tree:                 Gedmo\Tree\TreeListener
-        loggable:             Gedmo\Loggable\LoggableListener
-        sortable:             Gedmo\Sortable\SortableListener
-        softdeleteable:       Gedmo\SoftDeleteable\SoftDeleteableListener
-        uploadable:           Gedmo\Uploadable\UploadableListener
-        reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener

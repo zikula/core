@@ -1,0 +1,31 @@
+# Read the documentation: https://symfony.com/doc/current/bundles/StofDoctrineExtensionsBundle/index.html
+# See the official DoctrineExtensions documentation for more details: https://github.com/Atlantic18/DoctrineExtensions/tree/master/doc/
+stof_doctrine_extensions:
+    default_locale: en_US
+    #default_locale: '%locale%'
+    persist_default_translation: false
+    translation_fallback: true
+    orm:
+        default:
+            # if removed these values default to false
+            translatable: true
+            timestampable: true
+            blameable: true
+            sluggable: true
+            tree: true
+            loggable: true
+            sortable: true
+            softdeleteable: true
+            uploadable: true
+            reference_integrity: true
+    class:
+        translatable:         Gedmo\Translatable\TranslatableListener
+        timestampable:        Gedmo\Timestampable\TimestampableListener
+        blameable:            Gedmo\Blameable\BlameableListener
+        sluggable:            Gedmo\Sluggable\SluggableListener
+        tree:                 Gedmo\Tree\TreeListener
+        loggable:             Gedmo\Loggable\LoggableListener
+        sortable:             Gedmo\Sortable\SortableListener
+        softdeleteable:       Gedmo\SoftDeleteable\SoftDeleteableListener
+        uploadable:           Gedmo\Uploadable\UploadableListener
+        reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
