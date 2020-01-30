@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
-use PDO;
-use PDOException;
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
@@ -67,9 +68,10 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     public function isNecessary(): bool
     {
         $params = $this->yamlManager->getParameters();
-        if (!empty($params['database_host']) && !empty($params['database_user']) && !empty($params['database_name'])) {
+        $databaseUrl = $_ENV['DATABASE_URL'] ?? $params['database_url'] ?? '';
+        if (!empty($databaseUrl)) {
             // test the connection here.
-            $test = $this->testDBConnection($params);
+            $test = $this->testDBConnection($databaseUrl);
             if (true !== $test) {
                 throw new AbortStageException($test);
             }
@@ -88,10 +90,18 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     public function handleFormResult(FormInterface $form): bool
     {
         $data = $form->getData();
-        $params = array_merge($this->yamlManager->getParameters(), $data);
-        if (0 !== mb_strpos($params['database_driver'], 'pdo_')) {
-            $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in services_custom.yaml
-        }
+        $databaseUrl = 'pdo_' . $data['database_driver']
+            . '://' . $data['database_user'] . ':' . $data['database_password']
+            . '@' . $data['database_host'] . (!empty($data['database_port']) ? ':' . $data['database_port'] : '')
+            . '/' . $data['database_name']
+        ;
+        $databaseUrl .= '?charset=UTF8';
+        $databaseUrl .= '&serverVersion=5.7'; // any value will work (bypasses DBALException)
+
+        $dbParams = [
+            'database_url' => $databaseUrl
+        ];
+        $params = array_merge($this->yamlManager->getParameters(), $dbParams);
         $this->writeParams($params);
 
         return true;
@@ -108,13 +118,15 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         $this->container->get(CacheClearer::class)->clear('symfony.config');
     }
 
-    public function testDBConnection($params)
+    public function testDBConnection(string $databaseUrl = '')
     {
-        $params['database_driver'] = mb_substr($params['database_driver'], 4);
-        $dsn = $params['database_driver'] . ':host=' . $params['database_host'] . ';dbname=' . $params['database_name'];
+        $connectionParams = [
+            'url' => $databaseUrl
+        ];
+
         try {
-            new PDO($dsn, $params['database_user'], $params['database_password']);
-        } catch (PDOException $exception) {
+            DriverManager::getConnection($connectionParams, new Configuration());
+        } catch (DBALException $exception) {
             return $exception->getMessage();
         }
 

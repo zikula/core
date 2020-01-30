@@ -157,6 +157,7 @@
   - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
   - `LocaleApi` is now able to work with regions, too (#4012, #2425).
   - New and removed locales are automatically reflected in the configuration (#4012, #2425).
+  - Added possibility to specify custom database port in installer.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

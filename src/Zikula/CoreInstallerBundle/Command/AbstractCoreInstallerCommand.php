@@ -36,6 +36,10 @@ abstract class AbstractCoreInstallerCommand extends Command
             'description' => 'The location of your database, most of the times "localhost".',
             'default' => 'localhost'
         ],
+        'database_port' => [
+            'description' => 'Optional custom database port number.',
+            'default' => null
+        ],
         'database_user' => [
             'description' => 'The database user.',
             'default' => null
@@ -51,10 +55,6 @@ abstract class AbstractCoreInstallerCommand extends Command
         'database_driver' => [
             'description' => 'Your database driver.',
             'default' => 'mysql'
-        ],
-        'dbtabletype' => [
-            'description' => 'The database storage engine.',
-            'default' => 'innodb'
         ],
         /* Admin user */
         'username' => [
@@ -116,22 +116,25 @@ abstract class AbstractCoreInstallerCommand extends Command
     private function errorCodeToMessage(string $key): string
     {
         $messages = [
-            'phpsatisfied' => $this->translator->trans('You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.', ['%actual' => PHP_VERSION, '%required' => ZikulaKernel::PHP_MINIMUM_VERSION]),
+            'phpsatisfied' => $this->translator->trans('You have got a problem! Your PHP version is %actual%, which does not satisfy the Zikula system requirement of version %required% or later.', ['%actual%' => PHP_VERSION, '%required%' => ZikulaKernel::PHP_MINIMUM_VERSION]),
             'datetimezone' => $this->translator->trans('date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.'),
             'pdo' => $this->translator->trans("Your PHP installation doesn't have the PDO extension loaded."),
             'phptokens' => $this->translator->trans("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
             'mbstring' => $this->translator->trans('Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.'),
             'pcreUnicodePropertiesEnabled' => $this->translator->trans("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
             'json_encode' => $this->translator->trans('Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.'),
-            'config_personal_config_php' => $this->translator->trans("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => 'config/personal_config.php'])/*,
-            'services_custom_yaml' => $this->translator->trans("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "config/services_custom.yaml")*/
+            'config_personal_config_php' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => 'config/personal_config.php'])/*,
+            'services_custom_yaml' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => 'config/services_custom.yaml']),
+            'env_local' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => '.env.local'),
+            'env_dev_local' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => '.env.dev.local'),
+            'env_prod_local' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => '.env.prod.local')*/
         ];
         if (array_key_exists($key, $messages)) {
             return $messages[$key];
         }
 
         // remaining keys are filenames
-        return $this->translator->trans("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", ['%s' => $key]);
+        return $this->translator->trans("You have a problem! The '%fileName%' file is not writeable. Please ensure that the permissions are set correctly for the installation process.", ['%fileName%' => $key]);
     }
 
     protected function printSettings($givenSettings, SymfonyStyle $io): void

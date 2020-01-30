@@ -6,5 +6,5 @@ in the theme settings at `/theme/admin/config`.
 This functionality is modified for Core-2.0 compatible Twig-based themes.
 
 Now template names are exposed in the HTML source automatically by a listener
-`Zikula\ThemeModule\EventListener\TemplateNameExposeListener` whenever the `env` parameter is set to `dev` inside
-the `/config/services_custom.yaml` file.
+`Zikula\ThemeModule\EventListener\TemplateNameExposeListener` whenever the `APP_ENV` variable is set to `dev` inside
+the `/.env.local` file.

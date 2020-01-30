@@ -66,7 +66,7 @@ class PersistedBundleHelper
     private function getConnection(): Connection
     {
         $connectionParams = [
-            'url' => $_ENV['DATABASE_URL']
+            'url' => $_ENV['DATABASE_URL'] ?? ''
         ];
 
         return DriverManager::getConnection($connectionParams, new Configuration());
