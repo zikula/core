@@ -209,10 +209,10 @@ class ParameterHelper
     {
         //@chmod($filePath, 0400);
         //if (!is_readable($filePath)) {
-            @chmod($filePath, 0440);
-            if (!is_readable($filePath)) {
-                @chmod($filePath, 0444);
-            }
+        @chmod($filePath, 0440);
+        if (!is_readable($filePath)) {
+            @chmod($filePath, 0444);
+        }
         //}
     }
 

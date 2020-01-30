@@ -18,7 +18,6 @@ use InvalidArgumentException;
 use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Yaml\Yaml;
 use Zikula\AdminModule\ZikulaAdminModule;
 use Zikula\BlocksModule\ZikulaBlocksModule;
 use Zikula\Bundle\CoreBundle\AbstractBundle;
