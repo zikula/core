@@ -9,6 +9,7 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
     <php>
+        <server name="KERNEL_CLASS" value="Kernel" />
         <!-- from https://github.com/symfony/recipes/blob/master/symfony/phpunit-bridge/3.3/phpunit.xml.dist -->
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
