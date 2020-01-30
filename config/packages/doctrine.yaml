@@ -1,6 +1,7 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        server_version: 5 # any value will work (bypasses DBALException)
         types:
             utcdatetime:
                 class: Zikula\Bundle\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType

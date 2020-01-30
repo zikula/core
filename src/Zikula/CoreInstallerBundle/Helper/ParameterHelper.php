@@ -207,13 +207,13 @@ class ParameterHelper
 
     private function protectFile(string $filePath): void
     {
-        @chmod($filePath, 0400);
-        if (!is_readable($filePath)) {
+        //@chmod($filePath, 0400);
+        //if (!is_readable($filePath)) {
             @chmod($filePath, 0440);
             if (!is_readable($filePath)) {
                 @chmod($filePath, 0444);
             }
-        }
+        //}
     }
 
     /**
