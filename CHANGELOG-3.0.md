@@ -110,6 +110,9 @@
     - The `parameters.yml` file has been renamed to `services.yaml`.
     - The `custom_parameters.yaml` file has been renamed to `services_custom.yaml`.
     - YAML files use the `.yaml` extension instead of `.yml`.
+    - The parameters `system.chmod_dir` and `url_secret` have been removed without any replacement.
+    - The parameter `env` has been removed in favour of the environment variable `APP_ENV`.
+    - The parameter `debug` has been removed in favour of the environment variable `APP_DEBUG`.
 
 - Fixes:
   - Check if verification record is already deleted when confirming a changed mail address.

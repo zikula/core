@@ -124,9 +124,6 @@ class ParameterHelper
         if (!isset($params['secret']) || ('ThisTokenIsNotSoSecretChangeIt' === $params['secret'])) {
             $params['secret'] = $generator->generateString(50);
         }
-        if (!isset($params['url_secret'])) {
-            $params['url_secret'] = $generator->generateString(10);
-        }
 
         if ($configureRequestContext) {
             // Configure the Request Context

@@ -10,12 +10,10 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand:
         arguments:
-            $environment: '%env%'
             $installed: '%installed%'
 
     Zikula\Bundle\CoreInstallerBundle\Command\Install\FinishCommand:
         arguments:
-            $environment: '%env%'
             $installed: '%installed%'
 
     Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper:
@@ -24,5 +22,4 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
-            $env: '%env%'
             $symfonyCacheClearer: '@cache_clearer'
