@@ -56,7 +56,5 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
 
     public function getAutoloader(): object;
 
-    public function getConnectionConfig(): array;
-
     public function isClassInBundle(string $class): bool;
 }

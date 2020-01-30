@@ -14,19 +14,20 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\ThemeEvents;
 
 class TemplateNameExposeListener implements EventSubscriberInterface
 {
     /**
-     * @var string
+     * @var ZikulaHttpKernelInterface
      */
-    private $env;
+    private $kernel;
 
-    public function __construct(string $env)
+    public function __construct(ZikulaHttpKernelInterface $kernel)
     {
-        $this->env = $env;
+        $this->kernel = $kernel;
     }
 
     public static function getSubscribedEvents()
@@ -43,7 +44,7 @@ class TemplateNameExposeListener implements EventSubscriberInterface
      */
     public function exposeTemplateNames(TwigPostRenderEvent $event): void
     {
-        if ('dev' !== $this->env) {
+        if ('dev' !== $this->kernel->getEnvironment()) {
             return;
         }
 

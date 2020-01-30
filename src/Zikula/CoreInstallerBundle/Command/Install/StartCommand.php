@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
@@ -31,9 +32,9 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 class StartCommand extends AbstractCoreInstallerCommand
 {
     /**
-     * @var string
+     * @var ZikulaHttpKernelInterface
      */
-    private $environment;
+    private $kernel;
 
     /**
      * @var string
@@ -56,7 +57,7 @@ class StartCommand extends AbstractCoreInstallerCommand
     private $parameterHelper;
 
     public function __construct(
-        string $environment,
+        ZikulaHttpKernelInterface $kernel,
         bool $installed,
         ControllerHelper $controllerHelper,
         LocaleApiInterface $localeApi,
@@ -64,7 +65,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         TranslatorInterface $translator
     ) {
         parent::__construct($translator);
-        $this->environment = $environment;
+        $this->kernel = $kernel;
         $this->installed = $installed;
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
@@ -114,7 +115,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         if ($input->isInteractive()) {
-            $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
+            $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
             $io->comment($this->translator->trans('Please follow the instructions to install Zikula %version%.', ['%version%' => ZikulaKernel::VERSION]));
         }
 
@@ -156,7 +157,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             }
         }
 
-        // write the parameters to config/services_custom.yaml
+        // write parameters into config/services_custom.yaml and env vars into .env.local
         $this->parameterHelper->initializeParameters($settings);
 
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));

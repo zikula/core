@@ -45,9 +45,6 @@ if (is_readable($file = __DIR__ . '/services_custom.yaml')) {
 }
 $parameters = $kernelConfig['parameters'];
 
-// TEMP workaround/fallback
-$_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $parameters['env'];
-
 // set default locale for Intl classes
 if (extension_loaded('intl')) {
     Locale::setDefault($parameters['locale']);

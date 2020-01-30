@@ -36,6 +36,7 @@
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
+    - `ZikulaHttpKernelInterface` has dropped `getConnectionConfig()` method. Use environment variable `DATABASE_URL` instead.
     - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
     - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
     - `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
@@ -92,7 +93,6 @@
   - `Bundle\CoreBundle\Helper\PersistedBundleHelper::addAutoloaders` visibility set to private
   - `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
   - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
-  - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
   - Removed custom translation system (#4042). Use Symfony's translation system directly.
   - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
   - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
@@ -110,6 +110,13 @@
     - The `parameters.yml` file has been renamed to `services.yaml`.
     - The `custom_parameters.yaml` file has been renamed to `services_custom.yaml`.
     - YAML files use the `.yaml` extension instead of `.yml`.
+    - The `%temp_dir%` parameter has been removed. If you need a temporary folder use `sys_get_temp_dir()`.
+    - The parameters `system.chmod_dir` and `url_secret` have been removed without any replacement.
+    - Some other parameter have been removed in favour of environment variables
+      - `env` became `APP_ENV`.
+      - `debug` became `APP_DEBUG`.
+      - `secret` became `APP_SECRET`.
+      - `database_*` became `DATABASE_URL`.
 
 - Fixes:
   - Check if verification record is already deleted when confirming a changed mail address.
@@ -150,6 +157,7 @@
   - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
   - `LocaleApi` is now able to work with regions, too (#4012, #2425).
   - New and removed locales are automatically reflected in the configuration (#4012, #2425).
+  - Added possibility to specify custom database port in installer.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

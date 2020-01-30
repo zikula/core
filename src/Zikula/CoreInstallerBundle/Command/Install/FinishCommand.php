@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
@@ -24,9 +25,9 @@ use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 class FinishCommand extends AbstractCoreInstallerCommand
 {
     /**
-     * @var string
+     * @var ZikulaHttpKernelInterface
      */
-    private $environment;
+    private $kernel;
 
     /**
      * @var string
@@ -39,14 +40,14 @@ class FinishCommand extends AbstractCoreInstallerCommand
     private $stageHelper;
 
     public function __construct(
-        string $environment,
+        ZikulaHttpKernelInterface $kernel,
         bool $installed,
         StageHelper $stageHelper,
         TranslatorInterface $translator
     ) {
         parent::__construct($translator);
+        $this->kernel = $kernel;
         $this->installed = $installed;
-        $this->environment = $environment;
         $this->stageHelper = $stageHelper;
     }
 
@@ -69,7 +70,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
         }
 
         $io->section($this->translator->trans('*** INSTALLING ***'));
-        $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
+        $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
 
         // install!
         $ajaxStage = new AjaxInstallerStage();

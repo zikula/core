@@ -21,17 +21,18 @@
         </div>
     </div>
     <div class="form-group row">
-        {{ form_label(form.dbtabletype) }}
-        <div class="col-md-9">
-            {{ form_errors(form.dbtabletype) }}
-            {{ form_widget(form.dbtabletype) }}
-        </div>
-    </div>
-    <div class="form-group row">
         {{ form_label(form.database_host) }}
         <div class="col-sm-9">
             {{ form_errors(form.database_host) }}
             {{ form_widget(form.database_host) }}
+        </div>
+    </div>
+    <div class="form-group row">
+        {{ form_label(form.database_port) }}
+        <div class="col-sm-9">
+            {{ form_errors(form.database_port) }}
+            {{ form_widget(form.database_port) }}
+            {{ form_help(form.database_port) }}
         </div>
     </div>
     <div class="form-group row">
@@ -70,31 +71,9 @@
     $(document).ready(function() {
         $('form:first *:input:text:first').focus();
 
-        var value = $('#dbcreds_database_driver').val();
-
-        if ('mysql' === value) {
-            $('#dbcreds_dbtabletype').parent().parent().show();
-        } else {
-            $('#dbcreds_dbtabletype').parent().parent().hide();
-        }
-
-        $('#dbcreds_database_driver').on('change', function() {
-            var value = $(this).val();
-
-            if ('mysql' === value) {
-                $('#dbcreds_dbtabletype').parent().parent().slideDown('slow');
-            } else {
-                $('#dbcreds_dbtabletype').parent().parent().slideUp('slow');
-            }
-        });
-
-        // $('#submit_button').on('click', function() {
-        //     $('#db-check').removeClass('d-none');
-        // });
         $('#submit_button').closest('form').submit(function(event) {
             $('#db-check').removeClass('d-none');
         });
-
       });
 </script>
 {% endblock %}

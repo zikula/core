@@ -15,25 +15,38 @@ security:
 
     firewalls:
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
         login:
-            pattern:  ^/demo/secured/login$
+            pattern: ^/demo/secured/login$
             security: false
 
         secured_area:
-            pattern:    ^/demo/secured/
+            pattern: ^/demo/secured/
             form_login:
                 check_path: _security_check
                 login_path: _demo_login
             logout:
-                path:   _demo_logout
+                path: _demo_logout
                 target: _demo
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
 
+        main:
+            anonymous: lazy
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/demo/secured/hello/admin/, roles: ROLE_ADMIN }
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }

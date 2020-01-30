@@ -30,19 +30,6 @@ class PersistedBundleHelper
      */
     private $extensionStateMap = [];
 
-    public function getConnection(ZikulaHttpKernelInterface $kernel): Connection
-    {
-        // get bundles from persistence
-        $connectionParams = $kernel->getConnectionConfig();
-        $connectionParams['dbname'] = $connectionParams['parameters']['database_name'];
-        $connectionParams['user'] = $connectionParams['parameters']['database_user'];
-        $connectionParams['password'] = $connectionParams['parameters']['database_password'];
-        $connectionParams['host'] = $connectionParams['parameters']['database_host'];
-        $connectionParams['driver'] = $connectionParams['parameters']['database_driver'];
-
-        return DriverManager::getConnection($connectionParams, new Configuration());
-    }
-
     public function getPersistedBundles(ZikulaHttpKernelInterface $kernel, array &$bundles): void
     {
         try {
@@ -54,7 +41,7 @@ class PersistedBundleHelper
 
     private function doGetPersistedBundles(ZikulaHttpKernelInterface $kernel, array &$bundles): void
     {
-        $conn = $this->getConnection($kernel);
+        $conn = $this->getConnection();
         $conn->connect();
         $res = $conn->executeQuery('SELECT bundleclass, autoload, bundletype FROM bundles');
         foreach ($res->fetchAll(PDO::FETCH_NUM) as list($class, $autoload, $type)) {
@@ -74,6 +61,15 @@ class PersistedBundleHelper
             }
         }
         $conn->close();
+    }
+
+    private function getConnection(): Connection
+    {
+        $connectionParams = [
+            'url' => $_ENV['DATABASE_URL'] ?? ''
+        ];
+
+        return DriverManager::getConnection($connectionParams, new Configuration());
     }
 
     /**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Tests\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Translation\IdentityTranslator;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
@@ -31,6 +32,10 @@ class BlockFactoryApiTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        // hack to load test env vars
+        $dotenv = new Dotenv();
+        $dotenv->load('.env.test');
+
         self::bootKernel();
         $this->api = new BlockFactoryApi(self::$container, new IdentityTranslator());
     }

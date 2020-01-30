@@ -15,9 +15,15 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class CacheHelper
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
     /**
      * @var CacheClearer
      */
@@ -29,21 +35,16 @@ class CacheHelper
     private $symfonyCacheClearer;
 
     /**
-     * @var string
-     */
-    private $env;
-
-    /**
      * CacheHelper constructor.
      */
     public function __construct(
+        ZikulaHttpKernelInterface $kernel,
         CacheClearer $zikulaCacheClearer,
-        CacheClearerInterface $symfonyCacheClearer,
-        string $env
+        CacheClearerInterface $symfonyCacheClearer
     ) {
+        $this->kernel = $kernel;
         $this->zikulaCacheClearer = $zikulaCacheClearer;
         $this->symfonyCacheClearer = $symfonyCacheClearer;
-        $this->env = $env;
     }
 
     public function clearCaches(): bool
@@ -54,7 +55,7 @@ class CacheHelper
         // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.
         $this->symfonyCacheClearer->clear('dev');
         $this->symfonyCacheClearer->clear('prod');
-        if (!in_array($this->env, ['dev', 'prod'])) {
+        if (!in_array($this->kernel->getEnvironment(), ['dev', 'prod'], true)) {
             // this is just in case anyone ever creates a mode that isn't dev|prod
             $this->symfonyCacheClearer->clear($this->env);
         }

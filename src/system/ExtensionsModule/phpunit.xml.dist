@@ -8,15 +8,11 @@
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
-    <php>
-        <server name="KERNEL_CLASS" value="Kernel" />
-    </php>
     <testsuites>
         <testsuite name="Zikula Extensions Module Test Suite">
             <directory>./Tests/</directory>
         </testsuite>
     </testsuites>
-
     <filter>
         <whitelist>
             <directory>./</directory>

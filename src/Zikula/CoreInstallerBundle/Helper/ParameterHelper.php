@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use RandomLib\Factory;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\CacheClearer;
@@ -29,6 +31,11 @@ class ParameterHelper
      * @var string
      */
     private $configDir;
+
+    /**
+     * @var string
+     */
+    private $localEnvFile;
 
     /**
      * @var VariableApiInterface
@@ -54,13 +61,14 @@ class ParameterHelper
      * ParameterHelper constructor.
      */
     public function __construct(
-        string $configDir,
+        string $projectDir,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer,
         RequestStack $requestStack,
         ZikulaHttpKernelInterface $kernel
     ) {
-        $this->configDir = $configDir;
+        $this->configDir = $projectDir . '/config';
+        $this->localEnvFile = $projectDir . '/.env.local';
         $this->variableApi = $variableApi;
         $this->cacheClearer = $cacheClearer;
         $this->requestStack = $requestStack;
@@ -78,9 +86,6 @@ class ParameterHelper
     {
         $yamlHelper = $this->getYamlHelper(true);
         $params = array_merge($yamlHelper->getParameters(), $paramsToMerge);
-        if (0 !== mb_strpos($params['database_driver'], 'pdo_')) {
-            $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in services_custom.yaml
-        }
         $yamlHelper->setParameters($params);
         $this->cacheClearer->clear('symfony.config');
 
@@ -88,9 +93,7 @@ class ParameterHelper
     }
 
     /**
-     * load and set new default values from the original services.yaml file into the services_custom.yaml file.
-     *
-     * @return bool
+     * Load and set new default values from the original services.yaml file into the services_custom.yaml file.
      */
     public function reInitParameters(): bool
     {
@@ -102,6 +105,9 @@ class ParameterHelper
         return true;
     }
 
+    /**
+     * @throws IOExceptionInterface If .env.local could not be dumped
+     */
     public function finalizeParameters(bool $configureRequestContext = true): bool
     {
         $yamlHelper = $this->getYamlHelper();
@@ -116,17 +122,8 @@ class ParameterHelper
         $this->variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
 
         // add remaining parameters and remove unneeded ones
-        unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);
+        unset($params['username'], $params['password'], $params['email']);
         $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'public/uploads';
-
-        $RandomLibFactory = new Factory();
-        $generator = $RandomLibFactory->getMediumStrengthGenerator();
-        if (!isset($params['secret']) || ('ThisTokenIsNotSoSecretChangeIt' === $params['secret'])) {
-            $params['secret'] = $generator->generateString(50);
-        }
-        if (!isset($params['url_secret'])) {
-            $params['url_secret'] = $generator->generateString(10);
-        }
 
         if ($configureRequestContext) {
             // Configure the Request Context
@@ -164,7 +161,27 @@ class ParameterHelper
             unset($params['upgrading']);
         }
 
+        // write parameters into config/services_custom.yaml
         $yamlHelper->setParameters($params);
+
+        // write env vars into .env.local
+        $content = explode("\n", file_get_contents($this->localEnvFile));
+        $databaseSetting = $content[0];
+
+        $randomLibFactory = new Factory();
+        $generator = $randomLibFactory->getMediumStrengthGenerator();
+        $lines = [];
+        $lines[] = 'APP_ENV=prod';
+        $lines[] = 'APP_DEBUG=1';
+        $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
+        $lines[] = $databaseSetting;
+
+        $fileSystem = new Filesystem();
+        try {
+            $fileSystem->dumpFile($this->localEnvFile, implode("\n", $lines));
+        } catch (IOExceptionInterface $exception) {
+            throw $exception;
+        }
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
@@ -177,19 +194,26 @@ class ParameterHelper
         // protect services_custom.yaml files
         $files = array_diff(scandir($this->configDir), ['.', '..']);
         foreach ($files as $file) {
-            @chmod($file, 0400);
-            if (!is_readable($file)) {
-                @chmod($file, 0440);
-                if (!is_readable($file)) {
-                    @chmod($file, 0444);
-                }
-            }
+            $this->protectFile($this->configDir . '/' . $file);
         }
+
+        $this->protectFile($this->localEnvFile);
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
 
         return true;
+    }
+
+    private function protectFile(string $filePath): void
+    {
+        //@chmod($filePath, 0400);
+        //if (!is_readable($filePath)) {
+        @chmod($filePath, 0440);
+        if (!is_readable($filePath)) {
+            @chmod($filePath, 0444);
+        }
+        //}
     }
 
     /**

@@ -84,7 +84,10 @@ class UpgraderController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);
-                $params = ['stage' => $wizard->getNextStage()->getName(), '_locale' => $this->container->getParameter('locale')];
+                $params = [
+                    'stage' => $wizard->getNextStage()->getName(),
+                    '_locale' => $this->container->getParameter('locale')
+                ];
                 $url = $this->router->generate('upgrade', $params);
 
                 return new RedirectResponse($url);
