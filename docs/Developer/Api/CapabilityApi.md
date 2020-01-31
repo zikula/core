@@ -55,9 +55,16 @@ extra": {
     "zikula": {
         "url": "
         "capabilities": {
-            "user": {"route": "acmefoomodule_user_index"}
-            "admin": {"route": "acmefoomodule_admin_index"},
-            "categorizable": {"entities": ["Acme\\FooModule\\Entity\\FooEntity", "Acme\\FooModule\\Entity\\BarEntity"]}
+            "admin": {
+                "route": "acmefoomodule_admin_index",
+                "icon": "fas fa-rocket"
+            },
+            "user": {
+                "route": "acmefoomodule_user_index"
+            },
+            "categorizable": {
+                "entities": ["Acme\\FooModule\\Entity\\FooEntity", "Acme\\FooModule\\Entity\\BarEntity"]
+            }
         }
     }
 }
