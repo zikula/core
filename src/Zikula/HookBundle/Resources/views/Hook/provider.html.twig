@@ -62,7 +62,7 @@
                                         </div>
                                     </div>
                                 {% else %}
-                                    {% if not connection_exists %}<span class="small">{% trans with {'%1$s': currentmodule, '%2$s': subscriber.name} %}%1$s module can\'t connect to %2$s module. No connections are supported{% endtrans %}</span>{% endif %}
+                                    {% if not connection_exists %}<span class="small">{% trans with {'%module1%': currentmodule, '%module2%': subscriber.name} %}%module1% module can\'t connect to %module2% module. No connections are supported{% endtrans %}</span>{% endif %}
                                 {% endif %}
                             {% endfor %}
                         </td>
