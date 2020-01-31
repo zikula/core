@@ -40,10 +40,6 @@ use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 
 class ExtensionHelper
 {
-    public const TYPE_SYSTEM = 3;
-
-    public const TYPE_MODULE = 2;
-
     /**
      * @var ContainerInterface
      */

@@ -14,8 +14,8 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{% trans %}Name{% endtrans %}</a></th>
             <th id="hType" scope="col">{% trans %}Type{% endtrans %}</th>
+            <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{% trans %}Name{% endtrans %}</a></th>
             <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
             <th id="hVersion" scope="col">{% trans %}Version{% endtrans %}</th>
             <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{% trans %}State{% endtrans %}</a></th>
@@ -24,7 +24,8 @@
     </thead>
     <tbody>
     {% for extension in extensions %}
-        <tr>
+        <tr class="extension-type-{{ extension.type }}">
+            <td headers="hType" class="text-center">{{ _self.badge(extension.type) }}</td>
             <td headers="hName">
                 {% if adminRoutes[extension.name]|default %}
                     <a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ adminRoutes[extension.name] }}"><i class="fas fa-link"></i></a>
@@ -35,10 +36,6 @@
                     <li>Internal name: <em>{{ extension.name }}</em></li>
                     <li>Url root: <code>/{{ extension.url }}</code></li>
                 </ul>
-            </td>
-            <td headers="hType" class="text-center">
-                {{ extension.type }}
-                {% if extension.name|isCoreExtension %}<span class="badge badge-info tooltips" title="{% trans %}Core Extension{% endtrans %}">C</span>{% endif %}
             </td>
             <td headers="hDescription" style="width: 40%">{{ extension.description }}</td>
             <td headers="hVersion">{{ extension.version }}</td>
@@ -62,8 +59,29 @@
             $('i[class*=fa-caret-]').on('click', function() {
                 $(this).toggleClass('fa-caret-down fa-caret-up');
             });
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
         });
     })(jQuery);
 </script>
 {% endset %}
 {{ pageAddAsset('footer', initScript) }}
+
+{% macro badge(type) %}
+    {% if type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_MODULE') %}
+        <i class="fas fa-cubes fa-2x text-primary" data-toggle="tooltip" data-placement="right" title="{% trans %}Third party module{% endtrans %}"></i>
+    {% elseif type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_THEME') %}
+        <i class="fas fa-palette fa-2x text-info" data-toggle="tooltip" data-placement="right" title="{% trans %}Third party theme{% endtrans %}"></i>
+    {% elseif type is  constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_MODULE') %}
+        <span class="fa-stack" data-toggle="tooltip" data-placement="right" title="{% trans %}System module{% endtrans %}">
+          <i class="fas fa-circle fa-stack-2x text-primary"></i>
+          <i class="fas fa-cubes fa-stack-1x fa-inverse"></i>
+        </span>
+    {% elseif type is  constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_THEME') %}
+        <span class="fa-stack" data-toggle="tooltip" data-placement="right" title="{% trans %}System theme{% endtrans %}">
+          <i class="fas fa-circle fa-stack-2x text-info"></i>
+          <i class="fas fa-palette fa-stack-1x fa-inverse"></i>
+        </span>
+    {% endif %}
+{% endmacro %}

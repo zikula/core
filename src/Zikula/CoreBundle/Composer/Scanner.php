@@ -85,7 +85,7 @@ class Scanner
             }
             $json['autoload']['psr-4'][$ns] = $base;
             $json['extra']['zikula']['short-name'] = mb_substr($class, mb_strrpos($class, '\\') + 1, mb_strlen($class));
-            $json['extensionType'] = ZikulaKernel::isCoreExtension($json['extra']['zikula']['short-name']) ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
+            $json['extensionType'] = $this->computeExtensionType($json);
 
             return $json;
         }
@@ -93,22 +93,21 @@ class Scanner
         return false;
     }
 
-    public function getExtensionsMetaData(): array
+    private function computeExtensionType(array $json): int
     {
-        return $this->getMetaData('zikula-extension');
+        if (ZikulaKernel::isCoreExtension($json['extra']['zikula']['short-name'])) {
+           return MetaData::EXTENSION_TYPE_THEME === $json['type'] ? MetaData::TYPE_SYSTEM_THEME : MetaData::TYPE_SYSTEM_MODULE;
+        }
+
+        return MetaData::EXTENSION_TYPE_THEME === $json['type'] ? MetaData::TYPE_THEME : MetaData::TYPE_MODULE;
     }
 
-    private function getMetaData(string $type, bool $indexByShortName = false): array
+    public function getExtensionsMetaData(): array
     {
         $array = [];
         foreach ($this->jsons as $json) {
-            // @temp
-//            if ('zikula-extension' !== $type && $json['type'] !== $type) {
-//                continue;
-//            }
-            $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
-            $array[$indexField] = new MetaData($json);
-            $array[$indexField]->setTranslator($this->translator);
+            $array[$json['name']] = new MetaData($json);
+            $array[$json['name']]->setTranslator($this->translator);
         }
 
         return $array;
