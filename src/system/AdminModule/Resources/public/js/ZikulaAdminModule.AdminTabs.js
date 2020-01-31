@@ -55,7 +55,7 @@
                 var name = $(this).parent().prev('.admintabs-add-name').first().val();
                 $('.admintabs-add a').popover('hide');
                 if ('' === name) {
-                    alert('You must enter a name for the new category');
+                    alert(Translator.trans('You must enter a name for the new category'));
                     return;
                 }
                 $.ajax({
@@ -247,7 +247,7 @@
         $('#admintabs-rename-category-modal .btn-primary').click(function () {
             var name = $('#admintabs-rename-category-modal input').val();
             if ('' === name) {
-                alert('You must enter a name for the new category');
+                alert(Translator.trans('You must enter a name for the new category'));
                 return;
             }
             $.ajax({
