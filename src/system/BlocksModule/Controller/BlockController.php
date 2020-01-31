@@ -72,7 +72,7 @@ class BlockController extends AbstractController
         ExtensionRepositoryInterface $extensionRepository,
         BlockEntity $blockEntity = null
     ): Response {
-        $accessLevelRequired = ACCESS_EDIT;
+        $requiredAccessLevel = ACCESS_EDIT;
         if (null === $blockEntity) {
             $bKey = json_decode($request->query->get('bkey'));
             if (empty($bKey)) {
@@ -80,11 +80,11 @@ class BlockController extends AbstractController
             }
             $blockEntity = new BlockEntity(); // sets defaults in constructor
             $blockEntity->setBkey($bKey);
-            $accessLevelRequired = ACCESS_ADD;
+            $requiredAccessLevel = ACCESS_ADD;
             $request->attributes->set('blockEntity', $blockEntity);
         }
 
-        if (!$this->hasPermission('ZikulaBlocksModule::', $blockEntity->getBlocktype() . ':' . $blockEntity->getTitle() . ':' . $blockEntity->getBid(), $accessLevelRequired)) {
+        if (!$this->hasPermission('ZikulaBlocksModule::', $blockEntity->getBlocktype() . ':' . $blockEntity->getTitle() . ':' . $blockEntity->getBid(), $requiredAccessLevel)) {
             throw new AccessDeniedException();
         }
 
@@ -95,7 +95,7 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createForm(BlockType::class, $blockEntity, ['locale' => $request->getLocale()]);
-        if (($blockInstance instanceof BlockHandlerInterface) && ('' !== $blockInstance->getFormClassName())) {
+        if ($blockInstance instanceof BlockHandlerInterface && '' !== $blockInstance->getFormClassName()) {
             $form->add('properties', $blockInstance->getFormClassName(), $blockInstance->getFormOptions());
         }
         $form->handleRequest($request);
@@ -103,6 +103,13 @@ class BlockController extends AbstractController
         $moduleName = $blockInstance->getBundle()->getName();
         if ($form->isSubmitted()) {
             if ($form->isValid() && $form->get('save')->isClicked()) {
+                // remove orphan properties (#3892)
+                $properties = [];
+                foreach ($form->get('properties')->all() as $child) {
+                    $properties[$child->getName()] = $child->getData();
+                }
+                $blockEntity->setProperties($properties);
+
                 // sort filter array so keys are always sequential.
                 $filters = $blockEntity->getFilters();
                 sort($filters);

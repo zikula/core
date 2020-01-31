@@ -137,6 +137,7 @@
   - Improved asset merger with regards to negative weights (#3978).
   - Fixed broken JavaScript in ZAuth user modification form (#3992).
   - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
+  - When updating a block, orphan properties are removed (#3892).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
