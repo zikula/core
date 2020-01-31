@@ -41,7 +41,7 @@ Please see our [developer documentation](https://github.com/zikula/core/tree/mas
 Contributions can be made to Zikula in a number of ways
 
 1. By using our software!
-2. Assisting other users at our [Slack channels](https://zikula.slack.com/)
+2. Assisting other users at our [Slack channels](https://joinslack.ziku.la/)
 3. Creating themes for Zikula.
 4. Authoring additional modules for Zikula.
 5. Contributing bug fixes and patches to the Core.
