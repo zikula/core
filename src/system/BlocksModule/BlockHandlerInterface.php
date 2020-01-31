@@ -41,4 +41,9 @@ interface BlockHandlerInterface
      *   e.g. `return '@AcmeMyBundle/Block/foo_modify.html.twig';`
      */
     public function getFormTemplate(): string;
+
+    /**
+     * Get an array of default values for custom properties.
+     */
+    public function getPropertyDefaults(): array;
 }

@@ -40,6 +40,7 @@
     - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
     - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
     - `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
+    - `Zikula\BlocksModule\BlockHandlerInterface` requires a new method `getPropertyDefaults()` to be implemented.
     - `Zikula\Bundle\HookBundle\HookProviderInterface` requires a new method `getAreaName()` to be implemented.
     - `Zikula\Bundle\HookBundle\HookSubscriberInterface` requires a new method `getAreaName()` to be implemented.
     - `Zikula\Bundle\HookBundle\HookProviderInterface` has dropped `setServiceId` and `getServiceId` methods.
@@ -160,6 +161,7 @@
   - `LocaleApi` is now able to work with regions, too (#4012, #2425).
   - New and removed locales are automatically reflected in the configuration (#4012, #2425).
   - Added possibility to specify custom database port in installer.
+  - Blocks can now specify default property defaults used for custom form fields (#3676).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

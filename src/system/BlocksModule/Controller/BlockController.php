@@ -73,7 +73,9 @@ class BlockController extends AbstractController
         BlockEntity $blockEntity = null
     ): Response {
         $requiredAccessLevel = ACCESS_EDIT;
+        $isCreation = false;
         if (null === $blockEntity) {
+            $isCreation = true;
             $bKey = json_decode($request->query->get('bkey'));
             if (empty($bKey)) {
                 return $this->redirectToRoute('zikulablocksmodule_block_new');
@@ -81,7 +83,6 @@ class BlockController extends AbstractController
             $blockEntity = new BlockEntity(); // sets defaults in constructor
             $blockEntity->setBkey($bKey);
             $requiredAccessLevel = ACCESS_ADD;
-            $request->attributes->set('blockEntity', $blockEntity);
         }
 
         if (!$this->hasPermission('ZikulaBlocksModule::', $blockEntity->getBlocktype() . ':' . $blockEntity->getTitle() . ':' . $blockEntity->getBid(), $requiredAccessLevel)) {
@@ -89,6 +90,9 @@ class BlockController extends AbstractController
         }
 
         $blockInstance = $blockApi->createInstanceFromBKey($blockEntity->getBkey());
+        if (true === $isCreation) {
+            $blockEntity->setProperties($blockInstance->getPropertyDefaults());
+        }
         $blockType = $blockEntity->getBlocktype();
         if (empty($blockType)) {
             $blockEntity->setBlocktype($blockInstance->getType());
