@@ -43,10 +43,10 @@ class AdminCategoryType extends AbstractType
                 'label' => 'Description',
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
-            ->add('icon', IconType::class, [
+            ->add($builder->create('icon', IconType::class, [
                 'label' => 'Icon',
                 'required' => false
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
