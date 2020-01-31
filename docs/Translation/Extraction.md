@@ -125,3 +125,8 @@ $builder->add('myField', [
     ]
 ]);
 ```
+
+## Extracting from JavaScript files
+
+**Note:** currently it is not possible to automatically extract translation messages from JavaScript files.
+This functionality is being worked on [here](https://github.com/willdurand/BazingaJsTranslationBundle/pull/238).

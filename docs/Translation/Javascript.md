@@ -21,23 +21,25 @@ See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslati
 ## Extraction from JavaScript files
 
 Zikula also provides an Extractor for both native Symfony and Zikula translation functions. This is run automatically
-when translations are extracted. By default, **all javascript translations** are added to the `zikula_javascript` domain. 
+when translations are extracted. By default, **all javascript translations** are added to the `messages` domain (same as in PHP, too).
 **This catalog is automatically added to every page**.
 
 If an extension _chooses_, it can set the domain manually in each method call, e.g.:
 
 ```js
-var myText = Translator.__('Foo bar baz', 'my_special_domain');
+var myText = Translator.trans('Foo bar baz', {}, 'special_domain');
 ```
 
 In this case, the extractor will export these strings to its own translation file:
 
-    /MyModule/Resources/translations/my_special_domain.js
+```
+/MyModule/Resources/translations/special_domain.yaml
+```
 
 Then, your extension **must** manually include each of these files in the required template like so:
 
 ```twig
-{{ pageAddAsset('javascript', url('bazinga_jstranslation_js', {domain: 'my_special_domain'}), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JS_TRANSLATIONS')) }}
+{{ pageAddAsset('javascript', url('bazinga_jstranslation_js', {domain: 'special_domain'}), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JS_TRANSLATIONS')) }}
 ```
 
 ## JavaScripts in Twig templates

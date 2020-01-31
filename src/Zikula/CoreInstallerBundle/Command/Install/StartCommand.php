@@ -17,7 +17,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
@@ -25,15 +28,16 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
     /**
-     * @var string
+     * @var ZikulaHttpKernelInterface
      */
-    private $environment;
+    private $kernel;
 
     /**
      * @var string
@@ -55,8 +59,13 @@ class StartCommand extends AbstractCoreInstallerCommand
      */
     private $parameterHelper;
 
+    /**
+     * @var string
+     */
+    private $localEnvFile;
+
     public function __construct(
-        string $environment,
+        ZikulaHttpKernelInterface $kernel,
         bool $installed,
         ControllerHelper $controllerHelper,
         LocaleApiInterface $localeApi,
@@ -64,11 +73,12 @@ class StartCommand extends AbstractCoreInstallerCommand
         TranslatorInterface $translator
     ) {
         parent::__construct($translator);
-        $this->environment = $environment;
+        $this->kernel = $kernel;
         $this->installed = $installed;
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
+        $this->localEnvFile = $kernel->getProjectDir() . '/.env.local';
     }
 
     protected function configure()
@@ -114,7 +124,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         if ($input->isInteractive()) {
-            $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
+            $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
             $io->comment($this->translator->trans('Please follow the instructions to install Zikula %version%.', ['%version%' => ZikulaKernel::VERSION]));
         }
 
@@ -131,7 +141,11 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
         $settings = array_merge($settings, $data);
         $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
-        $settings = array_merge($settings, $data);
+
+        $dbCredsHelper = new DbCredsHelper();
+        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
+        $this->writeDatabaseUrl($io, $databaseUrl);
+
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
@@ -156,11 +170,24 @@ class StartCommand extends AbstractCoreInstallerCommand
             }
         }
 
-        // write the parameters to config/services_custom.yaml
+        // write parameters into config/services_custom.yaml and env vars into .env.local
         $this->parameterHelper->initializeParameters($settings);
 
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
 
         return 0;
+    }
+
+    private function writeDatabaseUrl(SymfonyStyle $io, string $databaseUrl): void
+    {
+        // write env vars into .env.local
+        $content = 'DATABASE_URL=\'' . $databaseUrl . "'\n";
+
+        $fileSystem = new Filesystem();
+        try {
+            $fileSystem->dumpFile($this->localEnvFile, $content);
+        } catch (IOExceptionInterface $exception) {
+            $io->error(sprintf('Cannot write parameters to %s file.', $this->localEnvFile) . ' ' . $exception->getMessage());
+        }
     }
 }

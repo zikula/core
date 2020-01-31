@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "88cff792cc6f2fa4df736e9abb612b955b783087"
+                "reference": "fb93036a70c9520cab99b46723ebc8f2e6fd82a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/88cff792cc6f2fa4df736e9abb612b955b783087",
-                "reference": "88cff792cc6f2fa4df736e9abb612b955b783087",
+                "url": "https://api.github.com/repos/composer/composer/zipball/fb93036a70c9520cab99b46723ebc8f2e6fd82a6",
+                "reference": "fb93036a70c9520cab99b46723ebc8f2e6fd82a6",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-01-18T12:54:01+00:00"
+            "time": "2020-01-28T13:22:11+00:00"
         },
         {
             "name": "composer/installers",
@@ -3467,13 +3467,13 @@
             "version": "dev-symfony-5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Jeroeny/symfony-console-form.git",
-                "reference": "c56e1c6339feba531ededc92c0474533419ee105"
+                "url": "https://github.com/Guite/symfony-console-form.git",
+                "reference": "e3238bdd5bbd7a1247746f908f7587a2e822b955"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Jeroeny/symfony-console-form/zipball/c56e1c6339feba531ededc92c0474533419ee105",
-                "reference": "c56e1c6339feba531ededc92c0474533419ee105",
+                "url": "https://api.github.com/repos/Guite/symfony-console-form/zipball/e3238bdd5bbd7a1247746f908f7587a2e822b955",
+                "reference": "e3238bdd5bbd7a1247746f908f7587a2e822b955",
                 "shasum": ""
             },
             "require": {
@@ -3521,9 +3521,9 @@
                 "form"
             ],
             "support": {
-                "source": "https://github.com/Jeroeny/symfony-console-form/tree/symfony-5"
+                "source": "https://github.com/Guite/symfony-console-form/tree/symfony-5"
             },
-            "time": "2020-01-04T09:52:39+00:00"
+            "time": "2020-01-31T08:02:06+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -5695,16 +5695,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v5.0.3",
+            "version": "v5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "fe34099ef413a6ed60126e1971c929ec382370ea"
+                "reference": "03e6126338b0e37c4dd6481ed0f517ed3de99110"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/fe34099ef413a6ed60126e1971c929ec382370ea",
-                "reference": "fe34099ef413a6ed60126e1971c929ec382370ea",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/03e6126338b0e37c4dd6481ed0f517ed3de99110",
+                "reference": "03e6126338b0e37c4dd6481ed0f517ed3de99110",
                 "shasum": ""
             },
             "require": {
@@ -5866,7 +5866,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2020-01-21T13:30:18+00:00"
+            "time": "2020-01-31T12:49:53+00:00"
         },
         {
             "name": "thomaspark/bootswatch",
@@ -6669,12 +6669,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "588ea6b36aff677516f8122c0488d6c826af0d9a"
+                "reference": "5999cf48761e0f08c61a2d500e72625b5a3eb3fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/588ea6b36aff677516f8122c0488d6c826af0d9a",
-                "reference": "588ea6b36aff677516f8122c0488d6c826af0d9a",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5999cf48761e0f08c61a2d500e72625b5a3eb3fa",
+                "reference": "5999cf48761e0f08c61a2d500e72625b5a3eb3fa",
                 "shasum": ""
             },
             "require": {
@@ -6727,7 +6727,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-01-26T12:50:19+00:00"
+            "time": "2020-01-31T15:22:41+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6735,12 +6735,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "748af29e42bbcd6ca8b0c321e3145e325dac980b"
+                "reference": "6826abe67b29076bb0c2b6b85f1f854a6c7854fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/748af29e42bbcd6ca8b0c321e3145e325dac980b",
-                "reference": "748af29e42bbcd6ca8b0c321e3145e325dac980b",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/6826abe67b29076bb0c2b6b85f1f854a6c7854fd",
+                "reference": "6826abe67b29076bb0c2b6b85f1f854a6c7854fd",
                 "shasum": ""
             },
             "require": {
@@ -6786,7 +6786,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-01-26T12:50:28+00:00"
+            "time": "2020-01-31T15:23:41+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6794,12 +6794,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "75b809ee0aa73231c53cc72de185a69e634aab9b"
+                "reference": "0cb865fe1546ff5d9c44a46b6125a0820a82a95f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/75b809ee0aa73231c53cc72de185a69e634aab9b",
-                "reference": "75b809ee0aa73231c53cc72de185a69e634aab9b",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/0cb865fe1546ff5d9c44a46b6125a0820a82a95f",
+                "reference": "0cb865fe1546ff5d9c44a46b6125a0820a82a95f",
                 "shasum": ""
             },
             "require": {
@@ -6838,7 +6838,7 @@
                 }
             ],
             "description": "Page locking support",
-            "time": "2020-01-26T12:49:23+00:00"
+            "time": "2020-01-31T15:24:27+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6846,12 +6846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "eb9862182032e7a5b2e5e44d9d88f3166e7a2535"
+                "reference": "53ce9a2e3f4f5f2892ec1aa260ecdf63e3213725"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/eb9862182032e7a5b2e5e44d9d88f3166e7a2535",
-                "reference": "eb9862182032e7a5b2e5e44d9d88f3166e7a2535",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/53ce9a2e3f4f5f2892ec1aa260ecdf63e3213725",
+                "reference": "53ce9a2e3f4f5f2892ec1aa260ecdf63e3213725",
                 "shasum": ""
             },
             "require": {
@@ -6907,7 +6907,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-01-26T12:57:54+00:00"
+            "time": "2020-01-31T15:25:03+00:00"
         },
         {
             "name": "zikula/sortable-columns",
@@ -7007,16 +7007,16 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.0.3",
+            "version": "v5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "7f835941a01bea2d03776451c9e42c2a2da6c34c"
+                "reference": "38959f0ef4cea3e003f94c670bca89b2f4d932c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/7f835941a01bea2d03776451c9e42c2a2da6c34c",
-                "reference": "7f835941a01bea2d03776451c9e42c2a2da6c34c",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/38959f0ef4cea3e003f94c670bca89b2f4d932c5",
+                "reference": "38959f0ef4cea3e003f94c670bca89b2f4d932c5",
                 "shasum": ""
             },
             "require": {
@@ -7068,7 +7068,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2020-01-21T08:40:24+00:00"
+            "time": "2020-01-31T09:56:42+00:00"
         }
     ],
     "aliases": [],

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
 use Symfony\Requirements\Requirement;
 use Symfony\Requirements\SymfonyRequirements;
@@ -83,6 +85,37 @@ class ZikulaRequirements
                 'config/services_custom.yaml file must be writable',
                 'Change the permissions of "<strong>config/services_custom.yaml</strong>" so that the web server can write into it.'
             );
+        }
+        $customEnvVarsPath = $rootDir . '.env.local';
+        if (!file_exists($customEnvVarsPath)) {
+            // try to create the file
+            $fileSystem = new Filesystem();
+            try {
+                $fileSystem->touch($customEnvVarsPath);
+            } catch (IOExceptionInterface $exception) {
+                $symfonyRequirements->addRequirement(
+                    false,
+                    '.env.local file must exists',
+                    'Create an empty file "<strong>.env.local</strong>" in the root folder.'
+                );
+            }
+        }
+        if (file_exists($customEnvVarsPath)) {
+            $content = file_get_contents($customEnvVarsPath);
+            if (false === mb_strpos($content, 'DATABASE_URL')) {
+                // no database credentials are set yet
+                $fileSystem = new Filesystem();
+                try {
+                    $fileSystem->dumpFile($customEnvVarsPath, 'Test');
+                    $fileSystem->dumpFile($customEnvVarsPath, '');
+                } catch (IOExceptionInterface $exception) {
+                    $symfonyRequirements->addRequirement(
+                        false,
+                        '.env.local file must be writable',
+                        'Change the permissions of "<strong>.env.local</strong>" so that the web server can write into it.'
+                    );
+                }
+            }
         }
     }
 }

@@ -218,7 +218,7 @@ class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
             25 => [
                 AjaxStageInterface::NAME => 'installassets',
                 AjaxStageInterface::PRE => $this->trans('Install assets'),
-                AjaxStageInterface::DURING => $this->trans('Installing assets to /web'),
+                AjaxStageInterface::DURING => $this->trans('Installing assets to /public'),
                 AjaxStageInterface::SUCCESS => $this->trans('Assets installed'),
                 AjaxStageInterface::FAIL => $this->trans('Failed to install assets')
             ],

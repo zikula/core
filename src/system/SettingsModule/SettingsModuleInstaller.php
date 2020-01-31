@@ -28,7 +28,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 {
     public function install(): bool
     {
-        $this->setSystemVar('debug', '0');
         $this->setSystemVar('startdate', date('m/Y'));
         $this->setSystemVar('adminmail', 'example@example.com');
         $this->setSystemVar('Default_Theme', 'ZikulaBootstrapTheme');
@@ -129,6 +128,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                     'funtext',
                     'reportlevel',
                     'idnnames',
+                    'debug',
                     'debug_sql',
                     'useflags',
                     'language_i18n'

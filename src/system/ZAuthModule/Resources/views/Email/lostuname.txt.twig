@@ -10,7 +10,7 @@
 
 {% trans with {'%user%': uname} %}The user name for your account is: %user%{% endtrans %}
 
-{% if not requestedByAdmin %}{% trans %}If the request was not made by you you don\'t need to worry.{% endtrans %} {% endif %}
+{% if not requestedByAdmin %}{% trans %}If the request was not made by you then you don\'t need to worry.{% endtrans %} {% endif %}
 {% trans %}You are the only recipient of this message, and your user name has not been sent to any other e-mail address.{% endtrans %}
 {% if not requestedByAdmin %} {% trans %}You can just delete this message.{% endtrans %}{% endif %}
 {{ include('@ZikulaZAuthModule/Email/footer.txt.twig') }}

@@ -87,14 +87,14 @@ services:
 
     Zikula\ThemeModule\Engine\Asset\JsResolver:
         arguments:
+          $kernel: '@kernel'
           $bag: '@zikula_core.common.theme.assets_js'
-          $env: '%env%'
           $combine: '%zikula_asset_manager.combine%'
 
     Zikula\ThemeModule\Engine\Asset\CssResolver:
         arguments:
+          $kernel: '@kernel'
           $bag: '@zikula_core.common.theme.assets_css'
-          $env: '%env%'
           $combine: '%zikula_asset_manager.combine%'
 
     # override TwigBundle's Twig\Environment definition with Zikula's own child class
@@ -124,7 +124,6 @@ services:
         arguments:
           $jsAssetBag: '@zikula_core.common.theme.assets_js'
           $cssAssetBag: '@zikula_core.common.theme.assets_css'
-          $env: '%env%'
           $bootstrapJavascriptPath: '%zikula.javascript.bootstrap.min.path%'
           $bootstrapStylesheetPath: "%zikula.stylesheet.bootstrap.min.path%"
           $fontAwesomePath: '%zikula.stylesheet.fontawesome.min.path%'
@@ -151,10 +150,6 @@ services:
         arguments:
           $headers: '@zikula_core.common.theme.assets_header'
           $defaultSessionName: '%zikula.session.name%'
-
-    Zikula\ThemeModule\EventListener\TemplateNameExposeListener:
-        arguments:
-          $env: '%env%'
 
     Zikula\ThemeModule\EventListener\ExtensionInstallationListener:
         arguments:

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Tests\Collector;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Dotenv\Dotenv;
 use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\Tests\Collector\Fixture\ABlock;
 use Zikula\BlocksModule\Tests\Collector\Fixture\BBlock;
@@ -28,6 +29,10 @@ class BlockCollectorTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        // hack to load test env vars
+        $dotenv = new Dotenv();
+        $dotenv->load('.env.test');
+
         self::bootKernel();
         $this->collector = new BlockCollector();
     }

@@ -9,9 +9,6 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true"
 >
-    <php>
-        <server name="KERNEL_CLASS" value="Kernel" />
-    </php>
     <testsuites>
         <testsuite name="ZikulaRoutesModule Test Suite">
             <directory>./Tests</directory>

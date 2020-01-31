@@ -78,7 +78,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         Asset $assetHelper,
         Engine $themeEngine,
         VariableApiInterface $variableApi,
-        string $env,
         bool $installed,
         string $bootstrapJavascriptPath,
         string $bootstrapStylesheetPath,
@@ -92,7 +91,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->themeEngine = $themeEngine;
         $this->variableApi = $variableApi;
         $this->params = [
-            'env' => $env,
             'installed' => $installed,
             'zikula.javascript.bootstrap.min.path' => $bootstrapJavascriptPath,
             'zikula.stylesheet.bootstrap.min.path' => $bootstrapStylesheetPath,
@@ -136,7 +134,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJquery(): void
     {
-        $jquery = 'dev' !== $this->params['env'] ? 'jquery.min.js' : 'jquery.js';
+        $jquery = 'dev' !== $this->kernel->getEnvironment() ? 'jquery.min.js' : 'jquery.js';
         $this->jsAssetBag->add([
             $this->assetHelper->resolve("jquery/${jquery}") => AssetBag::WEIGHT_JQUERY,
             $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1
@@ -145,7 +143,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addFosJsRouting(): void
     {
-        if ('dev' !== $this->params['env'] && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
+        if ('dev' !== $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
             $routeScript = $this->assetHelper->resolve('js/fos_js_routes.js');
         } else {
             $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
@@ -158,13 +156,9 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJsTranslation(): void
     {
-        // consider option of dumping the translations to /public
-        // add bundle translations? need domain name e.g. zikulapagesmodule
-        // #3650
-        $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula_javascript']/*, RouterInterface::ABSOLUTE_URL*/);
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('bundles/bazingajstranslation/js/translator.min.js') => AssetBag::WEIGHT_JS_TRANSLATOR,
-            $jsScript => AssetBag::WEIGHT_JS_TRANSLATIONS,
+            $this->router->generate('bazinga_jstranslation_js') => AssetBag::WEIGHT_JS_TRANSLATIONS,
         ]);
     }
 

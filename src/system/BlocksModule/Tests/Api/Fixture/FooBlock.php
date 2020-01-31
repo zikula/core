@@ -41,4 +41,9 @@ class FooBlock implements BlockHandlerInterface
     {
         return '';
     }
+
+    public function getPropertyDefaults(): array
+    {
+        return [];
+    }
 }

@@ -1,4 +1,3 @@
-'The password fields must match.': null
 'Invalid username.': null
 'The code is invalid for this username.': null
 'Old password is incorrect.': null
@@ -20,3 +19,4 @@
 'The value "%value%" is not allowed for the "%property%" property.': null
 'You must select at least "%limit%" choice.|You must select at least "%limit%" choices.': null
 'You must select at most "%limit%" choice.|You must select at most "%limit%" choices.': null
+'The password fields must match.': null

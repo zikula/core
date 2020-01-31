@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 use PDO;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,17 +40,6 @@ class DbCredsType extends AbstractType
                 'choices' => /** @Ignore */$this->getDbTypes(),
                 'data' => 'mysql'
             ])
-            ->add('dbtabletype', ChoiceType::class, [
-                'label' => 'Storage engine',
-                'label_attr' => [
-                    'class' => 'col-md-3'
-                ],
-                'choices' => [
-                    'InnoDB' => 'innodb',
-                    'MyISAM' => 'myisam'
-                ],
-                'data' => 'innodb'
-            ])
             ->add('database_host', TextType::class, [
                 'label' => 'Database host',
                 'label_attr' => [
@@ -59,6 +49,14 @@ class DbCredsType extends AbstractType
                 'constraints' => [
                     new NotBlank()
                 ]
+            ])
+            ->add('database_port', IntegerType::class, [
+                'label' => 'Database port',
+                'label_attr' => [
+                    'class' => 'col-md-3'
+                ],
+                'required' => false,
+                'help' => 'Enter custom port number or leave empty for default.'
             ])
             ->add('database_user', TextType::class, [
                 'label' => 'Database user name',
@@ -107,7 +105,7 @@ class DbCredsType extends AbstractType
             $types['MySQL'] = 'mysql';
         }
         if (in_array('sqlsrv', $availableDrivers, true)) {
-            $types['MSSQL (alpha)'] = 'sqlsrv';
+            $types['MSSQL (alpha)'] = 'mssql';
         }
         if (in_array('oci8', $availableDrivers, true)) {
             $types['Oracle (alpha) via OCI8 driver'] = 'oci8';

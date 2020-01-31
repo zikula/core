@@ -1,4 +1,5 @@
 web_profiler:
-    toolbar: '%debug%'
+    #toolbar: true
+    toolbar: '%kernel.debug%'
     intercept_redirects: false
     excluded_ajax_paths:  '^/((index|app(_[\w]+)?)\.php/)?_wdt'

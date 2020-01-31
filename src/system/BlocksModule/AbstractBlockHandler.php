@@ -93,6 +93,11 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         return '@ZikulaBlocksModule/Block/default_modify.html.twig';
     }
 
+    public function getPropertyDefaults(): array
+    {
+        return [];
+    }
+
     public function display(array $properties): string
     {
         return nl2br(implode("\n", $properties));

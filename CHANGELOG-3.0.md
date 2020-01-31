@@ -36,9 +36,11 @@
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
+    - `ZikulaHttpKernelInterface` has dropped `getConnectionConfig()` method. Use environment variable `DATABASE_URL` instead.
     - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
     - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
     - `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
+    - `Zikula\BlocksModule\BlockHandlerInterface` requires a new method `getPropertyDefaults()` to be implemented.
     - `Zikula\Bundle\HookBundle\HookProviderInterface` requires a new method `getAreaName()` to be implemented.
     - `Zikula\Bundle\HookBundle\HookSubscriberInterface` requires a new method `getAreaName()` to be implemented.
     - `Zikula\Bundle\HookBundle\HookProviderInterface` has dropped `setServiceId` and `getServiceId` methods.
@@ -92,8 +94,8 @@
   - `Bundle\CoreBundle\Helper\PersistedBundleHelper::addAutoloaders` visibility set to private
   - `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
   - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
-  - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
   - Removed custom translation system (#4042). Use Symfony's translation system directly.
+    - Default translation domain is now always `messages`. Use specific other domains (e.g. `mail`, `config`, `hooks` etc.) where appropriate.
   - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
   - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
   - Setting `composer.json` >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
@@ -110,6 +112,13 @@
     - The `parameters.yml` file has been renamed to `services.yaml`.
     - The `custom_parameters.yaml` file has been renamed to `services_custom.yaml`.
     - YAML files use the `.yaml` extension instead of `.yml`.
+    - The `%temp_dir%` parameter has been removed. If you need a temporary folder use `sys_get_temp_dir()`.
+    - The parameters `system.chmod_dir` and `url_secret` have been removed without any replacement.
+    - Some other parameter have been removed in favour of environment variables
+      - `env` became `APP_ENV`.
+      - `debug` became `APP_DEBUG`.
+      - `secret` became `APP_SECRET`.
+      - `database_*` became `DATABASE_URL`.
 
 - Fixes:
   - Check if verification record is already deleted when confirming a changed mail address.
@@ -129,6 +138,7 @@
   - Improved asset merger with regards to negative weights (#3978).
   - Fixed broken JavaScript in ZAuth user modification form (#3992).
   - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
+  - When updating a block, orphan properties are removed (#3892).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -150,6 +160,8 @@
   - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
   - `LocaleApi` is now able to work with regions, too (#4012, #2425).
   - New and removed locales are automatically reflected in the configuration (#4012, #2425).
+  - Added possibility to specify custom database port in installer.
+  - Blocks can now specify default property defaults used for custom form fields (#3676).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
@@ -209,7 +221,7 @@
   - symfony/contracts installed in 2.0.1
   - symfony/maker-bundle installed in 1.14.3
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
-  - symfony/phpunit-bridge updated from 3.4.14 to 5.0.3
+  - symfony/phpunit-bridge updated from 3.4.14 to 5.0.4
   - symfony/polyfill-ctype updated from v1.12.0 to v1.13.1
   - symfony/polyfill-iconv installed in 1.13.1
   - symfony/polyfill-intl-grapheme installed in 1.13.1
@@ -222,7 +234,7 @@
   - symfony/polyfill-php73 installed in 1.13.1
   - symfony/profiler-pack installed in 1.0.4
   - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
-  - symfony/symfony updated from 3.4.35 to 5.0.3
+  - symfony/symfony updated from 3.4.35 to 5.0.4
   - thomaspark/bootswatch installed in 4.4.1
   - tijsverkoyen/css-to-inline-styles installed in 2.2.2
   - twig/extra-bundle installed in 3.0.1

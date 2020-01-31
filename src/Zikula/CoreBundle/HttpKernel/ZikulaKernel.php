@@ -18,7 +18,6 @@ use InvalidArgumentException;
 use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Yaml\Yaml;
 use Zikula\AdminModule\ZikulaAdminModule;
 use Zikula\AtomTheme\ZikulaAtomTheme;
 use Zikula\BlocksModule\ZikulaBlocksModule;
@@ -209,16 +208,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
 
         return $this->autoloader;
-    }
-
-    public function getConnectionConfig(): array
-    {
-        $config = Yaml::parse(file_get_contents($this->getProjectDir() . '/config/services.yaml'));
-        if (is_readable($file = $this->getProjectDir() . '/config/services_custom.yaml')) {
-            $config = array_merge($config, Yaml::parse(file_get_contents($file)));
-        }
-
-        return $config;
     }
 
     public function isClassInBundle(string $class): bool

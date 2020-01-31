@@ -11,10 +11,7 @@ a.fas {
     text-decoration: none !important;
 }
 
-iframe + p {
-    margin-top: 1em;
-}
-
+iframe + p,
 p + iframe {
     margin-top: 1em;
 }
@@ -242,4 +239,35 @@ label.required.custom-control-label:after {
 }
 .unsorted:after {
     content: "\A0\f0dc"
+}
+
+/**
+ * mmenu customisation (max width 325 instead of 440 pixels)
+ */
+body .mm-menu_offcanvas,
+body .mm-menu_columns-1 {
+    max-width: 325px;
+}
+@media all and (min-width: 550px) {
+    body.mm-wrapper_opening .mm-menu_offcanvas ~ .mm-slideout,
+    body.mm-wrapper_opening .mm-menu_columns-1 ~ .mm-slideout {
+        -webkit-transform: translate3d(325px, 0, 0);
+        transform:translate3d(325px, 0, 0);
+    }
+    body.mm-wrapper_opening .mm-menu_columns-1.mm-menu_position-right.mm-menu_opened ~ .mm-slideout,
+    body.mm-wrapper_opening .mm-menu_position-right.mm-menu_opened ~ .mm-slideout {
+        -webkit-transform: translate3d(-325px, 0, 0);
+        transform: translate3d(-325px, 0, 0);
+    }
+}
+:root {
+    --mm-sidebar-expanded-size: 325px !important;
+}
+body .mm-wrapper_sidebar-expanded .mm-menu_sidebar-expanded {
+    width: 325px;
+}
+body .mm-wrapper_sidebar-expanded:not(.mm-wrapper_sidebar-closed) .mm-menu_sidebar-expanded.mm-menu_opened ~ .mm-slideout {
+    width: calc(100% - 325px);
+    -webkit-transform: translate3d(325px, 0, 0);
+    transform: translate3d(325px, 0, 0);
 }
