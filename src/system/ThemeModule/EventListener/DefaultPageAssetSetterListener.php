@@ -156,13 +156,9 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJsTranslation(): void
     {
-        // consider option of dumping the translations to /public
-        // add bundle translations? need domain name e.g. zikulapagesmodule
-        // #3650
-        $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula_javascript']/*, RouterInterface::ABSOLUTE_URL*/);
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('bundles/bazingajstranslation/js/translator.min.js') => AssetBag::WEIGHT_JS_TRANSLATOR,
-            $jsScript => AssetBag::WEIGHT_JS_TRANSLATIONS,
+            $this->router->generate('bazinga_jstranslation_js') => AssetBag::WEIGHT_JS_TRANSLATIONS,
         ]);
     }
 

@@ -7,11 +7,9 @@ Files should be be named `<domain>.<locale>.<extension>`.
 Examples:
 
 ```
-translations/messages.de.po
-translations/routes.de.yaml
+translations/messages.de.yaml
+translations/routes.de.po
 translations/validators.de.xlf
-translations/zikula.de.yml
-translations/zikula_javascript.de.mo
 ```
 
 After the files have been placed, you must 'install' them by going to _"General Settings > Localisation settings"_.
