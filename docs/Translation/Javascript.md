@@ -33,7 +33,7 @@ var myText = Translator.trans('Foo bar baz', {}, 'special_domain');
 In this case, the extractor will export these strings to its own translation file:
 
 ```
-/MyModule/Resources/translations/my_special_domain.yaml
+/MyModule/Resources/translations/special_domain.yaml
 ```
 
 Then, your extension **must** manually include each of these files in the required template like so:
