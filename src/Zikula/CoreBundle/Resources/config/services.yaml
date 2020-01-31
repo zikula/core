@@ -44,7 +44,6 @@ services:
         arguments:
           $cacheDir: '%kernel.cache_dir%'
           $kernelContainerClass: '%kernel.container_class%'
-          $fosJsRoutesExtractor: '@fos_js_routing.extractor'
           $routingLocales: '%jms_i18n_routing.locales%'
 
     Zikula\Bundle\CoreBundle\EventListener\BlameListener:
