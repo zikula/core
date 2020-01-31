@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
 
 /**
@@ -38,10 +39,10 @@ class AdminCategoryType extends AbstractType
                     'maxlength' => 50
                 ]
             ])
-            ->add('description', TextareaType::class, [
+            ->add($builder->create('description', TextareaType::class, [
                 'label' => 'Description',
                 'required' => false
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('icon', IconType::class, [
                 'label' => 'Icon',
                 'required' => false
