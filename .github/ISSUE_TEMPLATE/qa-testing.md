@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Replace ZKVERSION, BUILDNUMBER, BUILDURL and ANNOUNCEMENTTEXT by the correct values!**
+# Replace ZKVERSION, BUILDNUMBER, BUILDURL and ANNOUNCEMENTTEXT by the correct values!
 
 Please test build [#BUILDNUMBER](BUILDURL) and decide if it should become the next official release. **Anyone may participate in the testing process.**
 
