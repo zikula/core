@@ -50,7 +50,7 @@ class VarController extends AbstractController
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->trans('%theme% has no configuration.', ['%theme%' => $themeName]));
 
-            return $this->redirectToRoute('zikulathememodule_theme_view');
+            return $this->redirectToRoute('extensionsmodule_extension_list');
         }
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
         /** @var FormBuilder $formBuilder */
@@ -98,7 +98,7 @@ class VarController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulathememodule_theme_view');
+            return $this->redirectToRoute('extensionsmodule_extension_list');
         }
 
         return [

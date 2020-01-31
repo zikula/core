@@ -16,6 +16,7 @@ namespace Zikula\ExtensionsModule\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -49,6 +50,7 @@ class MenuBuilder
 
     public function createAdminMenu(array $options): ItemInterface
     {
+        /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $extension */
         $extension = $options['extension'];
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
@@ -143,6 +145,14 @@ class MenuBuilder
                 'routeParameters' => ['id' => $id]
             ])->setAttribute('icon', 'fas fa-wrench')
                 ->setLinkAttribute('style', 'color: #000');
+        }
+
+        if (Constant::STATE_ACTIVE === $extension->getState()
+            && (MetaData::TYPE_THEME === $extension->getType() || MetaData::TYPE_SYSTEM_THEME === $extension->getType())) {
+            $menu->addChild('Edit theme vars', [
+                'route' => 'zikulathememodule_var_var',
+                'routeParameters' => ['themeName' => $extension->getName()]
+            ])->setAttribute('icon', 'fas fa-pencil');
         }
 
         return $menu;
