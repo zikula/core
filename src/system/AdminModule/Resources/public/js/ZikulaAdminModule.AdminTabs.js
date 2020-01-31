@@ -52,10 +52,10 @@
             });
             $('.popover.show .fa-check').click(function (event) {
                 event.preventDefault();
+                var name = $(this).parent().prev('.admintabs-add-name').first().val();
                 $('.admintabs-add a').popover('hide');
-                var name = $('#admintabs-add-name').val();
-                if (name === '') {
-                    alert(('You must enter a name for the new category'));
+                if ('' === name) {
+                    alert('You must enter a name for the new category');
                     return;
                 }
                 $.ajax({
@@ -64,16 +64,15 @@
                         name: name
                     }
                 }).done(function (data) {
-                    var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
-                        '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
-                        '">'+
-                        '<span class="fas fa-arrows-alt admintabs-unlock"></span> '+
-                        data.name+
-                        '</a>'+
-                        '<ul class="admintabs-new dropdown-menu"></ul>'+
+                    var newTab = '<li class="nav-item dropdown droppable nowrap ui-sortable-handle ui-droppable" data-catid=' + data.id + '>' +
+                        '<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">' +
+                        '<span class="fas fa-arrows-alt admintabs-unlock"></span> ' +
+                        '<span><i class="text-muted fa-fw fas fa-file"></i> ' + data.name + '</span>' +
+                        '</a>' +
+                        '<ul class="admintabs-new dropdown-menu"></ul>' +
                         '</li>'
                     ;
-                    $('#admintabs .admintabs-add').before(newtab);
+                    $('#admintabs #admintabs-locker').before(newTab);
                     for (var i = 0; i < 6; i++) {
                         $('#admintabs ul:first > li:nth-child('+i+')').clone().appendTo('.admintabs-new')
                     }
@@ -242,11 +241,15 @@
             li = $(this).parent().parent();
             renameCategoryId = li.data('catid');
             renameTitleElement = li.find('span:nth-child(2)');
-            $('#admintabs-rename-category-modal input').val(renameTitleElement.text());
+            $('#admintabs-rename-category-modal input').val(renameTitleElement.text().trim());
             $('#admintabs-rename-category-modal input').focus();
         });
         $('#admintabs-rename-category-modal .btn-primary').click(function () {
             var name = $('#admintabs-rename-category-modal input').val();
+            if ('' === name) {
+                alert('You must enter a name for the new category');
+                return;
+            }
             $.ajax({
                 url: Routing.generate('zikulaadminmodule_ajax_editcategory'),
                 data: {

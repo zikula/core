@@ -47,7 +47,7 @@
             </a>
             <div id="admintabs-add-popover" class="d-none">
                 <div class="input-group">
-                    <input type="text" name="name" id="admintabs-add-name" class="form-control" />
+                    <input type="text" name="name" class="admintabs-add-name form-control" />
                     <div class="input-group-append">
                         <span class="input-group-text fas fa-times fa-red" style="cursor: pointer"></span>
                         <span class="input-group-text fas fa-check fa-green" style="cursor: pointer"></span>
@@ -68,8 +68,8 @@
                 <input/>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}Save changes{% endtrans %}</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
             </div>
         </div>
     </div>
