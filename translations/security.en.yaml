@@ -1,52 +1,15 @@
-'Allowed HTML settings': null
-'Filtering of allowed HTML occurs when a template string or variable is modified with the \''safeHtml\'' filter, or when a module asks for similar processing from within its functions.': null
-'HTML entities': null
-'Translate embedded HTML entities into real characters': null
-'Yes': null
-'No': null
-'HTML tags': null
-'Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to ''Not allowed'' unless you are sure that you really understand the consequences of enabling them.': null
-'HTML Purifier output filter': null
-'''Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).': null
-Tag: null
-'Check all': null
-'Not allowed': null
-Allowed: null
-'Allowed with attributes': null
-'Tag usage (from %link%)': null
-About: null
-Save: null
-Cancel: null
-'HTMLPurifier settings': null
-'HTMLPurifier filtering occurs when a template string or variable is modified with the \''safehtml\'' modifier, or when a module asks for similar processing from within its functions.': null
-Warning: null
-'Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.': null
-'will be applied after HTMLPurifier processing is completed.': null
-'HTMLPurifier %s configuration directives': null
-'Use default value (if checked) or override value': null
-'(Place each value on a separate line.)': null
-'(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)': null
-'(Modification not supported.)': null
-'Value:': null
-'Reset to default values': null
-'Security settings': null
-'Automatic update settings': null
-'Host settings': null
-'Cookies settings': null
-'Session settings': null
-'Intrusion Detection System': null
-'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.': null
-'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.': null
-'Output filter settings': null
-'View IDS log': null
+'Export IDS log': null
 'Download the entire log to a CSV file': null
 'Export IDS Log': null
 'Delete the entire log.': null
 'Purge IDS Log': null
+'Export Options': null
+'View IDS log': null
 Filter: null
 'Clear filter': null
 'Sort by %s': null
 Name: null
+Tag: null
 Value: null
 Page: null
 'User Name': null
@@ -62,8 +25,53 @@ Rule: null
 'Purge IDS log': null
 'Confirmation prompt': null
 'Do you really want to delete the entire IDS log?': null
-'Export IDS log': null
-'Export Options': null
+'HTMLPurifier settings': null
+'HTMLPurifier filtering occurs when a template string or variable is modified with the \''safehtml\'' modifier, or when a module asks for similar processing from within its functions.': null
+Warning: null
+'Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.': null
+'Allowed HTML settings': null
+'will be applied after HTMLPurifier processing is completed.': null
+'HTMLPurifier %s configuration directives': null
+'Use default value (if checked) or override value': null
+'(Place each value on a separate line.)': null
+'(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)': null
+'Yes': null
+'No': null
+'(Modification not supported.)': null
+'Value:': null
+Save: null
+Cancel: null
+'Reset to default values': null
+'Filtering of allowed HTML occurs when a template string or variable is modified with the \''safeHtml\'' filter, or when a module asks for similar processing from within its functions.': null
+'HTML entities': null
+'Translate embedded HTML entities into real characters': null
+'HTML tags': null
+'Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to ''Not allowed'' unless you are sure that you really understand the consequences of enabling them.': null
+'HTML Purifier output filter': null
+'''Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).': null
+'Check all': null
+'Not allowed': null
+Allowed: null
+'Allowed with attributes': null
+'Tag usage (from %link%)': null
+About: null
+'Security settings': null
+'Automatic update settings': null
+'Host settings': null
+'Cookies settings': null
+'Session settings': null
+'Intrusion Detection System': null
+'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.': null
+'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.': null
+'Output filter settings': null
+'Comma (,)': null
+'Semicolon (;)': null
+'Colon (:)': null
+Tab: null
+'Export title row': null
+'CSV filename': null
+'CSV delimiter': null
+Export: null
 All: null
 'Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the ''Secure host name'' box, make sure you include a trailing slash at the end of the address.': null
 'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': null
@@ -115,11 +123,3 @@ JSON: null
 'Define which fields contain JSON data and should be treated as such': null
 'Define which fields should not be monitored': null
 'Select output filter': null
-'Comma (,)': null
-'Semicolon (;)': null
-'Colon (:)': null
-Tab: null
-'Export title row': null
-'CSV filename': null
-'CSV delimiter': null
-Export: null
