@@ -72,7 +72,7 @@ class BundlesSchemaHelper
     /**
      * Sync the filesystem scan and the bundles table.
      * This is a 'dumb' scan - there is no state management here.
-     * State management occurs in the module and theme management and is checked in CoreBundle\Helper\PersistedBundleHelper.
+     * State management occurs in extensions management and is checked in CoreBundle\Helper\PersistedBundleHelper.
      */
     private function sync(array $fileExtensions = []): void
     {
