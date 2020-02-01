@@ -162,7 +162,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->flush();
             case '3.9.6':
-                $blocks = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks WHERE blocktype = 'Lang'");
+                $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks WHERE blocktype = 'Lang'");
+                $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
                 if (count($blocks) > 0) {
                     $this->entityManager->getConnection()->executeQuery("UPDATE blocks set bkey=?, blocktype=?, properties=? WHERE blocktype = 'Lang'", [
                         'ZikulaSettingsModule:Zikula\SettingsModule\Block\LocaleBlock',
@@ -174,7 +175,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':
             case '3.9.8':
-                $blocks = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
+                $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
+                $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($blocks as $block) {
                     $bKey = $block['bkey'];
                     if (mb_strpos($bKey, ':')) {
