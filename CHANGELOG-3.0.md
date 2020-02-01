@@ -162,6 +162,7 @@
   - New and removed locales are automatically reflected in the configuration (#4012, #2425).
   - Added possibility to specify custom database port in installer.
   - Blocks can now specify default property defaults used for custom form fields (#3676).
+  - Added twig-inspector for easy debugging of Twig templates (#4051).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
