@@ -167,11 +167,11 @@ class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error installing Zikula Menu Module')
             ],
             18 => [
-                AjaxStageInterface::NAME => 'activatemodules',
-                AjaxStageInterface::PRE => $this->trans('Activate system modules'),
-                AjaxStageInterface::DURING => $this->trans('Activating system modules'),
-                AjaxStageInterface::SUCCESS => $this->trans('System modules activated'),
-                AjaxStageInterface::FAIL => $this->trans('There was an error activating system modules')
+                AjaxStageInterface::NAME => 'activateextensions',
+                AjaxStageInterface::PRE => $this->trans('Activate system extensions'),
+                AjaxStageInterface::DURING => $this->trans('Activating system extensions'),
+                AjaxStageInterface::SUCCESS => $this->trans('System extensions activated'),
+                AjaxStageInterface::FAIL => $this->trans('There was an error activating system extensions')
             ],
             19 => [
                 AjaxStageInterface::NAME => 'categorize',

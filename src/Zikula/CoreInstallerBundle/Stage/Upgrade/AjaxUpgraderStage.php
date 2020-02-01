@@ -76,11 +76,11 @@ class AjaxUpgraderStage implements AjaxStageInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error firing the upgrade event')
             ],
             4 => [
-                AjaxStageInterface::NAME => 'upgrademodules',
-                AjaxStageInterface::PRE => $this->trans('Upgrade modules'),
-                AjaxStageInterface::DURING => $this->trans('Upgrading modules'),
-                AjaxStageInterface::SUCCESS => $this->trans('Modules upgraded'),
-                AjaxStageInterface::FAIL => $this->trans('There was an error upgrading the modules')
+                AjaxStageInterface::NAME => 'upgradeextensions',
+                AjaxStageInterface::PRE => $this->trans('Upgrade extensions'),
+                AjaxStageInterface::DURING => $this->trans('Upgrading extensions'),
+                AjaxStageInterface::SUCCESS => $this->trans('Extensions upgraded'),
+                AjaxStageInterface::FAIL => $this->trans('There was an error upgrading the extensions')
             ],
             5 => [
                 AjaxStageInterface::NAME => 'versionupgrade',
