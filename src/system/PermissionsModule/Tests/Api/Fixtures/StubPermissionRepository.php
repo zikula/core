@@ -95,6 +95,12 @@ class StubPermissionRepository implements PermissionRepositoryInterface
         return [];
     }
 
+    public function getAllColours(): array
+    {
+        // TODO: Implement getAllColours() method.
+        return [];
+    }
+
     public function persistAndFlush(PermissionEntity $entity): void
     {
         // TODO: Implement persistAndFlush() method.
