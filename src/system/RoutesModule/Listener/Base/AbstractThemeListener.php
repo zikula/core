@@ -52,8 +52,6 @@ abstract class AbstractThemeListener implements EventSubscriberInterface
      *
      * Occurs immediately after twig theme engine renders a template.
      *
-     * An example for implementing this event is \Zikula\ThemeModule\EventListener\TemplateNameExposeListener.
-     *
      * You can access general data available in the event.
      *
      * The event name:

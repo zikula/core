@@ -52,6 +52,9 @@ class ControllerAnnotationReaderListener implements EventSubscriberInterface
             return;
         }
         $controller = $event->getController();
+        if (!is_array($controller)) {
+            return;
+        }
         [$controller, $method] = $controller;
         // the controller could be a proxy, e.g. when using the JMSSecurityExtraBundle or JMSDiExtraBundle
         $controllerClassName = ClassUtils::getClass($controller);
