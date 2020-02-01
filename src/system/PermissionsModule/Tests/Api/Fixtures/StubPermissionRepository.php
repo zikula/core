@@ -31,7 +31,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => Constant::GROUP_ID_ADMIN, // 2
                 'sequence' => 1,
-                'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
                 'level' => ACCESS_ADMIN
@@ -39,7 +38,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => PermissionApi::ALL_GROUPS, // -1
                 'sequence' => 2,
-                'realm' => 0,
                 'component' => 'ExtendedMenublock::',
                 'instance' => '1:1:',
                 'level' => ACCESS_NONE
@@ -47,7 +45,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => Constant::GROUP_ID_USERS, // 1
                 'sequence' => 3,
-                'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
                 'level' => ACCESS_COMMENT
@@ -55,7 +52,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
                 'sequence' => 4,
-                'realm' => 0,
                 'component' => 'ExtendedMenublock::',
                 'instance' => '1:(1|2|3):',
                 'level' => ACCESS_NONE
@@ -63,7 +59,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
                 'sequence' => 5,
-                'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
                 'level' => ACCESS_READ

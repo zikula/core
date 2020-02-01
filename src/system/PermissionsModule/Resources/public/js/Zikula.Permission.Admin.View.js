@@ -8,6 +8,7 @@ var currentDelete;
         $('.create-new-permission').unbind('click').on('click', {action: 'new'}, editPermissionHandler);
         $('.delete-permission').unbind('click').click(startDeletePermission);
         $('.test-permission').unbind('click').click(startTestPermission);
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
     /* --- edit or create permission ---------------------------------------------------------------------------------------------- */
@@ -36,9 +37,9 @@ var currentDelete;
 
     function savePermission() {
         var pid = $('#zikulapermissionsmodule_permission_pid').val();
-        if (pid === '') {
+        if ('' === pid) {
             pid = '-1';
-        } else if (pid === adminpermission && lockadmin === 1) {
+        } else if (pid === adminPermission && 1 === lockAdmin) {
             return;
         }
         // fetch each input and hidden field and store the value to POST
@@ -59,6 +60,13 @@ var currentDelete;
             } else {
                 if (pid !== '-1') {
                     // update existing row
+                    $('#permission-row-' + pid).removeClass().addClass('table-' + (data.permission.colour ? data.permission.colour : 'default'));
+                    $('#permission-row-' + pid)
+                        .attr('title', data.permission.comment)
+                        .attr('data-original-title', data.permission.comment)
+                        .tooltip('update')
+                        .tooltip('show')
+                    ;
                     $('#permission-component-' + pid).text(data.permission.component);
                     $('#permission-instance-' + pid).text(data.permission.instance);
                     $('#permission-group-' + pid).data('id', data.permission.gid);
@@ -123,6 +131,7 @@ var currentDelete;
             ui.children().each(function () {
                 jQuery(this).css({width: jQuery(this).width()});
             });
+
             return ui;
         };
         $sortable.sortable({
@@ -188,9 +197,10 @@ var currentDelete;
         });
 
         /* --- Filter permissions ------------------------------------------------------------------------------------------- */
-        $('#zikulapermissionsmodule_filterlist_filterGroup, #zikulapermissionsmodule_filterlist_filterComponent').change(function () {
+        $('#zikulapermissionsmodule_filterlist_filterGroup, #zikulapermissionsmodule_filterlist_filterComponent, #zikulapermissionsmodule_filterlist_filterColour').change(function () {
             var group = $('#zikulapermissionsmodule_filterlist_filterGroup').val();
             var component = $('#zikulapermissionsmodule_filterlist_filterComponent').val();
+            var colour = $('#zikulapermissionsmodule_filterlist_filterColour').val();
 
             // toggle warnings
             $('#filter-warning-group').toggleClass('d-none', group == '-1');
@@ -206,6 +216,9 @@ var currentDelete;
                 if (component != '-1' && $('#permission-component-' + pid).text().indexOf(component) == -1) {
                     show = false;
                 }
+                if (colour != '-1' && !$('#permission-row-' + pid).hasClass('table-' + colour)) {
+                    show = false;
+                }
                 $this.toggleClass('d-none', !show);
             });
         });
@@ -213,6 +226,7 @@ var currentDelete;
         $('#zikulapermissionsmodule_filterlist_reset').click(function () {
             $('#zikulapermissionsmodule_filterlist_filterComponent').val(-1);
             $('#zikulapermissionsmodule_filterlist_filterGroup').val(-1).trigger('change');
+            $('#zikulapermissionsmodule_filterlist_filterColour').val(-1);
         });
 
         // on modal close, stop all spinning icons

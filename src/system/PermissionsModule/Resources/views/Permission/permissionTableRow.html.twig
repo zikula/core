@@ -1,4 +1,4 @@
-<tr{% if lockadmin and adminId == permission.pid %} class="warning"{% endif %} data-id="{{ permission.pid }}">
+<tr id="permission-row-{{ permission.pid }}" class="table-{% if lockadmin and adminId == permission.pid %}warning locked{% else %}{{ permission.colour|default('default') }}{% endif %}" data-id="{{ permission.pid }}" data-toggle="tooltip" title="{{ permission.comment|default('')|e('html_attr') }}">
     <td headers="hPosition" style="width: 1px; white-space: nowrap">
         {% if lockadmin and adminId == permission.pid %}
             <i class="fas fa-lock" title="{% trans %}This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.{% endtrans %}"></i>

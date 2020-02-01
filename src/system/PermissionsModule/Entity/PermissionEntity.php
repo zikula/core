@@ -52,14 +52,6 @@ class PermissionEntity extends EntityAccess
     private $sequence;
 
     /**
-     * the realm assoiciated with this rule
-     *
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $realm;
-
-    /**
      * the component part of the rule
      *
      * @ORM\Column(type="string", length=255)
@@ -85,14 +77,33 @@ class PermissionEntity extends EntityAccess
      */
     private $level;
 
+    /**
+     * optional comment
+     *
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @var string
+     */
+    private $comment;
+
+    /**
+     * optional colour (Bootstrap contextual class)
+     *
+     * @ORM\Column(type="string", length=10)
+     * @Assert\Length(min="0", max="10", allowEmptyString="true")
+     * @var string
+     */
+    private $colour;
+
     public function __construct()
     {
         $this->gid = 0;
         $this->sequence = 0;
-        $this->realm = 0;
         $this->component = '';
         $this->instance = '';
         $this->level = 0;
+        $this->comment = '';
+        $this->colour = '';
     }
 
     public function getPid(): ?int
@@ -125,16 +136,6 @@ class PermissionEntity extends EntityAccess
         $this->sequence = $sequence;
     }
 
-    public function getRealm(): int
-    {
-        return $this->realm;
-    }
-
-    public function setRealm(int $realm): void
-    {
-        $this->realm = $realm;
-    }
-
     public function getComponent(): string
     {
         return $this->component;
@@ -163,5 +164,25 @@ class PermissionEntity extends EntityAccess
     public function setLevel(int $level): void
     {
         $this->level = $level;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
+    public function getColour(): string
+    {
+        return $this->colour;
+    }
+
+    public function setColour(string $colour): void
+    {
+        $this->colour = $colour;
     }
 }

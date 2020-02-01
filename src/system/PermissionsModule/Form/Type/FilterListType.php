@@ -39,11 +39,18 @@ class FilterListType extends AbstractType
                     'class' => 'form-control-sm'
                 ]
             ])
+            ->add('filterColour', ChoiceType::class, [
+                'label' => 'Filter colour',
+                'choices' => /** @Ignore */$options['colourChoices'],
+                'attr' => [
+                    'class' => 'form-control-sm'
+                ]
+            ])
             ->add('reset', ButtonType::class, [
                 'label' => 'Reset',
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn-default btn-sm'
+                    'class' => 'btn-secondary btn-sm'
                 ]
             ])
         ;
@@ -61,7 +68,8 @@ class FilterListType extends AbstractType
                 'class' => 'form-inline'
             ],
             'groupChoices' => [],
-            'componentChoices' => []
+            'componentChoices' => [],
+            'colourChoices' => []
         ]);
     }
 }
