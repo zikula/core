@@ -216,6 +216,7 @@ class ParameterHelper
 
     private function protectFile(string $filePath): void
     {
+        return; // see #4099
         //@chmod($filePath, 0400);
         //if (!is_readable($filePath)) {
         @chmod($filePath, 0440);
