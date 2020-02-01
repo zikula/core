@@ -6725,12 +6725,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "5999cf48761e0f08c61a2d500e72625b5a3eb3fa"
+                "reference": "45b17c1b81a26dba7de80f4305c4cf25b7fa0451"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5999cf48761e0f08c61a2d500e72625b5a3eb3fa",
-                "reference": "5999cf48761e0f08c61a2d500e72625b5a3eb3fa",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/45b17c1b81a26dba7de80f4305c4cf25b7fa0451",
+                "reference": "45b17c1b81a26dba7de80f4305c4cf25b7fa0451",
                 "shasum": ""
             },
             "require": {
@@ -6783,7 +6783,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-01-31T15:22:41+00:00"
+            "time": "2020-02-01T18:25:30+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6902,12 +6902,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "53ce9a2e3f4f5f2892ec1aa260ecdf63e3213725"
+                "reference": "8368a13e7e26b28a38441f507e32043c537f9337"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/53ce9a2e3f4f5f2892ec1aa260ecdf63e3213725",
-                "reference": "53ce9a2e3f4f5f2892ec1aa260ecdf63e3213725",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8368a13e7e26b28a38441f507e32043c537f9337",
+                "reference": "8368a13e7e26b28a38441f507e32043c537f9337",
                 "shasum": ""
             },
             "require": {
@@ -6963,7 +6963,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-01-31T15:25:03+00:00"
+            "time": "2020-02-01T18:26:28+00:00"
         },
         {
             "name": "zikula/sortable-columns",
