@@ -167,30 +167,35 @@ class ParameterHelper
         $yamlHelper->setParameters($params);
 
         if (true === $isNewInstall) {
-            // write env vars into .env.local
-            $content = explode("\n", file_get_contents($this->localEnvFile));
-            $databaseSetting = $content[0];
-
-            $randomLibFactory = new Factory();
-            $generator = $randomLibFactory->getMediumStrengthGenerator();
-            $lines = [];
-            $lines[] = 'APP_ENV=prod';
-            $lines[] = 'APP_DEBUG=1';
-            $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
-            $lines[] = $databaseSetting;
-
-            $fileSystem = new Filesystem();
-            try {
-                $fileSystem->dumpFile($this->localEnvFile, implode("\n", $lines));
-            } catch (IOExceptionInterface $exception) {
-                throw $exception;
-            }
+            $this->writeEnvVars();
         }
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
 
         return true;
+    }
+
+    private function writeEnvVars()
+    {
+        // write env vars into .env.local
+        $content = explode("\n", file_get_contents($this->localEnvFile));
+        $databaseSetting = $content[0];
+
+        $randomLibFactory = new Factory();
+        $generator = $randomLibFactory->getMediumStrengthGenerator();
+        $lines = [];
+        $lines[] = 'APP_ENV=prod';
+        $lines[] = 'APP_DEBUG=1';
+        $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
+        $lines[] = $databaseSetting;
+
+        $fileSystem = new Filesystem();
+        try {
+            $fileSystem->dumpFile($this->localEnvFile, implode("\n", $lines));
+        } catch (IOExceptionInterface $exception) {
+            throw $exception;
+        }
     }
 
     public function protectFiles(): bool
