@@ -49,7 +49,11 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        $controller = $event->getController()[0];
+        $controller = $event->getController();
+        if (!is_array($controller)) {
+            return;
+        }
+        [$controller, $method] = $controller;
         if ($controller instanceof AbstractController) {
             try {
                 $module = $this->kernel->getModule($controller->getName());

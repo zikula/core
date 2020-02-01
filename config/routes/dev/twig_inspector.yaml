@@ -1,0 +1,2 @@
+oro_twig_inspector:
+    resource: '@OroTwigInspectorBundle/Resources/config/oro/routing.yml'
