@@ -1,6 +1,6 @@
 {
     "name": "zikula/bootstrap-theme",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Bootstrap based theme",
     "type": "zikula-theme",
     "license": "LGPL-3.0-or-later",
@@ -23,8 +23,13 @@
             "class": "Zikula\\BootstrapTheme\\ZikulaBootstrapTheme",
             "displayname": "Bootstrap",
             "capabilities": {
-                "user": true,
-                "admin": true
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": true,
+                    "icon": "fab fa-bootstrap"
+                }
             }
         }
     }

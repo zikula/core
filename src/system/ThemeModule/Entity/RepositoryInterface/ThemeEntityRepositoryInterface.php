@@ -23,8 +23,7 @@ interface ThemeEntityRepositoryInterface
      */
     public function get(
         int $filter,
-        int $state,
-        int $type
+        int $state
     );
 
     public function removeAndFlush(ThemeEntity $entity): void;

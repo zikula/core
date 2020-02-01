@@ -22,8 +22,13 @@
             "class": "Zikula\\AtomTheme\\ZikulaAtomTheme",
             "displayname": "Atom",
             "capabilities": {
-                "user": true,
-                "admin": false
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": false,
+                    "icon": "fas fa-atom"
+                }
             }
         }
     }

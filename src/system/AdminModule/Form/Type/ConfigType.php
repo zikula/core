@@ -126,16 +126,11 @@ class ConfigType extends AbstractType
     private function formatThemeSelector(array $themes = []): array
     {
         $choices = [];
-        $themeList = [];
-
         if (!empty($themes)) {
-            foreach ($themes as $name => $theme) {
-                $themeList[$name] = $theme['displayname'];
+            foreach ($themes as $theme) {
+                $choices[$theme['displayname']] = $theme['name'];
             }
-            natcasesort($themeList);
-            foreach ($themeList as $k => $v) {
-                $choices[$v] = $k;
-            }
+            natcasesort($choices);
         }
 
         return $choices;

@@ -22,8 +22,13 @@
             "class": "Zikula\\RssTheme\\ZikulaRssTheme",
             "displayname": "Rss",
             "capabilities": {
-                "user": true,
-                "admin": false
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": false,
+                    "icon": "fas fa-rss"
+                }
             }
         }
     }

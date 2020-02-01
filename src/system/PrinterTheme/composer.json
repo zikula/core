@@ -22,8 +22,13 @@
             "class": "Zikula\\PrinterTheme\\ZikulaPrinterTheme",
             "displayname": "Printer",
             "capabilities": {
-                "user": true,
-                "admin": false
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": false,
+                    "icon": "fas fa-print"
+                }
             }
         }
     }

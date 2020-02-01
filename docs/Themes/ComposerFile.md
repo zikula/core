@@ -25,5 +25,8 @@ Please see the [Official JSON Schema](https://getcomposer.org/doc/04-schema.md) 
     - class: (required) the fully qualified name of the Bundle class
     - displayname: (required) the common name for the bundle (translatable)
     - capabilities: (required if controllers are used) an object of objects defining capabilities of the extension
-      - user: true|false
-      - admin: true|false
+      - user: (required)
+        - theme: true|false
+      - admin: (required)
+        - theme: true|false
+        - icon: full fontawesome css class

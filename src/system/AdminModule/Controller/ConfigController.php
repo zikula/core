@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +23,13 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterfa
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\ConfigType;
 use Zikula\AdminModule\Helper\AdminModuleHelper;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Constant;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
  * Class ConfigController
@@ -46,7 +49,7 @@ class ConfigController extends AbstractController
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,
-        ThemeEntityRepository $themeEntityRepository,
+        ExtensionRepositoryInterface $extensionRepository,
         VariableApiInterface $variableApi,
         CapabilityApiInterface $capabilityApi,
         AdminModuleHelper $adminModuleHelper
@@ -83,7 +86,16 @@ class ConfigController extends AbstractController
             ];
             $dataValues['modulecategory' . $adminModule['name']] = isset($category) ? $category->getCid() : $this->getVar('defaultcategory');
         }
-        $themes = $themeEntityRepository->get(ThemeEntityRepository::FILTER_ADMIN);
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->in("type", [MetaData::TYPE_THEME, MetaData::TYPE_SYSTEM_THEME]))
+            ->andWhere(Criteria::expr()->eq('state', Constant::STATE_ACTIVE))
+            ->orderBy(['name' => Criteria::ASC]);
+        $themes = $extensionRepository->matching($criteria)->toArray();
+        foreach ($themes as $k => $theme) {
+            if (!isset($theme['capabilities']['admin']['theme']) || (false === $theme['capabilities']['admin']['theme'])) {
+                unset($themes[$k]);
+            }
+        }
 
         $form = $this->createForm(ConfigType::class,
             $dataValues, [

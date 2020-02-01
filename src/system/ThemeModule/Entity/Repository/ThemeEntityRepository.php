@@ -28,10 +28,6 @@ class ThemeEntityRepository extends ServiceEntityRepository implements ThemeEnti
 
     public const STATE_INACTIVE = 2;
 
-    public const TYPE_ALL = 0;
-
-    public const TYPE_XANTHIA3 = 3;
-
     public const FILTER_ALL = 0;
 
     public const FILTER_USER = 1;
@@ -55,8 +51,7 @@ class ThemeEntityRepository extends ServiceEntityRepository implements ThemeEnti
      */
     public function get(
         int $filter = self::FILTER_ALL,
-        int $state = self::STATE_ACTIVE,
-        int $type = self::TYPE_ALL
+        int $state = self::STATE_ACTIVE
     ) {
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('t')
@@ -65,10 +60,6 @@ class ThemeEntityRepository extends ServiceEntityRepository implements ThemeEnti
         if (self::STATE_ALL !== $state) {
             $qb->andWhere('t.state = :state')
                 ->setParameter('state', $state);
-        }
-        if (self::TYPE_ALL !== $type) {
-            $qb->andWhere('t.type = :type')
-                ->setParameter('type', $type);
         }
         switch ($filter) {
             case self::FILTER_USER:
