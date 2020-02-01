@@ -50,7 +50,7 @@ class ConfigType extends AbstractType
                 'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn btn-default'
+                    'class' => 'btn btn-secondary'
                 ]
             ])
         ;

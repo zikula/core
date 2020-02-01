@@ -36,7 +36,7 @@ class ChangeLanguageType extends AbstractType
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
                 'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'attr' => ['class' => 'btn btn-secondary']
             ])
         ;
     }
