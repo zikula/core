@@ -42,7 +42,7 @@ class Core3UpgradeListener implements EventSubscriberInterface
             $sql = 'ALTER TABLE `group_perms` DROP COLUMN `bond`;';
             $this->conn->executeQuery($sql);
         }
-        if ($this->columnExists('group_perms', 'comment')) {
+        if (!$this->columnExists('group_perms', 'comment')) {
             $sql = '
                 ALTER TABLE `group_perms`
                 ADD `comment` VARCHAR(255) NOT NULL AFTER `level`,
