@@ -96,7 +96,7 @@ class Scanner
     private function computeExtensionType(array $json): int
     {
         if (ZikulaKernel::isCoreExtension($json['extra']['zikula']['short-name'])) {
-           return MetaData::EXTENSION_TYPE_THEME === $json['type'] ? MetaData::TYPE_SYSTEM_THEME : MetaData::TYPE_SYSTEM_MODULE;
+            return MetaData::EXTENSION_TYPE_THEME === $json['type'] ? MetaData::TYPE_SYSTEM_THEME : MetaData::TYPE_SYSTEM_MODULE;
         }
 
         return MetaData::EXTENSION_TYPE_THEME === $json['type'] ? MetaData::TYPE_THEME : MetaData::TYPE_MODULE;
