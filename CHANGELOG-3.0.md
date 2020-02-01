@@ -46,7 +46,7 @@
     - `Zikula\Bundle\HookBundle\HookProviderInterface` has dropped `setServiceId` and `getServiceId` methods.
     - `Zikula\Bundle\HookBundle\Collector\HookCollectorInterface` has changed signature of `addProvider()` and `addSubscriber()` methods.
     - `Zikula\Common\Content\ContentTypeInterface` requires a new method `getBundleName()` to be implemented.
-    - `Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface` requires a new method `deleteGroupPermissions` to be implemented.
+    - `Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface` requires new methods `getAllColours()` and `deleteGroupPermissions()` to be implemented.
     - `Zikula\ŞearchModule\SearchableInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\ŞearchModule\SearchableInterface` has changed signature of `getResults()` method.        
     - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
@@ -54,7 +54,7 @@
   - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
   - Entity changes
     - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
-    - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `bond` property.
+    - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `realm` and `bond` properties.
     - `Zikula\ThemeModule\Entity\ThemeEntity` removed the `xhtml` property.
     - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
   - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
@@ -163,6 +163,7 @@
   - Added possibility to specify custom database port in installer.
   - Blocks can now specify default property defaults used for custom form fields (#3676).
   - Added twig-inspector for easy debugging of Twig templates (#4051).
+  - Added new fields for optional comments and colours to permission rules (#914).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

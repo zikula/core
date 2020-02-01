@@ -54,13 +54,14 @@ class PermissionController extends AbstractController
         }
         $groups = $groupsRepository->getGroupNamesById();
         $permissions = $permissionRepository->getFilteredPermissions();
-        $components = $permissionRepository->getAllComponents();
-        $components = [$this->trans('All components') => '-1'] + $components;
+        $components = [$this->trans('All components') => '-1'] + $permissionRepository->getAllComponents();
+        $colours = [$this->trans('All colours') => '-1'] + $permissionRepository->getAllColours();
         $permissionLevels = $permissionApi->accessLevelNames();
 
         $filterForm = $this->createForm(FilterListType::class, [], [
             'groupChoices' => $groups,
-            'componentChoices' => $components
+            'componentChoices' => $components,
+            'colourChoices' => $colours
         ]);
         $permissionCheckForm = $this->createForm(PermissionCheckType::class, [], [
             'permissionLevels' => $permissionLevels

@@ -72,7 +72,7 @@
             {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
                 {{ form_widget(resultsForm.delete) }}
             {% endif %}
-            <a class="btn btn-default" href="{{ path('zikulausersmodule_useradministration_list') }}"><i class="fas fa-sync"></i> {% trans %}Return to User Administration{% endtrans %}</a>
+            <a class="btn btn-secondary" href="{{ path('zikulausersmodule_useradministration_list') }}"><i class="fas fa-sync"></i> {% trans %}Return to User Administration{% endtrans %}</a>
         </div>
     </div>
     {{ form_end(resultsForm) }}
@@ -100,7 +100,7 @@
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
             {{ form_widget(mailForm.send) }}
-            <button type="button" class="btn btn-default" data-toggle="collapse" href="#email-users-form"><i class="fas fa-times"></i> {% trans %}Close{% endtrans %}</button>
+            <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#email-users-form"><i class="fas fa-times"></i> {% trans %}Close{% endtrans %}</button>
         </div>
     </div>
     {{ form_end(mailForm) }}

@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 class PermissionType extends AbstractType
@@ -43,6 +44,26 @@ class PermissionType extends AbstractType
                 'label' => 'Level',
                 'choices' => /** @Ignore */array_flip($options['permissionLevels'])
             ])
+            ->add($builder->create('comment', TextType::class, [
+                'label' => 'Comment',
+                'required' => false
+            ])->addModelTransformer(new NullToEmptyTransformer()))
+            ->add($builder->create('colour', ChoiceType::class, [
+                'label' => 'Colour',
+                'choices' => [
+                    'Default' => 'default',
+                    'Active' => 'active',
+                    'Primary' => 'primary',
+                    'Secondary' => 'secondary',
+                    'Success' => 'success',
+                    'Danger' => 'danger',
+                    'Warning' => 'warning',
+                    'Info' => 'info',
+                    'Light' => 'light',
+                    'Dark' => 'dark'
+                ],
+                'required' => false
+            ])->addModelTransformer(new NullToEmptyTransformer()))
         ;
     }
 

@@ -51,7 +51,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
                 $record = new PermissionEntity();
                 $record['gid']       = -1;
                 $record['sequence']  = $lastPerm->getSequence();
-                $record['realm']     = 0;
                 $record['component'] = 'ZikulaThemeModule::ThemeChange';
                 $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
                 $record['level']     = ACCESS_COMMENT; // 300
@@ -88,7 +87,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record = new PermissionEntity();
         $record['gid']       = 2;
         $record['sequence']  = 1;
-        $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_ADMIN; // 800
@@ -98,7 +96,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record = new PermissionEntity();
         $record['gid']       = -1;
         $record['sequence']  = 2;
-        $record['realm']     = 0;
         $record['component'] = 'ZikulaThemeModule::ThemeChange';
         $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
         $record['level']     = ACCESS_COMMENT; // 300
@@ -108,7 +105,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record = new PermissionEntity();
         $record['gid']       = 1;
         $record['sequence']  = 2;
-        $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_COMMENT; // 300
@@ -118,7 +114,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record = new PermissionEntity();
         $record['gid']       = 0;
         $record['sequence']  = 3;
-        $record['realm']     = 0;
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_READ; // 200

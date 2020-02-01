@@ -27,6 +27,8 @@ interface PermissionRepositoryInterface
 
     public function getAllComponents(): array;
 
+    public function getAllColours(): array;
+
     public function persistAndFlush(PermissionEntity $entity): void;
 
     /**

@@ -68,6 +68,18 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         return $components;
     }
 
+    public function getAllColours(): array
+    {
+        $all = $this->findBy([], ['sequence' => 'ASC']);
+        $colours = [];
+        foreach ($all as $perm) {
+            $colour = $perm->getColour() ?: 'default';
+            $colours[ucfirst($colour)] = $colour;
+        }
+
+        return $colours;
+    }
+
     public function persistAndFlush(PermissionEntity $entity): void
     {
         $this->_em->persist($entity);
