@@ -61,7 +61,7 @@ class MenuBuilder
             $menu->addChild('Permissions', ['route' => 'zikulapermissionsmodule_permission_list']);
         }
         if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
-            $menu->addChild('Themes', ['route' => 'zikulathememodule_theme_view']);
+            $menu->addChild('Themes', ['route' => 'zikulathememodule_config_config']);
         }
 
         return $menu;

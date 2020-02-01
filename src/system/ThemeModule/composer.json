@@ -49,7 +49,7 @@
             "oldnames": [],
             "capabilities": {
                 "admin": {
-                    "route": "zikulathememodule_theme_view",
+                    "route": "zikulathememodule_config_config",
                     "icon": "fas fa-palette"
                 },
                 "user": {"route": "zikulathememodule_user_index"}

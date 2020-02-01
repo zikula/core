@@ -1,0 +1,25 @@
+{% form_theme form with [
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+<h3>
+    <span class="fas fa-wrench"></span>
+    {% trans %}Settings{% endtrans %}
+    {{ pageSetVar('title', 'Theme settings'|trans) }}
+</h3>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{% trans %}Theme settings{% endtrans %}</legend>
+    {{ form_row(form.defaulttheme) }}
+    {{ form_row(form.admintheme) }}
+</fieldset>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.save) }}
+    </div>
+</div>
+{{ form_end(form) }}
+{{ adminFooter() }}

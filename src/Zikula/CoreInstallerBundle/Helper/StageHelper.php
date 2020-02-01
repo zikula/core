@@ -72,11 +72,6 @@ class StageHelper
      */
     private $cacheHelper;
 
-    /**
-     * @var ThemeHelper
-     */
-    private $themeHelper;
-
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         BundlesSchemaHelper $bundlesSchemaHelper,
@@ -86,8 +81,7 @@ class StageHelper
         BlockHelper $blockHelper,
         ParameterHelper $parameterHelper,
         SuperUserHelper $superUserHelper,
-        CacheHelper $cacheHelper,
-        ThemeHelper $themeHelper
+        CacheHelper $cacheHelper
     ) {
         $this->kernel = $kernel;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
@@ -98,7 +92,6 @@ class StageHelper
         $this->parameterHelper = $parameterHelper;
         $this->superUserHelper = $superUserHelper;
         $this->cacheHelper = $cacheHelper;
-        $this->themeHelper = $themeHelper;
     }
 
     /**
@@ -167,8 +160,6 @@ class StageHelper
                 return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $currentVersion]);
             case 'upgrademodules':
                 return $this->moduleHelper->upgradeModules();
-            case 'regenthemes':
-                return $this->themeHelper->regenerateThemes();
             case 'versionupgrade':
                 return $this->moduleHelper->executeCoreMetaUpgrade($currentVersion);
             case 'clearcaches':
