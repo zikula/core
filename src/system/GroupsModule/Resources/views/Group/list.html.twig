@@ -57,3 +57,13 @@
 </table>
 {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_list'}) }}
 {{ moduleFooter() }}
+{% set initScript %}
+    <script>
+      ( function($) {
+        $(document).ready(function() {
+          $('[data-toggle="tooltip"]').tooltip()
+        });
+      })(jQuery);
+    </script>
+{% endset %}
+{{ pageAddAsset('footer', initScript) }}

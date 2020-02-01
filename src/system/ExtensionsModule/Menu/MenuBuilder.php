@@ -152,7 +152,7 @@ class MenuBuilder
             $menu->addChild('Edit theme vars', [
                 'route' => 'zikulathememodule_var_var',
                 'routeParameters' => ['themeName' => $extension->getName()]
-            ])->setAttribute('icon', 'fas fa-pencil');
+            ])->setAttribute('icon', 'fas fa-pencil-alt');
         }
 
         return $menu;
