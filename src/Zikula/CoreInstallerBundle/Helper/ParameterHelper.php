@@ -113,13 +113,8 @@ class ParameterHelper
         $yamlHelper = $this->getYamlHelper();
         $params = $this->decodeParameters($yamlHelper->getParameters());
 
-        $isNewInstall = true;
-        if (isset($params['upgrading'])) {
-            $isNewInstall = false;
-        }
-
         $this->variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
-        if (true === $isNewInstall) {
+        if (!isset($params['upgrading'])) {
             $this->variableApi->set(VariableApi::CONFIG, 'locale', $params['locale']);
             // Set the System Identifier as a unique string.
             if (!$this->variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
@@ -151,7 +146,7 @@ class ParameterHelper
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
-        if (true !== $isNewInstall) {
+        if (isset($params['upgrading'])) {
             $params['zikula_asset_manager.combine'] = false;
             $startController = $this->variableApi->getSystemVar('startController');
             [$moduleName] = explode(':', $startController);
@@ -166,13 +161,14 @@ class ParameterHelper
             if (!$this->kernel->isBundle($defaultTheme) && $this->kernel->isBundle('ZikulaBootstrapTheme')) {
                 $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
             }
-            unset($params['upgrading']);
         }
 
         // write parameters into config/services_custom.yaml
         $yamlHelper->setParameters($params);
 
-        if (true === $isNewInstall) {
+        if (isset($params['upgrading'])) {
+            unset($params['upgrading']);
+        } else {
             $this->writeEnvVars();
         }
 
