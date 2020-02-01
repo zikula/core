@@ -17,9 +17,9 @@ var currentDelete;
         event.preventDefault();
         $(this).find('.fa').addClass('fa-spin');
         var pars = {};
-        var id = 'edit' === event.data.action ? $(this).parents("tr").data('id') : 'undefined';
+        var id = 'edit' === event.data.action ? $(this).parents('tr').data('id') : 'undefined';
         if ('new' === event.data.action) {
-            pars.sequence = $(this).hasClass('insertBefore') ? $(this).parents("tr").data("id") : -1;
+            pars.sequence = $(this).hasClass('insertBefore') ? $(this).parents('tr').data('id') : -1;
         }
         $.ajax({
             type: 'POST',
@@ -112,7 +112,8 @@ var currentDelete;
 
     /* --- test permission ---------------------------------------------------------------------------------------------- */
     /* Copies the component, instance and level to the permission test form */
-    function startTestPermission() {
+    function startTestPermission(event) {
+        event.preventDefault();
         var pid = $(this).parents('tr').data('id');
         $('#zikulapermissionsmodule_permissioncheck_user').val('');
         $('#zikulapermissionsmodule_permissioncheck_component').val($('#permission-component-' + pid).text());
@@ -136,7 +137,7 @@ var currentDelete;
         };
         $sortable.sortable({
             helper: fixHelper,
-            items: 'tr:not(.table-warning)',
+            items: 'tr:not(.locked)',
             update: function (event, ui) {
                 var parameters = [];
                 $('#permission-list > tbody > tr').each(function () {
