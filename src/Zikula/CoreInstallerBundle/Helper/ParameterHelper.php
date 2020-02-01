@@ -143,7 +143,9 @@ class ParameterHelper
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
+        $isNewInstall = true;
         if (isset($params['upgrading'])) {
+            $isNewInstall = false;
             $params['zikula_asset_manager.combine'] = false;
             $startController = $this->variableApi->getSystemVar('startController');
             [$moduleName] = explode(':', $startController);
@@ -164,6 +166,18 @@ class ParameterHelper
         // write parameters into config/services_custom.yaml
         $yamlHelper->setParameters($params);
 
+        if (true === $isNewInstall) {
+            $this->writeEnvVars();
+        }
+
+        // clear the cache
+        $this->cacheClearer->clear('symfony.config');
+
+        return true;
+    }
+
+    private function writeEnvVars()
+    {
         // write env vars into .env.local
         $content = explode("\n", file_get_contents($this->localEnvFile));
         $databaseSetting = $content[0];
@@ -182,11 +196,6 @@ class ParameterHelper
         } catch (IOExceptionInterface $exception) {
             throw $exception;
         }
-
-        // clear the cache
-        $this->cacheClearer->clear('symfony.config');
-
-        return true;
     }
 
     public function protectFiles(): bool

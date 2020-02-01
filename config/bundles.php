@@ -38,6 +38,7 @@ return [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
+    Oro\TwigInspector\Bundle\OroTwigInspectorBundle::class => ['dev' => true],
 
     // System Extensions - always installed
     Zikula\AdminModule\ZikulaAdminModule::class => ['all' => true],

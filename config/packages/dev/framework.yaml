@@ -1,2 +1,5 @@
 framework:
     profiler: { only_exceptions: false }
+
+    # see https://symfony.com/doc/current/reference/configuration/framework.html#ide
+    #ide: phpstorm

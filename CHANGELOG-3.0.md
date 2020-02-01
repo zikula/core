@@ -162,6 +162,7 @@
   - New and removed locales are automatically reflected in the configuration (#4012, #2425).
   - Added possibility to specify custom database port in installer.
   - Blocks can now specify default property defaults used for custom form fields (#3676).
+  - Added twig-inspector for easy debugging of Twig templates (#4051).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
@@ -206,6 +207,7 @@
   - monolog/monolog updated from 1.25.2 to 2.0.2
   - nikic/php-parser updated from 1.4.1 to 4.3.0
   - nyholm/nsa installed in 1.1.0
+  - oro/twig-inspector installed in 1.0.2
   - paragonie/random_compat updated from 2.0.18 to 9.99.99
   - php-translation/common installed in 3.0.1
   - php-translation/extractor installed in 2.0.1
