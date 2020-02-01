@@ -112,14 +112,17 @@ class ParameterHelper
     {
         $yamlHelper = $this->getYamlHelper();
         $params = $this->decodeParameters($yamlHelper->getParameters());
+
         $this->variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
-        $this->variableApi->set(VariableApi::CONFIG, 'locale', $params['locale']);
-        // Set the System Identifier as a unique string.
-        if (!$this->variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
-            $this->variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid((string) (random_int(1000000000, 9999999999)), true)));
+        if (!isset($params['upgrading'])) {
+            $this->variableApi->set(VariableApi::CONFIG, 'locale', $params['locale']);
+            // Set the System Identifier as a unique string.
+            if (!$this->variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
+                $this->variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid((string) (random_int(1000000000, 9999999999)), true)));
+            }
+            // add admin email as site email
+            $this->variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
         }
-        // add admin email as site email
-        $this->variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
 
         // add remaining parameters and remove unneeded ones
         unset($params['username'], $params['password'], $params['email']);
@@ -143,9 +146,7 @@ class ParameterHelper
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
-        $isNewInstall = true;
         if (isset($params['upgrading'])) {
-            $isNewInstall = false;
             $params['zikula_asset_manager.combine'] = false;
             $startController = $this->variableApi->getSystemVar('startController');
             [$moduleName] = explode(':', $startController);
@@ -160,13 +161,14 @@ class ParameterHelper
             if (!$this->kernel->isBundle($defaultTheme) && $this->kernel->isBundle('ZikulaBootstrapTheme')) {
                 $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
             }
-            unset($params['upgrading']);
         }
 
         // write parameters into config/services_custom.yaml
         $yamlHelper->setParameters($params);
 
-        if (true === $isNewInstall) {
+        if (isset($params['upgrading'])) {
+            unset($params['upgrading']);
+        } else {
             $this->writeEnvVars();
         }
 

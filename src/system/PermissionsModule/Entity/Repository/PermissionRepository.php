@@ -29,7 +29,10 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
     public function getPermissionsByGroups(array $groups): array
     {
         $qb = $this->createQueryBuilder('p');
-        $query = $qb->select('p')
+        // do not select just 'p' where because this method is used
+        // by PermissionApi which is used by the upgrader
+        // where columns "comment" and "colour" might not exist yet
+        $query = $qb->select('p.pid, p.gid, p.sequence, p.component, p.instance, p.level')
             ->where($qb->expr()->in('p.gid', ':groups'))
             ->setParameter('groups', $groups)
             ->orderBy('p.sequence', 'ASC')
