@@ -85,45 +85,41 @@ class StubPermissionRepository implements PermissionRepositoryInterface
 
     public function getFilteredPermissions(int $group = PermissionApi::ALL_GROUPS, string $component = null): array
     {
-        // TODO: Implement getFilteredPermissions() method.
         return [];
     }
 
     public function getAllComponents(): array
     {
-        // TODO: Implement getAllComponents() method.
         return [];
     }
 
     public function getAllColours(): array
     {
-        // TODO: Implement getAllColours() method.
         return [];
     }
 
     public function persistAndFlush(PermissionEntity $entity): void
     {
-        // TODO: Implement persistAndFlush() method.
+        // nothing
     }
 
     public function getMaxSequence(): int
     {
-        // TODO: Implement getMaxSequence() method.
         return 999;
     }
 
     public function updateSequencesFrom(int $value, int $amount = 1): void
     {
-        // TODO: Implement updateSequencesFrom() method.
+        // nothing
     }
 
     public function reSequence(): void
     {
-        // TODO: Implement reSequence() method.
+        // nothing
     }
 
     public function deleteGroupPermissions(int $groupId = 0): void
     {
-        // TODO: Implement deleteGroupPermissions() method.
+        // nothing
     }
 }
