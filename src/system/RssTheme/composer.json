@@ -20,7 +20,7 @@
         "zikula" : {
             "core-compatibility": ">=3.0.0",
             "class": "Zikula\\RssTheme\\ZikulaRssTheme",
-            "displayname": "Rss",
+            "displayname": "Rss Theme",
             "capabilities": {
                 "user": {
                     "theme": true

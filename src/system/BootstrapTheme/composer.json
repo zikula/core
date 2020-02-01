@@ -21,7 +21,7 @@
         "zikula" : {
             "core-compatibility": ">=3.0.0",
             "class": "Zikula\\BootstrapTheme\\ZikulaBootstrapTheme",
-            "displayname": "Bootstrap",
+            "displayname": "Bootstrap Theme",
             "capabilities": {
                 "user": {
                     "theme": true

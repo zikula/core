@@ -20,7 +20,7 @@
         "zikula" : {
             "core-compatibility": ">=3.0.0",
             "class": "Zikula\\PrinterTheme\\ZikulaPrinterTheme",
-            "displayname": "Printer",
+            "displayname": "Printer Theme",
             "capabilities": {
                 "user": {
                     "theme": true
