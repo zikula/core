@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule;
 
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\ThemeModule\Entity\ThemeEntity;
 
 /**
  * Installation and upgrade routines for the theme module.
@@ -56,9 +55,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
             case '3.4.2':
                 $this->delVar('enable_mobile_theme');
             case '3.4.3':
-                $this->schemaTool->update([
-                    ThemeEntity::class
-                ]);
+                // remove old method to update table that has since been removed.
             case '3.4.4':
                 // future upgrade
         }
