@@ -31,7 +31,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => Constant::GROUP_ID_ADMIN, // 2
                 'sequence' => 1,
-                'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
                 'level' => ACCESS_ADMIN
@@ -39,7 +38,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => PermissionApi::ALL_GROUPS, // -1
                 'sequence' => 2,
-                'realm' => 0,
                 'component' => 'ExtendedMenublock::',
                 'instance' => '1:1:',
                 'level' => ACCESS_NONE
@@ -47,7 +45,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => Constant::GROUP_ID_USERS, // 1
                 'sequence' => 3,
-                'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
                 'level' => ACCESS_COMMENT
@@ -55,7 +52,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
                 'sequence' => 4,
-                'realm' => 0,
                 'component' => 'ExtendedMenublock::',
                 'instance' => '1:(1|2|3):',
                 'level' => ACCESS_NONE
@@ -63,7 +59,6 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             [
                 'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
                 'sequence' => 5,
-                'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
                 'level' => ACCESS_READ
@@ -90,39 +85,41 @@ class StubPermissionRepository implements PermissionRepositoryInterface
 
     public function getFilteredPermissions(int $group = PermissionApi::ALL_GROUPS, string $component = null): array
     {
-        // TODO: Implement getFilteredPermissions() method.
         return [];
     }
 
     public function getAllComponents(): array
     {
-        // TODO: Implement getAllComponents() method.
+        return [];
+    }
+
+    public function getAllColours(): array
+    {
         return [];
     }
 
     public function persistAndFlush(PermissionEntity $entity): void
     {
-        // TODO: Implement persistAndFlush() method.
+        // nothing
     }
 
     public function getMaxSequence(): int
     {
-        // TODO: Implement getMaxSequence() method.
         return 999;
     }
 
     public function updateSequencesFrom(int $value, int $amount = 1): void
     {
-        // TODO: Implement updateSequencesFrom() method.
+        // nothing
     }
 
     public function reSequence(): void
     {
-        // TODO: Implement reSequence() method.
+        // nothing
     }
 
     public function deleteGroupPermissions(int $groupId = 0): void
     {
-        // TODO: Implement deleteGroupPermissions() method.
+        // nothing
     }
 }

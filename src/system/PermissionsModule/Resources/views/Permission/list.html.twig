@@ -1,8 +1,8 @@
 {% set scriptInit %}
     <script>
         // some defines
-        var adminpermission = {{ adminId }};
-        var lockadmin = {{ lockadmin }};
+        var adminPermission = {{ adminId }};
+        var lockAdmin = {{ lockadmin }};
     </script>
 {% endset %}
 {{ pageAddAsset('header', scriptInit) }}
@@ -25,6 +25,7 @@
         <legend class="mb-0">{% trans %}Filter{% endtrans %}</legend>
         {{ form_widget(filterForm.filterGroup) }}
         {{ form_widget(filterForm.filterComponent) }}
+        {{ form_widget(filterForm.filterColour) }}
         {{ form_widget(filterForm.reset) }}
     </fieldset>
     {{ form_end(filterForm) }}
