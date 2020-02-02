@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Helper;
 
 use Composer\Semver\Semver;
-use Exception;
 use RuntimeException;
 use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\Finder\Finder;
