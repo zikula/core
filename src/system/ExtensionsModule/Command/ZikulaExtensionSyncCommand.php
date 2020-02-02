@@ -39,23 +39,18 @@ class ZikulaExtensionSyncCommand extends Command
     {
         $this
             ->setDescription('Sync bundles in a directory with the bundles table and the extensions table.')
-            ->addArgument('directory', InputArgument::OPTIONAL, 'Directory to scan e.g. src/system. Optional: (default \'src/extensions\')')
+            ->addArgument('include core', InputArgument::OPTIONAL, 'Include the core extensions')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $directory = null !== $input->getArgument('directory') ? $input->getArgument('directory') : 'src/extensions';
-        if (!is_dir($directory)) {
-            $io->error('Directory is invalid (`' . $directory . '`)');
+        $include = null !== $input->getArgument('include core') ? $input->getArgument('include core') : false;
 
-            return 1;
-        }
-
-        $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles([$directory]);
+        $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles($include);
         if (empty($extensionsInFileSystem)) {
-            $io->warning('There were no extensions found in ' . $directory);
+            $io->warning('There were no extensions found in src/extensions.');
         } else {
             $io->title('Extensions in directory');
             $io->listing(array_keys($extensionsInFileSystem));
@@ -63,7 +58,7 @@ class ZikulaExtensionSyncCommand extends Command
 
         $upgraded = $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
         if (empty($upgraded)) {
-            $io->warning('There were no upgraded extensions found in ' . $directory);
+            $io->warning('There were no upgraded extensions found in src/extensions.');
         } else {
             $io->title('Upgraded extensions');
             $io->listing(array_keys($upgraded));

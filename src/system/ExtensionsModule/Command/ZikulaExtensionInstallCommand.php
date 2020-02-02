@@ -112,8 +112,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
     private function load(string $bundleName)
     {
         // load the extension into the modules table
-        $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles();
-        $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
+        $this->reSync(false);
         if (!($extension = $this->extensionRepository->findOneBy(['name' => $bundleName]))) {
             return false;
         }

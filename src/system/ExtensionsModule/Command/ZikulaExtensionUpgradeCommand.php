@@ -69,8 +69,7 @@ class ZikulaExtensionUpgradeCommand extends AbstractExtensionCommand
 
     private function isUpgradeable(string $bundleName)
     {
-        $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles();
-        $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
+        $this->reSync(false);
         if (null !== $extension = $this->extensionRepository->findOneBy(['name' => $bundleName])) {
             if (Constant::STATE_UPGRADED === $extension->getState()) {
                 return $extension;

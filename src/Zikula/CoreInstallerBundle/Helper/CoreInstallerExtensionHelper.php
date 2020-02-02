@@ -134,9 +134,7 @@ class CoreInstallerExtensionHelper
     public function reSyncAndActivate(): bool
     {
         $bundleSyncHelper = $this->container->get(BundleSyncHelper::class);
-        $projectDir = $this->container->get('kernel')->getProjectDir();
-        // @todo this shouldn't scan system. need a better solution
-        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles([$projectDir . '/src/system', $projectDir . '/src/extensions']);
+        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles(true);
         $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
 
         $doctrine = $this->container->get('doctrine');

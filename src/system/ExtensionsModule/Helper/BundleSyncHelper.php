@@ -21,6 +21,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
@@ -113,15 +114,12 @@ class BundleSyncHelper
     }
 
     /**
-     * Scan the file system for bundles and returns an array with all (potential) bundles found.
-     *
-     * @throws Exception Thrown if the user doesn't have admin permissions over the bundle
+     * Scan the extensions directory for bundles and returns an array with all (potential) bundles found.
      */
-    public function scanForBundles(?array $directories = null): array
+    public function scanForBundles($includeCore = false): array
     {
-        $directories = $directories ?? [$this->kernel->getProjectDir() . '/src/extensions'];
-        // sync the filesystem and the bundles table
-        $this->bundlesSchemaHelper->load($directories);
+        // sync the extensions directory and the bundles table
+        $this->bundlesSchemaHelper->load();
         $scanner = $this->bundlesSchemaHelper->getScanner();
         foreach ($scanner->getInvalid() as $invalidName) {
             $this->session->getFlashBag()->add(
@@ -148,9 +146,6 @@ class BundleSyncHelper
             $bundle = new $bundleClass();
             $bundleMetaData->setTranslator($this->translator);
             $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
-            $bundleVersionArray['capabilities'] = serialize($bundleVersionArray['capabilities']);
-            $bundleVersionArray['securityschema'] = serialize($bundleVersionArray['securityschema']);
-            $bundleVersionArray['dependencies'] = serialize($bundleVersionArray['dependencies']);
 
             $finder = new Finder();
             $finder->files()->in($bundle->getPath())->depth(0)->name('composer.json');
@@ -175,9 +170,22 @@ class BundleSyncHelper
             }
         }
 
+        if ($includeCore) {
+            $this->appendCoreExtensionsMetaData($bundles);
+        }
         $this->validate($bundles);
 
         return $bundles;
+    }
+
+    private function appendCoreExtensionsMetaData(array &$extensions): void
+    {
+        foreach (ZikulaKernel::$coreExtension as $systemModule => $bundleClass) {
+            $bundle = $this->kernel->getBundle($systemModule);
+            if ($bundle instanceof AbstractBundle) {
+                $extensions[$systemModule] = $bundle->getMetaData()->getFilteredVersionInfoArray();
+            }
+        }
     }
 
     /**
@@ -280,8 +288,6 @@ class BundleSyncHelper
 
                 unset($extensionFromFile['oldnames'], $extensionFromFile['dependencies']);
 
-                $extensionFromFile['capabilities'] = unserialize($extensionFromFile['capabilities']);
-                $extensionFromFile['securityschema'] = unserialize($extensionFromFile['securityschema']);
                 /** @var ExtensionEntity $extension */
                 $extension = $this->extensionRepository->find($extensionFromFile['id']);
                 $extension->merge($extensionFromFile);
@@ -365,10 +371,6 @@ class BundleSyncHelper
 
                 // unset vars that don't matter
                 unset($extensionFromFile['oldnames'], $extensionFromFile['dependencies']);
-
-                // unserialize vars
-                $extensionFromFile['capabilities'] = unserialize($extensionFromFile['capabilities']);
-                $extensionFromFile['securityschema'] = unserialize($extensionFromFile['securityschema']);
 
                 // insert new extension to db
                 $newExtension = new ExtensionEntity();

@@ -56,11 +56,10 @@ class BundlesSchemaHelper
         $this->scanner->setTranslator($translator);
     }
 
-    public function load(?array $directories = null): void
+    public function load(): void
     {
-        $directories = $directories ?? [$this->projectDir . '/src/extensions'];
         $this->verifySchema();
-        $this->scanner->scan($directories);
+        $this->scanner->scan([$this->projectDir . '/src/extensions']);
         $this->sync($this->scanner->getExtensionsMetaData());
     }
 
