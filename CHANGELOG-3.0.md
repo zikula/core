@@ -54,12 +54,17 @@
   - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
   - Entity changes
     - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
+      - The table name has been renamed from `modules` to `extensions`.
     - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `realm` and `bond` properties.
-    - `Zikula\ThemeModule\Entity\ThemeEntity` removed the `xhtml` property.
+    - `Zikula\ThemeModule\Entity\ThemeEntity` is removed along with its Repository and RepositoryInterface classes.
+      - The data is now stored in the `extensions` table and managed by the ExtensionsModule.
     - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
   - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
   - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
   - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
+  - `CoreBundle/Composer/Metadata` has removed `$basePath` and `$rootPath` properties and their getters.
+  - `$kernel::isCoreModule()` is renamed to `$kernel::isCoreExtension()`.
+    - The corresponding Twig function is similarly renamed.
   - Dropped vendors:
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)
@@ -96,10 +101,16 @@
   - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
   - Removed custom translation system (#4042). Use Symfony's translation system directly.
     - Default translation domain is now always `messages`. Use specific other domains (e.g. `mail`, `config`, `hooks` etc.) where appropriate.
-  - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
   - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
-  - Setting `composer.json` >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
+  - Changes to `composer.json`
+    - Removed use of `admin.png` and replaced by adding icon class >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`.
+      - Themes can now also include and icon path.
+    - Setting >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
+    - Change how themes define user and admin capabilities.
+      - old: e.g. `capabilities/admin:true`
+      - new: e.g. `capabilities/admin/theme:true`
   - Changes regarding directory layout
+    - Non-core themes and modules are now _both_ stored in `src/extensions`.
     - The `src/app/config/` directory has been moved to `config/`.
     - The `src/app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
     - The `src/app/Resources/translations/` directory became `translations/`.
@@ -155,7 +166,7 @@
   - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
   - More user-friendly response messages during account information recovery (#3723).
   - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
-  - Added CLI Commands to manage extension installation, upgrade and uninstall (#3517).
+  - Added CLI Commands to manage extension installation, upgrade and uninstall and sync (#3517).
   - Added ability to choose a Font Awesome icon for admin categories and categories (#3598).
   - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
   - `LocaleApi` is now able to work with regions, too (#4012, #2425).
@@ -164,6 +175,8 @@
   - Blocks can now specify default property defaults used for custom form fields (#3676).
   - Added twig-inspector for easy debugging of Twig templates (#4051).
   - Added new fields for optional comments and colours to permission rules (#914).
+  - In general, 'module' and 'theme' are now generically referred to as 'extensions' and many methods or properties have been renamed to align.
+  - The location for choosing the default theme and admin theme has been moved to the Theme module settings.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
