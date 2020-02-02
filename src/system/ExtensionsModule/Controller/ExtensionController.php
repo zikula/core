@@ -97,22 +97,6 @@ class ExtensionController extends AbstractController
             $sortableColumns->getSortColumn()->getName() => $sortableColumns->getSortDirection()
         ], $this->getVar('itemsperpage'), $pos);
 
-        $adminRoutes = [];
-
-        foreach ($pagedResult as $module) {
-            if (Constant::STATE_ACTIVE !== $module['state'] || !isset($module['capabilities']['admin']) || empty($module['capabilities']['admin'])) {
-                continue;
-            }
-
-            if (isset($module['capabilities']['admin']['route'])) {
-                try {
-                    $adminRoutes[$module['name']] = $router->generate($module['capabilities']['admin']['route']);
-                } catch (RouteNotFoundException $routeNotFoundException) {
-                    // do nothing, just skip this link
-                }
-            }
-        }
-
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
             'pager' => [
@@ -120,7 +104,6 @@ class ExtensionController extends AbstractController
                 'count' => count($pagedResult)
             ],
             'extensions' => $pagedResult,
-            'adminRoutes' => $adminRoutes,
             'upgradedExtensions' => $upgradedExtensions
         ];
     }

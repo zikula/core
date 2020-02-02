@@ -27,9 +27,7 @@
         <tr class="extension-type-{{ extension.type }}">
             <td headers="hType" class="text-center">{{ _self.badge(extension.type) }}</td>
             <td headers="hName">
-                {% if adminRoutes[extension.name]|default %}
-                    <a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ adminRoutes[extension.name] }}"><i class="fas fa-link"></i></a>
-                {% endif %}
+                {{ _self.adminRoute(extension) }}
                 <strong>{{ extension.displayname }}</strong>
                 <a data-toggle="collapse" href="#collapse-{{ extension.name }}"><i class="fas fa-caret-down"></i></a>
                 <ul id="collapse-{{ extension.name }}" class="collapse mb-0">
@@ -65,6 +63,12 @@
 </script>
 {% endset %}
 {{ pageAddAsset('footer', initScript) }}
+
+{% macro adminRoute(extension) %}
+    {% if extension.state is constant('Zikula\\ExtensionsModule\\Constant::STATE_ACTIVE') and extension.capabilities.admin.route|default %}
+        <a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ path(extension.capabilities.admin.route) }}"><i class="fas fa-link"></i></a>
+    {% endif %}
+{% endmacro %}
 
 {% macro badge(type) %}
     {% if type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_MODULE') %}
