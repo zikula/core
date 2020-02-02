@@ -1,23 +1,31 @@
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaExtensionsModule:js/Zikula.Extensions.Extension.List.js')) }}
 {{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>
     {% trans %}Extensions list{% endtrans %}
     {{ pageSetVar('title', 'Extensions list'|trans) }}
+    <div class="btn-group align-top float-right" role="group" aria-label="filters">
+        <button type="button" data-selectors=".extension-type-4 .extension-type-5" data-text-toggle="{% trans %}Show Themes{% endtrans %}" data-toggle="button" class="filter-button btn btn-outline-info btn-sm">{% trans %}Hide Themes{% endtrans %}</button>
+        <button type="button" data-selectors=".extension-type-2 .extension-type-3" data-text-toggle="{% trans %}Show Modules{% endtrans %}" data-toggle="button" class="filter-button btn btn-outline-primary btn-sm">{% trans %}Hide Modules{% endtrans %}</button>
+        <button type="button" data-selectors=".extension-type-3 .extension-type-5" data-text-toggle="{% trans %}Show Core Extensions{% endtrans %}" data-toggle="button" class="filter-button btn btn-outline-success btn-sm">{% trans %}Hide Core Extensions{% endtrans %}</button>
+    </div>
 </h3>
-<table class="table table-bordered table-striped">
+<table id="extension-list" class="table table-bordered table-striped">
     <colgroup>
+        <col id="cType" class="d-none d-md-table-cell" />
         <col id="cName" />
-        <col id="cDescription" />
-        <col id="cVersion" />
+        <col id="cDescription" class="d-none d-lg-table-cell" />
+        <col id="cVersion" class="d-none d-lg-table-cell" />
         <col id="cState" />
         <col id="cActions" />
     </colgroup>
     <thead>
         <tr>
-            <th id="hType" scope="col">{% trans %}Type{% endtrans %}</th>
+            <th id="hType" scope="col" class="d-none d-md-table-cell">{% trans %}Type{% endtrans %}</th>
             <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{% trans %}Name{% endtrans %}</a></th>
-            <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
-            <th id="hVersion" scope="col">{% trans %}Version{% endtrans %}</th>
+            <th id="hDescription" scope="col" class="d-none d-lg-table-cell">{% trans %}Description{% endtrans %}</th>
+            <th id="hVersion" scope="col" class="d-none d-lg-table-cell">{% trans %}Version{% endtrans %}</th>
             <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{% trans %}State{% endtrans %}</a></th>
             <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
         </tr>
@@ -25,7 +33,7 @@
     <tbody>
     {% for extension in extensions %}
         <tr class="extension-type-{{ extension.type }}">
-            <td headers="hType" class="text-center">{{ _self.badge(extension.type) }}</td>
+            <td headers="hType" class="text-center" class="d-none d-md-table-cell">{{ _self.badge(extension.type) }}</td>
             <td headers="hName">
                 {{ _self.adminRoute(extension) }}
                 <strong>{{ extension.displayname }}</strong>
@@ -35,8 +43,8 @@
                     <li>Url root: <code>/{{ extension.url }}</code></li>
                 </ul>
             </td>
-            <td headers="hDescription" style="width: 40%">{{ extension.description }}</td>
-            <td headers="hVersion">{{ extension.version }}</td>
+            <td headers="hDescription" style="width: 40%" class="d-none d-lg-table-cell">{{ extension.description }}</td>
+            <td headers="hVersion" class="d-none d-lg-table-cell">{{ extension.version }}</td>
             <td class="nowrap">
                 {{ stateLabel(extension, upgradedExtensions) }}
             </td>
@@ -48,21 +56,13 @@
     {% endfor %}
     </tbody>
 </table>
+<ul class="list-group list-group-horizontal-md float-left">
+    <li class="list-group-item"><i class="fas fa-circle text-dark"></i> {% trans %}Core Extension{% endtrans %}</li>
+    <li class="list-group-item"><i class="fas fa-cubes text-primary"></i> {% trans %}Module{% endtrans %}</li>
+    <li class="list-group-item"><i class="fas fa-palette text-info"></i> {% trans %}Theme{% endtrans %}</li>
+</ul>
 {{ pager({rowcount: pager.count, limit: pager.limit, route: 'zikulaextensionsmodule_extension_list'}) }}
 {{ adminFooter() }}
-{% set initScript %}
-<script>
-    ( function($) {
-        $(document).ready(function() {
-            $('i[class*=fa-caret-]').on('click', function() {
-                $(this).toggleClass('fa-caret-down fa-caret-up');
-            });
-            $('[data-toggle="tooltip"]').tooltip()
-        });
-    })(jQuery);
-</script>
-{% endset %}
-{{ pageAddAsset('footer', initScript) }}
 
 {% macro adminRoute(extension) %}
     {% if extension.state is constant('Zikula\\ExtensionsModule\\Constant::STATE_ACTIVE') and extension.capabilities.admin.route|default %}
