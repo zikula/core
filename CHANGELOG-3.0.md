@@ -165,7 +165,7 @@
   - Blocks can now specify default property defaults used for custom form fields (#3676).
   - Added twig-inspector for easy debugging of Twig templates (#4051).
   - Added new fields for optional comments and colours to permission rules (#914).
-  - Added ability to create dynamic site titles and meta descriptions by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
+  - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

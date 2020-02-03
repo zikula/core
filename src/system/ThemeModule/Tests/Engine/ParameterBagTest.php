@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Tests\Engine;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 class ParameterBagTest extends TestCase
@@ -28,23 +25,7 @@ class ParameterBagTest extends TestCase
 
     protected function setUp(): void
     {
-        $requestStack = $this
-            ->getMockBuilder(RequestStack::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $variableApi = $this
-            ->getMockBuilder(VariableApiInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-        $extensionRepository = $this
-            ->getMockBuilder(ExtensionRepositoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $this->bag = new ParameterBag($requestStack, $variableApi, $extensionRepository, ['foo' => 10]);
+        $this->bag = new ParameterBag(['foo' => 10]);
     }
 
     /**
