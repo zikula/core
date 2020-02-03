@@ -4,9 +4,9 @@ If you want to create your own theme, the starting point of reusing the ZikulaBo
 example is based on the ZikulaBoostrapTheme of Zikula 1.4.5
 
 - First create a new vendor folder inside the themes folder. It should start with a capital letter. For our example we should start with `Company`.
-- In this folder we will now create a theme folder. Let us name it `Paula`. So we now have the following: `themes/Company/Paula`.
+- In this folder we will now create a theme folder. Let us name it `Paula`. So we now have the following: `/src/extensions/Company/PaulaTheme`.
 - Copy all the files and folder of the folder ZikulaBootstrapTheme into the folder `Paula`.
-- Rename `Company/Paula/ZikulaBootstrapTheme.php` to `Company/Paula/CompanyPaulaTheme.php`.
+- Rename `Company/PaulaTheme/ZikulaBootstrapTheme.php` to `Company/PaulaTheme/CompanyPaulaTheme.php`.
 - Change the content as follows:
 
 ```php
@@ -56,8 +56,8 @@ class CompanyPaulaTheme extends AbstractCoreTheme
 ```
 
 - In `home.html.twig`, `master.html.twig` and `admin.html.twig` you have to change all instance of `@ZikulaBoostrapTheme`
-  to `@CompanyPaulaTheme`. They are located in `theme/Company/Paula/Resources/views`
-- Do the same in `header.html.twig` which is located in `theme/Company/Paula/Resources/views/include`
+  to `@CompanyPaulaTheme`. They are located in `/src/extensions/Company/PaulaTheme/Resources/views`
+- Do the same in `header.html.twig` which is located in `/src/extensions/Company/PaulaTheme/Resources/views/include`
 - Next change `{{ knp_menu_render('ZikulaBootstrapTheme:AdminMenu:menu') }}` with 
   `{{ knp_menu_render('CompanyPaulaTheme:AdminMenu:menu') }}`
 - There is a file named `AdminMenu` in the `/Menu` directory. Inside this file you will find the namespace. You have to adjust
