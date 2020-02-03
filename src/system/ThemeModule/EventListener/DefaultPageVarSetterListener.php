@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 /**
@@ -27,6 +27,11 @@ use Zikula\ThemeModule\Engine\ParameterBag;
  */
 class DefaultPageVarSetterListener implements EventSubscriberInterface
 {
+    /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
     /**
      * @var ParameterBag
      */
@@ -36,11 +41,6 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
      * @var RouterInterface
      */
     private $router;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
 
     /**
      * @var ZikulaHttpKernelInterface
@@ -53,15 +53,15 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     private $installed;
 
     public function __construct(
+        SiteDefinitionInterface $site,
         ParameterBag $pageVars,
         RouterInterface $routerInterface,
-        VariableApiInterface $variableApi,
         ZikulaHttpKernelInterface $kernel,
         bool $installed
     ) {
+        $this->site = $site;
         $this->pageVars = $pageVars;
         $this->router = $routerInterface;
-        $this->variableApi = $variableApi;
         $this->kernel = $kernel;
         $this->installed = $installed;
     }
@@ -88,9 +88,9 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         }
 
         // set some defaults
-        $this->pageVars->set('title', $this->variableApi->getSystemVar('defaultpagetitle'));
+        $this->pageVars->set('title', $this->site->getTitle());
         $this->pageVars->set('meta.charset', $this->kernel->getCharset());
-        $this->pageVars->set('meta.description', $this->variableApi->getSystemVar('defaultmetadescription'));
+        $this->pageVars->set('meta.description', $this->site->getDescription());
         $this->pageVars->set('homepath', $this->router->generate('home'));
         $this->pageVars->set('coredata', [
             'version' => ZikulaKernel::VERSION,

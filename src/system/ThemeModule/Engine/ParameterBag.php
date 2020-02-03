@@ -15,9 +15,6 @@ namespace Zikula\ThemeModule\Engine;
 
 use Countable;
 use IteratorAggregate;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 /**
  * This class provides an abstracted method of collecting, managing and retrieving variables.
@@ -29,21 +26,6 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
  */
 class ParameterBag implements IteratorAggregate, Countable
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var ExtensionRepositoryInterface
-     */
-    private $extensionRepository;
-
     /**
      * @var array
      */
@@ -57,15 +39,9 @@ class ParameterBag implements IteratorAggregate, Countable
     private $ns;
 
     public function __construct(
-        RequestStack $requestStack,
-        VariableApiInterface $variableApi,
-        ExtensionRepositoryInterface $extensionRepository,
         array $parameters = [],
         $namespaceChar = '.'
     ) {
-        $this->requestStack = $requestStack;
-        $this->variableApi = $variableApi;
-        $this->extensionRepository = $extensionRepository;
         $this->parameters = $parameters;
         $this->ns = $namespaceChar;
     }
@@ -104,9 +80,7 @@ class ParameterBag implements IteratorAggregate, Countable
         $parameters = $this->resolvePath($key);
         $key = $this->resolveKey($key);
 
-        $value = array_key_exists($key, $parameters) ? $parameters[$key] : $default;
-
-        return 'title' === $key ? $this->prepareTitle($value) : $value;
+        return array_key_exists($key, $parameters) ? $parameters[$key] : $default;
     }
 
     /**
@@ -243,40 +217,5 @@ class ParameterBag implements IteratorAggregate, Countable
         }
 
         return $key;
-    }
-
-    /**
-     * Applies amendments to a title value before returning it.
-     */
-    private function prepareTitle(string $title): string
-    {
-        if (!is_string($title)) {
-            return $title;
-        }
-
-        $titleScheme = $this->variableApi->getSystemVar('pagetitle', '');
-        if (!empty($titleScheme) && '%pagetitle%' !== $titleScheme) {
-            $title = str_replace(
-                ['%pagetitle%', '%sitename%'],
-                [$title, $this->variableApi->getSystemVar('sitename', '')],
-                $titleScheme
-            );
-
-            $moduleDisplayName = '';
-            $request = $this->requestStack->getCurrentRequest();
-            if (null !== $request && null !== $request->attributes->get('_controller')) {
-                $controllerNameParts = explode('\\', $request->attributes->get('_controller'));
-                $bundleName = count($controllerNameParts) > 1 ? $controllerNameParts[0] . $controllerNameParts[1] : '';
-                if ('Module' === mb_substr($bundleName, -6)) {
-                    $module = $this->extensionRepository->get($bundleName);
-                    if (null !== $module) {
-                        $moduleDisplayName = $module->getDisplayName();
-                    }
-                }
-            }
-            $title = str_replace('%modulename%', $moduleDisplayName, $title);
-        }
-
-        return $title;
     }
 }
