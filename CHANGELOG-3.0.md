@@ -139,6 +139,7 @@
   - Fixed broken JavaScript in ZAuth user modification form (#3992).
   - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
   - When updating a block, orphan properties are removed (#3892).
+  - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -164,6 +165,7 @@
   - Blocks can now specify default property defaults used for custom form fields (#3676).
   - Added twig-inspector for easy debugging of Twig templates (#4051).
   - Added new fields for optional comments and colours to permission rules (#914).
+  - Added ability to create dynamic site titles and meta descriptions by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
