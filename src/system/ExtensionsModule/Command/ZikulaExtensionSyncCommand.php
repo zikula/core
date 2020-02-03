@@ -46,7 +46,7 @@ class ZikulaExtensionSyncCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $include = null !== $input->getArgument('include core') ? $input->getArgument('include core') : false;
+        $include = null !== $input->getArgument('include core') ? (bool) $input->getArgument('include core') : false;
 
         $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles($include);
         if (empty($extensionsInFileSystem)) {
