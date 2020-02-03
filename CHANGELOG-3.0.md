@@ -53,12 +53,15 @@
     - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
   - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
   - Entity changes
-    - `Zikula\CategoriesModule\Entity\CategoryEntity` removed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
+    - `Zikula\BlocksModule\Entity\BlockEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLastUpdate/setLastUpdate`.
+    - `Zikula\CategoriesModule\Entity\CategoryEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
     - `Zikula\CategoriesModule\Entity\CategoryRegistryEntity` removed some obsolete accessors for PSR-1 compatibility. Please use now `getStatus/setStatus`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
     - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
     - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `realm` and `bond` properties.
     - `Zikula\ThemeModule\Entity\ThemeEntity` removed the `xhtml` property.
     - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
+    - `Zikula\UsersModule\Entity\UserEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getApprovedDate/setApprovedDate`, `getApprovedBy/setApprovedBy`, `getRegistrationDate/setRegistrationDate`, `getLastLogin/setLastLogin`.
+    - `Zikula\ZAuthModule\Entity\UserVerificationEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getCreatedDate/setCreatedDate`.
   - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
   - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
   - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
@@ -169,6 +172,7 @@
   - Added twig-inspector for easy debugging of Twig templates (#4051).
   - Added new fields for optional comments and colours to permission rules (#914).
   - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
+  - If a record is not found for a guest this is now similarly treated like an access denied exception (redirect to login form).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

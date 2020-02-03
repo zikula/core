@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -81,6 +82,10 @@ class ExceptionListener implements EventSubscriberInterface
         do {
             $userLoggedIn = $this->installed ? $this->currentUserApi->isLoggedIn() : false;
             if ($exception instanceof AccessDeniedException) {
+                $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
+            } elseif (!$userLoggedIn && $exception instanceof NotFoundHttpException) {
+                // if a record is not found for a guest this could likely be a result of missing permissions
+                // thus, treat it like access denied and redirect to login page
                 $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
             }
             // list and handle additional exceptions here
