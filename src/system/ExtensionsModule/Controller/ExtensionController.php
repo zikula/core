@@ -36,7 +36,7 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
 use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
@@ -373,8 +373,8 @@ class ExtensionController extends AbstractController
                 if (null === $bundle) {
                     continue;
                 }
-                $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
-                $eventDispatcher->dispatch($event, ExtensionEvents::MODULE_POSTINSTALL);
+                $event = new ExtensionStateEvent($bundle, $extensionEntity->toArray());
+                $eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_POSTINSTALL);
             }
         }
 

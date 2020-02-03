@@ -17,35 +17,35 @@ use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Bundle\CoreBundle\AbstractBundle;
 
 /**
- * Class ModuleStateEvent
+ * Class ExtensionStateEvent
  */
-class ModuleStateEvent extends Event
+class ExtensionStateEvent extends Event
 {
     /**
      * @var null|AbstractBundle The module instance. Null when Module object is not available
      */
-    private $module;
+    private $extension;
 
     /**
      * An array of info for the module. Possibly a result of calling $extensionEntity->toArray().
      *
      * @var null|array
      */
-    private $modInfo;
+    private $info;
 
-    public function __construct(AbstractBundle $module = null, array $modInfo = null)
+    public function __construct(AbstractBundle $extension = null, array $info = null)
     {
-        $this->module = $module;
-        $this->modInfo = $modInfo;
+        $this->extension = $extension;
+        $this->info = $info;
     }
 
-    public function getModule(): ?AbstractBundle
+    public function getExtension(): ?AbstractBundle
     {
-        return $this->module;
+        return $this->extension;
     }
 
-    public function getModInfo(): ?array
+    public function getInfo(): ?array
     {
-        return $this->modInfo;
+        return $this->info;
     }
 }

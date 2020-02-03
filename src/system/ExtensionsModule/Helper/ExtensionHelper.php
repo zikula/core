@@ -33,7 +33,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 
@@ -118,8 +118,8 @@ class ExtensionHelper
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
         $this->cacheClearer->clear('symfony.config');
 
-        $event = new ModuleStateEvent($bundle, $extension->toArray());
-        $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_INSTALL);
+        $event = new ExtensionStateEvent($bundle, $extension->toArray());
+        $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_INSTALL);
 
         return true;
     }
@@ -168,8 +168,8 @@ class ExtensionHelper
 
         if ($this->container->getParameter('installed')) {
             // Upgrade succeeded, issue event.
-            $event = new ModuleStateEvent($bundle, $extension->toArray());
-            $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_UPGRADE);
+            $event = new ExtensionStateEvent($bundle, $extension->toArray());
+            $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_UPGRADE);
         }
 
         return true;
@@ -214,8 +214,8 @@ class ExtensionHelper
 
         $this->cacheClearer->clear('symfony.config');
 
-        $event = new ModuleStateEvent($bundle, $extension->toArray());
-        $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_REMOVE);
+        $event = new ExtensionStateEvent($bundle, $extension->toArray());
+        $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_REMOVE);
 
         return true;
     }

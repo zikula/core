@@ -16,7 +16,7 @@ namespace Zikula\Bundle\HookBundle\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleUninstallListener implements EventSubscriberInterface
@@ -42,14 +42,14 @@ class ModuleUninstallListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::MODULE_REMOVE => 'removeHooks'
+            ExtensionEvents::EXTENSION_REMOVE => 'removeHooks'
         ];
     }
 
-    public function removeHooks(ModuleStateEvent $event): void
+    public function removeHooks(ExtensionStateEvent $event): void
     {
-        $moduleName = $event->getModInfo()['name'];
-        $this->hookBindingRepository->deleteAllByOwner($moduleName);
-        $this->hookRuntimeRepository->deleteAllByOwner($moduleName);
+        $extensionName = $event->getInfo()['name'];
+        $this->hookBindingRepository->deleteAllByOwner($extensionName);
+        $this->hookRuntimeRepository->deleteAllByOwner($extensionName);
     }
 }

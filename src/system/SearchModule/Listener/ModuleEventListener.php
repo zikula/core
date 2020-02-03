@@ -16,14 +16,14 @@ namespace Zikula\SearchModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 
 /**
  * Class ModuleEventListener
  *
- * Modify search block properties based on the availability and searchability of a module as its state changes.
+ * Modify search block properties based on the availability and searchability of a extension as its state changes.
  */
 class ModuleEventListener implements EventSubscriberInterface
 {
@@ -48,17 +48,17 @@ class ModuleEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::MODULE_INSTALL => ['moduleEnable'],
-            ExtensionEvents::MODULE_ENABLE => ['moduleEnable'],
-            ExtensionEvents::MODULE_DISABLE => ['moduleDisable'],
-            ExtensionEvents::MODULE_REMOVE => ['moduleRemove']
+            ExtensionEvents::EXTENSION_INSTALL => ['extensionEnable'],
+            ExtensionEvents::EXTENSION_ENABLE => ['extensionEnable'],
+            ExtensionEvents::EXTENSION_DISABLE => ['extensionDisable'],
+            ExtensionEvents::EXTENSION_REMOVE => ['extensionRemove']
         ];
     }
 
-    public function moduleEnable(ModuleStateEvent $event): void
+    public function extensionEnable(ExtensionStateEvent $event): void
     {
-        $moduleName = $this->getModuleName($event);
-        if (null === $moduleName) {
+        $extensionName = $this->getExtensionName($event);
+        if (null === $extensionName) {
             return;
         }
 
@@ -70,16 +70,16 @@ class ModuleEventListener implements EventSubscriberInterface
             if (!isset($properties['active'])) {
                 $properties['active'] = [];
             }
-            $properties['active'][$moduleName] = 1;
+            $properties['active'][$extensionName] = 1;
             $block->setProperties($properties);
             $this->blockRepository->persistAndFlush($block);
         }
     }
 
-    public function moduleDisable(ModuleStateEvent $event): void
+    public function extensionDisable(ExtensionStateEvent $event): void
     {
-        $moduleName = $this->getModuleName($event);
-        if (null === $moduleName) {
+        $extensionName = $this->getExtensionName($event);
+        if (null === $extensionName) {
             return;
         }
 
@@ -91,16 +91,16 @@ class ModuleEventListener implements EventSubscriberInterface
             if (!isset($properties['active'])) {
                 $properties['active'] = [];
             }
-            $properties['active'][$moduleName] = 0;
+            $properties['active'][$extensionName] = 0;
             $block->setProperties($properties);
             $this->blockRepository->persistAndFlush($block);
         }
     }
 
-    public function moduleRemove(ModuleStateEvent $event): void
+    public function extensionRemove(ExtensionStateEvent $event): void
     {
-        $moduleName = $this->getModuleName($event);
-        if (null === $moduleName) {
+        $extensionName = $this->getExtensionName($event);
+        if (null === $extensionName) {
             return;
         }
 
@@ -109,24 +109,24 @@ class ModuleEventListener implements EventSubscriberInterface
         /** @var BlockEntity[] $blocks */
         foreach ($blocks as $block) {
             $properties = $block->getProperties();
-            if (isset($properties['active'][$moduleName])) {
-                unset($properties['active'][$moduleName]);
+            if (isset($properties['active'][$extensionName])) {
+                unset($properties['active'][$extensionName]);
             }
             $block->setProperties($properties);
             $this->blockRepository->persistAndFlush($block);
         }
     }
 
-    private function getModuleName(ModuleStateEvent $event): ?string
+    private function getExtensionName(ExtensionStateEvent $event): ?string
     {
-        if (null === $event->getModule()) {
+        if (null === $event->getExtension()) {
             return null;
         }
-        $moduleName = $event->getModule()->getName();
-        if (null === $this->searchableModuleCollector->get($moduleName)) {
+        $extensionName = $event->getExtension()->getName();
+        if (null === $this->searchableModuleCollector->get($extensionName)) {
             return null;
         }
 
-        return $moduleName;
+        return $extensionName;
     }
 }

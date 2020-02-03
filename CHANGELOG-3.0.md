@@ -70,6 +70,9 @@
   - `CoreBundle/Composer/Metadata` has removed `$basePath` and `$rootPath` properties and their getters.
   - `$kernel::isCoreModule()` is renamed to `$kernel::isCoreExtension()`.
     - The corresponding Twig function is similarly renamed.
+  - `Zikula\ExtensionsModule\Event\ModuleStateEvent` is renamed to `Zikula\ExtensionsModule\Event\ExtensionStateEvent`.
+    - Its methods also renamed: `getModule` -> `getExtension` and `getModInfo` -> `getInfo`.
+  - All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName. 
   - Dropped vendors:
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)

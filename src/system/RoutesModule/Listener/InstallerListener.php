@@ -16,7 +16,7 @@ namespace Zikula\RoutesModule\Listener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
@@ -57,9 +57,9 @@ class InstallerListener extends AbstractInstallerListener
     {
         // override subscription to ALL available events to only needed events.
         return [
-            ExtensionEvents::MODULE_POSTINSTALL => ['modulePostInstalled', 5],
-            ExtensionEvents::MODULE_UPGRADE => ['moduleUpgraded', 5],
-            ExtensionEvents::MODULE_REMOVE => ['moduleRemoved', 5],
+            ExtensionEvents::EXTENSION_POSTINSTALL => ['extensionPostInstalled', 5],
+            ExtensionEvents::EXTENSION_UPGRADE => ['extensionUpgraded', 5],
+            ExtensionEvents::EXTENSION_REMOVE => ['extensionRemoved', 5],
             'new.routes.avail' => ['newRoutesAvail', 5]
         ];
     }
@@ -78,16 +78,16 @@ class InstallerListener extends AbstractInstallerListener
         $this->requestStack = $requestStack;
     }
 
-    public function modulePostInstalled(ModuleStateEvent $event): void
+    public function extensionPostInstalled(ExtensionStateEvent $event): void
     {
-        parent::modulePostInstalled($event);
+        parent::extensionPostInstalled($event);
 
-        $module = $event->getModule();
-        if (null === $module) {
+        $extension = $event->getExtension();
+        if (null === $extension) {
             return;
         }
 
-        if ('ZikulaRoutesModule' === $module->getName()) {
+        if ('ZikulaRoutesModule' === $extension->getName()) {
             // Reload multilingual routing settings.
             $this->multilingualRoutingHelper->reloadMultilingualRoutingSettings();
         }
@@ -98,12 +98,12 @@ class InstallerListener extends AbstractInstallerListener
         $this->updateJsRoutes();
     }
 
-    public function moduleUpgraded(ModuleStateEvent $event): void
+    public function extensionUpgraded(ExtensionStateEvent $event): void
     {
-        parent::moduleUpgraded($event);
+        parent::extensionUpgraded($event);
 
-        $module = $event->getModule();
-        if (null === $module) {
+        $extension = $event->getExtension();
+        if (null === $extension) {
             return;
         }
 
@@ -113,17 +113,17 @@ class InstallerListener extends AbstractInstallerListener
         $this->updateJsRoutes();
     }
 
-    public function moduleRemoved(ModuleStateEvent $event): void
+    public function extensionRemoved(ExtensionStateEvent $event): void
     {
-        parent::moduleRemoved($event);
+        parent::extensionRemoved($event);
 
-        $module = $event->getModule();
-        if (null === $module || 'ZikulaRoutesModule' === $module->getName()) {
+        $extension = $event->getExtension();
+        if (null === $extension || 'ZikulaRoutesModule' === $extension->getName()) {
             return;
         }
 
         // delete any custom routes for the removed bundle
-        $this->entityFactory->getRepository('route')->deleteByBundle($module->getName());
+        $this->entityFactory->getRepository('route')->deleteByBundle($extension->getName());
 
         // reload **all** JS routes
         $this->updateJsRoutes();
