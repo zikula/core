@@ -120,12 +120,12 @@ class CategoryTreeType extends AbstractType
 
         $choices = [];
         foreach ($children as $child) {
-            if (($child['is_leaf'] && !$includeLeaf) || ('I' === $child['status'] && $all)) {
+            if (($child['leaf'] && !$includeLeaf) || ('I' === $child['status'] && $all)) {
                 continue;
             }
             $indent = $child['lvl'] > 0 ? str_repeat('--', $child['lvl']) : '';
-            if (isset($child['display_name'][$locale]) && !empty($child['display_name'][$locale])) {
-                $catName = $child['display_name'][$locale];
+            if (isset($child['displayName'][$locale]) && !empty($child['displayName'][$locale])) {
+                $catName = $child['displayName'][$locale];
             } else {
                 $catName = $child['name'];
             }

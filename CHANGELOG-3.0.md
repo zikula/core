@@ -53,6 +53,8 @@
     - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
   - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
   - Entity changes
+    - `Zikula\CategoriesModule\Entity\CategoryEntity` removed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
+    - `Zikula\CategoriesModule\Entity\CategoryRegistryEntity` removed some obsolete accessors for PSR-1 compatibility. Please use now `getStatus/setStatus`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
     - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
     - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `realm` and `bond` properties.
     - `Zikula\ThemeModule\Entity\ThemeEntity` removed the `xhtml` property.

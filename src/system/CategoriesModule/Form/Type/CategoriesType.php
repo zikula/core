@@ -77,7 +77,7 @@ class CategoriesType extends AbstractType
             $choiceLabelClosure = static function(CategoryEntity $category) use ($baseCategory, $locale) {
                 $indent = str_repeat('--', $category->getLvl() - $baseCategory->getLvl() - 1);
 
-                $categoryName = $category['display_name'][$locale] ?? $category['display_name']['en'];
+                $categoryName = $category['displayName'][$locale] ?? $category['displayName']['en'];
 
                 return (!empty($indent) ? '|' : '') . $indent . $categoryName;
             };
@@ -94,7 +94,7 @@ class CategoriesType extends AbstractType
             ];
 
             if ($options['showRegistryLabels']) {
-                $registryOptions['label'] = $baseCategory['display_name'][$locale] ?? $baseCategory['display_name']['en'];
+                $registryOptions['label'] = $baseCategory['displayName'][$locale] ?? $baseCategory['displayName']['en'];
             } else {
                 $registryOptions['label_attr'] = !$options['expanded'] ? ['class' => 'hidden'] : [];
             }

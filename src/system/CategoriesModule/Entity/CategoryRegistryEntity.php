@@ -82,7 +82,7 @@ class CategoryRegistryEntity extends EntityAccess
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
-    protected $cr_uid;
+    protected $createdBy;
 
     /**
      * The user id of the last update of this entity
@@ -92,7 +92,7 @@ class CategoryRegistryEntity extends EntityAccess
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
-    protected $lu_uid;
+    protected $updatedBy;
 
     /**
      * The creation timestamp of this entity
@@ -101,7 +101,7 @@ class CategoryRegistryEntity extends EntityAccess
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
-    protected $cr_date;
+    protected $createdDate;
 
     /**
      * The last updated timestamp of this entity
@@ -110,16 +110,16 @@ class CategoryRegistryEntity extends EntityAccess
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
-    protected $lu_date;
+    protected $updatedDate;
 
     /**
      * The status of the entity
      *
-     * @ORM\Column(type="string", length=1)
+     * @ORM\Column(type="string", length=1, name="obj_status")
      * @Assert\Length(min="0", max="1", allowEmptyString="false")
      * @var string
      */
-    protected $obj_status = 'A';
+    protected $status = 'A';
 
     public function getId(): ?int
     {
@@ -171,53 +171,53 @@ class CategoryRegistryEntity extends EntityAccess
         $this->category = $category;
     }
 
-    public function getCr_date(): DateTime
+    public function getCreatedDate(): DateTime
     {
-        return $this->cr_date;
+        return $this->createdDate;
     }
 
-    public function setCr_date(DateTime $cr_date): void
+    public function setCreatedDate(DateTime $createdDate): void
     {
-        $this->cr_date = $cr_date;
+        $this->createdDate = $createdDate;
     }
 
-    public function getCr_uid(): UserEntity
+    public function getCreatedBy(): UserEntity
     {
-        return $this->cr_uid;
+        return $this->createdBy;
     }
 
-    public function setCr_uid(UserEntity $cr_uid): void
+    public function setCreatedBy(UserEntity $createdBy): void
     {
-        $this->cr_uid = $cr_uid;
+        $this->createdBy = $createdBy;
     }
 
-    public function getLu_date(): DateTime
+    public function getUpdatedDate(): DateTime
     {
-        return $this->lu_date;
+        return $this->updatedDate;
     }
 
-    public function setLu_date(DateTime $lu_date): void
+    public function setUpdatedDate(DateTime $updatedDate): void
     {
-        $this->lu_date = $lu_date;
+        $this->updatedDate = $updatedDate;
     }
 
-    public function getLu_uid(): UserEntity
+    public function getUpdatedBy(): UserEntity
     {
-        return $this->lu_uid;
+        return $this->updatedBy;
     }
 
-    public function setLu_uid(UserEntity $lu_uid): void
+    public function setUpdatedBy(UserEntity $updatedBy): void
     {
-        $this->lu_uid = $lu_uid;
+        $this->updatedBy = $updatedBy;
     }
 
-    public function getObj_status(): string
+    public function getStatus(): string
     {
-        return $this->obj_status;
+        return $this->status;
     }
 
-    public function setObj_status(string $obj_status): void
+    public function setStatus(string $status): void
     {
-        $this->obj_status = $obj_status;
+        $this->status = $status;
     }
 }

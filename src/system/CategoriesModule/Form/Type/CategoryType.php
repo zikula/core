@@ -63,12 +63,12 @@ class CategoryType extends AbstractType
                     new NotBlank()
                 ]
             ])
-            ->add('is_locked', CheckboxType::class, [
+            ->add('locked', CheckboxType::class, [
                 'label' => 'Category is locked',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
-            ->add('is_leaf', CheckboxType::class, [
+            ->add('leaf', CheckboxType::class, [
                 'label' => 'Category is a leaf node',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
@@ -86,12 +86,12 @@ class CategoryType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
-            ->add('display_name', CollectionType::class, [
+            ->add('displayName', CollectionType::class, [
                 'entry_type' => TextType::class,
                 'label' => 'Display name',
                 'required' => false
             ])
-            ->add('display_desc', CollectionType::class, [
+            ->add('displayDesc', CollectionType::class, [
                 'entry_type' => TextareaType::class,
                 'label' => 'Display description',
                 'required' => false
@@ -117,8 +117,8 @@ class CategoryType extends AbstractType
 
                 $name = $category->getName();
 
-                $displayName = $category->getDisplay_name();
-                $displayDesc = $category->getDisplay_desc();
+                $displayName = $category->getDisplayName();
+                $displayDesc = $category->getDisplayDesc();
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
@@ -129,8 +129,8 @@ class CategoryType extends AbstractType
                     }
                 }
 
-                $category->setDisplay_name($displayName);
-                $category->setDisplay_desc($displayDesc);
+                $category->setDisplayName($displayName);
+                $category->setDisplayDesc($displayDesc);
 
                 $event->setData($category);
             })
@@ -140,14 +140,14 @@ class CategoryType extends AbstractType
                 $category = $event->getData();
 
                 $name = $category->getName();
-                $displayName = $category->getDisplay_name();
+                $displayName = $category->getDisplayName();
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
                         $displayName[$code] = $translator->trans(/** @Ignore */$name, [], 'zikula', $code);
                     }
                 }
-                $category->setDisplay_name($displayName);
+                $category->setDisplayName($displayName);
 
                 $event->setData($category);
             })

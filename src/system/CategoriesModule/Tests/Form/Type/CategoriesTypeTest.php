@@ -423,8 +423,8 @@ class CategoriesTypeTest extends TypeTestCase
         $registry->setModname('AcmeFooModule');
         $registry->setEntityname('CategorizableEntity');
         $registry->setProperty('Main');
-        $registry->setCr_date($now);
-        $registry->setLu_date($now);
+        $registry->setCreatedDate($now);
+        $registry->setUpdatedDate($now);
         /** @var CategoryEntity $rootCategory */
         $rootCategory = $this->emRegistry->getRepository(CategoryEntity::class)->find(1);
         $registry->setCategory($rootCategory);
@@ -441,9 +441,9 @@ class CategoriesTypeTest extends TypeTestCase
         $root = new CategoryEntity();
         $root->setId(1);
         $root->setName('root');
-        $root->setDisplay_name(['en' => 'root']);
-        $root->setCr_date($now);
-        $root->setLu_date($now);
+        $root->setDisplayName(['en' => 'root']);
+        $root->setCreatedDate($now);
+        $root->setUpdatedDate($now);
         $repository->persistAsFirstChild($root);
 
         // first child
@@ -451,9 +451,9 @@ class CategoriesTypeTest extends TypeTestCase
         $a->setId(2);
         $a->setParent($root);
         $a->setName('a');
-        $a->setDisplay_name(['en' => 'a']);
-        $a->setCr_date($now);
-        $a->setLu_date($now);
+        $a->setDisplayName(['en' => 'a']);
+        $a->setCreatedDate($now);
+        $a->setUpdatedDate($now);
         $repository->persistAsFirstChildOf($a, $root);
 
         // second child
@@ -461,9 +461,9 @@ class CategoriesTypeTest extends TypeTestCase
         $b->setId(3);
         $b->setParent($root);
         $b->setName('b');
-        $b->setDisplay_name(['en' => 'b']);
-        $b->setCr_date($now);
-        $b->setLu_date($now);
+        $b->setDisplayName(['en' => 'b']);
+        $b->setCreatedDate($now);
+        $b->setUpdatedDate($now);
         $repository->persistAsLastChildOf($b, $root);
 
         // child of first child (grand child)
@@ -471,9 +471,9 @@ class CategoriesTypeTest extends TypeTestCase
         $aa->setId(4);
         $aa->setParent($a);
         $aa->setName('aa');
-        $aa->setDisplay_name(['en' => 'aa']);
-        $aa->setCr_date($now);
-        $aa->setLu_date($now);
+        $aa->setDisplayName(['en' => 'aa']);
+        $aa->setCreatedDate($now);
+        $aa->setUpdatedDate($now);
         $repository->persistAsFirstChildOf($aa, $a);
 
         $this->em->flush();
