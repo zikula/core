@@ -104,7 +104,7 @@
   - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
   - Changes to `composer.json`
     - Removed use of `admin.png` and replaced by adding icon class >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`.
-      - Themes can now also include and icon path.
+      - Themes can now also include an icon path.
     - Setting >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
     - Change how themes define user and admin capabilities.
       - old: e.g. `capabilities/admin:true`
@@ -177,6 +177,7 @@
   - Added new fields for optional comments and colours to permission rules (#914).
   - In general, 'module' and 'theme' are now generically referred to as 'extensions' and many methods or properties have been renamed to align.
   - The location for choosing the default theme and admin theme has been moved to the Theme module settings.
+  - System themes (Bootstrap, Atom, Printer, Rss) are now located in `system/` and are loaded directly into the kernel.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
