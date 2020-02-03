@@ -463,6 +463,7 @@ milliseconds: null
 'No profile module': null
 'No message module': null
 'All components': null
+'All colours': null
 'Notice: You cannot delete the main administration permission rule.': null
 'Permission check result:': null
 'unknown user.': null
@@ -496,9 +497,20 @@ Permission: null
 'Component to check': null
 'Instance to check': null
 'Check permission': null
+Primary: null
+Secondary: null
+Success: null
+Danger: null
+Warning: null
+Info: null
+Light: null
+Dark: null
 Level: null
+Comment: null
+Colour: null
 'Filter group': null
 'Filter component': null
+'Filter colour': null
 'Lock main administration permission rule': null
 'ID of main administration permission rule': null
 'Enable filtering of group permissions': null
@@ -599,7 +611,6 @@ States: null
 'Primary administrators group. Cannot be deleted.': null
 'Pending applications': null
 'Applying to group': null
-Comment: null
 'Accept %username%': null
 'Deny %username%': null
 'No items found.': null
