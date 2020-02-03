@@ -10,13 +10,11 @@
         $('.filter-button').click(function () {
             var $button = $(this);
             var $selectors = $button.data('selectors').split(' ').join(',');
-            $($selectors).each(function () {
-                $(this).toggleClass('d-none');
-                var textToggle = $button.data('text-toggle');
-                var currentText = $button.text();
-                $button.text(textToggle);
-                $button.data('text-toggle', currentText);
-            });
+            $($selectors).toggleClass('d-none');
+            var textToggle = $button.data('text-toggle');
+            var currentText = $button.find('span').text();
+            $button.find('span').text(textToggle);
+            $button.data('text-toggle', currentText);
         });
     });
 })(jQuery);
