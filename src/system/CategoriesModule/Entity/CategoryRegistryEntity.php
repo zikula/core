@@ -98,7 +98,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The creation timestamp of this entity
      *
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="cr_date")
      * @Gedmo\Timestampable(on="create")
      */
     protected $createdDate;
@@ -107,7 +107,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The last updated timestamp of this entity
      *
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="lu_date")
      * @Gedmo\Timestampable(on="update")
      */
     protected $updatedDate;
