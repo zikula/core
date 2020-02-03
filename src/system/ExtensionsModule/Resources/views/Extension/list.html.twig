@@ -40,7 +40,7 @@
                 <ul id="collapse-{{ extension.name }}" class="collapse mb-0">
                     <li>{% trans %}Internal name{% endtrans %}: <em>{{ extension.name }}</em></li>
                     <li>{% trans %}Url root{% endtrans %}: <code>/{{ extension.url }}</code></li>
-                    <li>{{ _self.adminRoute(extension) }}</li>
+                    {{ _self.adminRoute(extension) }}
                 </ul>
             </td>
             <td headers="hDescription" style="width: 40%" class="d-none d-lg-table-cell">{{ extension.description }}</td>
@@ -61,7 +61,7 @@
 
 {% macro adminRoute(extension) %}
     {% if extension.state is constant('Zikula\\ExtensionsModule\\Constant::STATE_ACTIVE') and extension.capabilities.admin.route|default %}
-        <a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ path(extension.capabilities.admin.route) }}"><i class="fas fa-link"></i> {% trans %}Administration{% endtrans %}</a>
+        <li><a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ path(extension.capabilities.admin.route) }}"><i class="fas fa-link"></i> {% trans %}Administration{% endtrans %}</a></li>
     {% endif %}
 {% endmacro %}
 
