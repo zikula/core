@@ -35,12 +35,12 @@
         <tr class="extension-type-{{ extension.type }}">
             <td headers="hType" class="text-center" class="d-none d-md-table-cell">{{ _self.badge(extension.type) }}</td>
             <td headers="hName">
-                {{ _self.adminRoute(extension) }}
                 <strong>{{ extension.displayname }}</strong>
                 <a data-toggle="collapse" href="#collapse-{{ extension.name }}"><i class="fas fa-caret-down"></i></a>
                 <ul id="collapse-{{ extension.name }}" class="collapse mb-0">
-                    <li>Internal name: <em>{{ extension.name }}</em></li>
-                    <li>Url root: <code>/{{ extension.url }}</code></li>
+                    <li>{% trans %}Internal name{% endtrans %}: <em>{{ extension.name }}</em></li>
+                    <li>{% trans %}Url root{% endtrans %}: <code>/{{ extension.url }}</code></li>
+                    <li>{{ _self.adminRoute(extension) }}</li>
                 </ul>
             </td>
             <td headers="hDescription" style="width: 40%" class="d-none d-lg-table-cell">{{ extension.description }}</td>
@@ -61,7 +61,7 @@
 
 {% macro adminRoute(extension) %}
     {% if extension.state is constant('Zikula\\ExtensionsModule\\Constant::STATE_ACTIVE') and extension.capabilities.admin.route|default %}
-        <a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ path(extension.capabilities.admin.route) }}"><i class="fas fa-link"></i></a>
+        <a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ path(extension.capabilities.admin.route) }}"><i class="fas fa-link"></i> {% trans %}Administration{% endtrans %}</a>
     {% endif %}
 {% endmacro %}
 
