@@ -29,7 +29,6 @@ use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -112,7 +111,7 @@ class ExtensionHelper
         if (null !== $installer) {
             $result = $installer->install();
             if (!$result) {
-                return FALSE;
+                return false;
             }
         }
 
@@ -152,10 +151,10 @@ class ExtensionHelper
                     $this->container->get('doctrine')->getManager()->flush();
                 }
 
-                return FALSE;
+                return false;
             }
-            if (TRUE !== $result) {
-                return FALSE;
+            if (true !== $result) {
+                return false;
             }
         }
 
@@ -203,7 +202,7 @@ class ExtensionHelper
         if (null !== $installer) {
             $result = $installer->uninstall();
             if (!$result) {
-                return FALSE;
+                return false;
             }
         }
 
