@@ -15,7 +15,7 @@ Further information: [Themes/TemplateOverrides.md](Themes/TemplateOverrides.md).
 Assets like CSS, images and JavaScript files are resolved in the following order:
 
 1. Override on system level: `/public/overrides/acmefoomodule/js/SomeScript.js`.
-2. Override on theme level: `/public/extensions/zikulabootstraptheme/acmefoomodule/js/SomeScript.js`.
+2. Override on theme level: `/public/themes/zikulabootstraptheme/acmefoomodule/js/SomeScript.js`.
 3. Original location: `/public/modules/acmefoo/js/SomeScript.js`.
 
 If the asset file can not be found, it is copied from it's source location to the original public folder.  
