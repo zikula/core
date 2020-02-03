@@ -140,6 +140,7 @@
   - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
   - When updating a block, orphan properties are removed (#3892).
   - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
+  - Fixed creating new ZAuth users as admin without setting a password.
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).

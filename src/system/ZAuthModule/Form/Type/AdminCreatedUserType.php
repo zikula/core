@@ -82,6 +82,7 @@ class AdminCreatedUserType extends AbstractType
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'required' => false,
                     'label' => 'Create new password',
                     'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
                     'help' => 'Minimum password length: %amount% characters.',
@@ -90,6 +91,7 @@ class AdminCreatedUserType extends AbstractType
                     ]
                 ],
                 'second_options' => [
+                    'required' => false,
                     'label' => 'Repeat new password',
                     'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
                 ],

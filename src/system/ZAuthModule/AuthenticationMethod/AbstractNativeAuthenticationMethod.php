@@ -90,6 +90,10 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
 
         $mapping = $this->getMapping($field, $data[$field]);
+        if (!$mapping->getPass()) {
+            return null;
+        }
+
         if ($mapping && $this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
             // is this the place to update the hash method? #2842
             return $mapping->getUid();
