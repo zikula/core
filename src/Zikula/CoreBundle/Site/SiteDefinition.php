@@ -52,12 +52,7 @@ class SiteDefinition implements SiteDefinitionInterface
 
     public function getTitle(): string
     {
-        $pageTitle = $this->variableApi->getSystemVar('defaultpagetitle');
-        if (!is_string($pageTitle)) {
-            return $pageTitle;
-        }
-
-        $title = $pageTitle;
+        $title = $this->variableApi->getSystemVar('defaultpagetitle');
         $titleScheme = $this->variableApi->getSystemVar('pagetitle', '');
         if (!empty($titleScheme) && '%pagetitle%' !== $titleScheme) {
             $title = str_replace(
