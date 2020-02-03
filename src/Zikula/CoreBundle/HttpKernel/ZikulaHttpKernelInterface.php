@@ -32,9 +32,9 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
     public function getModules(): array;
 
     /**
-     * Checks if name is is the list of core modules.
+     * Checks if name is is the list of core extensions.
      */
-    public static function isCoreModule(string $moduleName): bool;
+    public static function isCoreExtension(string $extensionName): bool;
 
     /**
      * Gets named theme bundle.

@@ -126,7 +126,7 @@ class Asset
         $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $relativeAssetPath);
         $this->fileSystem->copy($fullPath, $publicDir . '/' . $bundleAssetPath . '/' . $relativeAssetPath);
 
-        return $this->assetPackages->getUrl($path);
+        return $this->assetPackages->getUrl($bundleAssetPath . '/' . $relativeAssetPath);
     }
 
     /**

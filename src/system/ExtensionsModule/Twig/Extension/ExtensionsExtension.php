@@ -42,7 +42,7 @@ class ExtensionsExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('isCoreModule', ['Kernel', 'isCoreModule'])
+            new TwigFilter('isCoreExtension', ['Kernel', 'isCoreExtension'])
         ];
     }
 

@@ -29,11 +29,6 @@ class BundlesSchemaHelper
     private $conn;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var CacheClearer
      */
     private $cacheClearer;
@@ -43,6 +38,11 @@ class BundlesSchemaHelper
      */
     private $projectDir;
 
+    /**
+     * @var Scanner
+     */
+    private $scanner;
+
     public function __construct(
         Connection $conn,
         TranslatorInterface $translator,
@@ -50,25 +50,28 @@ class BundlesSchemaHelper
         $projectDir
     ) {
         $this->conn = $conn;
-        $this->translator = $translator;
         $this->cacheClearer = $cacheClearer;
         $this->projectDir = $projectDir;
+        $this->scanner = new Scanner();
+        $this->scanner->setTranslator($translator);
     }
 
     public function load(): void
     {
         $this->verifySchema();
-        $scanner = new Scanner();
-        $scanner->setTranslator($this->translator);
-        $scanner->scan([$this->projectDir . '/src/modules', $this->projectDir . '/src/themes']);
-        $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
-        $this->sync($array);
+        $this->scanner->scan([$this->projectDir . '/src/extensions']);
+        $this->sync($this->scanner->getExtensionsMetaData());
+    }
+
+    public function getScanner(): Scanner
+    {
+        return $this->scanner;
     }
 
     /**
      * Sync the filesystem scan and the bundles table.
      * This is a 'dumb' scan - there is no state management here.
-     * State management occurs in the module and theme management and is checked in CoreBundle\Helper\PersistedBundleHelper.
+     * State management occurs in extensions management and is checked in CoreBundle\Helper\PersistedBundleHelper.
      */
     private function sync(array $fileExtensions = []): void
     {

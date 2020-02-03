@@ -1,0 +1,35 @@
+{
+    "name": "zikula/rss-theme",
+    "version": "2.0.0",
+    "description": "The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.",
+    "type": "zikula-theme",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "https://ziku.la/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\RssTheme\\": "" }
+    },
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "extra": {
+        "zikula" : {
+            "core-compatibility": ">=3.0.0",
+            "class": "Zikula\\RssTheme\\ZikulaRssTheme",
+            "displayname": "Rss Theme",
+            "capabilities": {
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": false,
+                    "icon": "fas fa-rss"
+                }
+            }
+        }
+    }
+}

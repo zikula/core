@@ -65,22 +65,6 @@ class MetaDataTest extends TestCase
     }
 
     /**
-     * @covers MetaData::getBasePath
-     */
-    public function testGetBasePath(): void
-    {
-        $this->assertEmpty($this->metaData->getBasePath());
-    }
-
-    /**
-     * @covers MetaData::getRootPath
-     */
-    public function testGetRootPath(): void
-    {
-        $this->assertEmpty($this->metaData->getRootPath());
-    }
-
-    /**
      * @covers MetaData::getClass
      */
     public function testGetClass(): void
@@ -120,8 +104,6 @@ class MetaDataTest extends TestCase
         "zikula": {
             "class": "Zikula\\AdminModule\\ZikulaAdminModule",
             "core-compatibility": ">=1.4.2",
-            "base-path": "",
-            "root-path": "",
             "short-name": ""
         }
     }

@@ -53,9 +53,9 @@ class ExtensionMenu implements ExtensionMenuInterface
             return null;
         }
         $menu = $this->factory->createItem('themeAdminMenu');
-        $menu->addChild('Themes list', [
-            'route' => 'zikulathememodule_theme_view',
-        ])->setAttribute('icon', 'fas fa-list');
+        $menu->addChild('Settings', [
+            'route' => 'zikulathememodule_config_config',
+        ])->setAttribute('icon', 'fas fa-wrench');
 
         return 0 === $menu->count() ? null : $menu;
     }

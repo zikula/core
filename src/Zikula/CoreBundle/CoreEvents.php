@@ -17,7 +17,7 @@ namespace Zikula\Bundle\CoreBundle;
  * This class collects names of custom events used for changing
  * module states during core installation and core upgrades.
  *
- * @see \Zikula\ExtensionsModule\Event\ModuleStateEvent
+ * @see \Zikula\ExtensionsModule\Event\ExtensionStateEvent
  */
 final class CoreEvents
 {

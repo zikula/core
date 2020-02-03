@@ -1,0 +1,25 @@
+{% form_theme form with [
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+] %}
+{{ adminHeader() }}
+{{ showflashes() }}
+<h3>
+    <span class="fas fa-wrench"></span>
+    {% trans %}Extension settings{% endtrans %}
+    {{ pageSetVar('title', 'Extension settings'|trans) }}
+</h3>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+{{ form_row(form.displayname) }}
+{{ form_row(form.url) }}
+{{ form_row(form.description) }}
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
+        {{ form_widget(form.defaults) }}
+    </div>
+</div>
+{{ form_end(form) }}
+{{ adminFooter() }}

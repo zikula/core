@@ -12,22 +12,7 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-  # public because CoreInstallerBundle::AbstractController accesses this using container
-    Zikula\ThemeModule\Helper\:
-        resource: '../../Helper/*'
-        public: true
-        lazy: true
-
     Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeModule\Api\PageAssetApi'
-    Zikula\ThemeModule\Entity\RepositoryInterface\ThemeEntityRepositoryInterface: '@Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository'
-
-    # public because ThemeModuleInstaller uses it
-    Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository:
-        public: true
-
-    # public because installer accesses this using container
-    Zikula\ThemeModule\Helper\BundleSyncHelper:
-        public: true
 
     Zikula\ThemeModule\Twig\Extension\PageVarExtension:
         arguments:

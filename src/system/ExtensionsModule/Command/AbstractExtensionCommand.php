@@ -90,10 +90,12 @@ abstract class AbstractExtensionCommand extends Command
         return false;
     }
 
-    protected function reSync(): void
+    protected function reSync($reboot = true): void
     {
         $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles();
         $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
-        $this->kernel->reboot(null);
+        if ($reboot) {
+            $this->kernel->reboot(null);
+        }
     }
 }

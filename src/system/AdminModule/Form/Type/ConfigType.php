@@ -63,13 +63,6 @@ class ConfigType extends AbstractType
                     'maxlength' => 3
                 ]
             ])
-            ->add('admintheme', ChoiceType::class, [
-                'label' => 'Theme to use',
-                'required' => false,
-                'empty_data' => null,
-                'choices' => /** @Ignore */$this->formatThemeSelector($options['themes']),
-                'placeholder' => 'Use site\'s theme'
-            ])
             ->add('startcategory', ChoiceType::class, [
                 'label' => 'Initially selected category',
                 'empty_data' => null,
@@ -116,28 +109,6 @@ class ConfigType extends AbstractType
         $resolver->setDefaults([
             'categories' => [],
             'modules' => [],
-            'themes' => []
         ]);
-    }
-
-    /**
-     * Returns a list of choices for the admin theme selection.
-     */
-    private function formatThemeSelector(array $themes = []): array
-    {
-        $choices = [];
-        $themeList = [];
-
-        if (!empty($themes)) {
-            foreach ($themes as $name => $theme) {
-                $themeList[$name] = $theme['displayname'];
-            }
-            natcasesort($themeList);
-            foreach ($themeList as $k => $v) {
-                $choices[$v] = $k;
-            }
-        }
-
-        return $choices;
     }
 }

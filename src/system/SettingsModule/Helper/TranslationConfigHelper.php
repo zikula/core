@@ -74,7 +74,7 @@ class TranslationConfigHelper
             ]
         ];
         foreach ($this->kernel->getModules() as $bundle) {
-            if ($this->kernel->isCoreModule($bundle->getName())) {
+            if ($this->kernel->isCoreExtension($bundle->getName())) {
                 continue;
             }
             $bundleConfig = $configTemplate;

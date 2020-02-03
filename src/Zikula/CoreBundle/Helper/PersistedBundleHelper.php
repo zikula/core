@@ -21,7 +21,6 @@ use Exception;
 use PDO;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
-use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 class PersistedBundleHelper
 {
@@ -84,15 +83,7 @@ class PersistedBundleHelper
             $state = $this->extensionStateMap[$extensionName];
         } else {
             // load all values into class var for lookup
-            $sql = 'SELECT m.name, m.state, m.id FROM modules as m';
-            $rows = $conn->executeQuery($sql);
-            foreach ($rows as $row) {
-                $this->extensionStateMap[$row['name']] = [
-                    'state' => (int)$row['state'],
-                    'id'    => (int)$row['id'],
-                ];
-            }
-            $sql = 'SELECT t.name, t.state, t.id FROM themes as t';
+            $sql = 'SELECT m.name, m.state, m.id FROM extensions as m';
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
                 $this->extensionStateMap[$row['name']] = [
@@ -101,11 +92,7 @@ class PersistedBundleHelper
                 ];
             }
 
-            $state = $this->extensionStateMap[$extensionName] ?? ['state' => ('T' === $type) ? ThemeEntityRepository::STATE_INACTIVE : Constant::STATE_UNINITIALISED];
-        }
-
-        if ('T' === $type) {
-            return ThemeEntityRepository::STATE_ACTIVE === $state['state'];
+            $state = $this->extensionStateMap[$extensionName] ?? ['state' => ('T' === $type) ? Constant::STATE_INACTIVE : Constant::STATE_UNINITIALISED];
         }
 
         return in_array($state['state'], [Constant::STATE_ACTIVE, Constant::STATE_UPGRADED, Constant::STATE_TRANSITIONAL], true);

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SettingsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\SettingsModule\Helper\TranslationConfigHelper;
 
@@ -37,11 +37,11 @@ class ExtensionInstallerListener implements EventSubscriberInterface
     {
         return [
             //ExtensionEvents::MODULE_INSTALL     => ['updateTranslationConfig', 5],
-            ExtensionEvents::MODULE_POSTINSTALL => ['updateTranslationConfig', 5],
-            ExtensionEvents::MODULE_UPGRADE     => ['updateTranslationConfig', 5],
-            ExtensionEvents::MODULE_ENABLE      => ['updateTranslationConfig', 5],
-            ExtensionEvents::MODULE_DISABLE     => ['updateTranslationConfig', 5],
-            ExtensionEvents::MODULE_REMOVE      => ['updateTranslationConfig', 5]
+            ExtensionEvents::EXTENSION_POSTINSTALL => ['updateTranslationConfig', 5],
+            ExtensionEvents::EXTENSION_UPGRADE     => ['updateTranslationConfig', 5],
+            ExtensionEvents::EXTENSION_ENABLE      => ['updateTranslationConfig', 5],
+            ExtensionEvents::EXTENSION_DISABLE     => ['updateTranslationConfig', 5],
+            ExtensionEvents::EXTENSION_REMOVE      => ['updateTranslationConfig', 5]
 
             // NOTE as there are no events for theme state changes yet,
             // we simply call translationConfigHelper->updateConfiguration
@@ -50,7 +50,7 @@ class ExtensionInstallerListener implements EventSubscriberInterface
         ];
     }
 
-    public function updateTranslationConfig(ModuleStateEvent $event): void
+    public function updateTranslationConfig(ExtensionStateEvent $event): void
     {
         $this->translationConfigHelper->updateConfiguration();
     }

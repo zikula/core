@@ -22,7 +22,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ExtensionStateHelper
@@ -78,12 +78,12 @@ class ExtensionStateHelper
         // Check valid state transition
         switch ($state) {
             case Constant::STATE_INACTIVE:
-                $eventName = ExtensionEvents::MODULE_DISABLE;
+                $eventName = ExtensionEvents::EXTENSION_DISABLE;
                 break;
             case Constant::STATE_ACTIVE:
                 if (Constant::STATE_INACTIVE === $extension->getState()) {
                     // ACTIVE is used for freshly installed modules, so only register the transition if previously inactive.
-                    $eventName = ExtensionEvents::MODULE_ENABLE;
+                    $eventName = ExtensionEvents::EXTENSION_ENABLE;
                 }
                 break;
             case Constant::STATE_UPGRADED:
@@ -101,8 +101,8 @@ class ExtensionStateHelper
         $this->cacheClearer->clear('symfony');
 
         if (isset($eventName) && $this->kernel->isBundle($extension->getName())) {
-            $moduleBundle = $this->kernel->getModule($extension->getName());
-            $event = new ModuleStateEvent($moduleBundle, $extension->toArray());
+            $bundle = $this->kernel->getBundle($extension->getName());
+            $event = new ExtensionStateEvent($bundle, $extension->toArray());
             $this->dispatcher->dispatch($event, $eventName);
         }
 

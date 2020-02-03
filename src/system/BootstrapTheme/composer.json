@@ -1,0 +1,36 @@
+{
+    "name": "zikula/bootstrap-theme",
+    "version": "1.0.0",
+    "description": "Bootstrap based theme",
+    "type": "zikula-theme",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "https://ziku.la/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\BootstrapTheme\\": "" }
+    },
+    "require": {
+        "php": ">=7.2.5",
+        "thomaspark/bootswatch": "4.*"
+    },
+    "extra": {
+        "zikula" : {
+            "core-compatibility": ">=3.0.0",
+            "class": "Zikula\\BootstrapTheme\\ZikulaBootstrapTheme",
+            "displayname": "Bootstrap Theme",
+            "capabilities": {
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": true,
+                    "icon": "fab fa-bootstrap"
+                }
+            }
+        }
+    }
+}

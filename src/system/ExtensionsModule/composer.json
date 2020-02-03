@@ -27,7 +27,7 @@
             "oldnames": [],
             "capabilities": {
                 "admin": {
-                    "route": "zikulaextensionsmodule_module_viewmodulelist",
+                    "route": "zikulaextensionsmodule_extension_list",
                     "icon": "fas fa-plug"
                 }
             },

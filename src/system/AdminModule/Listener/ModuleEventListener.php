@@ -18,7 +18,7 @@ use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleEventListener implements EventSubscriberInterface
@@ -58,21 +58,21 @@ class ModuleEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::MODULE_INSTALL => ['moduleInstall']
+            ExtensionEvents::EXTENSION_INSTALL => ['moduleInstall']
         ];
     }
 
     /**
      * Handle module install event.
      */
-    public function moduleInstall(ModuleStateEvent $event): void
+    public function moduleInstall(ExtensionStateEvent $event): void
     {
         if (!$this->installed) {
             return;
         }
-        $module = $event->getModule();
+        $extension = $event->getExtension();
         $category = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
-        $module = $this->extensionRepository->findOneBy(['name' => $module->getName()]);
+        $module = $this->extensionRepository->findOneBy(['name' => $extension->getName()]);
         $sortOrder = $this->adminModuleRepository->countModulesByCategory($category);
 
         // move the module

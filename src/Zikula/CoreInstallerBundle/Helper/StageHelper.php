@@ -48,9 +48,9 @@ class StageHelper
     private $bundlesSchemaHelper;
 
     /**
-     * @var ModuleHelper
+     * @var CoreInstallerExtensionHelper
      */
-    private $moduleHelper;
+    private $coreInstallerExtensionHelper;
 
     /**
      * @var BlockHelper
@@ -72,33 +72,26 @@ class StageHelper
      */
     private $cacheHelper;
 
-    /**
-     * @var ThemeHelper
-     */
-    private $themeHelper;
-
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         BundlesSchemaHelper $bundlesSchemaHelper,
         ExtensionHelper $extensionHelper,
         EventDispatcherInterface $eventDispatcher,
-        ModuleHelper $moduleHelper,
+        CoreInstallerExtensionHelper $coreInstallerExtensionHelper,
         BlockHelper $blockHelper,
         ParameterHelper $parameterHelper,
         SuperUserHelper $superUserHelper,
-        CacheHelper $cacheHelper,
-        ThemeHelper $themeHelper
+        CacheHelper $cacheHelper
     ) {
         $this->kernel = $kernel;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->extensionHelper = $extensionHelper;
         $this->eventDispatcher = $eventDispatcher;
-        $this->moduleHelper = $moduleHelper;
+        $this->coreInstallerExtensionHelper = $coreInstallerExtensionHelper;
         $this->blockHelper = $blockHelper;
         $this->parameterHelper = $parameterHelper;
         $this->superUserHelper = $superUserHelper;
         $this->cacheHelper = $cacheHelper;
-        $this->themeHelper = $themeHelper;
     }
 
     /**
@@ -112,47 +105,47 @@ class StageHelper
         $currentVersion = $this->parameterHelper->getYamlHelper()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         switch ($stageName) {
             case 'bundles':
-                return $this->createBundles();
+                return $this->createBundles(); // @todo this stage may no longer be necessary since all core is hard-coded & loaded in kernel
             case 'install_event':
                 return $this->fireEvent(CoreEvents::CORE_INSTALL_PRE_MODULE);
             case 'extensions':
-                return $this->moduleHelper->installModule('ZikulaExtensionsModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaExtensionsModule');
             case 'settings':
-                return $this->moduleHelper->installModule('ZikulaSettingsModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaSettingsModule');
             case 'theme':
-                return $this->moduleHelper->installModule('ZikulaThemeModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaThemeModule');
             case 'admin':
-                return $this->moduleHelper->installModule('ZikulaAdminModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaAdminModule');
             case 'permissions':
-                return $this->moduleHelper->installModule('ZikulaPermissionsModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaPermissionsModule');
             case 'groups':
-                return $this->moduleHelper->installModule('ZikulaGroupsModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaGroupsModule');
             case 'blocks':
-                return $this->moduleHelper->installModule('ZikulaBlocksModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaBlocksModule');
             case 'users':
-                return $this->moduleHelper->installModule('ZikulaUsersModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaUsersModule');
             case 'zauth':
-                return $this->moduleHelper->installModule('ZikulaZAuthModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaZAuthModule');
             case 'security':
-                return $this->moduleHelper->installModule('ZikulaSecurityCenterModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaSecurityCenterModule');
             case 'categories':
-                return $this->moduleHelper->installModule('ZikulaCategoriesModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaCategoriesModule');
             case 'mailer':
-                return $this->moduleHelper->installModule('ZikulaMailerModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaMailerModule');
             case 'search':
-                return $this->moduleHelper->installModule('ZikulaSearchModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaSearchModule');
             case 'routes':
-                return $this->moduleHelper->installModule('ZikulaRoutesModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaRoutesModule');
             case 'menu':
-                return $this->moduleHelper->installModule('ZikulaMenuModule');
+                return $this->coreInstallerExtensionHelper->install('ZikulaMenuModule');
             case 'updateadmin':
                 return $this->superUserHelper->updateAdmin();
             case 'loginadmin':
                 return $this->superUserHelper->loginAdmin();
-            case 'activatemodules':
-                return $this->moduleHelper->reSyncAndActivateModules();
+            case 'activateextensions':
+                return $this->coreInstallerExtensionHelper->reSyncAndActivate();
             case 'categorize':
-                return $this->moduleHelper->categorizeModules();
+                return $this->coreInstallerExtensionHelper->categorize();
             case 'createblocks':
                 return $this->blockHelper->createBlocks();
             case 'finalizeparameters':
@@ -165,12 +158,10 @@ class StageHelper
                 return $this->parameterHelper->reInitParameters();
             case 'upgrade_event':
                 return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $currentVersion]);
-            case 'upgrademodules':
-                return $this->moduleHelper->upgradeModules();
-            case 'regenthemes':
-                return $this->themeHelper->regenerateThemes();
+            case 'upgradeextensions':
+                return $this->coreInstallerExtensionHelper->upgrade();
             case 'versionupgrade':
-                return $this->moduleHelper->executeCoreMetaUpgrade($currentVersion);
+                return $this->coreInstallerExtensionHelper->executeCoreMetaUpgrade($currentVersion);
             case 'clearcaches':
                 return $this->cacheHelper->clearCaches();
         }

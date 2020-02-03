@@ -25,8 +25,8 @@ use Zikula\AdminModule\Helper\AdminModuleHelper;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
 /**
  * Class ConfigController
@@ -46,7 +46,7 @@ class ConfigController extends AbstractController
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,
-        ThemeEntityRepository $themeEntityRepository,
+        ExtensionRepositoryInterface $extensionRepository,
         VariableApiInterface $variableApi,
         CapabilityApiInterface $capabilityApi,
         AdminModuleHelper $adminModuleHelper
@@ -83,13 +83,11 @@ class ConfigController extends AbstractController
             ];
             $dataValues['modulecategory' . $adminModule['name']] = isset($category) ? $category->getCid() : $this->getVar('defaultcategory');
         }
-        $themes = $themeEntityRepository->get(ThemeEntityRepository::FILTER_ADMIN);
 
         $form = $this->createForm(ConfigType::class,
             $dataValues, [
                 'categories' => $categories,
                 'modules' => $modules,
-                'themes' => $themes
             ]
         );
         $form->handleRequest($request);
@@ -99,7 +97,7 @@ class ConfigController extends AbstractController
 
                 // save module vars
                 $vars = [];
-                foreach (['ignoreinstallercheck', 'admingraphic', 'displaynametype', 'itemsperpage', 'modulesperrow', 'admintheme', 'startcategory', 'defaultcategory'] as $varName) {
+                foreach (['ignoreinstallercheck', 'admingraphic', 'displaynametype', 'itemsperpage', 'modulesperrow', 'startcategory', 'defaultcategory'] as $varName) {
                     $vars[$varName] = $formData[$varName];
                 }
                 $variableApi->setAll('ZikulaAdminModule', $vars);

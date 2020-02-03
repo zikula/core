@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleListener implements EventSubscriberInterface
@@ -51,22 +51,22 @@ class ModuleListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::MODULE_DISABLE => ['moduleDeactivated']
+            ExtensionEvents::EXTENSION_DISABLE => ['extensionDeactivated']
         ];
     }
 
     /**
-     * Handle module deactivated event.
+     * Handle extension deactivated event.
      */
-    public function moduleDeactivated(ModuleStateEvent $event): void
+    public function extensionDeactivated(ExtensionStateEvent $event): void
     {
-        $module = $event->getModule();
-        $moduleName = isset($module) ? $module->getName() : $event->getModInfo()['name'];
+        $extension = $event->getExtension();
+        $extensionName = isset($extension) ? $extension->getName() : $event->getInfo()['name'];
         $startController = $this->variableApi->getSystemVar('startController');
-        list($startModule) = explode(':', $startController);
+        [$startModule] = explode(':', $startController);
 
-        if ($moduleName === $startModule) {
-            // since the start module has been removed, set all related variables to ''
+        if ($extensionName === $startModule) {
+            // since the start extension has been removed, set all related variables to ''
             $this->variableApi->set(VariableApi::CONFIG, 'startController');
             $this->variableApi->set(VariableApi::CONFIG, 'startargs');
             $request = $this->requestStack->getCurrentRequest();

@@ -21,7 +21,7 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
  * Extension Entity.
  *
  * @ORM\Entity(repositoryClass="Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository")
- * @ORM\Table(name="modules")
+ * @ORM\Table(name="extensions")
  */
 class ExtensionEntity extends EntityAccess
 {

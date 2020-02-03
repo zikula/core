@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
@@ -92,8 +92,8 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
             return 5;
         }
 
-        $event = new ModuleStateEvent($this->kernel->getModule($extension->getName()), $extension->toArray());
-        $this->eventDispatcher->dispatch($event, ExtensionEvents::MODULE_POSTINSTALL);
+        $event = new ExtensionStateEvent($this->kernel->getModule($extension->getName()), $extension->toArray());
+        $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_POSTINSTALL);
 
         if ($input->isInteractive()) {
             $io->success('Extension installed');
@@ -112,8 +112,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
     private function load(string $bundleName)
     {
         // load the extension into the modules table
-        $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles();
-        $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
+        $this->reSync(false);
         if (!($extension = $this->extensionRepository->findOneBy(['name' => $bundleName]))) {
             return false;
         }

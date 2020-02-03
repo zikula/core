@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule;
 
-use Exception;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
-use Zikula\ThemeModule\Entity\ThemeEntity;
-use Zikula\ThemeModule\Helper\BundleSyncHelper;
 
 /**
  * Installation and upgrade routines for the theme module.
@@ -26,27 +22,6 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
 {
     public function install(): bool
     {
-        try {
-            $this->schemaTool->create([
-                ThemeEntity::class
-            ]);
-        } catch (Exception $exception) {
-            $this->addFlash('error', $exception->getMessage());
-
-            return false;
-        }
-
-        // detect all themes on install
-        $this->container->get(BundleSyncHelper::class)->regenerate();
-
-        // activate all current themes
-        $themes = $this->container->get(ThemeEntityRepository::class)->findAll();
-        /** @var ThemeEntity $theme */
-        foreach ($themes as $theme) {
-            $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
-        }
-        $this->entityManager->flush();
-
         // define defaults for module vars
         $this->setVar('modulesnocache');
         $this->setVar('enablecache', false);
@@ -80,9 +55,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
             case '3.4.2':
                 $this->delVar('enable_mobile_theme');
             case '3.4.3':
-                $this->schemaTool->update([
-                    ThemeEntity::class
-                ]);
+                // remove old method to update table that has since been removed.
             case '3.4.4':
                 // future upgrade
         }

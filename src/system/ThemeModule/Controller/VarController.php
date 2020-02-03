@@ -16,7 +16,8 @@ namespace Zikula\ThemeModule\Controller;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,22 +46,40 @@ class VarController extends AbstractController
         ZikulaHttpKernelInterface $kernel,
         string $themeName
     ) {
-        $themeBundle = $kernel->getBundle($themeName);
+        $themeBundle = $kernel->getTheme($themeName);
         $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->trans('%theme% has no configuration.', ['%theme%' => $themeName]));
 
-            return $this->redirectToRoute('zikulathememodule_theme_view');
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
         }
-        $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
-        /** @var FormBuilder $formBuilder */
-        $formBuilder = $this->createFormBuilder($themeBundle->getThemeVars());
-        foreach ($variableDefinitions as $fieldName => $definitions) {
-            $options = $definitions['options'] ?? [];
-            if (isset($definitions['type'])) {
-                $formBuilder->add($fieldName, $definitions['type'], $options);
+
+        $form = $this->generateThemeVarsForm($themeVarsPath, $themeBundle->getThemeVars());
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('save')->isClicked()) {
+                $variableApi->setAll($themeName, $form->getData());
+                $this->addFlash('status', 'Done! Theme configuration updated.');
+            } elseif ($form->get('toDefault')->isClicked()) {
+                $variableApi->setAll($themeName, $themeBundle->getDefaultThemeVars());
+                $this->addFlash('status', 'Done! Theme configuration updated to default values.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
+
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
         }
+
+        return [
+            'themeName' => $themeName,
+            'form' => $form->createView()
+        ];
+    }
+
+    private function generateThemeVarsForm(string $themeVarsPath, array $vars): FormInterface
+    {
+        $formBuilder = $this->createFormBuilder($vars);
+        $this->generateThemeVarFormElements($themeVarsPath, $formBuilder);
         $formBuilder
             ->add('save', SubmitType::class, [
                 'label' => $this->trans('Save'),
@@ -84,26 +103,18 @@ class VarController extends AbstractController
                 ]
             ])
         ;
-        $form = $formBuilder->getForm();
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('save')->isClicked()) {
-                // pseudo-hack to save theme vars in to modvars table
-                $variableApi->setAll($themeName, $form->getData());
-                $this->addFlash('status', 'Done! Theme configuration updated.');
-            } elseif ($form->get('toDefault')->isClicked()) {
-                $variableApi->setAll($themeName, $themeBundle->getDefaultThemeVars());
-                $this->addFlash('status', 'Done! Theme configuration updated to default values.');
-            } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', 'Operation cancelled.');
+
+        return $formBuilder->getForm();
+    }
+
+    private function generateThemeVarFormElements(string $themeVarsPath, FormBuilderInterface &$formBuilder): void
+    {
+        $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
+        foreach ($variableDefinitions as $fieldName => $definitions) {
+            $options = $definitions['options'] ?? [];
+            if (isset($definitions['type'])) {
+                $formBuilder->add($fieldName, $definitions['type'], $options);
             }
-
-            return $this->redirectToRoute('zikulathememodule_theme_view');
         }
-
-        return [
-            'themeName' => $themeName,
-            'form' => $form->createView()
-        ];
     }
 }

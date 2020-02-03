@@ -38,8 +38,7 @@ class ExtensionDependencyRepository extends ServiceEntityRepository
             if (!isset($extensionFromFile['dependencies']) || empty($extensionFromFile['dependencies'])) {
                 continue;
             }
-            $dependencies = unserialize($extensionFromFile['dependencies']);
-            foreach ($dependencies as $dependency) {
+            foreach ($extensionFromFile['dependencies'] as $dependency) {
                 $entity = new ExtensionDependencyEntity();
                 $entity->merge($dependency);
                 $entity->setModid($extension->getId());

@@ -17,12 +17,8 @@
 /public/*
 !/public/index.php
 !/public/uploads/
-/src/modules/*
-/src/themes/*
-!/src/themes/AtomTheme
-!/src/themes/BootstrapTheme
-!/src/themes/PrinterTheme
-!/src/themes/RssTheme
+/src/extensions/*
+!/tests/test_dbs/*.sql
 /src/Zikula/CoreBundle/Tests/Functional/cache/
 /translations/*
 /var/

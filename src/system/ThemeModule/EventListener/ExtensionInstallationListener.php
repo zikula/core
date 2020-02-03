@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 /**
@@ -70,11 +70,11 @@ class ExtensionInstallationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::MODULE_INSTALL => ['clearCombinedAssetCache'],
-            ExtensionEvents::MODULE_UPGRADE => ['clearPublishedAssets'],
-            ExtensionEvents::MODULE_ENABLE => ['clearCombinedAssetCache'],
-            ExtensionEvents::MODULE_DISABLE => ['clearCombinedAssetCache'],
-            ExtensionEvents::MODULE_REMOVE => ['clearPublishedAssets']
+            ExtensionEvents::EXTENSION_INSTALL => ['clearCombinedAssetCache'],
+            ExtensionEvents::EXTENSION_UPGRADE => ['clearPublishedAssets'],
+            ExtensionEvents::EXTENSION_ENABLE => ['clearCombinedAssetCache'],
+            ExtensionEvents::EXTENSION_DISABLE => ['clearCombinedAssetCache'],
+            ExtensionEvents::EXTENSION_REMOVE => ['clearPublishedAssets']
         ];
     }
 
@@ -85,11 +85,11 @@ class ExtensionInstallationListener implements EventSubscriberInterface
         }
     }
 
-    public function clearPublishedAssets(ModuleStateEvent $event): void
+    public function clearPublishedAssets(ExtensionStateEvent $event): void
     {
         $this->clearCombinedAssetCache();
 
-        $extension = $event->getModule();
+        $extension = $event->getExtension();
         if (null === $extension) {
             return;
         }

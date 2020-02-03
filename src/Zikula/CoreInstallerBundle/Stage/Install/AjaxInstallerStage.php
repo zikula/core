@@ -167,18 +167,18 @@ class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error installing Zikula Menu Module')
             ],
             18 => [
-                AjaxStageInterface::NAME => 'activatemodules',
-                AjaxStageInterface::PRE => $this->trans('Activate system modules'),
-                AjaxStageInterface::DURING => $this->trans('Activating system modules'),
-                AjaxStageInterface::SUCCESS => $this->trans('System modules activated'),
-                AjaxStageInterface::FAIL => $this->trans('There was an error activating system modules')
+                AjaxStageInterface::NAME => 'activateextensions',
+                AjaxStageInterface::PRE => $this->trans('Activate system extensions'),
+                AjaxStageInterface::DURING => $this->trans('Activating system extensions'),
+                AjaxStageInterface::SUCCESS => $this->trans('System extensions activated'),
+                AjaxStageInterface::FAIL => $this->trans('There was an error activating system extensions')
             ],
             19 => [
                 AjaxStageInterface::NAME => 'categorize',
-                AjaxStageInterface::PRE => $this->trans('Module categorization'),
-                AjaxStageInterface::DURING => $this->trans('Moving modules to their default categories'),
-                AjaxStageInterface::SUCCESS => $this->trans('Modules moved to their default categories'),
-                AjaxStageInterface::FAIL => $this->trans('There was an error moving modules to their default categories')
+                AjaxStageInterface::PRE => $this->trans('Extension categorization'),
+                AjaxStageInterface::DURING => $this->trans('Moving extensions to their default categories'),
+                AjaxStageInterface::SUCCESS => $this->trans('Extensions moved to their default categories'),
+                AjaxStageInterface::FAIL => $this->trans('There was an error moving extensions to their default categories')
             ],
             20 => [
                 AjaxStageInterface::NAME => 'createblocks',

@@ -25,9 +25,15 @@ class MetaData implements ArrayAccess
 
     public const TYPE_MODULE = 2;
 
-    public const TYPE_SYSTEM = 3;
+    public const TYPE_SYSTEM_MODULE = 3;
 
-    public const TYPE_CORE = 4;
+    public const TYPE_THEME = 4;
+
+    public const TYPE_SYSTEM_THEME = 5;
+
+    public const EXTENSION_TYPE_MODULE = 'zikula-module';
+
+    public const EXTENSION_TYPE_THEME = 'zikula-theme';
 
     public const DEPENDENCY_REQUIRED = 1;
 
@@ -50,10 +56,6 @@ class MetaData implements ArrayAccess
     private $class;
 
     private $namespace;
-
-    private $basePath;
-
-    private $rootPath;
 
     private $autoload;
 
@@ -81,8 +83,6 @@ class MetaData implements ArrayAccess
         $this->shortName = $json['extra']['zikula']['short-name'];
         $this->class = $json['extra']['zikula']['class'];
         $this->namespace = mb_substr($this->class, 0, mb_strrpos($this->class, '\\') + 1);
-        $this->basePath = $json['extra']['zikula']['base-path'];
-        $this->rootPath = $json['extra']['zikula']['root-path'];
         $this->autoload = $json['autoload'];
         $this->displayName = $json['extra']['zikula']['displayname'] ?? '';
         $this->url = $json['extra']['zikula']['url'] ?? '';
@@ -121,16 +121,6 @@ class MetaData implements ArrayAccess
     public function getAutoload(): array
     {
         return $this->autoload;
-    }
-
-    public function getBasePath(): string
-    {
-        return $this->basePath;
-    }
-
-    public function getRootPath(): string
-    {
-        return $this->rootPath;
     }
 
     public function getClass(): string
@@ -269,27 +259,6 @@ class MetaData implements ArrayAccess
         if (!isset($this->translator)) {
             throw new PreconditionRequiredHttpException(sprintf('The translator property is not set correctly in %s', __CLASS__));
         }
-    }
-
-    /**
-     * Theme MetaData as array
-     */
-    public function getThemeFilteredVersionInfoArray(): array
-    {
-        $capabilities = $this->getCapabilities();
-
-        return [
-            'name' => $this->getShortName(),
-            'type' => $this->getExtensionType(),
-            'displayname' => $this->getDisplayName(),
-            'description' => $this->getDescription(),
-            'version' => $this->getVersion(),
-//            'capabilities' => $this->getCapabilities(),
-            // It would be better to add capabilities to DB and move to inverse in legacy code and refactor later checks. refs #3644
-            'user' => $capabilities['user'] ?? true,
-            'admin' => $capabilities['admin'] ?? true,
-            'system' => $capabilities['system'] ?? false
-        ];
     }
 
     /**

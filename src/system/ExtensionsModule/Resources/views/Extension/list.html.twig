@@ -1,0 +1,84 @@
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaExtensionsModule:js/Zikula.Extensions.Extension.List.js')) }}
+{{ adminHeader() }}
+<h3>
+    <span class="fas fa-list"></span>
+    {% trans %}Extensions list{% endtrans %}
+    {{ pageSetVar('title', 'Extensions list'|trans) }}
+    <div class="btn-group align-top float-right" role="group" aria-label="filters">
+        <button type="button" data-selectors=".extension-type-4 .extension-type-5" data-text-toggle="{% trans %}Show Themes{% endtrans %}" data-toggle="button" class="filter-button btn btn-outline-info btn-sm"><i class="fas fa-palette"></i> <span>{% trans %}Hide Themes{% endtrans %}</span></button>
+        <button type="button" data-selectors=".extension-type-2 .extension-type-3" data-text-toggle="{% trans %}Show Modules{% endtrans %}" data-toggle="button" class="filter-button btn btn-outline-primary btn-sm"><i class="fas fa-cubes"></i> <span>{% trans %}Hide Modules{% endtrans %}</span></button>
+        <button type="button" data-selectors=".extension-type-3 .extension-type-5" data-text-toggle="{% trans %}Show Core Extensions{% endtrans %}" data-toggle="button" class="filter-button btn btn-outline-success btn-sm"><i class="fas fa-circle"></i> <span>{% trans %}Hide Core Extensions{% endtrans %}</span></button>
+    </div>
+</h3>
+<table id="extension-list" class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cType" class="d-none d-md-table-cell" />
+        <col id="cName" />
+        <col id="cDescription" class="d-none d-lg-table-cell" />
+        <col id="cVersion" class="d-none d-lg-table-cell" />
+        <col id="cState" />
+        <col id="cActions" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th id="hType" scope="col" class="d-none d-md-table-cell">{% trans %}Type{% endtrans %}</th>
+            <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{% trans %}Name{% endtrans %}</a></th>
+            <th id="hDescription" scope="col" class="d-none d-lg-table-cell">{% trans %}Description{% endtrans %}</th>
+            <th id="hVersion" scope="col" class="d-none d-lg-table-cell">{% trans %}Version{% endtrans %}</th>
+            <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{% trans %}State{% endtrans %}</a></th>
+            <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for extension in extensions %}
+        <tr class="extension-type-{{ extension.type }}">
+            <td headers="hType" class="text-center" class="d-none d-md-table-cell">{{ _self.badge(extension.type) }}</td>
+            <td headers="hName">
+                <strong>{{ extension.displayname }}</strong>
+                <a data-toggle="collapse" href="#collapse-{{ extension.name }}"><i class="fas fa-caret-down"></i></a>
+                <ul id="collapse-{{ extension.name }}" class="collapse mb-0">
+                    <li>{% trans %}Internal name{% endtrans %}: <em>{{ extension.name }}</em></li>
+                    <li>{% trans %}Url root{% endtrans %}: <code>/{{ extension.url }}</code></li>
+                    <li>{{ _self.adminRoute(extension) }}</li>
+                </ul>
+            </td>
+            <td headers="hDescription" style="width: 40%" class="d-none d-lg-table-cell">{{ extension.description }}</td>
+            <td headers="hVersion" class="d-none d-lg-table-cell">{{ extension.version }}</td>
+            <td class="nowrap">
+                {{ stateLabel(extension, upgradedExtensions) }}
+            </td>
+            <td headers="hActions" class="actions">
+                {% set rowActions = knp_menu_get('zikulaExtensionsAdminMenu', [], {extension: extension}) %}
+                {{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ pager({rowcount: pager.count, limit: pager.limit, route: 'zikulaextensionsmodule_extension_list'}) }}
+{{ adminFooter() }}
+
+{% macro adminRoute(extension) %}
+    {% if extension.state is constant('Zikula\\ExtensionsModule\\Constant::STATE_ACTIVE') and extension.capabilities.admin.route|default %}
+        <a title="{% trans %}Go to the extension's administration panel{% endtrans %}" href="{{ path(extension.capabilities.admin.route) }}"><i class="fas fa-link"></i> {% trans %}Administration{% endtrans %}</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro badge(type) %}
+    {% if type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_MODULE') %}
+        <i class="fas fa-cubes fa-2x text-primary" data-toggle="tooltip" data-placement="right" title="{% trans %}Third party module{% endtrans %}"></i>
+    {% elseif type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_THEME') %}
+        <i class="fas fa-palette fa-2x text-info" data-toggle="tooltip" data-placement="right" title="{% trans %}Third party theme{% endtrans %}"></i>
+    {% elseif type is  constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_MODULE') %}
+        <span class="fa-stack" data-toggle="tooltip" data-placement="right" title="{% trans %}System module{% endtrans %}">
+          <i class="fas fa-circle fa-stack-2x text-primary"></i>
+          <i class="fas fa-cubes fa-stack-1x fa-inverse"></i>
+        </span>
+    {% elseif type is  constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_THEME') %}
+        <span class="fa-stack" data-toggle="tooltip" data-placement="right" title="{% trans %}System theme{% endtrans %}">
+          <i class="fas fa-circle fa-stack-2x text-info"></i>
+          <i class="fas fa-palette fa-stack-1x fa-inverse"></i>
+        </span>
+    {% endif %}
+{% endmacro %}
