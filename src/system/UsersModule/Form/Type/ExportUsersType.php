@@ -38,13 +38,13 @@ class ExportUsersType extends AbstractType
                 'required' => false,
                 'data' => true
             ])
-            ->add('user_regdate', CheckboxType::class, [
+            ->add('registrationDate', CheckboxType::class, [
                 'label' => 'Export registration date',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
-            ->add('lastlogin', CheckboxType::class, [
+            ->add('lastLogin', CheckboxType::class, [
                 'label' => 'Export last login date',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,

@@ -210,10 +210,10 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'uname'         => 'guest',
             'email'         => '',
             'activated'     => UsersConstant::ACTIVATED_ACTIVE,
-            'approved_date' => $then,
-            'approved_by'   => UsersConstant::USER_ID_ADMIN,
-            'user_regdate'  => $then,
-            'lastlogin'     => $then,
+            'approvedDate'  => $then,
+            'approvedBy'    => UsersConstant::USER_ID_ADMIN,
+            'registrationDate' => $then,
+            'lastLogin'     => $then,
         ];
         $user = new UserEntity();
         $user->merge($record);
@@ -225,10 +225,10 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'uname'         => 'admin',
             'email'         => '',
             'activated'     => UsersConstant::ACTIVATED_ACTIVE,
-            'approved_date' => $now,
-            'approved_by'   => UsersConstant::USER_ID_ADMIN,
-            'user_regdate'  => $now,
-            'lastlogin'     => $then,
+            'approvedDate'  => $now,
+            'approvedBy'    => UsersConstant::USER_ID_ADMIN,
+            'registrationDate' => $now,
+            'lastLogin'     => $then,
         ];
         $user = new UserEntity();
         $user->merge($record);

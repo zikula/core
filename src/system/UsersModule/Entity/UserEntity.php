@@ -92,22 +92,22 @@ class UserEntity extends EntityAccess
      * If SQL date/time functions must be used, then care should be taken to ensure that either the function is time zone neutral,
      * or that the function and its relationship to time zone settings is completely understood.
      *
-     * @ORM\Column(type="utcdatetime")
+     * @ORM\Column(type="utcdatetime", name="approved_date")
      * @Assert\DateTime()
      * @var DateTime
      */
-    private $approved_date;
+    private $approvedDate;
 
     /**
      * The uid of the user account that approved the request to register a new account.
      * If this is the same as the user account's uid, then moderation was not in use at the time the request for a new account was made.
      * If this is -1, the the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="approved_by")
      * @Assert\Type(type="integer")
      * @var int
      */
-    private $approved_by;
+    private $approvedBy;
 
     /**
      * Registration Date/Time: Date/time the user account was registered.
@@ -118,23 +118,25 @@ class UserEntity extends EntityAccess
      * If neither is in use, then this is simply the date and time the user's registration request was made.
      * If the user account's activated state is "pending registration" (implying that either moderation, verification, or both are in use)
      * then this will be the date and time the user made the registration request UNTIL the registration process is complete, and then it is updated as above.
-     * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
+     * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time.
+     * See WARNING under approvedDate above.
      *
-     * @ORM\Column(type="utcdatetime")
+     * @ORM\Column(type="utcdatetime", name="user_regdate")
      * @Assert\DateTime()
      * @var DateTime
      */
-    private $user_regdate;
+    private $registrationDate;
 
     /**
      * Last Login Date/Time: Date/time user last successfully logged into the site.
-     * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
+     * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time.
+     * See WARNING under approvedDate above.
      *
-     * @ORM\Column(type="utcdatetime")
+     * @ORM\Column(type="utcdatetime", name="lastlogin")
      * @Assert\DateTime()
      * @var DateTime
      */
-    private $lastlogin;
+    private $lastLogin;
 
     /**
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
@@ -187,10 +189,10 @@ class UserEntity extends EntityAccess
         $this->uname = '';
         $this->email = '';
         $this->activated = 0;
-        $this->approved_date = new DateTime('1970-01-01 00:00:00');
-        $this->approved_by = 0;
-        $this->user_regdate = new DateTime('1970-01-01 00:00:00');
-        $this->lastlogin = new DateTime('1970-01-01 00:00:00');
+        $this->approvedDate = new DateTime('1970-01-01 00:00:00');
+        $this->approvedBy = 0;
+        $this->registrationDate = new DateTime('1970-01-01 00:00:00');
+        $this->lastLogin = new DateTime('1970-01-01 00:00:00');
         $this->tz = '';
         $this->locale = '';
 
@@ -243,69 +245,69 @@ class UserEntity extends EntityAccess
         $this->activated = $activated;
     }
 
-    public function getApproved_Date(): DateTime
+    public function getApprovedDate(): DateTime
     {
-        return $this->approved_date;
+        return $this->approvedDate;
     }
 
     /**
-     * @param string|DateTime $approved_date the user's approved date
+     * @param string|DateTime $approvedDate the user's approved date
      */
-    public function setApproved_Date($approved_date): void
+    public function setApprovedDate($approvedDate): void
     {
-        if ($approved_date instanceof DateTime) {
-            $this->approved_date = $approved_date;
+        if ($approvedDate instanceof DateTime) {
+            $this->approvedDate = $approvedDate;
         } else {
-            $this->approved_date = new DateTime($approved_date);
+            $this->approvedDate = new DateTime($approvedDate);
         }
     }
 
-    public function getApproved_By(): int
+    public function getApprovedBy(): int
     {
-        return $this->approved_by;
+        return $this->approvedBy;
     }
 
-    public function setApproved_By(int $approved_by): void
+    public function setApprovedBy(int $approvedBy): void
     {
-        $this->approved_by = $approved_by;
+        $this->approvedBy = $approvedBy;
     }
 
     public function isApproved(): bool
     {
-        return 0 !== $this->approved_by;
+        return 0 !== $this->approvedBy;
     }
 
-    public function getUser_Regdate(): DateTime
+    public function getRegistrationDate(): DateTime
     {
-        return $this->user_regdate;
+        return $this->registrationDate;
     }
 
     /**
-     * @param string|DateTime $user_regdate the user's regdate
+     * @param string|DateTime $registrationDate the user's regdate
      */
-    public function setUser_Regdate($user_regdate): void
+    public function setRegistrationDate($registrationDate): void
     {
-        if ($user_regdate instanceof DateTime) {
-            $this->user_regdate = $user_regdate;
+        if ($registrationDate instanceof DateTime) {
+            $this->registrationDate = $registrationDate;
         } else {
-            $this->user_regdate = new DateTime($user_regdate);
+            $this->registrationDate = new DateTime($registrationDate);
         }
     }
 
-    public function getLastlogin(): DateTime
+    public function getLastLogin(): DateTime
     {
-        return $this->lastlogin;
+        return $this->lastLogin;
     }
 
     /**
-     * @param string DateTime $lastlogin the user's last login
+     * @param string DateTime $lastLogin the user's last login
      */
-    public function setLastlogin($lastlogin): void
+    public function setLastLogin($lastLogin): void
     {
-        if ($lastlogin instanceof DateTime) {
-            $this->lastlogin = $lastlogin;
+        if ($lastLogin instanceof DateTime) {
+            $this->lastLogin = $lastLogin;
         } else {
-            $this->lastlogin = new DateTime($lastlogin);
+            $this->lastLogin = new DateTime($lastLogin);
         }
     }
 

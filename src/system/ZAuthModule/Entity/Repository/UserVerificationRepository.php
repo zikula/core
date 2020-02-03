@@ -67,9 +67,9 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         $qb = $this->createQueryBuilder('v');
         $and = $qb->expr()->andX()
             ->add($qb->expr()->eq('v.changetype', ':changeType'))
-            ->add($qb->expr()->isNotNull('v.created_dt'))
-            ->add($qb->expr()->neq('v.created_dt', ':createdDtNot'))
-            ->add($qb->expr()->lt('v.created_dt', ':createdDtMax'));
+            ->add($qb->expr()->isNotNull('v.createdDate'))
+            ->add($qb->expr()->neq('v.createdDate', ':createdDtNot'))
+            ->add($qb->expr()->lt('v.createdDate', ':createdDtMax'));
         $qb->select('v')
             ->where($and)
             ->setParameter('changeType', $changeType)
@@ -119,7 +119,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         /** @var UserVerificationEntity $userVerification */
         $userVerification = $this->findOneBy(['uid' => $userId]);
 
-        return null !== $userVerification && null !== $userVerification->getCreated_Dt();
+        return null !== $userVerification && null !== $userVerification->getCreatedDate();
     }
 
     public function setVerificationCode(
@@ -146,7 +146,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         $entity->setChangetype($changeType);
         $entity->setUid($userId);
         $entity->setVerifycode($hashedConfirmationCode);
-        $entity->setCreated_Dt($nowUTC);
+        $entity->setCreatedDate($nowUTC);
         if (!empty($email)) {
             $entity->setNewemail($email);
         }

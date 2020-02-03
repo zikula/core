@@ -82,10 +82,10 @@ class UserVerificationEntity extends EntityAccess
     /**
      * Date/Time created: The date and time the verification record was created, as a UTC date/time, used to expire the record.
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="created_dt")
      * @var DateTime
      */
-    private $created_dt;
+    private $createdDate;
 
     /**
      * constructor
@@ -96,7 +96,7 @@ class UserVerificationEntity extends EntityAccess
         $this->uid = 0;
         $this->newemail = '';
         $this->verifycode = '';
-        $this->created_dt = new DateTime('now');
+        $this->createdDate = new DateTime('now');
     }
 
     public function getId(): ?int
@@ -149,20 +149,20 @@ class UserVerificationEntity extends EntityAccess
         $this->verifycode = $verifycode;
     }
 
-    public function getCreated_Dt(): DateTime
+    public function getCreatedDate(): DateTime
     {
-        return $this->created_dt;
+        return $this->createdDate;
     }
 
     /**
-     * @param string|DateTime $created_dt the user verification's created date
+     * @param string|DateTime $createdDate the user verification's created date
      */
-    public function setCreated_Dt($created_dt): void
+    public function setCreatedDate($createdDate): void
     {
-        if ($created_dt instanceof DateTime) {
-            $this->created_dt = $created_dt;
+        if ($createdDate instanceof DateTime) {
+            $this->createdDate = $createdDate;
         } else {
-            $this->created_dt = new DateTime($created_dt);
+            $this->createdDate = new DateTime($createdDate);
         }
     }
 }
