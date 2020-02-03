@@ -131,7 +131,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         if (empty($hashedConfirmationCode)) {
             throw new InvalidArgumentException();
         }
-        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $nowUTC = new DateTime('now', new DateTimeZone('UTC'));
 
         $query = $this->createQueryBuilder('v')
             ->delete()

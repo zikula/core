@@ -42,6 +42,11 @@ class ValidPasswordValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (!$value) {
+            // user created without password
+            // needs to set one during verification
+            return;
+        }
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
             new Type('string'),
