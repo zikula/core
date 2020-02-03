@@ -47,7 +47,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         }
 
         /**
-         * explicitly set admin as user to be set as `lu_uid` and `cr_uid` fields. Normally this would be taken care of
+         * explicitly set admin as user to be set as `updatedBy` and `createdBy` fields. Normally this would be taken care of
          * by the BlameListener but during installation from the CLI this listener is not available
          */
         /** @var UserEntity $adminUserEntity */
@@ -59,8 +59,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         // Set autonumber to 10000 (for DB's that support autonumber fields)
         $cat = new CategoryEntity();
         $cat->setId(9999);
-        $cat->setLu_uid($adminUserEntity);
-        $cat->setCr_uid($adminUserEntity);
+        $cat->setUpdatedBy($adminUserEntity);
+        $cat->setCreatedBy($adminUserEntity);
         $this->entityManager->persist($cat);
         $this->entityManager->flush();
         $this->entityManager->remove($cat);
@@ -135,8 +135,8 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             $category = new CategoryEntity();
             $category->merge($data);
             // see note above about setting these fields during installation
-            $category->setCr_uid($adminUserEntity);
-            $category->setLu_uid($adminUserEntity);
+            $category->setCreatedBy($adminUserEntity);
+            $category->setUpdatedBy($adminUserEntity);
             $this->entityManager->persist($category);
 
             $categoryObjectMap[$data['id']] = $category;
@@ -160,285 +160,285 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $categoryData[] = [
             'id' => 1,
             'parent_id' => 0,
-            'is_locked' => true,
-            'is_leaf' => false,
+            'locked' => true,
+            'leaf' => false,
             'value' => '',
             'name' => '__SYSTEM__',
-            'display_name' => $this->localize($this->trans('Category root')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Category root')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 2,
             'parent_id' => 1,
-            'is_locked' => false,
-            'is_leaf' => false,
+            'locked' => false,
+            'leaf' => false,
             'value' => '',
             'name' => 'Modules',
-            'display_name' => $this->localize($this->trans('Modules')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Modules')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 3,
             'parent_id' => 1,
-            'is_locked' => false,
-            'is_leaf' => false,
+            'locked' => false,
+            'leaf' => false,
             'value' => '',
             'name' => 'General',
-            'display_name' => $this->localize($this->trans('General')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('General')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 10,
             'parent_id' => 3,
-            'is_locked' => false,
-            'is_leaf' => false,
+            'locked' => false,
+            'leaf' => false,
             'value' => '',
             'name' => 'Publication Status (extended)',
-            'display_name' => $this->localize($this->trans('Publication status (extended)')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Publication status (extended)')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 11,
             'parent_id' => 10,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'P',
             'name' => 'Pending',
-            'display_name' => $this->localize($this->trans('Pending')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Pending')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'P']
         ];
         $categoryData[] = [
             'id' => 12,
             'parent_id' => 10,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'C',
             'name' => 'Checked',
-            'display_name' => $this->localize($this->trans('Checked')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Checked')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'C']
         ];
         $categoryData[] = [
             'id' => 13,
             'parent_id' => 10,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'A',
             'name' => 'Approved',
-            'display_name' => $this->localize($this->trans('Approved')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Approved')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'A']
         ];
         $categoryData[] = [
             'id' => 14,
             'parent_id' => 10,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'O',
             'name' => 'On-line',
-            'display_name' => $this->localize($this->trans('On-line')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('On-line')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'O']
         ];
         $categoryData[] = [
             'id' => 15,
             'parent_id' => 10,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'R',
             'name' => 'Rejected',
-            'display_name' => $this->localize($this->trans('Rejected')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Rejected')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'R']
         ];
         $categoryData[] = [
             'id' => 25,
             'parent_id' => 3,
-            'is_locked' => false,
-            'is_leaf' => false,
+            'locked' => false,
+            'leaf' => false,
             'value' => '',
             'name' => 'ActiveStatus',
-            'display_name' => $this->localize($this->trans('Activity status')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Activity status')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 26,
             'parent_id' => 25,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'A',
             'name' => 'Active',
-            'display_name' => $this->localize($this->trans('Active')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Active')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'A']
         ];
         $categoryData[] = [
             'id' => 27,
             'parent_id' => 25,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'I',
             'name' => 'Inactive',
-            'display_name' => $this->localize($this->trans('Inactive')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Inactive')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'I']
         ];
         $categoryData[] = [
             'id' => 28,
             'parent_id' => 3,
-            'is_locked' => false,
-            'is_leaf' => false,
+            'locked' => false,
+            'leaf' => false,
             'value' => '',
             'name' => 'Publication status (basic)',
-            'display_name' => $this->localize($this->trans('Publication status (basic)')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Publication status (basic)')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 29,
             'parent_id' => 28,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'P',
             'name' => 'Pending',
-            'display_name' => $this->localize($this->trans('Pending')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Pending')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'P']
         ];
         $categoryData[] = [
             'id' => 30,
             'parent_id' => 28,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => 'A',
             'name' => 'Approved',
-            'display_name' => $this->localize($this->trans('Approved')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Approved')),
+            'displayDesc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'A']
         ];
         $categoryData[] = [
             'id' => 32,
             'parent_id' => 2,
-            'is_locked' => false,
-            'is_leaf' => false,
+            'locked' => false,
+            'leaf' => false,
             'value' => '',
             'name' => 'Global',
-            'display_name' => $this->localize($this->trans('Global')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Global')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 33,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Blogging',
-            'display_name' => $this->localize($this->trans('Blogging')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Blogging')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 34,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Music and audio',
-            'display_name' => $this->localize($this->trans('Music and audio')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Music and audio')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 35,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Art and photography',
-            'display_name' => $this->localize($this->trans('Art and photography')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Art and photography')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 36,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Writing and thinking',
-            'display_name' => $this->localize($this->trans('Writing and thinking')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Writing and thinking')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 37,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Communications and media',
-            'display_name' => $this->localize($this->trans('Communications and media')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Communications and media')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 38,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Travel and culture',
-            'display_name' => $this->localize($this->trans('Travel and culture')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Travel and culture')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 39,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Science and technology',
-            'display_name' => $this->localize($this->trans('Science and technology')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Science and technology')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 40,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Sport and activities',
-            'display_name' => $this->localize($this->trans('Sport and activities')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Sport and activities')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
             'id' => 41,
             'parent_id' => 32,
-            'is_locked' => false,
-            'is_leaf' => true,
+            'locked' => false,
+            'leaf' => true,
             'value' => '',
             'name' => 'Business and work',
-            'display_name' => $this->localize($this->trans('Business and work')),
-            'display_desc' => $this->localize(),
+            'displayName' => $this->localize($this->trans('Business and work')),
+            'displayDesc' => $this->localize(),
             'status' => 'A'
         ];
 

@@ -66,6 +66,8 @@
                 passSecond.parents('.form-group').find('label').removeClass('required');
             };
             setPassAlert.addClass('collapse show');
+            showPasswordsOptional();
+
             // ensure wrap is shown on form re-draw
             if (setPassEle.is(':checked')) {
                 setPassWrap.collapse('show');

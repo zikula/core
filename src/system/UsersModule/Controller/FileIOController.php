@@ -52,7 +52,7 @@ class FileIOController extends AbstractController
                 $data = $form->getData();
                 $response = new StreamedResponse();
                 $response->setCallback(function() use ($data, $userRepository) {
-                    $fields = ['uid', 'uname', 'activated', 'email', 'user_regdate', 'lastlogin', 'groups'];
+                    $fields = ['uid', 'uname', 'activated', 'email', 'registrationDate', 'lastLogin', 'groups'];
                     foreach ($fields as $k => $field) {
                         if (isset($data[$field]) && !$data[$field]) {
                             unset($fields[$k]); // remove unwanted fields
@@ -80,7 +80,6 @@ class FileIOController extends AbstractController
                                 $row[] = $value instanceof DateTime ? $value->format('c') : $value;
                             }
                         }
-                        $this->getDoctrine()->getManager()->detach($user[0]);
                         fputcsv($handle, $row, $data['delimiter']);
                     }
                     fclose($handle);

@@ -81,19 +81,19 @@ class CategoryController extends AbstractController
             'childOpen' => function($node) {
                 $jsTreeData = [];
                 $jsTreeData['disabled'] = 'A' !== $node['status'];
-                $jsTreeData['type'] = $node['is_leaf'] ? 'leaf' : 'default';
+                $jsTreeData['type'] = $node['leaf'] ? 'leaf' : 'default';
                 $jsTreeData = 'data-jstree="' . htmlentities(json_encode($jsTreeData)) . '" ';
 
                 return '<li ' . $jsTreeData . 'class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
             },
             'nodeDecorator' => function($node) use ($locale) {
-                $displayName = $node['display_name'][$locale] ?? $node['name'];
+                $displayName = $node['displayName'][$locale] ?? $node['name'];
                 $title = ' title="' . $this->createTitleAttribute($node, $displayName, $locale) . '"';
                 $classes = [];
-                if ($node['is_locked']) {
+                if ($node['locked']) {
                     $classes[] = 'locked';
                 }
-                if ($node['is_leaf']) {
+                if ($node['leaf']) {
                     $classes[] = 'leaf';
                 }
                 $class = !empty($classes) ? ' class="' . implode(' ', $classes) . '"' : '';
@@ -109,11 +109,11 @@ class CategoryController extends AbstractController
         $title[] = $this->trans('ID') . ': ' . $node['id'];
         $title[] = $this->trans('Name') . ': ' . $node['name'];
         $title[] = $this->trans('Display name') . ': ' . $displayName;
-        $title[] = $this->trans('Description') . ': ' . ($node['display_desc'][$locale] ?? '');
+        $title[] = $this->trans('Description') . ': ' . ($node['displayDesc'][$locale] ?? '');
         $title[] = $this->trans('Value') . ': ' . $node['value'];
         $title[] = $this->trans('Active') . ': ' . ('A' === $node['status'] ? 'Yes' : 'No');
-        $title[] = $this->trans('Leaf') . ': ' . ($node['is_leaf'] ? 'Yes' : 'No');
-        $title[] = $this->trans('Locked') . ': ' . ($node['is_locked'] ? 'Yes' : 'No');
+        $title[] = $this->trans('Leaf') . ': ' . ($node['leaf'] ? 'Yes' : 'No');
+        $title[] = $this->trans('Locked') . ': ' . ($node['locked'] ? 'Yes' : 'No');
 
         return implode('<br />', $title);
     }

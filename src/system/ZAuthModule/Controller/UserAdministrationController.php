@@ -182,8 +182,12 @@ class UserAdministrationController extends AbstractController
                     $session->set(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ($form['usermustverify']->getData() ? 'Y' : 'N'));
                 }
 
+                $userData = $mapping->getUserEntityData();
+                if (null === $userData['uid']) {
+                    unset($userData['uid']);
+                }
                 $user = new UserEntity();
-                $user->merge($mapping->getUserEntityData());
+                $user->merge($userData);
                 $user->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
                 $registrationHelper->registerNewUser($user);
                 if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
@@ -195,17 +199,19 @@ class UserAdministrationController extends AbstractController
                     $this->addFlash('error', 'Errors creating user!');
                     $this->addFlash('error', implode('<br />', $notificationErrors));
                 }
+                $userId = $user->getUid();
                 $mapping->setUid($user->getUid());
+                $mapping->setVerifiedEmail(!$form['usermustverify']->getData());
                 if (!$authMethod->register($mapping->toArray())) {
                     $this->addFlash('error', 'The create process failed for an unknown reason.');
                     $userRepository->removeAndFlush($user);
-                    $eventDispatcher->dispatch(new GenericEvent($user->getUid()), RegistrationEvents::DELETE_REGISTRATION);
+                    $eventDispatcher->dispatch(new GenericEvent($userId), RegistrationEvents::DELETE_REGISTRATION);
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
                 }
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
-                $hook = new ProcessHook($user->getUid());
+                $hook = new ProcessHook($userId);
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
                 $eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::REGISTRATION_SUCCEEDED);
 

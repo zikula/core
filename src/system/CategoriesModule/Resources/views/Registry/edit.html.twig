@@ -39,7 +39,7 @@
                 <td headers="hModule">{# to be improved: use module's display name here #}{{ registry.modname }}</td>
                 <td headers="hEntity">{% if registry.entityname|default %}{{ registry.entityname }}{% endif %}</td>
                 <td headers="hProperty">{{ registry.property }}</td>
-                <td headers="hCategory">{{ registry.category.display_name(app.request.locale|default('en')) }}</td>
+                <td headers="hCategory">{{ registry.category.displayName(app.request.locale|default('en')) }}</td>
                 <td headers="hActions" class="actions">
                     <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', {id: registry.id}) }}" title="{% trans %}Edit{% endtrans %}" ></a>
                     <a class="fas fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', {id: registry.id}) }}" title="{% trans %}Delete{% endtrans %}"></a>

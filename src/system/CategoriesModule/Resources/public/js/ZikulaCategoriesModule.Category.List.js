@@ -243,7 +243,7 @@
                                 var editedNode;
                                 if ('edit' === data.mode) {
                                     // rename the existing node
-                                    var newName = nodeData.display_name[Translator.locale];
+                                    var newName = nodeData.displayName[Translator.locale];
                                     newName = newName ? newName : nodeData.name;
                                     editedNode = treeElem.jstree('get_node', nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, newName);

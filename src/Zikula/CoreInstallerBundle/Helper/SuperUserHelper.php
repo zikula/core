@@ -82,8 +82,8 @@ class SuperUserHelper
         $userEntity->setUname($params['username']);
         $userEntity->setEmail($params['email']);
         $userEntity->setActivated(1);
-        $userEntity->setUser_Regdate(new DateTime());
-        $userEntity->setLastlogin(new DateTime());
+        $userEntity->setRegistrationDate(new DateTime());
+        $userEntity->setLastLogin(new DateTime());
         $this->entityManager->persist($userEntity);
 
         $mapping = new AuthenticationMappingEntity();

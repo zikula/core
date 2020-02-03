@@ -62,10 +62,10 @@ class NodeController extends AbstractController
                 $newCategory = clone $category;
                 $newCategory->setName($category->getName() . 'copy');
                 $displayNames = [];
-                foreach ($newCategory->getDisplay_name() as $locale => $displayName) {
+                foreach ($newCategory->getDisplayName() as $locale => $displayName) {
                     $displayNames[$locale] = $displayName . ' ' . $this->trans('copy');
                 }
-                $newCategory->setDisplay_name($displayNames);
+                $newCategory->setDisplayName($displayNames);
                 $action = 'edit';
                 $mode = 'new';
                 $category = $newCategory;

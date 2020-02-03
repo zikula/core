@@ -72,7 +72,7 @@ class SearchHelper implements SearchableInterface
             $result = new SearchResultEntity();
             $result->setTitle($user->getUname())
                 ->setModule($this->getBundleName())
-                ->setCreated($user->getUser_Regdate())
+                ->setCreated($user->getRegistrationDate())
                 ->setSesid($sessionId)
             ;
             $results[] = $result;

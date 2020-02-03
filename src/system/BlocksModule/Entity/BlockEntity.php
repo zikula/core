@@ -110,9 +110,9 @@ class BlockEntity extends EntityAccess
     /**
      * The last updated timestamp of the block
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="last_update")
      */
-    private $last_update;
+    private $lastUpdate;
 
     /**
      * The language of the block
@@ -142,7 +142,7 @@ class BlockEntity extends EntityAccess
         $this->module = 0;
         $this->filters = [];
         $this->active = BlockApi::BLOCK_ACTIVE;
-        $this->last_update = new DateTime('now');
+        $this->lastUpdate = new DateTime('now');
         $this->language = '';
         $this->placements = new ArrayCollection();
     }
@@ -237,14 +237,14 @@ class BlockEntity extends EntityAccess
         $this->active = $active;
     }
 
-    public function getLast_Update(): DateTime
+    public function getLastUpdate(): DateTime
     {
-        return $this->last_update;
+        return $this->lastUpdate;
     }
 
-    public function setLast_Update(): void
+    public function setLastUpdate(): void
     {
-        $this->last_update = new DateTime('now');
+        $this->lastUpdate = new DateTime('now');
     }
 
     public function getLanguage(): string

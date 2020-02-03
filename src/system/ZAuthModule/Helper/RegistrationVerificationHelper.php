@@ -99,7 +99,7 @@ class RegistrationVerificationHelper
         /** @var UserVerificationEntity $userVerificationEntity */
         $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $mapping->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if ($codeSent) {
-            return $userVerificationEntity->getCreated_Dt();
+            return $userVerificationEntity->getCreatedDate();
         }
         $this->userVerificationRepository->removeAndFlush($userVerificationEntity);
 

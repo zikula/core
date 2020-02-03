@@ -64,8 +64,8 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void
     {
-        $user->setApproved_Date($approvedOn);
-        $user->setApproved_By($approvedBy ?? $user->getUid());
+        $user->setApprovedDate($approvedOn);
+        $user->setApprovedBy($approvedBy ?? $user->getUid());
         $this->_em->flush();
     }
 
@@ -76,10 +76,10 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             if (!empty($v)) {
                 switch ($k) {
                     case 'registered_before':
-                        $filter['user_regdate'] = ['operator' => '<=', 'operand' => $v];
+                        $filter['registrationDate'] = ['operator' => '<=', 'operand' => $v];
                         break;
                     case 'registered_after':
-                        $filter['user_regdate'] = ['operator' => '>=', 'operand' => $v];
+                        $filter['registrationDate'] = ['operator' => '>=', 'operand' => $v];
                         break;
                     case 'groups':
                         /** @var ArrayCollection $v */

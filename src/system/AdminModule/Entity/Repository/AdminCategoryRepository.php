@@ -37,7 +37,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
 
     public function getModuleCategory(int $moduleId): ?AdminCategoryEntity
     {
-        $query = $this->_em->createQueryBuilder('m')
+        $query = $this->_em->createQueryBuilder()
             ->select('m.cid')
             ->from('ZikulaAdminModule:AdminModuleEntity', 'm')
             ->where('m.mid = :mid')

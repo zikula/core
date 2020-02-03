@@ -97,7 +97,7 @@ class CategoryEntity extends EntityAccess
      * @ORM\Column(type="boolean", name="is_locked")
      * @var boolean
      */
-    private $is_locked;
+    private $locked;
 
     /**
      * Is this a leaf category?
@@ -105,7 +105,7 @@ class CategoryEntity extends EntityAccess
      * @ORM\Column(type="boolean", name="is_leaf")
      * @var boolean
      */
-    private $is_leaf;
+    private $leaf;
 
     /**
      * The name of the category
@@ -131,7 +131,7 @@ class CategoryEntity extends EntityAccess
      * @ORM\Column(type="array", name="display_name")
      * @var array
      */
-    private $display_name;
+    private $displayName;
 
     /**
      * The display description for the category
@@ -139,7 +139,7 @@ class CategoryEntity extends EntityAccess
      * @ORM\Column(type="array", name="display_desc")
      * @var array
      */
-    private $display_desc;
+    private $displayDesc;
 
     /**
      * The status of the category
@@ -178,7 +178,7 @@ class CategoryEntity extends EntityAccess
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
      */
-    private $cr_uid;
+    private $createdBy;
 
     /**
      * The user id of the last updater of the category
@@ -188,25 +188,25 @@ class CategoryEntity extends EntityAccess
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
      */
-    private $lu_uid;
+    private $updatedBy;
 
     /**
      * The creation timestamp of the category
      *
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="cr_date")
      * @Gedmo\Timestampable(on="create")
      */
-    private $cr_date;
+    private $createdDate;
 
     /**
      * The last updated timestamp of the category
      *
      * @var DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", name="lu_date")
      * @Gedmo\Timestampable(on="update")
      */
-    private $lu_date;
+    private $updatedDate;
 
     /**
      * constructor
@@ -214,16 +214,16 @@ class CategoryEntity extends EntityAccess
      */
     public function __construct(array $locales = [])
     {
-        $this->is_locked = false; //  was 0
-        $this->is_leaf = false; // was 0
+        $this->locked = false; //  was 0
+        $this->leaf = false; // was 0
         $this->name = '';
         $this->value = '';
         $values = [];
         foreach ($locales as $code) {
             $values[$code] = '';
         }
-        $this->display_name = $values;
-        $this->display_desc = $values;
+        $this->displayName = $values;
+        $this->displayDesc = $values;
         $this->status = 'A';
         $this->icon = '';
 
@@ -260,56 +260,24 @@ class CategoryEntity extends EntityAccess
         $this->children = $children;
     }
 
-    public function getIs_locked(): bool
+    public function getLocked(): bool
     {
-        return $this->is_locked;
+        return $this->locked;
     }
 
-    /**
-     * Alias for Symfony Forms.
-     */
-    public function getIsLocked(): bool
+    public function setLocked(bool $locked): void
     {
-        return $this->getIs_locked();
+        $this->locked = $locked;
     }
 
-    public function setIs_locked(bool $is_locked): void
+    public function getLeaf(): bool
     {
-        $this->is_locked = $is_locked;
+        return $this->leaf;
     }
 
-    /**
-     * Alias for Symfony Forms
-     */
-    public function setIsLocked(bool $isLocked): void
+    public function setLeaf(bool $leaf): void
     {
-        $this->setIs_locked($isLocked);
-    }
-
-    public function getIs_leaf(): bool
-    {
-        return $this->is_leaf;
-    }
-
-    /**
-     * Alias for Symfony Forms
-     */
-    public function getIsLeaf(): bool
-    {
-        return $this->getIs_leaf();
-    }
-
-    public function setIs_leaf(bool $is_leaf): void
-    {
-        $this->is_leaf = $is_leaf;
-    }
-
-    /**
-     * Alias for Symfony Forms
-     */
-    public function setIsLeaf(bool $isLeaf): void
-    {
-        $this->setIs_leaf($isLeaf);
+        $this->leaf = $leaf;
     }
 
     public function getName(): string
@@ -335,67 +303,35 @@ class CategoryEntity extends EntityAccess
     /**
      * @return array|string the category display name(s)
      */
-    public function getDisplay_name(string $lang = null)
+    public function getDisplayName(string $lang = null)
     {
         if (!empty($lang)) {
-            return $this->display_name[$lang] ?? $this->display_name['en'] ?? $this->name;
+            return $this->displayName[$lang] ?? $this->displayName['en'] ?? $this->name;
         }
 
-        return $this->display_name;
+        return $this->displayName;
     }
 
-    /**
-     * Alias to self::getDisplay_name() required for Twig property access
-     */
-    public function getDisplayName()
+    public function setDisplayName(array $displayName): void
     {
-        return $this->getDisplay_name();
-    }
-
-    public function setDisplay_name(array $display_name): void
-    {
-        $this->display_name = $display_name;
-    }
-
-    /**
-     * Alias to self::setDisplay_name() required for PropertyAccess of collection form type
-     */
-    public function setDisplayName(array $display_name): void
-    {
-        $this->setDisplay_name($display_name);
+        $this->displayName = $displayName;
     }
 
     /**
      * @return array|string the category display description
      */
-    public function getDisplay_desc(string $lang = null)
-    {
-        if (!empty($lang)) {
-            return $this->display_desc[$lang] ?? $this->display_desc['en'] ?? '';
-        }
-
-        return $this->display_desc;
-    }
-
-    /**
-     * Alias to self::getDisplay_desc() required for Twig property access
-     */
     public function getDisplayDesc(string $lang = null)
     {
-        return $this->getDisplay_desc($lang);
+        if (!empty($lang)) {
+            return $this->displayDesc[$lang] ?? $this->displayDesc['en'] ?? '';
+        }
+
+        return $this->displayDesc;
     }
 
-    public function setDisplay_desc(array $display_desc): void
+    public function setDisplayDesc(array $displayDesc): void
     {
-        $this->display_desc = $display_desc;
-    }
-
-    /**
-     * Alias to self::setDisplay_desc() required for PropertyAccess of collection form type
-     */
-    public function setDisplayDesc(array $display_desc): void
-    {
-        $this->setDisplay_desc($display_desc);
+        $this->displayDesc = $displayDesc;
     }
 
     public function getStatus(): bool
@@ -421,44 +357,44 @@ class CategoryEntity extends EntityAccess
         $this->icon = $icon ?? '';
     }
 
-    public function getCr_date(): DateTime
+    public function getCreatedDate(): DateTime
     {
-        return $this->cr_date;
+        return $this->createdDate;
     }
 
-    public function setCr_date(DateTime $cr_date): void
+    public function setCreatedDate(DateTime $createdDate): void
     {
-        $this->cr_date = $cr_date;
+        $this->createdDate = $createdDate;
     }
 
-    public function getCr_uid(): UserEntity
+    public function getCreatedBy(): UserEntity
     {
-        return $this->cr_uid;
+        return $this->createdBy;
     }
 
-    public function setCr_uid(UserEntity $cr_uid): void
+    public function setCreatedBy(UserEntity $createdBy): void
     {
-        $this->cr_uid = $cr_uid;
+        $this->createdBy = $createdBy;
     }
 
-    public function getLu_date(): DateTime
+    public function getUpdatedDate(): DateTime
     {
-        return $this->lu_date;
+        return $this->updatedDate;
     }
 
-    public function setLu_date(DateTime $lu_date): void
+    public function setUpdatedDate(DateTime $updatedDate): void
     {
-        $this->lu_date = $lu_date;
+        $this->updatedDate = $updatedDate;
     }
 
-    public function getLu_uid(): UserEntity
+    public function getUpdatedBy(): UserEntity
     {
-        return $this->lu_uid;
+        return $this->updatedBy;
     }
 
-    public function setLu_uid(UserEntity $lu_uid): void
+    public function setUpdatedBy(UserEntity $updatedBy): void
     {
-        $this->lu_uid = $lu_uid;
+        $this->updatedBy = $updatedBy;
     }
 
     public function getAttributes(): Collection
@@ -546,16 +482,16 @@ class CategoryEntity extends EntityAccess
     {
         return json_encode([
             'id' => $prefix . $this->id,
-            'text' => $this->getDisplay_name($locale),
+            'text' => $this->getDisplayName($locale),
             'name' => $this->name,
-            'display_name' => $this->display_name,
-            'display_desc' => $this->display_desc,
+            'displayName' => $this->displayName,
+            'displayDesc' => $this->displayDesc,
             'value' => $this->value,
             'status' => $this->status,
-            'is_leaf' => $this->is_leaf,
-            'is_locked' => $this->is_locked,
+            'leaf' => $this->leaf,
+            'locked' => $this->locked,
             'parent' => $this->parent->getId(),
-//            'children' => $this->children,
+            //'children' => $this->children,
             'root' => null !== $this->getRoot() ? $this->getRoot()->getId() : null
         ]);
     }

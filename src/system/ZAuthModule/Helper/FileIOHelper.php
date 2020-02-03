@@ -235,14 +235,14 @@ class FileIOHelper
             if (!$importValue['activated']) {
                 $importValues[$k]['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
             } else {
-                $importValue['approved_date'] = $nowUTC;
-                $importValue['approved_by'] = $this->currentUser->get('uid');
+                $importValue['approvedDate'] = $nowUTC;
+                $importValue['approvedBy'] = $this->currentUser->get('uid');
             }
             $user = new UserEntity();
             $groupsArray = explode('|', $importValue['groups']);
             unset($importValue['groups'], $importValue['sendmail']);
             $user->merge($importValue);
-            $user->setUser_Regdate($nowUTC);
+            $user->setRegistrationDate($nowUTC);
             foreach ($groupsArray as $group) {
                 $user->addGroup($groups[$group]);
                 $groups[$group]->addUser($user);

@@ -1,7 +1,6 @@
 [![Build Status](https://travis-ci.org/zikula/core.svg?branch=master)](https://travis-ci.org/zikula/core)
 [![StyleCI](https://styleci.io/repos/781544/shield?branch=master)](https://styleci.io/repos/781544)
 [![SensioLabsInsight](https://insight.symfony.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487/mini.png)](https://insight.symfony.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487)
-[![Code Climate](https://codeclimate.com/github/zikula/core/badges/gpa.svg)](https://codeclimate.com/github/zikula/core)
 [![Scrutinizer](https://scrutinizer-ci.com/g/zikula/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zikula/core/)
 
 # Zikula Core - Application Framework
@@ -41,7 +40,7 @@ Please see our [developer documentation](https://github.com/zikula/core/tree/mas
 Contributions can be made to Zikula in a number of ways
 
 1. By using our software!
-2. Assisting other users at our [Slack channels](https://joinslack.ziku.la/)
+2. Assisting other users at our [Slack channels](https://zikula.slack.com/)
 3. Creating themes for Zikula.
 4. Authoring additional modules for Zikula.
 5. Contributing bug fixes and patches to the Core.

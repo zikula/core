@@ -81,7 +81,7 @@ class RegistrationHelper
     {
         $adminApprovalRequired = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
         if (null === $userEntity->getUid()) {
-            $userEntity->setUser_Regdate(new DateTime());
+            $userEntity->setRegistrationDate(new DateTime());
         }
         $userCreateEvent = new GenericEvent($userEntity);
         $this->eventDispatcher->dispatch($userCreateEvent, RegistrationEvents::FULL_USER_CREATE_VETO);
@@ -132,8 +132,8 @@ class RegistrationHelper
      */
     public function approve(UserEntity $user): void
     {
-        $user->setApproved_By((int)$this->currentUserApi->get('uid'));
-        $user->setApproved_Date(new DateTime());
+        $user->setApprovedBy((int)$this->currentUserApi->get('uid'));
+        $user->setApprovedDate(new DateTime());
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);

@@ -53,12 +53,17 @@
     - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
   - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
   - Entity changes
+    - `Zikula\BlocksModule\Entity\BlockEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLastUpdate/setLastUpdate`.
+    - `Zikula\CategoriesModule\Entity\CategoryEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
+    - `Zikula\CategoriesModule\Entity\CategoryRegistryEntity` removed some obsolete accessors for PSR-1 compatibility. Please use now `getStatus/setStatus`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
     - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
       - The table name has been renamed from `modules` to `extensions`.
     - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `realm` and `bond` properties.
     - `Zikula\ThemeModule\Entity\ThemeEntity` is removed along with its Repository and RepositoryInterface classes.
       - The data is now stored in the `extensions` table and managed by the ExtensionsModule.
     - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
+    - `Zikula\UsersModule\Entity\UserEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getApprovedDate/setApprovedDate`, `getApprovedBy/setApprovedBy`, `getRegistrationDate/setRegistrationDate`, `getLastLogin/setLastLogin`.
+    - `Zikula\ZAuthModule\Entity\UserVerificationEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getCreatedDate/setCreatedDate`.
   - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
   - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
   - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
@@ -150,6 +155,8 @@
   - Fixed broken JavaScript in ZAuth user modification form (#3992).
   - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
   - When updating a block, orphan properties are removed (#3892).
+  - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
+  - Fixed creating new ZAuth users as admin without setting a password.
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -178,6 +185,8 @@
   - In general, 'module' and 'theme' are now generically referred to as 'extensions' and many methods or properties have been renamed to align.
   - The location for choosing the default theme and admin theme has been moved to the Theme module settings.
   - System themes (Bootstrap, Atom, Printer, Rss) are now located in `system/` and are loaded directly into the kernel.
+  - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
+  - If a record is not found for a guest this is now similarly treated like an access denied exception (redirect to login form).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
