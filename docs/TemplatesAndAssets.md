@@ -19,4 +19,4 @@ Assets like CSS, images and JavaScript files are resolved in the following order
 3. Original location: `/public/modules/acmefoo/js/SomeScript.js`.
 
 If the asset file can not be found, it is copied from it's source location to the original public folder.  
-For example `/src/modules/Acme/FooModule/Resources/public/js/SomeScript.js` will be copied to `/public/modules/acmefoo/js/SomeScript.js`.
+For example `/src/extensions/Acme/FooModule/Resources/public/js/SomeScript.js` will be copied to `/public/modules/acmefoo/js/SomeScript.js`.

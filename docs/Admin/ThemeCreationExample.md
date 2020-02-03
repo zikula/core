@@ -3,18 +3,18 @@
 If you want to create your own theme, the starting point of reusing the ZikulaBoostrapTheme is a good idea. This 
 example is based on the ZikulaBoostrapTheme of Zikula 1.4.5
 
-- First create a new vendor folder inside the themes folder. It should start with a capital letter. For our example we should start with `Company`.
-- In this folder we will now create a theme folder. Let us name it `Paula`. So we now have the following: `/src/extensions/Company/PaulaTheme`.
-- Copy all the files and folder of the folder ZikulaBootstrapTheme into the folder `Paula`.
+- First create a new vendor folder inside the extensions folder. It should start with a capital letter. For our example we should start with `Company`.
+- In this folder we will now create a theme folder. Let us name it `PaulaTheme`. So we now have the following: `/src/extensions/Company/PaulaTheme`.
+- Copy all the files and folder of the folder ZikulaBootstrapTheme into the folder `PaulaTheme`.
 - Rename `Company/PaulaTheme/ZikulaBootstrapTheme.php` to `Company/PaulaTheme/CompanyPaulaTheme.php`.
 - Change the content as follows:
 
 ```php
 namespace Company\PaulaTheme;
 
-use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
+use \Zikula\ThemeModule\AbstractTheme;
 
-class CompanyPaulaTheme extends AbstractCoreTheme
+class CompanyPaulaTheme extends AbstractTheme
 {
 }
 ```
@@ -47,8 +47,13 @@ class CompanyPaulaTheme extends AbstractCoreTheme
             "class": "Company\\PaulaTheme\\CompanyPaulaTheme",
             "displayname": "Paula",
             "capabilities": {
-                "user": true,
-                "admin": true
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": true,
+                    "icon": "fab fa-bootstrap"
+                }
             }
         }
     }
