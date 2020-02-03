@@ -128,7 +128,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
             return;
         }
 
-        $qb = $this->_em->createQueryBuilder('p')
+        $qb = $this->_em->createQueryBuilder()
             ->delete('ZikulaPermissionsModule:PermissionEntity', 'p')
             ->where('p.gid = :gid')
             ->setParameter('gid', $groupId);

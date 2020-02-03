@@ -80,7 +80,6 @@ class FileIOController extends AbstractController
                                 $row[] = $value instanceof DateTime ? $value->format('c') : $value;
                             }
                         }
-                        $this->getDoctrine()->getManager()->detach($user[0]);
                         fputcsv($handle, $row, $data['delimiter']);
                     }
                     fclose($handle);
