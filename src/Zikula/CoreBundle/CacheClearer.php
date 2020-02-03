@@ -36,6 +36,11 @@ class CacheClearer
     private $kernelContainerClass;
 
     /**
+     * @var string
+     */
+    private $containerDirectory;
+
+    /**
      * @var bool
      */
     private $installed;
@@ -64,6 +69,8 @@ class CacheClearer
     ) {
         $this->container = $container;
         $this->cacheDir = $cacheDir;
+        $refClass = new \ReflectionClass($container);
+        $this->containerDirectory = $cacheDir . DIRECTORY_SEPARATOR . $refClass->getNamespaceName();
         $this->kernelContainerClass = $kernelContainerClass;
         $this->installed = $installed;
         $this->routingLocales = $routingLocales;
@@ -90,6 +97,9 @@ class CacheClearer
                 $this->fileSystem->remove($file);
             }
         }
+        if (in_array($type, ['symfony', 'symfony.config'])) {
+            $this->fileSystem->remove($this->containerDirectory);
+        }
     }
 
     private function initialiseCacheTypeMap()
@@ -110,7 +120,8 @@ class CacheClearer
 
         $this->cacheTypes = [
             'symfony.annotations' => [
-                $cacheFolder . 'annotations'
+                $cacheFolder . 'annotations.map',
+                $cacheFolder . 'annotations.php'
             ],
             'symfony.routing.generator' => [
                 $cacheFolder . 'url_generating_routes.php',
@@ -124,8 +135,11 @@ class CacheClearer
             'symfony.config' => [
                 $cacheFolder . $this->kernelContainerClass . '.php',
                 $cacheFolder . $this->kernelContainerClass . '.php.meta',
+                $cacheFolder . $this->kernelContainerClass . '.preload.php',
                 $cacheFolder . $this->kernelContainerClass . '.xml',
+                $cacheFolder . $this->kernelContainerClass . '.xml.meta',
                 $cacheFolder . $this->kernelContainerClass . 'Compiler.log',
+                $cacheFolder . $this->kernelContainerClass . 'Deprecations.log',
                 $cacheFolder . 'classes.map'
             ],
             'symfony.translations' => [

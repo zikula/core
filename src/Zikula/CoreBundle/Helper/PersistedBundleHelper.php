@@ -95,10 +95,6 @@ class PersistedBundleHelper
             $state = $this->extensionStateMap[$extensionName] ?? ['state' => ('T' === $type) ? Constant::STATE_INACTIVE : Constant::STATE_UNINITIALISED];
         }
 
-        if ('T' === $type) {
-            return Constant::STATE_ACTIVE === $state['state'];
-        }
-
         return in_array($state['state'], [Constant::STATE_ACTIVE, Constant::STATE_UPGRADED, Constant::STATE_TRANSITIONAL], true);
     }
 

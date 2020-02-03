@@ -105,12 +105,15 @@ class ExtensionHelper
             throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getName()]));
         }
 
+        /** @var AbstractBundle $bundle */
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($bundle);
-        $result = $installer->install();
-        if (!$result) {
-            return false;
+        if (null !== $installer) {
+            $result = $installer->install();
+            if (!$result) {
+                return FALSE;
+            }
         }
 
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
@@ -134,24 +137,26 @@ class ExtensionHelper
             throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getDisplayname()]));
         }
 
-        /** @var AbstractModule $bundle */
+        /** @var AbstractBundle $bundle */
         $bundle = $this->container->get('kernel')->getModule($extension->getName());
 
         // Check status of Dependencies here to be sure they are met for upgraded extension. #3647
 
         $installer = $this->getExtensionInstallerInstance($bundle);
-        $result = $installer->upgrade($extension->getVersion());
-        if (is_string($result)) {
-            if ($result !== $extension->getVersion()) {
-                // persist the last successful updated version
-                $extension->setVersion($result);
-                $this->container->get('doctrine')->getManager()->flush();
-            }
+        if (null !== $installer) {
+            $result = $installer->upgrade($extension->getVersion());
+            if (is_string($result)) {
+                if ($result !== $extension->getVersion()) {
+                    // persist the last successful updated version
+                    $extension->setVersion($result);
+                    $this->container->get('doctrine')->getManager()->flush();
+                }
 
-            return false;
-        }
-        if (true !== $result) {
-            return false;
+                return FALSE;
+            }
+            if (TRUE !== $result) {
+                return FALSE;
+            }
         }
 
         // persist the updated version
@@ -191,12 +196,15 @@ class ExtensionHelper
             return false;
         }
 
+        /** @var AbstractBundle $bundle */
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($bundle);
-        $result = $installer->uninstall();
-        if (!$result) {
-            return false;
+        if (null !== $installer) {
+            $result = $installer->uninstall();
+            if (!$result) {
+                return FALSE;
+            }
         }
 
         // remove remaining extension variables
@@ -254,11 +262,14 @@ class ExtensionHelper
     }
 
     /**
-     * Get an instance of an extension Installer.
+     * Attempt to get an instance of an extension Installer.
      */
-    private function getExtensionInstallerInstance(AbstractBundle $bundle): ExtensionInstallerInterface
+    private function getExtensionInstallerInstance(AbstractBundle $bundle): ?ExtensionInstallerInterface
     {
         $className = $bundle->getInstallerClass();
+        if (!class_exists($className)) {
+            return null;
+        }
         $reflectionInstaller = new ReflectionClass($className);
         if (!$reflectionInstaller->isSubclassOf(ExtensionInstallerInterface::class)) {
             throw new RuntimeException($this->translator->trans('%extension% must implement ExtensionInstallerInterface', ['%extension%' => $className]));

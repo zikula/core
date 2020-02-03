@@ -135,10 +135,9 @@ class MenuBuilder
                 break;
         }
 
-        if (!in_array($extension->getState(), [
-            Constant::STATE_UNINITIALISED,
-            Constant::STATE_INVALID,
-            Constant::STATE_MISSING,
+        if (in_array($extension->getState(), [
+            Constant::STATE_ACTIVE,
+            Constant::STATE_INACTIVE,
         ], true)) {
             $menu->addChild('Edit extension', [
                 'route' => 'zikulaextensionsmodule_extension_modify',
@@ -148,7 +147,7 @@ class MenuBuilder
         }
 
         if (Constant::STATE_ACTIVE === $extension->getState()
-            && (MetaData::TYPE_THEME === $extension->getType() || MetaData::TYPE_SYSTEM_THEME === $extension->getType())) {
+            && (in_array($extension->getType(), [MetaData::TYPE_THEME, MetaData::TYPE_SYSTEM_THEME]))) {
             $menu->addChild('Edit theme vars', [
                 'route' => 'zikulathememodule_var_var',
                 'routeParameters' => ['themeName' => $extension->getName()]

@@ -5,22 +5,22 @@
 {{ adminHeader() }}
 <h3>
     <span class="fas fa-plus"></span>
-    {% trans %}Install module{% endtrans %} '{{ extension.displayname }}'
-    {{ pageSetVar('title', 'Install module'|trans) }}
+    {% trans %}Install extension{% endtrans %} '{{ extension.displayname }}'
+    {{ pageSetVar('title', 'Install extension'|trans) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <table class="table table-bordered table-striped">
     <colgroup>
-        <col id="cModule" />
+        <col id="cExtension" />
         <col id="cLevel" />
         <col id="cReason" />
         <col id="cInstall" />
     </colgroup>
     <thead>
         <tr>
-            <th id="hModule" scope="col">{% trans %}Module name{% endtrans %}</th>
+            <th id="hExtension" scope="col">{% trans %}Extension name{% endtrans %}</th>
             <th id="hLevel" scope="col">{% trans %}Level{% endtrans %}</th>
             <th id="hReason" scope="col">{% trans %}Reason{% endtrans %}</th>
             <th id="hInstall" scope="col">{% trans %}Install{% endtrans %}</th>
@@ -29,7 +29,7 @@
     <tbody>
         {% for checkbox in form.dependencies %}
         <tr{% if checkbox.vars.data == false %} class="table-warning"{% endif %}>
-            <td headers="hModule">{{ dependencies[checkbox.vars.name].modname }}</td>
+            <td headers="hExtension">{{ dependencies[checkbox.vars.name].modname }}</td>
             <td headers="hLevel">
                 {% if dependencies[checkbox.vars.name].status == 1 %}
                     <span class="badge badge-danger">{% trans %}Required{% endtrans %}</span>

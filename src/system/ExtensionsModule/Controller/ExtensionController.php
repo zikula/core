@@ -132,12 +132,12 @@ class ExtensionController extends AbstractController
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
-            $this->addFlash('error', $this->trans('Error! Activation of module %name% not allowed.', ['%name%' => $extension->getName()]));
+            $this->addFlash('error', $this->trans('Error! Activation of %name% not allowed.', ['%name%' => $extension->getName()]));
         } else {
             // Update state
             $extensionStateHelper->updateState($id, Constant::STATE_ACTIVE);
-            $cacheClearer->clear('symfony.routing');
-            $this->addFlash('status', $this->trans('Done! Activated %name% module.', ['%name%' => $extension->getName()]));
+            $cacheClearer->clear('symfony');
+            $this->addFlash('status', $this->trans('Done! Activated %name%.', ['%name%' => $extension->getName()]));
         }
 
         return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
@@ -164,17 +164,18 @@ class ExtensionController extends AbstractController
         if (!$this->isCsrfTokenValid('deactivate-extension', $token)) {
             throw new AccessDeniedException();
         }
+        // @todo check if this is a theme and currently set as default or admin theme
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
         if (null !== $extension) {
             if (ZikulaKernel::isCoreExtension($extension->getName())) {
-                $this->addFlash('error', $this->trans('Error! You cannot deactivate the %name% module. It is a mandatory core extension, and is required by the system.', ['%name%' => $extension->getName()]));
+                $this->addFlash('error', $this->trans('Error! You cannot deactivate the %name%. It is required by the system.', ['%name%' => $extension->getName()]));
             } else {
                 // Update state
                 $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
-                $cacheClearer->clear('symfony.routing');
-                $this->addFlash('status', 'Done! Deactivated module.');
+                $cacheClearer->clear('symfony');
+                $this->addFlash('status', $this->trans('Done! Deactivated %name%.', ['%name%' => $extension->getName()]));
             }
         }
 
@@ -203,7 +204,7 @@ class ExtensionController extends AbstractController
         }
 
         /** @var AbstractBundle $bundle */
-        $bundle = $kernel->getModule($extension->getName());
+        $bundle = $kernel->getBundle($extension->getName());
         $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
 
         if ($forceDefaults) {
@@ -225,7 +226,7 @@ class ExtensionController extends AbstractController
                 $em->persist($extension);
                 $em->flush();
 
-                $cacheClearer->clear('symfony.routing');
+                $cacheClearer->clear('symfony');
                 $this->addFlash('status', 'Done! Extension updated.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -367,15 +368,14 @@ class ExtensionController extends AbstractController
                 if (null === $extensionRepository) {
                     continue;
                 }
-                $bundle = $kernel->getModule($extensionEntity->getName());
+                /** @var AbstractBundle $bundle */
+                $bundle = $kernel->getBundle($extensionEntity->getName());
                 if (null === $bundle) {
                     continue;
                 }
                 $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
                 $eventDispatcher->dispatch($event, ExtensionEvents::MODULE_POSTINSTALL);
             }
-            // currently commented out because it takes a long time.
-            //$extensionHelper->installAssets();
         }
 
         return $this->redirectToRoute('zikulaextensionsmodule_extension_list', ['justinstalled' => json_encode($extensions)]);
@@ -467,7 +467,12 @@ class ExtensionController extends AbstractController
         $requiredDependents = $dependencyHelper->getDependentExtensions($extension);
         $blocks = $blockRepository->findBy(['module' => $extension]);
 
-        $form = $this->createForm(DeletionType::class);
+        $form = $this->createForm(DeletionType::class, [], [
+            'action' => $this->generateUrl('zikulaextensionsmodule_extension_uninstall', [
+                'id' => $extension->getId(),
+                'token' => $token
+            ]),
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {

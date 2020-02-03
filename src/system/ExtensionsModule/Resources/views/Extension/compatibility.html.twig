@@ -5,11 +5,11 @@
     {{ pageSetVar('title', 'Incompatible version'|trans) }}
 </h3>
 <div class="form-group">
-    <p><strong>{% trans %}The version of this module is incompatible with the version of the core.{% endtrans %}</strong></p>
+    <p><strong>{% trans %}The version of this extension is incompatible with the version of the core.{% endtrans %}</strong></p>
     <ul>
         <li>{% trans with {'%version%': '<span class="badge badge-success">' ~ pagevars.coredata.version ~ '</span>'|raw} %}Current Core version is %version%{% endtrans %}</li>
         {% if extension.coreCompatibility is not empty %}
-        <li>{% trans with {"%s": '<span class="badge badge-warning">' ~ extension.coreCompatibility ~ '</span>'|raw} %}The minimum version of the core that this module supports is %s{% endtrans %}</li>
+        <li>{% trans with {"%s": '<span class="badge badge-warning">' ~ extension.coreCompatibility ~ '</span>'|raw} %}The minimum version of the core that this extension supports is %s{% endtrans %}</li>
         {% endif %}
     </ul>
 </div>

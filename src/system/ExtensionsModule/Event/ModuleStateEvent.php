@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
-use Zikula\ExtensionsModule\AbstractModule;
+use Zikula\Bundle\CoreBundle\AbstractBundle;
 
 /**
  * Class ModuleStateEvent
@@ -22,7 +22,7 @@ use Zikula\ExtensionsModule\AbstractModule;
 class ModuleStateEvent extends Event
 {
     /**
-     * @var null|AbstractModule The module instance. Null when Module object is not available
+     * @var null|AbstractBundle The module instance. Null when Module object is not available
      */
     private $module;
 
@@ -33,13 +33,13 @@ class ModuleStateEvent extends Event
      */
     private $modInfo;
 
-    public function __construct(AbstractModule $module = null, array $modInfo = null)
+    public function __construct(AbstractBundle $module = null, array $modInfo = null)
     {
         $this->module = $module;
         $this->modInfo = $modInfo;
     }
 
-    public function getModule(): ?AbstractModule
+    public function getModule(): ?AbstractBundle
     {
         return $this->module;
     }

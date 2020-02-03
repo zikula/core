@@ -5,15 +5,15 @@
 {{ adminHeader() }}
 <h3>
     <span class="fas fa-trash-alt"></span>
-    {% trans %}Uninstall module{% endtrans %} '{{ extension.displayname }}'
-    {{ pageSetVar('title', 'Uninstall module'|trans) }}
+    {% trans %}Uninstall extension{% endtrans %} '{{ extension.displayname }}'
+    {{ pageSetVar('title', 'Uninstall extension'|trans) }}
 </h3>
 
 <p class="alert alert-warning">{% trans with {'%title%': extension.displayname} %}Do you really want to uninstall '%title%'?{% endtrans %}</p>
-<p class="alert alert-danger">{% trans %}Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module.{% endtrans %}</p>
+<p class="alert alert-danger">{% trans %}Warning! Uninstalling this extension will also permanently remove all data associated with it, including all data held by other extensions that are hooked to this extension.{% endtrans %}</p>
 {% if blocks|length > 0 %}
     <div class="alert alert-danger">
-        {% trans %}Warning! Removing this module will also remove the following blocks{% endtrans %}:
+        {% trans %}Warning! Removing this extension will also remove the following blocks{% endtrans %}:
         <ul>
             {% for block in blocks %}
             <li>{{ block.blocktype }} : {{ block.title|default(block.description) }}</li>
@@ -23,7 +23,7 @@
 {% endif %}
 {% if requiredDependents|length > 0 %}
     <div class="alert alert-danger">
-        {% trans %}Warning! Other modules present in the system require this module. If you uninstall this module then these modules that require it will also be uninstalled.{% endtrans %}
+        {% trans %}Warning! Other extensions present in the system require this extension. If you uninstall this extension then these extensions that require it will also be uninstalled.{% endtrans %}
         <ul>
             {% for dependent in requiredDependents %}
             <li>{{ dependent.displayname }}</li>
