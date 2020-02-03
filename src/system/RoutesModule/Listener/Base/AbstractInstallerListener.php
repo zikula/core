@@ -40,7 +40,7 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      *
      * Called after a extension has been successfully installed.
      * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getModule()` and `$event->getModInfo()`.
+     * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.
      *
@@ -57,7 +57,7 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      *
      * Called after a extension has been installed (on reload of the extensions view).
      * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getModule()` and `$event->getModInfo()`.
+     * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.
      *
@@ -74,7 +74,7 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      *
      * Called after a extension has been successfully upgraded.
      * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getModule()` and `$event->getModInfo()`.
+     * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.
      *
@@ -91,7 +91,7 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      *
      * Called after a extension has been successfully enabled.
      * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getModule()` and `$event->getModInfo()`.
+     * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.
      *
@@ -108,7 +108,7 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      *
      * Called after a extension has been successfully disabled.
      * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getModule()` and `$event->getModInfo()`.
+     * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.
      *
@@ -125,7 +125,7 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      *
      * Called after a extension has been successfully removed.
      * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getModule()` and `$event->getModInfo()`.
+     * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.
      *
