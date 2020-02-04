@@ -25,12 +25,6 @@ COPY_FILES=(
     ["composer_lock"]="${DOC_PATH}/dev"
 )
 
-echo "Prepare"
-mkdir -p "${BUILD_PATH}"
-mkdir -p "${EXPORT_PATH}"
-mkdir -p "${PACKAGE_PATH}"
-mkdir -p "${ARCHIVE_PATH}"
-
 echo "Composer Install"
 composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-scripts
 echo "Post autoload dump"
@@ -38,12 +32,15 @@ composer run-script post-autoload-dump
 echo "Post install command"
 composer run-script post-install-cmd
 
-echo "Copying sources to package directory..."
+echo "Create required directories..."
+mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
 if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
+    echo "Copying sources to package directory..."
     cp -r "${SOURCE_PATH}/src/" "${PACKAGE_PATH}"
 else # Zikula 3
-    # prevent copying sub directory into itself: !(build_work)
-    cp -r "${SOURCE_PATH}/!(build_work)" "${PACKAGE_PATH}"
+    echo "Copying sources to package directory..."
+    # use rsync to prevent copying sub directory into itself
+    rsync -Rr "${SOURCE_PATH}" "${PACKAGE_PATH}"
 fi
 
 echo "Generating composer_vendors file..."
