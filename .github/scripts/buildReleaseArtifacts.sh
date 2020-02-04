@@ -39,7 +39,11 @@ echo "Post install command"
 composer run-script post-install-cmd
 
 echo "Copying sources to package directory..."
-cp -a "${SOURCE_PATH}/src/". "${PACKAGE_PATH}"
+if [ "$GITHUB_REF" = "2.0" ]; then # Zikula 2
+    cp -a "${SOURCE_PATH}/src/". "${PACKAGE_PATH}"
+else # Zikula 3
+    cp -a "${SOURCE_PATH}/". "${PACKAGE_PATH}"
+fi
 
 echo "Generating composer_vendors file..."
 ${PHP_BUILD} build:generate_vendor_doc --write-to "${PACKAGE_PATH}/docs/Composer_Vendors.md"
@@ -60,7 +64,11 @@ echo "Purging tests from vendors..."
 ${PHP_BUILD} build:purge_vendors "${PACKAGE_PATH}/vendor"
 
 echo "Creating translation files..."
-php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract template --output-format=po --output-dir="${PACKAGE_PATH}/app/Resources/translations" --enable-extractor=jms_i18n_routing --dir="${PACKAGE_PATH}/system" --dir="${PACKAGE_PATH}/lib/Zikula/Bundle"
+if [ "$GITHUB_REF" = "2.0" ]; then # Zikula 2
+    php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract template --output-format=po --output-dir="${PACKAGE_PATH}/app/Resources/translations" --enable-extractor=jms_i18n_routing --dir="${PACKAGE_PATH}/system" --dir="${PACKAGE_PATH}/lib/Zikula/Bundle"
+else # Zikula 3
+    php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract zikula en
+fi
 
 echo "Clearing cache directory..."
 mv "${PACKAGE_PATH}/var/cache/.htaccess" "${PACKAGE_PATH}/var/"
@@ -72,19 +80,22 @@ if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
 #    mv "${PACKAGE_PATH}/var/log/.htaccess" "${PACKAGE_PATH}/var/"
     rm -rf "${PACKAGE_PATH}/var/log/"*
 #    mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/log/"
-elif [ -e "${PACKAGE_PATH}/var/logs" ]; then # Zikula 2
+else # Zikula 2
     mv "${PACKAGE_PATH}/var/logs/.htaccess" "${PACKAGE_PATH}/var/"
     rm -rf "${PACKAGE_PATH}/var/logs/"*
     mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/logs/"
 fi
 
 echo "Setting directory permissions..."
-chmod -R 0777 "${PACKAGE_PATH}/app/config"
-chmod -R 0777 "${PACKAGE_PATH}/app/config/dynamic"
-chmod -R 0777 "${PACKAGE_PATH}/var/cache"
 if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
+    chmod -R 0777 "${PACKAGE_PATH}/config"
+    chmod -R 0777 "${PACKAGE_PATH}/config/dynamic"
+    chmod -R 0777 "${PACKAGE_PATH}/var/cache"
     chmod -R 0777 "${PACKAGE_PATH}/var/log"
 elif [ -e "${PACKAGE_PATH}/var/logs" ]; then # Zikula 2
+    chmod -R 0777 "${PACKAGE_PATH}/app/config"
+    chmod -R 0777 "${PACKAGE_PATH}/app/config/dynamic"
+    chmod -R 0777 "${PACKAGE_PATH}/var/cache"
     chmod -R 0777 "${PACKAGE_PATH}/var/logs"
 fi
 
