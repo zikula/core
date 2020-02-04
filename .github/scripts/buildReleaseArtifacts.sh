@@ -1,8 +1,7 @@
 #!/bin/bash
 
-WORKSPACE_ROOT="${GITHUB_WORKSPACE}/"
-BUILD_PATH="${WORKSPACE_ROOT}build_work"
 SOURCE_PATH="${GITHUB_WORKSPACE}"
+BUILD_PATH="${GITHUB_WORKSPACE}/build_work"
 BRANCH_PREFIX="refs/heads/"
 BRANCH_NAME=${GITHUB_REF#"$BRANCH_PREFIX"}
 EXPORT_PATH="${BUILD_PATH}/export"
@@ -36,12 +35,11 @@ else # Zikula 3
     rsync -Rr "${SOURCE_PATH}" "${PACKAGE_PATH}"
 fi
 
+
 echo "PP: ${PACKAGE_PATH}"
-ls -l
-
 cd "${PACKAGE_PATH}"
-
 pwd
+ls -l
 
 
 echo "Composer Install"
