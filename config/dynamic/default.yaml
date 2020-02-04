@@ -2,6 +2,8 @@
 # generated.yaml
 # It's here to give an initial configuration (until Zikula is installed).
 
+jms_i18n_routing:
+    strategy: prefix_except_default
 swiftmailer:
     transport: smtp
     username: ''

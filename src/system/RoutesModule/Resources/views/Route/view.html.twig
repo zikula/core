@@ -14,7 +14,11 @@
             {% set title = 'reload installed languages'|trans %}
             {% set url = path('zikularoutesmodule_update_renew') %}
             {% trans with {'%action%': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw} %}In case one or more installed languages are not listed below, %action%.{% endtrans %}
-            {{ jms_i18n_routing|raw }}
+            <ul>
+            {% for key, value in jms_i18n_routing %}
+                <li><strong>{{ key }}:</strong> {{ value is iterable ? value|join(', ') : value }}</li>
+            {% endfor %}
+            </ul>
         </div>
         {% set viewActions = knp_menu_get('zikulaRoutesMenuViewActions', [], {objectType: 'route', area: routeArea}) %}
         {{ knp_menu_render(viewActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}

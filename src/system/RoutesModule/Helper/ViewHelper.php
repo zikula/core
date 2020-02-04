@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Helper;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\ExtensionsModule\Constant as ExtensionConstant;
@@ -25,6 +26,11 @@ use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
  */
 class ViewHelper extends AbstractViewHelper
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
     /**
      * @var DynamicConfigDumper
      */
@@ -45,7 +51,13 @@ class ViewHelper extends AbstractViewHelper
 
         if ('route' === $type) {
             if ('view' === $func) {
-                $enrichedTemplateParameters['jms_i18n_routing'] = $this->configDumper->getConfigurationForHtml('jms_i18n_routing');
+                $configGroup = 'jms_i18n_routing';
+                $dynamicConfig = $this->configDumper->getConfiguration($configGroup);
+                $enrichedTemplateParameters[$configGroup] = [
+                    'strategy' => $dynamicConfig['strategy'],
+                    'default_locale' => $this->container->getParameter($configGroup . '.default_locale'),
+                    'locales' => $this->container->getParameter($configGroup . '.locales')
+                ];
             } elseif ('edit' === $func) {
                 $urlNames = [];
                 /** @var ExtensionEntity[] $modules */
@@ -64,9 +76,11 @@ class ViewHelper extends AbstractViewHelper
      * @required
      */
     public function setAdditionalDependencies(
+        ContainerInterface $container,
         DynamicConfigDumper $configDumper,
         ExtensionRepositoryInterface $extensionRepository
     ): void {
+        $this->container = $container;
         $this->configDumper = $configDumper;
         $this->extensionRepository = $extensionRepository;
     }
