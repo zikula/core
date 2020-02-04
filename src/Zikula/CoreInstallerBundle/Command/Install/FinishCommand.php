@@ -24,10 +24,7 @@ use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
 class FinishCommand extends AbstractCoreInstallerCommand
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
+    protected static $defaultName = 'zikula:install:finish';
 
     /**
      * @var string
@@ -45,18 +42,14 @@ class FinishCommand extends AbstractCoreInstallerCommand
         StageHelper $stageHelper,
         TranslatorInterface $translator
     ) {
-        parent::__construct($translator);
-        $this->kernel = $kernel;
         $this->installed = $installed;
         $this->stageHelper = $stageHelper;
+        parent::__construct($kernel, $translator);
     }
 
     protected function configure()
     {
-        $this
-            ->setName('zikula:install:finish')
-            ->setDescription('Call this command after zikula:install:start')
-        ;
+        $this->setDescription('Call this command after zikula:install:start');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

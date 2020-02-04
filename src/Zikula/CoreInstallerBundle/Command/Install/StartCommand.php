@@ -34,10 +34,7 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
+    protected static $defaultName = 'zikula:install:start';
 
     /**
      * @var string
@@ -72,21 +69,18 @@ class StartCommand extends AbstractCoreInstallerCommand
         ParameterHelper $parameterHelper,
         TranslatorInterface $translator
     ) {
-        parent::__construct($translator);
         $this->kernel = $kernel;
         $this->installed = $installed;
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
         $this->localEnvFile = $kernel->getProjectDir() . '/.env.local';
+        parent::__construct($kernel, $translator);
     }
 
     protected function configure()
     {
-        $this
-            ->setName('zikula:install:start')
-            ->setDescription('call this command first')
-        ;
+        $this->setDescription('call this command first');
 
         foreach ($this->settings as $name => $setting) {
             $this->addOption(

@@ -82,7 +82,7 @@ abstract class AbstractExtensionCommand extends Command
     protected function isInstalled(string $bundleName)
     {
         if (null !== $extension = $this->extensionRepository->findOneBy(['name' => $bundleName])) {
-            if (in_array($extension->getState(), [Constant::STATE_ACTIVE, Constant::STATE_INACTIVE])) {
+            if (in_array($extension->getState(), [Constant::STATE_ACTIVE, Constant::STATE_INACTIVE], true)) {
                 return $extension;
             }
         }

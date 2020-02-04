@@ -28,6 +28,8 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
  */
 class AssetsInstallCommand extends Command
 {
+    protected static $defaultName = 'assets:install';
+
     /**
      * @var Filesystem
      */
@@ -42,9 +44,9 @@ class AssetsInstallCommand extends Command
         Filesystem $filesystem,
         ZikulaHttpKernelInterface $kernel
     ) {
+        parent::__construct();
         $this->filesystem = $filesystem;
         $this->kernel = $kernel;
-        parent::__construct('assets:install');
     }
 
     protected function configure()

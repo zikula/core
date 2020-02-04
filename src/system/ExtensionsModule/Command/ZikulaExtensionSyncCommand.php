@@ -22,17 +22,17 @@ use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
 
 class ZikulaExtensionSyncCommand extends Command
 {
+    protected static $defaultName = 'zikula:extension:sync';
+
     /**
      * @var BundleSyncHelper
      */
     private $bundleSyncHelper;
 
-    protected static $defaultName = 'zikula:extension:sync';
-
     public function __construct(BundleSyncHelper $bundleSyncHelper)
     {
-        $this->bundleSyncHelper = $bundleSyncHelper;
         parent::__construct();
+        $this->bundleSyncHelper = $bundleSyncHelper;
     }
 
     protected function configure()

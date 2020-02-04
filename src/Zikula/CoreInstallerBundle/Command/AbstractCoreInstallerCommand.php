@@ -17,6 +17,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 abstract class AbstractCoreInstallerCommand extends Command
@@ -25,6 +26,11 @@ abstract class AbstractCoreInstallerCommand extends Command
      * @var TranslatorInterface
      */
     protected $translator;
+
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    protected $kernel;
 
     /**
      * @var array
@@ -88,9 +94,12 @@ abstract class AbstractCoreInstallerCommand extends Command
         ]
     ];
 
-    public function __construct(TranslatorInterface $translator)
-    {
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        TranslatorInterface $translator
+    ) {
         parent::__construct();
+        $this->kernel = $kernel;
         $this->translator = $translator;
     }
 

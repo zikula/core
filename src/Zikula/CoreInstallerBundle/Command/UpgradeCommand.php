@@ -35,6 +35,8 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
+    protected static $defaultName = 'zikula:upgrade';
+
     /**
      * @var string
      */
@@ -44,11 +46,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
      * @var ParameterBagInterface
      */
     private $params;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
 
     /**
      * @var ControllerHelper
@@ -91,22 +88,19 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         TranslatorInterface $translator,
         ParameterBagInterface $params
     ) {
-        $this->kernel = $kernel;
         $this->controllerHelper = $controllerHelper;
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
         $this->params = $params;
         $this->currentInstalledVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
-        parent::__construct($translator);
+        parent::__construct($kernel, $translator);
     }
 
     protected function configure()
     {
-        $this
-            ->setDescription('Upgrade Zikula from the command line.')
-            ->setName('zikula:upgrade')
-        ;
+        $this->setDescription('Upgrade Zikula from the command line.');
+
         foreach ($this->settings as $name => $setting) {
             if (!in_array($name, $this->selectedSettings, true)) {
                 // only use selected settings for upgrade
