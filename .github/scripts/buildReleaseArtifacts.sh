@@ -8,7 +8,7 @@ BRANCH_NAME=${GITHUB_REF#"$BRANCH_PREFIX"}
 EXPORT_PATH="${BUILD_PATH}/export"
 PACKAGE_PATH="${EXPORT_PATH}/${BRANCH_NAME}"
 ARCHIVE_PATH="${BUILD_PATH}/archive"
-PHP_BUILD="${SOURCE_PATH}/build.php"
+PHP_BUILD="./build.php"
 
 DOC_PATH="${PACKAGE_PATH}/docs/en"
 declare -A COPY_FILES
@@ -25,13 +25,6 @@ COPY_FILES=(
     ["composer_lock"]="${DOC_PATH}/dev"
 )
 
-echo "Composer Install"
-composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-scripts
-echo "Post autoload dump"
-composer run-script post-autoload-dump
-echo "Post install command"
-composer run-script post-install-cmd
-
 echo "Create required directories..."
 mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
 if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
@@ -42,6 +35,15 @@ else # Zikula 3
     # use rsync to prevent copying sub directory into itself
     rsync -Rr "${SOURCE_PATH}" "${PACKAGE_PATH}"
 fi
+
+cd "${PACKAGE_PATH}"
+
+echo "Composer Install"
+composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-scripts
+echo "Post autoload dump"
+composer run-script post-autoload-dump
+echo "Post install command"
+composer run-script post-install-cmd
 
 echo "Generating composer_vendors file..."
 ${PHP_BUILD} build:generate_vendor_doc --write-to "${PACKAGE_PATH}/docs/Composer_Vendors.md"
