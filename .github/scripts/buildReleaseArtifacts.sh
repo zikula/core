@@ -37,6 +37,8 @@ else # Zikula 3
     mv /tmp/ZKTEMP/{*,.[^.]*} "${PACKAGE_PATH}"
 fi
 
+cd "${PACKAGE_PATH}"
+
 echo "Composer Install"
 composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-scripts
 echo "Post autoload dump"
