@@ -98,6 +98,8 @@ elif [ -e "${PACKAGE_PATH}/var/logs" ]; then # Zikula 2
     chmod -R 0777 "${PACKAGE_PATH}/var/logs"
 fi
 
+rm -rf ".git .github"
+
 echo "Creating archives..."
 #if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
 #    ${PHP_BUILD} build:package --name="${BRANCH_NAME}" --build-dir="${ARCHIVE_PATH}" --source-dir="${PACKAGE_PATH}"
