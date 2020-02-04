@@ -7,7 +7,7 @@
 {% if menufirst %}{{ moduleLinks(type) }}{% endif %}
 <div class="py-2 {% if type == 'user' %}z-modtitle clearfix{% else %}z-admin-content-modtitle{% endif %}">
     <h2>
-        <i class="{{ caller.info.icon|default(caller.info.capabilities.admin.icon)|default('fas fa-layer-group') }} fa-fw fa-lg align-middle"></i>
+        <i class="{{ caller.info.icon|default('fas fa-layer-group') }} fa-fw fa-lg align-middle"></i>
         {{ title|default('Extension'|trans) }}
     </h2>
 </div>
