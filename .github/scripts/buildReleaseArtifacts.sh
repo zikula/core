@@ -40,9 +40,10 @@ composer run-script post-install-cmd
 
 echo "Copying sources to package directory..."
 if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
-    cp -a "${SOURCE_PATH}/src/". "${PACKAGE_PATH}"
+    cp -r "${SOURCE_PATH}/src/" "${PACKAGE_PATH}"
 else # Zikula 3
-    cp -a "${SOURCE_PATH}/" "${PACKAGE_PATH}"
+    # prevent copying sub directory into itself: !(build_work)
+    cp -r "${SOURCE_PATH}/!(build_work)" "${PACKAGE_PATH}"
 fi
 
 echo "Generating composer_vendors file..."
