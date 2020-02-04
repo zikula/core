@@ -172,11 +172,10 @@ class CoreInstallerExtensionHelper
             'ZikulaMailerModule',
             'ZikulaSearchModule',
             'ZikulaMenuModule',
-            // themes don't have an upgrade routine in place yet
-//            'ZikulaBootstrapTheme',
-//            'ZikulaAtomTheme',
-//            'ZikulaRssTheme',
-//            'ZikulaPrinterTheme',
+            'ZikulaBootstrapTheme',
+            'ZikulaAtomTheme',
+            'ZikulaRssTheme',
+            'ZikulaPrinterTheme',
         ];
         $result = true;
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
