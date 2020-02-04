@@ -36,7 +36,13 @@ else # Zikula 3
     rsync -Rr "${SOURCE_PATH}" "${PACKAGE_PATH}"
 fi
 
+echo "PP: ${PACKAGE_PATH}"
+ls -l
+
 cd "${PACKAGE_PATH}"
+
+pwd
+
 
 echo "Composer Install"
 composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-scripts
