@@ -34,7 +34,7 @@ else # Zikula 3
     cp -r . /tmp/ZKTEMP
     mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
     # exclude . and ..
-    mv /tmp/ZKTEMP/{*,.[^.]*,..?*} "${PACKAGE_PATH}"
+    mv /tmp/ZKTEMP/{*,.[^.]*} "${PACKAGE_PATH}"
 fi
 
 echo "Composer Install"
