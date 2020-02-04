@@ -38,6 +38,8 @@ class PurgeVendorsCommand extends Command
         $progress->start();
 
         self::cleanVendors($dir, $progress);
+
+        return 0;
     }
 
     public static function cleanVendors($dir, ProgressBar $progress)

@@ -101,5 +101,7 @@ class GenerateVendorDocCommand extends Command
         $output->writeln('Dumping vendors to ' . $input->getOption('write-to'));
 
         file_put_contents($input->getOption('write-to'), $content);
+
+        return 0;
     }
 }

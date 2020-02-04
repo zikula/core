@@ -128,5 +128,7 @@ CHECKSUM;
         $progress->finish();
 
         $output->writeln("<info>Artifacts built in ${buildDir}/ folder</info>");
+
+        return 0;
     }
 }

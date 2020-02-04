@@ -39,10 +39,10 @@ echo "Post install command"
 composer run-script post-install-cmd
 
 echo "Copying sources to package directory..."
-if [ "$GITHUB_REF" = "2.0" ]; then # Zikula 2
+if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
     cp -a "${SOURCE_PATH}/src/". "${PACKAGE_PATH}"
 else # Zikula 3
-    cp -a "${SOURCE_PATH}/". "${PACKAGE_PATH}"
+    cp -a "${SOURCE_PATH}/" "${PACKAGE_PATH}"
 fi
 
 echo "Generating composer_vendors file..."
@@ -64,7 +64,7 @@ echo "Purging tests from vendors..."
 ${PHP_BUILD} build:purge_vendors "${PACKAGE_PATH}/vendor"
 
 echo "Creating translation files..."
-if [ "$GITHUB_REF" = "2.0" ]; then # Zikula 2
+if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
     php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract template --output-format=po --output-dir="${PACKAGE_PATH}/app/Resources/translations" --enable-extractor=jms_i18n_routing --dir="${PACKAGE_PATH}/system" --dir="${PACKAGE_PATH}/lib/Zikula/Bundle"
 else # Zikula 3
     php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract zikula en
