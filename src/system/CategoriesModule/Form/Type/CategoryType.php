@@ -77,10 +77,10 @@ class CategoryType extends AbstractType
                 'label' => 'Value',
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
-            ->add('icon', IconType::class, [
+            ->add($builder->create('icon', IconType::class, [
                 'label' => 'Icon',
                 'required' => false
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('status', CheckboxType::class, [
                 'label' => 'Active',
                 'label_attr' => ['class' => 'switch-custom'],

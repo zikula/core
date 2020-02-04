@@ -75,6 +75,13 @@ class ExtensionEntity extends EntityAccess
     private $version;
 
     /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min="0", max="50", allowEmptyString="true")
+     * @var string
+     */
+    private $icon;
+
+    /**
      * @ORM\Column(type="array")
      * @var array
      */
@@ -98,6 +105,13 @@ class ExtensionEntity extends EntityAccess
      * @var string
      */
     private $coreCompatibility;
+
+    public function __construct()
+    {
+        $this->name = '';
+        $this->description = '';
+        $this->icon = '';
+    }
 
     public function getId(): ?int
     {
@@ -157,6 +171,16 @@ class ExtensionEntity extends EntityAccess
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon ?? $this['capabilities']['admin']['icon'] ?? '';
+    }
+
+    public function setIcon(string $icon): void
+    {
+        $this->icon = $icon ?? '';
     }
 
     public function getVersion(): string

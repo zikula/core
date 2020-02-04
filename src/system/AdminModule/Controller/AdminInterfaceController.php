@@ -289,7 +289,7 @@ class AdminInterfaceController extends AbstractController
                 'order' => $order,
                 'id' => $adminModule['id'],
                 'extensionMenu' => $extensionMenu,
-                'icon' => $adminModule['capabilities']['admin']['icon'] ?? '',
+                'icon' => $adminModule['icon']
             ];
 
             $menuModules[$adminModule['name']] = $module;

@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
@@ -38,9 +40,14 @@ class ExtensionModifyType extends AbstractType
                 'input_group' => ['left' => '/'],
                 'help' => 'WARNING: changing the url affects SEO by breaking existing indexed search results.'
             ])
-            ->add('description', TextType::class, [
-                'label' => 'Description'
-            ])
+            ->add($builder->create('description', TextType::class, [
+                'label' => 'Description',
+                'required' => false
+            ])->addModelTransformer(new NullToEmptyTransformer()))
+            ->add($builder->create('icon', IconType::class, [
+                'label' => 'Icon',
+                'required' => false
+            ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',

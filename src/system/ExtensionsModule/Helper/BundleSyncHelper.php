@@ -290,6 +290,9 @@ class BundleSyncHelper
                 /** @var ExtensionEntity $extension */
                 $extension = $this->extensionRepository->find($extensionFromFile['id']);
                 $extension->merge($extensionFromFile);
+                if ($forceDefaults) {
+                    $extension->setIcon($extensionFromFile['capabilities']['admin']['icon']);
+                }
                 $this->extensionRepository->persistAndFlush($extension);
             }
 

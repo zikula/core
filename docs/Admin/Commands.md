@@ -55,6 +55,6 @@ Shortcut: `bin/console z:e:sy`
 
 Options:
 
-- `--include core` Force the system extensions to re-sync as well. Core data is _only_ stored in the `extensions` table.
+- `--include_core` Force the system extensions to re-sync as well. Core data is _only_ stored in the `extensions` table.
 
-Usage: `bin/console z:e:sy 1`
+Usage: `bin/console z:e:sy --include_core`

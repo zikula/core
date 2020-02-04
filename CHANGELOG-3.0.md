@@ -177,7 +177,7 @@
   - More user-friendly response messages during account information recovery (#3723).
   - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
   - Added CLI Commands to manage extension installation, upgrade and uninstall and sync (#3517).
-  - Added ability to choose a Font Awesome icon for admin categories and categories (#3598).
+  - Added ability to choose a Font Awesome icon for admin categories, categories and extensions (#3598, #4061).
   - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
   - `LocaleApi` is now able to work with regions, too (#4012, #2425).
   - New and removed locales are automatically reflected in the configuration (#4012, #2425).

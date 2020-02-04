@@ -39,7 +39,8 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
                 'ignore_deps',
                 null,
                 InputOption::VALUE_NONE,
-                'Force install the extension ignoring all dependencies')
+                'Force install the extension ignoring all dependencies'
+            )
         ;
     }
 
