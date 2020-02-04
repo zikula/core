@@ -100,7 +100,7 @@ elif [ -e "${PACKAGE_PATH}/var/logs" ]; then # Zikula 2
     chmod -R 0777 "${PACKAGE_PATH}/var/logs"
 fi
 
-rm -rf "${PACKAGE_PATH}/.git ${PACKAGE_PATH}/.github"
+rm -rf "${PACKAGE_PATH}/.git" "${PACKAGE_PATH}/.github"
 
 echo "Creating archives..."
 #if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
