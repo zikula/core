@@ -25,20 +25,18 @@ COPY_FILES=(
 )
 
 echo "Create required directories..."
-mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
 if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
     echo "Copying sources to package directory..."
     cp -r "${SOURCE_PATH}/src/" "${PACKAGE_PATH}"
 else # Zikula 3
     echo "Copying sources to package directory..."
-    # use rsync to prevent copying sub directory into itself
-    rsync -Rr "${SOURCE_PATH}" "${PACKAGE_PATH}"
+    # prevent copying sub directory into itself
+    cp -r . /tmp/ZKTEMP
+    mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
+    mv /tmp/ZKTEMP "${PACKAGE_PATH}"
 fi
 
-
-echo "PP: ${PACKAGE_PATH}"
 cd "${PACKAGE_PATH}"
-pwd
 ls -l
 
 
