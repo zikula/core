@@ -33,12 +33,9 @@ else # Zikula 3
     # prevent copying sub directory into itself
     cp -r . /tmp/ZKTEMP
     mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
-    mv /tmp/ZKTEMP/* /tmp/ZKTEMP/.* "${PACKAGE_PATH}"
+    # exclude . and ..
+    mv /tmp/ZKTEMP/{*,.[^.]*,..?*} "${PACKAGE_PATH}"
 fi
-
-cd "${PACKAGE_PATH}"
-ls -l
-
 
 echo "Composer Install"
 composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-scripts
