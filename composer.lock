@@ -189,16 +189,16 @@
         },
         {
             "name": "components/font-awesome",
-            "version": "5.12.0",
+            "version": "5.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "d8646ec635a00b06cc219b7dffed3418444975cc"
+                "reference": "f033e952d0e20684443c0466045deae61fd4e733"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/d8646ec635a00b06cc219b7dffed3418444975cc",
-                "reference": "d8646ec635a00b06cc219b7dffed3418444975cc",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/f033e952d0e20684443c0466045deae61fd4e733",
+                "reference": "f033e952d0e20684443c0466045deae61fd4e733",
                 "shasum": ""
             },
             "type": "component",
@@ -220,7 +220,7 @@
                 "OFL-1.1"
             ],
             "description": "Font Awesome, the iconic SVG, font, and CSS framework.",
-            "time": "2020-01-08T10:17:47+00:00"
+            "time": "2020-02-05T15:33:46+00:00"
         },
         {
             "name": "components/jquery",
@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "fb93036a70c9520cab99b46723ebc8f2e6fd82a6"
+                "reference": "f4762ef0216ae435ab053f68e5bcdff966cf8d4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/fb93036a70c9520cab99b46723ebc8f2e6fd82a6",
-                "reference": "fb93036a70c9520cab99b46723ebc8f2e6fd82a6",
+                "url": "https://api.github.com/repos/composer/composer/zipball/f4762ef0216ae435ab053f68e5bcdff966cf8d4f",
+                "reference": "f4762ef0216ae435ab053f68e5bcdff966cf8d4f",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-01-28T13:22:11+00:00"
+            "time": "2020-02-04T11:58:34+00:00"
         },
         {
             "name": "composer/installers",
