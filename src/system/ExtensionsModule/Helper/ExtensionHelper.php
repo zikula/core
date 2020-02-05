@@ -24,11 +24,11 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\AbstractBundle;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -195,7 +195,7 @@ class ExtensionHelper
             return false;
         }
 
-        /** @var AbstractBundle $bundle */
+        /** @var \Zikula\ExtensionsModule\AbstractBundle $bundle */
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($bundle);

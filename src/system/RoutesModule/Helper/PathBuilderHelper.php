@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Helper;
 
 use Exception;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractBundle;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 class PathBuilderHelper

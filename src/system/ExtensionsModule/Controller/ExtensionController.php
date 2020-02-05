@@ -23,7 +23,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
@@ -33,6 +32,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\ExtensionsModule\AbstractBundle;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -203,7 +203,7 @@ class ExtensionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        /** @var AbstractBundle $bundle */
+        /** @var \Zikula\ExtensionsModule\AbstractBundle $bundle */
         $bundle = $kernel->getBundle($extension->getName());
         $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
 

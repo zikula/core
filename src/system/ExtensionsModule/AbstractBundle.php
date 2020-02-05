@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreBundle;
+namespace Zikula\ExtensionsModule;
 
 use InvalidArgumentException;
 use LogicException;

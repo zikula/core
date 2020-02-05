@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractBundle;
 
 /**
  * Class ExtensionStateEvent

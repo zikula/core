@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
-use Zikula\Bundle\CoreBundle\AbstractBundle;
-
 abstract class AbstractModule extends AbstractBundle
 {
     public function getNameType(): string

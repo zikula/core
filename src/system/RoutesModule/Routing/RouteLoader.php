@@ -21,8 +21,8 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractBundle;
 use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -104,7 +104,7 @@ class RouteLoader extends Loader
 
         $routeCollection = new RouteCollection();
 
-        list ($topRoutes, $middleRoutes, $bottomRoutes) = $this->findAll();
+        [$topRoutes, $middleRoutes, $bottomRoutes] = $this->findAll();
 
         $routeCollection->addCollection($topRoutes);
 
@@ -145,7 +145,7 @@ class RouteLoader extends Loader
         $middleRoutes = new RouteCollection();
         $bottomRoutes = new RouteCollection();
         foreach ($bundles as $bundle) {
-            list ($currentMiddleRoutes, $currentTopRoutes, $currentBottomRoutes) = $this->find($bundle);
+            [$currentMiddleRoutes, $currentTopRoutes, $currentBottomRoutes] = $this->find($bundle);
             $middleRoutes->addCollection($currentMiddleRoutes);
             $topRoutes->addCollection($currentTopRoutes);
             $bottomRoutes->addCollection($currentBottomRoutes);
@@ -190,7 +190,7 @@ class RouteLoader extends Loader
         foreach ($routeCollection as $oldRouteName => $route) {
             // set break here with $oldRouteName == 'zikula_routesmodule_route_renew'
             $this->prependBundlePrefix($route, $bundle);
-            list($type, $func) = $this->setZikulaDefaults($route, $bundle, $name);
+            [$type, $func] = $this->setZikulaDefaults($route, $bundle, $name);
             $routeName = $this->getRouteName($oldRouteName, $name, $type, $func);
 
             if ($route->hasOption('zkPosition')) {
@@ -228,8 +228,8 @@ class RouteLoader extends Loader
             // Add modname, type and func to the route's default values.
             $defaults = $dbRoute->getDefaults();
             $defaults['_zkModule'] = $bundleName;
-            list (, $type) = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
-            list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
+            [, $type] = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
+            [, $func] = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
             $defaults['_zkType'] = $type;
             $defaults['_zkFunc'] = $func;
             $defaults['_controller'] = $bundle->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func) . 'Action';

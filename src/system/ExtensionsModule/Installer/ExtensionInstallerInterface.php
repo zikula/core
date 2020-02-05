@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Installer;
 
-use Zikula\Bundle\CoreBundle\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractBundle;
 
 /**
  * Interface ExtensionInstallerInterface
