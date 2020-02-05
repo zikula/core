@@ -18,6 +18,7 @@
 !/public/index.php
 !/public/uploads/
 /src/extensions/*
+!src/extensions/.gitignore
 !/tests/test_dbs/*.sql
 /src/Zikula/CoreBundle/Tests/Functional/cache/
 /translations/*
