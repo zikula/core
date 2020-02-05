@@ -50,7 +50,7 @@ class Engine
     /**
      * The instance of the currently active theme.
      *
-     * @var \Zikula\ExtensionsModule\AbstractTheme
+     * @var AbstractTheme
      */
     private $activeThemeBundle;
 
