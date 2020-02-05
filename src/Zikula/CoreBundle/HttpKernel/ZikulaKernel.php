@@ -23,7 +23,7 @@ use Zikula\AtomTheme\ZikulaAtomTheme;
 use Zikula\BlocksModule\ZikulaBlocksModule;
 use Zikula\BootstrapTheme\ZikulaBootstrapTheme;
 use Zikula\CategoriesModule\ZikulaCategoriesModule;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\ZikulaExtensionsModule;
 use Zikula\GroupsModule\ZikulaGroupsModule;
@@ -167,7 +167,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     {
         $bundles = [];
         foreach ($this->bundles as $bundle) {
-            if (!$bundle instanceof AbstractBundle) {
+            if (!$bundle instanceof AbstractExtension) {
                 $bundles[] = $bundle;
             }
         }
@@ -215,7 +215,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         /* @var BundleInterface $bundle */
         foreach ($this->getBundles() as $bundle) {
             if (0 === mb_strpos($class, $bundle->getNamespace())) {
-                return $bundle instanceof AbstractBundle;
+                return $bundle instanceof AbstractExtension;
             }
         }
 

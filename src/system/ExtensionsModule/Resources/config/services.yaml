@@ -34,7 +34,7 @@ services:
     Zikula\ExtensionsModule\Helper\ExtensionHelper:
         public: true
 
-    # public because AbstractBundle accesses this using container
+    # public because AbstractExtension accesses this using container
     Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository:
         public: true
 

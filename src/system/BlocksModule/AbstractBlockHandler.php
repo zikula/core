@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -29,7 +29,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     use ExtensionVariablesTrait;
 
     /**
-     * @var AbstractBundle
+     * @var AbstractExtension
      */
     protected $bundle;
 
@@ -49,7 +49,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     protected $twig;
 
     public function __construct(
-        AbstractBundle $bundle,
+        AbstractExtension $bundle,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
@@ -69,7 +69,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     /**
      * Boot the handler.
      */
-    protected function boot(AbstractBundle $bundle): void
+    protected function boot(AbstractExtension $bundle): void
     {
         // load optional bootstrap
         $bootstrap = $bundle->getPath() . '/bootstrap.php';
@@ -151,7 +151,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         return $this->permissionApi->hasPermission($component, $instance, $level, $user);
     }
 
-    public function getBundle(): AbstractBundle
+    public function getBundle(): AbstractExtension
     {
         return $this->bundle;
     }

@@ -22,7 +22,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -159,7 +159,7 @@ class RouteLoader extends Loader
      *
      * @return RouteCollection[]
      */
-    private function find(AbstractBundle $bundle): array
+    private function find(AbstractExtension $bundle): array
     {
         try {
             $path = $this->kernel->locateResource($bundle->getRoutingConfig());
@@ -267,7 +267,7 @@ class RouteLoader extends Loader
      *
      * @return array The legacy $type and $func parameters
      */
-    private function setZikulaDefaults(Route $route, AbstractBundle $bundle, string $bundleName): array
+    private function setZikulaDefaults(Route $route, AbstractExtension $bundle, string $bundleName): array
     {
         $defaults = $route->getDefaults();
 
@@ -300,7 +300,7 @@ class RouteLoader extends Loader
      * If i18n is set to true, Zikula's customized pattern generation strategy will take care of it.
      * See Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
      */
-    private function prependBundlePrefix(Route $route, AbstractBundle $bundle)
+    private function prependBundlePrefix(Route $route, AbstractExtension $bundle)
     {
         $prefix = '';
         $options = $route->getOptions();

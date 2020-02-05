@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
-abstract class AbstractModule extends AbstractBundle
+abstract class AbstractModule extends AbstractExtension
 {
     public function getNameType(): string
     {

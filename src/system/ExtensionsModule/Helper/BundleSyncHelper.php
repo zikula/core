@@ -25,7 +25,7 @@ use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
@@ -141,7 +141,7 @@ class BundleSyncHelper
 
             $bundleClass = $bundleMetaData->getClass();
 
-            /** @var $bundle \Zikula\ExtensionsModule\AbstractBundle */
+            /** @var $bundle \Zikula\ExtensionsModule\AbstractExtension */
             $bundle = new $bundleClass();
             $bundleMetaData->setTranslator($this->translator);
             $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
@@ -181,7 +181,7 @@ class BundleSyncHelper
     {
         foreach (ZikulaKernel::$coreExtension as $systemModule => $bundleClass) {
             $bundle = $this->kernel->getBundle($systemModule);
-            if ($bundle instanceof AbstractBundle) {
+            if ($bundle instanceof AbstractExtension) {
                 $extensions[$systemModule] = $bundle->getMetaData()->getFilteredVersionInfoArray();
             }
         }

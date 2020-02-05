@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -33,7 +33,7 @@ abstract class AbstractController extends BaseController
     use ExtensionVariablesTrait;
 
     /**
-     * @var AbstractBundle
+     * @var AbstractExtension
      */
     private $bundle;
 
@@ -51,7 +51,7 @@ abstract class AbstractController extends BaseController
      * @throws InvalidArgumentException
      */
     public function __construct(
-        AbstractBundle $bundle,
+        AbstractExtension $bundle,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
@@ -68,7 +68,7 @@ abstract class AbstractController extends BaseController
     /**
      * Boot the controller.
      */
-    protected function boot(AbstractBundle $bundle): void
+    protected function boot(AbstractExtension $bundle): void
     {
         // load optional bootstrap
         $bootstrap = $bundle->getPath() . '/bootstrap.php';

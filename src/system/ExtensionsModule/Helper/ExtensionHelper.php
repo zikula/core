@@ -28,7 +28,7 @@ use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -104,7 +104,7 @@ class ExtensionHelper
             throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getName()]));
         }
 
-        /** @var AbstractBundle $bundle */
+        /** @var AbstractExtension $bundle */
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($bundle);
@@ -136,7 +136,7 @@ class ExtensionHelper
             throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getDisplayname()]));
         }
 
-        /** @var AbstractBundle $bundle */
+        /** @var AbstractExtension $bundle */
         $bundle = $this->container->get('kernel')->getModule($extension->getName());
 
         // Check status of Dependencies here to be sure they are met for upgraded extension. #3647
@@ -195,7 +195,7 @@ class ExtensionHelper
             return false;
         }
 
-        /** @var \Zikula\ExtensionsModule\AbstractBundle $bundle */
+        /** @var \Zikula\ExtensionsModule\AbstractExtension $bundle */
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($bundle);
@@ -263,7 +263,7 @@ class ExtensionHelper
     /**
      * Attempt to get an instance of an extension Installer.
      */
-    private function getExtensionInstallerInstance(AbstractBundle $bundle): ?ExtensionInstallerInterface
+    private function getExtensionInstallerInstance(AbstractExtension $bundle): ?ExtensionInstallerInterface
     {
         $className = $bundle->getInstallerClass();
         if (!class_exists($className)) {

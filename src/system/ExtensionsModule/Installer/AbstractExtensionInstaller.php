@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
@@ -42,7 +42,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $container;
 
     /**
-     * @var \Zikula\ExtensionsModule\AbstractBundle
+     * @var \Zikula\ExtensionsModule\AbstractExtension
      */
     protected $bundle;
 
@@ -71,7 +71,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
      */
     abstract public function uninstall(): bool;
 
-    public function setBundle(AbstractBundle $bundle): void
+    public function setBundle(AbstractExtension $bundle): void
     {
         $this->bundle = $bundle;
         $this->name = $bundle->getName();

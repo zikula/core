@@ -32,7 +32,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -203,7 +203,7 @@ class ExtensionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        /** @var \Zikula\ExtensionsModule\AbstractBundle $bundle */
+        /** @var \Zikula\ExtensionsModule\AbstractExtension $bundle */
         $bundle = $kernel->getBundle($extension->getName());
         $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
 
@@ -368,7 +368,7 @@ class ExtensionController extends AbstractController
                 if (null === $extensionRepository) {
                     continue;
                 }
-                /** @var AbstractBundle $bundle */
+                /** @var AbstractExtension $bundle */
                 $bundle = $kernel->getBundle($extensionEntity->getName());
                 if (null === $bundle) {
                     continue;

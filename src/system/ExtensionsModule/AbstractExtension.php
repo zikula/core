@@ -26,7 +26,7 @@ use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
-abstract class AbstractBundle extends Bundle
+abstract class AbstractExtension extends Bundle
 {
     public function getInstallerClass(): string
     {

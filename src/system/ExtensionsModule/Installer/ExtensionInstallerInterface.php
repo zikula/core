@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Installer;
 
-use Zikula\ExtensionsModule\AbstractBundle;
+use Zikula\ExtensionsModule\AbstractExtension;
 
 /**
  * Interface ExtensionInstallerInterface
  */
 interface ExtensionInstallerInterface extends InstallerInterface
 {
-    public function setBundle(AbstractBundle $bundle): void;
+    public function setBundle(AbstractExtension $bundle): void;
 }
