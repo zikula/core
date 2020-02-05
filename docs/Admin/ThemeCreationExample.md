@@ -12,8 +12,6 @@ example is based on the ZikulaBoostrapTheme of Zikula 1.4.5
 ```php
 namespace Company\PaulaTheme;
 
-use \Zikula\ThemeModule\AbstractTheme;
-
 class CompanyPaulaTheme extends AbstractTheme
 {
 }

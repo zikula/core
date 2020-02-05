@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BootstrapTheme;
 
-use Zikula\ThemeModule\AbstractCoreTheme;
+use Zikula\ExtensionsModule\AbstractCoreTheme;
 
 class ZikulaBootstrapTheme extends AbstractCoreTheme
 {

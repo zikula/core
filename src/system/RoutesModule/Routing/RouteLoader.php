@@ -24,12 +24,12 @@ use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\AbstractModule;
+use Zikula\ExtensionsModule\AbstractTheme;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 use Zikula\RoutesModule\Helper\PathBuilderHelper;
 use Zikula\RoutesModule\Helper\SanitizeHelper;
-use Zikula\ThemeModule\AbstractTheme;
 
 /**
  * Custom route loader.

@@ -15,7 +15,7 @@ namespace Zikula\RssTheme;
 
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use Zikula\ThemeModule\AbstractCoreTheme;
+use Zikula\ExtensionsModule\AbstractCoreTheme;
 
 class ZikulaRssTheme extends AbstractCoreTheme
 {
