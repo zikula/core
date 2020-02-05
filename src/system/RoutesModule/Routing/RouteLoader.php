@@ -139,13 +139,13 @@ class RouteLoader extends Loader
     {
         $modules = $this->kernel->getModules();
         $themes = $this->kernel->getThemes();
-        $bundles = array_merge($modules, $themes);
+        $extensions = array_merge($modules, $themes);
 
         $topRoutes = new RouteCollection();
         $middleRoutes = new RouteCollection();
         $bottomRoutes = new RouteCollection();
-        foreach ($bundles as $bundle) {
-            [$currentMiddleRoutes, $currentTopRoutes, $currentBottomRoutes] = $this->find($bundle);
+        foreach ($extensions as $extension) {
+            [$currentMiddleRoutes, $currentTopRoutes, $currentBottomRoutes] = $this->find($extension);
             $middleRoutes->addCollection($currentMiddleRoutes);
             $topRoutes->addCollection($currentTopRoutes);
             $bottomRoutes->addCollection($currentBottomRoutes);
@@ -159,15 +159,15 @@ class RouteLoader extends Loader
      *
      * @return RouteCollection[]
      */
-    private function find(AbstractExtension $bundle): array
+    private function find(AbstractExtension $extension): array
     {
         try {
-            $path = $this->kernel->locateResource($bundle->getRoutingConfig());
+            $path = $this->kernel->locateResource($extension->getRoutingConfig());
         } catch (InvalidArgumentException $exception) {
-            // Routing file does not exist (e.g. because the bundle could not be located).
+            // Routing file does not exist (e.g. because the extension could not be located).
             return [new RouteCollection(), new RouteCollection(), new RouteCollection()];
         }
-        $name = $bundle->getName();
+        $name = $extension->getName();
 
         $topRoutes = new RouteCollection();
         $middleRoutes = new RouteCollection();
@@ -189,8 +189,8 @@ class RouteLoader extends Loader
         /** @var Route $route */
         foreach ($routeCollection as $oldRouteName => $route) {
             // set break here with $oldRouteName == 'zikula_routesmodule_route_renew'
-            $this->prependBundlePrefix($route, $bundle);
-            [$type, $func] = $this->setZikulaDefaults($route, $bundle, $name);
+            $this->prependExtensionPrefix($route, $extension);
+            [$type, $func] = $this->setZikulaDefaults($route, $extension, $name);
             $routeName = $this->getRouteName($oldRouteName, $name, $type, $func);
 
             if ($route->hasOption('zkPosition')) {
@@ -219,25 +219,25 @@ class RouteLoader extends Loader
     {
         /** @var RouteEntity $dbRoute */
         foreach ($customRoutes as $dbRoute) {
-            $bundleName = $dbRoute->getBundle();
-            if (!$this->kernel->isBundle($bundleName)) {
+            $extensionName = $dbRoute->getBundle();
+            if (!$this->kernel->isBundle($extensionName)) {
                 continue;
             }
-            $bundle = $this->kernel->getBundle($bundleName);
+            $extension = $this->kernel->getBundle($extensionName);
 
             // Add modname, type and func to the route's default values.
             $defaults = $dbRoute->getDefaults();
-            $defaults['_zkModule'] = $bundleName;
+            $defaults['_zkModule'] = $extensionName;
             [, $type] = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
             [, $func] = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
             $defaults['_zkType'] = $type;
             $defaults['_zkFunc'] = $func;
-            $defaults['_controller'] = $bundle->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func) . 'Action';
+            $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func) . 'Action';
 
-            // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
+            // We have to prepend the extension prefix (see detailed description in docblock of prependExtensionPrefix() method).
             $options = $dbRoute->getOptions();
-            $prependBundle = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
-            if ($prependBundle) {
+            $prependExtension = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
+            if ($prependExtension) {
                 $path = $this->pathBuilderHelper->getPathWithBundlePrefix($dbRoute);
             } else {
                 $path = $dbRoute->getPath();
@@ -267,22 +267,22 @@ class RouteLoader extends Loader
      *
      * @return array The legacy $type and $func parameters
      */
-    private function setZikulaDefaults(Route $route, AbstractExtension $bundle, string $bundleName): array
+    private function setZikulaDefaults(Route $route, AbstractExtension $extension, string $extensionName): array
     {
         $defaults = $route->getDefaults();
 
-        $defaults['_zkBundle'] = $bundleName;
-        if ($bundle instanceof AbstractModule) {
-            $defaults['_zkModule'] = $bundleName;
-        } else if ($bundle instanceof AbstractTheme) {
-            $defaults['_zkTheme'] = $bundleName;
+        $defaults['_zkBundle'] = $extensionName;
+        if ($extension instanceof AbstractModule) {
+            $defaults['_zkModule'] = $extensionName;
+        } else if ($extension instanceof AbstractTheme) {
+            $defaults['_zkTheme'] = $extensionName;
         }
 
-        $controller = $this->sanitizeController($bundleName, $defaults['_controller']);
+        $controller = $this->sanitizeController($extensionName, $defaults['_controller']);
         $controller = explode(':', $controller);
         $defaults['_zkType'] = $type = lcfirst($controller[1]);
         $defaults['_zkFunc'] = $func = lcfirst($controller[2]);
-        $defaults['_controller'] = $bundle->getNamespace() . '\\Controller\\' . ucfirst($controller[1]) . 'Controller::' . $func . 'Action';
+        $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($controller[1]) . 'Controller::' . $func . 'Action';
 
         $route->setDefaults($defaults);
 
@@ -290,33 +290,33 @@ class RouteLoader extends Loader
     }
 
     /**
-     * Prepends the bundle prefix to the route.
+     * Prepends the extension prefix to the route.
      *
-     * We have to prepend the bundle prefix if
+     * We have to prepend the extension prefix if
      * - routes are _not_ currently extracted via the command line and
      * - the route has i18n set to false.
-     * This is because when extracting the routes, a bundle author only wants to translate the bare route
-     * patterns, without a redundant and potentially customized bundle prefix in front of them.
+     * This is because when extracting the routes, a extension author only wants to translate the bare route
+     * patterns, without a redundant and potentially customized extension prefix in front of them.
      * If i18n is set to true, Zikula's customized pattern generation strategy will take care of it.
      * See Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
      */
-    private function prependBundlePrefix(Route $route, AbstractExtension $bundle)
+    private function prependExtensionPrefix(Route $route, AbstractExtension $extension)
     {
         $prefix = '';
         $options = $route->getOptions();
-        $prependBundle = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
-        if (!$prependBundle) {
+        $prependExtension = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
+        if (!$prependExtension) {
             return;
         }
         if ((isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix'])) {
             return;
         }
 
-        // get url from bundle meta data first. May be empty.
-        $untranslatedPrefix = $bundle->getMetaData()->getUrl(false);
+        // get url from extension meta data first. May be empty.
+        $untranslatedPrefix = $extension->getMetaData()->getUrl(false);
         if (!empty($untranslatedPrefix)) {
-            if ($this->translator->getCatalogue($this->locale)->has($untranslatedPrefix, strtolower($bundle->getName()))) {
-                $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($bundle->getName()), $this->locale);
+            if ($this->translator->getCatalogue($this->locale)->has($untranslatedPrefix, strtolower($extension->getName()))) {
+                $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($extension->getName()), $this->locale);
             } else {
                 $prefix = $untranslatedPrefix;
             }
@@ -329,22 +329,22 @@ class RouteLoader extends Loader
     /**
      * Converts the controller identifier into a unified form.
      *
-     * @return string The controller identifier in a Bundle:Type:func form
+     * @return string The controller identifier in a Extension:Type:func form
      */
-    private function sanitizeController(string $bundleName, string $controllerString): string
+    private function sanitizeController(string $extensionName, string $controllerString): string
     {
         if (0 === preg_match('#^(.*?\\\\Controller\\\\(.+)Controller)::(.+)Action$#', $controllerString, $match)) {
             return $controllerString;
         }
 
-        // Bundle:controller:action
-        return $bundleName . ':' . $match[2] . ':' . $match[3];
+        // Extension:controller:action
+        return $extensionName . ':' . $match[2] . ':' . $match[3];
     }
 
     /**
      * Generates the route's new name.
      */
-    private function getRouteName(string $oldRouteName, string $bundleName, string $type, string $func): string
+    private function getRouteName(string $oldRouteName, string $extensionName, string $type, string $func): string
     {
         $suffix = '';
         $lastHit = strrpos($oldRouteName, '_');
@@ -357,7 +357,7 @@ class RouteLoader extends Loader
             }
         }
 
-        return strtolower($bundleName . '_' . $type . '_' . $func) . $suffix;
+        return strtolower($extensionName . '_' . $type . '_' . $func) . $suffix;
     }
 
     /**

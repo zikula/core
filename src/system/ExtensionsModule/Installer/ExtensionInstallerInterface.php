@@ -20,5 +20,5 @@ use Zikula\ExtensionsModule\AbstractExtension;
  */
 interface ExtensionInstallerInterface extends InstallerInterface
 {
-    public function setBundle(AbstractExtension $bundle): void;
+    public function setExtension(AbstractExtension $extension): void;
 }

@@ -32,7 +32,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     use ExtensionVariablesTrait;
 
     /**
-     * @var string the bundle name
+     * @var string the extension name
      */
     protected $name;
 
@@ -42,9 +42,9 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $container;
 
     /**
-     * @var \Zikula\ExtensionsModule\AbstractExtension
+     * @var AbstractExtension
      */
-    protected $bundle;
+    protected $extension;
 
     /**
      * @var EntityManagerInterface
@@ -71,10 +71,10 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
      */
     abstract public function uninstall(): bool;
 
-    public function setBundle(AbstractExtension $bundle): void
+    public function setExtension(AbstractExtension $extension): void
     {
-        $this->bundle = $bundle;
-        $this->name = $bundle->getName();
+        $this->extension = $extension;
+        $this->name = $extension->getName();
     }
 
     public function setContainer(ContainerInterface $container = null)

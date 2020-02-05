@@ -104,7 +104,7 @@ class BlockController extends AbstractController
         }
         $form->handleRequest($request);
 
-        $moduleName = $blockInstance->getBundle()->getName();
+        $moduleName = $blockInstance->getExtension()->getName();
         if ($form->isSubmitted()) {
             if ($form->isValid() && $form->get('save')->isClicked()) {
                 // remove orphan properties (#3892)

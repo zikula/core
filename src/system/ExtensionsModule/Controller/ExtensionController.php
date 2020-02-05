@@ -203,9 +203,9 @@ class ExtensionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        /** @var \Zikula\ExtensionsModule\AbstractExtension $bundle */
-        $bundle = $kernel->getBundle($extension->getName());
-        $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
+        /** @var AbstractExtension $extensionBundle */
+        $extensionBundle = $kernel->getBundle($extension->getName());
+        $metaData = $extensionBundle->getMetaData()->getFilteredVersionInfoArray();
 
         if ($forceDefaults) {
             $extension->setName($metaData['name']);
@@ -368,12 +368,12 @@ class ExtensionController extends AbstractController
                 if (null === $extensionRepository) {
                     continue;
                 }
-                /** @var AbstractExtension $bundle */
-                $bundle = $kernel->getBundle($extensionEntity->getName());
-                if (null === $bundle) {
+                /** @var AbstractExtension $extensionBundle */
+                $extensionBundle = $kernel->getBundle($extensionEntity->getName());
+                if (null === $extensionBundle) {
                     continue;
                 }
-                $event = new ExtensionStateEvent($bundle, $extensionEntity->toArray());
+                $event = new ExtensionStateEvent($extensionBundle, $extensionEntity->toArray());
                 $eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_POSTINSTALL);
             }
         }

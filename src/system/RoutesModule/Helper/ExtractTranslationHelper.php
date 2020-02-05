@@ -31,7 +31,7 @@ class ExtractTranslationHelper
     /**
      * Sets the currently extracted bundle.
      */
-    public function setBundleName(string $bundle): void
+    public function setExtensionName(string $bundle): void
     {
         $this->extractedBundle = $bundle;
     }

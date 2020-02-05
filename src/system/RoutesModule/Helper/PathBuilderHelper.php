@@ -42,16 +42,16 @@ class PathBuilderHelper
         }
 
         /**
-         * @var AbstractExtension $bundle
+         * @var AbstractExtension $extensionBundle
          */
-        $bundle = null;
+        $extensionBundle = null;
         try {
-            $bundle = $this->kernel->getBundle($route->getBundle());
+            $extensionBundle = $this->kernel->getBundle($route->getBundle());
         } catch (Exception $exception) {
             return $route->getPath();
         }
 
-        // return path prepended with bundle prefix
-        return '/' . $bundle->getMetaData()->getUrl() . $route->getPath();
+        // return path prepended with extensionBundle prefix
+        return '/' . $extensionBundle->getMetaData()->getUrl() . $route->getPath();
     }
 }

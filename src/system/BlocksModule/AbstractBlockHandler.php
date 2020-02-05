@@ -31,7 +31,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     /**
      * @var AbstractExtension
      */
-    protected $bundle;
+    protected $extension;
 
     /**
      * @var RequestStack
@@ -49,30 +49,30 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     protected $twig;
 
     public function __construct(
-        AbstractExtension $bundle,
+        AbstractExtension $extension,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
         Environment $twig
     ) {
-        $this->bundle = $bundle;
-        $this->extensionName = $bundle->getName(); // for ExtensionVariablesTrait
+        $this->extension = $extension;
+        $this->extensionName = $extension->getName(); // for ExtensionVariablesTrait
         $this->requestStack = $requestStack;
         $this->setTranslator($translator); // for TranslatorTrait
         $this->variableApi = $variableApi; // for ExtensionVariablesTrait
         $this->permissionApi = $permissionApi;
         $this->twig = $twig;
-        $this->boot($bundle);
+        $this->boot($extension);
     }
 
     /**
      * Boot the handler.
      */
-    protected function boot(AbstractExtension $bundle): void
+    protected function boot(AbstractExtension $extension): void
     {
         // load optional bootstrap
-        $bootstrap = $bundle->getPath() . '/bootstrap.php';
+        $bootstrap = $extension->getPath() . '/bootstrap.php';
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
@@ -151,8 +151,8 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         return $this->permissionApi->hasPermission($component, $instance, $level, $user);
     }
 
-    public function getBundle(): AbstractExtension
+    public function getExtension(): AbstractExtension
     {
-        return $this->bundle;
+        return $this->extension;
     }
 }

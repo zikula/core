@@ -35,7 +35,7 @@ abstract class AbstractController extends BaseController
     /**
      * @var AbstractExtension
      */
-    private $bundle;
+    private $extension;
 
     /**
      * @var string
@@ -51,27 +51,27 @@ abstract class AbstractController extends BaseController
      * @throws InvalidArgumentException
      */
     public function __construct(
-        AbstractExtension $bundle,
+        AbstractExtension $extension,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
     ) {
-        $this->bundle = $bundle;
-        $this->name = $bundle->getName();
+        $this->extension = $extension;
+        $this->name = $extension->getName();
         $this->permissionApi = $permissionApi;
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $variableApi; // for ExtensionVariablesTrait
         $this->setTranslator($translator);
-        $this->boot($bundle);
+        $this->boot($extension);
     }
 
     /**
      * Boot the controller.
      */
-    protected function boot(AbstractExtension $bundle): void
+    protected function boot(AbstractExtension $extension): void
     {
         // load optional bootstrap
-        $bootstrap = $bundle->getPath() . '/bootstrap.php';
+        $bootstrap = $extension->getPath() . '/bootstrap.php';
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
