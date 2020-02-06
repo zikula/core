@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-#            $bundle: '@Zikula\ThemeModule\ZikulaThemeModule'
+            $extension: '@Zikula\ThemeModule\ZikulaThemeModule'
             $installed: '%installed%'
             Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface: '@zikula.site_definition'
 

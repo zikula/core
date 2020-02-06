@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $bundle: '@Zikula\PermissionsModule\ZikulaPermissionsModule'
+            $extension: '@Zikula\PermissionsModule\ZikulaPermissionsModule'
 
     Zikula\PermissionsModule\:
         resource: '../../*'

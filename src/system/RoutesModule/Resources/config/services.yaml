@@ -9,7 +9,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-#            $bundle: '@Zikula\RoutesModule\ZikulaRoutesModule'
+            $extension: '@Zikula\RoutesModule\ZikulaRoutesModule'
             $twigLoader: '@twig.loader'
 
     Zikula\RoutesModule\:
