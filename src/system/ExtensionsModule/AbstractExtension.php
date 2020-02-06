@@ -15,7 +15,6 @@ namespace Zikula\ExtensionsModule;
 
 use InvalidArgumentException;
 use LogicException;
-use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -71,11 +70,6 @@ abstract class AbstractExtension extends Bundle
         return 'Bundle';
     }
 
-    protected function hasCommands(): bool
-    {
-        return false;
-    }
-
     public function getContainerExtension()
     {
         if (null === $this->extension) {
@@ -99,16 +93,7 @@ abstract class AbstractExtension extends Bundle
             }
         }
 
-        if ($this->extension) {
-            return $this->extension;
-        }
-    }
-
-    public function registerCommands(Application $application): void
-    {
-        if ($this->hasCommands()) {
-            parent::registerCommands($application);
-        }
+        return $this->extension ?: null;
     }
 
     public function getContainer(): ContainerInterface
