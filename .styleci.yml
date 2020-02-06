@@ -31,7 +31,6 @@ enabled:
   - standardize_increment
   - strict_comparison
   - ternary_to_null_coalescing
-  - unix_line_endings
 
 disabled:
   - blank_line_before_break
