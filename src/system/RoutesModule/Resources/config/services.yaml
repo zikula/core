@@ -1,7 +1,6 @@
 parameters:
     jms_i18n_routing.route_exclusion_strategy.class: Zikula\RoutesModule\Translation\DefaultRouteExclusionStrategy
     jms_i18n_routing.pattern_generation_strategy.class: Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy
-    jms_i18n_routing.route_translation_extractor.class: Zikula\RoutesModule\Translation\ZikulaRouteTranslationExtractor
 
 services:
     _defaults:
