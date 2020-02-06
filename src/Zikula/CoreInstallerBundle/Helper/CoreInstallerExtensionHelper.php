@@ -234,7 +234,7 @@ class CoreInstallerExtensionHelper
                 if ('userdata' === $this->container->getParameter('datadir')) {
                     $this->yamlHelper->setParameter('datadir', 'public/uploads');
                     $fs = $this->container->get('filesystem');
-                    $src = dirname(__DIR__, 5) . '/';
+                    $src = $this->container->get('kernel')->getProjectDir();
                     try {
                         if ($fs->exists($src . '/userdata')) {
                             $fs->mirror($src . '/userdata', $src . '/public/uploads');

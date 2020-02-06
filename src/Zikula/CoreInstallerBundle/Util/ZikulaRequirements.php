@@ -33,10 +33,10 @@ class ZikulaRequirements
     public function runSymfonyChecks(array $parameters = []): void
     {
         try {
-            $rootDir = dirname(__DIR__, 4);
-            $path = $rootDir . '/var/SymfonyRequirements.php';
+            $projectDir = dirname(__DIR__, 4); // should work when Bundle in vendor too
+            $path = $projectDir . '/var/SymfonyRequirements.php';
             require_once $path;
-            $symfonyRequirements = new SymfonyRequirements($rootDir);
+            $symfonyRequirements = new SymfonyRequirements($projectDir);
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
 
             foreach ($symfonyRequirements->getRequirements() as $req) {
