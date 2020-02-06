@@ -91,7 +91,7 @@ class ComposerValidationHelper
 
         // we determine the bundle name from the file system on purpose
         // because if a composer file is invalid the bundle is not detected
-        // so we can not use AbstractBundle methods here
+        // so we can not use AbstractExtension methods here
         $pathParts = explode('/', $file->getRelativePath());
         $this->bundleName = $pathParts[count($pathParts) - 1];
 

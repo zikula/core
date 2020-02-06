@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $bundle: '@Zikula\ThemeModule\ZikulaThemeModule'
+            $extension: '@Zikula\ThemeModule\ZikulaThemeModule'
             $installed: '%installed%'
             Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface: '@zikula.site_definition'
 
@@ -24,7 +24,7 @@ services:
 
     zikula_core.common.theme.assets_js:
         class: Zikula\ThemeModule\Engine\AssetBag
-    # public because AbstractBundle accesses this using container
+    # public because AbstractExtension accesses this using container
     zikula_core.common.theme.assets_css:
         class: Zikula\ThemeModule\Engine\AssetBag
         public: true
@@ -55,7 +55,7 @@ services:
         class: Zikula\ThemeModule\Engine\ParameterBag
         public: true
 
-    # public because AbstractBundle accesses this using container
+    # public because AbstractExtension accesses this using container
     Zikula\ThemeModule\Engine\Asset:
         public: true
 

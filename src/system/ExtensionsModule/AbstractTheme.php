@@ -11,16 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ThemeModule;
+namespace Zikula\ExtensionsModule;
 
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
-abstract class AbstractTheme extends AbstractBundle
+abstract class AbstractTheme extends AbstractExtension
 {
     /**
      * @var array

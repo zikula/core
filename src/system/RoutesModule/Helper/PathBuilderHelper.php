@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Helper;
 
 use Exception;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 class PathBuilderHelper
@@ -42,16 +42,16 @@ class PathBuilderHelper
         }
 
         /**
-         * @var AbstractBundle $bundle
+         * @var AbstractExtension $extensionBundle
          */
-        $bundle = null;
+        $extensionBundle = null;
         try {
-            $bundle = $this->kernel->getBundle($route->getBundle());
+            $extensionBundle = $this->kernel->getBundle($route->getBundle());
         } catch (Exception $exception) {
             return $route->getPath();
         }
 
-        // return path prepended with bundle prefix
-        return '/' . $bundle->getMetaData()->getUrl() . $route->getPath();
+        // return path prepended with extensionBundle prefix
+        return '/' . $extensionBundle->getMetaData()->getUrl() . $route->getPath();
     }
 }

@@ -19,17 +19,18 @@ use ReflectionException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractTheme;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class Engine
  *
  * The Theme Engine class is responsible to manage all aspects of theme management using the classes referenced below.
+ *
  * @see \Zikula\ThemeModule\Engine\*
  * @see \Zikula\ThemeModule\EventListener\*
- * @see \Zikula\ThemeModule\AbstractTheme
+ * @see \Zikula\ExtensionsModule\AbstractTheme
  *
  * The Engine works by intercepting the Response sent by the module controller (the controller action is the
  * 'primary actor'). It takes this response and "wraps" the theme around it and filters the resulting html to add
@@ -48,6 +49,7 @@ class Engine
 {
     /**
      * The instance of the currently active theme.
+     *
      * @var AbstractTheme
      */
     private $activeThemeBundle;

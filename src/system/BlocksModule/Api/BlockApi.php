@@ -113,7 +113,7 @@ class BlockApi implements BlockApiInterface
         $foundBlocks = [];
         foreach ($this->blockCollector->getBlocks() as $id => $blockInstance) {
             /** @var AbstractBlockHandler $blockInstance */
-            $bundleName = $blockInstance->getBundle()->getName();
+            $bundleName = $blockInstance->getExtension()->getName();
             if (!array_key_exists($bundleName, $modulesByName)) {
                 continue;
             }

@@ -17,8 +17,8 @@ use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -29,9 +29,9 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     use ExtensionVariablesTrait;
 
     /**
-     * @var AbstractBundle
+     * @var AbstractExtension
      */
-    protected $bundle;
+    protected $extension;
 
     /**
      * @var RequestStack
@@ -49,30 +49,30 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     protected $twig;
 
     public function __construct(
-        AbstractBundle $bundle,
+        AbstractExtension $extension,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
         Environment $twig
     ) {
-        $this->bundle = $bundle;
-        $this->extensionName = $bundle->getName(); // for ExtensionVariablesTrait
+        $this->extension = $extension;
+        $this->extensionName = $extension->getName(); // for ExtensionVariablesTrait
         $this->requestStack = $requestStack;
         $this->setTranslator($translator); // for TranslatorTrait
         $this->variableApi = $variableApi; // for ExtensionVariablesTrait
         $this->permissionApi = $permissionApi;
         $this->twig = $twig;
-        $this->boot($bundle);
+        $this->boot($extension);
     }
 
     /**
      * Boot the handler.
      */
-    protected function boot(AbstractBundle $bundle): void
+    protected function boot(AbstractExtension $extension): void
     {
         // load optional bootstrap
-        $bootstrap = $bundle->getPath() . '/bootstrap.php';
+        $bootstrap = $extension->getPath() . '/bootstrap.php';
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
@@ -151,8 +151,8 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         return $this->permissionApi->hasPermission($component, $instance, $level, $user);
     }
 
-    public function getBundle(): AbstractBundle
+    public function getExtension(): AbstractExtension
     {
-        return $this->bundle;
+        return $this->extension;
     }
 }

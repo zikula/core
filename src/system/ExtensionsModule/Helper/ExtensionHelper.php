@@ -24,11 +24,11 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -104,10 +104,10 @@ class ExtensionHelper
             throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getName()]));
         }
 
-        /** @var AbstractBundle $bundle */
-        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
+        /** @var AbstractExtension $extensionBundle */
+        $extensionBundle = $this->container->get('kernel')->getBundle($extension->getName());
 
-        $installer = $this->getExtensionInstallerInstance($bundle);
+        $installer = $this->getExtensionInstallerInstance($extensionBundle);
         if (null !== $installer) {
             $result = $installer->install();
             if (!$result) {
@@ -118,7 +118,7 @@ class ExtensionHelper
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
         $this->cacheClearer->clear('symfony.config');
 
-        $event = new ExtensionStateEvent($bundle, $extension->toArray());
+        $event = new ExtensionStateEvent($extensionBundle, $extension->toArray());
         $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_INSTALL);
 
         return true;
@@ -136,12 +136,12 @@ class ExtensionHelper
             throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getDisplayname()]));
         }
 
-        /** @var AbstractBundle $bundle */
-        $bundle = $this->container->get('kernel')->getModule($extension->getName());
+        /** @var AbstractExtension $extensionBundle */
+        $extensionBundle = $this->container->get('kernel')->getModule($extension->getName());
 
         // Check status of Dependencies here to be sure they are met for upgraded extension. #3647
 
-        $installer = $this->getExtensionInstallerInstance($bundle);
+        $installer = $this->getExtensionInstallerInstance($extensionBundle);
         if (null !== $installer) {
             $result = $installer->upgrade($extension->getVersion());
             if (is_string($result)) {
@@ -159,7 +159,7 @@ class ExtensionHelper
         }
 
         // persist the updated version
-        $newVersion = $bundle->getMetaData()->getVersion();
+        $newVersion = $extensionBundle->getMetaData()->getVersion();
         $extension->setVersion($newVersion);
         $this->container->get('doctrine')->getManager()->flush();
 
@@ -168,7 +168,7 @@ class ExtensionHelper
 
         if ($this->container->getParameter('installed')) {
             // Upgrade succeeded, issue event.
-            $event = new ExtensionStateEvent($bundle, $extension->toArray());
+            $event = new ExtensionStateEvent($extensionBundle, $extension->toArray());
             $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_UPGRADE);
         }
 
@@ -195,10 +195,10 @@ class ExtensionHelper
             return false;
         }
 
-        /** @var AbstractBundle $bundle */
-        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
+        /** @var \Zikula\ExtensionsModule\AbstractExtension $extensionBundle */
+        $extensionBundle = $this->container->get('kernel')->getBundle($extension->getName());
 
-        $installer = $this->getExtensionInstallerInstance($bundle);
+        $installer = $this->getExtensionInstallerInstance($extensionBundle);
         if (null !== $installer) {
             $result = $installer->uninstall();
             if (!$result) {
@@ -214,7 +214,7 @@ class ExtensionHelper
 
         $this->cacheClearer->clear('symfony.config');
 
-        $event = new ExtensionStateEvent($bundle, $extension->toArray());
+        $event = new ExtensionStateEvent($extensionBundle, $extension->toArray());
         $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_REMOVE);
 
         return true;
@@ -263,9 +263,9 @@ class ExtensionHelper
     /**
      * Attempt to get an instance of an extension Installer.
      */
-    private function getExtensionInstallerInstance(AbstractBundle $bundle): ?ExtensionInstallerInterface
+    private function getExtensionInstallerInstance(AbstractExtension $extension): ?ExtensionInstallerInterface
     {
-        $className = $bundle->getInstallerClass();
+        $className = $extension->getInstallerClass();
         if (!class_exists($className)) {
             return null;
         }
@@ -275,7 +275,7 @@ class ExtensionHelper
         }
         /** @var ExtensionInstallerInterface $installer */
         $installer = $reflectionInstaller->newInstance();
-        $installer->setBundle($bundle);
+        $installer->setExtension($extension);
         if ($installer instanceof ContainerAwareInterface) {
             $installer->setContainer($this->container);
         }

@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $bundle: '@Zikula\SearchModule\ZikulaSearchModule'
+            $extension: '@Zikula\SearchModule\ZikulaSearchModule'
 
     Zikula\SearchModule\:
         resource: '../../*'

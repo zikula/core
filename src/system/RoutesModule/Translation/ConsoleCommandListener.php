@@ -47,7 +47,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
             return;
         }
 
-        $this->extractTranslationHelper->setBundleName('');
+        $this->extractTranslationHelper->setExtensionName('');
 
         $bundle = null;
         if ($event->getInput()->hasParameterOption('-b')) {
@@ -61,7 +61,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
                 $bundle = substr($bundle, 1);
             }
 
-            $this->extractTranslationHelper->setBundleName($bundle);
+            $this->extractTranslationHelper->setExtensionName($bundle);
         }
     }
 }

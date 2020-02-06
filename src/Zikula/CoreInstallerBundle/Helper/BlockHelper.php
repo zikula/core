@@ -53,7 +53,7 @@ class BlockHelper
     public function createBlocks(): bool
     {
         $installer = new BlocksModuleInstaller();
-        $installer->setBundle($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
+        $installer->setExtension($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
         $installer->setContainer($this->container);
         $installer->createDefaultData();
         $this->createMainMenuBlock();

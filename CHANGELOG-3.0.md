@@ -12,7 +12,7 @@
   - Namespace changes
     - `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
     - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule` moved into `Zikula\ExtensionsModule\`.
-    - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme` moved into `Zikula\ThemeModule\`.
+    - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme` moved into `Zikula\ExtensionsModule\`.
     - `Zikula\Bundle\CoreBundle\Bundle\Bootstrap` moved and renamed to `Bundle\CoreBundle\Helper\PersistedBundleHelper`.
     - `Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper` moved and renamed to `Bundle\CoreBundle\Helper\BundlesSchemaHelper`.
     - `Zikula\Bundle\CoreBundle\Bundle\MetaData` moved into `Zikula\Bundle\CoreBundle\Composer\`.
@@ -22,18 +22,20 @@
     - `Zikula\Common\MultiHook\` moved into `Zikula\ExtensionsModule\ModuleInterface\MultiHook\`.
     - `Zikula\Common\Translator\` moved into `Zikula\Bundle\CoreBundle\Translation\`.
     - `Zikula\Common\ColumnExistsTrait` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
+    - `Zikula\Core\AbstractBundle` moved and renamed to `Zikula\ExtensionsModule\AbstractExtension`
+    - `Zikula\Core\AbstractExtensionInstaller` moved into `Zikula\ExtensionsModule\Installer\`.
+    - `Zikula\Core\AbstractModule` moved into `Zikula\ExtensionsModule\`.
     - `Zikula\Core\Controller\` moved into `Zikula\Bundle\CoreBundle\Controller\`.
+    - `Zikula\Core\CoreEvents` was split into `Zikula\Bundle\CoreBundle\CoreEvents` and `Zikula\ExtensionsModule\ExtensionEvents`.
     - `Zikula\Core\Doctrine\` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
     - `Zikula\Core\Event\GenericEvent` moved into `Zikula\Bundle\CoreBundle\Event\`.
     - `Zikula\Core\Event\ModuleStateEvent` moved into `Zikula\ExtensionsModule\Event\`.
-    - `Zikula\Core\Response\` moved into `Zikula\Bundle\CoreBundle\Response\`.
-    - `Zikula\Core\AbstractExtensionInstaller` moved into `Zikula\ExtensionsModule\Installer\`.
-    - `Zikula\Core\AbstractModule` moved into `Zikula\ExtensionsModule\`.
-    - `Zikula\Core\CoreEvents` was split into `Zikula\Bundle\CoreBundle\CoreEvents` and `Zikula\ExtensionsModule\ExtensionEvents`.
     - `Zikula\Core\ExtensionInstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
     - `Zikula\Core\InstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
+    - `Zikula\Core\Response\` moved into `Zikula\Bundle\CoreBundle\Response\`.
     - `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
+    - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
     - `ZikulaHttpKernelInterface` has dropped `getConnectionConfig()` method. Use environment variable `DATABASE_URL` instead.

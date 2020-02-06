@@ -209,7 +209,7 @@
 
 - BC Breaks:
   - Removed matthiasnoback/symfony-service-definition-validator (#3885).
-  - Removed \Zikula\Core\AbstractBundle::getBasePath() method. Use getPath() instead (#3862).
+  - Removed \Zikula\Core\AbstractExtension::getBasePath() method. Use getPath() instead (#3862).
 
 - Fixes:
   - Fixed wrong request service call in GroupsModule menu (#3874).

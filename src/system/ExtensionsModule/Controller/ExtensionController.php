@@ -23,7 +23,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
@@ -33,6 +32,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -203,9 +203,9 @@ class ExtensionController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        /** @var AbstractBundle $bundle */
-        $bundle = $kernel->getBundle($extension->getName());
-        $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
+        /** @var AbstractExtension $extensionBundle */
+        $extensionBundle = $kernel->getBundle($extension->getName());
+        $metaData = $extensionBundle->getMetaData()->getFilteredVersionInfoArray();
 
         if ($forceDefaults) {
             $extension->setName($metaData['name']);
@@ -368,12 +368,12 @@ class ExtensionController extends AbstractController
                 if (null === $extensionRepository) {
                     continue;
                 }
-                /** @var AbstractBundle $bundle */
-                $bundle = $kernel->getBundle($extensionEntity->getName());
-                if (null === $bundle) {
+                /** @var AbstractExtension $extensionBundle */
+                $extensionBundle = $kernel->getBundle($extensionEntity->getName());
+                if (null === $extensionBundle) {
                     continue;
                 }
-                $event = new ExtensionStateEvent($bundle, $extensionEntity->toArray());
+                $event = new ExtensionStateEvent($extensionBundle, $extensionEntity->toArray());
                 $eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_POSTINSTALL);
             }
         }

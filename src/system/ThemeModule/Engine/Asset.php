@@ -18,8 +18,8 @@ use Symfony\Component\Asset\Packages;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractExtension;
 
 /**
  * Class Asset
@@ -145,7 +145,7 @@ class Asset
             throw new InvalidArgumentException('Bundle ' . $bundleName . ' not found.');
         }
 
-        if ($bundle instanceof AbstractBundle) {
+        if ($bundle instanceof AbstractExtension) {
             return $bundle->getRelativeAssetPath();
         }
 

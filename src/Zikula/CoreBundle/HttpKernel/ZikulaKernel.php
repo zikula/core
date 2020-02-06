@@ -22,9 +22,10 @@ use Zikula\AdminModule\ZikulaAdminModule;
 use Zikula\AtomTheme\ZikulaAtomTheme;
 use Zikula\BlocksModule\ZikulaBlocksModule;
 use Zikula\BootstrapTheme\ZikulaBootstrapTheme;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\CategoriesModule\ZikulaCategoriesModule;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\AbstractModule;
+use Zikula\ExtensionsModule\AbstractTheme;
 use Zikula\ExtensionsModule\ZikulaExtensionsModule;
 use Zikula\GroupsModule\ZikulaGroupsModule;
 use Zikula\MailerModule\ZikulaMailerModule;
@@ -36,7 +37,6 @@ use Zikula\RssTheme\ZikulaRssTheme;
 use Zikula\SearchModule\ZikulaSearchModule;
 use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\SettingsModule\ZikulaSettingsModule;
-use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\EventListener\AddJSConfigListener;
 use Zikula\ThemeModule\ZikulaThemeModule;
 use Zikula\UsersModule\ZikulaUsersModule;
@@ -167,7 +167,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     {
         $bundles = [];
         foreach ($this->bundles as $bundle) {
-            if (!$bundle instanceof AbstractBundle) {
+            if (!$bundle instanceof AbstractExtension) {
                 $bundles[] = $bundle;
             }
         }
@@ -215,7 +215,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         /* @var BundleInterface $bundle */
         foreach ($this->getBundles() as $bundle) {
             if (0 === mb_strpos($class, $bundle->getNamespace())) {
-                return $bundle instanceof AbstractBundle;
+                return $bundle instanceof AbstractExtension;
             }
         }
 

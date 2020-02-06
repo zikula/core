@@ -21,8 +21,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
-use Zikula\Bundle\CoreBundle\AbstractBundle;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -33,9 +33,9 @@ abstract class AbstractController extends BaseController
     use ExtensionVariablesTrait;
 
     /**
-     * @var AbstractBundle
+     * @var AbstractExtension
      */
-    private $bundle;
+    private $extension;
 
     /**
      * @var string
@@ -51,27 +51,27 @@ abstract class AbstractController extends BaseController
      * @throws InvalidArgumentException
      */
     public function __construct(
-        AbstractBundle $bundle,
+        AbstractExtension $extension,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
     ) {
-        $this->bundle = $bundle;
-        $this->name = $bundle->getName();
+        $this->extension = $extension;
+        $this->name = $extension->getName();
         $this->permissionApi = $permissionApi;
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $variableApi; // for ExtensionVariablesTrait
         $this->setTranslator($translator);
-        $this->boot($bundle);
+        $this->boot($extension);
     }
 
     /**
      * Boot the controller.
      */
-    protected function boot(AbstractBundle $bundle): void
+    protected function boot(AbstractExtension $extension): void
     {
         // load optional bootstrap
-        $bootstrap = $bundle->getPath() . '/bootstrap.php';
+        $bootstrap = $extension->getPath() . '/bootstrap.php';
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }

@@ -15,7 +15,7 @@ namespace Zikula\PrinterTheme;
 
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use Zikula\ThemeModule\AbstractCoreTheme;
+use Zikula\ExtensionsModule\AbstractCoreTheme;
 
 class ZikulaPrinterTheme extends AbstractCoreTheme
 {

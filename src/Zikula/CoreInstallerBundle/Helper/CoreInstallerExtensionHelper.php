@@ -61,7 +61,7 @@ class CoreInstallerExtensionHelper
         $className = $module->getInstallerClass();
         $reflectionInstaller = new ReflectionClass($className);
         $installer = $reflectionInstaller->newInstance();
-        $installer->setBundle($module);
+        $installer->setExtension($module);
         if ($installer instanceof ContainerAwareInterface) {
             $installer->setContainer($this->container);
         }

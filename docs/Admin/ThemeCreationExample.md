@@ -12,7 +12,7 @@ example is based on the ZikulaBoostrapTheme of Zikula 1.4.5
 ```php
 namespace Company\PaulaTheme;
 
-use \Zikula\ThemeModule\AbstractTheme;
+use Zikula\ExtensionsModule\AbstractTheme;
 
 class CompanyPaulaTheme extends AbstractTheme
 {
