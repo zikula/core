@@ -3,8 +3,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $bundle: '@Zikula\BlocksModule\ZikulaBlocksModule'
+#        bind:
+#            $bundle: '@Zikula\BlocksModule\ZikulaBlocksModule'
 
     Zikula\BlocksModule\:
         resource: '../../*'
