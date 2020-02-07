@@ -1,3 +1,30 @@
+'View IDS log': null
+'Download the entire log to a CSV file': null
+'Export IDS Log': null
+'Delete the entire log.': null
+'Purge IDS Log': null
+Filter: null
+'Clear filter': null
+'Sort by %s': null
+Name: null
+Tag: null
+Value: null
+Page: null
+'User Name': null
+IP: null
+Impact: null
+'PHPIDS filters used': null
+Date: null
+Actions: null
+'PHPIDS filter %s': null
+Description: null
+Rule: null
+'No logged intrusions found.': null
+'Purge IDS log': null
+'Confirmation prompt': null
+'Do you really want to delete the entire IDS log?': null
+'Export IDS log': null
+'Export Options': null
 'Allowed HTML settings': null
 'Filtering of allowed HTML occurs when a template string or variable is modified with the \''safeHtml\'' filter, or when a module asks for similar processing from within its functions.': null
 'HTML entities': null
@@ -8,7 +35,6 @@
 'Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to ''Not allowed'' unless you are sure that you really understand the consequences of enabling them.': null
 'HTML Purifier output filter': null
 '''Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).': null
-Tag: null
 'Check all': null
 'Not allowed': null
 Allowed: null
@@ -38,33 +64,6 @@ Warning: null
 'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.': null
 'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.': null
 'Output filter settings': null
-'View IDS log': null
-'Download the entire log to a CSV file': null
-'Export IDS Log': null
-'Delete the entire log.': null
-'Purge IDS Log': null
-Filter: null
-'Clear filter': null
-'Sort by %s': null
-Name: null
-Value: null
-Page: null
-'User Name': null
-IP: null
-Impact: null
-'PHPIDS filters used': null
-Date: null
-Actions: null
-'PHPIDS filter %s': null
-Description: null
-Rule: null
-'No logged intrusions found.': null
-'Purge IDS log': null
-'Confirmation prompt': null
-'Do you really want to delete the entire IDS log?': null
-'Export IDS log': null
-'Export Options': null
-All: null
 'Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the ''Secure host name'' box, make sure you include a trailing slash at the end of the address.': null
 'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': null
 'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions''': null
@@ -123,3 +122,4 @@ Tab: null
 'CSV filename': null
 'CSV delimiter': null
 Export: null
+All: null

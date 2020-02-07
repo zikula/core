@@ -1,14 +1,4 @@
 Hello!: null
-'The user account \''%username%\'' at %sitename% has this e-mail address associated with it.': null
-'The administrator at %sub% requested that you reset your password.': null
-'Someone with the IP address %sub% has just requested your account password to be reset.': null
-'You can now create a new password by clicking on this link:': null
-'Reset my password': null
-'(If you cannot click on the link, you can copy this URL and paste it into your browser: %sub% )': null
-'This link expires in %amountOfDays% days.': null
-'If the request was not made by you then you don\''t need to take any action.': null
-'The password won\''t be changed unless you choose a new one using the link above, and you are the only recipient of this message.': null
-'You can just delete the message and log-in with your existing password next time you visit the site.': null
 'The administrator at %sub% requested that you receive your user name via e-mail.': null
 'Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.': null
 'The user name for your account is: %user%': null
@@ -21,8 +11,15 @@ Hello!: null
 'You can confirm the e-mail address change by going to this URL with your browser:': null
 'If you did not make this request then you do not need to take any action.': null
 'The e-mail address will not be changed unless the confirmation code is used, and you are the only recipient of this message. You can just delete this message.': null
+'The user account \''%username%\'' at %sitename% has this e-mail address associated with it.': null
 'The administrator at %sub% requested that reset your password.': null
+'Someone with the IP address %sub% has just requested your account password to be reset.': null
+'You can now create a new password by clicking on this link:': null
 '(If you cannot click on the link, you can copy the URL and paste it into your browser.)': null
+'This link expires in %amountOfDays% days.': null
+'If the request was not made by you then you don\''t need to take any action.': null
+'The password won\''t be changed unless you choose a new one using the link above, and you are the only recipient of this message.': null
+'You can just delete the message and log-in with your existing password next time you visit the site.': null
 'Welcome to %sub%!': null
 'Hello! This e-mail address (\''%email\'') has been used to register an account on \''%site\'' (%url).': null
 'If you did not request a new user account at this web site, please either contact our site administrator, or simply disregard this message.': null
@@ -30,7 +27,8 @@ Hello!: null
 'Your request is also waiting for administrator approval.': null
 'Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.': null
 'Please click on the following link to complete the e-mail address check: ': null
-'If you are not able to click on the above link, you can copy it into your browser.': null
+'Verify my e-mail address': null
+'If you are not able to click on the above link, you can copy the following URL into your browser:': null
 'Your verification code is:': null
 'Once verified and your account has been approved, then you will be able to log in.': null
 'Once verified, you will be able to log in.': null
@@ -40,14 +38,16 @@ Hello!: null
 '(This is the only time you will receive your password. Please keep it in a safe place.)': null
 'Remember: both this verification step and approval from an administrator must be completed before you can log in.': null
 'You will receive an additional e-mail message once an administrator has reviewed your request.': null
-'Verify my e-mail address': null
-'If you are not able to click on the above link, you can copy the following URL into your browser:': null
-'You can confirm the e-mail address change by clicking on this link:': null
-'Verify my e-mail address change.': null
-'(If you cannot click on the link above, you can copy this URL into your browser:': null
+'The administrator at %sub% requested that you reset your password.': null
+'Reset my password': null
+'(If you cannot click on the link, you can copy this URL and paste it into your browser: %sub% )': null
+'If you are not able to click on the above link, you can copy it into your browser.': null
 'Welcome to %1$s (%2$s)!': null
 'Hello! This e-mail address (\''%1$s\'') has been used to register an account on the \''%2$s\'' site.': null
 'Password:  %sub%': null
+'You can confirm the e-mail address change by clicking on this link:': null
+'Verify my e-mail address change.': null
+'(If you cannot click on the link above, you can copy this URL into your browser:': null
 'Welcome to %siteName%!': null
 'Reset your password at %siteName%': null
 '''%siteName%'' account information': null
@@ -62,9 +62,6 @@ Password: null
 'Your account application has been approved. Thank you for your patience during the new account application review process.': null
 'The web site administrator has created this new account for you.': null
 'You may now log into the web site.': null
-'A message from %s...': null
-'Recently, this e-mail address (\''%email\'') was used to request an account on \''%site\'' (%url).': null
-'Thank you for your application for a new account. At this time we are unable to approve your application.': null
 'New registration pending approval': null
 'New registration pending e-mail verification': null
 'New user activated': null
@@ -72,6 +69,9 @@ Password: null
 'A new user account has been activated on %s.': null
 'It was created by an administrator or sub-administrator.': null
 'The account details are as follows:': null
+'A message from %s...': null
+'Recently, this e-mail address (\''%email\'') was used to request an account on \''%site\'' (%url).': null
+'Thank you for your application for a new account. At this time we are unable to approve your application.': null
 'Warning! The welcoming email for the new registration could not be sent.': null
 'Warning! The notification email for the new registration could not be sent.': null
 'Warning! The welcoming email for the newly created user could not be sent.': null
