@@ -64,7 +64,7 @@
             ],
             "include": [
                 "src/extensions/*/composer.json",
-                "src/extensions/*/*/composer.json",
+                "src/extensions/*/*/composer.json"
             ],
             "recurse": false,
             "replace": false,
