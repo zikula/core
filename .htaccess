@@ -1,0 +1,9 @@
+# Block any web access to any folders (undone in /public/.htaccess)
+<IfModule !mod_authz_core.c>
+    # Apache 2.2
+    Deny from all
+</IfModule>
+<IfModule mod_authz_core.c>
+    # Apache 2.4
+    Require all denied
+</IfModule>

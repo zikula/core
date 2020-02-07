@@ -119,35 +119,10 @@ class AdminInterfaceController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        // check for .htaccess in app directory
-        $appDir = $kernel->getProjectDir() . '/app';
-        if ($appDir) {
-            // check if we have an absolute path which is possibly not within the document root
-            $docRoot = $request->server->get('DOCUMENT_ROOT');
-            if (0 === mb_strpos($appDir, '/') && false === mb_strpos($appDir, $docRoot)) {
-                // temp dir is outside the webroot, no .htaccess file needed
-                $app_htaccess = true;
-            } else {
-                if (false === mb_strpos($appDir, $docRoot)) {
-                    $ldir = __DIR__;
-                    $p = mb_strpos($ldir, DIRECTORY_SEPARATOR . 'system'); // we are in system/AdminModule
-                    $b = mb_substr($ldir, 0, $p);
-                    $filePath = $b . '/' . $appDir . '/.htaccess';
-                } else {
-                    $filePath = $appDir . '/.htaccess';
-                }
-                $app_htaccess = file_exists($filePath);
-            }
-        } else {
-            // already customised, admin should know about what he's doing...
-            $app_htaccess = true;
-        }
-
         $hasSecurityCenter = $kernel->isBundle('ZikulaSecurityCenterModule');
 
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
             'security' => [
-                'app_htaccess' => $app_htaccess,
                 'updatecheck' => $variableApi->getSystemVar('updatecheck'),
                 'scactive' => $hasSecurityCenter,
                 // check for outputfilter

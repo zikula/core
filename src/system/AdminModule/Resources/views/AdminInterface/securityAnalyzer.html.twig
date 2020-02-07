@@ -12,10 +12,6 @@
                 <div class="collapse" id="securitysettings_full">
                     <div class="legacy col-md-6">
                         <h4>{% trans %}Security warnings{% endtrans %}</h4>
-                        {% if not security.app_htaccess %}
-                            <p><strong>{% trans %}There is no '.htaccess' file in the application directory '/app', but one should be present.{% endtrans %}</strong></p>
-                            <p>{% trans %}If properly installed, a site will include an \'.htaccess\' file in the site\'s \'app\' folder. However, some methods used for transferring the package\'s files to a web space may lead to this file not being transferred. In this case, you are strongly recommended to create one (and to ensure that \'.htaccess\' files exist in certain other directories, too).{% endtrans %}</p>
-                        {% endif %}
                         {% if not security.updatecheck %}
                             <p><strong>{% trans %}The update check is not enabled, but preferably should be.{% endtrans %}</strong></p>
                         {% endif %}

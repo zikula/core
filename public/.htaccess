@@ -11,6 +11,16 @@ DirectoryIndex index.php
 # when compiling LESS/Sass/CoffeScript assets.
 Options FollowSymlinks
 
+# Allow web access in /public folder
+<IfModule !mod_authz_core.c>
+    # Apache 2.2
+    Allow from all
+</IfModule>
+<IfModule mod_authz_core.c>
+    # Apache 2.4
+    Require all granted
+</IfModule>
+
 # Disabling MultiViews prevents unwanted negotiation, e.g. "/index" should not resolve
 # to the front controller "/index.php" but be rewritten to "/index.php/index".
 <IfModule mod_negotiation.c>

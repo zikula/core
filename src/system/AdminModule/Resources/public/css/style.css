@@ -92,10 +92,6 @@
 * Styling for status security analyzer, update checker and more
 ******************************************************************************/
 
-/*#z-maincontent #admin-systemnotices div div {
-    margin-top: -1.15em;
-}*/
-
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 #z-maincontent div#z-adminwarning {
     background: url('../images/error.png') #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/

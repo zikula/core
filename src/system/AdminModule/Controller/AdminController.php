@@ -468,26 +468,4 @@ class AdminController extends AbstractController
             'menuOptions' => $menuOptions
         ]);
     }
-
-    /**
-     * @Route("/header")
-     *
-     * Opens the admin container.
-     */
-    public function adminheaderAction(): Response
-    {
-        return $this->render('@ZikulaAdminModule/Admin/header.html.twig');
-    }
-
-    /**
-     * @Route("/footer")
-     *
-     * Closes the admin container.
-     */
-    public function adminfooterAction(): Response
-    {
-        return $this->render('@ZikulaAdminModule/Admin/footer.html.twig', [
-            'symfonyversion' => Kernel::VERSION
-        ]);
-    }
 }
