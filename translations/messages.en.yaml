@@ -441,6 +441,20 @@ PHP: null
 'No block ID passed.': null
 'Create new block': null
 'Create new block position': null
+'Powered by': null
+'Toggle navigation': null
+'Signed in as %username%': null
+'Toggle dropdown': null
+'Log out': null
+'My Account': null
+'Change style': null
+'Only ajax access is allowed!': null
+Home: null
+Extensions: null
+Blocks: null
+Users: null
+Groups: null
+Permissions: null
 Menu: null
 'MenuItemName (menuItemId). The id is needed for permissions.': null
 'Edit item': null
@@ -479,7 +493,6 @@ options: null
 'No permission for this action': null
 'Data provided was inappropriate.': null
 'Done! Menu removed.': null
-Home: null
 list: null
 foo: null
 bar: null
@@ -490,17 +503,6 @@ new: null
 'New menu': null
 'Edit children': null
 'Edit menu root': null
-'Security analyser warnings': null
-'Security warnings': null
-'There is no ''.htaccess'' file in the application directory ''/app'', but one should be present.': null
-'If properly installed, a site will include an \''.htaccess\'' file in the site\''s \''app\'' folder. However, some methods used for transferring the package\''s files to a web space may lead to this file not being transferred. In this case, you are strongly recommended to create one (and to ensure that \''.htaccess\'' files exist in certain other directories, too).': null
-'The update check is not enabled, but preferably should be.': null
-'Security center module is not activated, but preferably should be.': null
-'When a site is originally installed, the Security center is installed and activated by default. You will see the above message if the Security center has been deactivated. You are recommended to leave the Security center activated, as it enhances a site''s security.': null
-'PHPIDS with the Security Center is not activated, but preferably should be.': null
-'PHPIDS is a feature of the Security center module that enhances the security of a site, and the Security analyser has detected that it is not enabled. You are recommended to ensure that it is enabled. You will also see this message if the Security center module is not installed or is not activated. For more information about this, please consult the Security center on-line help.': null
-'PHPIDS is activated, but requests are NOT blocked.': null
-'PHPIDS is enabled and you have set the Block action to ''Warn only''. Thus requests are not blocked. This is useful only for debugging the PHPIDS ruleset in order to verify correct operation.': null
 'You are in:': null
 Administration: null
 'Make default category': null
@@ -547,7 +549,6 @@ System: null
 'Core modules at the heart of operation of the site.': null
 Layout: null
 'Layout modules for controlling the site''s look and feel.': null
-Users: null
 'Modules for controlling user membership, access rights and profiles.': null
 Content: null
 'Modules for providing content to your users.': null
@@ -563,10 +564,8 @@ Security: null
 'Form of display for module names': null
 'Modules per page in module categories list': null
 'Modules per row in admin panel': null
-'Theme to use': null
 'Initially selected category': null
 'Default category for newly-added modules': null
-'Use site''s theme': null
 'invalid route': null
 'Access forbidden.': null
 'Error! Could not get module name for id %moduleId%.': null
@@ -742,7 +741,6 @@ Inbox: null
 'Send a message to this user': null
 Profile: null
 'Find/Mail/Delete users': null
-'Log out': null
 'Log in': null
 'New account': null
 'Users pending approval': null
@@ -775,7 +773,6 @@ States: null
 Comment: null
 'Accept %username%': null
 'Deny %username%': null
-Groups: null
 'There are currently no groups that can be joined.': null
 'Delete group': null
 'Do you really want to delete group ''%s''?': null
@@ -901,6 +898,7 @@ copy: null
 categoryAssignments: null
 'Category tree': null
 'Category registry': null
+Links: null
 'Test mailer settings': null
 'Current settings from': null
 'Settings test': null
@@ -952,32 +950,38 @@ Encoding: null
 'It looks like the message could not be sent properly.': null
 'The message could not be sent properly.': null
 'Test current settings': null
-'Extensions list': null
-Version: null
-'Go to the module''s administration panel': null
-'Core Extension': null
+Extension: null
+'Extension settings': null
 'Incompatible version with the core': null
 'Incompatible version': null
-'The version of this module is incompatible with the version of the core.': null
+'The version of this extension is incompatible with the version of the core.': null
 'Current Core version is %version%': null
-'The minimum version of the core that this module supports is %s': null
+'The minimum version of the core that this extension supports is %s': null
 Ok: null
-'Module settings': null
-'Install module': null
-'Module name': null
+'Extensions list': null
+'Only themes': null
+'Only modules': null
+'Only core extensions': null
+'Only non-core extensions': null
+Version: null
+'Url root': null
+'Third party module': null
+'Third party theme': null
+'System module': null
+'System theme': null
+'Install extension': null
+'Extension name': null
 Level: null
 Reason: null
 Install: null
 Required: null
 Recommended: null
 'Not Available in System': null
-'Uninstall module': null
+'Uninstall extension': null
 'Do you really want to uninstall ''%title%''?': null
-'Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module.': null
-'Warning! Removing this module will also remove the following blocks': null
-'Warning! Other modules present in the system require this module. If you uninstall this module then these modules that require it will also be uninstalled.': null
-Extension: null
-'Extension settings': null
+'Warning! Uninstalling this extension will also permanently remove all data associated with it, including all data held by other extensions that are hooked to this extension.': null
+'Warning! Removing this extension will also remove the following blocks': null
+'Warning! Other extensions present in the system require this extension. If you uninstall this extension then these extensions that require it will also be uninstalled.': null
 'Module services': null
 'Module Services are functions provided by the core or other modules for this module.': null
 'There aren\''t any modules services available.': null
@@ -1002,10 +1006,10 @@ URL: null
 '%extension% must implement ExtensionInstallerInterface': null
 'Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.': null
 'Error found in composer file of %component% (%filePath%) in property "%property%": %error%.': null
-'Error! Activation of module %name% not allowed.': null
-'Done! Activated %name% module.': null
-'Error! You cannot deactivate the %name% module. It is a mandatory core extension, and is required by the system.': null
-'Done! Deactivated module.': null
+'Error! Activation of %name% not allowed.': null
+'Done! Activated %name%.': null
+'Error! You cannot deactivate the %name%. It is required by the system.': null
+'Done! Deactivated %name%.': null
 'Default values reloaded. Save to confirm.': null
 'Done! Extension updated.': null
 'Failed to install dependency "%name%"!': null
@@ -1029,12 +1033,11 @@ Incompatible: null
 'Extension List': null
 'Deactivate extension': null
 'Activate extension': null
-'Uninstall extension': null
 'Upgrade extension': null
 'Remove extension': null
-'Install extension': null
 'Core compatibility information': null
 'Edit extension': null
+'Edit theme vars': null
 Services: null
 'List views': null
 Moderation: null
@@ -1175,7 +1178,6 @@ OPTIONS: null
 'Error: Could not delete "%path%" because %message%.': null
 'No such route found.': null
 'Sorry, but an error occured during the %action% action.': null
-'Only ajax access is allowed!': null
 'Error: invalid input.': null
 'The setting has been successfully changed.': null
 'Done! Routes reloaded.': null
@@ -1206,47 +1208,17 @@ Frontend: null
 Backend: null
 'Switch to user area.': null
 'Switch to administration area.': null
-'Theme credits': null
-'Registration ID': null
-Official: null
-Author: null
-'Admin panel theme': null
-'User theme': null
-'System theme': null
-Credits: null
-'Change log': null
-Help: null
-License: null
-'Theme confirmation prompt': null
-'Do you really want to set %sub% as the active theme for all site users?': null
-'Themes list': null
-'Themes control the visual presentation of a site.': null
-'Default theme': null
-'Activate %theme%': null
-'Set %theme% as site theme': null
-'Delete or deactivate': null
-'Credits for': null
-'Remove theme %sub%': null
-'Remove theme': null
-'Do you really want to remove the %name% theme?': null
+'Theme settings': null
 'Theme config': null
 'Theme configuration': null
-Accept: null
-'Also delete theme files, if possible': null
+'Theme to use for main site': null
+'Theme to use for admin controllers': null
+'Use site''s theme': null
 'The directory %directory% could not be removed. Please remove it manually. Error message: %message%': null
-'Cannot load %extension because the composer file is invalid.': null
 '%theme% has no configuration.': null
-'Set to defaults': null
 'Done! Theme configuration updated.': null
 'Done! Theme configuration updated to default values.': null
-'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.': null
-'Done! Changed default theme.': null
-'Sorry! No such theme found.': null
-'Files removed as requested.': null
-'Could not remove files as requested.': null
-'The files must be removed manually.': null
-'Done! Deleted the theme.': null
-'Done! Deactivated the theme.': null
+'Set to defaults': null
 'Main settings': null
 'Main info': null
 CAUTION: null
@@ -1312,6 +1284,7 @@ Localisation: null
 'Edit translations directly in the context of a page': null
 'Web interface to add, edit and remove translations': null
 'The startController was reset to a static frontpage.': null
+Administrator: null
 'Permission settings': null
 'This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.': null
 'Permission rules list': null
@@ -1328,6 +1301,16 @@ Permission: null
 'Instance template': null
 'Filter group': null
 'Filter component': null
+'Filter colour': null
+Primary: null
+Secondary: null
+Success: null
+Danger: null
+Warning: null
+Info: null
+Light: null
+Dark: null
+Colour: null
 'Component to check': null
 'Instance to check': null
 'Check permission': null
@@ -1346,6 +1329,7 @@ Invalid: null
 'Admin access': null
 'Error! Could not save configuration: unknown permission rule ID.': null
 'All components': null
+'All colours': null
 'Notice: You cannot delete the main administration permission rule.': null
 'Permission check result:': null
 'unknown user.': null
@@ -1490,7 +1474,7 @@ Next: null
 'Zikula is not installed!': null
 'Zikula Core is not installed!': null
 'installation instructions': null
-"'You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking\n                    on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.": null
+'You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.': null
 'Install Zikula!': null
 'Create administrator''s account': null
 'Zikula is already installed!': null
@@ -1569,14 +1553,10 @@ https: null
 'Firing upgrade event': null
 'Fired upgrade event': null
 'There was an error firing the upgrade event': null
-'Upgrade modules': null
-'Upgrading modules': null
-'Modules upgraded': null
-'There was an error upgrading the modules': null
-'Regenerate themes': null
-'Regenerating themes': null
-'Themes regenerated': null
-'There was an error regenerating the themes': null
+'Upgrade extensions': null
+'Upgrading extensions': null
+'Extensions upgraded': null
+'There was an error upgrading the extensions': null
 'Upgrade from Core %oldVersion% to Core %newVersion%': null
 'Upgrading to Core %version%': null
 'Upgraded to Core %version%': null
@@ -1663,14 +1643,14 @@ https: null
 'Installing Zikula Menu Module': null
 'Zikula Menu Module installed': null
 'There was an error installing Zikula Menu Module': null
-'Activate system modules': null
-'Activating system modules': null
-'System modules activated': null
-'There was an error activating system modules': null
-'Module categorization': null
-'Moving modules to their default categories': null
-'Modules moved to their default categories': null
-'There was an error moving modules to their default categories': null
+'Activate system extensions': null
+'Activating system extensions': null
+'System extensions activated': null
+'There was an error activating system extensions': null
+'Extension categorization': null
+'Moving extensions to their default categories': null
+'Extensions moved to their default categories': null
+'There was an error moving extensions to their default categories': null
 'Create blocks': null
 'Creating default blocks': null
 'Default blocks created': null
@@ -1690,8 +1670,8 @@ https: null
 'Cannot write parameters to %fileName% file.': null
 'Could not use %command% to set the %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': null
 'Could not set %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': null
-'Attempt to copy files from `userdata` to `public/uploads` failed. You must manually copy the contents.': null
 'Main menu': null
+'Attempt to copy files from `userdata` to `public/uploads` failed. You must manually copy the contents.': null
 'The file you requested (%name%) could not be found.': null
 'Attached areas': null
 Detach: null
