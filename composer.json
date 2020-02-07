@@ -7,7 +7,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Zikula\\": ["build", "src/system", "src/themes", "src/Zikula"]
+            "Zikula\\": ["build", "src/system", "src/extensions", "src/Zikula"]
         },
         "files": ["src/Kernel.php"]
     },
