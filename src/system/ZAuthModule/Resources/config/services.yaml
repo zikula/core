@@ -14,10 +14,6 @@ services:
         resource: '../../Helper/*'
         lazy: true
 
-    # public because installer accesses this using container
-    Zikula\ZAuthModule\Api\PasswordApi:
-        public: true
-
     Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface: '@Zikula\ZAuthModule\Api\PasswordApi'
     Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface: '@Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository'
     Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface: '@Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository'
