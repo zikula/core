@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "acbeb2b227c36d02341792da4db21e43",
+    "content-hash": "cffcbce980ade5f65116600c381e5ea3",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "f4762ef0216ae435ab053f68e5bcdff966cf8d4f"
+                "reference": "32e2e09c895568b105c4334e1c1817eca2279ff2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/f4762ef0216ae435ab053f68e5bcdff966cf8d4f",
-                "reference": "f4762ef0216ae435ab053f68e5bcdff966cf8d4f",
+                "url": "https://api.github.com/repos/composer/composer/zipball/32e2e09c895568b105c4334e1c1817eca2279ff2",
+                "reference": "32e2e09c895568b105c4334e1c1817eca2279ff2",
                 "shasum": ""
             },
             "require": {
@@ -483,20 +483,20 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-04T11:58:34+00:00"
+            "time": "2020-02-06T13:29:10+00:00"
         },
         {
             "name": "composer/installers",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "141b272484481432cda342727a427dc1e206bfa0"
+                "reference": "7d610d50aae61ae7ed6675e58efeabdf279bb5e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/141b272484481432cda342727a427dc1e206bfa0",
-                "reference": "141b272484481432cda342727a427dc1e206bfa0",
+                "url": "https://api.github.com/repos/composer/installers/zipball/7d610d50aae61ae7ed6675e58efeabdf279bb5e3",
+                "reference": "7d610d50aae61ae7ed6675e58efeabdf279bb5e3",
                 "shasum": ""
             },
             "require": {
@@ -544,6 +544,7 @@
                 "Kanboard",
                 "Lan Management System",
                 "MODX Evo",
+                "MantisBT",
                 "Mautic",
                 "Maya",
                 "OXID",
@@ -598,6 +599,7 @@
                 "shopware",
                 "silverstripe",
                 "sydes",
+                "sylius",
                 "symfony",
                 "typo3",
                 "wordpress",
@@ -605,7 +607,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2019-08-12T15:00:31+00:00"
+            "time": "2020-02-07T10:39:20+00:00"
         },
         {
             "name": "composer/semver",
