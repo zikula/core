@@ -63,10 +63,8 @@
                 "src/system/*/composer.json"
             ],
             "include": [
-                "src/modules/*/composer.json",
-                "src/modules/*/*/composer.json",
-                "src/themes/*/composer.json",
-                "src/themes/*/*/composer.json"
+                "src/extensions/*/composer.json",
+                "src/extensions/*/*/composer.json",
             ],
             "recurse": false,
             "replace": false,
