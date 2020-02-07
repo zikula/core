@@ -200,6 +200,7 @@
   - components/font-awesome updated from 4.7.0 to 5.12.1
   - composer/ca-bundle updated from 1.2.4 to 1.2.6
   - composer/composer installed in 1.9.1 (temporarily using dev-master b9d0015)
+  - composer/installers updated from v1.7.0 to v1.8.0
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.2
   - composer/xdebug-handler installed in 1.4.0
