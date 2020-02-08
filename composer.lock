@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "32e2e09c895568b105c4334e1c1817eca2279ff2"
+                "reference": "c56886ac36f71b9b7f335ae767ddabcabf96e84a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/32e2e09c895568b105c4334e1c1817eca2279ff2",
-                "reference": "32e2e09c895568b105c4334e1c1817eca2279ff2",
+                "url": "https://api.github.com/repos/composer/composer/zipball/c56886ac36f71b9b7f335ae767ddabcabf96e84a",
+                "reference": "c56886ac36f71b9b7f335ae767ddabcabf96e84a",
                 "shasum": ""
             },
             "require": {
@@ -438,8 +438,8 @@
                 "symfony/console": "2.8.38"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7",
-                "phpunit/phpunit-mock-objects": "^2.3 || ^3.0"
+                "phpspec/prophecy": "^1.10",
+                "symfony/phpunit-bridge": "^3.4"
             },
             "suggest": {
                 "ext-openssl": "Enabling the openssl extension allows you to access https URLs for repositories and packages",
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-06T13:29:10+00:00"
+            "time": "2020-02-07T21:33:39+00:00"
         },
         {
             "name": "composer/installers",
