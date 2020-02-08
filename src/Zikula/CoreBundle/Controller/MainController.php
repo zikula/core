@@ -61,9 +61,11 @@ class MainController
             return new Response(''); // home page is static
         }
 
-        $startController = $startPageInfo['controller'];
         $isValidStartController = true;
-        if (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
+        $startController = $startPageInfo['controller'];
+        if (!isset($startPageInfo['controller']) || !is_string($startPageInfo['controller'])) {
+            $isValidStartController = false;
+        } elseif (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
             $isValidStartController = false;
         } else {
             [$vendor, $bundleName] = explode('\\', $startController);
