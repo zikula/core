@@ -35,6 +35,7 @@
     - `Zikula\Core\Response\` moved into `Zikula\Bundle\CoreBundle\Response\`.
     - `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
+    - `Zikula\SettingsModule\Validator\` moved to `Zikula\Bundle\FormExtensionBundle\Validator\`.
     - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
@@ -162,13 +163,15 @@
   - When updating a block, orphan properties are removed (#3892).
   - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
   - Fixed creating new ZAuth users as admin without setting a password.
+  - Start page can now be defined more flexible (GET parameters, POST parameters, Request attributes) (#3955).
+  - Start page can now be configured for each available language (#3955).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
   - Migrated all templates to Bootstrap 4 and Font Awesome 5 (#3530, #4037).
   - Added all styles from Bootswatch to the Bootstrap theme (#4037).
   - Added option to allow users individually switching between available Bootswatch styles (#4037).
-  - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
+  - Centralised dynamic form field handling from Profile module in FormExtensionBundle (#3945).
   - Allow zasset syntax for relative assets also for normal bundles.
   - Added Twig function for creating a `RouteUrl` instance (#3802).
   - Added support for separators in dropdown menus of extensions interface / module links (#3904).

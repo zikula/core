@@ -38,8 +38,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('UseCompression', '0');
         $this->setSystemVar('siteoff', 0);
         $this->setSystemVar('siteoffreason');
-        $this->setSystemVar('startController');
-        $this->setSystemVar('startargs');
         $this->setSystemVar('language_detect', 0);
 
         // Multilingual support
@@ -48,6 +46,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             $this->setSystemVar('slogan_' . $lang, $this->trans('Site description'));
             $this->setSystemVar('defaultpagetitle_' . $lang, $this->trans('Site name'));
             $this->setSystemVar('defaultmetadescription_' . $lang, $this->trans('Site description'));
+            $this->setSystemVar('startController_' . $lang);
         }
 
         $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE);
@@ -103,11 +102,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                     }
                 }
                 $this->entityManager->flush();
-
             case '2.9.10':
-                $this->setSystemVar('startController');
-                $newStargArgs = str_replace(',', '&', $this->getSystemVar('startargs')); // replace comma with `&`
-                $this->setSystemVar('startargs', $newStargArgs);
             case '2.9.11':
                 $this->setSystemVar('UseCompression', (bool)$this->getSystemVar('UseCompression'));
             case '2.9.12': // ship with Core-1.4.4
@@ -122,7 +117,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             case '2.9.14': // ship with Core-1.5.0 + Core-2.x
                 $variableApi = $this->container->get(VariableApi::class);
                 $variableApi->del(VariableApi::CONFIG, 'Version_Sub');
-                $this->setSystemVar('startController'); // reset to blank because of new format FQCN::method
             case '2.9.15':
                 $varsToRemove = [
                     'funtext',
@@ -131,10 +125,15 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                     'debug',
                     'debug_sql',
                     'useflags',
-                    'language_i18n'
+                    'language_i18n',
+                    'startController',
+                    'startargs'
                 ];
                 foreach ($varsToRemove as $varName) {
                     $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, $varName);
+                }
+                foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $lang) {
+                    $this->setSystemVar('startController_' . $lang);
                 }
             case '2.9.16': // ship with Core-3.0.0
                 // current version

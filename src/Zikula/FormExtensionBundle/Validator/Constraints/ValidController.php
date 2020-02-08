@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\SettingsModule\Validator\Constraints;
+namespace Zikula\Bundle\FormExtensionBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

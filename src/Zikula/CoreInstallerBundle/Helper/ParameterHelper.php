@@ -148,12 +148,32 @@ class ParameterHelper
 
         if (isset($params['upgrading'])) {
             $params['zikula_asset_manager.combine'] = false;
-            $startController = $this->variableApi->getSystemVar('startController');
-            [$moduleName] = explode(':', $startController);
-            if (!$this->kernel->isBundle($moduleName)) {
-                // set the 'start' page information to empty to avoid missing module errors.
-                $this->variableApi->set(VariableApi::CONFIG, 'startController', '');
-                $this->variableApi->set(VariableApi::CONFIG, 'startargs', '');
+
+            // unset start page information if needed to avoid missing module errors
+            $startPageInfo = $this->variableApi->getSystemVar('startController');
+            if (!is_array($startPageInfo)) {
+                // BC
+                $startPageInfo = [
+                    'controller' => $startPageInfo,
+                    'query' => '',
+                    'request' => '',
+                    'attributes' => $this->variableApi->getSystemVar('startargs')
+                ];
+            }
+            $startController = $startPageInfo['controller'];
+            $isValidStartController = true;
+            if (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
+                $isValidStartController = false;
+            } else {
+                [$vendor, $bundleName] = explode('\\', $startController);
+                $bundleName = $vendor . $bundleName;
+                [$fqcn, $method] = explode('::', $startController);
+                if (!$this->kernel->isBundle($bundleName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
+                    $isValidStartController = false;
+                }
+            }
+            if (!$isValidStartController) {
+                $this->variableApi->set(VariableApi::CONFIG, 'startController_en', '');
             }
 
             // on upgrade, if a user doesn't add their custom theme back to the /theme dir, it should be reset to a core theme, if available.
