@@ -50,14 +50,25 @@ class SiteDefinition implements SiteDefinitionInterface
         $this->extensionRepository = $extensionRepository;
     }
 
-    public function getTitle(): string
+    public function getName(): string
     {
-        $title = $this->variableApi->getSystemVar('defaultpagetitle');
+        return $this->variableApi->getSystemVar('sitename', '');
+    }
+
+    public function getSlogan(): string
+    {
+        // not used yet, refs #3972
+        return $this->variableApi->getSystemVar('slogan', '');
+    }
+
+    public function getPageTitle(): string
+    {
+        $title = $this->variableApi->getSystemVar('defaultpagetitle', '');
         $titleScheme = $this->variableApi->getSystemVar('pagetitle', '');
         if (!empty($titleScheme) && '%pagetitle%' !== $titleScheme) {
             $title = str_replace(
                 ['%pagetitle%', '%sitename%'],
-                [$title, $this->variableApi->getSystemVar('sitename', '')],
+                [$title, $this->getName()],
                 $titleScheme
             );
 
@@ -79,23 +90,26 @@ class SiteDefinition implements SiteDefinitionInterface
         return $title;
     }
 
-    public function getDescription(): string
+    public function getMetaDescription(): string
     {
-        return $this->variableApi->getSystemVar('defaultmetadescription');
+        return $this->variableApi->getSystemVar('defaultmetadescription', '');
     }
 
     public function getLogoPath(): ?string
     {
+        // not used yet, refs #3972
         return '@CoreBundle:images/logo_with_title.png';
     }
 
     public function getMobileLogoPath(): ?string
     {
+        // not used yet, refs #3972
         return '@CoreBundle:images/zk-power.png';
     }
 
     public function getIconPath(): ?string
     {
+        // not used yet, refs #3972
         return '@CoreBundle:images/logo.gif';
     }
 }

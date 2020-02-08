@@ -7,9 +7,13 @@ The basic interface for this is defined in `\Zikula\Bundle\CoreBundle\Site\SiteD
 ```php
 interface SiteDefinitionInterface
 {
-    public function getTitle(): string;
+    public function getName(): string;
 
-    public function getDescription(): string;
+    public function getSlogan(): string;
+
+    public function getPageTitle(): string;
+
+    public function getMetaDescription(): string;
 
     public function getLogoPath(): ?string;
 

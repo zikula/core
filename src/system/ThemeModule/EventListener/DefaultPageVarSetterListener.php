@@ -88,9 +88,9 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         }
 
         // set some defaults
-        $this->pageVars->set('title', $this->site->getTitle());
+        $this->pageVars->set('title', $this->site->getPageTitle());
         $this->pageVars->set('meta.charset', $this->kernel->getCharset());
-        $this->pageVars->set('meta.description', $this->site->getDescription());
+        $this->pageVars->set('meta.description', $this->site->getMetaDescription());
         $this->pageVars->set('homepath', $this->router->generate('home'));
         $this->pageVars->set('coredata', [
             'version' => ZikulaKernel::VERSION,

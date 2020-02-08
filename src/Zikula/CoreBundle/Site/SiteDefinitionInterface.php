@@ -15,9 +15,13 @@ namespace Zikula\Bundle\CoreBundle\Site;
 
 interface SiteDefinitionInterface
 {
-    public function getTitle(): string;
+    public function getName(): string;
 
-    public function getDescription(): string;
+    public function getSlogan(): string;
+
+    public function getPageTitle(): string;
+
+    public function getMetaDescription(): string;
 
     public function getLogoPath(): ?string;
 
