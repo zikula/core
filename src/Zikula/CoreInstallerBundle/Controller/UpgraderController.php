@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Component\Wizard\FormHandlerInterface;
-use Zikula\Component\Wizard\Wizard;
-use Zikula\Component\Wizard\WizardCompleteInterface;
 
 /**
  * Class UpgraderController
@@ -48,53 +45,10 @@ class UpgraderController extends AbstractController
             return new RedirectResponse($this->router->generate('install'));
         }
 
-        $session = $request->hasSession() ? $request->getSession() : null;
-
-        // check php
-        $ini_warnings = $this->controllerHelper->initPhp();
-        if (null !== $session && 0 < count($ini_warnings)) {
-            $session->getFlashBag()->add('warning', implode('<hr />', $ini_warnings));
-        }
-
         $yamlDumper = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/config', 'services_custom.yaml');
         $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->container->getParameter('locale'));
 
-        // begin the wizard
-        $wizard = new Wizard($this->container, dirname(__DIR__) . '/Resources/config/upgrade_stages.yaml');
-        $currentStage = $wizard->getCurrentStage($stage);
-        if ($currentStage instanceof WizardCompleteInterface) {
-            $yamlDumper->setParameter('upgrading', false);
-
-            return $currentStage->getResponse($request);
-        }
-        $templateParams = $this->controllerHelper->getTemplateGlobals($currentStage);
-        $templateParams['headertemplate'] = '@ZikulaCoreInstaller/upgradeheader.html.twig';
-        if ($wizard->isHalted()) {
-            if (null !== $session) {
-                $session->getFlashBag()->add('danger', $wizard->getWarning());
-            }
-
-            return $this->renderResponse('@ZikulaCoreInstaller/error.html.twig', $templateParams);
-        }
-
-        // handle the form
-        if ($currentStage instanceof FormHandlerInterface) {
-            $form = $this->form->create($currentStage->getFormType(), null, $currentStage->getFormOptions());
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $currentStage->handleFormResult($form);
-                $params = [
-                    'stage' => $wizard->getNextStage()->getName(),
-                    '_locale' => $this->container->getParameter('locale')
-                ];
-                $url = $this->router->generate('upgrade', $params);
-
-                return new RedirectResponse($url);
-            }
-            $templateParams['form'] = $form->createView();
-        }
-
-        return $this->renderResponse($currentStage->getTemplateName(), $templateParams);
+        return $this->controllerHelper->processWizard($request, $stage, 'upgrade', $yamlDumper);
     }
 }
