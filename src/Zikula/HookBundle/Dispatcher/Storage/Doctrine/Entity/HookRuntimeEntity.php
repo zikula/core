@@ -16,6 +16,7 @@ namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Traits\HookEntityTrait;
 
 /**
  * HookRuntime
@@ -25,6 +26,8 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
  */
 class HookRuntimeEntity extends EntityAccess
 {
+    use HookEntityTrait;
+
     /**
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -88,64 +91,9 @@ class HookRuntimeEntity extends EntityAccess
      */
     private $priority;
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setSowner(string $sowner): self
-    {
-        $this->sowner = $sowner;
-
-        return $this;
-    }
-
-    public function getSowner(): string
-    {
-        return $this->sowner;
-    }
-
-    public function setPowner(string $powner): self
-    {
-        $this->powner = $powner;
-
-        return $this;
-    }
-
-    public function getPowner(): string
-    {
-        return $this->powner;
-    }
-
-    public function setSareaid(string $subscriberAreaId): self
-    {
-        $this->sareaid = $subscriberAreaId;
-
-        return $this;
-    }
-
-    public function getSareaid(): string
-    {
-        return $this->sareaid;
-    }
-
-    public function setPareaid(string $providerAreaId): self
-    {
-        $this->pareaid = $providerAreaId;
-
-        return $this;
-    }
-
-    public function getPareaid(): string
-    {
-        return $this->pareaid;
-    }
-
-    public function setEventname(string $eventname): self
+    public function setEventname(string $eventname): void
     {
         $this->eventname = $eventname;
-
-        return $this;
     }
 
     public function getEventname(): string
@@ -153,11 +101,9 @@ class HookRuntimeEntity extends EntityAccess
         return $this->eventname;
     }
 
-    public function setClassname(string $classname): self
+    public function setClassname(string $classname): void
     {
         $this->classname = $classname;
-
-        return $this;
     }
 
     public function getClassname(): string
@@ -165,11 +111,9 @@ class HookRuntimeEntity extends EntityAccess
         return $this->classname;
     }
 
-    public function setMethod(string $method): self
+    public function setMethod(string $method): void
     {
         $this->method = $method;
-
-        return $this;
     }
 
     public function getMethod(): string
@@ -177,11 +121,9 @@ class HookRuntimeEntity extends EntityAccess
         return $this->method;
     }
 
-    public function setPriority(int $priority): self
+    public function setPriority(int $priority): void
     {
         $this->priority = $priority;
-
-        return $this;
     }
 
     public function getPriority(): int
