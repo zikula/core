@@ -42,6 +42,10 @@
         ]
     },
     "config": {
+        "platform": {
+            "php": "7.2.5"
+        },
+        "sort-packages": true,
         "bin-dir": "bin",
         "component-dir": "public",
         "public-dir": "public",

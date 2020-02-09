@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cffcbce980ade5f65116600c381e5ea3",
+    "content-hash": "25d6127457cf3838e3b348ab80236de4",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "c56886ac36f71b9b7f335ae767ddabcabf96e84a"
+                "reference": "ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/c56886ac36f71b9b7f335ae767ddabcabf96e84a",
-                "reference": "c56886ac36f71b9b7f335ae767ddabcabf96e84a",
+                "url": "https://api.github.com/repos/composer/composer/zipball/ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b",
+                "reference": "ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-07T21:33:39+00:00"
+            "time": "2020-02-09T20:11:22+00:00"
         },
         {
             "name": "composer/installers",
@@ -6352,20 +6352,20 @@
         },
         {
             "name": "twig/string-extra",
-            "version": "v3.0.1",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/string-extra.git",
-                "reference": "54fb5511c4a0189de1d48d0f7c98843c270084e8"
+                "reference": "b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/54fb5511c4a0189de1d48d0f7c98843c270084e8",
-                "reference": "54fb5511c4a0189de1d48d0f7c98843c270084e8",
+                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda",
+                "reference": "b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.9",
+                "php": "^7.2.5",
                 "symfony/string": "^5.0",
                 "twig/twig": "^2.4|^3.0"
             },
@@ -6403,7 +6403,7 @@
                 "twig",
                 "unicode"
             ],
-            "time": "2019-12-27T07:33:44+00:00"
+            "time": "2020-01-02T12:43:40+00:00"
         },
         {
             "name": "twig/twig",
@@ -7150,5 +7150,8 @@
     "platform": {
         "php": "^7.2.5"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "platform-overrides": {
+        "php": "7.2.5"
+    }
 }

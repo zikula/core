@@ -276,7 +276,7 @@
   - twig/inky-extra installed in 3.0.1
   - twig/intl-extra installed in 3.0.1
   - twig/markdown-extra installed in 3.0.1
-  - twig/string-extra installed in 3.0.1
+  - twig/string-extra installed in 3.0.1 (currently 3.x-dev)
   - twig/twig updated from 1.42.4 to 3.0.1
   - webmozart/assert updated from 1.5.0 to 1.6.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0
