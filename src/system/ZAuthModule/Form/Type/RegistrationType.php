@@ -27,9 +27,9 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswer;
-use Zikula\ZAuthModule\Validator\Constraints\ValidEmail;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\ZAuthConstant;
 
