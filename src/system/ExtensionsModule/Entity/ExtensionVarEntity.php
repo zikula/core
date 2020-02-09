@@ -84,7 +84,7 @@ class ExtensionVarEntity extends EntityAccess
         // temporarily suppress E_NOTICE to avoid using @unserialize
         $errorReporting = error_reporting(error_reporting() ^ E_NOTICE);
 
-        $result = @unserialize($this->value);
+        $result = unserialize($this->value);
 
         error_reporting($errorReporting);
 
