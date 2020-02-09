@@ -5,6 +5,8 @@ services:
         public: false
         bind:
             $extension: '@Zikula\UsersModule\ZikulaUsersModule'
+            $installed: '%installed%'
+            $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
 
     Zikula\UsersModule\:
         resource: '../../*'
