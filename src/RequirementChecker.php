@@ -33,7 +33,7 @@ class RequirementChecker
             }
 
             // formatting for both HTML and CLI display
-            if (PHP_SAPI !== 'cli') {
+            if ('cli' !== PHP_SAPI) {
                 echo '<html><body><pre>';
             }
             echo 'The following errors were discovered when checking the' . PHP_EOL . 'Zikula Core system/environment requirements:' . PHP_EOL;
@@ -41,7 +41,7 @@ class RequirementChecker
             foreach ($versionChecker->requirementsErrors as $error) {
                 echo $error . PHP_EOL;
             }
-            if (PHP_SAPI !== 'cli') {
+            if ('cli' !== PHP_SAPI) {
                 echo '</pre></body></html>';
             }
             die();

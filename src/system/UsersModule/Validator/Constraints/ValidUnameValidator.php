@@ -96,8 +96,9 @@ class ValidUnameValidator extends ConstraintValidator
             }
         }
 
-        if (!$this->installed || $this->isUpgrading) {
+        if (!$this->installed || $this->isUpgrading || 'cli' === PHP_SAPI) {
             // avoid calling permission api in installer
+            // also for the user migration we explicitly want to exclude the "reserved name" check
             return;
         }
 
