@@ -81,7 +81,14 @@ class ExtensionVarEntity extends EntityAccess
 
     public function getValue()
     {
-        return @unserialize($this->value);
+        // temporarily suppress E_NOTICE to avoid using @unserialize
+        $errorReporting = error_reporting(error_reporting() ^ E_NOTICE);
+
+        $result = @unserialize($this->value);
+
+        error_reporting($errorReporting);
+
+        return $result;
     }
 
     public function setValue($value): void

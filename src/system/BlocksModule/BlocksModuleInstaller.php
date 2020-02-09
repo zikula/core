@@ -290,6 +290,13 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
     private function isSerialized($string): bool
     {
-        return 'b:0;' === $string || false !== @unserialize($string);
+        // temporarily suppress E_NOTICE to avoid using @unserialize
+        $errorReporting = error_reporting(error_reporting() ^ E_NOTICE);
+
+        $result = 'b:0;' === $string || false !== unserialize($string);
+
+        error_reporting($errorReporting);
+
+        return $result;
     }
 }
