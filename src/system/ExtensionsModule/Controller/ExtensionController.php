@@ -45,6 +45,7 @@ use Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionStateHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\ThemeModule\Engine\Engine;
 
 /**
  * Class ExtensionController
@@ -504,5 +505,20 @@ class ExtensionController extends AbstractController
             'blocks' => $blocks,
             'requiredDependents' => $requiredDependents
         ];
+    }
+
+    /**
+     * @Route("/theme-preview/{themeName}")
+     */
+    public function previewAction(Engine $engine, string $themeName): Response
+    {
+        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+
+        $engine->setActiveTheme($themeName);
+        $this->addFlash('warning', 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.');
+
+        return $this->forward('Zikula\Bundle\CoreBundle\Controller\MainController::homeAction');
     }
 }
