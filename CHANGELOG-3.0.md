@@ -192,6 +192,7 @@
   - System themes (Bootstrap, Atom, Printer, Rss) are now located in `system/` and are loaded directly into the kernel.
   - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
   - If a record is not found for a guest this is now similarly treated like an access denied exception (redirect to login form).
+  - Persist the locale a user used during his registration (#4098).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

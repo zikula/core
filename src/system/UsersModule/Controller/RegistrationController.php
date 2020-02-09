@@ -157,6 +157,7 @@ class RegistrationController extends AbstractController
                     $userEntity = new UserEntity();
                     $userEntity->setUname($formData['uname']);
                     $userEntity->setEmail($formData['email']);
+                    $userEntity->setLocale($request->getLocale());
                     $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
                     $validationErrors = $validator->validate($userEntity);
                     if (count($validationErrors) > 0) {
