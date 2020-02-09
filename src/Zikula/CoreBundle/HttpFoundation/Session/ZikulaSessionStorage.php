@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\HttpFoundation\Session;
 
 use SessionHandlerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionUtils;
-use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
@@ -74,7 +74,7 @@ class ZikulaSessionStorage extends NativeSessionStorage
         VariableApiInterface $variableApi,
         array $options = [],
         SessionHandlerInterface $handler = null,
-        MetadataBag $metaBag = null
+        SessionBagInterface $metaBag = null
     ) {
         $this->securityLevel = $variableApi->getSystemVar('seclevel', self::SECURITY_LEVEL_MEDIUM);
         $this->inactiveSeconds = $variableApi->getSystemVar('secinactivemins', 20) * 60;
