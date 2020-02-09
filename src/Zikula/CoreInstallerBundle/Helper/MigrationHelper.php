@@ -87,7 +87,7 @@ class MigrationHelper
         $errors = $this->validator->validate($mapping);
         if ($errors->count() > 0) {
             foreach ($errors as $error) {
-                $this->logger->addError('Unable to migrate user (' . $user['uname'] . '/' . $user['email'] . ') because: ' . $error->getMessage());
+                $this->logger->error('Unable to migrate user (' . $user['uname'] . '/' . $user['email'] . ') because: ' . $error->getMessage());
             }
 
             return null;
