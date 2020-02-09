@@ -68,10 +68,10 @@ class MainController
         } elseif (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
             $isValidStartController = false;
         } else {
-            [$vendor, $bundleName] = explode('\\', $startController);
-            $bundleName = $vendor . $bundleName;
+            [$vendor, $extensionName] = explode('\\', $startController);
+            $extensionName = $vendor . $extensionName;
             [$fqcn, $method] = explode('::', $startController);
-            if (!$this->kernel->isBundle($bundleName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
+            if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
                 $isValidStartController = false;
             }
         }
@@ -102,11 +102,11 @@ class MainController
 
         $subRequest = $request->duplicate($queryParams, $requestParams, $attributes);
 
-        $subRequest->attributes->set('_zkBundle', $bundleName);
-        $subRequest->attributes->set('_zkModule', $bundleName);
+        $subRequest->attributes->set('_zkBundle', $extensionName);
+        $subRequest->attributes->set('_zkModule', $extensionName);
         // fix for #3929, #3932
-        $request->attributes->set('_zkBundle', $bundleName);
-        $request->attributes->set('_zkModule', $bundleName);
+        $request->attributes->set('_zkBundle', $extensionName);
+        $request->attributes->set('_zkModule', $extensionName);
 
         return $this->kernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }

@@ -167,10 +167,10 @@ class ParameterHelper
             } elseif (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
                 $isValidStartController = false;
             } else {
-                [$vendor, $bundleName] = explode('\\', $startController);
-                $bundleName = $vendor . $bundleName;
+                [$vendor, $extensionName] = explode('\\', $startController);
+                $extensionName = $vendor . $extensionName;
                 [$fqcn, $method] = explode('::', $startController);
-                if (!$this->kernel->isBundle($bundleName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
+                if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
                     $isValidStartController = false;
                 }
             }

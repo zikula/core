@@ -69,7 +69,9 @@ class ModuleListener implements EventSubscriberInterface
     public function extensionDeactivated(ExtensionStateEvent $event): void
     {
         $extension = $event->getExtension();
-        $extensionName = isset($extension) ? $extension->getName() : $event->getInfo()['name'];
+        $deactivatedExtensionName = isset($extension) ? $extension->getName() : $event->getInfo()['name'];
+        $request = $this->requestStack->getCurrentRequest();
+
         foreach ($this->localeApi->getSupportedLocales() as $lang) {
             $startPageInfo = $this->variableApi->getSystemVar('startController_' . $lang);
             if (!$startPageInfo || !$startPageInfo['controller']) {
@@ -81,22 +83,23 @@ class ModuleListener implements EventSubscriberInterface
                 continue;
             }
 
-            [$vendor, $bundleName] = explode('\\', $startController);
-            $bundleName = $vendor . $bundleName;
-            if ($bundleName === $extensionName) {
-                // since the start extension has been removed, set all related variables to ''
-                $this->variableApi->set(VariableApi::CONFIG, 'startController_' . $lang, '');
+            [$vendor, $extensionName] = explode('\\', $startController);
+            $extensionName = $vendor . $extensionName;
+            if ($extensionName !== $deactivatedExtensionName) {
+                continue;
+            }
 
-                $request = $this->requestStack->getCurrentRequest();
-                if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
-                    $session->getFlashBag()->add(
-                        'info',
-                        $this->translator->__trans(
-                            'The start controller for language "%language%" was reset to a static frontpage.',
-                            ['%language%' => $lang]
-                        )
-                    );
-                }
+            // since the start extension has been removed, set all related variables to ''
+            $this->variableApi->set(VariableApi::CONFIG, 'startController_' . $lang, '');
+
+            if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
+                $session->getFlashBag()->add(
+                    'info',
+                    $this->translator->__trans(
+                        'The start controller for language "%language%" was reset to a static frontpage.',
+                        ['%language%' => $lang]
+                    )
+                );
             }
         }
     }

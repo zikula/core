@@ -76,9 +76,9 @@ class SiteDefinition implements SiteDefinitionInterface
             $request = $this->requestStack->getCurrentRequest();
             if (null !== $request && null !== $request->attributes->get('_controller')) {
                 $controllerNameParts = explode('\\', $request->attributes->get('_controller'));
-                $bundleName = count($controllerNameParts) > 1 ? $controllerNameParts[0] . $controllerNameParts[1] : '';
-                if ('Module' === mb_substr($bundleName, -6)) {
-                    $module = $this->extensionRepository->get($bundleName);
+                $extensionName = count($controllerNameParts) > 1 ? $controllerNameParts[0] . $controllerNameParts[1] : '';
+                if ('Module' === mb_substr($extensionName, -6)) {
+                    $module = $this->extensionRepository->get($extensionName);
                     if (null !== $module) {
                         $moduleDisplayName = $module->getDisplayName();
                     }
