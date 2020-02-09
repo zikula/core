@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,7 +20,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\CategoriesModule\Traits\StandardFieldsTrait;
-use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * Category entity.
