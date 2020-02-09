@@ -144,8 +144,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config', 'services_custom.yaml');
         // tell the core that we are upgrading
-        $params = array_merge($yamlManager->getParameters(), ['upgrading' => true]);
-        $yamlManager->setParameters($params);
+        $yamlDumper->setParameter('upgrading', true);
 
         $this->migrateUsers($io, $output);
 
@@ -173,7 +172,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io->newLine();
 
         // write the parameters into config/services_custom.yaml
-        $params = array_merge($params, $settings);
+        $params = array_merge($yamlManager->getParameters(), $settings);
         $yamlManager->setParameters($params);
 
         // upgrade!
