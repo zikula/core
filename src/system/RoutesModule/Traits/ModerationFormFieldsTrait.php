@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\UsersModule\Form\Type\UserLiveSearchType;
 
 /**
- * Moderation form fields trait implementation class.
+ * Moderation form fields trait.
  */
 trait ModerationFormFieldsTrait
 {
