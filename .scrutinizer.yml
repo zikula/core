@@ -49,21 +49,21 @@ coding_style:
             keywords:
                 general: lower
 
-tools:
-    php_analyzer: true
-    php_code_sniffer:
-        config:
-            standard: [PSR1, PSR12]
-    php_cs_fixer:
-        enabled: true
-        config:
-            level: psr2
-    php_loc:
-        enabled: true
-        excluded_dirs: [vendor]
-    php_mess_detector: true
-    php_pdepend: true
-    php_sim: true
+#tools:
+    #php_analyzer: true
+    #php_code_sniffer:
+        #config:
+            #standard: [PSR1, PSR12]
+    #php_cs_fixer:
+        #enabled: true
+        #config:
+            #level: psr2
+    #php_loc:
+        #enabled: true
+        #excluded_dirs: [vendor]
+    #php_mess_detector: true
+    #php_pdepend: true
+    #php_sim: true
 
 checks:
     javascript:
