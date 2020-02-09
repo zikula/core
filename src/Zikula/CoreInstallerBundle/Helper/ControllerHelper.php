@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -171,7 +172,7 @@ class ControllerHelper
     /**
      * Executes the wizard for installation or upgrade process.
      */
-    public function processWizard(Request $request, $stage, $mode = 'install', YamlDumper $yamlDumper = null): Response
+    public function processWizard(Request $request, $stage, $mode = 'install', FormFactory $formFactory, YamlDumper $yamlDumper = null): Response
     {
         if (!in_array($mode, ['install', 'upgrade'])) {
             $mode = 'install';
@@ -208,7 +209,7 @@ class ControllerHelper
 
         // handle the form
         if ($currentStage instanceof FormHandlerInterface) {
-            $form = $this->form->create($currentStage->getFormType(), null, $currentStage->getFormOptions());
+            $form = $formFactory->create($currentStage->getFormType(), null, $currentStage->getFormOptions());
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $currentStage->handleFormResult($form);

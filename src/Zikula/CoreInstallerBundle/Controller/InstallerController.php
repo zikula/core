@@ -43,6 +43,6 @@ class InstallerController extends AbstractController
 
         $request->setLocale($this->container->getParameter('locale'));
 
-        return $this->controllerHelper->processWizard($request, $stage, 'install');
+        return $this->controllerHelper->processWizard($request, $stage, 'install', $this->form);
     }
 }

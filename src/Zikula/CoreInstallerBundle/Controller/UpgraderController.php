@@ -49,6 +49,6 @@ class UpgraderController extends AbstractController
         $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->container->getParameter('locale'));
 
-        return $this->controllerHelper->processWizard($request, $stage, 'upgrade', $yamlDumper);
+        return $this->controllerHelper->processWizard($request, $stage, 'upgrade', $this->form, $yamlDumper);
     }
 }
