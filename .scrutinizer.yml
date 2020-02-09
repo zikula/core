@@ -17,7 +17,6 @@ build:
 filter:
     excluded_paths:
         - 'src/Zikula/WorkflowBundle/Resources/public/js/jsPlumb/*'
-        - 'src/themes/BootstrapTheme/Resources/public/css/cerulean.css'
         - '*.min.js'
         - '*/vendor/*'
     dependency_paths:
