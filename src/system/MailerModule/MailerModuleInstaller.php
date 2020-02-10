@@ -13,8 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\MailerModule;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 /**
@@ -22,6 +29,31 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
  */
 class MailerModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @var DynamicConfigDumper
+     */
+    private $configDumper;
+
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        DynamicConfigDumper $configDumper,
+        AbstractExtension $extension,
+        ManagerRegistry $managerRegistry,
+        SchemaHelper $schemaTool,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
+        $this->kernel = $kernel;
+        $this->configDumper = $configDumper;
+        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
+    }
+
     public function install(): bool
     {
         $this->setVars($this->getDefaults());
@@ -32,7 +64,6 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        $configDumper = $this->container->get(DynamicConfigDumper::class);
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.3.1':
@@ -40,7 +71,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
             case '1.3.2':
                 // clear old modvars
                 // use manual method because getVars() is not available during system upgrade
-                $modVarEntities = $this->container->get(ExtensionVarRepository::class)->findBy(['modname' => $this->name]);
+                $modVarEntities = $this->managerRegistry->getRepository(ExtensionVarEntity::class)->findBy(['modname' => $this->name]);
                 $modVars = [];
                 foreach ($modVarEntities as $var) {
                     $modVars[$var['name']] = $var['value'];
@@ -73,20 +104,20 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                     'delivery_addresses' => [],
                     'disable_delivery' => 5 === $modVars['mailertype'],
                 ];
-                $configDumper->setConfiguration('swiftmailer', $config);
+                $this->configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.0':
-                $config = $configDumper->getConfiguration('swiftmailer');
+                $config = $this->configDumper->getConfiguration('swiftmailer');
                 // remove spool parameter
                 unset($config['spool']);
-                $configDumper->setConfiguration('swiftmailer', $config);
+                $this->configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.1':
                 // install subscriber hooks
             case '1.4.2':
-                $config = $configDumper->getConfiguration('swiftmailer');
+                $config = $this->configDumper->getConfiguration('swiftmailer');
                 // delivery_address has changed to an array named delivery_addresses
                 $config['delivery_addresses'] = !empty($config['delivery_address']) ? [$config['delivery_address']] : [];
                 unset($config['delivery_address']);
-                $configDumper->setConfiguration('swiftmailer', $config);
+            $this->configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.3':
                 // nothing
             case '1.5.0':
@@ -113,7 +144,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
     private function getDefaults(): array
     {
         return [
-            'charset' => $this->container->get('kernel')->getCharset(),
+            'charset' => $this->kernel->getCharset(),
             'encoding' => '8bit',
             'html' => false,
             'wordwrap' => 50,

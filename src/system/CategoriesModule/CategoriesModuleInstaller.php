@@ -17,14 +17,19 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Helper\TreeMapHelper;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**
@@ -32,6 +37,24 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class CategoriesModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    public function __construct(
+        LocaleApiInterface $localeApi,
+        AbstractExtension $extension,
+        ManagerRegistry $managerRegistry,
+        SchemaHelper $schemaTool,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
+        $this->localeApi = $localeApi;
+        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
+    }
+
     public function install(): bool
     {
         $entities = [
@@ -94,11 +117,9 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.2.3':
             case '1.3.0':
                 $this->delVars();
-                /** @var ManagerRegistry $doctrine */
-                $doctrine = $this->container->get('doctrine');
                 /** @var CategoryRepositoryInterface $categoryRepository */
-                $categoryRepository = $doctrine->getManager()->getRepository(CategoryEntity::class);
-                $helper = new TreeMapHelper($doctrine, $categoryRepository);
+                $categoryRepository = $this->entityManager->getRepository(CategoryEntity::class);
+                $helper = new TreeMapHelper($this->managerRegistry, $categoryRepository);
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
 
@@ -448,7 +469,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     public function localize(string $value = ''): array
     {
         $values = [];
-        foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $code) {
+        foreach ($this->localeApi->getSupportedLocales() as $code) {
             $values[$code] = $this->trans(/** @Ignore */$value, [], 'zikula', $code);
         }
 

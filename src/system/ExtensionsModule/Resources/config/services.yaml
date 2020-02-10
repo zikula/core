@@ -19,7 +19,7 @@ services:
     Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository'
     Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository'
 
-    # public because AbstractTheme and AbstractExtensionInstaller access this using container
+    # public because AbstractTheme and others access this using container
     Zikula\ExtensionsModule\Api\VariableApi:
         public: true
         arguments:
@@ -33,3 +33,11 @@ services:
     Zikula\ExtensionsModule\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaExtensionsAdminMenu }
+
+    Zikula\ExtensionsModule\Helper\ExtensionHelper:
+        arguments:
+            $installed: '%installed%'
+
+    Zikula\ExtensionsModule\Collector\InstallerCollector:
+        arguments:
+            $installers: !tagged_iterator zikula.extension_installer

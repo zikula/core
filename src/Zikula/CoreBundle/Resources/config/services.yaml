@@ -26,19 +26,11 @@ services:
         tags:
             - { name: data_collector, template: '@Core/Collector/ZikulaVersion.html.twig', id: 'zikula_version', priority: 300 }
 
-    # public because AbstractExtensionInstaller accesses this using container
-    Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper:
-        public: true
-        lazy: true
-
-    # public because used in \Zikula\SecurityCenterModule\SecurityCenterModuleInstaller::upgrade
-    # and \Zikula\MailerModule\MailerModuleInstaller::upgrade from the container
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
-        public: true
         arguments:
           $configDir: '%kernel.project_dir%/config'
 
-    # public because SecurityCenterModule Installer and Core Installer accesses this using container
+    # public because Core Installer stages access this using container
     Zikula\Bundle\CoreBundle\CacheClearer:
         public: true
         arguments:
