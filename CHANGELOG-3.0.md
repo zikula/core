@@ -35,7 +35,6 @@
     - `Zikula\Core\Response\` moved into `Zikula\Bundle\CoreBundle\Response\`.
     - `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
-    - `Zikula\SettingsModule\Validator\` moved to `Zikula\Bundle\FormExtensionBundle\Validator\`.
     - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
@@ -71,6 +70,7 @@
   - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
   - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
   - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
+  - The `Zikula\SettingsModule\Validator\ValidController*` classes have been removed.
   - `CoreBundle/Composer/Metadata` has removed `$basePath` and `$rootPath` properties and their getters.
   - `$kernel::isCoreModule()` is renamed to `$kernel::isCoreExtension()`.
     - The corresponding Twig function is similarly renamed.
