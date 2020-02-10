@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
-use ReflectionClass;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Collector\InstallerCollector;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
@@ -30,9 +33,14 @@ use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 class CoreInstallerExtensionHelper
 {
     /**
-     * @var ContainerInterface
+     * @var ZikulaHttpKernelInterface
      */
-    private $container;
+    private $kernel;
+
+    /**
+     * @var ManagerRegistry
+     */
+    private $managerRegistry;
 
     /**
      * @var TranslatorInterface
@@ -54,31 +62,49 @@ class CoreInstallerExtensionHelper
      */
     private $extensionHelper;
 
+    /**
+     * @var InstallerCollector
+     */
+    private $installerCollector;
+
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
     public function __construct(
-        ContainerInterface $container,
+        ZikulaHttpKernelInterface $kernel,
+        ManagerRegistry $managerRegistry,
         TranslatorInterface $translator,
         ParameterHelper $parameterHelper,
         BundleSyncHelper $bundleSyncHelper,
-        ExtensionHelper $extensionHelper
+        ExtensionHelper $extensionHelper,
+        InstallerCollector $installerCollector,
+        VariableApiInterface $variableApi,
+        SessionInterface $session
     ) {
-        $this->container = $container;
+        $this->kernel = $kernel;
+        $this->managerRegistry = $managerRegistry;
         $this->translator = $translator;
         $this->yamlHelper = $parameterHelper->getYamlHelper();
         $this->bundleSyncHelper = $bundleSyncHelper;
         $this->extensionHelper = $extensionHelper;
+        $this->installerCollector = $installerCollector;
+        $this->variableApi = $variableApi;
+        $this->session = $session;
     }
 
-    public function install(string $moduleName): bool
+    public function install(string $extensionName): bool
     {
-        $module = $this->container->get('kernel')->getModule($moduleName);
-        /** @var AbstractCoreModule $module */
-        $className = $module->getInstallerClass();
-        $reflectionInstaller = new ReflectionClass($className);
-        $installer = $reflectionInstaller->newInstance();
-        $installer->setExtension($module);
-        if ($installer instanceof ContainerAwareInterface) {
-            $installer->setContainer($this->container);
-        }
+        $extensionBundle = $this->kernel->getModule($extensionName);
+        /** @var AbstractExtension $extensionBundle */
+        $className = $extensionBundle->getInstallerClass();
+        $installer = $this->installerCollector->get($className);
 
         if ($installer->install()) {
             return true;
@@ -92,17 +118,16 @@ class CoreInstallerExtensionHelper
      */
     private function setCategory(string $moduleName, string $translatedCategoryName): bool
     {
-        $doctrine = $this->container->get('doctrine');
-        $categoryRepository = $doctrine->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+        $categoryRepository = $this->managerRegistry->getRepository('ZikulaAdminModule:AdminCategoryEntity');
         $modulesCategories = $categoryRepository->getIndexedCollection('name');
-        $moduleEntity = $doctrine->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+        $moduleEntity = $this->managerRegistry->getRepository('ZikulaExtensionsModule:ExtensionEntity')
             ->findOneBy(['name' => $moduleName]);
 
-        $moduleRepository = $doctrine->getRepository('ZikulaAdminModule:AdminModuleEntity');
+        $moduleRepository = $this->managerRegistry->getRepository('ZikulaAdminModule:AdminModuleEntity');
         if (isset($modulesCategories[$translatedCategoryName])) {
             $moduleRepository->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
         } else {
-            $defaultCategoryId = $this->container->get(VariableApi::class)->get('ZikulaAdminModule', 'defaultcategory', 5);
+            $defaultCategoryId = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory', 5);
             $defaultCategory = $categoryRepository->find($defaultCategoryId);
             $moduleRepository->setModuleCategory($moduleEntity, $defaultCategory);
         }
@@ -150,15 +175,13 @@ class CoreInstallerExtensionHelper
         $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles(true);
         $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
 
-        $doctrine = $this->container->get('doctrine');
-
         /** @var ExtensionEntity[] $extensions */
-        $extensions = $doctrine->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+        $extensions = $this->managerRegistry->getRepository('ZikulaExtensionsModule:ExtensionEntity')
             ->findBy(['name' => array_keys(ZikulaKernel::$coreExtension)]);
         foreach ($extensions as $extension) {
             $extension->setState(Constant::STATE_ACTIVE);
         }
-        $doctrine->getManager()->flush();
+        $this->managerRegistry->getManager()->flush();
 
         return true;
     }
@@ -192,7 +215,7 @@ class CoreInstallerExtensionHelper
         ];
         $result = true;
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
-            $extensionEntity = $this->container->get('doctrine')->getRepository('ZikulaExtensionsModule:ExtensionEntity')->get($moduleName);
+            $extensionEntity = $this->managerRegistry->getRepository('ZikulaExtensionsModule:ExtensionEntity')->get($moduleName);
             if (isset($extensionEntity)) {
                 $result = $result && $this->extensionHelper->upgrade($extensionEntity);
             }
@@ -203,7 +226,6 @@ class CoreInstallerExtensionHelper
 
     public function executeCoreMetaUpgrade($currentCoreVersion): bool
     {
-        $doctrine = $this->container->get('doctrine');
         /**
          * NOTE: There are *intentionally* no `break` statements within each case here so that the process continues
          * through each case until the end.
@@ -217,7 +239,7 @@ class CoreInstallerExtensionHelper
                 // nothing
             case '1.4.5':
                 // Menu module was introduced in 1.4.4 but not installed on upgrade
-                $schemaManager = $doctrine->getConnection()->getSchemaManager();
+                $schemaManager = $this->managerRegistry->getConnection()->getSchemaManager();
                 if (!$schemaManager->tablesExist(['menu_items'])) {
                     $this->install('ZikulaMenuModule');
                     $this->reSyncAndActivate();
@@ -234,37 +256,36 @@ class CoreInstallerExtensionHelper
                 foreach (['objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'workflows'] as $table) {
                     $sql = "DROP TABLE ${table};";
                     /** @var \Doctrine\DBAL\Driver\PDOConnection $connection */
-                    $connection = $doctrine->getConnection();
+                    $connection = $this->managerRegistry->getConnection();
                     $stmt = $connection->prepare($sql);
                     $stmt->execute();
                     $stmt->closeCursor();
                 }
-                $variableApi = $this->container->get(VariableApi::class);
-                $variableApi->del(VariableApi::CONFIG, 'metakeywords');
-                $variableApi->del(VariableApi::CONFIG, 'startpage');
-                $variableApi->del(VariableApi::CONFIG, 'startfunc');
-                $variableApi->del(VariableApi::CONFIG, 'starttype');
-                if ('userdata' === $this->container->getParameter('datadir')) {
+                $this->variableApi->del(VariableApi::CONFIG, 'metakeywords');
+                $this->variableApi->del(VariableApi::CONFIG, 'startpage');
+                $this->variableApi->del(VariableApi::CONFIG, 'startfunc');
+                $this->variableApi->del(VariableApi::CONFIG, 'starttype');
+                if ('userdata' === $this->yamlHelper->getParameter('datadir')) {
                     $this->yamlHelper->setParameter('datadir', 'public/uploads');
-                    $fs = $this->container->get('filesystem');
-                    $src = $this->container->get('kernel')->getProjectDir();
+                    $fs = new Filesystem();
+                    $src = $this->kernel->getProjectDir();
                     try {
                         if ($fs->exists($src . '/userdata')) {
                             $fs->mirror($src . '/userdata', $src . '/public/uploads');
                         }
                     } catch (\Exception $exception) {
-                        $this->container->get('session')->getFlashBag()->add(
+                        $this->session->getFlashBag()->add(
                             'info',
                             'Attempt to copy files from `userdata` to `public/uploads` failed. You must manually copy the contents.'
                         );
                     }
                 }
                 // remove legacy blocks
-                $blocksToRemove = $doctrine->getRepository(BlockEntity::class)->findBy(['blocktype' => ['Extmenu', 'Menutree', 'Menu']]);
+                $blocksToRemove = $this->managerRegistry->getRepository(BlockEntity::class)->findBy(['blocktype' => ['Extmenu', 'Menutree', 'Menu']]);
                 foreach ($blocksToRemove as $block) {
-                    $doctrine->getManager()->remove($block);
+                    $this->managerRegistry->getManager()->remove($block);
                 }
-                $doctrine->getManager()->flush();
+                $this->managerRegistry->getManager()->flush();
             case '2.0.0':
                 // nothing needed
             case '3.0.0':
