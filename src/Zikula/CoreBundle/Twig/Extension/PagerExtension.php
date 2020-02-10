@@ -205,7 +205,7 @@ class PagerExtension extends AbstractExtension
                 parse_str($startPageInfo['attributes'], $pager['args']);
 
                 [$route, $controller] = explode('###', $startPageInfo['controller']);
-                return $this->router->generate($startPageInfo['route'], $pager['args']);
+                return $this->router->generate($route, $pager['args']);
             }
 
             return $this->router->generate('home', $pager['args']);
