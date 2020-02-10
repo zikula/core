@@ -21,10 +21,6 @@ services:
     Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserRepository'
     Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserSessionRepository'
 
-    # public because core installer and others accesses this using container
-    Zikula\UsersModule\Entity\Repository\UserRepository:
-        public: true
-
     # public because this is often required as part of Doctrine listeners
     # which need to access this using container because CurrentUserApi
     # depends on entities as well

@@ -19,7 +19,7 @@ services:
     Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository'
     Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository'
 
-    # public because AbstractTheme and AbstractExtensionInstaller access this using container
+    # public because AbstractTheme and others access this using container
     Zikula\ExtensionsModule\Api\VariableApi:
         public: true
         arguments:

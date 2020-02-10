@@ -24,7 +24,7 @@ use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\WizardCompleteInterface;
 use Zikula\UsersModule\Constant as UserConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
@@ -81,7 +81,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     private function sendEmailToAdmin(Request $request): int
     {
-        $adminUser = $this->container->get(UserRepository::class)->find(UserConstant::USER_ID_ADMIN);
+        $adminUser = $this->container->get('doctrine')->getRepository(UserEntity::class)->find(UserConstant::USER_ID_ADMIN);
         $uName = $adminUser->getUname();
         $url = $request->getSchemeAndHttpHost() . $request->getBasePath();
         $locale = $request->getLocale();

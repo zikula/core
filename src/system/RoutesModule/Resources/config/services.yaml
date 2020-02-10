@@ -19,10 +19,6 @@ services:
         resource: '../../Helper/*'
         lazy: true
 
-    # public because EntityLifecycleListener accesses this using container
-    Zikula\RoutesModule\Entity\Factory\EntityFactory:
-        public: true
-
     Zikula\RoutesModule\Form\Handler\:
         resource: '../../Form/Handler'
         calls:
