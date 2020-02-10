@@ -18,7 +18,7 @@ services:
 
     Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface: '@Zikula\SecurityCenterModule\Api\HtmlFilterApi'
 
-    # public because installer accesses this using container
+    # public because this extension installer accesses this using container
     Zikula\SecurityCenterModule\Helper\PurifierHelper:
         public: true
 

@@ -23,3 +23,8 @@ services:
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
             $symfonyCacheClearer: '@cache_clearer'
+
+    Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener:
+        arguments:
+            $installed: '%installed%'
+            $currentVersion: '%core_installed_version%' # ZikulaKernel::CORE_INSTALLED_VERSION_PARAM

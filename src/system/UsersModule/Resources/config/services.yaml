@@ -21,7 +21,7 @@ services:
     Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserRepository'
     Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserSessionRepository'
 
-    # public because installer accesses this using container
+    # public because core installer and others accesses this using container
     Zikula\UsersModule\Entity\Repository\UserRepository:
         public: true
 

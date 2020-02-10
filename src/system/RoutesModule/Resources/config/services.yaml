@@ -28,9 +28,7 @@ services:
         calls:
             - setLockingApi: ['@?Zikula\PageLockModule\Api\LockingApi']
 
-    # public because installer accesses this using container
     Zikula\RoutesModule\Helper\MultilingualRoutingHelper:
-        public: true
         arguments:
           $installed: '%installed%'
 

@@ -26,14 +26,6 @@ services:
           $installed: '%installed%'
           $multisitesParameters: '%multisites%'
 
-    # public because installer accesses this using container
-    Zikula\ExtensionsModule\Helper\BundleSyncHelper:
-        public: true
-
-    # public because installer accesses this using container
-    Zikula\ExtensionsModule\Helper\ExtensionHelper:
-        public: true
-
     # public because AbstractExtension accesses this using container
     Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository:
         public: true

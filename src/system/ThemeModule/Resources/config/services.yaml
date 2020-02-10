@@ -18,10 +18,6 @@ services:
         arguments:
             $pageVars: '@zikula_core.common.theme.pagevars'
 
-    # public because ZikulaKernel accesses this using container
-    Zikula\ThemeModule\Engine\Engine:
-        public: true
-
     zikula_core.common.theme.assets_js:
         class: Zikula\ThemeModule\Engine\AssetBag
     # public because AbstractExtension accesses this using container

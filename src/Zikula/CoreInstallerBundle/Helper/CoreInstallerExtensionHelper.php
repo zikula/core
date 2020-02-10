@@ -44,14 +44,28 @@ class CoreInstallerExtensionHelper
      */
     private $yamlHelper;
 
+    /**
+     * @var BundleSyncHelper
+     */
+    private $bundleSyncHelper;
+
+    /**
+     * @var ExtensionHelper
+     */
+    private $extensionHelper;
+
     public function __construct(
         ContainerInterface $container,
         TranslatorInterface $translator,
-        ParameterHelper $parameterHelper
+        ParameterHelper $parameterHelper,
+        BundleSyncHelper $bundleSyncHelper,
+        ExtensionHelper $extensionHelper
     ) {
         $this->container = $container;
         $this->translator = $translator;
         $this->yamlHelper = $parameterHelper->getYamlHelper();
+        $this->bundleSyncHelper = $bundleSyncHelper;
+        $this->extensionHelper = $extensionHelper;
     }
 
     public function install(string $moduleName): bool
@@ -133,9 +147,8 @@ class CoreInstallerExtensionHelper
      */
     public function reSyncAndActivate(): bool
     {
-        $bundleSyncHelper = $this->container->get(BundleSyncHelper::class);
-        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles(true);
-        $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
+        $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles(true);
+        $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
 
         $doctrine = $this->container->get('doctrine');
 
@@ -181,7 +194,7 @@ class CoreInstallerExtensionHelper
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
             $extensionEntity = $this->container->get('doctrine')->getRepository('ZikulaExtensionsModule:ExtensionEntity')->get($moduleName);
             if (isset($extensionEntity)) {
-                $result = $result && $this->container->get(ExtensionHelper::class)->upgrade($extensionEntity);
+                $result = $result && $this->extensionHelper->upgrade($extensionEntity);
             }
         }
 

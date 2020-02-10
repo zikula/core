@@ -38,7 +38,7 @@ services:
         arguments:
           $configDir: '%kernel.project_dir%/config'
 
-    # public because Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand accesses this using container
+    # public because SecurityCenterModule Installer and Core Installer accesses this using container
     Zikula\Bundle\CoreBundle\CacheClearer:
         public: true
         arguments:
