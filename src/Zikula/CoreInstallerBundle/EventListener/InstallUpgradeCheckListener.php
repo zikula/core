@@ -65,7 +65,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $request = $event->getRequest();
         // create several booleans to test condition of request regarding install/upgrade
         $requiresUpgrade = false;
-        if ($this->installed) {
+        if ($this->installed && !empty($this->currentVersion)) {
             $requiresUpgrade = $this->installed && version_compare($this->currentVersion, ZikulaKernel::VERSION, '<');
         }
 

@@ -27,4 +27,5 @@ services:
     Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener:
         arguments:
             $installed: '%installed%'
-            $currentVersion: '%core_installed_version%' # ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
+#            $currentVersion: '%core_installed_version%' # ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
+            $currentVersion: "@=container.hasParameter('core_installed_version') ? parameter('core_installed_version') : ''"
