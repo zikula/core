@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\ExtensionsModule\Constant;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
 {
@@ -55,7 +56,7 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
         $requiredDependents = $this->dependencyHelper->getDependentExtensions($extension);
         if (!empty($requiredDependents)) {
             if ($input->isInteractive()) {
-                $names = implode(', ', array_map(function ($dependent) {
+                $names = implode(', ', array_map(function (ExtensionEntity $dependent) {
                     return $dependent->getModname();
                 }, $requiredDependents));
 

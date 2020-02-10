@@ -77,7 +77,7 @@ class ModuleListener implements EventSubscriberInterface
             if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {
                 continue;
             }
-            [$route, $controller] = explode('###', $startPageInfo['controller']);
+            [, $controller] = explode('###', $startPageInfo['controller']);
             if (false === mb_strpos($controller, '\\') || false === mb_strpos($controller, '::')) {
                 continue;
             }

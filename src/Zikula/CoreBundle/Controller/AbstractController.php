@@ -33,11 +33,6 @@ abstract class AbstractController extends BaseController
     use ExtensionVariablesTrait;
 
     /**
-     * @var AbstractExtension
-     */
-    private $extension;
-
-    /**
      * @var string
      */
     protected $name;
@@ -56,7 +51,6 @@ abstract class AbstractController extends BaseController
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
     ) {
-        $this->extension = $extension;
         $this->name = $extension->getName();
         $this->permissionApi = $permissionApi;
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
