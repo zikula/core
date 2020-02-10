@@ -149,27 +149,8 @@ class ParameterHelper
         if (isset($params['upgrading'])) {
             $params['zikula_asset_manager.combine'] = false;
 
-            // unset start page information if needed to avoid missing module errors
-            $startPageInfo = $this->variableApi->getSystemVar('startController');
-            $isValidStartController = true;
-            if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {
-                $isValidStartController = false;
-            } else {
-                [$route, $controller] = explode('###', $startPageInfo['controller']);
-                if (false === mb_strpos($controller, '\\') || false === mb_strpos($controller, '::')) {
-                    $isValidStartController = false;
-                } else {
-                    [$vendor, $extensionName] = explode('\\', $controller);
-                    $extensionName = $vendor . $extensionName;
-                    [$fqcn, $method] = explode('::', $controller);
-                    if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
-                        $isValidStartController = false;
-                    }
-                }
-            }
-            if (!$isValidStartController) {
-                $this->variableApi->set(VariableApi::CONFIG, 'startController_en', '');
-            }
+            // unset start page information to avoid missing module errors
+            $this->variableApi->set(VariableApi::CONFIG, 'startController_en', '');
 
             // on upgrade, if a user doesn't add their custom theme back to the /theme dir, it should be reset to a core theme, if available.
             $defaultTheme = (string) $this->variableApi->getSystemVar('Default_Theme');
