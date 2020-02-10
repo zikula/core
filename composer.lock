@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b"
+                "reference": "5843a282bce3a7cabde12cc83f6200bee9b880ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b",
-                "reference": "ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b",
+                "url": "https://api.github.com/repos/composer/composer/zipball/5843a282bce3a7cabde12cc83f6200bee9b880ee",
+                "reference": "5843a282bce3a7cabde12cc83f6200bee9b880ee",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-09T20:11:22+00:00"
+            "time": "2020-02-10T16:26:26+00:00"
         },
         {
             "name": "composer/installers",
@@ -6907,12 +6907,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "523e1a81e5ef0d4025943a11a62a2743c74e7706"
+                "reference": "4f1fb81fbc53ce33733cc0515a80f4470d658ac8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/523e1a81e5ef0d4025943a11a62a2743c74e7706",
-                "reference": "523e1a81e5ef0d4025943a11a62a2743c74e7706",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/4f1fb81fbc53ce33733cc0515a80f4470d658ac8",
+                "reference": "4f1fb81fbc53ce33733cc0515a80f4470d658ac8",
                 "shasum": ""
             },
             "require": {
@@ -6968,7 +6968,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-02-06T00:44:50+00:00"
+            "time": "2020-02-10T18:57:44+00:00"
         },
         {
             "name": "zikula/sortable-columns",
