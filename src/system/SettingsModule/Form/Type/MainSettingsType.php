@@ -180,7 +180,8 @@ class MainSettingsType extends AbstractType
                 ])
                 ->add('startController_' . $languageCode, ControllerType::class, [
                     'label' => false,
-                    'required' => false
+                    'required' => false,
+                    'parameterTypes' => ['query', 'attributes']
                 ])
             ;
         }
