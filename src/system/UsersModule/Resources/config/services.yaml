@@ -5,6 +5,8 @@ services:
         public: false
         bind:
             $extension: '@Zikula\UsersModule\ZikulaUsersModule'
+            $installed: '%installed%'
+            $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
 
     Zikula\UsersModule\:
         resource: '../../*'
@@ -18,10 +20,6 @@ services:
     Zikula\UsersModule\Entity\RepositoryInterface\UserAttributeRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserAttributeRepository'
     Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserRepository'
     Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserSessionRepository'
-
-    # public because installer accesses this using container
-    Zikula\UsersModule\Entity\Repository\UserRepository:
-        public: true
 
     # public because this is often required as part of Doctrine listeners
     # which need to access this using container because CurrentUserApi

@@ -48,16 +48,30 @@ class ValidUnameValidator extends ConstraintValidator
      */
     private $permissionApi;
 
+    /**
+     * @var boolean
+     */
+    private $installed;
+
+    /**
+     * @var boolean
+     */
+    private $isUpgrading;
+
     public function __construct(
         VariableApiInterface $variableApi,
         TranslatorInterface $translator,
         ValidatorInterface $validator,
-        PermissionApiInterface $permissionApi
+        PermissionApiInterface $permissionApi,
+        bool $installed,
+        bool $isUpgrading
     ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->validator = $validator;
         $this->permissionApi = $permissionApi;
+        $this->installed = $installed;
+        $this->isUpgrading = $isUpgrading;
     }
 
     public function validate($value, Constraint $constraint)
@@ -80,6 +94,12 @@ class ValidUnameValidator extends ConstraintValidator
                 // this method forces the error to appear at the form input location instead of at the top of the form
                 $this->context->buildViolation($error->getMessage())->addViolation();
             }
+        }
+
+        if (!$this->installed || $this->isUpgrading || 'cli' === PHP_SAPI) {
+            // avoid calling permission api in installer
+            // also for the user migration we explicitly want to exclude the "reserved name" check
+            return;
         }
 
         // ensure not reserved/illegal (unless performed by Admin)

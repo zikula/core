@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -21,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
@@ -30,6 +31,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Collector\InstallerCollector;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -40,9 +42,19 @@ use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 class ExtensionHelper
 {
     /**
-     * @var ContainerInterface
+     * @var string
      */
-    private $container;
+    private $installed;
+
+    /**
+     * @var InstallerCollector
+     */
+    private $installerCollector;
+
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
 
     /**
      * @var TranslatorInterface
@@ -74,8 +86,16 @@ class ExtensionHelper
      */
     private $eventDispatcher;
 
+    /**
+     * @var ManagerRegistry
+     */
+    private $doctrine;
+
     public function __construct(
-        ContainerInterface $container,
+        $installed,
+        InstallerCollector $installerCollector,
+        KernelInterface $kernel,
+        ManagerRegistry $managerRegistry,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         ExtensionRepositoryInterface $extensionRepository,
@@ -83,7 +103,10 @@ class ExtensionHelper
         CacheClearer $cacheClearer,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->container = $container;
+        $this->installed = $installed;
+        $this->installerCollector = $installerCollector;
+        $this->kernel = $kernel;
+        $this->doctrine = $managerRegistry;
         $this->translator = $translator;
         $this->variableApi = $variableApi;
         $this->extensionRepository = $extensionRepository;
@@ -105,7 +128,7 @@ class ExtensionHelper
         }
 
         /** @var AbstractExtension $extensionBundle */
-        $extensionBundle = $this->container->get('kernel')->getBundle($extension->getName());
+        $extensionBundle = $this->kernel->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($extensionBundle);
         if (null !== $installer) {
@@ -137,7 +160,7 @@ class ExtensionHelper
         }
 
         /** @var AbstractExtension $extensionBundle */
-        $extensionBundle = $this->container->get('kernel')->getModule($extension->getName());
+        $extensionBundle = $this->kernel->getModule($extension->getName());
 
         // Check status of Dependencies here to be sure they are met for upgraded extension. #3647
 
@@ -148,7 +171,7 @@ class ExtensionHelper
                 if ($result !== $extension->getVersion()) {
                     // persist the last successful updated version
                     $extension->setVersion($result);
-                    $this->container->get('doctrine')->getManager()->flush();
+                    $this->doctrine->getManager()->flush();
                 }
 
                 return false;
@@ -161,12 +184,12 @@ class ExtensionHelper
         // persist the updated version
         $newVersion = $extensionBundle->getMetaData()->getVersion();
         $extension->setVersion($newVersion);
-        $this->container->get('doctrine')->getManager()->flush();
+        $this->doctrine->getManager()->flush();
 
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
         $this->cacheClearer->clear('symfony');
 
-        if ($this->container->getParameter('installed')) {
+        if ($this->installed) {
             // Upgrade succeeded, issue event.
             $event = new ExtensionStateEvent($extensionBundle, $extension->toArray());
             $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_UPGRADE);
@@ -196,7 +219,7 @@ class ExtensionHelper
         }
 
         /** @var \Zikula\ExtensionsModule\AbstractExtension $extensionBundle */
-        $extensionBundle = $this->container->get('kernel')->getBundle($extension->getName());
+        $extensionBundle = $this->kernel->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($extensionBundle);
         if (null !== $installer) {
@@ -248,7 +271,7 @@ class ExtensionHelper
     public function installAssets(): bool
     {
         /** @var ZikulaHttpKernelInterface $kernel */
-        $kernel = $this->container->get('kernel');
+        $kernel = $this->kernel;
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $input = new ArrayInput([
@@ -261,7 +284,7 @@ class ExtensionHelper
     }
 
     /**
-     * Attempt to get an instance of an extension Installer.
+     * Attempt to get an extension Installer.
      */
     private function getExtensionInstallerInstance(AbstractExtension $extension): ?ExtensionInstallerInterface
     {
@@ -269,17 +292,10 @@ class ExtensionHelper
         if (!class_exists($className)) {
             return null;
         }
-        $reflectionInstaller = new ReflectionClass($className);
-        if (!$reflectionInstaller->isSubclassOf(ExtensionInstallerInterface::class)) {
-            throw new RuntimeException($this->translator->trans('%extension% must implement ExtensionInstallerInterface', ['%extension%' => $className]));
-        }
-        /** @var ExtensionInstallerInterface $installer */
-        $installer = $reflectionInstaller->newInstance();
-        $installer->setExtension($extension);
-        if ($installer instanceof ContainerAwareInterface) {
-            $installer->setContainer($this->container);
+        if ($this->installerCollector->has($className)) {
+            return $this->installerCollector->get($className);
         }
 
-        return $installer;
+        return null;
     }
 }

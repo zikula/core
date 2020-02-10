@@ -54,7 +54,8 @@
     - `Zikula\ŞearchModule\SearchableInterface` has changed signature of `getResults()` method.        
     - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
-  - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
+  - `Zikula\BlocksModule\AbstractBlockHandler` is not ContainerAware anymore.
+  - `Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller` is not ContainerAware anymore.
   - Entity changes
     - `Zikula\BlocksModule\Entity\BlockEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLastUpdate/setLastUpdate`.
     - `Zikula\CategoriesModule\Entity\CategoryEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
@@ -233,7 +234,7 @@
   - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
   - knplabs/knp-menu updated from 2.2.0 to 3.1.0
   - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
-  - league/commonmark installed in 1.2.2
+  - league/commonmark installed in 1.3.0
   - league/html-to-markdown installed in 4.9.1
   - liip/imagine-bundle updated from 1.9.1 to 2.3.0
   - lorenzo/pinky installed in 1.0.5
@@ -280,7 +281,7 @@
   - twig/inky-extra installed in 3.0.1
   - twig/intl-extra installed in 3.0.1
   - twig/markdown-extra installed in 3.0.1
-  - twig/string-extra installed in 3.0.1
+  - twig/string-extra installed in 3.0.1 (currently 3.x-dev)
   - twig/twig updated from 1.42.4 to 3.0.1
   - webmozart/assert updated from 1.5.0 to 1.6.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0

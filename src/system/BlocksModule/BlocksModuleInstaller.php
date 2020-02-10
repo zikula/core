@@ -14,12 +14,18 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule;
 
 use Exception;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Block\HtmlBlock;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Block\SearchBlock;
@@ -38,6 +44,24 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         BlockPositionEntity::class,
         BlockPlacementEntity::class
     ];
+
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        AbstractExtension $extension,
+        ManagerRegistry $managerRegistry,
+        SchemaHelper $schemaTool,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
+        $this->kernel = $kernel;
+        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
+    }
 
     public function install(): bool
     {
@@ -85,10 +109,11 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
                 // check if request is available (#2073)
                 $templateWarning = $this->trans('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
+                $request = $this->requestStack->getMasterRequest();
                 if (
-                    is_object($this->container->get('request'))
-                    && method_exists($this->container->get('request'), 'getSession')
-                    && is_object($this->container->get('request')->getSession())
+                    is_object($request)
+                    && method_exists($request, 'getSession')
+                    && is_object($request->getSession())
                 ) {
                     $this->addFlash('warning', $templateWarning);
                 }
@@ -107,13 +132,12 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $blocks = $blockRepository->findAll();
                 $installerHelper = new InstallerHelper();
                 /** @var ZikulaHttpKernelInterface $kernel */
-                $kernel = $this->container->get('kernel');
                 /** @var BlockEntity $block */
                 foreach ($blocks as $block) {
                     $block->setProperties($oldContent[$block->getBid()]);
                     $block->setFilters($installerHelper->upgradeFilterArray($block->getFilters()));
                     $block->setBlocktype(preg_match('/Block$/', $block->getBkey()) ? mb_substr($block->getBkey(), 0, -5) : $block->getBkey());
-                    $block->setBkey($installerHelper->upgradeBkeyToFqClassname($kernel, $block));
+                    $block->setBkey($installerHelper->upgradeBkeyToFqClassname($this->kernel, $block));
                 }
                 $this->entityManager->flush();
 
@@ -290,6 +314,13 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
     private function isSerialized($string): bool
     {
-        return 'b:0;' === $string || false !== @unserialize($string);
+        // temporarily suppress E_NOTICE to avoid using @unserialize
+        $errorReporting = error_reporting(error_reporting() ^ E_NOTICE);
+
+        $result = 'b:0;' === $string || false !== unserialize($string);
+
+        error_reporting($errorReporting);
+
+        return $result;
     }
 }

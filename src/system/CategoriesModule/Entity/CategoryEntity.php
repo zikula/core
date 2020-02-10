@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity;
 
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
-use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\CategoriesModule\Traits\StandardFieldsTrait;
 
 /**
  * Category entity.
@@ -33,6 +32,8 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class CategoryEntity extends EntityAccess
 {
+    use StandardFieldsTrait;
+
     /**
      * The id of the category
      *
@@ -169,44 +170,6 @@ class CategoryEntity extends EntityAccess
      *                indexBy="name")
      */
     private $attributes;
-
-    /**
-     * The user id of the creator of the category
-     *
-     * @var UserEntity
-     * @Gedmo\Blameable(on="create")
-     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
-     * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
-     */
-    private $createdBy;
-
-    /**
-     * The user id of the last updater of the category
-     *
-     * @var UserEntity
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
-     * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
-     */
-    private $updatedBy;
-
-    /**
-     * The creation timestamp of the category
-     *
-     * @var DateTime
-     * @ORM\Column(type="datetime", name="cr_date")
-     * @Gedmo\Timestampable(on="create")
-     */
-    private $createdDate;
-
-    /**
-     * The last updated timestamp of the category
-     *
-     * @var DateTime
-     * @ORM\Column(type="datetime", name="lu_date")
-     * @Gedmo\Timestampable(on="update")
-     */
-    private $updatedDate;
 
     /**
      * constructor
@@ -355,46 +318,6 @@ class CategoryEntity extends EntityAccess
     public function setIcon(string $icon): void
     {
         $this->icon = $icon ?? '';
-    }
-
-    public function getCreatedDate(): DateTime
-    {
-        return $this->createdDate;
-    }
-
-    public function setCreatedDate(DateTime $createdDate): void
-    {
-        $this->createdDate = $createdDate;
-    }
-
-    public function getCreatedBy(): UserEntity
-    {
-        return $this->createdBy;
-    }
-
-    public function setCreatedBy(UserEntity $createdBy): void
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    public function getUpdatedDate(): DateTime
-    {
-        return $this->updatedDate;
-    }
-
-    public function setUpdatedDate(DateTime $updatedDate): void
-    {
-        $this->updatedDate = $updatedDate;
-    }
-
-    public function getUpdatedBy(): UserEntity
-    {
-        return $this->updatedBy;
-    }
-
-    public function setUpdatedBy(UserEntity $updatedBy): void
-    {
-        $this->updatedBy = $updatedBy;
     }
 
     public function getAttributes(): Collection

@@ -15,6 +15,7 @@
 - [Javascript translation](Javascript.md)
 - [Debugging translations](Debugging.md)
 - [Using the PHP and Symfony's Intl classes](Intl.md)
+- [Contributing translations](Contributing.md)
 
 ## Additional resources
 

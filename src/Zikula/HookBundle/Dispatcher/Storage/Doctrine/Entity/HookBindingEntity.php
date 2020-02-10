@@ -16,6 +16,7 @@ namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Traits\HookEntityTrait;
 
 /**
  * HookBinding
@@ -25,6 +26,8 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
  */
 class HookBindingEntity extends EntityAccess
 {
+    use HookEntityTrait;
+
     /**
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -74,64 +77,9 @@ class HookBindingEntity extends EntityAccess
      */
     private $sortorder;
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function setSowner(string $sowner): self
-    {
-        $this->sowner = $sowner;
-
-        return $this;
-    }
-
-    public function getSowner(): string
-    {
-        return $this->sowner;
-    }
-
-    public function setPowner(string $powner): self
-    {
-        $this->powner = $powner;
-
-        return $this;
-    }
-
-    public function getPowner(): string
-    {
-        return $this->powner;
-    }
-
-    public function setSareaid(string $subscriberAreaId): self
-    {
-        $this->sareaid = $subscriberAreaId;
-
-        return $this;
-    }
-
-    public function getSareaid(): string
-    {
-        return $this->sareaid;
-    }
-
-    public function setPareaid(string $providerAreaId): self
-    {
-        $this->pareaid = $providerAreaId;
-
-        return $this;
-    }
-
-    public function getPareaid(): string
-    {
-        return $this->pareaid;
-    }
-
-    public function setCategory(string $category): self
+    public function setCategory(string $category): void
     {
         $this->category = $category;
-
-        return $this;
     }
 
     public function getCategory(): string
@@ -139,11 +87,9 @@ class HookBindingEntity extends EntityAccess
         return $this->category;
     }
 
-    public function setSortorder(int $sortorder): self
+    public function setSortorder(int $sortorder): void
     {
         $this->sortorder = $sortorder;
-
-        return $this;
     }
 
     public function getSortorder(): int

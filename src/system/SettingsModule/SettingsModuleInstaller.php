@@ -14,18 +14,48 @@ declare(strict_types=1);
 namespace Zikula\SettingsModule;
 
 use DateTimeZone;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
-use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
  * Installation and upgrade routines for the Settings module.
  */
 class SettingsModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    /**
+     * @var string
+     */
+    private $locale;
+
+    public function __construct(
+        LocaleApiInterface $localeApi,
+        $locale,
+        AbstractExtension $extension,
+        ManagerRegistry $managerRegistry,
+        SchemaHelper $schemaTool,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
+        $this->localeApi = $localeApi;
+        $this->locale = $locale;
+        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
+    }
+
     public function install(): bool
     {
         $this->setSystemVar('startdate', date('m/Y'));
@@ -41,7 +71,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('language_detect', 0);
 
         // Multilingual support
-        foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $lang) {
+        foreach ($this->localeApi->getSupportedLocales() as $lang) {
             $this->setSystemVar('sitename_' . $lang, $this->trans('Site name'));
             $this->setSystemVar('slogan_' . $lang, $this->trans('Site description'));
             $this->setSystemVar('defaultpagetitle_' . $lang, $this->trans('Site name'));
@@ -58,8 +88,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         //! this is a comma-separated list of special characters to replace in permalinks
         $this->setSystemVar('permareplace', $this->trans('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
 
-        $locale = $this->container->getParameter('locale');
-        $this->setSystemVar('locale', $locale);
+        $this->setSystemVar('locale', $this->locale);
 
         // Initialisation successful
         return true;
@@ -67,7 +96,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        $request = $this->container->get('request_stack')->getMasterRequest();
+        $request = $this->requestStack->getMasterRequest();
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.9.7':
@@ -89,11 +118,11 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 // update certain System vars to multilingual. provide default values for all locales using current value.
                 // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values
                 $varsToChange = ['sitename', 'slogan', 'defaultpagetitle', 'defaultmetadescription'];
-                $systemVars = $this->container->get(ExtensionVarRepository::class)->findBy(['modname' => VariableApi::CONFIG]);
+                $systemVars = $this->managerRegistry->getRepository(ExtensionVarEntity::class)->findBy(['modname' => VariableApi::CONFIG]);
                 /** @var ExtensionVarEntity $modVar */
                 foreach ($systemVars as $modVar) {
                     if (in_array($modVar->getName(), $varsToChange, true)) {
-                        foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $langcode) {
+                        foreach ($this->localeApi->getSupportedLocales() as $langcode) {
                             $newModVar = clone $modVar;
                             $newModVar->setName($modVar->getName() . '_' . $langcode);
                             $this->entityManager->persist($newModVar);
@@ -109,14 +138,13 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 // reconfigure TZ settings
                 $this->setGuestTimeZone();
             case '2.9.13':
-                $variableApi = $this->container->get(VariableApi::class);
-                $variableApi->del(VariableApi::CONFIG, 'entrypoint');
-                $variableApi->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
-                $variableApi->del(VariableApi::CONFIG, 'shorturls');
-                $variableApi->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
+                $this->getVariableApi()->del(VariableApi::CONFIG, 'entrypoint');
+                $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
+                $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturls');
+                $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
             case '2.9.14': // ship with Core-1.5.0 + Core-2.x
-                $variableApi = $this->container->get(VariableApi::class);
-                $variableApi->del(VariableApi::CONFIG, 'Version_Sub');
+                $this->getVariableApi()->del(VariableApi::CONFIG, 'Version_Sub');
+                $this->setSystemVar('startController'); // reset to blank because of new format FQCN::method
             case '2.9.15':
                 $varsToRemove = [
                     'funtext',
@@ -130,7 +158,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                     'startargs'
                 ];
                 foreach ($varsToRemove as $varName) {
-                    $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, $varName);
+                    $this->getVariableApi()->del(VariableApi::CONFIG, $varName);
                 }
                 foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $lang) {
                     $this->setSystemVar('startController_' . $lang);
@@ -151,12 +179,12 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
     private function setSystemVar(string $name, $value = ''): void
     {
-        $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, $name, $value);
+        $this->getVariableApi()->set(VariableApi::CONFIG, $name, $value);
     }
 
     private function getSystemVar(string $name)
     {
-        return $this->container->get(VariableApi::class)->getSystemVar($name);
+        return $this->getVariableApi()->getSystemVar($name);
     }
 
     private function setGuestTimeZone(): void

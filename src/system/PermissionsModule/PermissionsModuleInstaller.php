@@ -45,7 +45,7 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.1.1':
-                $lastPerm = $this->container->get(PermissionRepository::class)
+                $lastPerm = $this->managerRegistry->getRepository(PermissionEntity::class)
                     ->findOneBy([], ['sequence' => 'DESC']);
                 // allow access to non-html themes
                 $record = new PermissionEntity();

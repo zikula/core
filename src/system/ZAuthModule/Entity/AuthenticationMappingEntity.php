@@ -16,6 +16,7 @@ namespace Zikula\ZAuthModule\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\UsersModule\Validator\Constraints as UsersAssert;
 use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
 
 /**
@@ -49,7 +50,7 @@ class AuthenticationMappingEntity extends EntityAccess
     /**
      * @ORM\Column(type="string")
      * @Assert\Length(min="0", max="255", allowEmptyString="false")
-     * @ZAuthAssert\ValidUname()
+     * @UsersAssert\ValidUname()
      * @var string
      */
     private $uname;
@@ -57,7 +58,7 @@ class AuthenticationMappingEntity extends EntityAccess
     /**
      * @ORM\Column(type="string")
      * @Assert\Length(min="0", max="255", allowEmptyString="false")
-     * @ZAuthAssert\ValidEmail()
+     * @UsersAssert\ValidEmail()
      * @var string
      */
     private $email;

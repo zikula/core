@@ -13,10 +13,16 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
@@ -28,6 +34,39 @@ use Zikula\SecurityCenterModule\Helper\PurifierHelper;
  */
 class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var DynamicConfigDumper
+     */
+    private $configDumper;
+
+    /**
+     * @var CacheClearer
+     */
+    private $cacheClearer;
+
+    /**
+     * @var PurifierHelper
+     */
+    private $purifierHelper;
+
+    public function __construct(
+        DynamicConfigDumper $configDumper,
+        CacheClearer $cacheClearer,
+        PurifierHelper $purifierHelper,
+        AbstractExtension $extension,
+        ManagerRegistry $managerRegistry,
+        SchemaHelper $schemaTool,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
+        $this->configDumper = $configDumper;
+        $this->cacheClearer = $cacheClearer;
+        $this->purifierHelper = $purifierHelper;
+        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
+    }
+
+
     public function install(): bool
     {
         // create the table
@@ -65,10 +104,10 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('filtercookievars', 1);
 
         // HTML Purifier cache dir
-        $this->container->get(CacheClearer::class)->clear('purifier');
+        $this->cacheClearer->clear('purifier');
 
         // HTML Purifier default settings
-        $purifierDefaultConfig = $this->container->get(PurifierHelper::class)->getPurifierConfig(['forcedefault' => true]);
+        $purifierDefaultConfig = $this->purifierHelper->getPurifierConfig(['forcedefault' => true]);
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage
@@ -219,29 +258,27 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        $variableApi = $this->container->get(VariableApi::class);
         switch ($oldVersion) {
             case '1.5.0':
                 // avoid storing absolute pathes in module vars
 
                 // delete obsolete variable
-                $variableApi->del(VariableApi::CONFIG, 'htmlpurifierlocation');
+                $this->getVariableApi()->del(VariableApi::CONFIG, 'htmlpurifierlocation');
 
                 // only update this value if it has not been customised
-                if (false !== mb_strpos($variableApi->get(VariableApi::CONFIG, 'idsrulepath'), 'phpids_zikula_default')) {
+                if (false !== mb_strpos($this->getVariableApi()->get(VariableApi::CONFIG, 'idsrulepath'), 'phpids_zikula_default')) {
                     $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
                 }
             case '1.5.1':
                 // set the session information in /config/dynamic/generated.yaml
-                $configDumper = $this->container->get(DynamicConfigDumper::class);
-                $sessionStoreToFile = $variableApi->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
+                $sessionStoreToFile = $this->getVariableApi()->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
                 $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
-                $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
+                $this->configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
                 $sessionStorageId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
-                $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
-                $sessionSavePath = $variableApi->getSystemVar('sessionsavepath', '');
+                $this->configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
+                $sessionSavePath = $this->getVariableApi()->getSystemVar('sessionsavepath', '');
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
-                $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
+                $this->configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
             case '1.5.2':
                 $varsToRemove = [
                     'sessioncsrftokenonetime',
@@ -254,7 +291,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                     'sessionregeneratefreq'
                 ];
                 foreach ($varsToRemove as $varName) {
-                    $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, $varName);
+                    $this->getVariableApi()->del(VariableApi::CONFIG, $varName);
                 }
             case '1.5.3':
                 // current version
@@ -272,6 +309,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 
     private function setSystemVar(string $name, $value = ''): bool
     {
-        return $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, $name, $value);
+        return $this->getVariableApi()->set(VariableApi::CONFIG, $name, $value);
     }
 }

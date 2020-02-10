@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
@@ -81,5 +82,10 @@ trait ExtensionVariablesTrait
     public function delVars(): bool
     {
         return $this->variableApi->delAll($this->extensionName);
+    }
+
+    public function getVariableApi(): VariableApiInterface
+    {
+        return $this->variableApi;
     }
 }

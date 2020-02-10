@@ -64,8 +64,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $this->setVar('hidePrivate', false);
             case '2.4.1':
                 /** @var UserEntity $anonymousUser */
-                $anonymousUser = $this->container->get(UserRepository::class)->find(UsersConstant::USER_ID_ANONYMOUS);
-                $usersGroup = $this->container->get(GroupRepository::class)->find(GroupsConstant::GROUP_ID_USERS);
+                $anonymousUser = $this->managerRegistry->getRepository(UserEntity::class)->find(UsersConstant::USER_ID_ANONYMOUS);
+                $usersGroup = $this->managerRegistry->getRepository(GroupEntity::class)->find(GroupsConstant::GROUP_ID_USERS);
                 $anonymousUser->getGroups()->removeElement($usersGroup);
                 $this->entityManager->flush();
                 $this->addFlash('info', 'NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.');

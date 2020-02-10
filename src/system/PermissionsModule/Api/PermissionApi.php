@@ -92,6 +92,7 @@ class PermissionApi implements PermissionApiInterface
         if (!isset($user)) {
             $user = (int)$this->currentUserApi->get('uid');
         }
+        $user = !$user ? Constant::USER_ID_ANONYMOUS : $user;
         if (!isset($this->groupPermsByUser[$user]) || false === $this->groupPermsByUser[$user]) {
             $this->setGroupPermsForUser($user);
         }
@@ -106,7 +107,6 @@ class PermissionApi implements PermissionApiInterface
      */
     private function setGroupPermsForUser(int $user): void
     {
-        $user = !$user ? Constant::USER_ID_ANONYMOUS : $user;
         $uids = [self::ALL_USERS, $user]; // by default include 'all users'
 
         // Get all groups that user is in

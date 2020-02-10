@@ -20,5 +20,4 @@ use Zikula\ExtensionsModule\AbstractExtension;
  */
 interface ExtensionInstallerInterface extends InstallerInterface
 {
-    public function setExtension(AbstractExtension $extension): void;
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cffcbce980ade5f65116600c381e5ea3",
+    "content-hash": "25d6127457cf3838e3b348ab80236de4",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "c56886ac36f71b9b7f335ae767ddabcabf96e84a"
+                "reference": "ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/c56886ac36f71b9b7f335ae767ddabcabf96e84a",
-                "reference": "c56886ac36f71b9b7f335ae767ddabcabf96e84a",
+                "url": "https://api.github.com/repos/composer/composer/zipball/ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b",
+                "reference": "ac40fc86e39a9c9adc650ad91f50ebbcbd66bc2b",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-07T21:33:39+00:00"
+            "time": "2020-02-09T20:11:22+00:00"
         },
         {
             "name": "composer/installers",
@@ -2848,30 +2848,31 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.2.2",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "34cf4ddb3892c715ae785c880e6691d839cff88d"
+                "reference": "4f30be7a2cbf3bfa5788abab71384713e48f451f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/34cf4ddb3892c715ae785c880e6691d839cff88d",
-                "reference": "34cf4ddb3892c715ae785c880e6691d839cff88d",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/4f30be7a2cbf3bfa5788abab71384713e48f451f",
+                "reference": "4f30be7a2cbf3bfa5788abab71384713e48f451f",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": "^7.1"
             },
-            "replace": {
-                "colinodell/commonmark-php": "*"
+            "conflict": {
+                "scrutinizer/ocular": "1.7.*"
             },
             "require-dev": {
                 "cebe/markdown": "~1.0",
                 "commonmark/commonmark.js": "0.29.1",
                 "erusev/parsedown": "~1.0",
                 "ext-json": "*",
+                "github/gfm": "0.29.0",
                 "michelf/php-markdown": "~1.4",
                 "mikehaertl/php-shellcommand": "^1.4",
                 "phpstan/phpstan-shim": "^0.11.5",
@@ -2879,16 +2880,13 @@
                 "scrutinizer/ocular": "^1.5",
                 "symfony/finder": "^4.2"
             },
-            "suggest": {
-                "league/commonmark-extras": "Library of useful extensions including smart punctuation"
-            },
             "bin": [
                 "bin/commonmark"
             ],
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -2908,14 +2906,19 @@
                     "role": "Lead Developer"
                 }
             ],
-            "description": "PHP Markdown parser based on the CommonMark spec",
+            "description": "Highly-extensible PHP Markdown parser which fully supports the CommonMark spec and Github-Flavored Markdown (GFM)",
             "homepage": "https://commonmark.thephpleague.com",
             "keywords": [
                 "commonmark",
+                "flavored",
+                "gfm",
+                "github",
+                "github-flavored",
                 "markdown",
+                "md",
                 "parser"
             ],
-            "time": "2020-01-16T01:18:13+00:00"
+            "time": "2020-02-08T23:42:03+00:00"
         },
         {
             "name": "league/html-to-markdown",
@@ -6349,20 +6352,20 @@
         },
         {
             "name": "twig/string-extra",
-            "version": "v3.0.1",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/string-extra.git",
-                "reference": "54fb5511c4a0189de1d48d0f7c98843c270084e8"
+                "reference": "b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/54fb5511c4a0189de1d48d0f7c98843c270084e8",
-                "reference": "54fb5511c4a0189de1d48d0f7c98843c270084e8",
+                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda",
+                "reference": "b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.9",
+                "php": "^7.2.5",
                 "symfony/string": "^5.0",
                 "twig/twig": "^2.4|^3.0"
             },
@@ -6400,7 +6403,7 @@
                 "twig",
                 "unicode"
             ],
-            "time": "2019-12-27T07:33:44+00:00"
+            "time": "2020-01-02T12:43:40+00:00"
         },
         {
             "name": "twig/twig",
@@ -7147,5 +7150,8 @@
     "platform": {
         "php": "^7.2.5"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "platform-overrides": {
+        "php": "7.2.5"
+    }
 }

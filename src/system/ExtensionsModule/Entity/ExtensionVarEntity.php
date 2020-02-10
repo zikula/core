@@ -81,7 +81,21 @@ class ExtensionVarEntity extends EntityAccess
 
     public function getValue()
     {
-        return @unserialize($this->value);
+        // temporarily suppress E_NOTICE to avoid using @unserialize
+        $errorReporting = error_reporting(error_reporting() ^ E_NOTICE);
+
+        $result = '';
+        try {
+            $result = unserialize($this->value);
+        } catch (\ErrorException $exception) {
+            // Warning: Class __PHP_Incomplete_Class has no unserializer
+            // may happen during CLI upgrades for example
+            // see also https://github.com/symfony/symfony/issues/20654
+        }
+
+        error_reporting($errorReporting);
+
+        return $result;
     }
 
     public function setValue($value): void
