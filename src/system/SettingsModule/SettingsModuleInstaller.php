@@ -160,7 +160,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 foreach ($varsToRemove as $varName) {
                     $this->getVariableApi()->del(VariableApi::CONFIG, $varName);
                 }
-                foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $lang) {
+                foreach ($this->localeApi->getSupportedLocales() as $lang) {
                     $this->setSystemVar('startController_' . $lang);
                 }
             case '2.9.16': // ship with Core-3.0.0
