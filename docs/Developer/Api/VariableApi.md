@@ -114,6 +114,8 @@ public function delVar(string $variableName): bool;
  * Convenience shortcut to delete all extension variables.
  */
 public function delVars(): bool;
+
+public function getVariableApi(): VariableApiInterface;
 ```
 
 The class is fully tested.
