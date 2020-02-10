@@ -151,27 +151,22 @@ class ParameterHelper
 
             // unset start page information if needed to avoid missing module errors
             $startPageInfo = $this->variableApi->getSystemVar('startController');
-            if (!is_array($startPageInfo)) {
-                // BC
-                $startPageInfo = [
-                    'controller' => $startPageInfo,
-                    'query' => '',
-                    'request' => '',
-                    'attributes' => $this->variableApi->getSystemVar('startargs')
-                ];
-            }
             $isValidStartController = true;
-            $startController = $startPageInfo['controller'];
-            if (!isset($startPageInfo['controller']) || !is_string($startPageInfo['controller'])) {
-                $isValidStartController = false;
-            } elseif (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
+            if (!is_array($startPageInfo) || !isset($startPageInfo['controller'])) {
                 $isValidStartController = false;
             } else {
-                [$vendor, $extensionName] = explode('\\', $startController);
-                $extensionName = $vendor . $extensionName;
-                [$fqcn, $method] = explode('::', $startController);
-                if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
+                $startController = $startPageInfo['controller'];
+                if (!isset($startPageInfo['controller']) || !is_string($startPageInfo['controller'])) {
                     $isValidStartController = false;
+                } elseif (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
+                    $isValidStartController = false;
+                } else {
+                    [$vendor, $extensionName] = explode('\\', $startController);
+                    $extensionName = $vendor . $extensionName;
+                    [$fqcn, $method] = explode('::', $startController);
+                    if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
+                        $isValidStartController = false;
+                    }
                 }
             }
             if (!$isValidStartController) {

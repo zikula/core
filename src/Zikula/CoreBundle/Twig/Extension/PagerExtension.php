@@ -200,16 +200,12 @@ class PagerExtension extends AbstractExtension
 
             // only case where this should be true is if this is the homepage
             $startPageInfo = $systemVars['startController_' . $request->getLocale()];
-            if (is_array($startPageInfo) && isset($startPageInfo['controller']) && !empty($startPageInfo['controller'])) {
+            if (is_array($startPageInfo) && isset($startPageInfo['controller'])) {
                 parse_str($startPageInfo['query'], $pager['args']);
                 parse_str($startPageInfo['attributes'], $pager['args']);
 
-                foreach ($this->router->getRouteCollection()->all() as $route => $params) {
-                    $defaults = $params->getDefaults();
-                    if (isset($defaults['_controller']) && $defaults['_controller'] === $startPageInfo['controller']) {
-                        return $this->router->generate($route, $pager['args']);
-                    }
-                }
+                [$route, $controller] = explode('###', $startPageInfo['controller']);
+                return $this->router->generate($startPageInfo['route'], $pager['args']);
             }
 
             return $this->router->generate('home', $pager['args']);

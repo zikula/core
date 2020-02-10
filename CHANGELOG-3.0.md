@@ -162,6 +162,7 @@
   - When updating a block, orphan properties are removed (#3892).
   - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
   - Fixed creating new ZAuth users as admin without setting a password.
+  - Start page controllers now get properly set the `_route` request argument (#3955).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -193,7 +194,8 @@
   - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
   - If a record is not found for a guest this is now similarly treated like an access denied exception (redirect to login form).
   - Persist the locale a user used during his registration (#4098).
-  - Start page can now be defined more flexible (GET parameters and request attributes) (#3955).
+  - Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
+  - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
   - Start page can now be configured for each available language (#3955).
 
 - Vendor updates:

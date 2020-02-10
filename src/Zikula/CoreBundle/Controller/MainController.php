@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
@@ -31,22 +30,15 @@ class MainController
     private $kernel;
 
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
      * @var VariableApiInterface
      */
     private $variableApi;
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        RouterInterface $router,
         VariableApiInterface $variableApi
     ) {
         $this->kernel = $kernel;
-        $this->router = $router;
         $this->variableApi = $variableApi;
     }
 
@@ -61,16 +53,17 @@ class MainController
             return new Response(''); // home page is static
         }
 
-        $isValidStartController = true;
-        $startController = $startPageInfo['controller'];
         if (!isset($startPageInfo['controller']) || !is_string($startPageInfo['controller'])) {
-            $isValidStartController = false;
-        } elseif (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
+            return new Response(''); // home page is static
+        }
+        $isValidStartController = true;
+        [$route, $controller] = explode('###', $startPageInfo['controller']);
+        if (false === mb_strpos($controller, '\\') || false === mb_strpos($controller, '::')) {
             $isValidStartController = false;
         } else {
-            [$vendor, $extensionName] = explode('\\', $startController);
+            [$vendor, $extensionName] = explode('\\', $controller);
             $extensionName = $vendor . $extensionName;
-            [$fqcn, $method] = explode('::', $startController);
+            [$fqcn, $method] = explode('::', $controller);
             if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
                 $isValidStartController = false;
             }
@@ -90,15 +83,8 @@ class MainController
         if (null !== $startPageInfo['attributes']) {
             parse_str($startPageInfo['attributes'], $attributes);
         }
-        $attributes['_controller'] = $startController;
-
-        foreach ($this->router->getRouteCollection()->all() as $route => $params) {
-            $defaults = $params->getDefaults();
-            if (isset($defaults['_controller']) && $defaults['_controller'] === $startPageInfo['controller']) {
-                $attributes['_route'] = $route;
-                break;
-            }
-        }
+        $attributes['_controller'] = $controller;
+        $attributes['_route'] = $route;
 
         $subRequest = $request->duplicate($queryParams, $requestParams, $attributes);
 

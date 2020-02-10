@@ -14,25 +14,56 @@ declare(strict_types=1);
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Bundle\FormExtensionBundle\Validator\Constraints\ValidController;
+use Symfony\Component\Routing\RouterInterface;
+use Translation\Extractor\Annotation\Ignore;
 
 /**
  * Controller form type.
  */
 class ControllerType extends AbstractType
 {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var array
+     */
+    private $controllerChoices = [];
+
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('controller', TextType::class, [
+        if (1 > count($this->controllerChoices)) {
+            foreach ($this->router->getRouteCollection()->all() as $route => $params) {
+                $defaults = $params->getDefaults();
+                if (!isset($defaults['_controller']) || empty($defaults['_controller'])) {
+                    // skip routes without controller
+                    continue;
+                }
+                $controller = $defaults['_controller'] ?? '';
+                $optionLabel = str_pad($route . ' ', 80, '-') . '> ' . $controller;
+                $optionValue = $route . '###' . $controller;
+                $this->controllerChoices[$optionLabel] = $optionValue;
+            }
+            ksort($this->controllerChoices);
+        }
+
+        $builder->add('controller', ChoiceType::class, [
             'label' => 'Controller',
-            'help' => 'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>',
-            'help_html' => true,
+            'choices' => /** @Ignore */$this->controllerChoices,
             'required' => $options['required'] ?? false,
-            'constraints' => [
-                new ValidController()
+            'attr' => [
+                'style' => 'font-family: monospace; font-size: 10px'
             ]
         ]);
         if (in_array('query', $options['parameterTypes'])) {
