@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractTheme;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\ThemeModule\Engine\Annotation\Theme as ThemeAnnotation;
 
 /**
  * Class Engine
@@ -185,7 +185,7 @@ class Engine
     {
         $reflectionClass = new ReflectionClass($controllerClassName);
         $reflectionMethod = $reflectionClass->getMethod($method);
-        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, Theme::class);
+        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, ThemeAnnotation::class);
         if (isset($themeAnnotation)) {
             // method annotations contain `@Theme` so set theme based on value
             $this->annotationValue = $themeAnnotation->value;
