@@ -69,7 +69,7 @@
     {% import "knp_menu.html.twig" as macros %}
     <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
-            <i data-toggle="tooltip" class="{{ item.attribute('icon') }} fa-lg" title="{{ block('label') }}"></i>
+            <i data-toggle="tooltip" class="{{ item.attribute('icon') }} fa-fw fa-lg" title="{{ block('label') }}"></i>
         {% endif %}
     </a>
 {% endblock %}

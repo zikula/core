@@ -152,6 +152,11 @@ class MenuBuilder
                 'route' => 'zikulathememodule_var_var',
                 'routeParameters' => ['themeName' => $extension->getName()]
             ])->setAttribute('icon', 'fas fa-pencil-alt');
+            $menu->addChild('Preview theme', [
+                'route' => 'zikulaextensionsmodule_extension_preview',
+                'routeParameters' => ['themeName' => $extension->getName()]
+            ])->setAttribute('icon', 'far fa-eye')
+            ->setLinkAttribute('target', '_blank');
         }
 
         return $menu;
