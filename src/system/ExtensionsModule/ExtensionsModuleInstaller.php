@@ -98,9 +98,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         $jsonPath = realpath(__DIR__ . '/composer.json');
         $jsonContent = $scanner->decode($jsonPath);
         $metaData = new MetaData($jsonContent);
-        if (!empty($this->container)) {
-            $metaData->setTranslator($this->container->get('translator'));
-        }
+        $metaData->setTranslator($this->getTranslator());
         $meta = $metaData->getFilteredVersionInfoArray();
         $meta['state'] = Constant::STATE_ACTIVE;
         unset($meta['dependencies'], $meta['oldnames']);

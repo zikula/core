@@ -53,7 +53,8 @@
     - `Zikula\ŞearchModule\SearchableInterface` has changed signature of `getResults()` method.        
     - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
-  - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
+  - `Zikula\BlocksModule\AbstractBlockHandler` is not ContainerAware anymore.
+  - `Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller` is not ContainerAware anymore.
   - Entity changes
     - `Zikula\BlocksModule\Entity\BlockEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLastUpdate/setLastUpdate`.
     - `Zikula\CategoriesModule\Entity\CategoryEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.

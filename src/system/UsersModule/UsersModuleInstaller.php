@@ -45,7 +45,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         // Set default values and modvars for module
         $this->createDefaultData();
         $this->setVars($this->getDefaultModvars());
-        $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
+        $this->getVariableApi()->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
 
         // Initialisation successful
         return true;
@@ -114,7 +114,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 ]);
                 $this->delVar('login_redirect');
             case '2.2.8':
-                $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
+                $this->getVariableApi()->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
             case '2.2.9':
                 // migrate modvar values to ZAuth and remove from Users
                 $this->migrateModVarsToZAuth();
@@ -281,7 +281,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
                 ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED
             ], true) ? (bool)$value : $value;
-            $this->container->get(VariableApi::class)->set('ZikulaZAuthModule', $migratedModVarName, $value);
+            $this->getVariableApi()->set('ZikulaZAuthModule', $migratedModVarName, $value);
         }
     }
 

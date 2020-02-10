@@ -13,20 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Installer;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use LogicException;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\AbstractExtension;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
 /**
  * Base class for extension installation and upgrade routines.
  */
-abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface, ContainerAwareInterface
+abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
 {
     use TranslatorTrait;
     use ExtensionVariablesTrait;
@@ -37,17 +38,17 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $name;
 
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var AbstractExtension
      */
     protected $extension;
 
     /**
-     * @var EntityManagerInterface
+     * @var ManagerRegistry
+     */
+    protected $managerRegistry;
+
+    /**
+     * @var ObjectManager
      */
     protected $entityManager;
 
@@ -55,6 +56,30 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
      * @var SchemaHelper
      */
     protected $schemaTool;
+
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    public function __construct(
+        AbstractExtension $extension,
+        ManagerRegistry $managerRegistry,
+        SchemaHelper $schemaTool,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
+        $this->extension = $extension;
+        $this->name = $extension->getName();
+        $this->managerRegistry = $managerRegistry;
+        $this->entityManager = $managerRegistry->getManager();
+        $this->schemaTool = $schemaTool;
+        $this->requestStack = $requestStack;
+        $this->setTranslator($translator);
+        $this->extensionName = $this->name; // ExtensionVariablesTrait
+        $this->variableApi = $variableApi; // ExtensionVariablesTrait
+    }
 
     /**
      * Initialise the extension
@@ -71,31 +96,12 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
      */
     abstract public function uninstall(): bool;
 
-    public function setExtension(AbstractExtension $extension): void
-    {
-        $this->extension = $extension;
-        $this->name = $extension->getName();
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->extensionName = $this->name; // for ExtensionVariablesTrait
-        $this->container = $container;
-        if (null === $container) {
-            return;
-        }
-        $this->setTranslator($container->get('translator'));
-        $this->entityManager = $container->get('doctrine')->getManager();
-        $this->schemaTool = $container->get(SchemaHelper::class);
-        $this->variableApi = $container->get(VariableApi::class); // for ExtensionVariablesTrait
-    }
-
     /**
      * Convenience shortcut to add a session flash message.
      */
     public function addFlash(string $type, string $message): void
     {
-        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
             echo ucfirst($type) . ': ' . $message . "\n";
 

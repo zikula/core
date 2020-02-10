@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\BlocksModuleInstaller;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
+use Zikula\ExtensionsModule\Collector\InstallerCollector;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\MenuModule\Block\MenuBlock;
 
@@ -36,25 +36,23 @@ class BlockHelper
     private $translator;
 
     /**
-     * @var ContainerInterface
+     * @var InstallerCollector
      */
-    private $container;
+    private $installerCollector;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         TranslatorInterface $translator,
-        ContainerInterface $container
+        InstallerCollector $installerCollector
     ) {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
-        $this->container = $container;
+        $this->installerCollector = $installerCollector;
     }
 
     public function createBlocks(): bool
     {
-        $installer = new BlocksModuleInstaller();
-        $installer->setExtension($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
-        $installer->setContainer($this->container);
+        $installer = $this->installerCollector->get(BlocksModuleInstaller::class);
         $installer->createDefaultData();
         $this->createMainMenuBlock();
 
