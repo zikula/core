@@ -105,7 +105,6 @@
   - Removed the `polyfill` Twig tag (#3925).
   - Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
   - Removed `ZikulaKernel::VERSION_SUB` constant.
-  - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
   - `Bundle\CoreBundle\Helper\PersistedBundleHelper::getConnection` visibility set to private
   - `Bundle\CoreBundle\Helper\PersistedBundleHelper::addAutoloaders` visibility set to private
   - `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
@@ -163,8 +162,6 @@
   - When updating a block, orphan properties are removed (#3892).
   - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
   - Fixed creating new ZAuth users as admin without setting a password.
-  - Start page can now be defined more flexible (GET parameters, POST parameters, Request attributes) (#3955).
-  - Start page can now be configured for each available language (#3955).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -195,6 +192,9 @@
   - System themes (Bootstrap, Atom, Printer, Rss) are now located in `system/` and are loaded directly into the kernel.
   - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
   - If a record is not found for a guest this is now similarly treated like an access denied exception (redirect to login form).
+  - Persist the locale a user used during his registration (#4098).
+  - Start page can now be defined more flexible (GET parameters and request attributes) (#3955).
+  - Start page can now be configured for each available language (#3955).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
