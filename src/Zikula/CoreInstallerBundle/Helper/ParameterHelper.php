@@ -152,18 +152,16 @@ class ParameterHelper
             // unset start page information if needed to avoid missing module errors
             $startPageInfo = $this->variableApi->getSystemVar('startController');
             $isValidStartController = true;
-            if (!is_array($startPageInfo) || !isset($startPageInfo['controller'])) {
+            if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {
                 $isValidStartController = false;
             } else {
-                $startController = $startPageInfo['controller'];
-                if (!isset($startPageInfo['controller']) || !is_string($startPageInfo['controller'])) {
-                    $isValidStartController = false;
-                } elseif (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
+                [$route, $controller] = explode('###', $startPageInfo['controller']);
+                if (false === mb_strpos($controller, '\\') || false === mb_strpos($controller, '::')) {
                     $isValidStartController = false;
                 } else {
-                    [$vendor, $extensionName] = explode('\\', $startController);
+                    [$vendor, $extensionName] = explode('\\', $controller);
                     $extensionName = $vendor . $extensionName;
-                    [$fqcn, $method] = explode('::', $startController);
+                    [$fqcn, $method] = explode('::', $controller);
                     if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
                         $isValidStartController = false;
                     }

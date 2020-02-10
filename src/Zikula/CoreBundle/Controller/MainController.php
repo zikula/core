@@ -49,13 +49,10 @@ class MainController
     public function homeAction(Request $request): Response
     {
         $startPageInfo = $this->variableApi->getSystemVar('startController');
-        if (!$startPageInfo || !$startPageInfo['controller']) {
+        if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {
             return new Response(''); // home page is static
         }
 
-        if (!isset($startPageInfo['controller']) || !is_string($startPageInfo['controller'])) {
-            return new Response(''); // home page is static
-        }
         $isValidStartController = true;
         [$route, $controller] = explode('###', $startPageInfo['controller']);
         if (false === mb_strpos($controller, '\\') || false === mb_strpos($controller, '::')) {

@@ -74,16 +74,14 @@ class ModuleListener implements EventSubscriberInterface
 
         foreach ($this->localeApi->getSupportedLocales() as $lang) {
             $startPageInfo = $this->variableApi->getSystemVar('startController_' . $lang);
-            if (!$startPageInfo || !$startPageInfo['controller']) {
+            if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {
                 continue;
             }
-
-            $startController = $startPageInfo['controller'];
-            if (false === mb_strpos($startController, '\\') || false === mb_strpos($startController, '::')) {
+            [$route, $controller] = explode('###', $startPageInfo['controller']);
+            if (false === mb_strpos($controller, '\\') || false === mb_strpos($controller, '::')) {
                 continue;
             }
-
-            [$vendor, $extensionName] = explode('\\', $startController);
+            [$vendor, $extensionName] = explode('\\', $controller);
             $extensionName = $vendor . $extensionName;
             if ($extensionName !== $deactivatedExtensionName) {
                 continue;
