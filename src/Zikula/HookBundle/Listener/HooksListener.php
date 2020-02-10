@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuEvent;
@@ -37,11 +36,6 @@ class HooksListener implements EventSubscriberInterface
     private $hookCollector;
 
     /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -49,12 +43,10 @@ class HooksListener implements EventSubscriberInterface
     public function __construct(
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $hookCollector,
-        RouterInterface $router,
         TranslatorInterface $translator
     ) {
         $this->permissionsApi = $permissionApi;
         $this->hookCollector = $hookCollector;
-        $this->router = $router;
         $this->translator = $translator;
     }
 
@@ -80,9 +72,11 @@ class HooksListener implements EventSubscriberInterface
         ) {
             return;
         }
-        $event->getMenu()->addChild('Hooks', [
+        $event->getMenu()->addChild($this->translator->trans('Hooks'), [
             'route' => 'zikula_hook_hook_edit',
             'routeParameters' => ['moduleName' => $event->getBundleName()]
-            ])->setAttribute('icon', 'fas fa-paperclip');
+        ])
+            ->setAttribute('icon', 'fas fa-paperclip')
+        ;
     }
 }

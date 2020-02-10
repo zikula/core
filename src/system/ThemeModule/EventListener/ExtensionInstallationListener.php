@@ -95,7 +95,6 @@ class ExtensionInstallationListener implements EventSubscriberInterface
         }
 
         $publicDir = realpath($this->kernel->getProjectDir() . '/public');
-        $extensionName = $extension->getName();
         $assetDirectory = $publicDir . '/' . $extension->getRelativeAssetPath() . '/';
 
         $fileSystem = new Filesystem();

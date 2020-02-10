@@ -16,7 +16,6 @@ namespace Zikula\ZAuthModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -35,16 +34,10 @@ class UserEventListener implements EventSubscriberInterface
      */
     private $router;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(RequestStack $requestStack, RouterInterface $router, TranslatorInterface $translator)
+    public function __construct(RequestStack $requestStack, RouterInterface $router)
     {
         $this->requestStack = $requestStack;
         $this->router = $router;
-        $this->translator = $translator;
     }
 
     public static function getSubscribedEvents()
