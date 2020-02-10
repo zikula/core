@@ -70,6 +70,7 @@
   - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
   - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
   - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
+  - The `Zikula\SettingsModule\Validator\ValidController*` classes have been removed.
   - `CoreBundle/Composer/Metadata` has removed `$basePath` and `$rootPath` properties and their getters.
   - `$kernel::isCoreModule()` is renamed to `$kernel::isCoreExtension()`.
     - The corresponding Twig function is similarly renamed.
@@ -105,7 +106,6 @@
   - Removed the `polyfill` Twig tag (#3925).
   - Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
   - Removed `ZikulaKernel::VERSION_SUB` constant.
-  - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
   - `Bundle\CoreBundle\Helper\PersistedBundleHelper::getConnection` visibility set to private
   - `Bundle\CoreBundle\Helper\PersistedBundleHelper::addAutoloaders` visibility set to private
   - `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
@@ -163,13 +163,14 @@
   - When updating a block, orphan properties are removed (#3892).
   - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
   - Fixed creating new ZAuth users as admin without setting a password.
+  - Start page controllers now get properly set the `_route` request argument (#3955).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
   - Migrated all templates to Bootstrap 4 and Font Awesome 5 (#3530, #4037).
   - Added all styles from Bootswatch to the Bootstrap theme (#4037).
   - Added option to allow users individually switching between available Bootswatch styles (#4037).
-  - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
+  - Centralised dynamic form field handling from Profile module in FormExtensionBundle (#3945).
   - Allow zasset syntax for relative assets also for normal bundles.
   - Added Twig function for creating a `RouteUrl` instance (#3802).
   - Added support for separators in dropdown menus of extensions interface / module links (#3904).
@@ -194,6 +195,9 @@
   - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
   - If a record is not found for a guest this is now similarly treated like an access denied exception (redirect to login form).
   - Persist the locale a user used during his registration (#4098).
+  - Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
+  - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
+  - Start page can now be configured for each available language (#3955).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

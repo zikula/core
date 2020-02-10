@@ -159,8 +159,8 @@ class PagerExtension extends AbstractExtension
                         }
                         break;
                     case 'lang':
-                        $addcurrentlang2url = $systemVars['languageurl'];
-                        if (0 === $addcurrentlang2url) {
+                        $addCurrentLanguageToUrl = $systemVars['languageurl'];
+                        if (0 === $addCurrentLanguageToUrl) {
                             $pager['args'][$k] = $v;
                         }
                         break;
@@ -193,15 +193,18 @@ class PagerExtension extends AbstractExtension
             }
         }
 
-        $pagerUrl = function($pager) use ($routeName, $systemVars) {
+        $pagerUrl = function($pager) use ($request, $routeName, $systemVars) {
             if ($routeName) {
                 return $this->router->generate($routeName, $pager['args']);
             }
-            // only case where this should be true is if this is the homepage
-            parse_str($systemVars['startargs'], $pager['args']);
-            if ($systemVars['startController']) {
-                $route = mb_strtolower(str_replace(':', '_', $systemVars['startController']));
 
+            // only case where this should be true is if this is the homepage
+            $startPageInfo = $systemVars['startController_' . $request->getLocale()];
+            if (is_array($startPageInfo) && isset($startPageInfo['controller'])) {
+                parse_str($startPageInfo['query'], $pager['args']);
+                parse_str($startPageInfo['attributes'], $pager['args']);
+
+                [$route, $controller] = explode('###', $startPageInfo['controller']);
                 return $this->router->generate($route, $pager['args']);
             }
 

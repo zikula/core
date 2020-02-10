@@ -110,7 +110,7 @@ class VariableApi implements VariableApiInterface
 
     public function localizeVariables(string $lang): void
     {
-        $items = ['sitename', 'slogan', 'defaultpagetitle', 'defaultmetadescription'];
+        $items = ['sitename', 'slogan', 'defaultpagetitle', 'defaultmetadescription', 'startController'];
         foreach ($items as $item) {
             $indexSource = $item . '_en';
             $indexTarget = $item . '_' . $lang;

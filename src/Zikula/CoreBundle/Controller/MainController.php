@@ -34,8 +34,10 @@ class MainController
      */
     private $variableApi;
 
-    public function __construct(ZikulaHttpKernelInterface $kernel, VariableApiInterface $variableApi)
-    {
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        VariableApiInterface $variableApi
+    ) {
         $this->kernel = $kernel;
         $this->variableApi = $variableApi;
     }
@@ -46,22 +48,48 @@ class MainController
      */
     public function homeAction(Request $request): Response
     {
-        $controller = trim($this->variableApi->getSystemVar('startController'), '\\');
-        if (!$controller) {
+        $startPageInfo = $this->variableApi->getSystemVar('startController');
+        if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {
             return new Response(''); // home page is static
         }
-        $args = $this->variableApi->getSystemVar('startargs');
-        $attributes = null !== $args ? parse_str($args, $attributes) : [];
-        $attributes['_controller'] = $controller;
-        $subRequest = $request->duplicate(null, null, $attributes);
-        list($vendor, $moduleName) = explode('\\', $controller);
-        $moduleName = $vendor . $moduleName;
 
-        $subRequest->attributes->set('_zkBundle', $moduleName);
-        $subRequest->attributes->set('_zkModule', $moduleName);
+        $isValidStartController = true;
+        [$route, $controller] = explode('###', $startPageInfo['controller']);
+        if (false === mb_strpos($controller, '\\') || false === mb_strpos($controller, '::')) {
+            $isValidStartController = false;
+        } else {
+            [$vendor, $extensionName] = explode('\\', $controller);
+            $extensionName = $vendor . $extensionName;
+            [$fqcn, $method] = explode('::', $controller);
+            if (!$this->kernel->isBundle($extensionName) || !class_exists($fqcn) || !is_callable([$fqcn, $method])) {
+                $isValidStartController = false;
+            }
+        }
+
+        if (!$isValidStartController) {
+            return new Response(''); // home page is static
+        }
+
+        $queryParams = $requestParams = $attributes = [];
+        if (null !== $startPageInfo['query']) {
+            parse_str($startPageInfo['query'], $queryParams);
+        }
+        if (null !== $startPageInfo['request']) {
+            parse_str($startPageInfo['request'], $requestParams);
+        }
+        if (null !== $startPageInfo['attributes']) {
+            parse_str($startPageInfo['attributes'], $attributes);
+        }
+        $attributes['_controller'] = $controller;
+        $attributes['_route'] = $route;
+
+        $subRequest = $request->duplicate($queryParams, $requestParams, $attributes);
+
+        $subRequest->attributes->set('_zkBundle', $extensionName);
+        $subRequest->attributes->set('_zkModule', $extensionName);
         // fix for #3929, #3932
-        $request->attributes->set('_zkBundle', $moduleName);
-        $request->attributes->set('_zkModule', $moduleName);
+        $request->attributes->set('_zkBundle', $extensionName);
+        $request->attributes->set('_zkModule', $extensionName);
 
         return $this->kernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }

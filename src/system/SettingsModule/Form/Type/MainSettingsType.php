@@ -30,9 +30,9 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\ControllerType;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\SettingsModule\Validator\Constraints\ValidController;
 
 /**
  * Main settings form type.
@@ -112,21 +112,6 @@ class MainSettingsType extends AbstractType
                 'label' => 'Reason for disabling site',
                 'required' => false
             ])
-            ->add('startController', TextType::class, [
-                'label' => 'Start controller',
-                'required' => false,
-                'help' => 'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>',
-                'help_html' => true,
-                'constraints' => [
-                    new ValidController()
-                ]
-            ])
-            ->add('startargs', TextType::class, [
-                'label' => 'Start function arguments',
-                'required' => false,
-                'help' => 'Separate with & for example: <code>foo=2&bar=5</code>',
-                'help_html' => true
-            ])
             ->add('UseCompression', CheckboxType::class, [
                 'label' => 'Activate compression',
                 'label_attr' => ['class' => 'switch-custom'],
@@ -192,6 +177,11 @@ class MainSettingsType extends AbstractType
                 ])
                 ->add('defaultmetadescription_' . $languageCode, TextType::class, [
                     'label' => 'Default meta description'
+                ])
+                ->add('startController_' . $languageCode, ControllerType::class, [
+                    'label' => false,
+                    'required' => false,
+                    'parameterTypes' => ['query', 'attributes']
                 ])
             ;
         }
