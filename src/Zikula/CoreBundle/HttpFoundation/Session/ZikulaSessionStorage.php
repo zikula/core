@@ -139,12 +139,12 @@ class ZikulaSessionStorage extends NativeSessionStorage
 
         if (null !== $lifetime) {
             // added due to https://github.com/symfony/symfony/issues/28577
-            session_destroy();
+            $this->save();
 
             ini_set('session.cookie_lifetime', (string) $lifetime);
 
             // added due to https://github.com/symfony/symfony/issues/28577
-            session_start();
+            $this->start();
         }
 
         if ($destroy) {
