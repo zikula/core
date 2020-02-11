@@ -275,14 +275,14 @@
   - symfony/symfony updated from 3.4.35 to 5.0.4
   - thomaspark/bootswatch installed in 4.4.1
   - tijsverkoyen/css-to-inline-styles installed in 2.2.2
-  - twig/extra-bundle installed in 3.0.2
-  - twig/cssinliner-extra installed in 3.0.2
-  - twig/html-extra installed in 3.0.2
-  - twig/inky-extra installed in 3.0.2
-  - twig/intl-extra installed in 3.0.2
-  - twig/markdown-extra installed in 3.0.2
-  - twig/string-extra installed in 3.0.2
-  - twig/twig updated from 1.42.4 to 3.0.2
+  - twig/extra-bundle installed in 3.0.3
+  - twig/cssinliner-extra installed in 3.0.3
+  - twig/html-extra installed in 3.0.3
+  - twig/inky-extra installed in 3.0.3
+  - twig/intl-extra installed in 3.0.3
+  - twig/markdown-extra installed in 3.0.3
+  - twig/string-extra installed in 3.0.3
+  - twig/twig updated from 1.42.4 to 3.0.3
   - vakata/jstree updated from 3.3.8 to 3.3.9
   - webmozart/assert updated from 1.5.0 to 1.6.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0

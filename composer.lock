@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "5843a282bce3a7cabde12cc83f6200bee9b880ee"
+                "reference": "02433c3659bcdd92758094f5dcdeb951db044979"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/5843a282bce3a7cabde12cc83f6200bee9b880ee",
-                "reference": "5843a282bce3a7cabde12cc83f6200bee9b880ee",
+                "url": "https://api.github.com/repos/composer/composer/zipball/02433c3659bcdd92758094f5dcdeb951db044979",
+                "reference": "02433c3659bcdd92758094f5dcdeb951db044979",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-10T16:26:26+00:00"
+            "time": "2020-02-11T12:47:34+00:00"
         },
         {
             "name": "composer/installers",
@@ -4073,12 +4073,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-storage.git",
-                "reference": "caa23d034d425bad74f1de11a42a1c8a228670c8"
+                "reference": "9d6e34d6ed662a6438365bc891768b701fdd6c24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/caa23d034d425bad74f1de11a42a1c8a228670c8",
-                "reference": "caa23d034d425bad74f1de11a42a1c8a228670c8",
+                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/9d6e34d6ed662a6438365bc891768b701fdd6c24",
+                "reference": "9d6e34d6ed662a6438365bc891768b701fdd6c24",
                 "shasum": ""
             },
             "require": {
@@ -4094,7 +4094,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "2.2-dev"
                 }
             },
             "autoload": {
@@ -4113,7 +4113,7 @@
                 }
             ],
             "description": "A translation file storage using Symfony translation component.",
-            "time": "2020-01-19T19:30:46+00:00"
+            "time": "2020-02-11T12:49:11+00:00"
         },
         {
             "name": "phpids/phpids",
@@ -6021,7 +6021,7 @@
         },
         {
             "name": "twig/cssinliner-extra",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/cssinliner-extra.git",
@@ -6075,7 +6075,7 @@
         },
         {
             "name": "twig/extra-bundle",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
@@ -6134,7 +6134,7 @@
         },
         {
             "name": "twig/html-extra",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/html-extra.git",
@@ -6187,7 +6187,7 @@
         },
         {
             "name": "twig/inky-extra",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/inky-extra.git",
@@ -6242,7 +6242,7 @@
         },
         {
             "name": "twig/intl-extra",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/intl-extra.git",
@@ -6295,7 +6295,7 @@
         },
         {
             "name": "twig/markdown-extra",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/markdown-extra.git",
@@ -6352,16 +6352,16 @@
         },
         {
             "name": "twig/string-extra",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/string-extra.git",
-                "reference": "b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda"
+                "reference": "9905d4410f1214df183fbb1a5e7848c560fdd551"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda",
-                "reference": "b71ca9aa5ec6f78002f1d7aac572c0d25ae25dda",
+                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/9905d4410f1214df183fbb1a5e7848c560fdd551",
+                "reference": "9905d4410f1214df183fbb1a5e7848c560fdd551",
                 "shasum": ""
             },
             "require": {
@@ -6403,20 +6403,20 @@
                 "twig",
                 "unicode"
             ],
-            "time": "2020-01-02T12:43:40+00:00"
+            "time": "2020-02-06T15:26:33+00:00"
         },
         {
             "name": "twig/twig",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "5e6df0763a83dab0b73c1e803342fc0315f63ff5"
+                "reference": "3b88ccd180a6b61ebb517aea3b1a8906762a1dc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5e6df0763a83dab0b73c1e803342fc0315f63ff5",
-                "reference": "5e6df0763a83dab0b73c1e803342fc0315f63ff5",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3b88ccd180a6b61ebb517aea3b1a8906762a1dc2",
+                "reference": "3b88ccd180a6b61ebb517aea3b1a8906762a1dc2",
                 "shasum": ""
             },
             "require": {
@@ -6465,7 +6465,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2020-02-11T06:03:57+00:00"
+            "time": "2020-02-11T15:33:47+00:00"
         },
         {
             "name": "vakata/jstree",
@@ -7025,12 +7025,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "8c8e2e34bbb43d44aeab9849d39250de1e235016"
+                "reference": "91c8e497a5d7664e9748b38f8ef47a4c74fe6bdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/8c8e2e34bbb43d44aeab9849d39250de1e235016",
-                "reference": "8c8e2e34bbb43d44aeab9849d39250de1e235016",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/91c8e497a5d7664e9748b38f8ef47a4c74fe6bdd",
+                "reference": "91c8e497a5d7664e9748b38f8ef47a4c74fe6bdd",
                 "shasum": ""
             },
             "require": {
@@ -7062,7 +7062,7 @@
                 "step",
                 "wizard"
             ],
-            "time": "2020-02-01T06:45:30+00:00"
+            "time": "2020-02-11T12:10:49+00:00"
         }
     ],
     "packages-dev": [
