@@ -26,8 +26,8 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
-use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 use Zikula\SecurityCenterModule\Helper\HtmlTagsHelper;
+use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 /**
  * Installation routines for the security center module.

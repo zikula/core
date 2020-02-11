@@ -28,7 +28,6 @@ use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Helper\HookUiHelper;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
