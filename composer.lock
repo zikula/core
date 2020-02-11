@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "5843a282bce3a7cabde12cc83f6200bee9b880ee"
+                "reference": "31068b7bed3ff63d4ecde3c9d51f2e08d30b0d3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/5843a282bce3a7cabde12cc83f6200bee9b880ee",
-                "reference": "5843a282bce3a7cabde12cc83f6200bee9b880ee",
+                "url": "https://api.github.com/repos/composer/composer/zipball/31068b7bed3ff63d4ecde3c9d51f2e08d30b0d3b",
+                "reference": "31068b7bed3ff63d4ecde3c9d51f2e08d30b0d3b",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-10T16:26:26+00:00"
+            "time": "2020-02-11T09:49:09+00:00"
         },
         {
             "name": "composer/installers",
