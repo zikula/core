@@ -12,11 +12,11 @@ declare(strict_types=1);
  */
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+//use Symfony\Bundle\FrameworkBundle\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 //use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-//use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
