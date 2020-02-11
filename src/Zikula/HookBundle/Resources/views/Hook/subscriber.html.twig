@@ -44,14 +44,14 @@
 <div id="hookProviderAreas" class="col-md-6">
     <fieldset>
         <legend>{% trans %}Available areas{% endtrans %}</legend>
-        {% for hookprovider in hookproviders|filter(hp => hp.areas is not empty) %}
+        {% for provider in hookProviders|filter(hp => hp.areas is not empty) %}
             <div class="parea_wrapper">
-                <h4><i class="fas fa-caret-right"></i> {{ hookprovider.displayname }}</h4>
+                <h4><i class="fas fa-caret-right"></i> {{ provider.displayname }}</h4>
                 <div class="panel-content">
-                    {% for category, areas in hookprovider.areasAndCategories %}
+                    {% for category, areas in provider.areasAndCategories %}
                     <fieldset class="pareas_category">
                         <legend>{{ category }}</legend>
-                        {% set draglist_identifier = hookprovider.name ~ '_' ~ category %}
+                        {% set draglist_identifier = provider.name ~ '_' ~ category %}
                         {% set draglist_identifier_md5 = draglist_identifier|php('md5') %}
                         <ol id="availableareasdraglist_{{ draglist_identifier_md5 }}" class="list-group">
                             {% for parea in areas %}
@@ -60,11 +60,11 @@
                                 <li id="availablearea_{{ available_area_identifier }}" class="z-draggable clearfix list-group-item">
                                     <i class="fas fa-long-arrow-left"></i>
                                     <span>
-                                        {{ hookprovider.areasToTitles[parea]|default('Area') }} <span class="small">({{ parea }})
+                                        {{ provider.areasToTitles[parea]|default('Area') }} <span class="small">({{ parea }})
                                     </span>
-                                    <a class="detachlink d-none" title="{% trans %}Detach{% endtrans %} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fas fa-times"></i></a></span>
+                                    <a class="detachlink d-none" title="{% trans %}Detach{% endtrans %} {{ provider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fas fa-times"></i></a></span>
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_a" value="{{ parea }}" />
-                                    <input type="hidden" id="availablearea_{{ available_area_identifier }}_c" value="{{ hookprovider.areasToCategories[parea] }}" />
+                                    <input type="hidden" id="availablearea_{{ available_area_identifier }}_c" value="{{ provider.areasToCategories[parea] }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_i" value="{{ parea_md5 }}" />
                                 </li>
                             {% endfor %}

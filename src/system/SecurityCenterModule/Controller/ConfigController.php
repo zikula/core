@@ -31,6 +31,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SecurityCenterModule\Constant;
 use Zikula\SecurityCenterModule\Form\Type\ConfigType;
+use Zikula\SecurityCenterModule\Helper\HtmlTagsHelper;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Helper\AccessHelper;
@@ -77,27 +78,14 @@ class ConfigController extends AbstractController
 
                 $updateCheck = $formData['updatecheck'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'updatecheck', $updateCheck);
-
-                // if update checks are disabled, reset values to force new update check if re-enabled
                 if (0 === $updateCheck) {
+                    // if update checks are disabled, reset values to force new update check if re-enabled
                     $variableApi->set(VariableApi::CONFIG, 'updateversion', ZikulaKernel::VERSION);
                     $variableApi->set(VariableApi::CONFIG, 'updatelastchecked', 0);
                 }
+                $variableApi->set(VariableApi::CONFIG, 'updatefrequency', $formData['updatefrequency'] ?? 7);
 
-                $updateFrequency = $formData['updatefrequency'] ?? 7;
-                $variableApi->set(VariableApi::CONFIG, 'updatefrequency', $updateFrequency);
-
-                $secureDomain = $formData['secure_domain'] ?? '';
-                $variableApi->set(VariableApi::CONFIG, 'secure_domain', $secureDomain);
-
-                $signCookies = $formData['signcookies'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'signcookies', $signCookies);
-
-                $signingKey = $formData['signingkey'] ?? '';
-                $variableApi->set(VariableApi::CONFIG, 'signingkey', $signingKey);
-
-                $securityLevel = $formData['seclevel'] ?? 'Medium';
-                $variableApi->set(VariableApi::CONFIG, 'seclevel', $securityLevel);
+                $variableApi->set(VariableApi::CONFIG, 'seclevel', $formData['seclevel'] ?? 'Medium');
 
                 $secMedDays = $formData['secmeddays'] ?? 7;
                 if ($secMedDays < 1 || $secMedDays > 365) {
@@ -156,9 +144,15 @@ class ConfigController extends AbstractController
 
                 // set the session information in /config/dynamic/generated.yaml
                 $configDumper->setParameter('zikula.session.name', $newSessionName);
-                $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
+                $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile
+                    ? 'session.handler.native_file'
+                    : 'zikula_core.bridge.http_foundation.doctrine_session_handler'
+                ;
                 $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
-                $sessionStorageId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
+                $sessionStorageId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile
+                    ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file'
+                    : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine'
+                ;
                 $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
@@ -166,8 +160,7 @@ class ConfigController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'sessionname', $newSessionName);
                 $variableApi->set(VariableApi::CONFIG, 'sessionstoretofile', $sessionStoreToFile);
 
-                $outputFilter = $formData['outputfilter'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'outputfilter', $outputFilter);
+                $variableApi->set(VariableApi::CONFIG, 'outputfilter', $formData['outputfilter'] ?? 1);
 
                 $useIds = $formData['useids'] ?? 0;
                 $variableApi->set(VariableApi::CONFIG, 'useids', $useIds);
@@ -181,39 +174,23 @@ class ConfigController extends AbstractController
                     }
                 }
 
-                $idsSoftBlock = $formData['idssoftblock'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'idssoftblock', $idsSoftBlock);
-
-                $idsMail = $formData['idsmail'] ?? 0;
-                $variableApi->set(VariableApi::CONFIG, 'idsmail', $idsMail);
-
-                $idsFilter = $formData['idsfilter'] ?? 'xml';
-                $variableApi->set(VariableApi::CONFIG, 'idsfilter', $idsFilter);
-
-                $validates = true;
+                $variableApi->set(VariableApi::CONFIG, 'idssoftblock', $formData['idssoftblock'] ?? 1);
+                $variableApi->set(VariableApi::CONFIG, 'idsmail', $formData['idsmail'] ?? 0);
+                $variableApi->set(VariableApi::CONFIG, 'idsfilter', $formData['idsfilter'] ?? 'xml');
 
                 $idsRulePath = $formData['idsrulepath'] ?? 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
                 if (is_readable($idsRulePath)) {
                     $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
                 } else {
                     $this->addFlash('error', $this->trans('Error! PHPIDS rule file %filePath% does not exist or is not readable.', ['%filePath%' => $idsRulePath]));
-                    $validates = false;
                 }
 
-                $idsImpactThresholdOne = $formData['idsimpactthresholdone'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdone', $idsImpactThresholdOne);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdone', $formData['idsimpactthresholdone'] ?? 1);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdtwo', $formData['idsimpactthresholdtwo'] ?? 10);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdthree', $formData['idsimpactthresholdthree'] ?? 25);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdfour', $formData['idsimpactthresholdfour'] ?? 75);
 
-                $idsImpactThresholdTwo = $formData['idsimpactthresholdtwo'] ?? 10;
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdtwo', $idsImpactThresholdTwo);
-
-                $idsImpactThresholdThree = $formData['idsimpactthresholdthree'] ?? 25;
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdthree', $idsImpactThresholdThree);
-
-                $idsImpactThresholdFour = $formData['idsimpactthresholdfour'] ?? 75;
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdfour', $idsImpactThresholdFour);
-
-                $idsImpactMode = $formData['idsimpactmode'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactmode', $idsImpactMode);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactmode', $formData['idsimpactmode'] ?? 1);
 
                 $idsHtmlFields = $formData['idshtmlfields'] ?? '';
                 $idsHtmlFields = explode(PHP_EOL, $idsHtmlFields);
@@ -248,14 +225,11 @@ class ConfigController extends AbstractController
                 }
                 $variableApi->set(VariableApi::CONFIG, 'idsexceptions', $idsExceptionsArray);
 
-                // clear all cache and compile directories
+                // clear cache
                 $cacheClearer->clear('symfony');
-                $cacheClearer->clear('legacy');
 
                 // the module configuration has been updated successfuly
-                if ($validates) {
-                    $this->addFlash('status', 'Done! Configuration updated.');
-                }
+                $this->addFlash('status', 'Done! Configuration updated.');
 
                 // we need to auto logout the user if essential session settings have been changed
                 if (true === $causeLogout) {
@@ -513,13 +487,14 @@ class ConfigController extends AbstractController
         Request $request,
         RouterInterface $router,
         VariableApiInterface $variableApi,
-        CacheClearer $cacheClearer
+        CacheClearer $cacheClearer,
+        HtmlTagsHelper $htmlTagsHelper
     ) {
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $htmlTags = $this->getHtmlTags();
+        $htmlTags = $htmlTagsHelper->getTagsWithLinks();
 
         if ('POST' === $request->getMethod()) {
             $htmlEntities = $request->request->getInt('htmlentities', 0);
@@ -552,126 +527,6 @@ class ConfigController extends AbstractController
             'configUrl' => $router->generate('zikulasecuritycentermodule_config_config'),
             'htmlTags' => $htmlTags,
             'currentHtmlTags' => $variableApi->getSystemVar('AllowableHTML')
-        ];
-    }
-
-    /**
-     * Utility function to return the list of available tags.
-     */
-    private function getHtmlTags(): array
-    {
-        // Possible allowed HTML tags
-        return [
-            '!--' => 'https://www.w3schools.com/tags/tag_comment.asp',
-            'a' => 'https://www.w3schools.com/tags/tag_a.asp',
-            'abbr' => 'https://www.w3schools.com/tags/tag_abbr.asp',
-            'acronym' => 'https://www.w3schools.com/tags/tag_acronym.asp',
-            'address' => 'https://www.w3schools.com/tags/tag_address.asp',
-            'applet' => 'https://www.w3schools.com/tags/tag_applet.asp',
-            'area' => 'https://www.w3schools.com/tags/tag_area.asp',
-            'article' => 'https://www.w3schools.com/tags/tag_article.asp',
-            'aside' => 'https://www.w3schools.com/tags/tag_aside.asp',
-            'audio' => 'https://www.w3schools.com/tags/tag_audio.asp',
-            'b' => 'https://www.w3schools.com/tags/tag_b.asp',
-            'base' => 'https://www.w3schools.com/tags/tag_base.asp',
-            'basefont' => 'https://www.w3schools.com/tags/tag_basefont.asp',
-            'bdo' => 'https://www.w3schools.com/tags/tag_bdo.asp',
-            'big' => 'https://www.w3schools.com/tags/tag_font_style.asp',
-            'blockquote' => 'https://www.w3schools.com/tags/tag_blockquote.asp',
-            'br' => 'https://www.w3schools.com/tags/tag_br.asp',
-            'button' => 'https://www.w3schools.com/tags/tag_button.asp',
-            'canvas' => 'https://www.w3schools.com/tags/tag_canvas.asp',
-            'caption' => 'https://www.w3schools.com/tags/tag_caption.asp',
-            'center' => 'https://www.w3schools.com/tags/tag_center.asp',
-            'cite' => 'https://www.w3schools.com/tags/tag_cite.asp',
-            'code' => 'https://www.w3schools.com/tags/tag_code.asp',
-            'col' => 'https://www.w3schools.com/tags/tag_col.asp',
-            'colgroup' => 'https://www.w3schools.com/tags/tag_colgroup.asp',
-            'command' => 'https://www.w3schools.com/tags/tag_command.asp',
-            'datalist' => 'https://www.w3schools.com/tags/tag_datalist.asp',
-            'dd' => 'https://www.w3schools.com/tags/tag_dd.asp',
-            'del' => 'https://www.w3schools.com/tags/tag_del.asp',
-            'details' => 'https://www.w3schools.com/tags/tag_details.asp',
-            'dfn' => 'https://www.w3schools.com/tags/tag_dfn.asp',
-            'dir' => 'https://www.w3schools.com/tags/tag_dir.asp',
-            'div' => 'https://www.w3schools.com/tags/tag_div.asp',
-            'dl' => 'https://www.w3schools.com/tags/tag_dl.asp',
-            'dt' => 'https://www.w3schools.com/tags/tag_dt.asp',
-            'em' => 'https://www.w3schools.com/tags/tag_em.asp',
-            'embed' => 'https://www.w3schools.com/tags/tag_embed.asp',
-            'fieldset' => 'https://www.w3schools.com/tags/tag_fieldset.asp',
-            'figcaption' => 'https://www.w3schools.com/tags/tag_figcaption.asp',
-            'figure' => 'https://www.w3schools.com/tags/tag_figure.asp',
-            'font' => 'https://www.w3schools.com/tags/tag_font.asp',
-            'footer' => 'https://www.w3schools.com/tags/tag_footer.asp',
-            'form' => 'https://www.w3schools.com/tags/tag_form.asp',
-            'h1' => 'https://www.w3schools.com/tags/tag_hn.asp',
-            'h2' => 'https://www.w3schools.com/tags/tag_hn.asp',
-            'h3' => 'https://www.w3schools.com/tags/tag_hn.asp',
-            'h4' => 'https://www.w3schools.com/tags/tag_hn.asp',
-            'h5' => 'https://www.w3schools.com/tags/tag_hn.asp',
-            'h6' => 'https://www.w3schools.com/tags/tag_hn.asp',
-            'header' => 'https://www.w3schools.com/tags/tag_header.asp',
-            'hgroup' => 'https://www.w3schools.com/tags/tag_hgroup.asp',
-            'hr' => 'https://www.w3schools.com/tags/tag_hr.asp',
-            'i' => 'https://www.w3schools.com/tags/tag_i.asp',
-            'iframe' => 'https://www.w3schools.com/tags/tag_iframe.asp',
-            'img' => 'https://www.w3schools.com/tags/tag_img.asp',
-            'input' => 'https://www.w3schools.com/tags/tag_input.asp',
-            'ins' => 'https://www.w3schools.com/tags/tag_ins.asp',
-            'keygen' => 'https://www.w3schools.com/tags/tag_keygen.asp',
-            'kbd' => 'https://www.w3schools.com/tags/tag_kbd.asp',
-            'label' => 'https://www.w3schools.com/tags/tag_label.asp',
-            'legend' => 'https://www.w3schools.com/tags/tag_legend.asp',
-            'li' => 'https://www.w3schools.com/tags/tag_li.asp',
-            'map' => 'https://www.w3schools.com/tags/tag_map.asp',
-            'mark' => 'https://www.w3schools.com/tags/tag_mark.asp',
-            'menu' => 'https://www.w3schools.com/tags/tag_menu.asp',
-            'marquee' => '',
-            'meter' => 'https://www.w3schools.com/tags/tag_meter.asp',
-            'nav' => 'https://www.w3schools.com/tags/tag_nav.asp',
-            'nobr' => '',
-            'object' => 'https://www.w3schools.com/tags/tag_object.asp',
-            'ol' => 'https://www.w3schools.com/tags/tag_ol.asp',
-            'optgroup' => 'https://www.w3schools.com/tags/tag_optgroup.asp',
-            'option' => 'https://www.w3schools.com/tags/tag_option.asp',
-            'output' => 'https://www.w3schools.com/tags/tag_output.asp',
-            'p' => 'https://www.w3schools.com/tags/tag_p.asp',
-            'param' => 'https://www.w3schools.com/tags/tag_param.asp',
-            'pre' => 'https://www.w3schools.com/tags/tag_pre.asp',
-            'progress' => 'https://www.w3schools.com/tags/tag_progress.asp',
-            'q' => 'https://www.w3schools.com/tags/tag_q.asp',
-            'rp' => 'https://www.w3schools.com/tags/tag_rp.asp',
-            'rt' => 'https://www.w3schools.com/tags/tag_rt.asp',
-            'ruby' => 'https://www.w3schools.com/tags/tag_ruby.asp',
-            's' => 'https://www.w3schools.com/tags/tag_s.asp',
-            'samp' => 'https://www.w3schools.com/tags/tag_samp.asp',
-            'script' => 'https://www.w3schools.com/tags/tag_script.asp',
-            'section' => 'https://www.w3schools.com/tags/tag_section.asp',
-            'select' => 'https://www.w3schools.com/tags/tag_select.asp',
-            'small' => 'https://www.w3schools.com/tags/tag_small.asp',
-            'source' => 'https://www.w3schools.com/tags/tag_source.asp',
-            'span' => 'https://www.w3schools.com/tags/tag_span.asp',
-            'strike' => 'https://www.w3schools.com/tags/tag_strike.asp',
-            'strong' => 'https://www.w3schools.com/tags/tag_strong.asp',
-            'sub' => 'https://www.w3schools.com/tags/tag_sup.asp',
-            'summary' => 'https://www.w3schools.com/tags/tag_summary.asp',
-            'sup' => 'https://www.w3schools.com/tags/tag_sup.asp',
-            'table' => 'https://www.w3schools.com/tags/tag_table.asp',
-            'tbody' => 'https://www.w3schools.com/tags/tag_tbody.asp',
-            'td' => 'https://www.w3schools.com/tags/tag_td.asp',
-            'textarea' => 'https://www.w3schools.com/tags/tag_textarea.asp',
-            'tfoot' => 'https://www.w3schools.com/tags/tag_tfoot.asp',
-            'th' => 'https://www.w3schools.com/tags/tag_th.asp',
-            'thead' => 'https://www.w3schools.com/tags/tag_thead.asp',
-            'time' => 'https://www.w3schools.com/tags/tag_time.asp',
-            'tr' => 'https://www.w3schools.com/tags/tag_tr.asp',
-            'tt' => 'https://www.w3schools.com/tags/tag_font_style.asp',
-            'u' => 'https://www.w3schools.com/tags/tag_u.asp',
-            'ul' => 'https://www.w3schools.com/tags/tag_ul.asp',
-            'var' => 'https://www.w3schools.com/tags/tag_var.asp',
-            'video' => 'https://www.w3schools.com/tags/tag_video.asp',
-            'wbr' => 'https://www.w3schools.com/tags/tag_wbr.asp'
         ];
     }
 }

@@ -20,17 +20,6 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend>{% trans %}Host settings{% endtrans %}</legend>
-    {{ form_row(form.secure_domain) }}
-</fieldset>
-<fieldset>
-    <legend>{% trans %}Cookies settings{% endtrans %}</legend>
-    {{ form_row(form.signcookies) }}
-    <div data-switch="zikulasecuritycentermodule_config[signcookies]" data-switch-value="1">
-        {{ form_row(form.signingkey) }}
-    </div>
-</fieldset>
-<fieldset>
     <legend>{% trans %}Session settings{% endtrans %}</legend>
     {{ form_row(form.seclevel) }}
     <div data-switch="zikulasecuritycentermodule_config[seclevel]" data-switch-value="Medium">
@@ -49,9 +38,9 @@
     <legend>{% trans %}Intrusion Detection System{% endtrans %}</legend>
     {{ form_row(form.useids) }}
     <div data-switch="zikulasecuritycentermodule_config[useids]" data-switch-value="1">
-        <p class="col-sm-offset-3 col-sm-9 help-block alert alert-info">
+        <p class="col-md-9 offset-md-3 help-block alert alert-info">
             {% trans %}PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.{% endtrans %}
-            {% trans %}Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.{% endtrans %}
+            {% trans %}Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage" target="_blank">PHPIDS homepage</a>.{% endtrans %}
         </p>
         {{ form_row(form.idssoftblock) }}
         {{ form_row(form.idsmail) }}

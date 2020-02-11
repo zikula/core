@@ -151,7 +151,7 @@ class Merger implements MergerInterface
             return;
         }
         $source = fopen($file, 'rb');
-        if (!$source) {
+        if (false === $source) {
             return;
         }
 

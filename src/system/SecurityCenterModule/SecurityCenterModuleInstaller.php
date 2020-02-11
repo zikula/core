@@ -25,9 +25,9 @@ use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
+use Zikula\SecurityCenterModule\Helper\HtmlTagsHelper;
 
 /**
  * Installation routines for the security center module.
@@ -49,6 +49,11 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
      */
     private $purifierHelper;
 
+    /**
+     * @var HtmlTagsHelper
+     */
+    private $htmlTagsHelper;
+
     public function __construct(
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
@@ -58,11 +63,13 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         SchemaHelper $schemaTool,
         RequestStack $requestStack,
         TranslatorInterface $translator,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        HtmlTagsHelper $htmlTagsHelper
     ) {
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
         $this->purifierHelper = $purifierHelper;
+        $this->htmlTagsHelper = $htmlTagsHelper;
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
     }
 
@@ -85,9 +92,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('updatefrequency', 7);
         $this->setSystemVar('updatelastchecked', 0);
         $this->setSystemVar('updateversion', ZikulaKernel::VERSION);
-        $this->setSystemVar('secure_domain');
-        $this->setSystemVar('signcookies', 1);
-        $this->setSystemVar('signingkey', sha1((string) (random_int(0, time()))));
         $this->setSystemVar('seclevel', 'Medium');
         $this->setSystemVar('secmeddays', 7);
         $this->setSystemVar('secinactivemins', 20);
@@ -131,125 +135,10 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
             'REQUEST.filter.page', 'POST.filter.page',
             'REQUEST.filter.value', 'POST.filter.value'
         ]);
-
         $this->setSystemVar('outputfilter', 1);
 
         $this->setSystemVar('htmlentities', 1);
-
-        // default values for AllowableHTML
-        $defhtml = [
-            '!--' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'a' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'abbr' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'acronym' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'address' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'applet' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'area' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'article' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'aside' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'audio' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'b' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'base' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'basefont' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'bdo' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'big' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'blockquote' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'br' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'button' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'canvas' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'caption' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'center' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'cite' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'code' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'col' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'colgroup' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'command' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'datalist' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'dd' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'del' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'details' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'dfn' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'dir' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'div' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'dl' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'dt' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'em' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'embed' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'fieldset' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'figcaption' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'figure' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'footer' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'font' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'form' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'h1' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'h2' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'h3' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'h4' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'h5' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'h6' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'header' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'hgroup' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'hr' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'i' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'iframe' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'img' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'input' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'ins' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'keygen' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'kbd' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'label' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'legend' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'li' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'map' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'mark' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'menu' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'marquee' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'meter' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'nav' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'nobr' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'object' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'ol' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'optgroup' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'option' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'output' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'p' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'param' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'pre' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'progress' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'q' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'rp' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'rt' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'ruby' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            's' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'samp' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'script' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'section' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'select' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'small' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'source' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'span' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'strike' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'strong' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'sub' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'summary' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'sup' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'table' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'tbody' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'td' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'textarea' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'tfoot' => HtmlFilterApiInterface::TAG_ALLOWED_PLAIN,
-            'th' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'thead' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'time' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'tr' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'tt' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'u' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'ul' => HtmlFilterApiInterface::TAG_ALLOWED_WITH_ATTRIBUTES,
-            'var' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'video' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
-            'wbr' => HtmlFilterApiInterface::TAG_NOT_ALLOWED
-        ];
-        $this->setSystemVar('AllowableHTML', $defhtml);
+        $this->setSystemVar('AllowableHTML', $this->htmlTagsHelper->getDefaultValues());
 
         // Initialisation successful
         return true;
@@ -280,6 +169,9 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $this->configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
             case '1.5.2':
                 $varsToRemove = [
+                    'secure_domain',
+                    'signcookies',
+                    'signingkey',
                     'sessioncsrftokenonetime',
                     'sessionipcheck',
                     'keyexpiry',

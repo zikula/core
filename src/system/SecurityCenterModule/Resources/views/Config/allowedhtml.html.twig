@@ -80,7 +80,7 @@
                         <input class="allowedwith_radio" type="radio" value="2" name="htmlallow{{ htmlTag }}tag"{% if currentHtmlTags[htmlTag] is defined and currentHtmlTags[htmlTag] == 2 %} checked="checked"{% endif %} />
                     </td>
                     <td headers="hTag{{ htmlTag }} hUsageInfo">
-                        {% if usageTag is not empty %}<a href="{{ usageTag }}">{% trans %}About{% endtrans %} "&lt;{htmlTag|raw}&gt;"</a>{% endif %}
+                        {% if usageTag is not empty %}<a href="{{ usageTag }}">{% trans %}About{% endtrans %} "&lt;{{ htmlTag|raw }}&gt;"</a>{% endif %}
                     </td>
                 </tr>
             {% endfor %}

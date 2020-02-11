@@ -27,8 +27,8 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
+use Zikula\Bundle\HookBundle\Helper\HookUiHelper;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -54,7 +54,7 @@ class HookController extends AbstractController
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
         HookDispatcherInterface $dispatcher,
-        ExtensionRepositoryInterface $extensionRepository,
+        HookUiHelper $hookUiHelper,
         string $moduleName
     ): array {
         $templateParameters = [];
@@ -77,8 +77,8 @@ class HookController extends AbstractController
         $templateParameters['isSubscriberSelfCapable'] = $isSubscriberSelfCapable;
         $templateParameters['providerAreas'] = [];
 
-        $nonPersistedProviders = $collector->getProviders();
-        $nonPersistedSubscribers = $collector->getSubscribers();
+        $providers = $collector->getProviders();
+        $subscribers = $collector->getSubscribers();
 
         // get areas of module and bundle titles also
         if ($isProvider) {
@@ -87,159 +87,48 @@ class HookController extends AbstractController
 
             $providerAreasToTitles = [];
             foreach ($providerAreas as $providerArea) {
-                if (isset($nonPersistedProviders[$providerArea])) {
-                    $providerAreasToTitles[$providerArea] = $nonPersistedProviders[$providerArea]->getTitle();
+                if (isset($providers[$providerArea])) {
+                    $providerAreasToTitles[$providerArea] = $providers[$providerArea]->getTitle();
                 }
             }
             $templateParameters['providerAreasToTitles'] = $providerAreasToTitles;
         }
         $templateParameters['subscriberAreas'] = [];
-        $templateParameters['hooksubscribers'] = [];
+        $templateParameters['hookSubscribers'] = [];
 
         if ($isSubscriber) {
             $subscriberAreas = $collector->getSubscriberAreasByOwner($moduleName);
             $templateParameters['subscriberAreas'] = $subscriberAreas;
 
-            $subscriberAreasToTitles = [];
-            $subscriberAreasToCategories = [];
-            $subscriberAreasAndCategories = [];
-            foreach ($subscriberAreas as $subscriberArea) {
-                $category = null;
-                if (isset($nonPersistedSubscribers[$subscriberArea])) {
-                    $subscriberAreasToTitles[$subscriberArea] = $nonPersistedSubscribers[$subscriberArea]->getTitle();
-                    $category = $nonPersistedSubscribers[$subscriberArea]->getCategory();
-                }
-                $subscriberAreasToCategories[$subscriberArea] = $category;
-                if (null !== $category) {
-                    $subscriberAreasAndCategories[$category][] = $subscriberArea;
-                }
-            }
-            $templateParameters['subscriberAreasToTitles'] = $subscriberAreasToTitles;
-            $templateParameters['subscriberAreasToCategories'] = $subscriberAreasToCategories;
-            $templateParameters['subscriberAreasAndCategories'] = $subscriberAreasAndCategories;
+            $areasInfo = $hookUiHelper->prepareSubscriberAreasForSubscriber($subscriberAreas, $subscribers);
+            $templateParameters['subscriberAreasToTitles'] = $areasInfo['titles'];
+            $templateParameters['subscriberAreasToCategories'] = $areasInfo['categories'];
+            $templateParameters['subscriberAreasAndCategories'] = $areasInfo['categoryGroups'];
         }
 
         // get available subscribers that can attach to provider
         if ($isProvider && !empty($providerAreas)) {
-            /** @var ExtensionEntity[] $hookSubscribers */
-            $hookSubscribers = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_SUBSCRIBER);
-            $amountOfAvailableSubscriberAreas = 0;
-            foreach ($hookSubscribers as $i => $hookSubscriber) {
-                $hookSubscribers[$i] = $hookSubscriber->toArray();
-                // don't allow subscriber and provider to be the same
-                // unless subscriber has the ability to connect to it's own providers
-                if ($moduleName === $hookSubscriber->getName()) {
-                    unset($hookSubscribers[$i]);
-                    continue;
-                }
-                // does the user have admin permissions on the subscriber module?
-                if (!$permissionApi->hasPermission($hookSubscriber->getName() . '::', '::', ACCESS_ADMIN)) {
-                    unset($hookSubscribers[$i]);
-                    continue;
-                }
-
-                // get the areas of the subscriber
-                $hooksubscriberAreas = $collector->getSubscriberAreasByOwner($hookSubscriber->getName());
-                $hookSubscribers[$i]['areas'] = $hooksubscriberAreas;
-                $amountOfAvailableSubscriberAreas += count($hooksubscriberAreas);
-
-                $hooksubscriberAreasToTitles = []; // and get the titles
-                $hooksubscriberAreasToCategories = []; // and get the categories
-                foreach ($hooksubscriberAreas as $hooksubscriberArea) {
-                    $category = null;
-                    if (isset($nonPersistedSubscribers[$hooksubscriberArea])) {
-                        $hooksubscriberAreasToTitles[$hooksubscriberArea] = $nonPersistedSubscribers[$hooksubscriberArea]->getTitle();
-                        $category = $nonPersistedSubscribers[$hooksubscriberArea]->getCategory();
-                    }
-                    $hooksubscriberAreasToCategories[$hooksubscriberArea] = $category;
-                }
-                $hookSubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
-                $hookSubscribers[$i]['areasToCategories'] = $hooksubscriberAreasToCategories;
-            }
-            $templateParameters['hooksubscribers'] = $hookSubscribers;
-            $templateParameters['total_available_subscriber_areas'] = $amountOfAvailableSubscriberAreas;
+            [$hookSubscribers, $amountOfAvailableSubscriberAreas] = $hookUiHelper->prepareAvailableSubscriberAreasForProvider($moduleName, $subscribers);
+            $templateParameters['hookSubscribers'] = $hookSubscribers;
+            $templateParameters['amountOfAvailableSubscriberAreas'] = $amountOfAvailableSubscriberAreas;
         } else {
-            $templateParameters['total_available_subscriber_areas'] = 0;
+            $templateParameters['amountOfAvailableSubscriberAreas'] = 0;
         }
 
         // get providers that are already attached to the subscriber
         // and providers that can attach to the subscriber
         if ($isSubscriber && !empty($subscriberAreas)) {
             // get current sorting
-            $currentSortingTitles = [];
-            $currentSorting = [];
-            $amountOfAttachedProviderAreas = 0;
-            foreach ($subscriberAreas as $hookSubscriber) {
-                $sortsByArea = $dispatcher->getBindingsFor($hookSubscriber);
-                foreach ($sortsByArea as $sba) {
-                    $areaname = $sba['areaname'];
-                    $category = $sba['category'];
-
-                    if (!isset($currentSorting[$category])) {
-                        $currentSorting[$category] = [];
-                    }
-
-                    if (!isset($currentSorting[$category][$hookSubscriber])) {
-                        $currentSorting[$category][$hookSubscriber] = [];
-                    }
-
-                    $currentSorting[$category][$hookSubscriber][] = $areaname;
-                    $amountOfAttachedProviderAreas++;
-
-                    // get the bundle title
-                    if (isset($nonPersistedProviders[$areaname])) {
-                        $currentSortingTitles[$areaname] = $nonPersistedProviders[$areaname]->getTitle();
-                    }
-                }
-            }
+            [$currentSorting, $currentSortingTitles, $amountOfAttachedProviderAreas] = $hookUiHelper->prepareAttachedProvidersForSubscriber($subscriberAreas, $providers);
             $templateParameters['areasSorting'] = $currentSorting;
             $templateParameters['areasSortingTitles'] = $currentSortingTitles;
-            $templateParameters['total_attached_provider_areas'] = $amountOfAttachedProviderAreas;
+            $templateParameters['amountOfAttachedProviderAreas'] = $amountOfAttachedProviderAreas;
 
-            // get available providers
-            /** @var ExtensionEntity[] $hookProviders */
-            $hookProviders = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_PROVIDER);
-            $amountOfAvailableProviderAreas = 0;
-            foreach ($hookProviders as $i => $hookProvider) {
-                $hookProviders[$i] = $hookProvider->toArray();
-                // don't allow subscriber and provider to be the same
-                // unless subscriber has the ability to connect to it's own providers
-                if (!$isSubscriberSelfCapable && $moduleName === $hookProvider->getName()) {
-                    unset($hookProviders[$i]);
-                    continue;
-                }
-
-                // does the user have admin permissions on the provider module?
-                if (!$permissionApi->hasPermission($hookProvider->getName() . '::', '::', ACCESS_ADMIN)) {
-                    unset($hookProviders[$i]);
-                    continue;
-                }
-
-                // get the areas of the provider
-                $hookproviderAreas = $collector->getProviderAreasByOwner($hookProvider->getName());
-                $hookProviders[$i]['areas'] = $hookproviderAreas;
-                $amountOfAvailableProviderAreas += count($hookproviderAreas);
-
-                $hookproviderAreasToTitles = []; // and get the titles
-                $hookproviderAreasToCategories = []; // and get the categories
-                $hookproviderAreasAndCategories = []; // and build array with category => areas
-                foreach ($hookproviderAreas as $hookproviderArea) {
-                    $category = null;
-                    if (isset($nonPersistedProviders[$hookproviderArea])) {
-                        $hookproviderAreasToTitles[$hookproviderArea] = $nonPersistedProviders[$hookproviderArea]->getTitle();
-                        $category = $nonPersistedProviders[$hookproviderArea]->getCategory();
-                    }
-                    $hookproviderAreasToCategories[$hookproviderArea] = $category;
-                    $hookproviderAreasAndCategories[$category][] = $hookproviderArea;
-                }
-                $hookProviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
-                $hookProviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
-                $hookProviders[$i]['areasAndCategories'] = $hookproviderAreasAndCategories;
-            }
-            $templateParameters['hookproviders'] = $hookProviders;
-            $templateParameters['total_available_provider_areas'] = $amountOfAvailableProviderAreas;
+            [$hookProviders, $amountOfAvailableProviderAreas] = $hookUiHelper->prepareAvailableProviderAreasForSubscriber($moduleName, $providers, $isSubscriberSelfCapable);
+            $templateParameters['hookProviders'] = $hookProviders;
+            $templateParameters['amountOfAvailableProviderAreas'] = $amountOfAvailableProviderAreas;
         } else {
-            $templateParameters['hookproviders'] = [];
+            $templateParameters['hookProviders'] = [];
         }
         $templateParameters['hookDispatcher'] = $dispatcher;
         $request = $requestStack->getCurrentRequest();
@@ -268,7 +157,7 @@ class HookController extends AbstractController
         HookDispatcherInterface $dispatcher
     ): JsonResponse {
         $this->setTranslator($translator);
-        if (!$this->checkAjaxToken($request)) {
+        if (!$this->isCsrfTokenValid('hook-ui', $request->request->get('token'))) {
             throw new AccessDeniedException();
         }
 
@@ -348,7 +237,7 @@ class HookController extends AbstractController
         HookDispatcherInterface $hookDispatcher
     ): JsonResponse {
         $this->setTranslator($translator);
-        if (!$this->checkAjaxToken($request)) {
+        if (!$this->isCsrfTokenValid('hook-ui', $request->request->get('token'))) {
             throw new AccessDeniedException();
         }
 
@@ -380,46 +269,5 @@ class HookController extends AbstractController
         $hookDispatcher->setBindOrder($subscriberarea, $providerarea);
 
         return $this->json(['result' => true]);
-    }
-
-    /**
-     * Check the CSRF token.
-     */
-    private function checkAjaxToken(Request $request): bool
-    {
-        if (!$request->isXmlHttpRequest()) {
-            return false;
-        }
-
-        if (!$request->hasSession()) {
-            return false;
-        }
-
-        $sessionName = $this->getParameter('zikula.session.name');
-        $sessionId = $request->cookies->get($sessionName);
-
-        if ($sessionId !== $request->getSession()->getId()) {
-            return false;
-        }
-
-        if (!$this->isCsrfTokenValid('hook-ui', $request->request->get('token'))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function getExtensionsCapableOf(
-        HookCollectorInterface $collector,
-        ExtensionRepositoryInterface $extensionRepository,
-        string $type
-    ): array {
-        $owners = $collector->getOwnersCapableOf($type);
-        $extensions = [];
-        foreach ($owners as $owner) {
-            $extensions[] = $extensionRepository->findOneBy(['name' => $owner]);
-        }
-
-        return $extensions;
     }
 }

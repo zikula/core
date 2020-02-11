@@ -2,7 +2,7 @@
 {{ pageAddAsset('javascript', asset('bundles/zikulahook/js/hookui.js')) }}
 {{ pageAddAsset('stylesheet', asset('bundles/zikulahook/css/hooks.css')) }}
 {% set showBothPanels = false %}
-{% if isSubscriber and isProvider and providerAreas is not empty and total_available_subscriber_areas > 0 %}
+{% if isSubscriber and isProvider and providerAreas is not empty and amountOfAvailableSubscriberAreas > 0 %}
     {% set showBothPanels = true %}
 {% endif %}
 
@@ -49,13 +49,13 @@
         </div>
     {% endif %}
 
-    {% if isProvider and providerAreas is not empty and total_available_subscriber_areas > 0 %}
+    {% if isProvider and providerAreas is not empty and amountOfAvailableSubscriberAreas > 0 %}
         <div id="hookProvider">
             {{ include('@ZikulaHook/Hook/provider.html.twig') }}
         </div>
     {% endif %}
 
-    {% if total_available_subscriber_areas == 0 and not isSubscriber %}
+    {% if amountOfAvailableSubscriberAreas == 0 and not isSubscriber %}
         <p class="alert alert-warning">{% trans with {"%sub%": currentmodule} %}There are no subscribers available for %sub%.{% endtrans %}</p>
     {% endif %}
 {% endif %}

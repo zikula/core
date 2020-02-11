@@ -53,34 +53,6 @@ class ConfigType extends AbstractType
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('secure_domain', TextType::class, [
-                'label' => 'Secure host name',
-                'empty_data' => '',
-                'attr' => [
-                    'maxlength' => 100
-                ],
-                'required' => false,
-                'alert' => ["Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the 'Secure host name' box, make sure you include a trailing slash at the end of the address." => 'info']
-            ])
-            ->add('signcookies', ChoiceType::class, [
-                'label' => 'Sign cookies',
-                'label_attr' => ['class' => 'radio-custom'],
-                'empty_data' => 1,
-                'choices' => [
-                    'Yes' => 1,
-                    'No' => 0
-                ],
-                'expanded' => true,
-                'multiple' => false
-            ])
-            ->add('signingkey', TextType::class, [
-                'label' => 'Signing key',
-                'empty_data' => sha1((string)random_int(0, time())),
-                'attr' => [
-                    'maxlength' => 100
-                ],
-                'required' => false
-            ])
             ->add('seclevel', ChoiceType::class, [
                 'label' => 'Security level',
                 'empty_data' => 'Medium',
