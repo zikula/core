@@ -66,7 +66,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
     }
 
-
     public function install(): bool
     {
         // create the table

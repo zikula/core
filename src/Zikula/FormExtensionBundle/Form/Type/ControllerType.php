@@ -15,7 +15,6 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
-use ReflectionException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -94,7 +93,7 @@ class ControllerType extends AbstractType
                 }
 
                 // skip controllers annotated with admin theme
-                if (false !== strpos($controllerName, '::')) {
+                if (false !== mb_strpos($controllerName, '::')) {
                     [$controllerClassName, $method] = explode('::', $controllerName);
                     $reflectionClass = new ReflectionClass($controllerClassName);
                     $reflectionMethod = $reflectionClass->getMethod($method);

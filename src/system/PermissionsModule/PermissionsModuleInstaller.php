@@ -16,7 +16,6 @@ namespace Zikula\PermissionsModule;
 use Exception;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
-use Zikula\PermissionsModule\Entity\Repository\PermissionRepository;
 
 /**
  * Installation and upgrade routines for the permissions module.

@@ -18,9 +18,7 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\Repository\GroupRepository;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**

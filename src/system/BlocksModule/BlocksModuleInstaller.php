@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule;
 
-use Exception;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Block\HtmlBlock;
