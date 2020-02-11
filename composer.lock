@@ -6469,16 +6469,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.8",
+            "version": "3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "c9d7c1425f2272c5400536fa631eba8657522ecf"
+                "reference": "a7f224265891eee74d85b469006ab461bd430f48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/c9d7c1425f2272c5400536fa631eba8657522ecf",
-                "reference": "c9d7c1425f2272c5400536fa631eba8657522ecf",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/a7f224265891eee74d85b469006ab461bd430f48",
+                "reference": "a7f224265891eee74d85b469006ab461bd430f48",
                 "shasum": ""
             },
             "require": {
@@ -6522,7 +6522,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2019-04-28T21:22:05+00:00"
+            "time": "2020-02-10T22:25:09+00:00"
         },
         {
             "name": "webmozart/assert",
