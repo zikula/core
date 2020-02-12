@@ -1,27 +1,31 @@
 {% if collector.activeKeys is not empty %}
 {% if collector.activeKeys|length > 1 %}
-<div class="dropdown{% if 'nav' in position %} navbar-right{% endif %}">
-    <button class="btn btn-secondary dropdown-toggle{% if 'nav' in position %} navbar-btn{% endif %}" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle{% if 'nav' in position %} navbar-btn{% endif %}" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <i class="fas fa-key"></i> {% trans %}Login with ...{% endtrans %}
     </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
         {% for method in collector.activeKeys %}
-            <li><a href="{{ path(path, {'authenticationMethod': method}) }}">{{ collector.get(method).DisplayName }}</a></li>
+            <a class="dropdown-item" href="{{ path(path, {'authenticationMethod': method}) }}">{{ collector.get(method).DisplayName }}</a>
         {% endfor %}
         {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
-            <li role="separator" class="dropdown-divider"></li>
-            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create a new account{% endtrans %}</a></li>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create a new account{% endtrans %}</a>
         {% endif %}
-    </ul>
+    </div>
 </div>
 {% else %}
-<div class="btn-group{% if 'nav' in position %} navbar-btn navbar-right{% endif %}">
-    <a class="btn btn-secondary" href="{{ path(path, {'authenticationMethod': collector.activeKeys|first}) }}"><i class="fas fa-key"></i> {% trans %}Login with{% endtrans %} {{ collector.get(collector.activeKeys|first).DisplayName }}</a>
+<div class="btn-group">
+    <a class="btn btn-primary" href="{{ path(path, {'authenticationMethod': collector.activeKeys|first}) }}">
+        <i class="fas fa-key"></i> {% trans %}Login with{% endtrans %} {{ collector.get(collector.activeKeys|first).DisplayName }}
+    </a>
     {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
-        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-        <ul class="dropdown-menu">
-            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create a new account{% endtrans %}</a></li>
-        </ul>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">{% trans %}Toggle Dropdown{% endtrans %}</span>
+        </button>
+        <div class="dropdown-menu">
+            <a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create a new account{% endtrans %}</a>
+        </div>
     {% endif %}
 </div>
 {% endif %}
