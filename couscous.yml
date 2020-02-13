@@ -44,6 +44,9 @@ menu:
                 install:
                     text: Installation
                     relativeUrl: install.html
+                requirements:
+                    text: Requirements
+                    relativeUrl: requirements.html
                 upgrade:
                     text: Upgrade
                     relativeUrl: upgrade.html

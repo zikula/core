@@ -3,6 +3,8 @@ currentMenu: install
 ---
 # Zikula installation instructions
 
+First please check [requirements](requirements.md).
+
 1. [Install by uploading package](#upload)
 2. [Install via Composer](#installing-using-composer-for-developers)
 3. [Install with Vagrant](#vagrant-installation)
