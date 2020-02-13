@@ -222,7 +222,7 @@
   - doctrine/orm updated from 2.5.14 to 2.7.0
   - doctrine/persistence installed in 1.3.6
   - doctrine/reflection installed in 1.1.0
-  - egulias/email-validator installed in 2.1.15
+  - egulias/email-validator installed in 2.1.16
   - erusev/parsedown installed in 1.7.4
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
   - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.39
@@ -230,7 +230,7 @@
   - imagine/imagine updated from 0.7.1 to 1.3.3
   - itsjavi/fontawesome-iconpicker installed in 3.2.0
   - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using remmel/i18n-routing-bundle dev-master instead)
-  - jquery.mmenu updated from 7.3.3 to mmenu.js 8.4.5
+  - jquery.mmenu updated from 7.3.3 to mmenu.js 8.4.7
   - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
   - knplabs/knp-menu updated from 2.2.0 to 3.1.0
   - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
