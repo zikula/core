@@ -7,7 +7,7 @@ To extract translations use the console command `translation:extract`.
 
 To see all of it's option, do this:
 
-```
+```shell
 php bin/console translation:extract -h
 # or
 php bin/console translation:extract --help
@@ -15,7 +15,7 @@ php bin/console translation:extract --help
 
 Example for Zikula core:
 
-```
+```shell
 # extract for all configured locales
 php bin/console translation:extract zikula
 # extract only for English
@@ -26,7 +26,7 @@ Note `zikula` is the name of our configuration.
 
 Examples for a module or a theme:
 
-```
+```shell
 php bin/console translation:extract -b AcmeFooModule extension
 php bin/console translation:extract --bundle AcmeFooModule extension en
 php bin/console translation:extract -b AcmeFooModule acmefoomodule
@@ -120,7 +120,7 @@ If you have a form class which uses a help array with multiple help messages str
 
 ```php
 $builder->add('myField', [
-    // ...
+    // …
     /** @Ignore */
     'help' => [
         /** @Translate */'This is the first help message.',

@@ -42,7 +42,7 @@ in the form.  We can then validate our form and then trigger a `validate_edit` h
 
 ```php
 $hook = new \Zikula\Bundle\HookBundle\Hook\ValidationHook(new \Zikula\Bundle\HookBundle\Hook\ValidationProviders());
-$this->dispatchHooks('...validate_edit', $hook);
+$this->dispatchHooks('…validate_edit', $hook);
 $validators = $hook->getValidators();
 ```
 
@@ -88,7 +88,7 @@ in the form.  We can then validate our form and then trigger a `validate_edit` e
 
 ```php
 $hook = new \Zikula\Bundle\HookBundle\Hook\ValidationHook(new Zikula_Hook_ValidationProviders());
-$this->DispatchHooks('...validate_edit', $hook);
+$this->DispatchHooks('…validate_edit', $hook);
 $validators = $hook->getValidators();
 ```
 

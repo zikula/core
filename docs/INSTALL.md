@@ -5,6 +5,10 @@ currentMenu: install
 
 First please check [requirements](requirements.md).
 
+This guide assumes you are going to install Zikula on a webserver which is fully operational. If you want to do the setup on a fresh root server there are additional steps to consider though. In this case maybe this guide can help: [Installation of Zikula on Ubuntu Server](InstallingZikulaOnUbuntu.md).
+
+## Overview
+
 1. [Install by uploading package](#upload)
 2. [Install via Composer](#installing-using-composer-for-developers)
 3. [Install with Vagrant](#vagrant-installation)

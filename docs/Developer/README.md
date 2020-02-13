@@ -13,3 +13,4 @@ currentMenu: developer-overview
 - [Traits](Traits/index.md)
 - [Users and authentication](UsersAndAuthentication/index.md)
 - [Other topics](OtherTopics/index.md)
+- [Extension development](ExtensionDevelopment/index.md)

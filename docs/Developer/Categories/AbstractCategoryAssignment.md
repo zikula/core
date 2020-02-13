@@ -117,7 +117,7 @@ We need to add a inverse side of the association to the original `UserEntity`
 ```php
 use Doctrine\Common\Collections\ArrayCollection;
 
-// ...
+// …
 
 /**
  * @ORM\OneToMany(targetEntity="Acme\YourModule\Entity\UserCategoryAssignmentsEntity", 

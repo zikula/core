@@ -36,4 +36,4 @@ These terms will be governed by the laws of the State of Delaware and applicable
 
 ## Electronic signature
 
-You must sign this agreement electronically at <https://www.clahub.com/agreements/zikula/core>.
+You must sign this agreement electronically at <https://www.clahub.com/agreements/zikula/core> (registration required).

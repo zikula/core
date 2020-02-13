@@ -10,7 +10,7 @@ This annotation is used in a controller method like so:
 ```php
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
-// ...
+// …
 
 /**
  * @Route("/view")

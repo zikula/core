@@ -102,7 +102,7 @@ menu:
                     text: Other topics
                     relativeUrl: Developer/OtherTopics/index.html
                 developer-extension:
-                    text: Extension Development
+                    text: Extension development
                     relativeUrl: Developer/ExtensionDevelopment/index.html
         further:
             name: Further topics

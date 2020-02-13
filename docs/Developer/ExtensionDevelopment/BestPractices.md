@@ -48,7 +48,7 @@ These should always be wrapped in the following format:
 
 ```js
 (function($) {
-    ... here goes our code...
+    … here goes our code …
 })(jQuery)
 ```
 

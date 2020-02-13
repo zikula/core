@@ -29,7 +29,7 @@ Menu Root ("MyDropMenu")
             |
             -- Child 1 (link)
             -- Child 2 (link)
-            -- etc...
+            -- etc…
 ```
 
 As above for the standard NavBar, you must set the `childrenAttributes` as 

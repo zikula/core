@@ -51,7 +51,7 @@ You can use HTML inside help messages if you enable the `help_html` option:
 
 ```php
 ->add('foo', TextType::class, [
-    'help' => '<a target="_blank" href="...">Look up your ZIP code.</a>',
+    'help' => '<a target="_blank" href="…">Look up your ZIP code.</a>',
     'help_html' => true
 ])
 ```

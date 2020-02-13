@@ -96,7 +96,7 @@ We need to add a inverse side of the association to the original `UserEntity`
 use Acme\YourModule\Entity\UserAttributeEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 
-// ...
+// …
 
 /**
  * @ORM\OneToMany(targetEntity="Acme\YourModule\Entity\UserAttributeEntity", 
@@ -142,7 +142,7 @@ List your `AbstractEntityAttribute` subclass in the `$this->schemaTool->create()
 Set/change an attribute:
 
 ```php
-$user = // ...
+$user = // …
 $user->setAttribute('url', 'https://www.example.com');
 
 $entityManager->persist($user);
@@ -151,7 +151,7 @@ $entityManager->persist($user);
 Remove an attribute:
 
 ```php
-$user = // ...
+$user = // …
 $user->setAttribute('url', null);
 
 $entityManager->persist($user);
@@ -160,6 +160,6 @@ $entityManager->persist($user);
 Access all attributes:
 
 ```php
-$user = // ...
+$user = // …
 $urlValue = $user->getAttributes()->get('url')->getValue();
 ```

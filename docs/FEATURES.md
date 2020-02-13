@@ -87,4 +87,4 @@ currentMenu: features
 - [Tag](https://github.com/craigh/Tag) (Tagging hook)
 - [EZComments](https://github.com/zikula-modules/EZComments) (Comments hook)
 - Captcha (Anti-spam hook)
-- Several others...
+- Several others…
