@@ -45,4 +45,4 @@ Contributions can be made to Zikula in a number of ways
 4. Authoring additional modules for Zikula.
 5. Contributing bug fixes and patches to the Core.
 
-Pull requests are welcome, please see [contributing doc](https://github.com/zikula/core/wiki/Contributing).
+Pull requests are welcome, please see [contributing doc](docs/Contributing/README.md).
