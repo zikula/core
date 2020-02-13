@@ -64,7 +64,6 @@ currentMenu: vendor-info
                     $content .= "\n";
                 }
                 $content .= '## ' . $typeOrder[$package['type']] . "\n\n";
-                $content .= str_repeat('-', mb_strlen($typeOrder[$package['type']])) . "\n";
                 $currentType = $package['type'];
             }
             $content .= "- **" . $package['name'] . "** `" . $package['version'] . "`";
@@ -82,8 +81,8 @@ currentMenu: vendor-info
         }
 
         $content .= "\n\n";
-        $content .= "These are the main authors of all of the projects supporting Zikula\n";
-        $content .= "-------------------------------------------------------------------\n";
+        $content .= "## Authors\n\n";
+        $content .= "These are the main authors of all of the projects supporting Zikula:\n\n";
 
         $tmp = [];
         foreach ($authors as $k => $author) {
