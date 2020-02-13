@@ -2,6 +2,12 @@ template:
     #directory: ../../Template-Dark
     url: https://github.com/zikula/Template-Dark.git
 
+include:
+    - docs
+
+exclude:
+    - vendor
+
 # Base URL of the published website
 baseUrl: http://zikula.github.io/core
 
