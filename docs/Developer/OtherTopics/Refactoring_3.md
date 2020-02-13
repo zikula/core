@@ -58,7 +58,7 @@ information and examples.
 
 All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.
 
-For more information please refer to the documents in `docs/Translation/`.
+For more information please refer to [Translation docs](../../Translation/README.md).
 
 ## Twig
 
