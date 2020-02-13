@@ -49,8 +49,7 @@ class GenerateVendorDocCommand extends Command
             return array_search($a['type'], $types) - array_search($b['type'], $types);
         });
 
-        $content = "
----
+        $content = "---
 currentMenu: vendor-info
 ---
 # Vendor information
@@ -92,7 +91,7 @@ currentMenu: vendor-info
             }
             $tmp[] = $author['name'];
         }
-        usort($authors, function ($a, $b) {
+        usort($authors, function($a, $b) {
             return strcmp($a['name'], $b['name']);
         });
         foreach ($authors as $author) {
