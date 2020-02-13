@@ -46,7 +46,13 @@ class GenerateVendorDocCommand extends Command
         ];
         $types = array_keys($typeOrder);
         usort($packages, function($a, $b) use ($types) {
-            return array_search($a['type'], $types) - array_search($b['type'], $types);
+            $typeOrder = array_search($a['type'], $types) - array_search($b['type'], $types);
+            if (0 !== $typeOrder) {
+                return $typeOrder;
+            }
+
+            // inside same type order by name
+            return strcmp($a['name'], $b['name']);
         });
 
         $content = "---
