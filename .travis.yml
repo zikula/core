@@ -112,3 +112,15 @@ script:
   - cd deprecation-detector
   - composer install --no-suggest
   - ./bin/deprecation-detector check src vendor
+
+after_success:
+  - composer require couscous/couscous
+  - vendor/bin/couscous travis-auto-deploy --php-version=7.4
+
+env:
+  global:
+    - GIT_NAME: "'Zikula docs auto deploy'"
+    - GIT_EMAIL: info@ziku.la
+    - GH_REF: github.com/zikula/core
+    # deployment key for couscous
+    - secure: hIc9fYIbJRRI5vi56HyOz1uGafmID0RrkprMysiK3AGZyHI9VKVs7Vx53poiN8mUhQtedvLcChmp5H0yj86oL9Uli6oF2a9JrtYt3wLUTXXUuiV+NsiYVhPfFSgm/9Ku3N1OwaNliQJIxO3pLQS0SS/QR3YW5oZjGmChd675cqY=

@@ -3,7 +3,7 @@ on:
   schedule:
     - cron:  '0 12 */2 * *' # run every 2 days
 jobs:
-  update-deps:
+  update-translations:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout sources from master branch
