@@ -77,21 +77,20 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $containsInstall = 'install' === $routeInfo['_route'];
         $containsUpgrade = 'upgrade' === $routeInfo['_route'];
         $containsLogin = 'Zikula\\UsersModule\\Controller\\AccessController::loginAction' === $routeInfo['_controller'];
-        $containsDoc = 'doc' === $routeInfo['_route'];
         $containsWdt =  '_wdt' === $routeInfo['_route'];
         $containsProfiler = false !== mb_strpos($routeInfo['_route'], '_profiler');
         $containsRouter = 'fos_js_routing_js' === $routeInfo['_route'];
         $doNotRedirect = $containsProfiler || $containsWdt || $containsRouter || $request->isXmlHttpRequest();
 
         // check if Zikula Core is not installed
-        if (!$this->installed && !$containsDoc && !$containsInstall && !$doNotRedirect) {
+        if (!$this->installed && !$containsInstall && !$doNotRedirect) {
             $this->router->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->router->generate('install');
             $this->multiLingualRoutingHelper->reloadMultilingualRoutingSettings();
             $event->setResponse(new RedirectResponse($url));
         }
         // check if Zikula Core requires upgrade
-        if ($requiresUpgrade && !$containsLogin && !$containsDoc && !$containsUpgrade && !$doNotRedirect) {
+        if ($requiresUpgrade && !$containsLogin && !$containsUpgrade && !$doNotRedirect) {
             $this->router->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->router->generate('upgrade');
             $this->multiLingualRoutingHelper->reloadMultilingualRoutingSettings();

@@ -41,12 +41,12 @@ menu:
                 roadmap:
                     text: Roadmap
                     relativeUrl: roadmap.html
-                install:
-                    text: Installation
-                    relativeUrl: install.html
                 requirements:
                     text: Requirements
                     relativeUrl: requirements.html
+                install:
+                    text: Installation
+                    relativeUrl: install.html
                 upgrade:
                     text: Upgrade
                     relativeUrl: upgrade.html
