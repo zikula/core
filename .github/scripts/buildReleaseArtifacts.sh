@@ -13,13 +13,8 @@ DOC_PATH="${PACKAGE_PATH}/docs/en"
 declare -A COPY_FILES
 COPY_FILES=(
     ["README_md"]="${DOC_PATH}"
-    ["INSTALL-2_0_md"]="${PACKAGE_PATH}"
-    ["INSTALL-2_0_md"]="${DOC_PATH}"
-    ["UPGRADE-2_0_md"]="${PACKAGE_PATH}"
-    ["UPGRADE-2_0_md"]="${DOC_PATH}"
     ["CHANGELOG-2_0_md"]="${DOC_PATH}"
     ["CHANGELOG-3_0_md"]="${DOC_PATH}"
-    ["ROADMAP_md"]="${DOC_PATH}"
     ["composer_json"]="${DOC_PATH}/dev"
     ["composer_lock"]="${DOC_PATH}/dev"
 )
