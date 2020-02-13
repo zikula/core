@@ -56,6 +56,9 @@ menu:
                 releases:
                     text: Releases
                     relativeUrl: Releases/index.html
+                vendor-info:
+                    text: Vendor information
+                    relativeUrl: vendorinformation.html
         admin:
             name: Administrators
             items:

@@ -49,7 +49,14 @@ class GenerateVendorDocCommand extends Command
             return array_search($a['type'], $types) - array_search($b['type'], $types);
         });
 
-        $content = '';
+        $content = "
+---
+currentMenu: vendor-info
+---
+# Vendor information
+";
+        }
+        
         $currentType = '';
         $authors = [];
         foreach ($packages as $package) {
@@ -57,7 +64,7 @@ class GenerateVendorDocCommand extends Command
                 if ('' !== $currentType) {
                     $content .= "\n";
                 }
-                $content .= $typeOrder[$package['type']] . "\n";
+                $content .= '## ' . $typeOrder[$package['type']] . "\n\n";
                 $content .= str_repeat('-', mb_strlen($typeOrder[$package['type']])) . "\n";
                 $currentType = $package['type'];
             }
