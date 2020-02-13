@@ -107,15 +107,14 @@ install:
     - mysql -e 'drop database zk_test'
 
 script:
+  # deploy docs
+  - composer require couscous/couscous
+  - vendor/bin/couscous travis-auto-deploy --php-version=7.4
   # execute Symfony deprecation detector
   - git clone https://github.com/sensiolabs-de/deprecation-detector.git
   - cd deprecation-detector
   - composer install --no-suggest
   - ./bin/deprecation-detector check src vendor
-
-after_success:
-  - composer require couscous/couscous
-  - vendor/bin/couscous travis-auto-deploy --php-version=7.4
 
 env:
   global:
