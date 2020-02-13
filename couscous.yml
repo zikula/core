@@ -9,7 +9,7 @@ exclude:
     - vendor
 
 # Base URL of the published website
-baseUrl: http://zikula.github.io/core
+baseUrl: https://docs.ziku.la
 
 # The content of this variable will be directly inserted into the CNAME file
 # Set a custom domain which is used by GitHub Pages
