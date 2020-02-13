@@ -55,8 +55,7 @@ currentMenu: vendor-info
 ---
 # Vendor information
 ";
-        }
-        
+
         $currentType = '';
         $authors = [];
         foreach ($packages as $package) {
