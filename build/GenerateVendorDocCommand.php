@@ -92,6 +92,9 @@ currentMenu: vendor-info
             }
             $tmp[] = $author['name'];
         }
+        usort($authors, function ($a, $b) {
+            return strcmp($a['name'], $b['name']);
+        });
         foreach ($authors as $author) {
             $content .= "- **" . $author['name'] . "**";
             if (isset($author['homepage'])) {
