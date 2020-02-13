@@ -19,4 +19,4 @@ For more information visit [ziku.la](https://ziku.la/).
 
 ## Documentation
 
-Please see our [documentation](docs/README.md).
+Please see our [documentation](docs/).
