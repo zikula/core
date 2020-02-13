@@ -206,7 +206,7 @@
   - components/font-awesome updated from 4.7.0 to 5.12.1
   - composer/ca-bundle updated from 1.2.4 to 1.2.6
   - composer/composer installed in 1.9.1 (temporarily using dev-master b9d0015)
-  - composer/installers updated from v1.7.0 to v1.8.0
+  - composer/installers updated from 1.7.0 to 1.8.0
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.2
   - composer/xdebug-handler installed in 1.4.0
@@ -260,16 +260,16 @@
   - symfony/maker-bundle installed in 1.14.3
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.4
-  - symfony/polyfill-ctype updated from v1.12.0 to v1.13.1
-  - symfony/polyfill-iconv installed in 1.13.1
-  - symfony/polyfill-intl-grapheme installed in 1.13.1
-  - symfony/polyfill-intl-icu updated from 1.11.0 to 1.13.1
-  - symfony/polyfill-intl-idn updated from 1.11.0 to 1.13.1
-  - symfony/polyfill-intl-messageformatter installed in 1.13.1
-  - symfony/polyfill-intl-normalizer installed in 1.13.1
-  - symfony/polyfill-mbstring updated from v1.12.0 to v1.13.1
-  - symfony/polyfill-php72 installed in 1.13.1
-  - symfony/polyfill-php73 installed in 1.13.1
+  - symfony/polyfill-ctype updated from 1.12.0 to 1.14.0
+  - symfony/polyfill-iconv installed in 1.14.0
+  - symfony/polyfill-intl-grapheme installed in 1.14.0
+  - symfony/polyfill-intl-icu updated from 1.11.0 to 1.14.0
+  - symfony/polyfill-intl-idn updated from 1.11.0 to 1.14.0
+  - symfony/polyfill-intl-messageformatter installed in 1.14.0
+  - symfony/polyfill-intl-normalizer installed in 1.14.0
+  - symfony/polyfill-mbstring updated from 1.12.0 to 1.14.0
+  - symfony/polyfill-php72 installed in 1.14.0
+  - symfony/polyfill-php73 installed in 1.14.0
   - symfony/profiler-pack installed in 1.0.4
   - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
   - symfony/symfony updated from 3.4.35 to 5.0.4
