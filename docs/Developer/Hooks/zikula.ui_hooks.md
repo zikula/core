@@ -1,4 +1,7 @@
-# Hook types
+---
+currentMenu: developer-hooks
+---
+# UI hooks / display hooks
 
 The following is a list of valid hook types.
 

@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Translations
 
 ## Basic topics
@@ -17,6 +20,6 @@
 - [Using the PHP and Symfony's Intl classes](Intl.md)
 - [Contributing translations](Contributing.md)
 
-## Additional resources
+## External resources
 
 - [YAML to PO converter](https://yml2po.com/)

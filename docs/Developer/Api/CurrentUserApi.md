@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # CurrentUserApi
 
 classname: `\Zikula\UsersModule\Api\CurrentUserApi`.

@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Collapseable blocks
 
 In the BlocksModule settings, an admin may **enable block collapse icons**. This feature adds a small icon next to each

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-other
+---
 # Site Definition
 
 The Core bundle provides a site definition which can be used for adding additional logic for computing site titles, site meta descriptions as well as logos and icon files.

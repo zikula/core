@@ -1,3 +1,6 @@
+---
+currentMenu: developer-events
+---
 # String filter events
 
 The `\Zikula\SecurityCenterModule\Api\HtmlFilterApiInterface` class provides this event:

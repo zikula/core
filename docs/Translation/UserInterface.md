@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # UI-based translations
 
 Zikula 3 introduces two new abilities for creating and changing translations.

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-categories
+---
 # CategoryTreeType
 
 The CategoriesModule provides a CategoryTreeType form type for ease of use with Symfony Forms.

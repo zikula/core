@@ -1,3 +1,6 @@
+---
+currentMenu: menus
+---
 # ExtensionMenu
 
 The ExtensionMenu system is a method to store menus that the extension can utilize in various User Interfaces.

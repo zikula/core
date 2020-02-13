@@ -1,3 +1,6 @@
+---
+currentMenu: developer-events
+---
 # Access, User and Registration events
 
 The following classes provide different events:

@@ -1,4 +1,7 @@
-# Provider display hooks
+---
+currentMenu: developer-hooks
+---
+# Provider workflow for display hooks
 
 A provider hook handler should respond to hookable events similar to the following:
 

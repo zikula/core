@@ -1,3 +1,6 @@
+---
+currentMenu: developer-moduleinterfaces
+---
 # Message interface
 
 Modules that want the Core to identify the module as Message-capable must provide a class which implements

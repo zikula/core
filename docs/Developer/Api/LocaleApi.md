@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # LocaleApi
 
 classname: `\Zikula\SettingsModule\Api\LocaleApi`

@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Theme composer file
 
 Filename: `composer.json`

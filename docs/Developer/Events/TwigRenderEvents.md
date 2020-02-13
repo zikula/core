@@ -1,3 +1,6 @@
+---
+currentMenu: developer-events
+---
 # Twig render events
 
 The `\Zikula\ThemeModule\ThemeEvents` class provides these events:

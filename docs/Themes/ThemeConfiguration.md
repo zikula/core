@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Theme configuration
 
 File: `/Resources/config/theme.yaml`

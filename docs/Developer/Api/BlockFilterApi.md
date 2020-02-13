@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # BlockFilterApi
 
 classname: `\Zikula\BlocksModule\Api\BlockFilterApi`.

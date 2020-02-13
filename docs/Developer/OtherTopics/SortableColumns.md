@@ -1,3 +1,6 @@
+---
+currentMenu: developer-other
+---
 # Sortable Columns
 
 SortableColumns is a zikula component to help manage data table column headings that can be clicked to sort the data.
@@ -16,7 +19,10 @@ $sortableColumns->addColumn(new Column('pageid')); // first added is automatical
 $sortableColumns->addColumn(new Column('title'));
 $sortableColumns->addColumn(new Column('cr_date'));
 $sortableColumns->setOrderBy($sortableColumns->getColumn($orderBy), $currentSortDirection);
-$sortableColumns->setAdditionalUrlParameters(array(
+$sortableColumns->setAdditionalUrlParameters(array(---
+currentMenu: developer-overview
+---
+
     'language' => isset($filterData['language']) ? $filterData['language'] : null,
 ));
 

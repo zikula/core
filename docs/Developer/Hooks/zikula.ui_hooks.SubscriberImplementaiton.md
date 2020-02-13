@@ -1,4 +1,7 @@
-# Workflow of ui_hooks hooks
+---
+currentMenu: developer-hooks
+---
+# Subscriber workflow for display hooks
 
 ## Introduction to new/edit/delete types subscriber Implementation
 

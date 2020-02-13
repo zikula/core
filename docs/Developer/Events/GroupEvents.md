@@ -1,3 +1,6 @@
+---
+currentMenu: developer-events
+---
 # Group events
 
 The `\Zikula\GroupsModule\GroupEvents` class provides these events:

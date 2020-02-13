@@ -1,3 +1,6 @@
+---
+currentMenu: developer-other
+---
 # Searchable
 
 The Api/methodology for the search module requires a dedicated class which must implement `Zikula\SearchModule\SearchableInterface`.

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # HtmlFilterApi
 
 classname: `\Zikula\SecurityCenterModule\Api\HtmlFilterApi`.

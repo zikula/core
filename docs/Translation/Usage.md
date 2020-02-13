@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Translator usage
 
 ## PHP files

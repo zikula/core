@@ -1,0 +1,127 @@
+template:
+    #directory: ../../Template-Dark
+    url: https://github.com/zikula/Template-Dark.git
+
+# Base URL of the published website
+baseUrl: http://zikula.github.io/core
+
+# The content of this variable will be directly inserted into the CNAME file
+# Set a custom domain which is used by GitHub Pages
+cname: docs.ziku.la
+
+# Set the target branch in which to deploy the generated website
+branch: gh-pages
+
+# Used to link to the GitHub project
+github:
+    user: zikula
+    repo: core
+
+title: Zikula Core
+subTitle: Zikula CMS and Symfony framework
+
+# The left menu bar
+menu:
+    sections:
+        general:
+            name: General
+            items:
+                home:
+                    text: Home page
+                    relativeUrl: index.html
+                features:
+                    text: Features
+                    relativeUrl: features.html
+                roadmap:
+                    text: Roadmap
+                    relativeUrl: roadmap.html
+                install:
+                    text: Installation
+                    relativeUrl: install.html
+                upgrade:
+                    text: Upgrade
+                    relativeUrl: upgrade.html
+                contributing:
+                    text: Contributing
+                    relativeUrl: Contributing/index.html
+                releases:
+                    text: Releases
+                    relativeUrl: Releases/index.html
+        admin:
+            name: Administrators
+            items:
+                admin-overview:
+                    text: Overview
+                    relativeUrl: Admin/index.html
+        developer:
+            name: Developers
+            items:
+                developer-overview:
+                    text: Overview
+                    relativeUrl: Developer/index.html
+                developer-api:
+                    text: APIs
+                    relativeUrl: Developer/Api/index.html
+                developer-categories:
+                    text: Categories
+                    relativeUrl: Developer/Categories/index.html
+                developer-doctrine:
+                    text: Doctrine
+                    relativeUrl: Developer/Doctrine/index.html
+                developer-events:
+                    text: Events
+                    relativeUrl: Developer/Events/index.html
+                developer-forms:
+                    text: Forms
+                    relativeUrl: Developer/Forms/index.html
+                developer-hooks:
+                    text: Hooks
+                    relativeUrl: Developer/Hooks/index.html
+                developer-moduleinterfaces:
+                    text: Module interfaces
+                    relativeUrl: Developer/ModuleInterfaces/index.html
+                developer-traits:
+                    text: Traits
+                    relativeUrl: Developer/Traits/index.html
+                developer-usersandauth:
+                    text: Users and authentication
+                    relativeUrl: Developer/UsersAndAuthentication/index.html
+                developer-other:
+                    text: Other topics
+                    relativeUrl: Developer/OtherTopics/index.html
+                developer-extension:
+                    text: Extension Development
+                    relativeUrl: Developer/ExtensionDevelopment/index.html
+        further:
+            name: Further topics
+            items:
+                translation:
+                    text: Translation
+                    relativeUrl: Translation/index.html
+                menus:
+                    text: Menus
+                    relativeUrl: Menu/index.html
+                themes:
+                    text: Themes
+                    relativeUrl: Themes/index.html
+                templatesAndAssets:
+                    text: Templates and Assets
+                    relativeUrl: templatesandassets.html
+                twig:
+                    text: Twig
+                    relativeUrl: Twig/index.html
+                workflows:
+                    text: Workflows
+                    relativeUrl: Workflows/workflows.html
+        resources:
+            name: Resources
+            items:
+                website:
+                    text: Zikula website
+                    absoluteUrl: https://ziku.la
+                github:
+                    text: "<i class=\"fab fa-github\"></i> GitHub"
+                    absoluteUrl: https://github.com/zikula/core
+                slack:
+                    text: "<i class=\"fab fa-slack\"></i> Slack"
+                    absoluteUrl: https://joinslack.ziku.la/

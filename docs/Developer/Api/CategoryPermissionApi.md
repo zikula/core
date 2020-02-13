@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # CategoryPermissionApi
 
 classname: `\Zikula\CategoriesModule\Api\CategoryPermissionApi`.

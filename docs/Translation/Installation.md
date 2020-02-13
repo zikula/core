@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Installation of translations
 
 Translations must be located in `translations`.

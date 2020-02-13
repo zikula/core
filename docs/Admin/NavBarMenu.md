@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Bootstrap NavBar Menus
 
 1. Standard NavBar (list-style) Menu
@@ -5,7 +8,7 @@
 
 ## Standard NavBar (list-style) Menu
 
-A normal menu as created in the "Menus.md" document can be easily converted to a list-style
+A normal menu as created in the [Dynamic menus](Menus.md) document can be easily converted to a list-style
 NavBar menu by editing the *menu root* and adding one option: "childrenAttributes" and give it
 a value of `{"class":"nav navbar-nav"}` (include the braces `{}` and use double-qutoes.)
 

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-usersandauth
+---
 # Users and authentication
 
 As of Core 1.4.3, the UsersModule has been entirely rewritten and has dramatic "under the hood" changes. Some of these
@@ -14,7 +17,7 @@ of a user, various statistics like registration date and others, and a simple me
 
 A new module, ZAuthModule is now responsible for the *authentication* of each user. This means that ZAuth is responsible
 for authentication credentials: username, email and password, for users that are created *within zikula*. But users
-are not required to be created within Zikula! (For more on this see the AuthenticationMethodInterface documentation). 
+are not required to be created within Zikula! (For more on this see the [AuthenticationMethodInterface](AuthenticationMethodInterface.md) documentation). 
 ZAuth therefore maintains the password and provides admin and user interfaces for the management of the credentials.
 
 It should be noted that many of the settings and admin-interface controls have been relocated from Users to ZAuth.
@@ -43,4 +46,5 @@ therefore relieve the Zikula site admin of the responsibility of password securi
 
 ## Events
 
-See the `Events/AccessUserAndRegistrationEvents.md` document for more information on User and Registration related events.
+- [Authentication related events](AuthenticationRelatedEvents.md)
+- See the [Events/AccessUserAndRegistrationEvents.md](../Events/AccessUserAndRegistrationEvents.md) document for more information on User and Registration related events.

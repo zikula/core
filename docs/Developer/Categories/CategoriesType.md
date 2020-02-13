@@ -1,3 +1,6 @@
+---
+currentMenu: developer-categories
+---
 # CategoriesType
 
 The CategoriesModule provides a CategoriesType form type for ease of use with Symfony Forms.

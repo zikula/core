@@ -1,3 +1,6 @@
+---
+currentMenu: developer-traits
+---
 # WhereFromFilterTrait
 
 The trait implemented by `\Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait` adds the following methods to your class:

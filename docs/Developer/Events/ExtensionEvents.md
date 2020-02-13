@@ -1,3 +1,6 @@
+---
+currentMenu: developer-events
+---
 # Extension events
 
 The `\Zikula\ExtensionsModule\ExtensionEvents` class provides these events:

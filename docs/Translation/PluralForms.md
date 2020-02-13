@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Plural forms
 
 Note: before reading this you should have read the [extraction chapter](Extraction.md) first.

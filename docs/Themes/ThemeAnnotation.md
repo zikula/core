@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Theme annotation
 
 The action method of any controller can alter the theme through the use of annotation.

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # PageAssetApi
 
 classname: `\Zikula\ThemeModule\Api\PageAssetApi`.

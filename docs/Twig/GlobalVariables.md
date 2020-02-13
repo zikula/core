@@ -1,3 +1,6 @@
+---
+currentMenu: twig
+---
 # Twig template global variables
 
 In addition to the global variables that are provided by Symfony, Zikula provides the following global variables.

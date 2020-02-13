@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Translation extraction
 
 To extract translations use the console command `translation:extract`.

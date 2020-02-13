@@ -1,3 +1,6 @@
+---
+currentMenu: developer-other
+---
 # Dynamic Configuration Dumper
 
 The dynamic configuration dumper is implemented by the `\Zikula\Bundle\CoreBundle\DynamicConfigDumper` class

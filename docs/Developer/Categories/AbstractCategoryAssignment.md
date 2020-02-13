@@ -1,3 +1,6 @@
+---
+currentMenu: developer-categories
+---
 # AbstractCategoryAssignment
 
 The categories module provides an abstract base class in `\Zikula\CategoriesModule\Entity\AbstractCategoryAssignment`. This

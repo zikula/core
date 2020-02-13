@@ -1,3 +1,6 @@
+---
+currentMenu: developer-forms
+---
 # Dynamic form fields
 
 The `FormExtensionBundle` offers helpers for handling dynamic form fields (*properties*).

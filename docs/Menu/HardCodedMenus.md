@@ -1,3 +1,6 @@
+---
+currentMenu: menus
+---
 # Hard coded menus
 
 If your custom module uses a menu that never changes or you would like to programatically create

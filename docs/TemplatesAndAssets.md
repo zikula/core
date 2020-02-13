@@ -1,3 +1,6 @@
+---
+currentMenu: templatesAndAssets
+---
 # Templates and Assets
 
 ## Template locations

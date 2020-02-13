@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # SearchApi
 
 classname: `\Zikula\SearchModule\Api\SearchApi`.

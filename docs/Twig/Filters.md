@@ -1,3 +1,6 @@
+---
+currentMenu: twig
+---
 # Twig filters provided by Zikula Core
 
 The following twig filters are available in templates. These are in addition to the standard functions provided

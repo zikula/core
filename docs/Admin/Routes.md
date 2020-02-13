@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Routes and custom urls
 
 ## Changing module urls

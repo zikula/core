@@ -1,4 +1,7 @@
-# Subscriber workflow for `form_aware_hook`
+---
+currentMenu: developer-hooks
+---
+# Subscriber workflow for form-aware hooks
 
 Recommend use of class constants for all hook names.
 

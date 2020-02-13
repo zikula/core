@@ -1,3 +1,6 @@
+---
+currentMenu: developer-doctrine
+---
 # AbstractEntityAttribute
 
 The `Zikula\Bundle\CoreBundle\Doctrine\Entity\AbstractEntityAttribute` class provides a base class for implementing attribute support

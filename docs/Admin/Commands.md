@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Zikula CLI Commands
 
 ## Extension management

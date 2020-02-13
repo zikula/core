@@ -1,3 +1,6 @@
+---
+currentMenu: twig
+---
 # Twig functions provided by Zikula Core
 
 The following twig functions are available in templates. These are in addition to the standard functions provided

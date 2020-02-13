@@ -1,3 +1,6 @@
+---
+currentMenu: developer-traits
+---
 # TranslatorTrait
 
 The trait implemented by `\Zikula\Bundle\CoreBundle\Translator\TranslatorTrait` adds the following methods to your class:

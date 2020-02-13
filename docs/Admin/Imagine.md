@@ -1,4 +1,7 @@
-# Imagine
+---
+currentMenu: admin-overview
+---
+# Image manipulation with Imagine
 
 Imagine is implemented in Zikula Core by the installation and pre-configuration of the [LiipImagineBundle](https://github.com/liip/LiipImagineBundle).
 
@@ -35,3 +38,8 @@ filter_sets:
 # my template
 <img src="{{ 'public/uploads/flowers.jpg'|imagine_filter('my_uploads_filter') }}" />
 ```
+
+## External resources
+
+- [Imagine docs](https://imagine.readthedocs.io/en/stable/)
+- [LiipImagineBundle docs](https://symfony.com/doc/current/bundles/LiipImagineBundle/index.html)

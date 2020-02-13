@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Allowing themes to change via permissions
 
 Upon installation, a permissions rule is set up to allow any user to change the theme for three "utility" themes:

@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Translation terminology
 
 The technology for translations used in this guide is simple - anywhere in project we use English strings and English descriptions.

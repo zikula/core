@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Using the PHP and Symfony's Intl classes
 
 Zikula expects PHP's [intl extension](http://www.php.net/manual/en/book.intl.php) to be installed to facilitate internationalization functions within the code.

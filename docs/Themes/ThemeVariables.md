@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Theme variables
 
 File path: `/Resources/config/variables.yaml`

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-other
+---
 # Page assets
 
 Assets are publicly visible resources that are used to construct a web page. These include javascripts, stylesheets,

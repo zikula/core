@@ -1,3 +1,6 @@
+---
+currentMenu: developer-events
+---
 # Core events
 
 The `\Zikula\Bundle\CoreBundle\CoreEvents` provides these events:

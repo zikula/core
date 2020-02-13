@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Debugging translations
 
 Symfony comes with `bin/console debug:translation` command line tool to debug translations.

@@ -1,4 +1,7 @@
-Theme class
+---
+currentMenu: themes
+---
+# Theme class
 
 Filename: `<Vendor><Name>Theme.php`
 

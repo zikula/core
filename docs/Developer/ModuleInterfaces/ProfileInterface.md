@@ -1,3 +1,6 @@
+---
+currentMenu: developer-moduleinterfaces
+---
 # Profile interface
 
 Modules that want the Core to identify the module as Profile-capable must provide a class which implements

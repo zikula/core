@@ -1,3 +1,6 @@
+---
+currentMenu: features
+---
 # Features of Zikula
 
 ## Core system

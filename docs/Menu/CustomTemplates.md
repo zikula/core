@@ -1,3 +1,6 @@
+---
+currentMenu: menus
+---
 # Custom menu templates
 
 The default template for all menus is `Knp/Menu/Resources/views/knp_menu.html.twig`.

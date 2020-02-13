@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Dependency injection
 
 Just like any Symfony bundle, Zikula themes are allowed to utilize the DIC (Dependency Injection Container). 

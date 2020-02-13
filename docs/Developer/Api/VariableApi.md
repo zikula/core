@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # VariableApi
 
 classname: `\Zikula\ExtensionsModule\Api\VariableApi`.

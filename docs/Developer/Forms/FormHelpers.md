@@ -1,3 +1,6 @@
+---
+currentMenu: developer-forms
+---
 # Form helpers
 
 Using Symfony forms, there is often a need for various customizations in the template. Some of these are simplified

@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Theme template overrides
 
 ## Theme resource overrides

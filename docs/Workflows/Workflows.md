@@ -1,3 +1,6 @@
+---
+currentMenu: workflows
+---
 # Workflows
 
 Zikula utilises the Symfony Workflow component to provide workflow functionality.

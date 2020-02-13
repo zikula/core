@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Theme file structure
 
 [Reference in Symfony docs](https://symfony.com/doc/current/bundles/best_practices.html).

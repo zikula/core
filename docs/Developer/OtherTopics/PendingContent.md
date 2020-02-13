@@ -1,3 +1,6 @@
+---
+currentMenu: developer-other
+---
 # Pending Content
 
 This document details the `get.pending_content` event which is used to collect information from modules about

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-api
+---
 # CapabilityApi
 
 classname: `\Zikula\ExtensionsModule\Api\CapabilityApi`.

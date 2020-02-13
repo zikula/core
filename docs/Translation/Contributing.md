@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # Contributing translations
 
 Translations should be managed in the repository of the corresponding component.

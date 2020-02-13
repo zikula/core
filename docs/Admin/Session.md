@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Session Information
 
 Sessions can be stored in the database or in the filesystem. This choice as well as a few configuration options

@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Creating a theme based on ZikulaBootstrapTheme
 
 If you want to create your own theme, the starting point of reusing the ZikulaBoostrapTheme is a good idea. This 

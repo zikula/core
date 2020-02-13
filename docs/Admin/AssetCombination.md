@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Asset combination
 
 Zikula Core provides functionality to combine both CSS and JavScript files into one cached file in your twig template

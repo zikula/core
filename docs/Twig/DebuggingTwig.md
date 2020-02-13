@@ -1,4 +1,7 @@
-# Debugging Twig
+---
+currentMenu: twig
+---
+# Debugging Twig templates
 
 Since Core 3.0 Zikula includes the [twig-inspector](https://github.com/oroinc/twig-inspector) that is a nice and powerful tool for inspecting and debugging Twig templates.
 

@@ -1,3 +1,6 @@
+---
+currentMenu: developer-other
+---
 # Cache clearer
 
 The cache clearer is implemented by the `\Zikula\Bundle\CoreBundle\CacheClearer` class and intended to be used

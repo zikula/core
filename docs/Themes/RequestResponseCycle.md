@@ -1,3 +1,6 @@
+---
+currentMenu: themes
+---
 # Request / Response cycle
 
 The theme engine works by intercepting the Response sent by the module controller

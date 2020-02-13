@@ -1,3 +1,6 @@
+---
+currentMenu: upgrade
+---
 # Upgrading Zikula
 
 1. [Test Environment](#test-environment)
@@ -29,7 +32,7 @@ The following process should be followed for all upgrades even small point relea
   You should consider deleting and replacing these with a MenuModule block before upgrading.
 - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
 - Upload the new package and unpack the archive.
-  - Please read the [INSTALL docs](INSTALL-2.0.md#upload) for detailed information on proper uploading.
+  - Please read the [INSTALL docs](INSTALL.md#upload) for detailed information on proper uploading.
   - Note 1: One common issue when installing is that the `/var/cache` and `/var/log` directories must be writable both by the 
     web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/current/setup/file_permissions.html) 
     to see potential solutions to this problem when installing from the CLI.
@@ -44,7 +47,7 @@ The following process should be followed for all upgrades even small point relea
 ### Continue
 
 - Copy your custom theme to your new installation. The folders of your theme should be in the exact same place as your backup.
-- Return compatible modules to the `/src/modules` directory.
+- Return compatible extensions to the `/src/extensions` directory.
   - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
 - Copy your backup contents of `/userdata` into `/public/uploads`
 - Then **start the upgrade (do one or the other)**

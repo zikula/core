@@ -1,3 +1,6 @@
+---
+currentMenu: menus
+---
 # Dynamic menus
 
 A Dynamic menu is a menu that is created via the User Interface in the MenuModule. There is 

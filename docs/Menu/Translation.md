@@ -1,3 +1,6 @@
+---
+currentMenu: menus
+---
 # Translation
 
 Labels and link titles of menu items are automatically translated.

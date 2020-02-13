@@ -1,3 +1,6 @@
+---
+currentMenu: admin-overview
+---
 # Block filters
 
 A powerful filter mechanism has been implemented for blocks. For any block you can set up your own filters based on 

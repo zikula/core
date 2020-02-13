@@ -1,3 +1,6 @@
+---
+currentMenu: install
+---
 # Zikula installation instructions
 
 1. [Install by uploading package](#upload)

@@ -1,3 +1,6 @@
+---
+currentMenu: translation
+---
 # JavaScript translation
 
 Zikula includes `willdurand/js-translation-bundle` also known as [BazingaJsTranslationBundle](https://github.com/willdurand/BazingaJsTranslationBundle).

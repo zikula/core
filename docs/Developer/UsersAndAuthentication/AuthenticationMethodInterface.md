@@ -1,3 +1,6 @@
+---
+currentMenu: developer-usersandauth
+---
 # AuthenticationMethodInterface
 
 As of Zikula Core-1.4.3 a new method is introduced to provide a means for users to be authenticated for use in the

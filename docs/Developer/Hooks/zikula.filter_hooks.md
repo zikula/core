@@ -1,4 +1,7 @@
-# Hook types
+---
+currentMenu: developer-hooks
+---
+# Filter hooks
 
 ## 'filter_hooks' category
 

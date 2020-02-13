@@ -1,3 +1,6 @@
+---
+currentMenu: developer-traits
+---
 # ExtensionVariablesTrait
 
 The trait implemented by `\Zikula\ExtensionsModule\ExtensionVariablesTrait` adds the following methods to your class:

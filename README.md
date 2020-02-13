@@ -7,7 +7,7 @@
 
 Zikula Core is an Application Framework which extends Symfony 5.x and includes technologies
 fostering a dynamic modular development paradigm and Twig-based theming system which allows for rapid
-website and application development. See the [Features](https://github.com/zikula/core/blob/master/docs/FEATURES.md)
+website and application development. See the [Features](docs/FEATURES.md)
 document for more information.
 
 Zikula also features an [MDSD](https://en.wikipedia.org/wiki/Model-driven_engineering) tool for rapid prototyping
@@ -33,7 +33,7 @@ For more information visit [ziku.la](https://ziku.la/).
 
 ## Documentation
 
-Please see our [developer documentation](https://github.com/zikula/core/tree/master/docs)
+Please see our [developer documentation](docs/README.md)
 
 ## Contributing
 

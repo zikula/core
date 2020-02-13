@@ -1,3 +1,6 @@
+---
+currentMenu: developer-usersandauth
+---
 # Authentication related events
 
 `Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO`
