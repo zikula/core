@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "4d74f5ba957468afe124849ceaf38c2fcf5b871a"
+                "reference": "f26c6d9773fa6b4f8448c692959bd7839a3de809"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/4d74f5ba957468afe124849ceaf38c2fcf5b871a",
-                "reference": "4d74f5ba957468afe124849ceaf38c2fcf5b871a",
+                "url": "https://api.github.com/repos/composer/composer/zipball/f26c6d9773fa6b4f8448c692959bd7839a3de809",
+                "reference": "f26c6d9773fa6b4f8448c692959bd7839a3de809",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-02-12T09:23:03+00:00"
+            "time": "2020-02-13T21:01:40+00:00"
         },
         {
             "name": "composer/installers",
@@ -1788,16 +1788,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.16",
+            "version": "2.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "5065fafc8c29d229ff207f2a89b02175f479a909"
+                "reference": "ade6887fd9bd74177769645ab5c474824f8a418a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5065fafc8c29d229ff207f2a89b02175f479a909",
-                "reference": "5065fafc8c29d229ff207f2a89b02175f479a909",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/ade6887fd9bd74177769645ab5c474824f8a418a",
+                "reference": "ade6887fd9bd74177769645ab5c474824f8a418a",
                 "shasum": ""
             },
             "require": {
@@ -1842,7 +1842,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-02-12T22:28:28+00:00"
+            "time": "2020-02-13T22:36:52+00:00"
         },
         {
             "name": "erusev/parsedown",
