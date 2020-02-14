@@ -15,8 +15,8 @@ currentMenu: menus
 
 Both dynamic and hard coded menus are enabled by the implementation of the
 [KnpMenuBundle](https://symfony.com/doc/current/bundles/KnpMenuBundle/index.html).
-Please note, KnpMenuBundle is already fully included, installed and configured.
-There is no need to take these steps as outlined in the docs.
+It is already fully included, installed and configured - so there is no need
+to take these steps as outlined in the docs.
 
 - [ExtensionMenu](Dev/ExtensionMenu.md)
 - [Hard coded menus](Dev/HardCodedMenus.md)
