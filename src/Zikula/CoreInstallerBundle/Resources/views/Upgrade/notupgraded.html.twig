@@ -10,7 +10,7 @@
                 <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
                 <h2>{% trans %}Zikula Core requires upgrade!{% endtrans %}</h2>
                 <p>
-                    {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://docs.ziku.la/upgrade.html', '%text%': 'upgrade instructions'|trans }) %}
+                    {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://docs.ziku.la/Setup/upgrade.html', '%text%': 'upgrade instructions'|trans }) %}
                     {% set docs = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
                     {% trans with { '%inst%': inst, '%docs%': docs } %}'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking
                         on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}

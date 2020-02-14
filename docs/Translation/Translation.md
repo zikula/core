@@ -53,7 +53,6 @@ Translations are cached in `var/cache/<env>/translations/catalogue.<locale>.<key
 
 ### Fallback locale
 
-There is something new in Symfony translator that was not available with legacy mode.
 Let's look at a website with 3 languages: `en` (strings are in `en`), `de` and `pl`.
 All languages are enabled but some translations are missing for some strings.
 
@@ -68,5 +67,4 @@ when translator fallback setting locale is set to `de`. At the end there is alwa
 
 - [Gettext documentation](https://www.gnu.org/software/gettext/manual/gettext.html#I18n_002c-L10n_002c-and-Such)
 - [Symfony Translator documentation](https://symfony.com/doc/current/translation.html)
-- [Zikula legacy translations guides](https://github.com/zikula/zikula-docs/tree/master/guides/translation)
 - [How to Translate With GetText PO and POT Files](https://www.icanlocalize.com/site/tutorials/how-to-translate-with-gettext-po-and-pot-files/)

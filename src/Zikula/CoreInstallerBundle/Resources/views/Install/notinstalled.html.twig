@@ -10,7 +10,7 @@
                 <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
                 <h2>{% trans %}Zikula Core is not installed!{% endtrans %}</h2>
                 <p>
-                    {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://docs.ziku.la/install.html', '%text%': 'installation instructions'|trans }) %}
+                    {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://docs.ziku.la/Setup/installation.html', '%text%': 'installation instructions'|trans }) %}
                     {% set docs = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
                     {% trans with {'%inst%': inst, '%docs%': docs} %}You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>

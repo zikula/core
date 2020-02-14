@@ -42,7 +42,7 @@ echo "Post install command"
 composer run-script post-install-cmd
 
 echo "Generating composer_vendors file..."
-${PHP_BUILD} build:generate_vendor_doc --write-to "${PACKAGE_PATH}/docs/VendorInformation.md"
+${PHP_BUILD} build:generate_vendor_doc --write-to "${PACKAGE_PATH}/docs/General/VendorInformation.md"
 
 echo "Copying docs and composer files..."
 mkdir -p "${DOC_PATH}/dev"

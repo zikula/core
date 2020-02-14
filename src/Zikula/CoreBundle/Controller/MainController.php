@@ -74,9 +74,6 @@ class MainController
         if (null !== $startPageInfo['query']) {
             parse_str($startPageInfo['query'], $queryParams);
         }
-        if (null !== $startPageInfo['request']) {
-            parse_str($startPageInfo['request'], $requestParams);
-        }
         if (null !== $startPageInfo['attributes']) {
             parse_str($startPageInfo['attributes'], $attributes);
         }

@@ -1,5 +1,5 @@
 template:
-    #directory: ../../Template-Dark
+    #directory: ../Template-Dark
     url: https://github.com/zikula/Template-Dark.git
 
 include:
@@ -33,98 +33,134 @@ menu:
             name: General
             items:
                 home:
-                    text: Home page
+                    text: About
                     relativeUrl: index.html
-                features:
-                    text: Features
-                    relativeUrl: features.html
-                roadmap:
-                    text: Roadmap
-                    relativeUrl: roadmap.html
-                requirements:
-                    text: Requirements
-                    relativeUrl: requirements.html
-                install:
-                    text: Installation
-                    relativeUrl: install.html
-                upgrade:
-                    text: Upgrade
-                    relativeUrl: upgrade.html
                 contributing:
                     text: Contributing
-                    relativeUrl: Contributing/index.html
-                releases:
-                    text: Releases
-                    relativeUrl: Releases/index.html
+                    relativeUrl: General/Contributing/index.html
+                roadmap-releases:
+                    text: Roadmap and Releases
+                    relativeUrl: General/Releases/index.html
                 vendor-info:
                     text: Vendor information
-                    relativeUrl: vendorinformation.html
-        admin:
-            name: Administrators
+                    relativeUrl: General/vendorinformation.html
+        setup:
+            name: Setup
             items:
-                admin-overview:
-                    text: Overview
-                    relativeUrl: Admin/index.html
-        developer:
-            name: Developers
+                requirements:
+                    text: Requirements
+                    relativeUrl: Setup/requirements.html
+                install:
+                    text: Installation
+                    relativeUrl: Setup/installation.html
+                upgrade:
+                    text: Upgrade
+                    relativeUrl: Setup/upgrade.html
+        configuration:
+            name: Configuration
             items:
-                developer-overview:
-                    text: Overview
-                    relativeUrl: Developer/index.html
-                developer-api:
-                    text: APIs
-                    relativeUrl: Developer/Api/index.html
-                developer-categories:
-                    text: Categories
-                    relativeUrl: Developer/Categories/index.html
-                developer-doctrine:
-                    text: Doctrine
-                    relativeUrl: Developer/Doctrine/index.html
-                developer-events:
-                    text: Events
-                    relativeUrl: Developer/Events/index.html
-                developer-forms:
-                    text: Forms
-                    relativeUrl: Developer/Forms/index.html
-                developer-hooks:
-                    text: Hooks
-                    relativeUrl: Developer/Hooks/index.html
-                developer-moduleinterfaces:
-                    text: Module interfaces
-                    relativeUrl: Developer/ModuleInterfaces/index.html
-                developer-traits:
-                    text: Traits
-                    relativeUrl: Developer/Traits/index.html
-                developer-usersandauth:
-                    text: Users and authentication
-                    relativeUrl: Developer/UsersAndAuthentication/index.html
-                developer-other:
-                    text: Other topics
-                    relativeUrl: Developer/OtherTopics/index.html
-                developer-extension:
-                    text: Extension development
-                    relativeUrl: Developer/ExtensionDevelopment/index.html
-        further:
-            name: Further topics
-            items:
-                translation:
-                    text: Translation
-                    relativeUrl: Translation/index.html
-                menus:
-                    text: Menus
-                    relativeUrl: Menu/index.html
-                themes:
-                    text: Themes
-                    relativeUrl: Themes/index.html
-                templatesAndAssets:
-                    text: Templates and Assets
-                    relativeUrl: templatesandassets.html
-                twig:
-                    text: Twig
-                    relativeUrl: Twig/index.html
+                main-settings:
+                    text: Main settings
+                    relativeUrl: Configuration/Settings/index.html
+                localisation:
+                    text: Localisation
+                    relativeUrl: Configuration/Localisation/index.html
+                mailer:
+                    text: Mailer
+                    relativeUrl: Configuration/Mailer/index.html
+                admin-panel:
+                    text: Admin panel
+                    relativeUrl: Configuration/AdminPanel/index.html
+                security-center:
+                    text: Security center
+                    relativeUrl: Configuration/Security/index.html
+                extension-management:
+                    text: Extensions
+                    relativeUrl: Configuration/Extensions/index.html
+                routes-management:
+                    text: Routes
+                    relativeUrl: Configuration/Routes/index.html
                 workflows:
                     text: Workflows
-                    relativeUrl: Workflows/workflows.html
+                    relativeUrl: Configuration/Workflows/index.html
+        access-control:
+            name: Access Control
+            items:
+                groups:
+                    text: Groups
+                    relativeUrl: AccessControl/groups.html
+                users:
+                    text: Users
+                    relativeUrl: AccessControl/users.html
+                authentication:
+                    text: Authentication
+                    relativeUrl: AccessControl/authentication.html
+                permissions:
+                    text: Permissions
+                    relativeUrl: AccessControl/permissions.html
+        layout:
+            name: Layout & Design
+            items:
+                templating:
+                    text: Templating
+                    relativeUrl: LayoutDesign/Templating/index.html
+                themes:
+                    text: Themes
+                    relativeUrl: LayoutDesign/Themes/index.html
+                blocks:
+                    text: Blocks
+                    relativeUrl: LayoutDesign/Blocks/index.html
+                menus:
+                    text: Menus
+                    relativeUrl: LayoutDesign/Menus/index.html
+                forms:
+                    text: Forms
+                    relativeUrl: LayoutDesign/Forms/index.html
+        trans:
+            name: Translation
+            items:
+                translation:
+                    text: Overview
+                    relativeUrl: Translation/index.html
+        integration:
+            name: Integration
+            items:
+                categories:
+                    text: Categories
+                    relativeUrl: Integration/Categories/index.html
+                search:
+                    text: Search
+                    relativeUrl: Integration/Search/index.html
+        extensions:
+            name: Extensions
+            items:
+                ext-content:
+                    text: Content
+                    relativeUrl: Extensions/content.html
+                ext-other:
+                    text: Other
+                    relativeUrl: Extensions/other.html
+        development:
+            name: Extension Development
+            items:
+                dev-general:
+                    text: General
+                    relativeUrl: Development/General/index.html
+                dev-doctrine:
+                    text: Databases & Doctrine
+                    relativeUrl: Development/Doctrine/index.html
+                dev-extensions:
+                    text: Extension services
+                    relativeUrl: Development/Extensions/index.html
+                dev-hooks:
+                    text: Hooks
+                    relativeUrl: Development/Hooks/index.html
+                dev-misc:
+                    text: Misc
+                    relativeUrl: Development/Misc/index.html
+                dev-mdsd:
+                    text: Model-driven approach
+                    absoluteUrl: https://modulestudio.de/en/documentation/10-introduction/
         resources:
             name: Resources
             items:

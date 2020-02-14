@@ -208,7 +208,7 @@
   - composer/composer installed in 1.9.1 (temporarily using dev-master b9d0015)
   - composer/installers updated from 1.7.0 to 1.8.0
   - composer/semver updated from 1.5.0 to 1.5.1
-  - composer/spdx-licenses installed in 1.5.2
+  - composer/spdx-licenses installed in 1.5.3
   - composer/xdebug-handler installed in 1.4.0
   - doctrine/annotations updated from 1.2.7 to 1.8.0
   - doctrine/collections updated from 1.3.0 to 1.6.4
@@ -222,7 +222,7 @@
   - doctrine/orm updated from 2.5.14 to 2.7.0
   - doctrine/persistence installed in 1.3.6
   - doctrine/reflection installed in 1.1.0
-  - egulias/email-validator installed in 2.1.16
+  - egulias/email-validator installed in 2.1.17
   - erusev/parsedown installed in 1.7.4
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
   - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.39

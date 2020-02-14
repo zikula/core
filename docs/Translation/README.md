@@ -1,7 +1,7 @@
 ---
 currentMenu: translation
 ---
-# Translations
+# Translation
 
 ## Basic topics
 
@@ -28,3 +28,7 @@ Here are some recommended tools. We recommend you try them all to find your favo
 - [Poedit](https://poedit.net/) - Powerful Gettext translation tool, works with Windows, Mac and Linux
 - [Virtaal](https://virtaal.translatehouse.org/) - Another excellent translation tool
 - [YAML to PO converter](https://yml2po.com/)
+
+## For developers
+
+- [TranslatorTrait](Dev/TranslatorTrait.md)
