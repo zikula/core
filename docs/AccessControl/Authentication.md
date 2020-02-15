@@ -25,11 +25,20 @@ In contrast to external authentication methods ZAuth does that simply local inst
 
 The OAuthModule provides the ability to use OAuth for authentication with common services, like:
 
-- Facebook
-- GitHub
-- Google
-- Instagram
-- LinkedIn
+Facebook
+: Based on [thephpleague/oauth2-facebook](https://github.com/thephpleague/oauth2-facebook).
+
+GitHub
+: Based on [thephpleague/oauth2-github](https://github.com/thephpleague/oauth2-github).
+
+Google
+: Based on [thephpleague/oauth2-google](https://github.com/thephpleague/oauth2-google).
+
+Instagram
+: Based on [thephpleague/oauth2-instagram](https://github.com/thephpleague/oauth2-instagram).
+
+LinkedIn
+: Based on [thephpleague/oauth2-linkedin](https://github.com/thephpleague/oauth2-linkedin).
 
 ### Others
 

@@ -6730,12 +6730,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "4db1ff0c2f0b9f1039bdb7c8b95e0e5a7a320199"
+                "reference": "e56a9e708102706618d0a7e336177faf2c2cd6e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/4db1ff0c2f0b9f1039bdb7c8b95e0e5a7a320199",
-                "reference": "4db1ff0c2f0b9f1039bdb7c8b95e0e5a7a320199",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/e56a9e708102706618d0a7e336177faf2c2cd6e5",
+                "reference": "e56a9e708102706618d0a7e336177faf2c2cd6e5",
                 "shasum": ""
             },
             "require": {
@@ -6788,7 +6788,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-02-06T00:44:15+00:00"
+            "time": "2020-02-15T12:22:40+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6796,12 +6796,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "91e770d6e69bcce35ede460b24d76287d84ba439"
+                "reference": "0a417c53bf0ad047b96151dd4fd58ecb3c485641"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/91e770d6e69bcce35ede460b24d76287d84ba439",
-                "reference": "91e770d6e69bcce35ede460b24d76287d84ba439",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/0a417c53bf0ad047b96151dd4fd58ecb3c485641",
+                "reference": "0a417c53bf0ad047b96151dd4fd58ecb3c485641",
                 "shasum": ""
             },
             "require": {
@@ -6847,7 +6847,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-02-14T13:39:08+00:00"
+            "time": "2020-02-15T12:33:52+00:00"
         },
         {
             "name": "zikula/pagelock-module",

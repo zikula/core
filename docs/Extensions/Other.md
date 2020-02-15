@@ -10,12 +10,12 @@ currentMenu: ext-other
 [Profile](https://github.com/zikula-modules/Profile)
 : User profile module and avatar management.
 : Included in Core distribution.
-: See also [User profiles](../AccessControl/Users.md#user-profiles).
+: See [User profiles](../AccessControl/Users.md#user-profiles) for further details.
 
 [OAuth](https://github.com/zikula/OAuth)
 : OAuth authentication provider.
 : Included in Core distribution.
-: See also [Authentication / OAuth](../AccessControl/Authentication.md#oauth).
+: See [Authentication / OAuth](../AccessControl/Authentication.md#oauth) for further details.
 
 [Formicula](https://github.com/zikula-ev/Formicula)
 : Contact form generator

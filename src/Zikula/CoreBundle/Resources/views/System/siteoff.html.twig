@@ -11,7 +11,7 @@
     <div class="container">
         <div class="jumbotron text-center" style="margin-top: 3em;">
             <h1>{% trans %}The site is currently off-line.{% endtrans %}</h1>
-            <h2>{{ getModVar('ZConfig', 'siteoffreason') }}</h2>
+            <h2>{{ getSystemVar('siteoffreason') }}</h2>
             {{ showflashes() }}
             <p>
                 <a class="btn btn-xl btn-primary" href="{{ path('zikulausersmodule_access_login') }}"><i class="fas fa-key"></i> {% trans %}Administrator log-in{% endtrans %}</a>

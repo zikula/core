@@ -9,13 +9,13 @@
 {# here you can add your image if you want to #}
 {#
 <image>
-  <title>{{ getModVar('ZConfig', 'sitename') }}</title>
+  <title>{{ getSystemVar('sitename') }}</title>
   <url>{{ zasset(@VendorBundleName:images/logo.png) }}</url>
   <link>{{ pagevars.homepath }}</link>
 </image>
 #}
-<managingEditor>{% trans %}Administrator{% endtrans %} {{ getModVar('ZConfig', 'adminmail') }} ({{ getModVar('ZConfig', 'sitename') }})</managingEditor>
-<webMaster>{% trans %}Administrator{% endtrans %} {{ getModVar('ZConfig', 'adminmail') }} ({{ getModVar('ZConfig', 'sitename') }})</webMaster>
+<managingEditor>{% trans %}Administrator{% endtrans %} {{ getSystemVar('adminmail') }} ({{ getSystemVar('sitename') }})</managingEditor>
+<webMaster>{% trans %}Administrator{% endtrans %} {{ getSystemVar('adminmail') }} ({{ getSystemVar('sitename') }})</webMaster>
 {{ maincontent|raw }}
 </channel>
 </rss>
