@@ -205,7 +205,7 @@
   - components/bootstrap updated from 3.4.1 to 4.4.1
   - components/font-awesome updated from 4.7.0 to 5.12.1
   - composer/ca-bundle updated from 1.2.4 to 1.2.6
-  - composer/composer installed in 1.9.1 (temporarily using dev-master b9d0015)
+  - composer/composer installed in 1.10.0-RC
   - composer/installers updated from 1.7.0 to 1.8.0
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.3
@@ -252,7 +252,7 @@
   - psr/event-dispatcher installed in 1.0.0
   - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
   - seld/jsonlint installed in 1.7.2
-  - seld/phar-utils installed in 1.0.2
+  - seld/phar-utils installed in 1.1.0
   - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.3
   - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
   - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
@@ -284,7 +284,7 @@
   - twig/string-extra installed in 3.0.3
   - twig/twig updated from 1.42.4 to 3.0.3
   - vakata/jstree updated from 3.3.8 to 3.3.9
-  - webmozart/assert updated from 1.5.0 to 1.6.0
+  - webmozart/assert updated from 1.5.0 to 1.7.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0
   - zikula/legal-module updated from 3.1.2 to dev-master
   - zikula/oauth-module updated from 1.0.4 to dev-master
