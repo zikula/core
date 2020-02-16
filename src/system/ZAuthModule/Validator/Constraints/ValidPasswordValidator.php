@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -42,7 +43,10 @@ class ValidPasswordValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!$value) {
+        if (!$constraint instanceof ValidPassword) {
+            throw new UnexpectedTypeException($constraint, ValidPassword::class);
+        }
+        if (null === $value || '' === $value) {
             // user created without password
             // needs to set one during verification
             return;

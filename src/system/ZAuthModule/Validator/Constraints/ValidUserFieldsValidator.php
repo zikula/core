@@ -15,6 +15,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository;
@@ -51,6 +52,9 @@ class ValidUserFieldsValidator extends ConstraintValidator
 
     public function validate($authenticationMappingEntity, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidUserFields) {
+            throw new UnexpectedTypeException($constraint, ValidUserFields::class);
+        }
         $userName = $authenticationMappingEntity->getUname();
         $emailAddress = $authenticationMappingEntity->getEmail();
 

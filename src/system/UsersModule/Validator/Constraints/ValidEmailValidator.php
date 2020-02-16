@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -51,6 +52,9 @@ class ValidEmailValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidEmail) {
+            throw new UnexpectedTypeException($constraint, ValidEmail::class);
+        }
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
             new Email()

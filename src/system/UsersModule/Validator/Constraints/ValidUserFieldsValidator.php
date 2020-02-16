@@ -15,6 +15,7 @@ namespace Zikula\UsersModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -41,6 +42,9 @@ class ValidUserFieldsValidator extends ConstraintValidator
 
     public function validate($data, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidUserFields) {
+            throw new UnexpectedTypeException($constraint, ValidUserFields::class);
+        }
         // ensure unique uname
         $qb = $this->userRepository->createQueryBuilder('u');
         $qb->select('count(u.uid)')

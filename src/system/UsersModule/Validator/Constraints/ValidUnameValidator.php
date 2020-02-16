@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -76,6 +77,9 @@ class ValidUnameValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidUname) {
+            throw new UnexpectedTypeException($constraint, ValidUname::class);
+        }
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
             new NotBlank(),

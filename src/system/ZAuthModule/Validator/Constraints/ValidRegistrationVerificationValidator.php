@@ -15,6 +15,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
@@ -57,6 +58,9 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
 
     public function validate($data, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidRegistrationVerification) {
+            throw new UnexpectedTypeException($constraint, ValidRegistrationVerification::class);
+        }
         $userEntity = $this->userRepository->findOneBy(['uname' => $data['uname']]);
         if (!$userEntity) {
             $this->context->buildViolation($this->translator->trans('Invalid username.'))

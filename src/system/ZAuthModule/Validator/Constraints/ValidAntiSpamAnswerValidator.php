@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -48,6 +49,9 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof ValidAntiSpamAnswer) {
+            throw new UnexpectedTypeException($constraint, ValidAntiSpamAnswer::class);
+        }
         $correctAnswer = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
