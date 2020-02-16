@@ -52,7 +52,7 @@ abstract class AbstractConfigController extends AbstractController
                 $appSettings = $form->getData();
                 $appSettings->save();
         
-                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
                 $userName = $currentUserApi->get('uname');
                 $logger->notice(
                     '{app}: User {user} updated the configuration.',
