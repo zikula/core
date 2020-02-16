@@ -63,6 +63,7 @@ class MenuBuilder
         if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             $menu->addChild('Themes', ['route' => 'zikulathememodule_config_config']);
         }
+        $menu->addChild('Log out', ['route' => 'zikulausersmodule_access_logout'])->setAttribute('icon', 'fas fa-sign-out-alt');
 
         return $menu;
     }
