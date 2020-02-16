@@ -219,7 +219,7 @@
   - doctrine/inflector updated from 1.1.0 to 1.3.1
   - doctrine/instantiator updated from 1.0.5 to 1.3.0
   - doctrine/lexer updated from 1.0.2 to 1.2.0
-  - doctrine/orm updated from 2.5.14 to 2.7.0
+  - doctrine/orm updated from 2.5.14 to 2.7.1
   - doctrine/persistence installed in 1.3.6
   - doctrine/reflection installed in 1.1.0
   - egulias/email-validator installed in 2.1.17
@@ -243,6 +243,7 @@
   - monolog/monolog updated from 1.25.2 to 2.0.2
   - nikic/php-parser updated from 1.4.1 to 4.3.0
   - nyholm/nsa installed in 1.1.0
+  - ocramius/package-versions installed in 1.4.2
   - oro/twig-inspector installed in 1.0.2
   - paragonie/random_compat updated from 2.0.18 to 9.99.99
   - php-translation/common installed in 3.0.1
