@@ -93,7 +93,7 @@ class UserEntity extends EntityAccess
      * or that the function and its relationship to time zone settings is completely understood.
      *
      * @ORM\Column(type="utcdatetime", name="approved_date")
-     * @Assert\DateTime()
+     * @Assert\Type("\DateTimeInterface")
      * @var DateTime
      */
     private $approvedDate;
@@ -122,7 +122,7 @@ class UserEntity extends EntityAccess
      * See WARNING under approvedDate above.
      *
      * @ORM\Column(type="utcdatetime", name="user_regdate")
-     * @Assert\DateTime()
+     * @Assert\Type("\DateTimeInterface")
      * @var DateTime
      */
     private $registrationDate;
@@ -133,7 +133,7 @@ class UserEntity extends EntityAccess
      * See WARNING under approvedDate above.
      *
      * @ORM\Column(type="utcdatetime", name="lastlogin")
-     * @Assert\DateTime()
+     * @Assert\Type("\DateTimeInterface")
      * @var DateTime
      */
     private $lastLogin;
@@ -189,10 +189,11 @@ class UserEntity extends EntityAccess
         $this->uname = '';
         $this->email = '';
         $this->activated = 0;
-        $this->approvedDate = new DateTime('1970-01-01 00:00:00');
+        $utcTZ = new \DateTimeZone('UTC');
+        $this->approvedDate = new DateTime('1970-01-01 00:00:00', $utcTZ);
         $this->approvedBy = 0;
-        $this->registrationDate = new DateTime('1970-01-01 00:00:00');
-        $this->lastLogin = new DateTime('1970-01-01 00:00:00');
+        $this->registrationDate = new DateTime('1970-01-01 00:00:00', $utcTZ);
+        $this->lastLogin = new DateTime('1970-01-01 00:00:00', $utcTZ);
         $this->tz = '';
         $this->locale = '';
 
