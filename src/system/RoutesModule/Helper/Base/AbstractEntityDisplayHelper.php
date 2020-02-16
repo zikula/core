@@ -59,10 +59,13 @@ abstract class AbstractEntityDisplayHelper
      */
     protected function formatRoute(RouteEntity $entity): string
     {
-        return $this->translator->trans('%path% (%sort%)', [
-            '%path%' => $entity->getPath(),
-            '%sort%' => $entity->getSort()
-        ]);
+        return $this->translator->trans(
+            '%path% (%sort%)',
+            [
+                '%path%' => $entity->getPath(),
+                '%sort%' => $entity->getSort()
+            ]
+        );
     }
     
     /**

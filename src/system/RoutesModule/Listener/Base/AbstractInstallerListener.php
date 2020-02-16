@@ -34,11 +34,11 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
             ExtensionEvents::EXTENSION_REMOVE      => ['extensionRemoved', 5]
         ];
     }
-
+    
     /**
      * Listener for the `extension.install` event.
      *
-     * Called after a extension has been successfully installed.
+     * Called after an extension has been successfully installed.
      * The event allows accessing the extension bundle and the extension
      * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
@@ -51,11 +51,11 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     public function extensionInstalled(ExtensionStateEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `extension.postinstall` event.
      *
-     * Called after a extension has been installed (on reload of the extensions view).
+     * Called after an extension has been installed (on reload of the extensions view).
      * The event allows accessing the extension bundle and the extension
      * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
@@ -68,11 +68,11 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     public function extensionPostInstalled(ExtensionStateEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `extension.upgrade` event.
      *
-     * Called after a extension has been successfully upgraded.
+     * Called after an extension has been successfully upgraded.
      * The event allows accessing the extension bundle and the extension
      * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
@@ -85,11 +85,11 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     public function extensionUpgraded(ExtensionStateEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `extension.enable` event.
      *
-     * Called after a extension has been successfully enabled.
+     * Called after an extension has been successfully enabled.
      * The event allows accessing the extension bundle and the extension
      * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
@@ -102,12 +102,12 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     public function extensionEnabled(ExtensionStateEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `extension.disable` event.
      *
-     * Called after a extension has been successfully disabled.
-     * The event allows accessing the extension bundle and the extension
+     * Called after an extension has been successfully disabled.
+     * The event allows accessing the module bundle and the extension
      * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.
@@ -119,12 +119,12 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     public function extensionDisabled(ExtensionStateEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `extension.remove` event.
      *
-     * Called after a extension has been successfully removed.
-     * The event allows accessing the extension bundle and the extension
+     * Called after an extension has been successfully removed.
+     * The event allows accessing the module bundle and the extension
      * information array using `$event->getExtension()` and `$event->getInfo()`.
      *
      * You can access general data available in the event.

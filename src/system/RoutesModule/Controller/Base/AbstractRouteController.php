@@ -160,7 +160,9 @@ abstract class AbstractRouteController extends AbstractController
             $route = $entityFactory->getRepository('route')->selectById($id);
         }
         if (null === $route) {
-            throw new NotFoundHttpException($this->trans('No such route found.'));
+            throw new NotFoundHttpException(
+                'No such route found.'
+            );
         }
         
         $objectType = 'route';
@@ -305,7 +307,10 @@ abstract class AbstractRouteController extends AbstractController
             }
         
             if ('delete' === $action) {
-                $this->addFlash('status', 'Done! Item deleted.');
+                $this->addFlash(
+                    'status',
+                    'Done! Route deleted.'
+                );
                 $logger->notice(
                     '{app}: User {user} deleted the {entity} with id {id}.',
                     [
@@ -316,7 +321,10 @@ abstract class AbstractRouteController extends AbstractController
                     ]
                 );
             } else {
-                $this->addFlash('status', 'Done! Item updated.');
+                $this->addFlash(
+                    'status',
+                    'Done! Route updated.'
+                );
                 $logger->notice(
                     '{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.',
                     [

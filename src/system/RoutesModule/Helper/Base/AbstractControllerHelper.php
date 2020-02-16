@@ -18,6 +18,7 @@ use Exception;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -162,6 +163,18 @@ abstract class AbstractControllerHelper
             $contextArgs
         );
     
+        $urlParameters = $templateParameters;
+        foreach ($urlParameters as $parameterName => $parameterValue) {
+            if (
+                false === stripos($parameterName, 'thumbRuntimeOptions')
+                && false === stripos($parameterName, 'featureActivationHelper')
+                && false === stripos($parameterName, 'permissionHelper')
+            ) {
+                continue;
+            }
+            unset($urlParameters[$parameterName]);
+        }
+    
         $quickNavFormType = 'Zikula\RoutesModule\Form\Type\QuickNavigation\\'
             . ucfirst($objectType) . 'QuickNavType'
         ;
@@ -175,6 +188,7 @@ abstract class AbstractControllerHelper
                 }
                 if (in_array($fieldName, ['all', 'own', 'num'], true)) {
                     $templateParameters[$fieldName] = $fieldValue;
+                    $urlParameters[$fieldName] = $fieldValue;
                 } elseif ('sort' === $fieldName && !empty($fieldValue)) {
                     $sort = $fieldValue;
                 } elseif ('sortdir' === $fieldName && !empty($fieldValue)) {
@@ -184,25 +198,18 @@ abstract class AbstractControllerHelper
                     && false === stripos($fieldName, 'featureActivationHelper')
                     && false === stripos($fieldName, 'permissionHelper')
                 ) {
-                    // set filter as query argument, fetched inside repository
+                    // set filter as query argument, fetched inside CollectionFilterHelper
                     $request->query->set($fieldName, $fieldValue);
+                    if ($fieldValue instanceof EntityAccess) {
+                        $fieldValue = $fieldValue->getKey();
+                    }
+                    $urlParameters[$fieldName] = $fieldValue;
                 }
             }
         }
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
         $resultsPerPage = $templateParameters['num'];
         $request->query->set('own', $templateParameters['own']);
-    
-        $urlParameters = $templateParameters;
-        foreach ($urlParameters as $parameterName => $parameterValue) {
-            if (
-                false === stripos($parameterName, 'thumbRuntimeOptions')
-                && false === stripos($parameterName, 'featureActivationHelper')
-            ) {
-                continue;
-            }
-            unset($urlParameters[$parameterName]);
-        }
     
         $sortableColumns->setAdditionalUrlParameters($urlParameters);
     

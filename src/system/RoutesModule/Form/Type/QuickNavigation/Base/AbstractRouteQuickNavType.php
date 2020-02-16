@@ -154,7 +154,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                 'attr' => [
                     'class' => 'form-control-sm'
                 ],
-                'choices' =>             [
+                'choices' => [
                     'Bundle' => 'bundle',
                     'Controller' => 'controller',
                     'Action' => 'action',
