@@ -83,17 +83,17 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
                 ->addViolation();
         } else {
             $validPassword = false;
-            // old way - remove in Core-4.0.0
             if ($this->passwordApi->passwordsMatch($object['password'], $user['pass'])) {
+                // old way - remove in Core-4.0.0
                 $validPassword = true;
                 // convert old encoding to new
-                $this->setPassword($user['uid'], $object['password']);
-            }
-            // new way
-            if ($passwordEncoder->isPasswordValid($user['pass'], $object['password'], NULL)) {
+                $this->setPassword((int) $user['uid'], $object['password']);
+            } elseif (
+                // new way
+                $passwordEncoder->isPasswordValid($user['pass'], $object['password'], NULL)) {
                 $validPassword = true;
                 if ($passwordEncoder->needsRehash($user['pass'])) { // check to update hash to newer algo
-                    $this->setPassword($user['uid'], $object['password']);
+                    $this->setPassword((int) $user['uid'], $object['password']);
                 }
             }
             if (!$validPassword) {

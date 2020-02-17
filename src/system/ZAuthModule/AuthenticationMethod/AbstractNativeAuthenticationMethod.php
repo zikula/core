@@ -103,20 +103,16 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
         $passwordEncoder = $this->encoderFactory->getEncoder($mapping);
 
-        // old way - remove in Core-4.0.0
         if ($mapping && $this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
+            // old way - remove in Core-4.0.0
             // convert old encoding to new
-            $mapping->setPass($passwordEncoder->encodePassword($data['pass'], null));
-            $this->mappingRepository->persistAndFlush($mapping);
+            $this->updatePassword($mapping, $data['pass']);
 
             return $mapping->getUid();
-        }
-
-        // new way
-        if ($mapping && $passwordEncoder->isPasswordValid($mapping->getPass(), $data['pass'], null)) {
+        } elseif ($mapping && $passwordEncoder->isPasswordValid($mapping->getPass(), $data['pass'], null)) {
+            // new way
             if ($passwordEncoder->needsRehash($mapping->getPass())) { // check to update hash to newer algo
-                $mapping->setPass($passwordEncoder->encodePassword($data['pass'], null));
-                $this->mappingRepository->persistAndFlush($mapping);
+                $this->updatePassword($mapping, $data['pass']);
             }
 
             return $mapping->getUid();
@@ -128,6 +124,12 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
 
         return null;
+    }
+
+    private function updatePassword(AuthenticationMappingEntity $mapping, string $unHashedPassword)
+    {
+        $mapping->setPass($this->encoderFactory->getEncoder($mapping)->encodePassword($unHashedPassword, null));
+        $this->mappingRepository->persistAndFlush($mapping);
     }
 
     /**
