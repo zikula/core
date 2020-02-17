@@ -248,7 +248,7 @@
   - paragonie/random_compat updated from 2.0.18 to 9.99.99
   - php-translation/common installed in 3.0.1
   - php-translation/extractor installed in 2.0.1
-  - php-translation/symfony-bundle installed in 0.11.3
+  - php-translation/symfony-bundle installed in 0.11.3 (temporarily using dev-master)
   - php-translation/symfony-storage installed in 2.1.0 (temporarily using dev-master)
   - psr/event-dispatcher installed in 1.0.0
   - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
@@ -286,7 +286,7 @@
   - twig/twig updated from 1.42.4 to 3.0.3
   - vakata/jstree updated from 3.3.8 to 3.3.9
   - webmozart/assert updated from 1.5.0 to 1.7.0
-  - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0
+  - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.1
   - zikula/legal-module updated from 3.1.2 to dev-master
   - zikula/oauth-module updated from 1.0.4 to dev-master
   - zikula/pagelock-module updated from 1.2.3 to dev-master

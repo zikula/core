@@ -66,6 +66,7 @@ zikulaextensionsmodule_extension_install: '/install/{id}/{token}'
 zikulaextensionsmodule_extension_postinstall: '/postinstall/{extensions}'
 zikulaextensionsmodule_extension_upgrade: '/upgrade/{id}/{token}'
 zikulaextensionsmodule_extension_uninstall: '/uninstall/{id}/{token}'
+zikulaextensionsmodule_extension_preview: '/theme-preview/{themeName}'
 zikulaextensionsmodule_extensionsinterface_header: /extensionsinterface/header
 zikulaextensionsmodule_extensionsinterface_footer: /extensionsinterface/footer
 zikulaextensionsmodule_extensionsinterface_help: /extensionsinterface/help

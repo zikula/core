@@ -73,6 +73,7 @@ You should remove all translation calls from the following elements:
   - Single help messages
   - Input group addons
   - Alert messages
+  - Title attributes
 - Flash messages (`$this->addFlash()` as well as `getFlashBag()->add()`); except when substitution parameters are used.
 - Knp menu entries:
   - Labels (`$menu->addChild('foo')` as well as `$menu['foo']->setLabel('bar')`)

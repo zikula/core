@@ -1003,7 +1003,6 @@ URL: null
 'Error! Not allowed to upgrade %extension%.': null
 'Error! No permission to uninstall %extension%.': null
 'Error! %extension% is not yet installed, therefore it cannot be uninstalled.': null
-'%extension% must implement ExtensionInstallerInterface': null
 'Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.': null
 'Error found in composer file of %component% (%filePath%) in property "%property%": %error%.': null
 'Error! Activation of %name% not allowed.': null
@@ -1023,6 +1022,7 @@ URL: null
 'Error: Could not uninstall dependent extensions.': null
 'Done! Uninstalled extension.': null
 'Extension removal failed! (note: blocks and dependents may have been removed)': null
+'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.': null
 'Files missing': null
 'New version': null
 'Invalid structure': null
@@ -1038,6 +1038,7 @@ Incompatible: null
 'Core compatibility information': null
 'Edit extension': null
 'Edit theme vars': null
+'Preview theme': null
 Services: null
 'List views': null
 Moderation: null
@@ -1106,6 +1107,13 @@ Condition: null
 'Host:': null
 'Condition:': null
 'Description:': null
+'Enter the bundle of the route': null
+'Enter the controller of the route': null
+'Enter the action of the route': null
+'Enter the path of the route': null
+'Enter the host of the route': null
+'Enter the condition of the route': null
+'Enter the description of the route': null
 'The amount of routes shown per page': null
 'Whether only own entries should be shown on view pages by default or not': null
 'Whether to allow moderators choosing a user which will be set as creator.': null
@@ -1115,6 +1123,10 @@ Condition: null
 'Allow moderation specific creator for route:': null
 'Allow moderation specific creation date for route:': null
 'Update configuration': null
+'Enter the route entries per page. Only digits are allowed.': null
+'The show only own entries option': null
+'The allow moderation specific creator for route option': null
+'The allow moderation specific creation date for route option': null
 'Enter one entry per line.': null
 'Schemes:': null
 'Methods:': null
@@ -1126,6 +1138,22 @@ Condition: null
 'Options:': null
 'Sort:': null
 'Submit and repeat': null
+'Enter the bundle of the route.': null
+'Enter the controller of the route.': null
+'Enter the action of the route.': null
+'Enter the path of the route.': null
+'Enter the host of the route.': null
+'Choose the schemes.': null
+'Choose the methods.': null
+'prepend bundle prefix ?': null
+'translatable ?': null
+'Enter the translation prefix of the route.': null
+'Enter the defaults of the route.': null
+'Enter the requirements of the route.': null
+'Enter the options of the route.': null
+'Enter the condition of the route.': null
+'Enter the description of the route.': null
+'Enter the sort of the route. Only digits are allowed.': null
 Sort: null
 'Creation date': null
 Creator: null
@@ -1176,7 +1204,6 @@ DELETE: null
 OPTIONS: null
 '%path% (%sort%)': null
 'Error: Could not delete "%path%" because %message%.': null
-'No such route found.': null
 'Sorry, but an error occured during the %action% action.': null
 'Error: invalid input.': null
 'The setting has been successfully changed.': null
@@ -1255,14 +1282,10 @@ Always: null
 'Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.': null
 milliseconds: null
 'Possible tags: %pagetitle%, %sitename%, %modulename%': null
-'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>': null
-'Separate with & for example: <code>foo=2&bar=5</code>': null
 'Page title structure': null
 'Admin''s e-mail address': null
 'Disable site': null
 'Reason for disabling site': null
-'Start controller': null
-'Start function arguments': null
 'Activate compression': null
 'Module used for managing user profiles': null
 'Module used for private messaging': null
@@ -1283,7 +1306,6 @@ Localisation: null
 'Enable edit in place': null
 'Edit translations directly in the context of a page': null
 'Web interface to add, edit and remove translations': null
-'The startController was reset to a static frontpage.': null
 Administrator: null
 'Permission settings': null
 'This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.': null
@@ -1400,6 +1422,10 @@ Radio: null
 'Field options': null
 javascript: null
 Select: null
+'Separate with &, for example: <code>foo=2&bar=5</code>': null
+'GET parameters': null
+'POST parameters': null
+'Request attributes': null
 'Help text': null
 'Regex validation string constraint': null
 'Any 3 letter ISO 4217 code. Default: EUR': null
@@ -1437,13 +1463,20 @@ model_timezone: null
 'Zikula documentation': null
 'Support @ Slack': null
 'File system permissions': null
+'Zikula Application Framework': null
+'Installer script': null
+'Select language': null
+'Check requirements': null
+'Database information': null
+'Create administrator''s account': null
+'installation guide': null
+'Please refer to the %doc_link% during the process.': null
 'Zikula is upgrading!': null
 'Begin Upgrader': null
 'be patient!': null
 'Upgrading Modules and Helpers': null
 Finish: null
 'Zikula is not upgraded!': null
-'Zikula Application Framework': null
 'Zikula Core requires upgrade!': null
 'upgrade instructions': null
 'online documentation': null
@@ -1453,14 +1486,10 @@ Finish: null
 'To version': null
 'Zikula is free software released under the GPL license!': null
 'For more information, please visit %link%.': null
-'Upgrader script': null
-'upgrade guide': null
-'Please refer to the %doc_link% during the process.': null
 'Migrating Users...': null
 'This will migrate all VALID users from the old Users table to the new ZAuth table.': null
 'Begin migration': null
 'Zikula Core Installer': null
-'Database information': null
 'Ensure the database is in UTF-8 format.': null
 'Checking database connection...': null
 Next: null
@@ -1476,7 +1505,6 @@ Next: null
 'installation instructions': null
 'You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.': null
 'Install Zikula!': null
-'Create administrator''s account': null
 'Zikula is already installed!': null
 'Zikula Core is already installed!': null
 "Zikula Core is already installed so the installer has been disabled. If you need to run the installer\n                    a second time, you must reset config.php to its original state and clear the database tables before\n                    running the installer again.": null
@@ -1485,10 +1513,8 @@ Next: null
 'Zikula is installing!': null
 'Begin Installer': null
 'Installing Modules and Helpers': null
-'Installer script': null
-'Select language': null
-'Check requirements': null
-'installation guide': null
+'Upgrader script': null
+'upgrade guide': null
 'You have got a problem! Your PHP version is %actual%, which does not satisfy the Zikula system requirement of version %required% or later.': null
 'date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.': null
 'You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula''s output system.': null
@@ -1672,7 +1698,6 @@ https: null
 'Could not set %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': null
 'Main menu': null
 'Attempt to copy files from `userdata` to `public/uploads` failed. You must manually copy the contents.': null
-'The file you requested (%name%) could not be found.': null
 'Attached areas': null
 Detach: null
 'There aren''t any areas attached here.': null
@@ -1696,3 +1721,11 @@ Provision: null
 'Module "%name%" is not a valid provider.': null
 'Provider module "%name%" is not available.': null
 'Providers'' areas order is not an array.': null
+'%extension% must implement ExtensionInstallerInterface': null
+'No such route found.': null
+'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>': null
+'Separate with & for example: <code>foo=2&bar=5</code>': null
+'Start controller': null
+'Start function arguments': null
+'The startController was reset to a static frontpage.': null
+'The file you requested (%name%) could not be found.': null

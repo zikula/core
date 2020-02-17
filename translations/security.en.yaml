@@ -34,7 +34,7 @@ Warning: null
 'Session settings': null
 'Intrusion Detection System': null
 'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.': null
-'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.': null
+'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage" target="_blank">PHPIDS homepage</a>.': null
 'Output filter settings': null
 'View IDS log': null
 'Download the entire log to a CSV file': null
@@ -126,3 +126,4 @@ Export: null
 'PHPIDS is a feature of the Security center module that enhances the security of a site, and the Security analyser has detected that it is not enabled. You are recommended to ensure that it is enabled. You will also see this message if the Security center module is not installed or is not activated. For more information about this, please consult the Security center on-line help.': null
 'PHPIDS is activated, but requests are NOT blocked.': null
 'PHPIDS is enabled and you have set the Block action to ''Warn only''. Thus requests are not blocked. This is useful only for debugging the PHPIDS ruleset in order to verify correct operation.': null
+'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.': null

@@ -4044,16 +4044,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.11.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "461a05a485dbaf33b3c5ea2e862955630ef6c219"
+                "reference": "50e54c56025ec57a9c1dc256e85637cbf6c11691"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/461a05a485dbaf33b3c5ea2e862955630ef6c219",
-                "reference": "461a05a485dbaf33b3c5ea2e862955630ef6c219",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/50e54c56025ec57a9c1dc256e85637cbf6c11691",
+                "reference": "50e54c56025ec57a9c1dc256e85637cbf6c11691",
                 "shasum": ""
             },
             "require": {
@@ -4116,7 +4116,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "time": "2020-01-20T10:58:22+00:00"
+            "time": "2020-02-17T08:55:16+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -6674,16 +6674,16 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "159397515e67dd071a530cf8e238434808e6f1f7"
+                "reference": "a64af02e1b2193ba77dfbb08a5df14d2c7d3bae4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/159397515e67dd071a530cf8e238434808e6f1f7",
-                "reference": "159397515e67dd071a530cf8e238434808e6f1f7",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/a64af02e1b2193ba77dfbb08a5df14d2c7d3bae4",
+                "reference": "a64af02e1b2193ba77dfbb08a5df14d2c7d3bae4",
                 "shasum": ""
             },
             "require": {
@@ -6733,7 +6733,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2020-01-14T17:02:24+00:00"
+            "time": "2020-02-17T14:41:11+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -6847,12 +6847,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "0a417c53bf0ad047b96151dd4fd58ecb3c485641"
+                "reference": "72c4a175ec9415b21961500ecfeb99d9e115ede5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/0a417c53bf0ad047b96151dd4fd58ecb3c485641",
-                "reference": "0a417c53bf0ad047b96151dd4fd58ecb3c485641",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/72c4a175ec9415b21961500ecfeb99d9e115ede5",
+                "reference": "72c4a175ec9415b21961500ecfeb99d9e115ede5",
                 "shasum": ""
             },
             "require": {
@@ -6898,7 +6898,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-02-15T12:33:52+00:00"
+            "time": "2020-02-17T14:57:38+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -7190,6 +7190,7 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
+        "php-translation/symfony-bundle": 20,
         "php-translation/symfony-storage": 20,
         "matthiasnoback/symfony-console-form": 20,
         "zikula/wizard": 20,
