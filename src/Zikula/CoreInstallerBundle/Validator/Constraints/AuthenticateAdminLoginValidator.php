@@ -15,12 +15,13 @@ namespace Zikula\Bundle\CoreInstallerBundle\Validator\Constraints;
 
 use Doctrine\DBAL\Connection;
 use Exception;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 class AuthenticateAdminLoginValidator extends ConstraintValidator
 {
@@ -37,20 +38,20 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
     private $databaseConnection;
 
     /**
-     * @var PasswordApiInterface
+     * @var EncoderFactoryInterface
      */
-    private $passwordApi;
+    private $encoderFactory;
 
     public function __construct(
         PermissionApiInterface $permissionApi,
         Connection $connection,
         TranslatorInterface $translator,
-        PasswordApiInterface $passwordApi
+        EncoderFactoryInterface $encoderFactory
     ) {
         $this->permissionApi = $permissionApi;
         $this->databaseConnection = $connection;
         $this->setTranslator($translator);
-        $this->passwordApi = $passwordApi;
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function validate($object, Constraint $constraint)
@@ -67,7 +68,8 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
             ;
         }
 
-        if (empty($user) || $user['uid'] <= 1 || !$this->passwordApi->passwordsMatch($object['password'], $user['pass'])) {
+        $passwordEncoder = $this->encoderFactory->getEncoder(AuthenticationMappingEntity::class);
+        if (empty($user) || $user['uid'] <= 1 || !$passwordEncoder->isPasswordValid($user['pass'], $object['password'], null)) {
             $this->context
                 ->buildViolation($this->trans('Error! Could not login with provided credentials. Please try again.'))
                 ->addViolation()

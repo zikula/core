@@ -15,6 +15,7 @@ namespace Zikula\ZAuthModule\AuthenticationMethod;
 
 use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -57,13 +58,19 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      */
     private $passwordApi;
 
+    /**
+     * @var EncoderFactoryInterface
+     */
+    private $encoderFactory;
+
     public function __construct(
         AuthenticationMappingRepositoryInterface $mappingRepository,
         RequestStack $requestStack,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         ValidatorInterface $validator,
-        PasswordApiInterface $passwordApi
+        PasswordApiInterface $passwordApi,
+        EncoderFactoryInterface $encoderFactory
     ) {
         $this->mappingRepository = $mappingRepository;
         $this->requestStack = $requestStack;
@@ -71,6 +78,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $this->variableApi = $variableApi;
         $this->validator = $validator;
         $this->passwordApi = $passwordApi;
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function getRegistrationFormClassName(): string
@@ -93,9 +101,24 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         if (!$mapping->getPass()) {
             return null;
         }
+        $passwordEncoder = $this->encoderFactory->getEncoder($mapping);
 
+        // old way - remove in Core-4.0.0
         if ($mapping && $this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
-            // is this the place to update the hash method? #2842
+            // convert old encoding to new
+            $mapping->setPass($passwordEncoder->encodePassword($data['pass'], null));
+            $this->mappingRepository->persistAndFlush($mapping);
+
+            return $mapping->getUid();
+        }
+
+        // new way
+        if ($mapping && $passwordEncoder->isPasswordValid($data['pass'])) {
+            if ($passwordEncoder->needsRehash($mapping->getPass())) { // check to update hash to newer algo
+                $mapping->setPass($passwordEncoder->encodePassword($data['pass'], null));
+                $this->mappingRepository->persistAndFlush($mapping);
+            }
+
             return $mapping->getUid();
         }
 
@@ -152,7 +175,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         if (empty($data['pass'])) {
             $mapping->setPass('');
         } else {
-            $mapping->setPass($this->passwordApi->getHashedPassword($data['pass']));
+            $mapping->setPass($this->encoderFactory->getEncoder($mapping)->encodePassword($data['pass'], null));
         }
 
         $mapping->setMethod($this->getAlias());

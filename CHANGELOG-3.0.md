@@ -76,7 +76,9 @@
     - The corresponding Twig function is similarly renamed.
   - `Zikula\ExtensionsModule\Event\ModuleStateEvent` is renamed to `Zikula\ExtensionsModule\Event\ExtensionStateEvent`.
     - Its methods also renamed: `getModule` -> `getExtension` and `getModInfo` -> `getInfo`.
-  - All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName. 
+  - All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName.
+  - `Zikula\ZAuthModule\Api\PasswordApi` & `Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface` are deprecated and will be removed in Core-4.0.0
+    - Use `Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface` or `bin2hex(random_bytes(8))`
   - Dropped vendors:
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)
@@ -198,6 +200,7 @@
   - Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
   - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
   - Start page can now be configured for each available language (#3955).
+  - Passwords in the ZAuth module are now always hashed with the the most up-to-date algorithm available (via Symfony security component) and automatically updated on login (#2842).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

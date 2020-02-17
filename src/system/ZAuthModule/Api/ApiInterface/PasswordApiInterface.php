@@ -15,6 +15,9 @@ namespace Zikula\ZAuthModule\Api\ApiInterface;
 
 use InvalidArgumentException;
 
+/**
+ * @deprecated at Core-3.0.0 to be removed Core-4.0.0
+ */
 interface PasswordApiInterface
 {
     public const SALT_DELIM = '$';

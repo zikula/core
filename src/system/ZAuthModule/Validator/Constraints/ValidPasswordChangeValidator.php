@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Validator\Constraints;
 
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -37,11 +38,21 @@ class ValidPasswordChangeValidator extends ConstraintValidator
      */
     private $passwordApi;
 
-    public function __construct(AuthenticationMappingRepositoryInterface $repository, TranslatorInterface $translator, PasswordApiInterface $passwordApi)
-    {
+    /**
+     * @var EncoderFactoryInterface
+     */
+    private $encoderFactory;
+
+    public function __construct(
+        AuthenticationMappingRepositoryInterface $repository,
+        TranslatorInterface $translator,
+        PasswordApiInterface $passwordApi,
+        EncoderFactoryInterface $encoderFactory
+    ) {
         $this->repository = $repository;
         $this->translator = $translator;
         $this->passwordApi = $passwordApi;
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function validate($data, Constraint $constraint)
@@ -53,7 +64,9 @@ class ValidPasswordChangeValidator extends ConstraintValidator
         if ($userEntity) {
             $currentPass = $userEntity->getPass();
             // is oldpass correct?
-            if (empty($data['oldpass']) || !$this->passwordApi->passwordsMatch($data['oldpass'], $currentPass)) {
+            $validLegacyPassword = $this->passwordApi->passwordsMatch($data['oldpass'], $currentPass); // remove at Core-4.0.0
+            $validPassword = $this->encoderFactory->getEncoder($userEntity)->isPasswordValid($currentPass, $data['oldpass'], null);
+            if (empty($data['oldpass']) || !($validLegacyPassword || $validPassword)) {
                 $this->context->buildViolation($this->translator->trans('Old password is incorrect.', [], 'validators'))
                     ->atPath('oldpass')
                     ->addViolation();

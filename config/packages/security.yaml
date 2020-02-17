@@ -1,6 +1,13 @@
 security:
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        Zikula\ZAuthModule\Entity\AuthenticationMappingEntity:
+            algorithm: auto
+            migrate_from:
+                - md5
+                - sha1
+                - sha256
+        # could enter additional encoders here for OAuth, etc
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER

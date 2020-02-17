@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
@@ -30,7 +31,6 @@ use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\RegistrationEvents;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\VerifyRegistrationType;
@@ -69,7 +69,7 @@ class RegistrationController extends AbstractController
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         UserVerificationRepositoryInterface $userVerificationRepository,
         RegistrationHelper $registrationHelper,
-        PasswordApiInterface $passwordApi,
+        EncoderFactoryInterface $encoderFactory,
         AccessHelper $accessHelper,
         MailHelper $mailHelper,
         string $uname = null,
@@ -118,7 +118,7 @@ class RegistrationController extends AbstractController
             $userEntity = $userRepository->findOneBy(['uname' => $data['uname']]);
             $mapping = $authenticationMappingRepository->getByZikulaId($userEntity->getUid());
             if (isset($data['pass'])) {
-                $mapping->setPass($passwordApi->getHashedPassword($data['pass']));
+                $mapping->setPass($encoderFactory->getEncoder($mapping)->encodePassword($data['pass'], null));
             }
             $mapping->setVerifiedEmail(true);
             $authenticationMappingRepository->persistAndFlush($mapping);

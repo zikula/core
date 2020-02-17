@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Validator\Constraints;
 
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -40,20 +41,20 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
     private $userVerificationRepository;
 
     /**
-     * @var PasswordApiInterface
+     * @var EncoderFactoryInterface
      */
-    private $passwordApi;
+    private $encoderFactory;
 
     public function __construct(
         TranslatorInterface $translator,
         UserRepositoryInterface $userRepository,
         UserVerificationRepositoryInterface $userVerificationRepository,
-        PasswordApiInterface $passwordApi
+        EncoderFactoryInterface $encoderFactory
     ) {
         $this->translator = $translator;
         $this->userRepository = $userRepository;
         $this->userVerificationRepository = $userVerificationRepository;
-        $this->passwordApi = $passwordApi;
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function validate($data, Constraint $constraint)
@@ -73,8 +74,8 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
                 ->atPath('uname')
                 ->addViolation();
         } else {
-            $codesMatch = $this->passwordApi->passwordsMatch($data['verifycode'], $verifyChg['verifycode']);
-            if (!$codesMatch) {
+            $validCode = $this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->isPasswordValid($verifyChg['verifycode'], $data['verifycode'], null);
+            if (!$validCode) {
                 $this->context->buildViolation($this->translator->trans('The code is invalid for this username.', [], 'validators'))
                     ->atPath('verifycode')
                     ->addViolation();

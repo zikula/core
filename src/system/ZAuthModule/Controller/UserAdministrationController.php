@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
@@ -43,7 +44,6 @@ use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\AdminCreatedUserType;
@@ -248,7 +248,7 @@ class UserAdministrationController extends AbstractController
         Request $request,
         AuthenticationMappingEntity $mapping,
         VariableApiInterface $variableApi,
-        PasswordApiInterface $passwordApi,
+        EncoderFactoryInterface $encoderFactory,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         EventDispatcherInterface $eventDispatcher,
@@ -278,7 +278,7 @@ class UserAdministrationController extends AbstractController
                 /** @var AuthenticationMappingEntity $mapping */
                 $mapping = $form->getData();
                 if ($form->get('setpass')->getData()) {
-                    $mapping->setPass($passwordApi->getHashedPassword($mapping->getPass()));
+                    $mapping->setPass($encoderFactory->getEncoder($mapping)->encodePassword($mapping->getPass(), null));
                 } else {
                     $mapping->setPass($originalMapping->getPass());
                 }

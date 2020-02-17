@@ -17,6 +17,12 @@ use InvalidArgumentException;
 use RandomLib\Factory as RandomLibFactory;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 
+/**
+ * Class PasswordApi
+ * @deprecated at Core-3.0.0 to be removed in Core-4.0.0
+ * Use \Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface
+ * Use `bin2hex(random_bytes(8))` for random string generation suitable for passwords
+ */
 class PasswordApi implements PasswordApiInterface
 {
     /**
@@ -76,7 +82,10 @@ class PasswordApi implements PasswordApiInterface
             || false === mb_strpos($hashedPassword, self::SALT_DELIM)
             || 2 !== mb_substr_count($hashedPassword, self::SALT_DELIM)
         ) {
-            throw new InvalidArgumentException();
+            // passwords encoded with the new Symfony encoder (since Core3) will fail here.
+            // returning false here allows it to pass-through to the next password validation check
+            // see \Zikula\ZAuthModule\AuthenticationMethod\AbstractNativeAuthenticationMethod::authenticateByField
+            return false;
         }
 
         return $this->checkSaltedHash($unhashedPassword, $hashedPassword);
@@ -168,7 +177,7 @@ class PasswordApi implements PasswordApiInterface
         $hashMethodCodeToName = array_flip($this->methods);
 
         if (1 === mb_strlen($saltDelimiter) && false !== mb_strpos($saltedHash, $saltDelimiter)) {
-            list($hashMethod, $saltStr, $correctHash) = explode($saltDelimiter, $saltedHash);
+            [$hashMethod, $saltStr, $correctHash] = explode($saltDelimiter, $saltedHash);
 
             if (is_numeric($hashMethod) && ((int)$hashMethod === $hashMethod)) {
                 $hashMethod = (int)$hashMethod;
