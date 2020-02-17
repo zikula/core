@@ -16,9 +16,11 @@ namespace Zikula\RoutesModule\Validator\Constraints\Base;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
+use Zikula\RoutesModule\Validator\Constraints\ListEntry;
 
 /**
  * List entry validator.
@@ -40,6 +42,9 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (!$constraint instanceof ListEntry) {
+            throw new UnexpectedTypeException($constraint, ListEntry::class);
+        }
         if (null === $value) {
             return;
         }
