@@ -113,9 +113,8 @@ class PasswordApiTest extends TestCase
      */
     public function testPasswordsMatchExceptionOnEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
         $hashedPass = $this->api->getHashedPassword('12345678');
-        $this->api->passwordsMatch('', $hashedPass);
+        $this->assertFalse($this->api->passwordsMatch('', $hashedPass));
     }
 
     /**
