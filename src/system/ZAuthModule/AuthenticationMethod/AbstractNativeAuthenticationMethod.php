@@ -113,7 +113,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
 
         // new way
-        if ($mapping && $passwordEncoder->isPasswordValid($data['pass'])) {
+        if ($mapping && $passwordEncoder->isPasswordValid($mapping->getPass(), $data['pass'], null)) {
             if ($passwordEncoder->needsRehash($mapping->getPass())) { // check to update hash to newer algo
                 $mapping->setPass($passwordEncoder->encodePassword($data['pass'], null));
                 $this->mappingRepository->persistAndFlush($mapping);
