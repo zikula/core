@@ -44,15 +44,6 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 5])
                 ]
             ])
-            ->add(ZAuthConstant::MODVAR_HASH_METHOD, ChoiceType::class, [
-                'label' => 'Password hashing method',
-                'help' => 'The default hashing method is \'SHA256\'.', //@todo
-                'choices' => [
-                    'SHA1'  => 'sha1',
-                    'SHA256' => 'sha256',
-                    // add bcrypt #2842
-                ]
-            ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, CheckboxType::class, [
                 'label' => 'Show password strength meter',
                 'label_attr' => ['class' => 'switch-custom'],

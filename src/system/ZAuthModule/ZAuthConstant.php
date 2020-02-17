@@ -36,16 +36,6 @@ class ZAuthConstant
     public const DEFAULT_PASSWORD_STRENGTH_METER_ENABLED = false;
 
     /**
-     * Module variable key for the hash method used for hashing passwords.
-     */
-    public const MODVAR_HASH_METHOD = 'hash_method';
-
-    /**
-     * Default value for the hash method used for hashing passwords.
-     */
-    public const DEFAULT_HASH_METHOD = 'sha256';
-
-    /**
      * Module variable key for the status of requirement for email verification.
      */
     public const MODVAR_EMAIL_VERIFICATION_REQUIRED = 'email_verification_required';
