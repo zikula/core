@@ -74,7 +74,7 @@ class SuperUserHelper
     /**
      * This inserts the admin's user data
      */
-    public function updateAdmin(): bool
+    public function createAdmin(): bool
     {
         $params = $this->parameterHelper->decodeParameters($this->parameterHelper->getYamlHelper()->getParameters());
         /** @var UserEntity $userEntity */

@@ -138,8 +138,8 @@ class StageHelper
                 return $this->coreInstallerExtensionHelper->install('ZikulaRoutesModule');
             case 'menu':
                 return $this->coreInstallerExtensionHelper->install('ZikulaMenuModule');
-            case 'updateadmin':
-                return $this->superUserHelper->updateAdmin();
+            case 'createadmin':
+                return $this->superUserHelper->createAdmin();
             case 'loginadmin':
                 return $this->superUserHelper->loginAdmin();
             case 'activateextensions':
