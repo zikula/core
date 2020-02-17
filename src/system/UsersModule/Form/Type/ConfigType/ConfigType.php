@@ -27,6 +27,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class ConfigType extends AbstractType
@@ -115,7 +116,7 @@ class ConfigType extends AbstractType
                         'message' => 'The value provided does not appear to be a valid list of user names. The list should consist of one or more user names made up of lowercase letters, numbers, underscores, periods, or dashes. Separate each user name with a comma. For example: \'root, administrator, superuser\' (the quotes should not appear in the list). Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).'
                     ])
                 ]
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer())
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, TextareaType::class, [
                 'label' => 'Banned user agents',
                 'required' => false,
@@ -127,7 +128,7 @@ class ConfigType extends AbstractType
                         'message' => 'The contents of this field does not appear to be a valid comma separated list. The list should consist of one or more string values separated by commas. For example: \'first example, 2nd example, tertiary example\' (the quotes should not appear in the list). One optional space following the comma is ignored for readability. Any other spaces (those appearing before the comma, and any additional spaces beyond the single optional space) will be considered to be part of the string value. Commas cannot be part of the string value. Empty values (two commas together, or separated only by a space) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).'
                     ])
                 ]
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer())
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, TextareaType::class, [
                 'label' => 'Banned e-mail address domains',
                 'required' => false,
@@ -145,7 +146,7 @@ class ConfigType extends AbstractType
                         'message' => 'The contents of this field does not appear to be a valid list of e-mail address domains. The list should consist of one or more e-mail address domains (the part after the \'@\'), separated by commas. For example: \'gmail.com, example.org, acme.co.uk\' (the quotes should not appear in the list). Do not include the \'@\' itself. Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).'
                     ])
                 ]
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer())
             /**
              * User Login Settings
              */
