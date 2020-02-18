@@ -45,6 +45,9 @@ class HelpController extends AbstractController
     ): Response
     {
         $page = $request->query->get('page', 'README');
+        if (false !== mb_strpos($page, '..')) {
+            throw new \Exception('Invalid page "' . $page . '".');
+        }
 
         $locale = $request->getLocale();
         $extension = $kernel->getBundle($moduleName);
