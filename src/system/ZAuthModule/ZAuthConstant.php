@@ -41,6 +41,16 @@ class ZAuthConstant
     public const DEFAULT_PASSWORD_STRENGTH_METER_ENABLED = false;
 
     /**
+     * Module variable key for non compromised password
+     */
+    public const MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD = 'non_compromised_password';
+
+    /**
+     * default value for non compromised password
+     */
+    public const DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD = false;
+
+    /**
      * Module variable key for the status of requirement for email verification.
      */
     public const MODVAR_EMAIL_VERIFICATION_REQUIRED = 'email_verification_required';

@@ -47,6 +47,16 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => ZAuthConstant::PASSWORD_MINIMUM_LENGTH])
                 ]
             ])
+            ->add(ZAuthConstant::MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD, CheckboxType::class, [
+                'label' => 'Require non compromised passwords',
+                'help' => 'Applies to ALL passwords (including admins). See %symfonydocs%',
+                'help_translation_parameters' => [
+                    '%symfonydocs%' => '<a target="_blank" href="https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html">Symfony docs</a>'
+                ],
+                'help_html' => true,
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false,
+            ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, CheckboxType::class, [
                 'label' => 'Show password strength meter',
                 'label_attr' => ['class' => 'switch-custom'],
