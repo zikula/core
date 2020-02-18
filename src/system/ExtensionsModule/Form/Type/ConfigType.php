@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,6 +33,15 @@ class ConfigType extends AbstractType
                     new NotBlank(),
                     new GreaterThan(0)
                 ]
+            ])
+            ->add('helpUiMode', ChoiceType::class, [
+                'label' => 'Help UI Mode',
+                'choices' => [
+                    'Modal window' => 'modal',
+                    'Sidebar on right side' => 'sidebar-right',
+                    'Sidebar on left side' => 'sidebar-left'
+                ],
+                'help' => 'How help documents for an extension should be displayed.'
             ])
             ->add('hardreset', CheckboxType::class, [
                 'label' => 'Reset all extensions to default values',

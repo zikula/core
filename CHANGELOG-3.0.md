@@ -198,6 +198,7 @@
   - Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
   - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
   - Start page can now be configured for each available language (#3955).
+  - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
