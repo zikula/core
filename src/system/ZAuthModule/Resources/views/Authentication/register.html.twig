@@ -36,11 +36,6 @@
     <fieldset>
         <legend>{% trans %}Set a password{% endtrans %}</legend>
         {{ form_row(form.pass, {'help': 'The minimum length for user passwords is %sub% characters.'|trans({"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
-        {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
-            <div class="form-group row">
-                <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>
-            </div>
-        {% endif %}
     </fieldset>
 
     {% for additional_template in additional_templates %}
@@ -64,15 +59,21 @@
     </div>
 {{ form_end(form) }}
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
-{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/pwstrength-bootstrap.min.js')) }}
 {% set customScript %}
 <script>
     (function($) {
         $(document).ready(function() {
-            ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
-                username: '{{ form.uname.vars.id }}',
-                minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }}'
-            });
+          $('#{{ form.pass.vars.id }}_first').pwstrength({
+            common: {
+              minChar: {{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }},
+              usernameField: '#{{ form.uname.vars.id }}'
+            },
+            ui: {
+              showVerdictsInsideProgressBar: true,
+              progressExtraCssClasses: "mt-2"
+            }
+          });
         });
     })(jQuery);
 </script>
