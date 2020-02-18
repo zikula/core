@@ -424,7 +424,7 @@ class AccountController extends AbstractController
             'login' => $login,
             'authenticationMethod' => $authenticationMethod
         ], [
-            'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
+            'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

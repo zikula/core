@@ -38,10 +38,13 @@ class ConfigType extends AbstractType
             ->add(ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, IntegerType::class, [
                 'label' => 'Minimum length for user passwords',
                 'required' => false,
-                'help' => 'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than five.',
+                'help' => 'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than %number%.',
+                'help_translation_parameters' => [
+                    '%number%' => ZAuthConstant::PASSWORD_MINIMUM_LENGTH
+                ],
                 'constraints' => [
                     new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 5])
+                    new GreaterThanOrEqual(['value' => ZAuthConstant::PASSWORD_MINIMUM_LENGTH])
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, CheckboxType::class, [

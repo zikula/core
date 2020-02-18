@@ -55,7 +55,7 @@ class ValidPasswordValidator extends ConstraintValidator
         $errors = $this->validator->validate($value, [
             new Type('string'),
             new Length([
-                'min' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
+                'min' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
             ])
         ]);
         if (count($errors) > 0) {

@@ -166,6 +166,7 @@
   - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
   - Fixed creating new ZAuth users as admin without setting a password.
   - Start page controllers now get properly set the `_route` request argument (#3955).
+  - Default minimum length for passwords is now raised to 8. Absolute minimum length is still 5 (#2842).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).

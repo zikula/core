@@ -23,7 +23,12 @@ class ZAuthConstant
     /**
      * Default value for the minimum password length.
      */
-    public const DEFAULT_PASSWORD_MINIMUM_LENGTH = 5;
+    public const DEFAULT_PASSWORD_MINIMUM_LENGTH = 8;
+
+    /**
+     * Actual minimal length for all passwords.
+     */
+    public const PASSWORD_MINIMUM_LENGTH = 5;
 
     /**
      * Module variable key for the flag indicating whether the password strength meter should be enabled or not.
