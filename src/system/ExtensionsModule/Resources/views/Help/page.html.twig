@@ -1,0 +1,39 @@
+{% if raw == 1 %}
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ app.request.locale }}" lang="{{ app.request.locale }}">
+    <head>
+        <title>{{ '%extension% help'|trans({'%extension%': moduleName}) }}</title>
+        <style>
+            body {
+                 background-color: transparent !important;
+                 padding-bottom: 100px !important;{# for developer toolbar #}
+            }
+            a {
+                color: #000 !important;
+            }
+        </style>
+    </head>
+    <body>
+{% else %}
+    {{ pageSetVar('title', '%extension% help'|trans({'%extension%': moduleName})) }}
+{% endif %}
+{% set output %}
+{% apply markdown_to_html %}
+    {{ content }}
+{% endapply %}
+{% endset %}
+{{ output|replace({'<h1>': '<h1><i class="fas fa-question-circle"></i>&nbsp;', '&amp;amp;': '&amp;'})|raw }}
+    {% set customScript %}
+        <script>
+            (function ($) {
+                $(document).ready(function () {
+                    $("a[href^='http']").attr('target', '_blank');
+                });
+            })(jQuery);
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', customScript) }}
+{% if raw == 1 %}
+    </body>
+    </html>
+{% endif %}

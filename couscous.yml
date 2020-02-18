@@ -88,16 +88,16 @@ menu:
             items:
                 groups:
                     text: Groups
-                    relativeUrl: AccessControl/groups.html
+                    relativeUrl: AccessControl/Groups/index.html
                 users:
                     text: Users
-                    relativeUrl: AccessControl/users.html
+                    relativeUrl: AccessControl/Users/index.html
                 authentication:
                     text: Authentication
-                    relativeUrl: AccessControl/authentication.html
+                    relativeUrl: AccessControl/Authentication/index.html
                 permissions:
                     text: Permissions
-                    relativeUrl: AccessControl/permissions.html
+                    relativeUrl: AccessControl/Permissions/index.html
         layout:
             name: Layout & Design
             items:

@@ -1,0 +1,2 @@
+navbar-fixed*.css files are taken from https://github.com/mladenplavsic/bootstrap-navbar-sidebar
+licensed with MIT

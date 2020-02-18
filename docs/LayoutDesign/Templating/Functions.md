@@ -48,7 +48,6 @@ functions, filters, tags, tests and global variables.
 - moduleHeader(type, title, titlelink, set_page_title, insert_flashes, menufirst, image)
 - moduleFooter()
 - moduleBreadcrumbs()
-- moduleHelp(type)
 - moduleLinks(type, links, modname, menuid, menuclass, itemclass, first, last)
 
 ### Users
