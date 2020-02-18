@@ -13,7 +13,8 @@ how his account credentials are managed.
 
 ### Minimum length for user passwords
 
-Default: 5
+Default: 8
+Minimum: 5
 
 Passwords for user accounts set during new account registration or set during
 a password change request must be at least this number of characters long to
