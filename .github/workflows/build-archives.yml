@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout sources
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     # persist composer's internal cache directory to reduce the workflow execution time
     - name: Get Composer cache directory

@@ -35,7 +35,10 @@ Help text can be a simple text value. Input groups must be an array with the pos
 ```php
 ->add('foo', TextType::class, [
     'help' => 'Foo help text.',
-    'input_group' => ['left' => '<i class="fas fa-rocket"></i>', 'right' => 'some text']
+    'input_group' => [
+        'left' => '<i class="fas fa-rocket"></i>',
+        'right' => 'some text'
+    ]
 ])
 ```
 
@@ -60,7 +63,10 @@ Alert texts must be an array with the keys as the text and the value as the type
 
 ```php
 ->add('foo', TextType::class, [
-    'alert' => ['Foo alert text.' => 'warning', 'Bar alert text.' => 'danger']
+    'alert' => [
+        'Foo alert text.' => 'warning',
+        'Bar alert text.' => 'danger'
+    ]
 ])
 ```
 
@@ -68,7 +74,7 @@ When using `@ZikulaFormExtension/Form/form_div_layout.html.twig` you can specify
 
 ```php
 ->add('save', SubmitType::class, [
-    'label' => $options['translator']->__('Save'),
+    'label' => 'Save',
     'icon' => 'fa-check',
     'attr' => ['class' => 'btn btn-success']
 ])

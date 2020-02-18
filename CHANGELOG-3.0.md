@@ -205,6 +205,7 @@
   - Passwords can optionally be validated with Symfony's NonCompromisedPassword validator (see https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html) (#2842).
   - A new password strength meter is implemented. See https://github.com/ablanco/jquery.pwstrength.bootstrap (#2842).
   - Added ability to force a group of users to change their password on next login (#2842).
+  - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

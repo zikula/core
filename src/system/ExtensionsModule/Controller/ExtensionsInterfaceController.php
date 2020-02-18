@@ -65,16 +65,6 @@ class ExtensionsInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/help")
-     *
-     * Display the module help page.
-     */
-    public function helpAction(): Response
-    {
-        return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/help.html.twig');
-    }
-
-    /**
      * @Route("/breadcrumbs", methods = {"GET"})
      *
      * Admin breadcrumbs
