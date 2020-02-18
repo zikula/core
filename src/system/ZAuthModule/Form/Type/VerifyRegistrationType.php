@@ -23,11 +23,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class VerifyRegistrationType extends AbstractType
 {
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    public function __construct(VariableApiInterface $variableApi)
+    {
+        $this->variableApi = $variableApi;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -84,6 +96,7 @@ class VerifyRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'setpass' => true,
+            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
             'constraints' => [
                 new ValidRegistrationVerification()
             ]

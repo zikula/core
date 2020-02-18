@@ -21,11 +21,23 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class ChangePasswordType extends AbstractType
 {
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    public function __construct(VariableApiInterface $variableApi)
+    {
+        $this->variableApi = $variableApi;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -83,7 +95,7 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'minimumPasswordLength' => 5,
+            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
             'constraints' => [
                 new ValidPasswordChange()
             ]

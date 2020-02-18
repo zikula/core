@@ -110,6 +110,7 @@ class RegistrationController extends AbstractController
             'uname' => $uname,
             'verifycode' => $verifycode
         ], [
+            'minimumPasswordLength' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
             'setpass' => $setPass
         ]);
         $form->handleRequest($request);
