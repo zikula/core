@@ -123,7 +123,7 @@ class ExtensionHelpListener implements EventSubscriberInterface
             return;
         }
 
-        $helpUiMode = $this->variableApi->get('ZikulaExtensionsModule', 'helpUiMode', 'sidebar-right');
+        $helpUiMode = $this->variableApi->get('ZikulaExtensionsModule', 'helpUiMode', 'modal');
         if (!in_array($helpUiMode, ['modal', 'sidebar-left', 'sidebar-right'], true)) {
             $helpUiMode = 'sidebar-right';
         }
