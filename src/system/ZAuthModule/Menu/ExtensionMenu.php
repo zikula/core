@@ -107,6 +107,9 @@ class ExtensionMenu implements ExtensionMenuInterface
             $menu->addChild('Settings', [
                 'route' => 'zikulazauthmodule_config_config',
             ])->setAttribute('icon', 'fas fa-wrench');
+            $menu->addChild('Batch password change', [
+                'route' => 'zikulazauthmodule_useradministration_batchforcepasswordchange',
+            ])->setAttribute('icon', 'fas fa-lock');
         }
 
         return 0 === $menu->count() ? null : $menu;

@@ -20,6 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
+use function Doctrine\ORM\QueryBuilder;
 
 class AuthenticationMappingRepository extends ServiceEntityRepository implements AuthenticationMappingRepositoryInterface
 {
@@ -92,6 +93,16 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         }
 
         return $query->getResult();
+    }
+
+    public function getByExpiredPasswords()
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->select('m')
+            ->where('m.pass NOT LIKE :param')
+            ->setParameter('param', '$%');
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

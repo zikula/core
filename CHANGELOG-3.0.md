@@ -204,6 +204,7 @@
   - Passwords in the ZAuth module are now always hashed with the the most up-to-date algorithm available (via Symfony security component) and automatically updated on login (#2842).
   - Passwords can optionally be validated with Symfony's NonCompromisedPassword validator (see https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html) (#2842).
   - A new password strength meter is implemented. See https://github.com/ablanco/jquery.pwstrength.bootstrap (#2842).
+  - Added ability to force a group of users to change their password on next login (#2842).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
