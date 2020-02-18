@@ -42,23 +42,5 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.UserAdmin.js')) }}
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
 {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/pwstrength-bootstrap.min.js')) }}
-{% set customScript %}
-<script>
-    (function($) {
-        $(document).ready(function() {
-          $('#{{ form.pass.vars.id }}_first').pwstrength({
-            common: {
-              minChar: {{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }},
-              usernameField: '#{{ form.uname.vars.id }}'
-            },
-            ui: {
-              showVerdictsInsideProgressBar: true,
-              progressExtraCssClasses: "mt-2"
-            }
-          });
-        });
-    })(jQuery);
-</script>
-{% endset %}
-{{ pageAddAsset('footer', customScript) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PWStrength.Init.js')) }}
 {% endif %}

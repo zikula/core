@@ -40,6 +40,12 @@ class ChangePasswordType extends AbstractType
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'attr' => [
+                        'class' => 'pwstrength',
+                        'data-uname-id' => '',
+                        'minlength' => $options['minimumPasswordLength'],
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                    ],
                     'label' => 'New password',
                     'help' => 'Minimum password length: %amount% characters.',
                     'help_translation_parameters' => [

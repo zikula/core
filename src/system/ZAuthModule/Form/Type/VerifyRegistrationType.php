@@ -56,7 +56,15 @@ class VerifyRegistrationType extends AbstractType
         if ($options['setpass']) {
             $builder->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
+                'first_options' => [
+                    'attr' => [
+                        'class' => 'pwstrength',
+                        'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
+                        'minlength' => $options['minimumPasswordLength'],
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                    ],
+                    'label' => 'Password'
+                ],
                 'second_options' => ['label' => 'Repeat password'],
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [

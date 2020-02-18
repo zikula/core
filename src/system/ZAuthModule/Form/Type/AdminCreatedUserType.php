@@ -82,6 +82,12 @@ class AdminCreatedUserType extends AbstractType
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'attr' => [
+                        'class' => 'pwstrength',
+                        'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
+                        'minlength' => $options['minimumPasswordLength'],
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                    ],
                     'required' => false,
                     'label' => 'Create new password',
                     'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
