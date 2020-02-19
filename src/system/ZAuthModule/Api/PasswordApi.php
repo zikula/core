@@ -54,6 +54,11 @@ class PasswordApi implements PasswordApiInterface
      */
     private $randomStringCharacters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|][';
 
+    /**
+     * @internal
+     * Do not use this method publicly.
+     * It only remains to allow testing of `passwordsMatch()`
+     */
     public function getHashedPassword(
         string $unhashedPassword,
         int $hashMethodCode = self::DEFAULT_HASH_METHOD_CODE
@@ -64,16 +69,12 @@ class PasswordApi implements PasswordApiInterface
         return $this->getSaltedHash($unhashedPassword, $hashAlgorithmName, $this->methods);
     }
 
+    /**
+     * This function no longer is used or useful
+     */
     public function generatePassword(int $length = self::MIN_LENGTH): string
     {
-        if ($length < self::MIN_LENGTH) {
-            $length = self::MIN_LENGTH;
-        }
-        $factory = new RandomLibFactory();
-        $generator = $factory->getMediumStrengthGenerator();
-        $chars = str_replace($this->passwordIncompatibleCharacters, '', $this->randomStringCharacters);
-
-        return $generator->generateString($length, $chars);
+        return '';
     }
 
     public function passwordsMatch(string $unhashedPassword, string $hashedPassword): bool
