@@ -7,7 +7,7 @@
   - The directory structure is dramatically different (reflecting changes from Symfony).
     - The `public/` directory is now the *web root*. Set your server/htaccess/etc accordingly.
     - `public/index.php` is the entry point to the site.
-    - See https://symfony.com/doc/current/setup/web_server_configuration.html for more information.
+    - See <https://symfony.com/doc/current/setup/web_server_configuration.html> for more information.
   - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
   - Namespace changes
     - `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
@@ -202,8 +202,8 @@
   - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
   - Start page can now be configured for each available language (#3955).
   - Passwords in the ZAuth module are now always hashed with the the most up-to-date algorithm available (via Symfony security component) and automatically updated on login (#2842).
-  - Passwords can optionally be validated with Symfony's NonCompromisedPassword validator (see https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html) (#2842).
-  - A new password strength meter is implemented. See https://github.com/ablanco/jquery.pwstrength.bootstrap (#2842).
+  - Passwords can optionally be validated with Symfony's NonCompromisedPassword validator ([docs](https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html)) (#2842).
+  - A new password strength meter is implemented (see [GitHub repo](https://github.com/ablanco/jquery.pwstrength.bootstrap)) (#2842).
   - Added a simple password generator in all places where a new password might be needed (#2842).
   - Added ability to force a group of users to change their password on next login (#2842).
   - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
