@@ -6,7 +6,7 @@ currentMenu: themes
 ## Basic topics
 
 - [Request / Response cycle](RequestResponseCycle.md)
-- [Using a customized bootstrap CSS file](CustomBootstrapCss.md)
+- [Using a customized Bootstrap CSS file](CustomBootstrapCss.md)
 - [Allowing themes to change via permissions](ThemeChangePermissions.md)
 - Special themes: Atom, Printer, RSS
 
