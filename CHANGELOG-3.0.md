@@ -204,6 +204,7 @@
   - Passwords in the ZAuth module are now always hashed with the the most up-to-date algorithm available (via Symfony security component) and automatically updated on login (#2842).
   - Passwords can optionally be validated with Symfony's NonCompromisedPassword validator (see https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html) (#2842).
   - A new password strength meter is implemented. See https://github.com/ablanco/jquery.pwstrength.bootstrap (#2842).
+  - Added a simple password generator in all places where a new password might be needed (#2842).
   - Added ability to force a group of users to change their password on next login (#2842).
   - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
 
