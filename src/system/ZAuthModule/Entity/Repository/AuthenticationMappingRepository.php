@@ -20,7 +20,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
-use function Doctrine\ORM\QueryBuilder;
 
 class AuthenticationMappingRepository extends ServiceEntityRepository implements AuthenticationMappingRepositoryInterface
 {

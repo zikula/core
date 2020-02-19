@@ -1,8 +1,7 @@
-Included Javascript vendors
-===========================
+# Included Javascript vendors
 
-pwstrength-bootstrap.min.js
----------------------------
+## pwstrength-bootstrap.min.js
+
 https://github.com/ablanco/jquery.pwstrength.bootstrap
 
 License: MIT

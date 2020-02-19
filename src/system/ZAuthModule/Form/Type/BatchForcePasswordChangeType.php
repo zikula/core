@@ -17,6 +17,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 
 class BatchForcePasswordChangeType extends AbstractType
@@ -38,20 +40,20 @@ class BatchForcePasswordChangeType extends AbstractType
             ->add('group', ChoiceType::class, [
                 'label' => 'Group to modify',
                 'required' => true,
-                'choices' => $this->getChoices(),
+                'choices' => /** @Ignore */$this->getChoices(),
                 'help' => 'Old passwords are pre-Core3 passwords which are less secure. <strong>The current user will not be affected</strong>.',
                 'help_html' => true
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
-                'icon' => 'fas fa-check',
+                'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fas fa-times'
+                'icon' => 'fa-times'
             ])
         ;
     }
@@ -59,8 +61,8 @@ class BatchForcePasswordChangeType extends AbstractType
     private function getChoices(): array
     {
         $choices = [
-            'Users with old passwords (recommended)' => 'old',
-            'All users' => 'all'
+            /** @Translate */'Users with old passwords (recommended)' => 'old',
+            /** @Translate */'All users' => 'all'
         ];
         /** @var \Zikula\GroupsModule\Entity\GroupEntity[] $groups */
         $groups = $this->groupRepository->getGroups();
