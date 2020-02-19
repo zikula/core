@@ -22,13 +22,25 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidUserFields;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class AdminModifyUserType extends AbstractType
 {
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    public function __construct(VariableApiInterface $variableApi)
+    {
+        $this->variableApi = $variableApi;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -61,6 +73,12 @@ class AdminModifyUserType extends AbstractType
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'attr' => [
+                        'class' => 'pwstrength',
+                        'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
+                        'minlength' => $options['minimumPasswordLength'],
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                    ],
                     'required' => false,
                     'label' => 'Create new password',
                     'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
@@ -101,7 +119,7 @@ class AdminModifyUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'minimumPasswordLength' => 5,
+            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
             'constraints' => [
                 new ValidUserFields()
             ]

@@ -76,7 +76,9 @@
     - The corresponding Twig function is similarly renamed.
   - `Zikula\ExtensionsModule\Event\ModuleStateEvent` is renamed to `Zikula\ExtensionsModule\Event\ExtensionStateEvent`.
     - Its methods also renamed: `getModule` -> `getExtension` and `getModInfo` -> `getInfo`.
-  - All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName. 
+  - All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName.
+  - `Zikula\ZAuthModule\Api\PasswordApi` & `Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface` are deprecated and will be removed in Core-4.0.0
+    - Use `Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface` or `bin2hex(random_bytes(8))`
   - Dropped vendors:
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)
@@ -164,6 +166,7 @@
   - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
   - Fixed creating new ZAuth users as admin without setting a password.
   - Start page controllers now get properly set the `_route` request argument (#3955).
+  - Default minimum length for passwords is now raised to 8. Absolute minimum length is still 5 (#2842).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -198,6 +201,11 @@
   - Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
   - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
   - Start page can now be configured for each available language (#3955).
+  - Passwords in the ZAuth module are now always hashed with the the most up-to-date algorithm available (via Symfony security component) and automatically updated on login (#2842).
+  - Passwords can optionally be validated with Symfony's NonCompromisedPassword validator (see https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html) (#2842).
+  - A new password strength meter is implemented. See https://github.com/ablanco/jquery.pwstrength.bootstrap (#2842).
+  - Added a simple password generator in all places where a new password might be needed (#2842).
+  - Added ability to force a group of users to change their password on next login (#2842).
   - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
 
 - Vendor updates:

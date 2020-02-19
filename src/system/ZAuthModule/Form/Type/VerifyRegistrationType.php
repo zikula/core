@@ -23,11 +23,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 class VerifyRegistrationType extends AbstractType
 {
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    public function __construct(VariableApiInterface $variableApi)
+    {
+        $this->variableApi = $variableApi;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -56,7 +68,15 @@ class VerifyRegistrationType extends AbstractType
         if ($options['setpass']) {
             $builder->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Password'],
+                'first_options' => [
+                    'attr' => [
+                        'class' => 'pwstrength',
+                        'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
+                        'minlength' => $options['minimumPasswordLength'],
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                    ],
+                    'label' => 'Password'
+                ],
                 'second_options' => ['label' => 'Repeat password'],
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [
@@ -76,6 +96,7 @@ class VerifyRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'setpass' => true,
+            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
             'constraints' => [
                 new ValidRegistrationVerification()
             ]

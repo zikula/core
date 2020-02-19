@@ -23,7 +23,12 @@ class ZAuthConstant
     /**
      * Default value for the minimum password length.
      */
-    public const DEFAULT_PASSWORD_MINIMUM_LENGTH = 5;
+    public const DEFAULT_PASSWORD_MINIMUM_LENGTH = 8;
+
+    /**
+     * Actual minimal length for all passwords.
+     */
+    public const PASSWORD_MINIMUM_LENGTH = 5;
 
     /**
      * Module variable key for the flag indicating whether the password strength meter should be enabled or not.
@@ -36,14 +41,14 @@ class ZAuthConstant
     public const DEFAULT_PASSWORD_STRENGTH_METER_ENABLED = false;
 
     /**
-     * Module variable key for the hash method used for hashing passwords.
+     * Module variable key for non compromised password
      */
-    public const MODVAR_HASH_METHOD = 'hash_method';
+    public const MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD = 'non_compromised_password';
 
     /**
-     * Default value for the hash method used for hashing passwords.
+     * default value for non compromised password
      */
-    public const DEFAULT_HASH_METHOD = 'sha256';
+    public const DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD = false;
 
     /**
      * Module variable key for the status of requirement for email verification.

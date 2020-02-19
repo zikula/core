@@ -94,6 +94,16 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         return $query->getResult();
     }
 
+    public function getByExpiredPasswords()
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->select('m')
+            ->where('m.pass NOT LIKE :param')
+            ->setParameter('param', '$%');
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * Construct a QueryBuilder Expr\OrderBy object suitable for use in QueryBuilder->orderBy() from an array.
      * sort = [field => dir, field => dir, ...]

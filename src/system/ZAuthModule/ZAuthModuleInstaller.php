@@ -61,6 +61,9 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
                 $this->delVar('password_reminder_enabled');
                 $this->delVar('password_reminder_mandatory');
             case '1.0.1':
+                $this->delVar('hash_method');
+                $this->setVar(ZAuthConstant::MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD, ZAuthConstant::DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD);
+            case '1.0.2':
                 // current version
         }
 
@@ -80,8 +83,8 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     private function getDefaultModvars(): array
     {
         return [
-            ZAuthConstant::MODVAR_HASH_METHOD => ZAuthConstant::DEFAULT_HASH_METHOD,
             ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH => ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH,
+            ZAuthConstant::MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD => ZAuthConstant::DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD,
             ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED => ZAuthConstant::DEFAULT_PASSWORD_STRENGTH_METER_ENABLED,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL,
             ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD => ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD,

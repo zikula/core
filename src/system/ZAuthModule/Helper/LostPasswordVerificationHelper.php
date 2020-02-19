@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Helper;
 
 use Exception;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
@@ -34,9 +34,9 @@ class LostPasswordVerificationHelper
     private $variableApi;
 
     /**
-     * @var PasswordApiInterface
+     * @var EncoderFactoryInterface
      */
-    private $passwordApi;
+    private $encoderFactory;
 
     /**
      * Concatenation delimiter
@@ -51,11 +51,11 @@ class LostPasswordVerificationHelper
     public function __construct(
         UserVerificationRepositoryInterface $userVerificationRepository,
         VariableApiInterface $variableApi,
-        PasswordApiInterface $passwordApi
+        EncoderFactoryInterface $encoderFactory
     ) {
         $this->userVerificationRepository = $userVerificationRepository;
         $this->variableApi = $variableApi;
-        $this->passwordApi = $passwordApi;
+        $this->encoderFactory = $encoderFactory;
     }
 
     /**
@@ -66,9 +66,10 @@ class LostPasswordVerificationHelper
     {
         $confirmationCode = $this->delimiter;
         while (false !== mb_strpos($confirmationCode, $this->delimiter)) {
-            $confirmationCode = $this->passwordApi->generatePassword();
+            $confirmationCode = bin2hex(random_bytes(8));
         }
-        $this->userVerificationRepository->setVerificationCode($mapping->getUid(), ZAuthConstant::VERIFYCHGTYPE_PWD, $this->passwordApi->getHashedPassword($confirmationCode));
+        $hashedCode = $this->encoderFactory->getEncoder($mapping)->encodePassword($confirmationCode, null);
+        $this->userVerificationRepository->setVerificationCode($mapping->getUid(), ZAuthConstant::VERIFYCHGTYPE_PWD, $hashedCode);
 
         $params = [
             $mapping->getUid(),
@@ -128,7 +129,8 @@ class LostPasswordVerificationHelper
             'uid' => $userId,
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_PWD
         ]);
+        $passwordValid = $this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->isPasswordValid($userVerificationEntity->getVerifycode(), $code, null);
 
-        return !(!isset($userVerificationEntity) || (!$this->passwordApi->passwordsMatch($code, $userVerificationEntity->getVerifycode())));
+        return isset($userVerificationEntity) && $passwordValid;
     }
 }

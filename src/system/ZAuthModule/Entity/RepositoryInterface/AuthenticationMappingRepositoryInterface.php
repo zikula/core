@@ -38,4 +38,6 @@ interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Sel
         int $offset = 0,
         string $exprType = 'and'
     );
+
+    public function getByExpiredPasswords();
 }

@@ -16,10 +16,10 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\AccessHelper;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -51,9 +51,9 @@ class SuperUserHelper
     private $accessHelper;
 
     /**
-     * @var PasswordApiInterface
+     * @var EncoderFactoryInterface
      */
-    private $passwordApi;
+    private $encoderFactory;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -61,20 +61,20 @@ class SuperUserHelper
         ParameterHelper $parameterHelper,
         RequestStack $requestStack,
         AccessHelper $accessHelper,
-        PasswordApiInterface $passwordApi
+        EncoderFactoryInterface $encoderFactory
     ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->parameterHelper = $parameterHelper;
         $this->requestStack = $requestStack;
         $this->accessHelper = $accessHelper;
-        $this->passwordApi = $passwordApi;
+        $this->encoderFactory = $encoderFactory;
     }
 
     /**
      * This inserts the admin's user data
      */
-    public function updateAdmin(): bool
+    public function createAdmin(): bool
     {
         $params = $this->parameterHelper->decodeParameters($this->parameterHelper->getYamlHelper()->getParameters());
         /** @var UserEntity $userEntity */
@@ -91,7 +91,7 @@ class SuperUserHelper
         $mapping->setUname($userEntity->getUname());
         $mapping->setEmail($userEntity->getEmail());
         $mapping->setVerifiedEmail(true);
-        $mapping->setPass($this->passwordApi->getHashedPassword($params['password']));
+        $mapping->setPass($this->encoderFactory->getEncoder($mapping)->encodePassword($params['password'], null));
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
         $this->entityManager->persist($mapping);
 

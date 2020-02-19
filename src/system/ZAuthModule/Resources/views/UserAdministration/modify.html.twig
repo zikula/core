@@ -23,8 +23,8 @@
     <legend>{% trans %}Log-in information{% endtrans %}</legend>
     {{ form_row(form.setpass, {attr: {'data-toggle': 'collapse', 'data-target': '#' ~ form.setpass.vars.id ~ '_wrap'}}) }}
     <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} show {% endif %}">
+        {{ include('@ZikulaZAuthModule/Authentication/PasswordGenerator.html.twig') }}
         {{ form_row(form.pass) }}
-        <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>
     </div>
 </fieldset>
 {% for additional_template in additional_templates %}
@@ -42,18 +42,6 @@
 <div id="setPassIdentifiers" data-setpassid="{{ form.setpass.vars.id }}" data-passid="{{ form.pass.vars.id }}"></div>
 {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.UserAdmin.js')) }}
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
-{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
-{% set customScript %}
-<script>
-    (function($) {
-        $(document).ready(function() {
-            ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
-                username: '{{ form.uname.vars.id }}',
-                minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }}'
-            });
-        });
-    })(jQuery);
-</script>
-{% endset %}
-{{ pageAddAsset('footer', customScript) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/pwstrength-bootstrap.min.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PWStrength.Init.js')) }}
 {% endif %}

@@ -17,6 +17,7 @@ use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -35,7 +36,7 @@ use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
 class FileIOHelper
@@ -78,9 +79,9 @@ class FileIOHelper
     private $currentUser;
 
     /**
-     * @var PasswordApiInterface
+     * @var EncoderFactoryInterface
      */
-    private $passwordApi;
+    private $encoderFactory;
 
     /**
      * @var GroupRepositoryInterface
@@ -96,7 +97,7 @@ class FileIOHelper
         MailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
-        PasswordApiInterface $passwordApi,
+        EncoderFactoryInterface $encoderFactory,
         GroupRepositoryInterface $groupRepository
     ) {
         $this->variableApi = $variableApi;
@@ -107,7 +108,7 @@ class FileIOHelper
         $this->mailHelper = $mailHelper;
         $this->eventDispatcher = $eventDispatcher;
         $this->currentUser = $currentUserApi;
-        $this->passwordApi = $passwordApi;
+        $this->encoderFactory = $encoderFactory;
         $this->groupRepository = $groupRepository;
     }
 
@@ -231,7 +232,7 @@ class FileIOHelper
         // create users
         foreach ($importValues as $k => $importValue) {
             $unHashedPass = $importValue['pass'];
-            $importValue['pass'] = $this->passwordApi->getHashedPassword($importValue['pass']);
+            $importValue['pass'] = $this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->encodePassword($importValue['pass'], null);
             if (!$importValue['activated']) {
                 $importValues[$k]['activated'] = UsersConstant::ACTIVATED_PENDING_REG;
             } else {

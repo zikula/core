@@ -188,7 +188,7 @@ class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error creating default blocks')
             ],
             21 => [
-                AjaxStageInterface::NAME => 'updateadmin',
+                AjaxStageInterface::NAME => 'createadmin',
                 AjaxStageInterface::PRE => $this->trans('Create admin account'),
                 AjaxStageInterface::DURING => $this->trans('Creating admin account'),
                 AjaxStageInterface::SUCCESS => $this->trans('Admin account created'),

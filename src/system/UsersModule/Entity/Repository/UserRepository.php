@@ -37,7 +37,12 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function findByUids(array $userIds = []): array
     {
-        return $this->findBy(['uid' => $userIds]);
+        // using queryBuilder allows to index collection by the uid
+        $qb = $this->createQueryBuilder('u', 'u.uid')
+            ->where('u.uid IN (:uids)')
+            ->setParameter('uids', $userIds);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function persistAndFlush(UserEntity $user): void

@@ -19,8 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
@@ -31,7 +33,9 @@ use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -43,11 +47,11 @@ use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\AdminCreatedUserType;
 use Zikula\ZAuthModule\Form\Type\AdminModifyUserType;
+use Zikula\ZAuthModule\Form\Type\BatchForcePasswordChangeType;
 use Zikula\ZAuthModule\Form\Type\SendVerificationConfirmationType;
 use Zikula\ZAuthModule\Form\Type\TogglePasswordConfirmationType;
 use Zikula\ZAuthModule\Helper\AdministrationActionsHelper;
@@ -161,7 +165,7 @@ class UserAdministrationController extends AbstractController
 
         $mapping = new AuthenticationMappingEntity();
         $form = $this->createForm(AdminCreatedUserType::class, $mapping, [
-            'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
+            'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
         ]);
         $formEvent = new UserFormAwareEvent($form);
         $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
@@ -248,7 +252,7 @@ class UserAdministrationController extends AbstractController
         Request $request,
         AuthenticationMappingEntity $mapping,
         VariableApiInterface $variableApi,
-        PasswordApiInterface $passwordApi,
+        EncoderFactoryInterface $encoderFactory,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         EventDispatcherInterface $eventDispatcher,
@@ -262,7 +266,7 @@ class UserAdministrationController extends AbstractController
         }
 
         $form = $this->createForm(AdminModifyUserType::class, $mapping, [
-            'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
+            'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
         ]);
         $originalMapping = clone $mapping;
         $formEvent = new UserFormAwareEvent($form);
@@ -278,7 +282,7 @@ class UserAdministrationController extends AbstractController
                 /** @var AuthenticationMappingEntity $mapping */
                 $mapping = $form->getData();
                 if ($form->get('setpass')->getData()) {
-                    $mapping->setPass($passwordApi->getHashedPassword($mapping->getPass()));
+                    $mapping->setPass($encoderFactory->getEncoder($mapping)->encodePassword($mapping->getPass(), null));
                 } else {
                     $mapping->setPass($originalMapping->getPass());
                 }
@@ -461,5 +465,94 @@ class UserAdministrationController extends AbstractController
             'mustChangePass' => $mustChangePass,
             'user' => $user
         ];
+    }
+
+    /**
+     * @Route("/batch-force-password-change")
+     * @Theme("admin")
+     * @Template("@ZikulaZAuthModule/UserAdministration/batchForcePasswordChange.html.twig")
+     *
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
+     */
+    public function batchForcePasswordChangeAction(
+        CurrentUserApiInterface $currentUserApi,
+        Request $request
+    ) {
+        if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+        $form = $this->createForm(BatchForcePasswordChangeType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('submit')->isClicked()) {
+                $users = $this->getUsers($form->get('group')->getData(), $currentUserApi->get('uid'));
+                $count = 0;
+                foreach ($users as $user) {
+                    $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);
+                    $count++;
+                    if ($count % 20 === 0) {
+                        $this->getDoctrine()->getManager()->flush(); // flush manager every 20 reps
+                    }
+                }
+                $this->getDoctrine()->getManager()->flush(); // flush remaining
+                /** @Desc("{count, plural,\n  one   {# user was processed!}\n  other {# users were processed!}\n}") */
+                $this->addFlash('info', $this->trans('plural_n.users.processed.', ['%count%' => $count]));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('info', 'Operation cancelled.');
+            }
+
+            return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
+    }
+
+    private function getUsers($selector, int $currentUser)
+    {
+        if (!in_array($selector, ['all', 'old']) && !is_int($selector)) {
+            return [];
+        }
+        $authenticationMappingRepository = $this->getDoctrine()->getRepository(AuthenticationMappingEntity::class);
+        $toUsersArray = function($mappings) {
+            $uids = [];
+            foreach ($mappings as $mapping) {
+                $uids[] = $mapping->getUid();
+            }
+            $userRepository = $this->getDoctrine()->getRepository(UserEntity::class);
+
+            return $userRepository->findByUids($uids);
+        };
+        switch ($selector) {
+            case 'old':
+                $mappings = $authenticationMappingRepository->getByExpiredPasswords();
+                $users = $toUsersArray($mappings);
+                break;
+            case 'all':
+                $mappings = $authenticationMappingRepository->findAll();
+                $users = $toUsersArray($mappings);
+                break;
+            default: //group id
+                $groupRepository = $this->getDoctrine()->getRepository(GroupEntity::class);
+                $group = $groupRepository->find($selector);
+                if ($group && $group instanceof GroupEntity) {
+                    $users = $group->getUsers();
+                    foreach ($users as $user) {
+                        if (!$authenticationMappingRepository->getByZikulaId($user->getUid())) {
+                            $users->removeElement($user);
+                        }
+                    }
+                    $users = $users->toArray();
+                }
+        }
+
+        if (is_array($users) && isset($users[$currentUser])) {
+            unset($users[$currentUser]); // remove the current user (admin)
+            unset($users[1]); // remove guest user if included
+        }
+
+        return $users;
     }
 }

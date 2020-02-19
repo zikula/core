@@ -71,8 +71,14 @@ class RegistrationType extends AbstractType
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
+                    'attr' => [
+                        'class' => 'pwstrength',
+                        'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
+                        'minlength' => $options['minimumPasswordLength'],
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                    ],
                     'label' => 'Password',
-                    'help' => 'Minimum password length: %amount% characters.',
+                    'help' => 'Minimum password length: %amount% characters. Longer passwords are more secure.',
                     'help_translation_parameters' => [
                         '%amount%' => $options['minimumPasswordLength']
                     ]
@@ -124,7 +130,7 @@ class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'minimumPasswordLength' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH],
+            'minimumPasswordLength' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH] ?? ZAuthConstant::PASSWORD_MINIMUM_LENGTH,
             'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]
         ]);
     }

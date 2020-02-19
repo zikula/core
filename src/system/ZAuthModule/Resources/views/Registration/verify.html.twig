@@ -13,8 +13,8 @@
 {% if form.children.pass is defined %}
     <fieldset>
         <legend>{% trans %}Create a password{% endtrans %}</legend>
+        {{ include('@ZikulaZAuthModule/Authentication/PasswordGenerator.html.twig') }}
         {{ form_row(form.pass) }}
-        <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>
     </fieldset>
 {% endif %}
 <div class="form-group row">
@@ -24,18 +24,6 @@
 </div>
 {{ form_end(form) }}
 {% if modvars.use_password_strength_meter and form.pass|default %}
-{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
-{% set customScript %}
-<script>
-    (function($) {
-        $(document).ready(function() {
-            ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
-                username: '{{ form.uname.vars.id }}',
-                minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }}'
-            });
-        });
-    })(jQuery);
-</script>
-{% endset %}
-{{ pageAddAsset('footer', customScript) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/pwstrength-bootstrap.min.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PWStrength.Init.js')) }}
 {% endif %}

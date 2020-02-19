@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersModule\Validator\Constraints as UsersAssert;
@@ -24,7 +25,7 @@ use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
  * @ORM\Table(name="zauth_authentication_mapping")
  * @ZAuthAssert\ValidUserFields()
  */
-class AuthenticationMappingEntity extends EntityAccess
+class AuthenticationMappingEntity extends EntityAccess implements UserInterface
 {
     /**
      * @ORM\Id
@@ -152,5 +153,30 @@ class AuthenticationMappingEntity extends EntityAccess
             'uname' => $this->getUname(),
             'email' => $this->getEmail()
         ];
+    }
+
+    public function getRoles()
+    {
+        // not implemented
+    }
+
+    public function getPassword()
+    {
+        return $this->pass;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getUsername()
+    {
+        return $this->uid;
+    }
+
+    public function eraseCredentials()
+    {
+        // not implemented
     }
 }
