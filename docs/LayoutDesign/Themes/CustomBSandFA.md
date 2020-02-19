@@ -9,7 +9,7 @@ A **theme** can force the core to use a customized build of Bootstrap CSS file b
 `bootstrapPath` parameter value in its `theme.yaml` file:
 
 ```yaml
-bootstrapPath: "@AcmeFooTheme:css/bootstrap.min.css"
+bootstrapPath: '@AcmeFooTheme:css/bootstrap.min.css'
 ```
 
 ## Full site
