@@ -78,7 +78,7 @@ class RegistrationType extends AbstractType
                         'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
                     ],
                     'label' => 'Password',
-                    'help' => 'Minimum password length: %amount% characters.',
+                    'help' => 'Minimum password length: %amount% characters. Longer passwords are more secure.',
                     'help_translation_parameters' => [
                         '%amount%' => $options['minimumPasswordLength']
                     ]

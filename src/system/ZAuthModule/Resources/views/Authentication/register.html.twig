@@ -35,7 +35,8 @@
     {% endif %}
     <fieldset>
         <legend>{% trans %}Set a password{% endtrans %}</legend>
-        {{ form_row(form.pass, {'help': 'The minimum length for user passwords is %sub% characters.'|trans({"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
+        {{ include('@ZikulaZAuthModule/Authentication/PasswordGenerator.html.twig') }}
+        {{ form_row(form.pass) }}
     </fieldset>
 
     {% for additional_template in additional_templates %}

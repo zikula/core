@@ -13,6 +13,7 @@
 {% if form.children.pass is defined %}
     <fieldset>
         <legend>{% trans %}Create a password{% endtrans %}</legend>
+        {{ include('@ZikulaZAuthModule/Authentication/PasswordGenerator.html.twig') }}
         {{ form_row(form.pass) }}
     </fieldset>
 {% endif %}

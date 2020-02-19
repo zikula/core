@@ -24,6 +24,7 @@
     <legend>{% trans %}Log-in information{% endtrans %}</legend>
     {{ form_row(form.setpass, {attr: {'data-toggle': 'collapse', 'data-target': '#' ~ form.setpass.vars.id ~ '_wrap'}}) }}
     <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} show {% endif %}">
+        {{ include('@ZikulaZAuthModule/Authentication/PasswordGenerator.html.twig') }}
         {{ form_row(form.pass) }}
         {{ form_row(form.sendpass) }}
     </div>
