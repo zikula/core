@@ -485,9 +485,6 @@ abstract class AbstractEditHandler
             $this->repeatCreateAction = true;
         }
     
-        $action = $args['commandName'];
-        $isRegularAction = 'delete' !== $action;
-    
         $this->fetchInputData();
     
         $success = $this->applyAction($args);

@@ -4,18 +4,18 @@ currentMenu: ext-other
 # Other extensions
 
 [PageLock](https://github.com/zikula-modules/PageLock)
-: Page locking module which can be used by other extensions to prevent concurrent changes.
+: Page locking extension which can be used by other components to prevent concurrent changes.
 : Included in Core distribution.
 
 [Profile](https://github.com/zikula-modules/Profile)
-: User profile module and avatar management.
+: User profile extension and avatar management.
 : Included in Core distribution.
-: See [User profiles](../AccessControl/Users.md#user-profiles) for further details.
+: See [User profiles](../AccessControl/Users/index.md#user-profiles) for further details.
 
 [OAuth](https://github.com/zikula/OAuth)
 : OAuth authentication provider.
 : Included in Core distribution.
-: See [Authentication / OAuth](../AccessControl/Authentication.md#oauth) for further details.
+: See [Authentication / OAuth](../AccessControl/Authentication/index.md#oauth) for further details.
 
 [Formicula](https://github.com/zikula-ev/Formicula)
 : Contact form generator
@@ -27,7 +27,7 @@ currentMenu: ext-other
 : Piwik/Matomo integration
 
 [FooHookModule](https://github.com/zikula-modules/FooHookModule)
-: Sample hook module
+: Sample hook extension
 
 ## Legacy Modules not yet converted
 
