@@ -53,7 +53,7 @@ class HooksListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionMenuEvent::class => 'addHookMenu'
+            ExtensionMenuEvent::class => ['addHookMenu', -254]
         ];
     }
 

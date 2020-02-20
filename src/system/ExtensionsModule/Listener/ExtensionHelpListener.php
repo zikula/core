@@ -93,7 +93,7 @@ class ExtensionHelpListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionMenuEvent::class => 'addHelpMenu'
+            ExtensionMenuEvent::class => ['addHelpMenu', -255]
         ];
     }
 
