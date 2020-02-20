@@ -10,57 +10,60 @@ a method to do so as a sub-menu to a 'Connections' parent menu item.
 ## Connections Menu
 
 Related classes:
-  - \Zikula\ExtensionsModule\Event\ConnectionsMenuEvent
-  - \Zikula\ExtensionsModule\Listener\ExtensionConnectionsListener
+
+- `\Zikula\ExtensionsModule\Event\ConnectionsMenuEvent`
+- `\Zikula\ExtensionsModule\Listener\ExtensionConnectionsListener`
 
 ### How to add a child menu item to the Connections Menu
 
 Create a subscriber class for the `ConnectionsMenuEvent::class` event
 
+```php
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\ExtensionsModule\Event\ConnectionsMenuEvent;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-    use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-    use Symfony\Contracts\Translation\TranslatorInterface;
-    use Zikula\ExtensionsModule\Event\ConnectionsMenuEvent;
-    use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+class ExampleFooSubscriber implements EventSubscriberInterface
+{
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
-    class ExampleFooSubscriber implements EventSubscriberInterface
+    /**
+     * @var PermissionApiInterface
+     */
+    private $permissionApi;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        PermissionApiInterface $permissionApi
+    ) {
+        $this->translator = $translator;
+        $this->permissionApi = $permissionApi;
+    }
+
+    public static function getSubscribedEvents()
     {
-        /**
-         * @var TranslatorInterface
-         */
-        private $translator;
-    
-        /**
-         * @var PermissionApiInterface
-         */
-        private $permissionApi;
-    
-        public function __construct(
-            TranslatorInterface $translator,
-            PermissionApiInterface $permissionApi
-        ) {
-            $this->translator = $translator;
-            $this->permissionApi = $permissionApi;
+        return [
+            ConnectionsMenuEvent::class => 'addMenuItem'
+        ];
+    }
+
+    public function addMenuItem(ConnectionsMenuEvent $event): void
+    {
+        if (!$this->permissionApi->hasPermission($event->getExtensionName() . '::', '::', ACCESS_ADMIN)) {
+            return;
         }
-    
-        public static function getSubscribedEvents()
-        {
-            return [
-                ConnectionsMenuEvent::class => 'addMenuItem'
-            ];
-        }
-    
-        public function addMenuItem(ConnectionsMenuEvent $event): void
-        {
-            if (!$this->permissionApi->hasPermission($event->getExtensionName() . '::', '::', ACCESS_ADMIN)) {
-                return;
-            }
-            if ('ZikulaUserModule' == $event->getExtensionName()) {
-                // only add to menu for the User module
-                $event->addChild($this->translator->trans('MyFooExtension Connection'), [
-                    'route' => 'acmefoomodule_admin_foo',
-                    'routeParameters' => ['moduleName' => $event->getExtensionName()]
-                ]);
-            }
+
+        if ('ZikulaUsersModule' === $event->getExtensionName()) {
+            // only add to menu for the Users module
+            $event->addChild($this->translator->trans('MyFooExtension Connection'), [
+                'route' => 'acmefoomodule_admin_foo',
+                'routeParameters' => ['moduleName' => $event->getExtensionName()]
+            ]);
         }
     }
+}
+```
