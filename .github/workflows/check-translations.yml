@@ -1,4 +1,4 @@
-name: Update translations
+name: Check translations
 on:
   schedule:
     - cron:  '0 12 */2 * *' # run every 2 days
@@ -26,21 +26,6 @@ jobs:
       run: |
         composer install
 
-    - name: Update translations
+    - name: Check translations
       run: |
-        php -dmemory_limit=2G bin/console translation:extract zikula en
-
-    # see https://github.com/peter-evans/create-pull-request
-    - name: Commit changes and create/update pull request
-      uses: peter-evans/create-pull-request@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'update translations :speech_balloon:'
-        title: Translation update
-        body: This is an auto-generated PR with translation updates.
-        labels: translation-updates
-        branch: translation-updates
-
-    - name: Check outputs
-      run: |
-        echo "Created pull request number: ${{ env.PULL_REQUEST_NUMBER }}"
+        php bin/console translation:check-missing en zikula

@@ -4044,16 +4044,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "dev-master",
+            "version": "0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "50e54c56025ec57a9c1dc256e85637cbf6c11691"
+                "reference": "fe181a2fb0eaa3b37002c2f0d4484cf46eb73256"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/50e54c56025ec57a9c1dc256e85637cbf6c11691",
-                "reference": "50e54c56025ec57a9c1dc256e85637cbf6c11691",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/fe181a2fb0eaa3b37002c2f0d4484cf46eb73256",
+                "reference": "fe181a2fb0eaa3b37002c2f0d4484cf46eb73256",
                 "shasum": ""
             },
             "require": {
@@ -4116,7 +4116,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "time": "2020-02-17T08:55:16+00:00"
+            "time": "2020-02-21T16:31:38+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -7190,7 +7190,6 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
-        "php-translation/symfony-bundle": 20,
         "php-translation/symfony-storage": 20,
         "matthiasnoback/symfony-console-form": 20,
         "zikula/wizard": 20,

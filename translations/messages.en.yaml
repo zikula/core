@@ -8,6 +8,12 @@ Settings: null
 'User Credential Settings': null
 'Registration Settings': null
 'Remember me': null
+'Generate a password for me': null
+'Generate password': null
+'Here is your generated password': null
+'copy & close': null
+'Generate another': null
+Close: null
 Login: null
 'Log in page': null
 'Create new account': null
@@ -24,8 +30,10 @@ Login: null
 'Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.': null
 'Enter your e-mail address': null
 'Set a password': null
-'The minimum length for user passwords is %sub% characters.': null
 'Answer the security question': null
+'Force Password change for users': null
+'This action will force the selected group to change their password on next login.': null
+'The users will not be emailed.': null
 'No records found.': null
 'Create new user': null
 'The items that are marked with an asterisk (\''*\'') are required entries.': null
@@ -123,7 +131,10 @@ Submit: null
 'CSV file (Max. %maxSize%)': null
 'CSV delimiter': null
 Upload: null
+'Old passwords are pre-Core3 passwords which are less secure. <strong>The current user will not be affected</strong>.': null
+'Group to modify': null
 'You will use your e-mail address to identify yourself when you log in.': null
+'Minimum password length: %amount% characters. Longer passwords are more secure.': null
 'Asking this question helps us prevent automated scripts from accessing private areas of the site.': null
 'Repeat email': null
 'Repeat password': null
@@ -134,17 +145,15 @@ Reset: null
 'Changing this setting will affect all password change requests currently pending verification.': null
 'If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.': null
 days: null
-SHA1: null
-SHA256: null
-'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than five.': null
-'The default hashing method is ''SHA256''.': null
+'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than %number%.': null
+'Applies to ALL passwords (including admins). See %symfonydocs%': null
 'Enter the number of days a user''s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.': null
 'This setting only affects users who have not established security question responses. Enter the number of days a user''s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.': null
 'Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).': null
 'You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.': null
 'Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.': null
 'Minimum length for user passwords': null
-'Password hashing method': null
+'Require non compromised passwords': null
 'Show password strength meter': null
 'Email address verifications expire in': null
 'Password reset requests expire in': null
@@ -223,8 +232,10 @@ username: null
 'Done! The user name for %userName% has been sent via e-mail.': null
 'Done! A password change will no longer be required for %userName%.': null
 'Done! A password change will be required the next time %userName% logs in.': null
+plural_n.users.processed.: null
 'Done! Users imported.': null
 'New users': null
+'Batch password change': null
 'Change e-mail address': null
 'Account menu': null
 'Recover account information or password': null
@@ -363,7 +374,6 @@ All: null
 'Edit block position': null
 'Marked positions are not available in the current default theme.': null
 'Block View': null
-Close: null
 'Modify block': null
 'Create block': null
 Meta: null
@@ -952,6 +962,7 @@ Encoding: null
 'Test current settings': null
 Extension: null
 'Extension settings': null
+'%extension% help': null
 'Incompatible version with the core': null
 'Incompatible version': null
 'The version of this extension is incompatible with the version of the core.': null
@@ -982,14 +993,16 @@ Recommended: null
 'Warning! Uninstalling this extension will also permanently remove all data associated with it, including all data held by other extensions that are hooked to this extension.': null
 'Warning! Removing this extension will also remove the following blocks': null
 'Warning! Other extensions present in the system require this extension. If you uninstall this extension then these extensions that require it will also be uninstalled.': null
-'Module services': null
-'Module Services are functions provided by the core or other modules for this module.': null
-'There aren\''t any modules services available.': null
 dependencies: null
 /: null
 'WARNING: changing the url affects SEO by breaking existing indexed search results.': null
 URL: null
 'Reload defaults': null
+'Modal window': null
+'Sidebar on right side': null
+'Sidebar on left side': null
+'How help documents for an extension should be displayed.': null
+'Help UI Mode': null
 'Reset all extensions to default values': null
 'no title defined': null
 'Error! Could not resolve %template% template.': null
@@ -1039,7 +1052,8 @@ Incompatible: null
 'Edit extension': null
 'Edit theme vars': null
 'Preview theme': null
-Services: null
+Connections: null
+Help: null
 'List views': null
 Moderation: null
 'Here you can configure parameters for list views.': null
@@ -1543,7 +1557,8 @@ Parameter: null
 '*** INSTALLING ***': null
 'INSTALL COMPLETE!': null
 'Error! There was a problem with the database connection.': null
-'Error! Could not login with provided credentials. Please try again.': null
+'Error! Could not login because the user could not be found. Please try again.': null
+'Error! Could not login with the provided credentials. Please try again.': null
 'Error! You logged in to an account without Admin permissions': null
 'Error! Please enter your database credentials.': null
 'Error! Determination existing tables failed.': null
@@ -1708,7 +1723,6 @@ Detach: null
 'Connect %sub% to other modules': null
 '%sub% module provides the following area:': null
 'To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.': null
-Connections: null
 '%module1% module can\''t connect to %module2% module. No connections are supported': null
 Hooks: null
 'Drag items from the right column to the left column to connect the hooks. Only areas with the same category can be connected.': null
@@ -1721,6 +1735,17 @@ Provision: null
 'Module "%name%" is not a valid provider.': null
 'Provider module "%name%" is not available.': null
 'Providers'' areas order is not an array.': null
+'The minimum length for user passwords is %sub% characters.': null
+SHA1: null
+SHA256: null
+'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than five.': null
+'The default hashing method is ''SHA256''.': null
+'Password hashing method': null
+'Module services': null
+'Module Services are functions provided by the core or other modules for this module.': null
+'There aren\''t any modules services available.': null
+Services: null
+'Error! Could not login with provided credentials. Please try again.': null
 '%extension% must implement ExtensionInstallerInterface': null
 'No such route found.': null
 'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>': null
