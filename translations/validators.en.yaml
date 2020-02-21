@@ -1,22 +1,22 @@
-'Invalid username.': null
-'The code is invalid for this username.': null
+'The group name you entered (%groupName%) does already exist.': null
+'The passwords must match!': null
+'The emails must match!': null
 'Old password is incorrect.': null
 'Your new password cannot match your current password.': null
 'Could not find user to update.': null
+'You did not provide the correct answer for the security question. Try %answer%!': null
+'Invalid username.': null
+'The code is invalid for this username.': null
 'The password cannot be the same as the user name. Please choose a different password.': null
 'The user name you entered (%userName%) has already been registered.': null
 'The email address you entered (%email%) has already been registered.': null
-'You did not provide the correct answer for the security question. Try %answer%!': null
-'The emails must match!': null
-'The passwords must match!': null
 'The selected item does not exist': null
 'Could not json_decode the string you entered.': null
 'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.': null
 'The user name you entered is reserved. It cannot be used.': null
 'Sorry! The domain of the e-mail address you specified is banned.': null
-'The group name you entered (%groupName%) does already exist.': null
-'Category "%name%" must be unique under parent': null
 'The value "%value%" is not allowed for the "%property%" property.': null
 'You must select at least "%limit%" choice.|You must select at least "%limit%" choices.': null
 'You must select at most "%limit%" choice.|You must select at most "%limit%" choices.': null
+'Category "%name%" must be unique under parent': null
 'The password fields must match.': null

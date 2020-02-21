@@ -69,10 +69,9 @@ zikulaextensionsmodule_extension_uninstall: '/uninstall/{id}/{token}'
 zikulaextensionsmodule_extension_preview: '/theme-preview/{themeName}'
 zikulaextensionsmodule_extensionsinterface_header: /extensionsinterface/header
 zikulaextensionsmodule_extensionsinterface_footer: /extensionsinterface/footer
-zikulaextensionsmodule_extensionsinterface_help: /extensionsinterface/help
 zikulaextensionsmodule_extensionsinterface_breadcrumbs: /extensionsinterface/breadcrumbs
 zikulaextensionsmodule_extensionsinterface_links: /extensionsinterface/links
-zikulaextensionsmodule_services_moduleservices: '/services/{moduleName}'
+zikulaextensionsmodule_help_index: '/help/{moduleName}'
 zikulagroupsmodule_application_admin: '/application/admin/{action}/{app_id}'
 zikulagroupsmodule_application_create: '/application/create/{gid}'
 zikulagroupsmodule_config_config: /config/config
@@ -164,4 +163,7 @@ zikulazauthmodule_useradministration_verify: '/admin/verify/{mapping}'
 zikulazauthmodule_useradministration_sendconfirmation: '/admin/send-confirmation/{mapping}'
 zikulazauthmodule_useradministration_sendusername: '/admin/send-username/{mapping}'
 zikulazauthmodule_useradministration_togglepasswordchange: '/admin/toggle-password-change/{user}'
+zikulazauthmodule_useradministration_batchforcepasswordchange: /admin/batch-force-password-change
 zikulabootstraptheme_ajax_changeuserstyle: /ajax/changeUserStyle
+zikulaextensionsmodule_extensionsinterface_help: /extensionsinterface/help
+zikulaextensionsmodule_services_moduleservices: '/services/{moduleName}'
