@@ -94,7 +94,7 @@ class ConfigController extends AbstractController
                     'username' => $formData['username' . $credentialsSuffix],
                     'password' => $formData['password' . $credentialsSuffix],
                     'host' => $formData['host'],
-                    'port' => $formData['port'],
+                    'port' => 'gmail' === $formData['transport'] ? 465 : $formData['port'],
                     'encryption' => $formData['encryption'],
                     'auth_mode' => $formData['auth_mode'],
                     // the items below can be configured by modifying the /config/dynamic/generated.yaml file
