@@ -15,13 +15,13 @@ namespace Zikula\PermissionsModule\Listener;
 
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\Reader;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PermissionsModule\Annotation\PermRequired as PermAnnotation;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
 {
@@ -142,10 +142,10 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         if (!$this->hasRouteAttribute($segment)) {
             return $segment;
         }
-        if (1 !== preg_match( '/(\$[^:\n]+)/' , $segment, $matches)) {
+        if (1 !== preg_match('/(\$[^:\n]+)/' , $segment, $matches)) {
             throw new AnnotationException('Invalid schema in @Annotation: @PermRequired(). Could not match route attributes');
         }
-        unset ($matches[0]); // first key is unneeded full match
+        unset($matches[0]); // first key is unneeded full match
 
         foreach ($matches as $name) {
             if ($request->attributes->has(mb_substr($name, 1))) {
