@@ -32,13 +32,13 @@
             "class": "Zikula\\RoutesModule\\ZikulaRoutesModule",
             "displayname": "Routes",
             "url": "routes",
+            "icon": "fas fa-map-marked-alt",
             "capabilities": {
                 "user": {
                     "route": "zikularoutesmodule_route_index"
                 },
                 "admin": {
-                    "route": "zikularoutesmodule_route_adminindex",
-                    "icon": "fas fa-map-marked-alt"
+                    "route": "zikularoutesmodule_route_adminindex"
                 }
             },
             "securityschema": {

@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\BlocksModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "suggest": {
         "Scribite:>=6.0.2": "To allow WYSIWYG HTML block editing."
@@ -25,23 +25,18 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Blocks Module",
             "url": "blocks",
-            "oldnames": [],
+            "icon": "fas fa-table",
             "capabilities": {
                 "admin": {
-                    "route": "zikulablocksmodule_admin_view",
-                    "icon": "fas fa-table"
+                    "route": "zikulablocksmodule_admin_view"
                 }
             },
             "securityschema": {
                 "ZikulaBlocksModule::": "Block key:Block title:Block ID",
                 "ZikulaBlocksModule::position": "Position name::Position ID",
-                "ExtendedMenublock::": "Block ID:Link ID:",
                 "fincludeblock::": "Block title::",
                 "HTMLblock::": "Block title::",
                 "HTMLblock::bid": "::bid",
-                "Languageblock::": "Block title::",
-                "Menublock::": "Block title:Link name:",
-                "Menutree:menutreeblock:": "Block ID:Link Name:Link ID",
                 "PendingContent::": "Block title::",
                 "Textblock::": "Block title::",
                 "Textblock::bid": "::bid",

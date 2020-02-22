@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\ExtensionsModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.2.5",
         "composer/semver": "1.*",
         "justinrainbow/json-schema": "5.*"
     },
@@ -24,11 +24,10 @@
             "class": "Zikula\\ExtensionsModule\\ZikulaExtensionsModule",
             "core-compatibility": ">=3.0.0",
             "displayname": "Extensions",
-            "oldnames": [],
+            "icon": "fas fa-plug",
             "capabilities": {
                 "admin": {
-                    "route": "zikulaextensionsmodule_extension_list",
-                    "icon": "fas fa-plug"
+                    "route": "zikulaextensionsmodule_extension_list"
                 }
             },
             "securityschema": {

@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\MenuModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.2.5",
         "knplabs/knp-menu-bundle": ">=2.2.1"
     },
     "extra": {
@@ -22,13 +22,13 @@
             "class": "Zikula\\MenuModule\\ZikulaMenuModule",
             "core-compatibility": ">=3.0.0",
             "displayname": "Menu Module",
+            "url": "menu",
+            "icon": "fas fa-compass",
             "capabilities": {
                 "admin": {
-                    "route": "zikulamenumodule_menu_list",
-                    "icon": "fas fa-compass"
+                    "route": "zikulamenumodule_menu_list"
                 }
             },
-            "url": "menu",
             "securityschema": {
                 "ZikulaMenuModule::": "::",
                 "ZikulaMenuModule::id": "::id"

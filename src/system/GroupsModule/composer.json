@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\GroupsModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula": {
@@ -22,12 +22,14 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Groups",
             "url": "groups",
+            "icon": "fas fa-users",
             "capabilities": {
                 "admin": {
-                    "route": "zikulagroupsmodule_group_adminlist",
-                    "icon": "fas fa-users"
+                    "route": "zikulagroupsmodule_group_adminlist"
                 },
-                "user": {"route": "zikulagroupsmodule_group_list"}
+                "user": {
+                    "route": "zikulagroupsmodule_group_list"
+                }
             },
             "securityschema": {
                 "ZikulaGroupsModule::": "Group ID::",

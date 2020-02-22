@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\CategoriesModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula": {
@@ -22,10 +22,10 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Categories",
             "url": "categories",
+            "icon": "fas fa-sitemap",
             "capabilities": {
                 "admin": {
-                    "route": "zikulacategoriesmodule_category_list",
-                    "icon": "fas fa-sitemap"
+                    "route": "zikulacategoriesmodule_category_list"
                 }
             },
             "securityschema": {

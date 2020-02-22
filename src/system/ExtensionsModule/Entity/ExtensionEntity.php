@@ -175,7 +175,7 @@ class ExtensionEntity extends EntityAccess
 
     public function getIcon(): string
     {
-        return $this->icon ?? $this['capabilities']['admin']['icon'] ?? '';
+        return $this->icon ?? '';
     }
 
     public function setIcon(string $icon): void

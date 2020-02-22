@@ -73,6 +73,7 @@
                         "class": {"type": "string"},
                         "displayname": {"type": "string"},
                         "url": {"type": "string"},
+                        "icon": {"type": "string"},
                         "oldnames": {"type": "array"},
                         "capabilities": {
                             "type": "object",
@@ -83,7 +84,7 @@
                             "additionalProperties": true
                         }
                     },
-                    "required": ["core-compatibility", "class"],
+                    "required": ["core-compatibility", "class", "icon"],
                     "additionalProperties": false
                 }
             },
