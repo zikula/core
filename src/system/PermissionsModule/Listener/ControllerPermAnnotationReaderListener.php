@@ -139,7 +139,7 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         if (!$this->hasFlag($segment)) {
             return $segment;
         }
-        if (1 !== preg_match('/\$([^:\n]+)/' , $segment, $matches)) {
+        if (1 !== preg_match('/\$([^:\n]+)/', $segment, $matches)) {
             throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(). Could not match route attributes');
         }
 
@@ -153,7 +153,7 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         return $segment;
     }
 
-    private function filterMatches(string $value) : bool
+    private function filterMatches(string $value): bool
     {
         return !$this->hasFlag($value);
     }
@@ -166,10 +166,10 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
     private function getValidConstant(string $string): int
     {
         if ($this->isValidConstantValue($string)) {
-            if (FALSE !== array_key_exists($string, $this->accessMap)) {
+            if (false !== array_key_exists($string, $this->accessMap)) {
                 return constant($string);
             }
-            if (FALSE !== $key = array_search($string, $this->accessMap)) {
+            if (false !== $key = array_search($string, $this->accessMap)) {
                 return constant($key);
             }
         }
