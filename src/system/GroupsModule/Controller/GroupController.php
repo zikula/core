@@ -133,7 +133,7 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
-     * @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
+     * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/edit.html.twig")
      *
@@ -168,7 +168,7 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/remove/{gid}", requirements={"gid"="\d+"})
-     * @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_DELETE"})
+     * @PermissionCheck({"$_zkModule::", "$gid::", "delete"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/remove.html.twig")
      *
