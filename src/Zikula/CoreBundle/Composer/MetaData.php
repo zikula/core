@@ -65,6 +65,8 @@ class MetaData implements ArrayAccess
 
     private $oldNames;
 
+    private $icon;
+
     private $capabilities;
 
     private $securitySchema;
