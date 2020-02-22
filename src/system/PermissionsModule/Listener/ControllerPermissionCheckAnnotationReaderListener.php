@@ -113,7 +113,7 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
             ];
         }
 
-        throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(). Value must be string or an array.');
+        throw new AnnotationException('Invalid schema in @PermissionCheck() annotation. Value must be string or an array.');
     }
 
     private function isValidSchema(array $schema): bool
@@ -140,7 +140,7 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
             return $segment;
         }
         if (1 !== preg_match('/\$([^:\n]+)/', $segment, $matches)) {
-            throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(). Could not match route attributes');
+            throw new AnnotationException('Invalid schema in @PermissionCheck() annotation. Could not match route attributes');
         }
         $filterMatches = function(string $value): bool {
             return !$this->hasFlag($value);
