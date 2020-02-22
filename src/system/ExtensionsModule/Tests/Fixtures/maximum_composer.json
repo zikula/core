@@ -37,6 +37,7 @@
       "displayname": "FooModule",
       "url": "foo",
       "oldnames": ["food"],
+      "icon": "fas fa-database",
       "capabilities": {
         "admin": {
             "route": "zikulafoomodule_bar_index"
