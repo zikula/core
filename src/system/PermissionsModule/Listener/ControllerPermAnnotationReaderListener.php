@@ -142,8 +142,11 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         if (1 !== preg_match('/\$([^:\n]+)/', $segment, $matches)) {
             throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(). Could not match route attributes');
         }
+        $filterMatches = function(string $value): bool {
+            return !$this->hasFlag($value);
+        };
 
-        foreach (array_filter($matches, [$this, 'filterMatches']) as $name) {
+        foreach (array_filter($matches, $filterMatches) as $name) {
             if ($request->attributes->has($name)) {
                 $value = $request->attributes->get($name);
                 $segment = str_replace(self::ROUTE_ATTRIBUTE_FLAG . $name, $value, $segment);
@@ -151,11 +154,6 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         }
 
         return $segment;
-    }
-
-    private function filterMatches(string $value): bool
-    {
-        return !$this->hasFlag($value);
     }
 
     private function hasFlag(string $value): bool
