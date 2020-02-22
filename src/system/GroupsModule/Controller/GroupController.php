@@ -15,10 +15,8 @@ namespace Zikula\GroupsModule\Controller;
 
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
@@ -32,24 +30,20 @@ use Zikula\GroupsModule\Form\Type\CreateGroupType;
 use Zikula\GroupsModule\Form\Type\EditGroupType;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\PermissionsModule\Annotation\PermRequired;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 class GroupController extends AbstractController
 {
     /**
      * @Route("/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
+     * @PermRequired("overview")
      * @Template("@ZikulaGroupsModule/Group/list.html.twig")
      *
      * View a list of all groups (user view).
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
      */
     public function listAction(GroupRepositoryInterface $groupRepository, int $startnum = 0): array
     {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
-
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
         $excludedGroups = [CommonHelper::GTYPE_CORE];
@@ -76,22 +70,17 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
+     * @PermRequired("edit")
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/adminList.html.twig")
      *
      * View a list of all groups (admin view).
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
     public function adminListAction(
         GroupRepositoryInterface $groupRepository,
         GroupApplicationRepository $applicationRepository,
         int $startnum = 0
     ): array {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
         $groups = $groupRepository->findBy([], [], $itemsPerPage, $startnum);
@@ -111,22 +100,16 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/create")
+     * @PermRequired("add")
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/create.html.twig")
      *
      * Display a form to add a new group.
-     *
-     * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to add any groups
      */
     public function createAction(
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ) {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(CreateGroupType::class, new GroupEntity());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -150,23 +133,17 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
+     * @PermRequired({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/edit.html.twig")
      *
      * Modify a group.
-     *
-     * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
     public function editAction(
         Request $request,
         GroupEntity $groupEntity,
         EventDispatcherInterface $eventDispatcher
     ) {
-        if (!$this->hasPermission('ZikulaGroupsModule::', $groupEntity->getGid() . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(EditGroupType::class, $groupEntity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -191,23 +168,17 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/remove/{gid}", requirements={"gid"="\d+"})
+     * @PermRequired({"$_zkModule::", "$gid::", "ACCESS_DELETE"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/remove.html.twig")
      *
      * Deletes a group.
-     *
-     * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to delete any groups
      */
     public function removeAction(
         Request $request,
         GroupEntity $groupEntity,
         EventDispatcherInterface $eventDispatcher
     ) {
-        if (!$this->hasPermission('ZikulaGroupsModule::', $groupEntity->getGid() . '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
-
         // get the user default group - we do not allow its deletion
         $defaultGroup = $this->getVar('defaultgroup', 1);
         if ($groupEntity->getGid() === $defaultGroup) {
