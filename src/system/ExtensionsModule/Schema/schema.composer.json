@@ -84,7 +84,7 @@
                             "additionalProperties": true
                         }
                     },
-                    "required": ["core-compatibility", "class"],
+                    "required": ["core-compatibility", "class", "icon"],
                     "additionalProperties": false
                 }
             },
