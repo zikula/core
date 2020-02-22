@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\ZAuthModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.2.5",
         "ircmaxell/random-lib": "1.*"
     },
     "extra": {
@@ -23,10 +23,10 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Zikula Native Authorization",
             "url": "zauth",
+            "icon": "fas fa-user-lock",
             "capabilities": {
                 "admin": {
-                    "route": "zikulazauthmodule_useradministration_list",
-                    "icon": "fas fa-user-lock"
+                    "route": "zikulazauthmodule_useradministration_list"
                 }
             },
             "securityschema": {

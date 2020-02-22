@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\SecurityCenterModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.2.5",
         "phpids/phpids": "dev-master"
     },
     "extra": {
@@ -23,10 +23,10 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Security Center",
             "url": "securitycenter",
+            "icon": "fas fa-shield-alt",
             "capabilities": {
                 "admin": {
-                    "route": "zikulasecuritycentermodule_config_config",
-                    "icon": "fas fa-shield-alt"
+                    "route": "zikulasecuritycentermodule_config_config"
                 }
             },
             "securityschema": {

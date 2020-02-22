@@ -22,13 +22,13 @@
             "core-compatibility": ">=3.0.0",
             "class": "Zikula\\BootstrapTheme\\ZikulaBootstrapTheme",
             "displayname": "Bootstrap Theme",
+            "icon": "fab fa-bootstrap",
             "capabilities": {
                 "user": {
                     "theme": true
                 },
                 "admin": {
-                    "theme": true,
-                    "icon": "fab fa-bootstrap"
+                    "theme": true
                 }
             }
         }

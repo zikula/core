@@ -65,6 +65,7 @@ class ComposerValidationHelperTest extends TestCase
             ['maximum_composer.json', true, []],
             ['minimum_error1_composer.json', false, ['Error found in composer file of Fixtures (/../Fixtures) in property "description": The property description is required.']],
             ['minimum_error2_composer.json', false, ['Error found in composer file of Fixtures (/../Fixtures) in property "autoload.psr-4": The property psr-4 is required.']],
+            ['minimum_error3_composer.json', false, ['Error found in composer file of Fixtures (/../Fixtures) in property "extra.zikula.icon": The property icon is required.']],
             ['minimum_syntax_error_composer.json', false, ['Unable to decode composer file of Fixtures (/../Fixtures): Syntax error. Ensure the composer.json file has a valid syntax.']],
             ['empty_composer.json', false, [
                 'Error found in composer file of Fixtures (/../Fixtures) in property "name": The property name is required.',

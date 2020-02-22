@@ -290,9 +290,6 @@ class BundleSyncHelper
                 /** @var ExtensionEntity $extension */
                 $extension = $this->extensionRepository->find($extensionFromFile['id']);
                 $extension->merge($extensionFromFile);
-                if (empty($extension->getIcon())) {
-                    $extension->setIcon($extensionFromFile['capabilities']['admin']['icon']);
-                }
                 $this->extensionRepository->persistAndFlush($extension);
             }
 
@@ -377,9 +374,6 @@ class BundleSyncHelper
                 // insert new extension to db
                 $newExtension = new ExtensionEntity();
                 $newExtension->merge($extensionFromFile);
-                if (empty($newExtension->getIcon())) {
-                    $newExtension->setIcon($extensionFromFile['capabilities']['admin']['icon']);
-                }
                 $vetoEvent = new GenericEvent($newExtension);
                 $this->dispatcher->dispatch($vetoEvent, ExtensionEvents::INSERT_VETO);
                 if (!$vetoEvent->isPropagationStopped()) {

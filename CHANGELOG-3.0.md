@@ -116,8 +116,8 @@
     - Default translation domain is now always `messages`. Use specific other domains (e.g. `mail`, `config`, `hooks` etc.) where appropriate.
   - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
   - Changes to `composer.json`
-    - Removed use of `admin.png` and replaced by adding icon class >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`.
-      - Themes can now also include an icon path.
+    - Removed use of `admin.png` and replaced by adding icon class >> `extra/zikula/icon: "fas fa-user"`.
+      - Themes now also need to include an icon.
     - Setting >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
     - Change how themes define user and admin capabilities.
       - old: e.g. `capabilities/admin:true`

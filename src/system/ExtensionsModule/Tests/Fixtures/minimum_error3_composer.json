@@ -17,8 +17,7 @@
   "extra": {
     "zikula": {
       "class": "Zikula\\SpecModule\\ZikulaFooModule",
-      "core-compatibility": ">=1.4.2",
-      "icon": "fas fa-database"
+      "core-compatibility": ">=1.4.2"
     }
   }
 }

@@ -14,20 +14,20 @@
         "psr-4": { "Zikula\\RssTheme\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula" : {
             "core-compatibility": ">=3.0.0",
             "class": "Zikula\\RssTheme\\ZikulaRssTheme",
             "displayname": "Rss Theme",
+            "icon": "fas fa-rss",
             "capabilities": {
                 "user": {
                     "theme": true
                 },
                 "admin": {
-                    "theme": false,
-                    "icon": "fas fa-rss"
+                    "theme": false
                 }
             }
         }

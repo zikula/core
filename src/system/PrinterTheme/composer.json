@@ -14,20 +14,20 @@
         "psr-4": { "Zikula\\PrinterTheme\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula" : {
             "core-compatibility": ">=3.0.0",
             "class": "Zikula\\PrinterTheme\\ZikulaPrinterTheme",
             "displayname": "Printer Theme",
+            "icon": "fas fa-print",
             "capabilities": {
                 "user": {
                     "theme": true
                 },
                 "admin": {
-                    "theme": false,
-                    "icon": "fas fa-print"
+                    "theme": false
                 }
             }
         }
