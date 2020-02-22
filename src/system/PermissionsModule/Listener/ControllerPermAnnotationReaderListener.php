@@ -28,7 +28,7 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
     /**
      * flag of route attribute parameter
      */
-    const ROUTE_ATTRIBUTE_FLAG = '$';
+    private const ROUTE_ATTRIBUTE_FLAG = '$';
 
     /**
      * @var array
@@ -124,9 +124,11 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         if (array_sum(array_map('is_string', $schema)) !== count($schema)) {
             return false;
         }
-        if (((false !== mb_strpos($schema[0], ':')) && (2 !== mb_substr_count($schema[0], ':')))
-            || ((false !== mb_strpos($schema[1], ':')) && (2 !== mb_substr_count($schema[1], ':')))) {
-                return false;
+        if (
+            (false !== mb_strpos($schema[0], ':') && 2 !== mb_substr_count($schema[0], ':'))
+            || (false !== mb_strpos($schema[1], ':') && 2 !== mb_substr_count($schema[1], ':'))
+        ) {
+            return false;
         }
         if (false === array_key_exists($schema[2], $this->accessMap)) {
             return false;
