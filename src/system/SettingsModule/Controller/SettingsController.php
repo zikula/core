@@ -32,12 +32,12 @@ use Zikula\UsersModule\Collector\ProfileModuleCollector;
 /**
  * Class SettingsController
  * @Route("")
+ * @PermissionCheck("admin")
  */
 class SettingsController extends AbstractController
 {
     /**
      * @Route("")
-     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaSettingsModule/Settings/main.html.twig")
      *
@@ -89,7 +89,6 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/locale", options={"i18n"=false})
-     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaSettingsModule/Settings/locale.html.twig")
      *
@@ -148,7 +147,6 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/phpinfo")
-     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaSettingsModule/Settings/phpinfo.html.twig")
      *
@@ -172,7 +170,6 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/toggleeditinplace")
-     * @PermissionCheck("admin")
      * @Theme("admin")
      *
      * Toggles the "Edit in place" translation functionality.
