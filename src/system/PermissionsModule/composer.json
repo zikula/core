@@ -14,20 +14,20 @@
         "psr-4": { "Zikula\\PermissionsModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule",
             "core-compatibility": ">=3.0.0",
-            "capabilities": {
-                "admin": {
-                    "route": "zikulapermissionsmodule_permission_list",
-                    "icon": "fas fa-key"
-                }
-            },
             "displayname": "Permissions",
             "url": "permissions",
+            "icon": "fas fa-key",
+            "capabilities": {
+                "admin": {
+                    "route": "zikulapermissionsmodule_permission_list"
+                }
+            },
             "securityschema": {
                 "ZikulaPermissionsModule::": "::"
             }

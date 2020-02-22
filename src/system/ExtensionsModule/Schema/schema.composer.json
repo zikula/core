@@ -73,6 +73,7 @@
                         "class": {"type": "string"},
                         "displayname": {"type": "string"},
                         "url": {"type": "string"},
+                        "icon": {"type": "string"},
                         "oldnames": {"type": "array"},
                         "capabilities": {
                             "type": "object",

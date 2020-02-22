@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\SearchModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula": {
@@ -22,12 +22,14 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Site search",
             "url": "search",
+            "icon": "fas fa-search",
             "capabilities": {
                 "admin": {
-                    "route": "zikulasearchmodule_config_config",
-                    "icon": "fas fa-search"
+                    "route": "zikulasearchmodule_config_config"
                 },
-                "user": {"route": "zikulasearchmodule_search_execute"}
+                "user": {
+                    "route": "zikulasearchmodule_search_execute"
+                }
             },
             "securityschema": {
                 "ZikulaSearchModule::": "Module name::",

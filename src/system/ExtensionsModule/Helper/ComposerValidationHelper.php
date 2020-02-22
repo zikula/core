@@ -111,11 +111,14 @@ class ComposerValidationHelper
         $this->content = json_decode($this->rawContent); // returns null on failure
         if (empty($this->content)) {
             $error = $this->jsonErrorCodes[json_last_error()];
-            $this->errors[] = $this->translator->trans('Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.', [
-                '%component%' => $this->bundleName,
-                '%filePath%' => $this->filePath,
-                '%error%' => $error
-            ]);
+            $this->errors[] = $this->translator->trans(
+                'Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.',
+                [
+                    '%component%' => $this->bundleName,
+                    '%filePath%' => $this->filePath,
+                    '%error%' => $error
+                ]
+            );
 
             return false;
         }
@@ -140,12 +143,15 @@ class ComposerValidationHelper
 
         if (!$validator->isValid()) {
             foreach ($validator->getErrors() as $errorDetails) {
-                $this->errors[] = $this->translator->trans('Error found in composer file of %component% (%filePath%) in property "%property%": %error%.', [
-                    '%component%' => $this->bundleName,
-                    '%filePath%' => $this->filePath,
-                    '%property%' => $errorDetails['property'],
-                    '%error%' => $errorDetails['message']
-                ]);
+                $this->errors[] = $this->translator->trans(
+                    'Error found in composer file of %component% (%filePath%) in property "%property%": %error%.',
+                    [
+                        '%component%' => $this->bundleName,
+                        '%filePath%' => $this->filePath,
+                        '%property%' => $errorDetails['property'],
+                        '%error%' => $errorDetails['message']
+                    ]
+                );
             }
         }
     }

@@ -42,17 +42,15 @@
     },
     "extra": {
         "zikula": {
-            "url": "theme",
             "class": "Zikula\\ThemeModule\\ZikulaThemeModule",
             "core-compatibility": ">=3.0.0",
             "displayname": "Theme Module",
-            "oldnames": [],
+            "url": "theme",
+            "icon": "fas fa-palette",
             "capabilities": {
                 "admin": {
-                    "route": "zikulathememodule_config_config",
-                    "icon": "fas fa-palette"
-                },
-                "user": {"route": "zikulathememodule_user_index"}
+                    "route": "zikulathememodule_config_config"
+                }
             },
             "securityschema": {
                 "ZikulaThemeModule::": "ThemeName::",

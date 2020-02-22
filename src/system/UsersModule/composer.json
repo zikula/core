@@ -14,21 +14,22 @@
         "psr-4": { "Zikula\\UsersModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula": {
-            "url": "users",
             "class": "Zikula\\UsersModule\\ZikulaUsersModule",
             "core-compatibility": ">=3.0.0",
             "displayname": "Users Module",
-            "oldnames": [],
+            "url": "users",
+            "icon": "fas fa-users-cog",
             "capabilities": {
                 "admin": {
-                    "route": "zikulausersmodule_useradministration_list",
-                    "icon": "fas fa-users-cog"
+                    "route": "zikulausersmodule_useradministration_list"
                 },
-                "user": {"route": "zikulausersmodule_account_menu"}
+                "user": {
+                    "route": "zikulausersmodule_account_menu"
+                }
             },
             "securityschema": {
                 "ZikulaUsersModule::": "Uname::User ID",

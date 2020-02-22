@@ -14,20 +14,20 @@
         "psr-4": { "Zikula\\AtomTheme\\": "" }
     },
     "require": {
-        "php": ">=7.2.0"
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula" : {
             "core-compatibility": ">=3.0.0",
             "class": "Zikula\\AtomTheme\\ZikulaAtomTheme",
             "displayname": "Atom Theme",
+            "icon": "fas fa-atom",
             "capabilities": {
                 "user": {
                     "theme": true
                 },
                 "admin": {
-                    "theme": false,
-                    "icon": "fas fa-atom"
+                    "theme": false
                 }
             }
         }

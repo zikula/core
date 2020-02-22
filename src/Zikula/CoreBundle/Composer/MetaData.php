@@ -87,6 +87,7 @@ class MetaData implements ArrayAccess
         $this->displayName = $json['extra']['zikula']['displayname'] ?? '';
         $this->url = $json['extra']['zikula']['url'] ?? '';
         $this->oldNames = $json['extra']['zikula']['oldnames'] ?? [];
+        $this->icon = $json['extra']['zikula']['icon'] ?? '';
         $this->capabilities = $json['extra']['zikula']['capabilities'] ?? [];
         $this->securitySchema = $json['extra']['zikula']['securityschema'] ?? [];
         $this->extensionType = $json['extensionType'] ?? self::TYPE_MODULE;
@@ -191,6 +192,16 @@ class MetaData implements ArrayAccess
     public function getOldNames(): array
     {
         return $this->oldNames;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): void
+    {
+        $this->icon = $icon;
     }
 
     public function getCapabilities(): array
