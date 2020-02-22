@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\PermissionsModule\Annotation\PermRequired as PermAnnotation;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
@@ -88,7 +88,7 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         $controllerClassName = get_class($controller);
         $reflectionClass = new \ReflectionClass($controllerClassName);
         $reflectionMethod = $reflectionClass->getMethod($method);
-        $permAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, PermAnnotation::class);
+        $permAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, PermissionCheck::class);
         if (!$permAnnotation) {
             return;
         }
@@ -101,19 +101,19 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
 
     private function formatSchema($permAnnotation, Request $request): array
     {
-        if (!is_array($permAnnotation->value) && false !== $constant = array_search($permAnnotation->value, $this->accessMap)) {
-            return [$request->attributes->get('_zkModule') . '::', '::', constant($constant)];
+        if (!is_array($permAnnotation->value) && $constant = $this->getValidConstant($permAnnotation->value)) {
+            return [$request->attributes->get('_zkModule') . '::', '::', $constant];
         }
 
         if ($this->isValidSchema($permAnnotation->value)) {
             return [
                 $this->replaceRouteAttributes($permAnnotation->value[0], $request),
                 $this->replaceRouteAttributes($permAnnotation->value[1], $request),
-                constant($permAnnotation->value[2])
+                $this->getValidConstant($permAnnotation->value[2])
             ];
         }
 
-        throw new AnnotationException('Invalid schema in @Annotation: @PermRequired(' . $permAnnotation->value . ')');
+        throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(' . $permAnnotation->value . ')');
     }
 
     private function isValidSchema(array $schema): bool
@@ -130,35 +130,57 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         ) {
             return false;
         }
-        if (false === array_key_exists($schema[2], $this->accessMap)) {
-            return false;
-        }
 
         return true;
     }
 
     private function replaceRouteAttributes(string $segment, Request $request): string
     {
-        if (!$this->hasRouteAttribute($segment)) {
+        if (!$this->hasFlag($segment)) {
             return $segment;
         }
-        if (1 !== preg_match('/(\$[^:\n]+)/' , $segment, $matches)) {
-            throw new AnnotationException('Invalid schema in @Annotation: @PermRequired(). Could not match route attributes');
+        if (1 !== preg_match('/\$([^:\n]+)/' , $segment, $matches)) {
+            throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(). Could not match route attributes');
         }
-        unset($matches[0]); // first key is unneeded full match
 
-        foreach ($matches as $name) {
-            if ($request->attributes->has(mb_substr($name, 1))) {
-                $value = $request->attributes->get(mb_substr($name, 1));
+        foreach (array_filter($matches, [$this, 'filterMatches']) as $name) {
+            if ($request->attributes->has($name)) {
+                $value = $request->attributes->get($name);
             }
-            $segment = str_replace($name, $value, $segment);
+            $segment = str_replace(self::ROUTE_ATTRIBUTE_FLAG . $name, $value, $segment);
         }
 
         return $segment;
     }
 
-    private function hasRouteAttribute(string $value): bool
+    private function filterMatches(string $value) : bool
+    {
+        return !$this->hasFlag($value);
+    }
+
+    private function hasFlag(string $value): bool
     {
         return false !== mb_strpos($value, self::ROUTE_ATTRIBUTE_FLAG);
+    }
+
+    private function getValidConstant(string $string): int
+    {
+        if ($this->isValidConstantValue($string)) {
+            if (FALSE !== array_key_exists($string, $this->accessMap)) {
+                return constant($string);
+            }
+            if (FALSE !== $key = array_search($string, $this->accessMap)) {
+                return constant($key);
+            }
+        }
+    }
+
+    private function isValidConstantValue(string $string): bool
+    {
+        if (false === array_key_exists($string, $this->accessMap) && false === array_search($string, $this->accessMap)) {
+            throw new AnnotationException('Invalid schema in @Annotation @PermissionCheck(). Access level invalid.');
+        }
+
+        return true;
     }
 }

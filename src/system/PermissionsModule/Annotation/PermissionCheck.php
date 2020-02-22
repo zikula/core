@@ -21,8 +21,8 @@ use Doctrine\Common\Annotations\Annotation;
  * Controller action permissions
  *
  * This annotation is used in a Controller Action Method in one of two ways.
- * 1. like so: @PermRequired("admin")
- *     Possible values are:
+ * 1. like so: @PermissionCheck("admin")
+ *     Possible alias values are:
  *       'admin'
  *       'delete'
  *       'add'
@@ -35,17 +35,19 @@ use Doctrine\Common\Annotations\Annotation;
  *       the component will be like 'AcmeFooModule::'
  *       the instance will be '::'
  *       the level will be the corresponding ACCESS_* constant (e.g. ACCESS_ADMIN)
+ *     Also allowed: @PermissionCheck("ACCESS_ADMIN")
  *
- * 2. You can also pass any valid permission schema (e.g. @PermRequired({"ZikulaCategoriesModule::category", "ID::5", "ACCESS_EDIT"})
+ * 2. You can also pass any valid permission schema (e.g. @PermissionCheck({"ZikulaCategoriesModule::category", "ID::5", "ACCESS_EDIT"})
  *     - note the use of curly brackets `{}` within for this type of value
  *     The listener will attempt to replace any variable with a route attribute value. For example if this is the annotation:
- *       @PermRequired({"ZikulaGroupsModule::", "$gid::", "ACCESS_EDIT"})
+ *       @PermissionCheck({"ZikulaGroupsModule::", "$gid::", "ACCESS_EDIT"})
  *     Then, the listener will look for an 'gid' attribute in the request object and replace the variable name with its value
  *     when testing for permissions.
- *     You can also use `$_zkModule` as the Extension name if preferred, e.g. @PermRequired({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
+ *     You can also use `$_zkModule` as the Extension name if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
+ *     You can also use access alias if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
  *
  * @see \Zikula\PermissionsModule\Listener\ControllerPermAnnotationReaderListener
  */
-class PermRequired extends Annotation
+class PermissionCheck extends Annotation
 {
 }

@@ -30,14 +30,14 @@ use Zikula\GroupsModule\Form\Type\CreateGroupType;
 use Zikula\GroupsModule\Form\Type\EditGroupType;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
-use Zikula\PermissionsModule\Annotation\PermRequired;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 class GroupController extends AbstractController
 {
     /**
      * @Route("/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
-     * @PermRequired("overview")
+     * @PermissionCheck("overview")
      * @Template("@ZikulaGroupsModule/Group/list.html.twig")
      *
      * View a list of all groups (user view).
@@ -70,7 +70,7 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
-     * @PermRequired("edit")
+     * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/adminList.html.twig")
      *
@@ -100,7 +100,7 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/create")
-     * @PermRequired("add")
+     * @PermissionCheck("add")
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/create.html.twig")
      *
@@ -133,7 +133,7 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
-     * @PermRequired({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
+     * @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/edit.html.twig")
      *
@@ -168,7 +168,7 @@ class GroupController extends AbstractController
 
     /**
      * @Route("/admin/remove/{gid}", requirements={"gid"="\d+"})
-     * @PermRequired({"$_zkModule::", "$gid::", "ACCESS_DELETE"})
+     * @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_DELETE"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/remove.html.twig")
      *

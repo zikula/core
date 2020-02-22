@@ -21,7 +21,7 @@ use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Annotation\PermRequired;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
 use Zikula\SettingsModule\Form\Type\MainSettingsType;
@@ -37,7 +37,7 @@ class SettingsController extends AbstractController
 {
     /**
      * @Route("")
-     * @PermRequired("admin")
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaSettingsModule/Settings/main.html.twig")
      *
@@ -89,7 +89,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/locale", options={"i18n"=false})
-     * @PermRequired("admin")
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaSettingsModule/Settings/locale.html.twig")
      *
@@ -148,7 +148,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/phpinfo")
-     * @PermRequired("admin")
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaSettingsModule/Settings/phpinfo.html.twig")
      *
@@ -172,7 +172,7 @@ class SettingsController extends AbstractController
 
     /**
      * @Route("/toggleeditinplace")
-     * @PermRequired("admin")
+     * @PermissionCheck("admin")
      * @Theme("admin")
      *
      * Toggles the "Edit in place" translation functionality.
