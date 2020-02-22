@@ -38,6 +38,7 @@ This annotation is used in a Controller Action Method in one of two ways.
 
 Example:
 
+```php
     /**
      * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
@@ -52,3 +53,4 @@ Example:
         EventDispatcherInterface $eventDispatcher
     ) { ... }
 
+```
