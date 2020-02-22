@@ -1,0 +1,23 @@
+{
+  "name": "zikula/foo-module",
+  "description": "A foo module.",
+  "type": "zikula-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zikula Team"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Zikula\\FooModule\\": "" }
+  },
+  "require": {
+    "php": ">=7.2.5"
+  },
+  "extra": {
+    "zikula": {
+      "class": "Zikula\\SpecModule\\ZikulaFooModule",
+      "core-compatibility": ">=1.4.2"
+    }
+  }
+}
