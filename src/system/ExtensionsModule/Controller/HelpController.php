@@ -42,8 +42,7 @@ class HelpController extends AbstractController
         RouterInterface $router,
         AssetFilter $assetFilter,
         string $moduleName
-    ): Response
-    {
+    ): Response {
         $page = $request->query->get('page', 'README');
         if (false !== mb_strpos($page, '..')) {
             throw new \Exception('Invalid page "' . $page . '".');
@@ -76,7 +75,7 @@ class HelpController extends AbstractController
         // rewrite local links
         $content = preg_replace_callback(
             '/\[(.*?)\]\((.*?)\)/',
-            function ($match) use($router, $moduleName, $raw) {
+            function ($match) use ($router, $moduleName, $raw) {
                 if (false === mb_strpos($match[2], '.md')) {
                     return $match[0];
                 }

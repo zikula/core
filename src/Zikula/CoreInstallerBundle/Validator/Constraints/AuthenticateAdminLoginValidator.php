@@ -90,7 +90,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
                 $this->setPassword((int) $user['uid'], $object['password']);
             } elseif (
                 // new way
-                $passwordEncoder->isPasswordValid($user['pass'], $object['password'], NULL)) {
+                $passwordEncoder->isPasswordValid($user['pass'], $object['password'], null)) {
                 $validPassword = true;
                 if ($passwordEncoder->needsRehash($user['pass'])) { // check to update hash to newer algo
                     $this->setPassword((int) $user['uid'], $object['password']);

@@ -491,7 +491,7 @@ class UserAdministrationController extends AbstractController
                 foreach ($users as $user) {
                     $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);
                     $count++;
-                    if ($count % 20 === 0) {
+                    if (0 === $count % 20) {
                         $this->getDoctrine()->getManager()->flush(); // flush manager every 20 reps
                     }
                 }
@@ -549,8 +549,8 @@ class UserAdministrationController extends AbstractController
         }
 
         if (is_array($users) && isset($users[$currentUser])) {
-            unset($users[$currentUser]); // remove the current user (admin)
-            unset($users[1]); // remove guest user if included
+            // remove the current user (admin) and guest user if included
+            unset($users[$currentUser], $users[1]);
         }
 
         return $users;
