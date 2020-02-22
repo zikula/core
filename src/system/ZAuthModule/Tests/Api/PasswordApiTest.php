@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Tests\Api;
 
-use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Api\PasswordApi;
