@@ -6,8 +6,8 @@ currentMenu: permissions
  - Class: `\Zikula\PermissionsModule\Annotation\PermissionCheck`
  - Also see: `\Zikula\PermissionsModule\Listener\ControllerPermissionCheckAnnotationReaderListener`
 
-This annotation is used in a Controller Action Method in one of two ways.
-1. like so: `@PermissionCheck("admin")`
+This annotation is used in a Controller Action Method OR CLASS in one of two ways.
+1. Like so: `@PermissionCheck("admin")`
     Possible alias values are:
       - 'admin'
       - 'delete'
@@ -36,9 +36,17 @@ This annotation is used in a Controller Action Method in one of two ways.
     You can also use `$_zkModule` as the Extension name if preferred, e.g. `@PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})`
     You can also use the access alias if preferred, e.g. `@PermissionCheck({"$_zkModule::", "$gid::", "edit"})`
 
-Example:
+### Please note: You cannot use @PermissionCheck() in *both* the Class and the Method. This will produce an AnnotationException.
 
+---
+
+## Examples:
+
+### Method-level
 ```php
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
+// ...
+
 /**
  * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
  * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
@@ -52,4 +60,24 @@ public function editAction(
     GroupEntity $groupEntity,
     EventDispatcherInterface $eventDispatcher
 ) { ... }
+```
+
+### Class-level
+```php
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
+// ...
+
+/**
+ * Class ThemeController
+ * @Route("/config")
+ * @PermissionCheck("delete")
+ */
+class ConfigController extends AbstractController
+{
+    /**
+     * @Route("/config")
+     * @Theme("admin")
+     * @Template("@ZikulaThemeModule/Config/config.html.twig")
+     */
+    public function configAction() { ... }
 ```

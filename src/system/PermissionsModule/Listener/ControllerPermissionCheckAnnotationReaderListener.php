@@ -15,6 +15,7 @@ namespace Zikula\PermissionsModule\Listener;
 
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\Reader;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -26,7 +27,7 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 class ControllerPermissionCheckAnnotationReaderListener implements EventSubscriberInterface
 {
     /**
-     * flag of route attribute parameter
+     * flag of route attribute parameter variable
      */
     private const ROUTE_ATTRIBUTE_FLAG = '$';
 
@@ -84,19 +85,36 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         if (!is_array($controller)) {
             return;
         }
-        [$controller, $method] = $controller;
-        $controllerClassName = get_class($controller);
-        $reflectionClass = new \ReflectionClass($controllerClassName);
-        $reflectionMethod = $reflectionClass->getMethod($method);
-        $permAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, PermissionCheck::class);
-        if (!$permAnnotation) {
+        $annotationValue = $this->getAnnotationValueFromController($controller);
+        if (!$annotationValue) {
             return;
         }
-        [$component, $instance, $level] = $this->formatSchema($permAnnotation, $event->getRequest());
+
+        [$component, $instance, $level] = $this->formatSchema($annotationValue, $event->getRequest());
 
         if (!$this->permissionApi->hasPermission($component, $instance, $level)) {
             throw new AccessDeniedException();
         }
+    }
+
+    private function getAnnotationValueFromController(array $controller): ?object
+    {
+        [$controller, $method] = $controller;
+        $controllerClassName = get_class($controller);
+        $reflectionClass = new \ReflectionClass($controllerClassName);
+        if (!($controller instanceof AbstractController)) {
+            return null;
+        }
+        $classPermissionAnnotation = $this->annotationReader->getClassAnnotation($reflectionClass, PermissionCheck::class);
+        $reflectionMethod = $reflectionClass->getMethod($method);
+        $methodPermissionAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, PermissionCheck::class);
+        if (!$classPermissionAnnotation && !$methodPermissionAnnotation) {
+            return null;
+        } else if ($classPermissionAnnotation && $methodPermissionAnnotation) {
+            throw AnnotationException::semanticalError('You cannot use @PermissionCheck() annotation at the method and class level at the same time.');
+        }
+
+        return $classPermissionAnnotation ?? $methodPermissionAnnotation;
     }
 
     private function formatSchema($permAnnotation, Request $request): array

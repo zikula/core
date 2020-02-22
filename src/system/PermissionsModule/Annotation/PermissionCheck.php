@@ -17,11 +17,11 @@ use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
- * @Target({"METHOD"})
+ * @Target({"METHOD", "CLASS"})
  * Controller action permissions
  *
- * This annotation is used in a Controller Action Method in one of two ways.
- * 1. like so: @PermissionCheck("admin")
+ * This annotation is used in a Controller Action Method OR Class in one of two ways.
+ * 1. Like so: @PermissionCheck("admin")
  *     Possible alias values are:
  *       'admin'
  *       'delete'
@@ -45,6 +45,8 @@ use Doctrine\Common\Annotations\Annotation;
  *     when testing for permissions.
  *     You can also use `$_zkModule` as the Extension name if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
  *     You can also use the access alias if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
+ *
+ * Please note: You cannot use @PermissionCheck() in *both* the Class and the Method. This will produce an AnnotationException.
  *
  * @see \Zikula\PermissionsModule\Listener\ControllerPermissionCheckAnnotationReaderListener
  */
