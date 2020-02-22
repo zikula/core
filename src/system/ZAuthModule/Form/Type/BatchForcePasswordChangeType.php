@@ -23,7 +23,6 @@ use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 
 class BatchForcePasswordChangeType extends AbstractType
 {
-
     /**
      * @var GroupRepositoryInterface
      */
@@ -61,8 +60,8 @@ class BatchForcePasswordChangeType extends AbstractType
     private function getChoices(): array
     {
         $choices = [
-            /** @Translate */'Users with old passwords (recommended)' => 'old',
-            /** @Translate */'All users' => 'all'
+/** @Translate */'Users with old passwords (recommended)' => 'old',
+/** @Translate */'All users' => 'all'
         ];
         /** @var \Zikula\GroupsModule\Entity\GroupEntity[] $groups */
         $groups = $this->groupRepository->getGroups();
