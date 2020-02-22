@@ -70,7 +70,7 @@ use Zikula\PermissionsModule\Annotation\PermissionCheck;
 /**
  * Class ThemeController
  * @Route("/config")
- * @PermissionCheck("delete")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {

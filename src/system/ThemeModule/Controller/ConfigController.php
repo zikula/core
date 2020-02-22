@@ -31,7 +31,7 @@ use Zikula\ThemeModule\Form\Type\ThemeType;
 /**
  * Class ThemeController
  * @Route("/config")
- * @PermissionCheck("delete")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
