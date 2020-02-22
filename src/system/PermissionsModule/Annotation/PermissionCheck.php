@@ -46,7 +46,7 @@ use Doctrine\Common\Annotations\Annotation;
  *     You can also use `$_zkModule` as the Extension name if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
  *     You can also use access alias if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
  *
- * @see \Zikula\PermissionsModule\Listener\ControllerPermAnnotationReaderListener
+ * @see \Zikula\PermissionsModule\Listener\ControllerPermissionCheckAnnotationReaderListener
  */
 class PermissionCheck extends Annotation
 {

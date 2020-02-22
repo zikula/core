@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
+class ControllerPermissionCheckAnnotationReaderListener implements EventSubscriberInterface
 {
     /**
      * flag of route attribute parameter
