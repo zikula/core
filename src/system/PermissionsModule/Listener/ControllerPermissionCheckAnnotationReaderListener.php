@@ -101,8 +101,8 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
 
     private function formatSchema($permAnnotation, Request $request): array
     {
-        if (!is_array($permAnnotation->value) && $constant = $this->getConstant($permAnnotation->value)) {
-            return [$request->attributes->get('_zkModule') . '::', '::', $constant];
+        if (is_string($permAnnotation->value)) {
+            return [$request->attributes->get('_zkModule') . '::', '::', $this->getConstant($permAnnotation->value)];
         }
 
         if ($this->isValidSchema($permAnnotation->value)) {
@@ -113,7 +113,7 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
             ];
         }
 
-        throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(' . $permAnnotation->value . ')');
+        throw new AnnotationException('Invalid schema in @Annotation: @PermissionCheck(). Value must be string or an array.');
     }
 
     private function isValidSchema(array $schema): bool
@@ -169,6 +169,6 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         if (false !== $key = array_search($string, $this->accessMap)) {
             return constant($key);
         }
-        throw new AnnotationException('Invalid schema in @Annotation @PermissionCheck(). Access level invalid.');
+        throw new AnnotationException('Invalid schema in @Annotation @PermissionCheck(). Access level string invalid.');
     }
 }
