@@ -101,7 +101,7 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
 
     private function formatSchema($permAnnotation, Request $request): array
     {
-        if (!is_array($permAnnotation->value) && $constant = $this->getValidConstant($permAnnotation->value)) {
+        if (!is_array($permAnnotation->value) && $constant = $this->getConstant($permAnnotation->value)) {
             return [$request->attributes->get('_zkModule') . '::', '::', $constant];
         }
 
@@ -109,7 +109,7 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
             return [
                 $this->replaceRouteAttributes($permAnnotation->value[0], $request),
                 $this->replaceRouteAttributes($permAnnotation->value[1], $request),
-                $this->getValidConstant($permAnnotation->value[2])
+                $this->getConstant($permAnnotation->value[2])
             ];
         }
 
@@ -146,8 +146,8 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         foreach (array_filter($matches, [$this, 'filterMatches']) as $name) {
             if ($request->attributes->has($name)) {
                 $value = $request->attributes->get($name);
+                $segment = str_replace(self::ROUTE_ATTRIBUTE_FLAG . $name, $value, $segment);
             }
-            $segment = str_replace(self::ROUTE_ATTRIBUTE_FLAG . $name, $value, $segment);
         }
 
         return $segment;
@@ -163,24 +163,14 @@ class ControllerPermAnnotationReaderListener implements EventSubscriberInterface
         return false !== mb_strpos($value, self::ROUTE_ATTRIBUTE_FLAG);
     }
 
-    private function getValidConstant(string $string): int
+    private function getConstant(string $string): int
     {
-        if ($this->isValidConstantValue($string)) {
-            if (false !== array_key_exists($string, $this->accessMap)) {
-                return constant($string);
-            }
-            if (false !== $key = array_search($string, $this->accessMap)) {
-                return constant($key);
-            }
+        if (false !== array_key_exists($string, $this->accessMap)) {
+            return constant($string);
         }
-    }
-
-    private function isValidConstantValue(string $string): bool
-    {
-        if (false === array_key_exists($string, $this->accessMap) && false === array_search($string, $this->accessMap)) {
-            throw new AnnotationException('Invalid schema in @Annotation @PermissionCheck(). Access level invalid.');
+        if (false !== $key = array_search($string, $this->accessMap)) {
+            return constant($key);
         }
-
-        return true;
+        throw new AnnotationException('Invalid schema in @Annotation @PermissionCheck(). Access level invalid.');
     }
 }
