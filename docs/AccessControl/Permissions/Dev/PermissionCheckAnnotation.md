@@ -39,18 +39,17 @@ This annotation is used in a Controller Action Method in one of two ways.
 Example:
 
 ```php
-    /**
-     * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
-     * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
-     * @Theme("admin")
-     * @Template("@ZikulaGroupsModule/Group/edit.html.twig")
-     *
-     * Modify a group.
-     */
-    public function editAction(
-        Request $request,
-        GroupEntity $groupEntity,
-        EventDispatcherInterface $eventDispatcher
-    ) { ... }
-
+/**
+ * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
+ * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
+ * @Theme("admin")
+ * @Template("@ZikulaGroupsModule/Group/edit.html.twig")
+ *
+ * Modify a group.
+ */
+public function editAction(
+    Request $request,
+    GroupEntity $groupEntity,
+    EventDispatcherInterface $eventDispatcher
+) { ... }
 ```
