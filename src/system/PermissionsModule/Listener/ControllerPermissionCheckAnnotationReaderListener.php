@@ -110,7 +110,7 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         $methodPermissionAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, PermissionCheck::class);
         if (!$classPermissionAnnotation && !$methodPermissionAnnotation) {
             return null;
-        } else if ($classPermissionAnnotation && $methodPermissionAnnotation) {
+        } elseif ($classPermissionAnnotation && $methodPermissionAnnotation) {
             throw AnnotationException::semanticalError('You cannot use @PermissionCheck() annotation at the method and class level at the same time.');
         }
 
