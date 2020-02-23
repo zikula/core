@@ -23,5 +23,5 @@ First of all, permission rules are always applied to [user groups](../Groups/REA
 
 - [How to implement permissions](Dev/Implementation.md)
 - [PermissionApi](Dev/PermissionApi.md)
-- [PermissionCheck Annotation](PermissionCheckAnnotation.md)
+- [PermissionCheck Annotation](Dev/PermissionCheckAnnotation.md)
 - [CategoryPermissionApi](../Integration/Categories/Dev/CategoryPermissionApi.md)
