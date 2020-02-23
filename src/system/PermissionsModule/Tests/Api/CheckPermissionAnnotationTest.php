@@ -152,7 +152,6 @@ class CheckPermissionAnnotationTest extends AbstractPermissionTestCase
             $this->expectException($expected);
             $this->invokeMethod($listener, 'getAnnotationValueFromController', [$controller]);
         }
-
     }
 
     public function controllerProvider(): array
