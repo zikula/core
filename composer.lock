@@ -1897,12 +1897,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "37dd61c45fdc51100ba445551ce278f6401c246f"
+                "reference": "ced089434df320de6df9b610854b8fba8bfe1d1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/37dd61c45fdc51100ba445551ce278f6401c246f",
-                "reference": "37dd61c45fdc51100ba445551ce278f6401c246f",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/ced089434df320de6df9b610854b8fba8bfe1d1e",
+                "reference": "ced089434df320de6df9b610854b8fba8bfe1d1e",
                 "shasum": ""
             },
             "require": {
@@ -1939,7 +1939,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2020-01-21T16:17:18+00:00"
+            "time": "2020-02-22T17:12:02+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
