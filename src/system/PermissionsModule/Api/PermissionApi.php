@@ -133,7 +133,11 @@ class PermissionApi implements PermissionApiInterface
             $component = $this->normalizeRegexString($perm['component']);
             $instance = $this->normalizeRegexString($perm['instance']);
             $level = (int)$perm['level']; // this string must be a numeric and not normalized.
-            $groupPerms[] = ['component' => $component, 'instance' => $instance, 'level' => $level];
+            $groupPerms[] = [
+                'component' => $component,
+                'instance' => $instance,
+                'level' => $level
+            ];
         }
 
         $this->groupPermsByUser[$user] = $groupPerms;
