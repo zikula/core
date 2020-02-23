@@ -13,99 +13,22 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Tests\Api;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\Error\Notice;
-use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionException;
-use Symfony\Component\Translation\IdentityTranslator;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
-use Zikula\PermissionsModule\Tests\Api\Fixtures\StubPermissionRepository;
-use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Entity\UserEntity;
 
-class PermissionApiTest extends TestCase
+class PermissionApiTest extends AbstractPermissionTestCase
 {
-    /**
-     * for testing purposes only.
-     */
-    public const RANDOM_USER_ID = 99;
-
-    /**
-     * @var PermissionRepositoryInterface
-     */
-    private $permRepo;
-
-    /**
-     * @var UserEntity
-     */
-    private $user;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepo;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    protected function setUp(): void
-    {
-        $this->permRepo = new StubPermissionRepository();
-        $this->user = $this
-            ->getMockBuilder(UserEntity::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->userRepo = $this
-            ->getMockBuilder(UserRepositoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->userRepo
-            ->method('findByUids')
-            ->with($this->anything())
-            ->willReturnCallback(function (array $uids) {
-                $groups = new ArrayCollection();
-                // getGroups returns [gid => $group, gid => $group, ...]
-                if (in_array(self::RANDOM_USER_ID, $uids, true)) {
-                    $groups = new ArrayCollection([GroupsConstant::GROUP_ID_USERS => []]);
-                } elseif (in_array(Constant::USER_ID_ADMIN, $uids, true)) {
-                    $groups = new ArrayCollection([GroupsConstant::GROUP_ID_USERS => [], GroupsConstant::GROUP_ID_ADMIN => []]);
-                }
-                $this->user
-                    ->method('getGroups')
-                    ->willReturn($groups);
-
-                return [$this->user]; // must return an array of users.
-            });
-        $this->currentUserApi = $this
-            ->getMockBuilder(CurrentUserApiInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->translator = new IdentityTranslator();
-    }
-
     /**
      * Call protected/private method of the api class.
      *
      * @return mixed Method return
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     private function invokeMethod(PermissionApiInterface $api, string $methodName, array $parameters = [])
     {
-        $reflection = new ReflectionClass(get_class($api));
+        $reflection = new \ReflectionClass(get_class($api));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

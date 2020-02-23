@@ -32,6 +32,11 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
     private const ROUTE_ATTRIBUTE_FLAG = '$';
 
     /**
+     * regex pattern to search for embedded attribute parameters
+     */
+    private const REGEX_PATTERN = '/(^|:)\\' . self::ROUTE_ATTRIBUTE_FLAG . '(\w+)/m';
+
+    /**
      * @var array
      */
     private $accessMap = [
@@ -155,16 +160,14 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         if (!$this->hasFlag($segment)) {
             return $segment;
         }
-        if (1 !== preg_match('/\$([^:\n]+)/', $segment, $matches)) {
+        if (false === preg_match_all(self::REGEX_PATTERN, $segment, $matches)) {
             throw new AnnotationException('Invalid schema in @PermissionCheck() annotation. Could not match route attributes');
         }
-        $filterMatches = function(string $value): bool {
-            return !$this->hasFlag($value);
-        };
-        foreach (array_filter($matches, $filterMatches) as $name) {
+        foreach ($matches[2] as $name) {
             if ($request->attributes->has($name)) {
                 $value = $request->attributes->get($name);
-                $segment = str_replace(self::ROUTE_ATTRIBUTE_FLAG . $name, $value, $segment);
+                $pattern = str_replace('(\w+)', $name, self::REGEX_PATTERN);
+                $segment = preg_replace($pattern, '${1}' . $value, $segment);
             }
         }
 
