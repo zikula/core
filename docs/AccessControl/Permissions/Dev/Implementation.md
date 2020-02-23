@@ -112,7 +112,7 @@ class PersonController extends AbstractController
 }
 ```
 
-Note this is not limited to one permission check for each method. It is possible to have multiple occurrences in a method's doc block, these are all evaluated independently then.
+Note this is limited to one permission check for each method. It is not possible to have multiple occurrences in a method's doc block. If more complex evaluations are required, permission API should be used instead (see above).
 
 It is also possible to use the annotation on class-level. But it is not allowed to use it for a class *and* for it's methods concurrently.
 
