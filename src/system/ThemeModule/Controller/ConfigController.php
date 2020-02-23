@@ -15,10 +15,8 @@ namespace Zikula\ThemeModule\Controller;
 
 use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
@@ -26,12 +24,14 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Form\Type\ThemeType;
 
 /**
  * Class ThemeController
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -39,8 +39,6 @@ class ConfigController extends AbstractController
      * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaThemeModule/Config/config.html.twig")
-     *
-     * @return array|RedirectResponse
      */
     public function configAction(
         Request $request,
@@ -48,10 +46,6 @@ class ConfigController extends AbstractController
         CacheClearer $cacheClearer,
         ExtensionRepositoryInterface $extensionRepository
     ) {
-        if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
-
         $criteria = Criteria::create()
             ->where(Criteria::expr()->in("type", [MetaData::TYPE_THEME, MetaData::TYPE_SYSTEM_THEME]))
             ->andWhere(Criteria::expr()->eq('state', Constant::STATE_ACTIVE));
