@@ -18,17 +18,17 @@ First of all, the category system offers some functions that are generally usefu
 
 ## Category registries
 
-The most powerful function, however, which really brings out the advantages mentioned above, is "Category Registries". These are entry points that determine where in the category tree a module wants to use categories for a particular entity.
+The most powerful function, however, which really brings out the advantages mentioned above, is "Category Registries". These are entry points that determine where in the category tree an extension wants to use categories for a particular entity.
 
-Several modules can use the same subtrees or different ones. For example, content pages and news articles could either use the same subject areas (politics, business, sports, etc.) or completely different categories could be used for the two areas. Each module can define whether only one or more of the categories from the subtree is allowed.
+Several extensions can use the same subtrees or different ones. For example, content pages and news articles could either use the same subject areas (politics, business, sports, etc.) or completely different categories could be used for the two areas. Each extension can define whether only one or more of the categories from the subtree is allowed.
 
-If several modules use the same categories, it is possible to link relevant content. One could show suitable downloads or videos under an article. Or you could display information from a knowledge base for the current product group in a webshop.
+If several extensions use the same categories, it is possible to link relevant content. One could show suitable downloads or videos under an article. Or you could display information from a knowledge base for the current product group in a webshop.
 
 The site operator can freely set the entry points of the registries. And above all, additional registries can be defined. An entity can also use several registries at the same time and thus get several category fields. So if the selection of a topic for a news article is not sufficient, but the selection of a department should also be possible, this can be realized via a second entry point, which refers to a subtree, under which categories for the different departments are located.
 
-This means that you can have any number of drop-down elements for a specific entity, which get their content from the categories. And all this content is dynamically extendable, translatable, can be provided with attributes and can be reused in other modules.
+This means that you can have any number of drop-down elements for a specific entity, which get their content from the categories. And all this content is dynamically extendable, translatable, can be provided with attributes and can be reused in other extensions.
 
-Finally, it is also possible to filter content based on access rights to the categories, if supported by the corresponding module. There are two variants: either the content is allowed for which access rights exist to all categories of all registries, or the content is allowed for which at least one authorization exists.
+Finally, it is also possible to filter content based on access rights to the categories, if supported by the corresponding extension. There are two variants: either the content is allowed for which access rights exist to all categories of all registries, or the content is allowed for which at least one authorization exists.
 
 ## For developers
 

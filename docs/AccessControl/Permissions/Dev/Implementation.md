@@ -211,4 +211,4 @@ Common approaches for handling such requirements are for example:
 
 If an extension utilises the side-wide category system. it could become helpful to be able to filter data based on permissions for categories.
 
-For further information about this please refer to the [Categories docs](../Integration/Categories/README.md), particularly [CategoryPermissionApi](../Integration/Categories/Dev/CategoryPermissionApi.md).
+For further information about this please refer to the [Categories docs](../../Integration/Categories/README.md), particularly [CategoryPermissionApi](../../Integration/Categories/Dev/CategoryPermissionApi.md).
