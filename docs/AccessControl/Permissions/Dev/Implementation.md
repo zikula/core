@@ -145,6 +145,18 @@ class ConfigController extends AbstractController
 
 For more details see the [PermissionCheck Annotation document](PermissionCheckAnnotation.md).
 
+## Twig templates
+
+You can use `hasPermission` inside templates similarly as in PHP. The only difference is that the permission level constants need to be declared as strings.
+
+Example:
+
+```twig
+{% if hasPermission('AcmePersonModule::', person.id ~ '::', 'ACCESS_READ') %}
+    <h3>{{ person.name }}</h3>
+{% endif %}
+```
+
 ## Special aspects
 
 ### Check permissions for specific users
