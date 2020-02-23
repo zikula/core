@@ -3,6 +3,35 @@ currentMenu: permissions
 ---
 # How to implement permissions
 
+## Declare permission schema
+
+An extension needs to declare all permission components and instance templates in `composer.json`. This is required to let the permissions system know them which helps supporting site administrators [looking up components and instances](../Management.md).
+
+The following example shows how this is done:
+
+```yaml
+{
+    "name": "acme/person-module",
+    ...
+    "extra": {
+        "zikula": {
+            ...
+            "securityschema": {
+                "AcmePersonModule::": "::",
+                "AcmePersonModule:SomeBlock:": "Block title::",
+                "AcmePersonModule:Person:": "Person ID::",
+                "AcmePersonModule:Address:": "Address ID::",
+                ...
+            }
+        }
+    }
+}
+```
+
+Each entry in the `securityschema` array consists of a component (key) and a template for the instances (value).
+
+The extension author is completely free in deciding which components and instances are supported.
+
 ## Basic usage
 
 Typically required permissions are checked for using the [PermissionApi](PermissionApi.md).
