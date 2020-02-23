@@ -17,11 +17,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
 use Zikula\SettingsModule\Form\Type\MainSettingsType;
@@ -32,6 +32,7 @@ use Zikula\UsersModule\Collector\ProfileModuleCollector;
 /**
  * Class SettingsController
  * @Route("")
+ * @PermissionCheck("admin")
  */
 class SettingsController extends AbstractController
 {
@@ -41,10 +42,6 @@ class SettingsController extends AbstractController
      * @Template("@ZikulaSettingsModule/Settings/main.html.twig")
      *
      * Settings for entire site.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     *
-     * @return array|RedirectResponse
      */
     public function mainAction(
         Request $request,
@@ -53,10 +50,6 @@ class SettingsController extends AbstractController
         ProfileModuleCollector $profileModuleCollector,
         MessageModuleCollector $messageModuleCollector
     ) {
-        if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
 
@@ -100,20 +93,12 @@ class SettingsController extends AbstractController
      * @Template("@ZikulaSettingsModule/Settings/locale.html.twig")
      *
      * Locale settings for entire site.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     *
-     * @return array|RedirectResponse
      */
     public function localeAction(
         Request $request,
         LocaleApiInterface $localeApi,
         VariableApiInterface $variableApi
     ) {
-        if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
 
@@ -166,15 +151,9 @@ class SettingsController extends AbstractController
      * @Template("@ZikulaSettingsModule/Settings/phpinfo.html.twig")
      *
      * Displays the content of {@see phpinfo()}.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function phpinfoAction(): array
     {
-        if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         ob_start();
         phpinfo();
         $phpinfo = ob_get_clean();
@@ -194,17 +173,11 @@ class SettingsController extends AbstractController
      * @Theme("admin")
      *
      * Toggles the "Edit in place" translation functionality.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function toggleEditInPlaceAction(
         Request $request,
         EditInPlaceActivator $activator
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         if ($request->hasSession() && ($session = $request->getSession())) {
             if ($session->has(EditInPlaceActivator::KEY)) {
                 $activator->deactivate();
