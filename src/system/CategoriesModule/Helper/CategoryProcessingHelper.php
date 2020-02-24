@@ -107,7 +107,7 @@ class CategoryProcessingHelper
                 // limit query to one result to avoid wasting performance
                 $mappings = $this->entityManager->getRepository($entityClass)
                     ->findBy(['category' => $category], [], 1);
-                if (count($mappings) > 0) {
+                if (0 < count($mappings)) {
                     // existing reference found
                     return false;
                 }
