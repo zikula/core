@@ -28,6 +28,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
@@ -41,14 +42,9 @@ use Zikula\UsersModule\Constant;
 class FilterListener implements EventSubscriberInterface
 {
     /**
-     * @var bool
+     * @var ZikulaHttpKernelInterface
      */
-    private $installed;
-
-    /**
-     * @var bool
-     */
-    private $isUpgrading;
+    private $kernel;
 
     /**
      * @var VariableApiInterface
@@ -75,22 +71,34 @@ class FilterListener implements EventSubscriberInterface
      */
     private $cacheDir;
 
+    /**
+     * @var bool
+     */
+    private $installed;
+
+    /**
+     * @var bool
+     */
+    private $isUpgrading;
+
     public function __construct(
-        bool $installed,
-        $isUpgrading, // cannot cast to bool because set with expression language
+        ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
         MailerApiInterface $mailer,
         TranslatorInterface $translator,
-        string $cacheDir
+        string $cacheDir,
+        bool $installed,
+        $isUpgrading // cannot cast to bool because set with expression language
     ) {
-        $this->installed = $installed;
-        $this->isUpgrading = $isUpgrading;
+        $this->kernel = $kernel;
         $this->variableApi = $variableApi;
         $this->em = $em;
         $this->mailer = $mailer;
         $this->translator = $translator;
         $this->cacheDir = $cacheDir;
+        $this->installed = $installed;
+        $this->isUpgrading = $isUpgrading;
     }
 
     public static function getSubscribedEvents()
@@ -199,7 +207,8 @@ class FilterListener implements EventSubscriberInterface
         $config['General']['use_base_path'] = false;
 
         // path to the filters used
-        $config['General']['filter_path'] = $this->getSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
+        $defaultPath = 'src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
+        $config['General']['filter_path'] = $this->kernel->getProjectDir() . '/' . $this->getSystemVar('idsrulepath', $defaultPath);
         // path to (writable) tmp directory
         $config['General']['tmp_path'] = $this->cacheDir . '/idsTmp';
         $config['General']['scan_keys'] = false;
@@ -219,16 +228,13 @@ class FilterListener implements EventSubscriberInterface
         // define which fields shouldn't be monitored (a[b]=c should be referenced via a.b)
         $config['General']['exceptions'] = $this->getSystemVar('idsexceptions', []);
 
-        // PHPIDS should run with PHP 5.1.2 but this is untested - set this value to force compatibilty with minor versions
-        $config['General']['min_php_version'] = '5.1.6';
-
         // caching settings
         // @todo: add UI for those caching settings
         $config['Caching'] = [];
 
         // caching method (session|file|database|memcached|none), default file
-        $config['Caching']['caching'] = 'none'; // deactivate caching for now
-        $config['Caching']['expiration_time'] = 600;
+        $config['Caching']['caching'] = $this->getSystemVar('idscachingtype', 'none');
+        $config['Caching']['expiration_time'] = $this->getSystemVar('idscachingexpiration', 600);
 
         // file cache
         $config['Caching']['path'] = $config['General']['tmp_path'] . '/default_filter.cache';

@@ -116,7 +116,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         // create vars for phpids usage
         $this->setSystemVar('useids', 0);
         $this->setSystemVar('idsmail', 0);
-        $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
+        $this->setSystemVar('idsrulepath', 'src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
         $this->setSystemVar('idssoftblock', 1); // do not block requests, but warn for debugging
         $this->setSystemVar('idsfilter', 'xml'); // filter type
         $this->setSystemVar('idsimpactthresholdone', 1); // db logging
@@ -135,6 +135,9 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
             'REQUEST.filter.page', 'POST.filter.page',
             'REQUEST.filter.value', 'POST.filter.value'
         ]);
+        $this->setSystemVar('idscachingtype', 'none');
+        $this->setSystemVar('idscachingexpiration', 600);
+
         $this->setSystemVar('outputfilter', 1);
 
         $this->setSystemVar('htmlentities', 1);
@@ -184,6 +187,9 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 foreach ($varsToRemove as $varName) {
                     $this->getVariableApi()->del(VariableApi::CONFIG, $varName);
                 }
+                $this->setSystemVar('idsrulepath', 'src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
+                $this->setSystemVar('idscachingtype', 'none');
+                $this->setSystemVar('idscachingexpiration', 600);
             case '1.5.3':
                 // current version
         }

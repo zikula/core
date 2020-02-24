@@ -25,6 +25,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -52,6 +53,7 @@ class ConfigController extends AbstractController
      * @return array|RedirectResponse
      */
     public function configAction(
+        ZikulaHttpKernelInterface $kernel,
         Request $request,
         RouterInterface $router,
         VariableApiInterface $variableApi,
@@ -175,8 +177,8 @@ class ConfigController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'idsmail', $formData['idsmail'] ?? 0);
                 $variableApi->set(VariableApi::CONFIG, 'idsfilter', $formData['idsfilter'] ?? 'xml');
 
-                $idsRulePath = $formData['idsrulepath'] ?? 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
-                if (is_readable($idsRulePath)) {
+                $idsRulePath = $formData['idsrulepath'] ?? 'src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
+                if (is_readable($kernel->getProjectDir() . '/' . $idsRulePath)) {
                     $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
                 } else {
                     $this->addFlash('error', $this->trans('Error! PHPIDS rule file %filePath% does not exist or is not readable.', ['%filePath%' => $idsRulePath]));
@@ -401,19 +403,6 @@ class ConfigController extends AbstractController
         foreach ($allowed as list($namespace, $directive)) {
             if (in_array($namespace . '_' . $directive, $excluded, true)) {
                 continue;
-            }
-
-            if ('Filter' === $namespace) {
-                if (
-                // Do not allow Filter.Custom for now. Causing errors.
-                // TODO research why Filter.Custom is causing exceptions and correct.
-                        ('Custom' === $directive)
-                        // Do not allow Filter.ExtractStyleBlock* for now. Causing errors.
-                        // TODO Filter.ExtractStyleBlock* requires CSSTidy
-                        || (false !== mb_stripos($directive, 'ExtractStyleBlock'))
-                ) {
-                    continue;
-                }
             }
 
             $directiveRec = [];

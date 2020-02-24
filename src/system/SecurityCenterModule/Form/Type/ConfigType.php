@@ -165,7 +165,7 @@ class ConfigType extends AbstractType
             ->add('idsrulepath', TextType::class, [
                 'label' => 'IDS rule path',
                 'empty_data' => '',
-                'help' => 'Default: <code>Resources/config/phpids_zikula_default.xml</code>',
+                'help' => 'Default: <code>src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml</code>',
                 'help_html' => true
             ])
             ->add('idsimpactthresholdone', IntegerType::class, [
@@ -212,6 +212,27 @@ class ConfigType extends AbstractType
                 'empty_data' => implode("\n", ['GET.__utmz', 'GET.__utmc', 'REQUEST.linksorder', 'POST.linksorder', 'REQUEST.fullcontent', 'POST.fullcontent', 'REQUEST.summarycontent', 'POST.summarycontent', 'REQUEST.filter.page', 'POST.filter.page', 'REQUEST.filter.value', 'POST.filter.value']),
                 'required' => false,
                 'help' => '(Place each value on a separate line.)'
+            ])
+            ->add('idscachingtype', ChoiceType::class, [
+                'label' => 'Caching method',
+                'empty_data' => 'none',
+                'choices' => [
+                    'Session' => 'session',
+                    'File' => 'file',
+                    //'Database' => 'database',
+                    'Memcached' => 'memcached',
+                    'None' => 'none'
+                ],
+                'expanded' => false,
+                'multiple' => false
+            ])
+            ->add('idscachingexpiration', IntegerType::class, [
+                'label' => 'Cache expiration time',
+                'empty_data' => 600,
+                'attr' => [
+                    'maxlength' => 5
+                ],
+                'input_group' => ['right' => 'seconds']
             ])
             ->add('outputfilter', ChoiceType::class, [
                 'label' => 'Select output filter',

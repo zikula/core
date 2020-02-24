@@ -19,7 +19,7 @@
     {% for directiveNamespace, directives in purifierAllowed %}
     <fieldset>
         {% set namespaceFrag = directiveNamespace|e('url') %}
-        {% set namespaceLink = '<a href="http://htmlpurifier.org/live/configdoc/plain.html#' ~ namespaceFrag ~ '">' ~ directiveNamespace ~ '</a>' %}
+        {% set namespaceLink = '<a href="http://htmlpurifier.org/live/configdoc/plain.html#' ~ namespaceFrag ~ '" class="external">' ~ directiveNamespace ~ '</a>' %}
         <legend>{% trans with {'%s': namespaceLink|raw } %}HTMLPurifier %s configuration directives{% endtrans %}</legend>
         {% for directiveName, directive in directives|filter(d => d.supported) %}
             {% set idVal = 'purifierConfig_' ~ directive.key %}
@@ -28,7 +28,7 @@
             {% if directive.allowNull %}
             <div class="form-group row">
                 <label class="col-md-3 col-form-label" for="purifierConfig_div_{{ directive.key }}">
-                    {{ directiveName }} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{{ directive.key|e('url') }}">(?)</a>
+                    {{ directiveName }} <a href="http://htmlpurifier.org/live/configdoc/plain.html#{{ directive.key|e('url') }}" class="external">(?)</a>
                 </label>
                 <div class="col-md-9">
                     <div id="purifierConfig_div_{{ directive.key }}">
