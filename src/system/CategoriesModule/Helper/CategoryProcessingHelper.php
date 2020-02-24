@@ -65,9 +65,6 @@ class CategoryProcessingHelper
      */
     public function mayCategoryBeDeletedOrMoved(CategoryEntity $category): bool
     {
-        // TODO #3920
-        return true;
-
         // collect parents
         $isOnTop = false;
         $parentIds = [$category->getId()];
@@ -76,9 +73,14 @@ class CategoryProcessingHelper
             $directParent = $category->getParent();
             if (null === $directParent) {
                 $isOnTop = true;
-            } else {
-                $parentIds[] = $directParent->getId();
+                break;
             }
+            $parentId = $directParent->getId();
+            if ($parentId === end($parentIds)) {
+                $isOnTop = true;
+                break;
+            }
+            $parentIds[] = $directParent->getId();
         }
 
         // fetch registries
@@ -102,8 +104,9 @@ class CategoryProcessingHelper
                     continue;
                 }
                 // check if this mapping table contains a reference to the given category
+                // limit query to one result to avoid wasting performance
                 $mappings = $this->entityManager->getRepository($entityClass)
-                    ->findBy(['category' => $category]);
+                    ->findBy(['category' => $category], [], 1);
                 if (count($mappings) > 0) {
                     // existing reference found
                     return false;

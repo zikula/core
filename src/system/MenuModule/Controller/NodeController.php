@@ -137,8 +137,12 @@ class NodeController extends AbstractController
             $menuItemRepository->{$methodName}($menuItemEntity, abs($diff));
         } else {
             $parentEntity = $menuItemRepository->find(str_replace($this->domTreeNodePrefix, '', $parent));
-            $children = $menuItemRepository->children($parentEntity);
-            $menuItemRepository->persistAsNextSiblingOf($menuItemEntity, $children[$position - 1]);
+            if (1 > $position) {
+                $menuItemRepository->persistAsFirstChildOf($menuItemEntity, $parentEntity);
+            } else {
+                $children = $menuItemRepository->children($parentEntity);
+                $menuItemRepository->persistAsNextSiblingOf($menuItemEntity, $children[$position - 1]);
+            }
         }
         $this->getDoctrine()->getManager()->flush();
 

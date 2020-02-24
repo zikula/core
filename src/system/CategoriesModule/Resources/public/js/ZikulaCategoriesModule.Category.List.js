@@ -57,6 +57,7 @@
 
         // Tooltips
         treeElem.on('hover_node.jstree', function(e, data) {
+            $('.tooltip').remove();
             var anchor = $('#' + data.node.id + '_anchor');
             anchor.tooltip({
                 placement: 'right',
@@ -254,7 +255,7 @@
                                     var nodeId = treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1);
                                     editedNode = treeElem.jstree('get_node', nodeId);
                                 }
-                                var nodeType = nodeData.is_leaf ? 'leaf' : 'default';
+                                var nodeType = nodeData.leaf ? 'leaf' : 'default';
                                 treeElem.jstree(true).set_type(editedNode, nodeType);
                                 closeEditForm();
                             }

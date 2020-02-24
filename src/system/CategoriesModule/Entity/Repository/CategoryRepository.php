@@ -41,7 +41,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
         parent::__construct($manager, $manager->getClassMetadata($entityClass));
     }
 
-    public function countForContext(string $name = '', int $parentId = 0, int $excludedId = 0): int
+    public function countForContext(string $name = '', int $parentId = 0, int $excludedId = null): int
     {
         $qb = $this->createQueryBuilder('c')
             ->select('COUNT(c.id)');
@@ -55,7 +55,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
                ->setParameter('parentid', $parentId);
         }
 
-        if ($excludedId > 0) {
+        if (null !== $excludedId && $excludedId > 0) {
             $qb->andWhere('c.id != :id')
                ->setParameter('id', $excludedId);
         }

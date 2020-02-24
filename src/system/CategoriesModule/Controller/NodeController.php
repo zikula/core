@@ -201,25 +201,29 @@ class NodeController extends AbstractController
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
         /** @var CategoryEntity $category */
         $category = $categoryRepository->find($entityId);
-        if ($processingHelper->mayCategoryBeDeletedOrMoved($category)) {
-            $oldParent = $request->request->get('old_parent');
-            $oldPosition = (int)$request->request->get('old_position');
-            $parent = $request->request->get('parent');
-            $position = (int)$request->request->get('position');
-            if ($oldParent === $parent) {
-                $diff = $oldPosition - $position; // if $diff is positive, then node moved up
-                $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
-                $categoryRepository->{$methodName}($category, abs($diff));
+        if (!$processingHelper->mayCategoryBeDeletedOrMoved($category)) {
+            return $this->json(['result' => false]);
+        }
+
+        $oldParent = $request->request->get('old_parent');
+        $oldPosition = (int)$request->request->get('old_position');
+        $parent = $request->request->get('parent');
+        $position = (int)$request->request->get('position');
+        if ($oldParent === $parent) {
+            $diff = $oldPosition - $position; // if $diff is positive, then node moved up
+            $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
+            $categoryRepository->{$methodName}($category, abs($diff));
+        } else {
+            $parentEntity = $categoryRepository->find(str_replace($this->domTreeNodePrefix, '', $parent));
+            if (1 > $position) {
+                $categoryRepository->persistAsFirstChildOf($category, $parentEntity);
             } else {
-                $parentEntity = $categoryRepository->find(str_replace($this->domTreeNodePrefix, '', $parent));
                 $children = $categoryRepository->children($parentEntity);
                 $categoryRepository->persistAsNextSiblingOf($category, $children[$position - 1]);
             }
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->json(['result' => true]);
         }
+        $this->getDoctrine()->getManager()->flush();
 
-        return $this->json(['result' => false]);
+        return $this->json(['result' => true]);
     }
 }

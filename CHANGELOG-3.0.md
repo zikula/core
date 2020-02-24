@@ -168,6 +168,8 @@
   - Start page controllers now get properly set the `_route` request argument (#3955).
   - Default minimum length for passwords is now raised to 8. Absolute minimum length is still 5 (#2842).
   - Set correct port for Gmail transport type (#4142).
+  - Fixed broken drag n drop of categories and menu items when target position is the top of a subtree.
+  - Fixed logic of `CategoryProcessingHelper#mayCategoryBeDeletedOrMoved` (#3920).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).

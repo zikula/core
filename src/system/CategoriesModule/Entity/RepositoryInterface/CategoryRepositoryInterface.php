@@ -24,7 +24,7 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable, Repo
     /**
      * Returns amount of categories for specified filters.
      */
-    public function countForContext(string $name = '', int $parentId = 0, int $excludedId = 0): int;
+    public function countForContext(string $name = '', int $parentId = 0, int $excludedId = null): int;
 
     /**
      * Returns the last added category within a given parent category.
