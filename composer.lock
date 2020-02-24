@@ -4048,12 +4048,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "fe181a2fb0eaa3b37002c2f0d4484cf46eb73256"
+                "reference": "7f737fee38031331cb433bbf564658c6504c26c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/fe181a2fb0eaa3b37002c2f0d4484cf46eb73256",
-                "reference": "fe181a2fb0eaa3b37002c2f0d4484cf46eb73256",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/7f737fee38031331cb433bbf564658c6504c26c9",
+                "reference": "7f737fee38031331cb433bbf564658c6504c26c9",
                 "shasum": ""
             },
             "require": {
@@ -4116,7 +4116,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "time": "2020-02-21T16:31:38+00:00"
+            "time": "2020-02-24T10:04:44+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
