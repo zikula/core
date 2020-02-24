@@ -4044,7 +4044,7 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.12",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
@@ -4120,7 +4120,7 @@
         },
         {
             "name": "php-translation/symfony-storage",
-            "version": "dev-master",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-storage.git",
@@ -7186,7 +7186,7 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
-        "php-translation/symfony-storage": 20,
+        "php-translation/symfony-bundle": 20,
         "matthiasnoback/symfony-console-form": 20,
         "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,
