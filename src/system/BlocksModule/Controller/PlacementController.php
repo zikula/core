@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
