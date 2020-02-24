@@ -32,6 +32,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
+use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\UsersModule\Constant;
 
 /**
@@ -42,9 +43,9 @@ use Zikula\UsersModule\Constant;
 class FilterListener implements EventSubscriberInterface
 {
     /**
-     * @var ZikulaHttpKernelInterface
+     * @var ZikulaSecurityCenterModule
      */
-    private $kernel;
+    private $securityCenterModule;
 
     /**
      * @var VariableApiInterface
@@ -82,7 +83,7 @@ class FilterListener implements EventSubscriberInterface
     private $isUpgrading;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
+        ZikulaSecurityCenterModule $securityCenterModule,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
         MailerApiInterface $mailer,
@@ -91,7 +92,7 @@ class FilterListener implements EventSubscriberInterface
         bool $installed,
         $isUpgrading // cannot cast to bool because set with expression language
     ) {
-        $this->kernel = $kernel;
+        $this->securityCenterModule = $securityCenterModule;
         $this->variableApi = $variableApi;
         $this->em = $em;
         $this->mailer = $mailer;
@@ -207,8 +208,8 @@ class FilterListener implements EventSubscriberInterface
         $config['General']['use_base_path'] = false;
 
         // path to the filters used
-        $defaultPath = 'src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
-        $config['General']['filter_path'] = $this->kernel->getProjectDir() . '/' . $this->getSystemVar('idsrulepath', $defaultPath);
+        $defaultPath = 'Resources/config/phpids_zikula_default.xml';
+        $config['General']['filter_path'] = $this->securityCenterModule->getPath() . '/' . $this->getSystemVar('idsrulepath', $defaultPath);
         // path to (writable) tmp directory
         $config['General']['tmp_path'] = $this->cacheDir . '/idsTmp';
         $config['General']['scan_keys'] = false;
@@ -229,9 +230,7 @@ class FilterListener implements EventSubscriberInterface
         $config['General']['exceptions'] = $this->getSystemVar('idsexceptions', []);
 
         // caching settings
-        // @todo: add UI for those caching settings
         $config['Caching'] = [];
-
         // caching method (session|file|database|memcached|none), default file
         $config['Caching']['caching'] = $this->getSystemVar('idscachingtype', 'none');
         $config['Caching']['expiration_time'] = $this->getSystemVar('idscachingexpiration', 600);

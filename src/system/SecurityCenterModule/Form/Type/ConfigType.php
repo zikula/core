@@ -165,7 +165,7 @@ class ConfigType extends AbstractType
             ->add('idsrulepath', TextType::class, [
                 'label' => 'IDS rule path',
                 'empty_data' => '',
-                'help' => 'Default: <code>src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml</code>',
+                'help' => 'Default: <code>Resources/config/phpids_zikula_default.xml</code>',
                 'help_html' => true
             ])
             ->add('idsimpactthresholdone', IntegerType::class, [

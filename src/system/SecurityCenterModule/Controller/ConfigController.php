@@ -25,7 +25,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -34,6 +33,7 @@ use Zikula\SecurityCenterModule\Constant;
 use Zikula\SecurityCenterModule\Form\Type\ConfigType;
 use Zikula\SecurityCenterModule\Helper\HtmlTagsHelper;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
+use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Helper\AccessHelper;
 
@@ -53,7 +53,7 @@ class ConfigController extends AbstractController
      * @return array|RedirectResponse
      */
     public function configAction(
-        ZikulaHttpKernelInterface $kernel,
+        ZikulaSecurityCenterModule $securityCenterModule,
         Request $request,
         RouterInterface $router,
         VariableApiInterface $variableApi,
@@ -177,8 +177,8 @@ class ConfigController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'idsmail', $formData['idsmail'] ?? 0);
                 $variableApi->set(VariableApi::CONFIG, 'idsfilter', $formData['idsfilter'] ?? 'xml');
 
-                $idsRulePath = $formData['idsrulepath'] ?? 'src/system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
-                if (is_readable($kernel->getProjectDir() . '/' . $idsRulePath)) {
+                $idsRulePath = $formData['idsrulepath'] ?? 'Resources/config/phpids_zikula_default.xml';
+                if (is_readable($securityCenterModule->getPath() . '/' . $idsRulePath)) {
                     $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
                 } else {
                     $this->addFlash('error', $this->trans('Error! PHPIDS rule file %filePath% does not exist or is not readable.', ['%filePath%' => $idsRulePath]));
@@ -223,6 +223,9 @@ class ConfigController extends AbstractController
                     }
                 }
                 $variableApi->set(VariableApi::CONFIG, 'idsexceptions', $idsExceptionsArray);
+
+                $variableApi->set(VariableApi::CONFIG, 'idscachingtype', $formData['idscachingtype'] ?? 'none');
+                $variableApi->set(VariableApi::CONFIG, 'idscachingexpiration', $formData['idscachingexpiration'] ?? 600);
 
                 // clear cache
                 $cacheClearer->clear('symfony');
