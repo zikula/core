@@ -18,7 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
@@ -26,12 +25,14 @@ use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositor
 use Zikula\CategoriesModule\Form\Type\CategoryRegistryType;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * @Route("/registry")
- *
  * Controller for handling category registries.
+ *
+ * @Route("/registry")
+ * @PermissionCheck("admin")
  */
 class RegistryController extends AbstractController
 {
@@ -43,7 +44,6 @@ class RegistryController extends AbstractController
      * Creates or edits a category registry.
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function editAction(
         Request $request,
@@ -52,9 +52,6 @@ class RegistryController extends AbstractController
         CategoryRegistryRepositoryInterface $registryRepository,
         CategoryRegistryEntity $registryEntity = null
     ) {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         if (null === $registryEntity) {
             $registryEntity = new CategoryRegistryEntity();
         }
@@ -101,16 +98,12 @@ class RegistryController extends AbstractController
      * Deletes a category registry.
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function deleteAction(
         Request $request,
         EntityManagerInterface $entityManager,
         CategoryRegistryEntity $registry
     ) {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $form = $this->createForm(DeletionType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

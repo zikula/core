@@ -24,9 +24,9 @@ use Zikula\CategoriesModule\Form\Type\CategoryTreeType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * @Route("/admin/category")
+ * Controller for handling categories.
  *
- * Controller for handling category registries.
+ * @Route("/admin/category")
  */
 class CategoryController extends AbstractController
 {

@@ -18,9 +18,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -28,6 +28,7 @@ use Zikula\UsersModule\Form\Type\ExportUsersType;
 
 /**
  * @Route("/fileIO")
+ * @PermissionCheck("admin")
  */
 class FileIOController extends AbstractController
 {
@@ -37,14 +38,9 @@ class FileIOController extends AbstractController
      * @Template("@ZikulaUsersModule/FileIO/export.html.twig")
      *
      * @return array|StreamedResponse
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function exportAction(Request $request, UserRepositoryInterface $userRepository)
     {
-        if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(ExportUsersType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

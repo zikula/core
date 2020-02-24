@@ -39,6 +39,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class RegistrationController
+ *
  * @Route("")
  */
 class RegistrationController extends AbstractController

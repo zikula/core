@@ -6781,12 +6781,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "da8b5c820272e411ede00763086e5ab5f0707224"
+                "reference": "1ec3b47ed6ba4134bd6216a5c0f3c4caa3c75909"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/da8b5c820272e411ede00763086e5ab5f0707224",
-                "reference": "da8b5c820272e411ede00763086e5ab5f0707224",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/1ec3b47ed6ba4134bd6216a5c0f3c4caa3c75909",
+                "reference": "1ec3b47ed6ba4134bd6216a5c0f3c4caa3c75909",
                 "shasum": ""
             },
             "require": {
@@ -6839,7 +6839,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-02-23T08:28:41+00:00"
+            "time": "2020-02-24T08:03:56+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6847,12 +6847,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "6d38d9bce1f5d48c685ac92808ca4fac55cfca9a"
+                "reference": "5b3bbcd81fc5d2d3e351371cdbdadd79df3b6a4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/6d38d9bce1f5d48c685ac92808ca4fac55cfca9a",
-                "reference": "6d38d9bce1f5d48c685ac92808ca4fac55cfca9a",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/5b3bbcd81fc5d2d3e351371cdbdadd79df3b6a4e",
+                "reference": "5b3bbcd81fc5d2d3e351371cdbdadd79df3b6a4e",
                 "shasum": ""
             },
             "require": {
@@ -6897,7 +6897,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-02-23T08:28:25+00:00"
+            "time": "2020-02-24T08:05:20+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6954,12 +6954,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "b2224d8f13e75853b18c15721fc73ab0451a668a"
+                "reference": "6b903ead781846e0ef2c7a79f36b4bc90a0dc052"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b2224d8f13e75853b18c15721fc73ab0451a668a",
-                "reference": "b2224d8f13e75853b18c15721fc73ab0451a668a",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/6b903ead781846e0ef2c7a79f36b4bc90a0dc052",
+                "reference": "6b903ead781846e0ef2c7a79f36b4bc90a0dc052",
                 "shasum": ""
             },
             "require": {
@@ -7015,7 +7015,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-02-23T08:30:34+00:00"
+            "time": "2020-02-24T08:09:41+00:00"
         },
         {
             "name": "zikula/sortable-columns",

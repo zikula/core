@@ -28,9 +28,9 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 /**
- * @Route("/ajax")
- *
  * Ajax controllers for the admin module
+ *
+ * @Route("/ajax")
  */
 class AjaxController extends AbstractController
 {

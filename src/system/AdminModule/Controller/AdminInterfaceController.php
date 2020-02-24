@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
@@ -32,6 +31,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 
 /**
  * @Route("/admininterface")
@@ -71,6 +71,7 @@ class AdminInterfaceController extends AbstractController
 
     /**
      * @Route("/breadcrumbs", methods = {"GET"})
+     * @PermissionCheck("admin")
      *
      * Admin breadcrumbs
      */
@@ -80,10 +81,6 @@ class AdminInterfaceController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): Response {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $masterRequest = $requestStack->getMasterRequest();
         $caller = $masterRequest->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
@@ -107,6 +104,7 @@ class AdminInterfaceController extends AbstractController
 
     /**
      * @Route("/securityanalyzer")
+     * @PermissionCheck("admin")
      *
      * Display security analyzer
      */
@@ -115,10 +113,6 @@ class AdminInterfaceController extends AbstractController
         ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi
     ): Response {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $hasSecurityCenter = $kernel->isBundle('ZikulaSecurityCenterModule');
 
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
@@ -134,20 +128,15 @@ class AdminInterfaceController extends AbstractController
 
     /**
      * @Route("/updatecheck")
+     * @PermissionCheck("admin")
      *
      * Display update check
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function updatecheckAction(
         RequestStack $requestStack,
         ZikulaHttpKernelInterface $kernel,
         UpdateCheckHelper $updateCheckHelper
     ): Response {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $masterRequest = $requestStack->getMasterRequest();
 
         return $this->render('@ZikulaAdminModule/AdminInterface/updateCheck.html.twig', [
@@ -162,10 +151,9 @@ class AdminInterfaceController extends AbstractController
 
     /**
      * @Route("/menu")
+     * @PermissionCheck("admin")
      *
      * Display admin menu
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function menuAction(
         RequestStack $requestStack,
@@ -176,10 +164,6 @@ class AdminInterfaceController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): Response {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $masterRequest = $requestStack->getMasterRequest();
         $currentRequest = $requestStack->getCurrentRequest();
 

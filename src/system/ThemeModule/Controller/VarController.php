@@ -25,8 +25,12 @@ use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
+/**
+ * @PermissionCheck("admin")
+ */
 class VarController extends AbstractController
 {
     /**

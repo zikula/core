@@ -24,6 +24,7 @@ use Zikula\MenuModule\Form\Type\MenuItemType;
 
 /**
  * Class NodeController
+ *
  * @Route("/node")
  */
 class NodeController extends AbstractController

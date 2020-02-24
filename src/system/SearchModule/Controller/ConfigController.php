@@ -16,16 +16,18 @@ namespace Zikula\SearchModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ConfigController
+ *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -33,19 +35,12 @@ class ConfigController extends AbstractController
      * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaSearchModule/Config/config.html.twig")
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function configAction(
         Request $request,
         ZikulaHttpKernelInterface $kernel,
         SearchableModuleCollector $collector
     ): array {
-        // Security check
-        if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $modVars = $this->getVars();
         $plugins = [];
 

@@ -31,6 +31,7 @@ use Zikula\UsersModule\Collector\ProfileModuleCollector;
 
 /**
  * Class SettingsController
+ *
  * @Route("")
  * @PermissionCheck("admin")
  */

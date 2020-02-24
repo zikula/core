@@ -19,17 +19,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class PlacementController
+ *
  * @Route("/admin/placement")
+ * @PermissionCheck("admin")
  */
 class PlacementController extends AbstractController
 {
@@ -39,18 +41,12 @@ class PlacementController extends AbstractController
      * @Template("@ZikulaBlocksModule/Placement/edit.html.twig")
      *
      * Create a new placement or edit an existing placement.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function editAction(
         BlockPositionEntity $positionEntity,
         BlockRepositoryInterface $blockRepository,
         BlockPositionRepositoryInterface $positionRepository
     ): array {
-        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $allBlocks = $blockRepository->findAll();
         $assignedBlocks = [];
         foreach ($positionEntity->getPlacements() as $blockPlacement) {
@@ -75,15 +71,9 @@ class PlacementController extends AbstractController
      * @Route("/ajax/changeorder", methods = {"POST"}, options={"expose"=true, "i18n"=false})
      *
      * Change the block order.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function changeBlockOrderAction(Request $request): JsonResponse
     {
-        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->trans('No permission for this action.'), Response::HTTP_FORBIDDEN);
-        }
-
         $blockorder = $request->request->get('blockorder', []); // [7, 1]
         $position = $request->request->get('position'); // 1
         /** @var EntityManager $em */

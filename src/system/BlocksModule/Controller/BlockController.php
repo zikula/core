@@ -29,10 +29,12 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class BlockController
+ *
  * @Route("/admin/block")
  */
 class BlockController extends AbstractController
@@ -179,6 +181,7 @@ class BlockController extends AbstractController
 
     /**
      * @Route("/toggle-active", methods = {"POST"}, options={"expose"=true})
+     * @PermissionCheck("admin")
      *
      * Ajax method to toggle the active status of a block.
      *
@@ -186,9 +189,6 @@ class BlockController extends AbstractController
      */
     public function toggleblockAction(Request $request): JsonResponse
     {
-        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->trans('No permission for this action.'), Response::HTTP_FORBIDDEN);
-        }
         $bid = $request->request->getInt('bid', -1);
         if (-1 === $bid) {
             return $this->json($this->trans('No block ID passed.'), Response::HTTP_BAD_REQUEST);

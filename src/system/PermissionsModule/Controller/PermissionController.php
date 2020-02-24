@@ -15,12 +15,12 @@ namespace Zikula\PermissionsModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\ErrorHandler\Error\FatalError;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
@@ -32,6 +32,9 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
+/**
+ * @PermissionCheck("admin")
+ */
 class PermissionController extends AbstractController
 {
     /**
@@ -40,8 +43,6 @@ class PermissionController extends AbstractController
      * @Template("@ZikulaPermissionsModule/Permission/list.html.twig")
      *
      * View permissions.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function listAction(
         GroupRepositoryInterface $groupsRepository,
@@ -49,15 +50,11 @@ class PermissionController extends AbstractController
         PermissionApiInterface $permissionApi,
         SchemaHelper $schemaHelper
     ): array {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $groups = $groupsRepository->getGroupNamesById();
         $permissions = $permissionRepository->getFilteredPermissions();
         $components = [$this->trans('All components') => '-1'] + $permissionRepository->getAllComponents();
         $colours = [$this->trans('All colours') => '-1'] + $permissionRepository->getAllColours();
         $permissionLevels = $permissionApi->accessLevelNames();
-        unset($permissionLevels[-1]);
 
         $filterForm = $this->createForm(FilterListType::class, [], [
             'groupChoices' => $groups,
@@ -83,8 +80,6 @@ class PermissionController extends AbstractController
 
     /**
      * @Route("/edit/{pid}", options={"expose"=true})
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function editAction(
         Request $request,
@@ -93,9 +88,6 @@ class PermissionController extends AbstractController
         PermissionApiInterface $permissionApi,
         PermissionEntity $permissionEntity = null
     ): JsonResponse {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         if (!isset($permissionEntity)) {
             $permissionEntity = new PermissionEntity();
             if ($request->request->has('sequence')) {
@@ -105,7 +97,6 @@ class PermissionController extends AbstractController
 
         $groupNames = $groupsRepository->getGroupNamesById();
         $accessLevelNames = $permissionApi->accessLevelNames();
-        unset($accessLevelNames[-1]);
 
         $form = $this->createForm(PermissionType::class, $permissionEntity, [
             'groups' => $groupNames,
@@ -148,16 +139,11 @@ class PermissionController extends AbstractController
      * @Route("/change-order", methods = {"POST"}, options={"expose"=true})
      *
      * Change the order of a permission rule.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function changeOrderAction(
         Request $request,
         PermissionRepositoryInterface $permissionRepository
     ): JsonResponse {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $permOrder = $request->request->get('permorder');
         $amountOfPermOrderValues = count($permOrder);
         for ($cnt = 0; $cnt < $amountOfPermOrderValues; $cnt++) {
@@ -174,7 +160,6 @@ class PermissionController extends AbstractController
      *
      * Delete a permission.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws FatalError Thrown if the requested permission rule is the default admin rule
      *                           or if the permission rule couldn't be deleted
      */
@@ -182,9 +167,6 @@ class PermissionController extends AbstractController
         PermissionEntity $permissionEntity,
         PermissionRepositoryInterface $permissionRepository
     ): JsonResponse {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         // check if this is the overall admin permission and return if this shall be deleted
         if (1 === $permissionEntity->getPid()
             && ACCESS_ADMIN === $permissionEntity->getLevel()
@@ -209,18 +191,12 @@ class PermissionController extends AbstractController
      * @Route("/test", methods = {"POST"}, options={"expose"=true})
      *
      * Test a permission rule for a given username.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function testAction(
         Request $request,
         PermissionApiInterface $permissionApi,
         UserRepositoryInterface $userRepository
     ): JsonResponse {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $permissionCheckForm = $this->createForm(PermissionCheckType::class, [], [
             'permissionLevels' => $permissionApi->accessLevelNames()
         ]);

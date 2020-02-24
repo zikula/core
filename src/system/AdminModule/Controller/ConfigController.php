@@ -17,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\ConfigType;
@@ -26,11 +25,14 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ConfigController
+ *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -39,7 +41,6 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaAdminModule/Config/config.html.twig")
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
     public function configAction(
@@ -51,10 +52,6 @@ class ConfigController extends AbstractController
         CapabilityApiInterface $capabilityApi,
         AdminModuleHelper $adminModuleHelper
     ) {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         // get admin capable mods
         $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
 

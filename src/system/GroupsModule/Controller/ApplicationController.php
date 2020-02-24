@@ -28,6 +28,7 @@ use Zikula\GroupsModule\Form\Type\ManageApplicationType;
 use Zikula\GroupsModule\Form\Type\MembershipApplicationType;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -40,13 +41,13 @@ class ApplicationController extends AbstractController
 {
     /**
      * @Route("/admin/{action}/{app_id}", requirements={"action" = "deny|accept", "app_id" = "^[1-9]\d*$"})
+     * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Application/admin.html.twig")
      *
      * Display a list of group applications.
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
     public function adminAction(
         Request $request,
@@ -54,9 +55,6 @@ class ApplicationController extends AbstractController
         GroupApplicationEntity $groupApplicationEntity,
         EventDispatcherInterface $eventDispatcher
     ) {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
         $formValues = [
             'theAction' => $action,
             'application' => $groupApplicationEntity,
@@ -100,12 +98,13 @@ class ApplicationController extends AbstractController
 
     /**
      * @Route("/create/{gid}", requirements={"gid" = "^[1-9]\d*$"})
+     * @PermissionCheck("overview")
      * @Template("@ZikulaGroupsModule/Application/create.html.twig")
      *
      * Create an application to a group.
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function createAction(
         Request $request,
@@ -115,9 +114,6 @@ class ApplicationController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
     ) {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->trans('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
@@ -175,7 +171,7 @@ class ApplicationController extends AbstractController
         bool $alreadyGroupMember
     ) {
         $messages = [];
-        $messages[] = $this->trans('Sorry!, You cannot apply to join the requested group');
+        $messages[] = $this->trans('Error! You cannot apply to join the requested group');
         if ($groupTypeIsCore) {
             $messages[] = $this->trans('This group is a core-only group');
         }

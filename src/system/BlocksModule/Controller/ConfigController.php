@@ -17,14 +17,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Form\Type\ConfigType;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ConfigController
+ *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -34,14 +36,9 @@ class ConfigController extends AbstractController
      * @Template("@ZikulaBlocksModule/Config/config.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function configAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(ConfigType::class, $this->getVars());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

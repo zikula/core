@@ -24,6 +24,7 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -32,6 +33,7 @@ use Zikula\UsersModule\Form\Type\ChangeLanguageType;
 
 /**
  * @Route("/account")
+ * @PermissionCheck("read")
  */
 class AccountController extends AbstractController
 {
@@ -39,14 +41,14 @@ class AccountController extends AbstractController
      * @Route("")
      * @Template("@ZikulaUsersModule/Account/menu.html.twig")
      *
-     * @throws AccessDeniedException Thrown if the user isn't logged in or hasn't read permissions for the module
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function menuAction(
         CurrentUserApiInterface $currentUserApi,
         ExtensionMenuCollector $extensionMenuCollector,
         VariableApiInterface $variableApi
     ): array {
-        if (!$currentUserApi->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException();
         }
 
@@ -76,6 +78,8 @@ class AccountController extends AbstractController
      * @Template("@ZikulaUsersModule/Account/changeLanguage.html.twig")
      *
      * @return array|RedirectResponse
+     *
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function changeLanguageAction(
         Request $request,

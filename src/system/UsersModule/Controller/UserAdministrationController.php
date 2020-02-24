@@ -36,6 +36,7 @@ use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -58,16 +59,16 @@ use Zikula\UsersModule\UserEvents;
 
 /**
  * Class UserAdministrationController
+ *
  * @Route("/admin")
  */
 class UserAdministrationController extends AbstractController
 {
     /**
      * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
+     * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/UserAdministration/list.html.twig")
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
     public function listAction(
         Request $request,
@@ -79,9 +80,6 @@ class UserAdministrationController extends AbstractController
         string $letter = 'all',
         int $startnum = 0
     ): array {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
         $startnum = $startnum > 0 ? $startnum - 1 : 0;
 
         $sortableColumns = new SortableColumns($router, 'zikulausersmodule_useradministration_list', 'sort', 'sortdir');
@@ -211,11 +209,11 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/approve/{user}/{force}", requirements={"user" = "^[1-9]\d*$"})
+     * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/UserAdministration/approve.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
     public function approveAction(
         Request $request,
@@ -224,10 +222,6 @@ class UserAdministrationController extends AbstractController
         MailHelper $mailHelper,
         bool $force = false
     ) {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
-
         $forceVerification = $this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
         $form = $this->createForm(ApproveRegistrationConfirmationType::class, [
             'user' => $user->getUid(),
@@ -279,11 +273,11 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/delete/{user}", requirements={"user" = "^[1-9]\d*$"})
+     * @PermissionCheck("delete")
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/UserAdministration/delete.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't delete permissions for the module
      */
     public function deleteAction(
         Request $request,
@@ -293,9 +287,6 @@ class UserAdministrationController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         UserEntity $user = null
     ) {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
         $users = new ArrayCollection();
         if ('POST' === $request->getMethod()) {
             $deleteForm = $this->createForm(DeleteType::class, [], [
@@ -380,20 +371,17 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/search")
+     * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/UserAdministration/search.html.twig")
      *
      * @return array|Response
-     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
     public function searchAction(
         Request $request,
         UserRepositoryInterface $userRepository,
         VariableApiInterface $variableApi
     ) {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
         $form = $this->createForm(SearchUserType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -415,8 +403,7 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/mail")
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't comment permissions for the mailing functionality
+     * @PermissionCheck({"$_zkModule::MailUsers", "::", "comment"})
      */
     public function mailUsersAction(
         Request $request,
@@ -424,9 +411,6 @@ class UserAdministrationController extends AbstractController
         VariableApiInterface $variableApi,
         MailHelper $mailHelper
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaUsersModule', '::MailUsers', ACCESS_COMMENT)) {
-            throw new AccessDeniedException();
-        }
         $mailForm = $this->buildMailForm($variableApi);
         $mailForm->handleRequest($request);
         if ($mailForm->isSubmitted() && $mailForm->isValid()) {

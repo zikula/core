@@ -69,6 +69,7 @@ use Zikula\PermissionsModule\Annotation\PermissionCheck;
 
 /**
  * Class ThemeController
+ *
  * @Route("/config")
  * @PermissionCheck("admin")
  */

@@ -33,12 +33,12 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * NOTE: intentionally no class level route setting here
- *
  * Administrative controllers for the admin module
+ * NOTE: intentionally no class level route setting here
  */
 class AdminController extends AbstractController
 {
@@ -55,19 +55,14 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/categories/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
+     * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaAdminModule/Admin/view.html.twig")
      *
      * Views all admin categories.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit permission to the module
      */
     public function viewAction(AdminCategoryRepositoryInterface $repository, int $startnum = 0): array
     {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         $itemsPerPage = $this->getVar('itemsperpage');
 
         $categories = [];
@@ -91,20 +86,16 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/newcategory")
+     * @PermissionCheck({"$_zkModule::Item", "::", "add"})
      * @Theme("admin")
      * @Template("@ZikulaAdminModule/Admin/editCategory.html.twig")
      *
      * Displays and handles a form for the user to input the details of the new category.
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user doesn't have permission to add a category
      */
     public function newcatAction(Request $request)
     {
-        if (!$this->hasPermission('ZikulaAdminModule::Item', '::', ACCESS_ADD)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(AdminCategoryType::class, new AdminCategoryEntity());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -202,6 +193,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/panel/{acid}", methods = {"GET"}, requirements={"acid" = "^[1-9]\d*$"})
+     * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaAdminModule/Admin/adminpanel.html.twig")
      *
@@ -220,13 +212,6 @@ class AdminController extends AbstractController
         ExtensionMenuCollector $extensionMenuCollector,
         int $acid = null
     ) {
-        if (!$this->hasPermission('::', '::', ACCESS_EDIT)) {
-            // suppress admin display - return to index.
-            if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
-                throw new AccessDeniedException();
-            }
-        }
-
         if (!$this->getVar('ignoreinstallercheck') && 'dev' === $kernel->getEnvironment()) {
             // check if the Zikula Recovery Console exists
             $zrcExists = file_exists('zrc.php');

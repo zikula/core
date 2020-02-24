@@ -21,17 +21,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
 use Symfony\Component\Workflow\Registry;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Workflow editor controller class.
  *
  * @Route("/editor")
+ * @PermissionCheck("admin")
  */
 class EditorController extends AbstractController
 {
@@ -44,20 +44,14 @@ class EditorController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaWorkflow/Editor/index.html.twig")
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown if the desired workflow could not be found
      */
     public function indexAction(
         Request $request,
         ContainerInterface $container,
-        PermissionApiInterface $permissionApi,
         Registry $workflowRegistry,
         TranslatorInterface $translator
     ): array {
-        if (!$permissionApi->hasPermission('ZikulaWorkflowBundle::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $workflowType = 'workflow';
         $workflowName = $workflowType . '.' . $request->query->get('workflow', '');
         if (!$container->has($workflowName)) {

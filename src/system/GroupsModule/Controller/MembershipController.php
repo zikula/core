@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule\Controller;
 
 use DateTime;
-use Exception;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,6 +31,7 @@ use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\GroupsModule\Form\Type\RemoveUserType;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -48,12 +48,10 @@ class MembershipController extends AbstractController
 {
     /**
      * @Route("/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
+     * @PermissionCheck({"$_zkModule::memberslist", "::", "overview"})
      * @Template("@ZikulaGroupsModule/Membership/list.html.twig")
      *
      * Display all members of a group to a user.
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
-     * @throws Exception
      */
     public function listAction(
         GroupEntity $group,
@@ -62,9 +60,6 @@ class MembershipController extends AbstractController
         string $letter = '*',
         int $startNum = 0
     ): array {
-        if (!$this->hasPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
         $groupsCommon = new CommonHelper($this->getTranslator());
         $inactiveLimit = $variableApi->getSystemVar('secinactivemins');
         $dateTime = new DateTime();
@@ -84,22 +79,17 @@ class MembershipController extends AbstractController
 
     /**
      * @Route("/admin/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
+     * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Membership/adminList.html.twig")
      *
      * Display all members of a group to an admin.
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
     public function adminListAction(
         GroupEntity $group,
         string $letter = '*',
         int $startNum = 0
     ): array {
-        if (!$this->hasPermission('ZikulaGroupsModule::', $group->getGid() . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         return [
             'group' => $group,
             'pager' => [
@@ -111,10 +101,11 @@ class MembershipController extends AbstractController
 
     /**
      * @Route("/admin/add/{uid}/{gid}/{token}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
+     * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      *
      * Add user to a group.
      *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit the group
+     * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
     public function addAction(
         UserEntity $userEntity,
@@ -122,9 +113,6 @@ class MembershipController extends AbstractController
         string $token,
         EventDispatcherInterface $eventDispatcher
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaGroupsModule::', $group->getGid() . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
         if (!$this->isCsrfTokenValid('membership-add', $token)) {
             throw new AccessDeniedException();
         }
@@ -145,10 +133,11 @@ class MembershipController extends AbstractController
 
     /**
      * @Route("/join/{gid}", requirements={"gid" = "^[1-9]\d*$"})
+     * @PermissionCheck("overview")
      *
      * Process request by the current user to join a group
      *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function joinAction(
         GroupEntity $group,
@@ -156,11 +145,8 @@ class MembershipController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
         if (!$currentUserApi->isLoggedIn()) {
-            throw new AccessDeniedException($this->trans('Sorry! You must register for a user account on this site before you can join a group.'));
+            throw new AccessDeniedException($this->trans('Error! You must register for a user account on this site before you can join a group.'));
         }
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
@@ -188,6 +174,7 @@ class MembershipController extends AbstractController
 
     /**
      * @Route("/admin/remove/{gid}/{uid}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
+     * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Membership/remove.html.twig")
      *
@@ -195,7 +182,6 @@ class MembershipController extends AbstractController
      *
      * @return array|Response
      *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit the group
      * @throws InvalidArgumentException
      */
     public function removeAction(
@@ -213,9 +199,6 @@ class MembershipController extends AbstractController
         }
         if ($gid < 1 || $uid < 1) {
             throw new InvalidArgumentException($this->trans('Invalid Group ID or User ID.'));
-        }
-        if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
         }
         $group = $groupRepository->find($gid);
         if (!$group) {
@@ -254,10 +237,11 @@ class MembershipController extends AbstractController
 
     /**
      * @Route("/leave/{gid}", requirements={"gid" = "^[1-9]\d*$"})
+     * @PermissionCheck("overview")
      *
      * Process request by current user to leave a group
      *
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
+     * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function leaveAction(
         GroupEntity $group,
@@ -265,11 +249,8 @@ class MembershipController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
         if (!$currentUserApi->isLoggedIn()) {
-            throw new AccessDeniedException($this->trans('Sorry! You must be logged in before you can leave a group.'));
+            throw new AccessDeniedException($this->trans('Error! You must be logged in before you can leave a group.'));
         }
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
@@ -318,7 +299,7 @@ class MembershipController extends AbstractController
         bool $alreadyGroupMember
     ): string {
         $messages = [];
-        $messages[] = $this->trans('Sorry!, You cannot apply to join the requested group');
+        $messages[] = $this->trans('Error! You cannot apply to join the requested group');
         if ($groupTypeIsPrivate) {
             $messages[] = $this->trans('This group is a private group');
         }

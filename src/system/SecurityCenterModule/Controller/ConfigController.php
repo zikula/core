@@ -22,13 +22,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SecurityCenterModule\Constant;
 use Zikula\SecurityCenterModule\Form\Type\ConfigType;
 use Zikula\SecurityCenterModule\Helper\HtmlTagsHelper;
@@ -38,7 +38,9 @@ use Zikula\UsersModule\Helper\AccessHelper;
 
 /**
  * Class ConfigController
+ *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -47,7 +49,6 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenterModule/Config/config.html.twig")
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
     public function configAction(
@@ -58,10 +59,6 @@ class ConfigController extends AbstractController
         CacheClearer $cacheClearer,
         AccessHelper $accessHelper
     ) {
-        if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $modVars = $variableApi->getAll(VariableApi::CONFIG);
 
         $sessionName = $this->getParameter('zikula.session.name');
@@ -258,7 +255,6 @@ class ConfigController extends AbstractController
      *
      * HTMLPurifier configuration.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
     public function purifierconfigAction(
@@ -267,10 +263,6 @@ class ConfigController extends AbstractController
         CacheClearer $cacheClearer,
         string $reset = null
     ) {
-        if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         if ('POST' === $request->getMethod()) {
             // Load HTMLPurifier Classes
             $purifier = $purifierHelper->getPurifier();
@@ -480,7 +472,6 @@ class ConfigController extends AbstractController
      *
      * Display the allowed html form.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
     public function allowedhtmlAction(
@@ -490,10 +481,6 @@ class ConfigController extends AbstractController
         CacheClearer $cacheClearer,
         HtmlTagsHelper $htmlTagsHelper
     ) {
-        if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $htmlTags = $htmlTagsHelper->getTagsWithLinks();
 
         if ('POST' === $request->getMethod()) {

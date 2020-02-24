@@ -20,24 +20,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SearchModule\Api\ApiInterface\SearchApiInterface;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\SearchModule\Form\Type\AmendableModuleSearchType;
 use Zikula\SearchModule\Form\Type\SearchType;
 
+/**
+ * @PermissionCheck("read")
+ */
 class SearchController extends AbstractController
 {
     /**
      * @Route("/{page}", requirements={"page"="\d+"})
      * @Template("@ZikulaSearchModule/Search/execute.html.twig")
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have read access
      * @return array|Response
      */
     public function executeAction(
@@ -49,9 +51,6 @@ class SearchController extends AbstractController
         SearchApiInterface $searchApi,
         int $page = -1
     ) {
-        if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
         $setActiveDefaults = false;
         if (!$request->query->has('active')) {
             $setActiveDefaults = true;
@@ -132,17 +131,11 @@ class SearchController extends AbstractController
      * @Template("@ZikulaSearchModule/Search/recent.html.twig")
      *
      * Display a list of recent searches.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have read access
      */
     public function recentAction(
         Request $request,
         SearchStatRepositoryInterface $searchStatRepository
     ): array {
-        if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
-
         $startnum = $request->query->getInt('startnum');
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $items = $searchStatRepository->getStats([], ['date' => 'DESC'], $itemsPerPage, $startnum);
@@ -160,15 +153,9 @@ class SearchController extends AbstractController
      * @Route("/opensearch", options={"i18n"=false})
      *
      * Generate xml for opensearch syndication.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have read access
      */
     public function opensearchAction(VariableApiInterface $variableApi): PlainResponse
     {
-        if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
-            throw new AccessDeniedException();
-        }
-
         $templateParameters = [
             'siteName' => $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en')),
             'slogan' => $variableApi->getSystemVar('slogan', $variableApi->getSystemVar('slogan_en')),

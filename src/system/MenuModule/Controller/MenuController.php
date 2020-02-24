@@ -25,11 +25,14 @@ use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Entity\Repository\MenuItemRepository;
 use Zikula\MenuModule\Form\Type\DeleteMenuItemType;
 use Zikula\MenuModule\Form\Type\MenuItemType;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class MenuController
+ *
  * @Route("/admin")
+ * @PermissionCheck("admin")
  */
 class MenuController extends AbstractController
 {
@@ -42,16 +45,10 @@ class MenuController extends AbstractController
      * @Route("/list")
      * @Template("@ZikulaMenuModule/Menu/list.html.twig")
      * @Theme("admin")
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function listAction(
         MenuItemRepository $menuItemRepository
     ): array {
-        if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         return [
             'rootNodes' => $menuItemRepository->getRootNodes()
         ];
@@ -64,13 +61,13 @@ class MenuController extends AbstractController
      *
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
+     * @throws AccessDeniedException Thrown if the menu item is not a root item
      */
     public function viewAction(
         MenuItemRepository $menuItemRepository,
         MenuItemEntity $menuItemEntity
     ): array {
-        if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN) || null !== $menuItemEntity->getParent()) {
+        if (null !== $menuItemEntity->getParent()) {
             throw new AccessDeniedException();
         }
         $htmlTree = $menuItemRepository->childrenHierarchy(
@@ -97,18 +94,12 @@ class MenuController extends AbstractController
     /**
      * @Route("/edit/{id}", defaults={"id" = null})
      * @Theme("admin")
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function editAction(
         Request $request,
         MenuItemRepository $menuItemRepository,
         MenuItemEntity $menuItemEntity = null
     ): Response {
-        if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         if (!isset($menuItemEntity)) {
             $menuItemEntity = new MenuItemEntity();
         }
@@ -161,9 +152,6 @@ class MenuController extends AbstractController
      */
     public function deleteAction(Request $request, MenuItemEntity $menuItemEntity)
     {
-        if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $form = $this->createForm(DeleteMenuItemType::class, [
             'entity' => $menuItemEntity
         ]);

@@ -34,6 +34,7 @@ use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
@@ -62,16 +63,16 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * Class UserAdministrationController
+ *
  * @Route("/admin")
  */
 class UserAdministrationController extends AbstractController
 {
     /**
      * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
+     * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/list.html.twig")
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
     public function listAction(
         Request $request,
@@ -83,9 +84,6 @@ class UserAdministrationController extends AbstractController
         string $letter = 'all',
         int $startnum = 0
     ): array {
-        if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
         $startnum = $startnum > 0 ? $startnum - 1 : 0;
 
         $sortableColumns = new SortableColumns($router, 'zikulazauthmodule_useradministration_list', 'sort', 'sortdir');
@@ -143,11 +141,11 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/user/create")
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/create.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function createAction(
         Request $request,
@@ -159,10 +157,6 @@ class UserAdministrationController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         HookDispatcherInterface $hookDispatcher
     ) {
-        if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $mapping = new AuthenticationMappingEntity();
         $form = $this->createForm(AdminCreatedUserType::class, $mapping, [
             'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
@@ -320,11 +314,11 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/verify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
+     * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/verify.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
     public function verifyAction(
         Request $request,
@@ -332,9 +326,6 @@ class UserAdministrationController extends AbstractController
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         RegistrationVerificationHelper $registrationVerificationHelper
     ) {
-        if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
-            throw new AccessDeniedException();
-        }
         $form = $this->createForm(SendVerificationConfirmationType::class, [
             'mapping' => $mapping->getId()
         ]);
@@ -469,19 +460,16 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/batch-force-password-change")
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/batchForcePasswordChange.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
      */
     public function batchForcePasswordChangeAction(
         CurrentUserApiInterface $currentUserApi,
         Request $request
     ) {
-        if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $form = $this->createForm(BatchForcePasswordChangeType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

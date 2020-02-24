@@ -33,6 +33,7 @@
             },
             "securityschema": {
                 "ZikulaUsersModule::": "Uname::User ID",
+                "ZikulaUsersModule::LiveSearch": "::",
                 "ZikulaUsersModule::MailUsers": "::",
                 "Accountlinks::": "Block title::",
                 "Loginblock::": "Block title::",

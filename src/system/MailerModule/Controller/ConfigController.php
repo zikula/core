@@ -18,7 +18,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -26,11 +25,14 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\MailerModule\Form\Type\ConfigType;
 use Zikula\MailerModule\Form\Type\TestType;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ConfigController
+ *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -38,8 +40,6 @@ class ConfigController extends AbstractController
      * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaMailerModule/Config/config.html.twig")
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function configAction(
         Request $request,
@@ -47,10 +47,6 @@ class ConfigController extends AbstractController
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper
     ): array {
-        if (!$this->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(ConfigType::class,
             $this->getDataValues($variableApi, $configDumper), [
                 'charset' => $kernel->getCharset()
@@ -127,8 +123,6 @@ class ConfigController extends AbstractController
      * @Template("@ZikulaMailerModule/Config/test.html.twig")
      *
      * This function displays a form to send a test mail.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function testAction(
         Request $request,
@@ -136,10 +130,6 @@ class ConfigController extends AbstractController
         DynamicConfigDumper $configDumper,
         MailerApiInterface $mailerApi
     ): array {
-        if (!$this->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $paramHtml = $configDumper->getConfigurationForHtml('swiftmailer');
         // avoid exposing a password
         $paramHtml = preg_replace('/<li><strong>password:(.*?)<\/li>/is', '', $paramHtml);

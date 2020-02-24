@@ -17,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
@@ -25,12 +24,15 @@ use Zikula\BlocksModule\Form\Type\AdminViewFilterType;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class AdminController
+ *
  * @Route("/admin")
+ * @PermissionCheck("admin")
  */
 class AdminController extends AbstractController
 {
@@ -40,8 +42,6 @@ class AdminController extends AbstractController
      * @Template("@ZikulaBlocksModule/Admin/view.html.twig")
      *
      * View all blocks.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function viewAction(
         Request $request,
@@ -51,9 +51,6 @@ class AdminController extends AbstractController
         LocaleApiInterface $localeApi,
         RouterInterface $router
     ): array {
-        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $sessionFilterData = [];
         if ($request->hasSession() && ($session = $request->getSession())) {
             $clear = $request->request->get('clear', 0);

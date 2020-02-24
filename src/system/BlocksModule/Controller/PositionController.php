@@ -27,6 +27,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class PositionController
+ *
  * @Route("/admin/position")
  */
 class PositionController extends AbstractController

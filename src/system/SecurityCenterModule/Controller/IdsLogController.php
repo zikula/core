@@ -27,6 +27,7 @@ use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogExportType;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType;
@@ -34,28 +35,24 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class IdsLogController
+ *
  * @Route("/idslog")
  */
 class IdsLogController extends AbstractController
 {
     /**
      * @Route("/view")
+     * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenterModule/IdsLog/view.html.twig")
      *
      * Function to view ids log events.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function viewAction(
         Request $request,
         IntrusionRepository $repository,
         RouterInterface $router
     ): array {
-        if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         // sorting
         $sort = $request->query->get('sort', 'date DESC');
         $sort_exp = explode(' ', $sort);
@@ -132,20 +129,16 @@ class IdsLogController extends AbstractController
 
     /**
      * @Route("/export")
+     * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenterModule/IdsLog/export.html.twig")
      *
      * Export ids log.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|Response
      */
     public function exportAction(Request $request, IntrusionRepository $repository)
     {
-        if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(IdsLogExportType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -243,20 +236,16 @@ class IdsLogController extends AbstractController
 
     /**
      * @Route("/purge")
+     * @PermissionCheck("delete")
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenterModule/IdsLog/purge.html.twig")
      *
      * Purge ids log.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
     public function purgeAction(Request $request, IntrusionRepository $repository)
     {
-        if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(DeletionType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -279,18 +268,15 @@ class IdsLogController extends AbstractController
 
     /**
      * @Route("/deleteentry")
+     * @PermissionCheck("delete")
      *
      * Delete an ids log entry.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @throws AccessDeniedException Thrown if the CSRF token is invalid
      * @throws InvalidArgumentException Thrown if the object id is not numeric or if
      */
     public function deleteentryAction(Request $request, IntrusionRepository $repository): RedirectResponse
     {
-        if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
-            throw new AccessDeniedException();
-        }
-
         if (!$this->isCsrfTokenValid('delete-idsentry', $request->query->get('token'))) {
             throw new AccessDeniedException();
         }

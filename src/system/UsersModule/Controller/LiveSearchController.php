@@ -16,8 +16,8 @@ namespace Zikula\UsersModule\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\UsersModule\Collector\ProfileModuleCollector;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
@@ -30,17 +30,13 @@ class LiveSearchController extends AbstractController
      * Retrieves a list of users for a given search term (fragment).
      *
      * @Route("/getUsers", methods = {"GET"}, options={"expose"=true})
-     * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the live search component
+     * @PermissionCheck({"$_zkModule::LiveSearch", "::", "edit"})
      */
     public function getUsersAction(
         Request $request,
         UserRepositoryInterface $userRepository,
         ProfileModuleCollector $profileModuleCollector
     ): JsonResponse {
-        if (!$this->hasPermission('ZikulaUsersModule::LiveSearch', '::', ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         $fragment = $request->query->get('fragment', '');
         $results = $userRepository->searchActiveUser(['operator' => 'like', 'operand' => '%' . $fragment . '%']);
 

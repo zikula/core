@@ -22,11 +22,14 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
 use Zikula\CategoriesModule\Form\Type\CategoryType;
 use Zikula\CategoriesModule\Helper\CategoryProcessingHelper;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
  * Class NodeController
+ *
  * @Route("/admin/category")
+ * @PermissionCheck("admin")
  */
 class NodeController extends AbstractController
 {
@@ -46,9 +49,6 @@ class NodeController extends AbstractController
         string $action = 'edit',
         CategoryEntity $category = null
     ): JsonResponse {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->trans('No permission for this action'), Response::HTTP_FORBIDDEN);
-        }
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
             return $this->json($this->trans('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
@@ -197,9 +197,6 @@ class NodeController extends AbstractController
         CategoryRepository $categoryRepository,
         CategoryProcessingHelper $processingHelper
     ): JsonResponse {
-        if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->trans('No permission for this action'), Response::HTTP_FORBIDDEN);
-        }
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
         /** @var CategoryEntity $category */

@@ -30,6 +30,7 @@ use Zikula\ThemeModule\Form\Type\ThemeType;
 
 /**
  * Class ThemeController
+ *
  * @Route("/config")
  * @PermissionCheck("admin")
  */

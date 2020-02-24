@@ -44,11 +44,13 @@ use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionStateHelper;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Engine\Engine;
 
 /**
  * Class ExtensionController
+ *
  * @Route("")
  */
 class ExtensionController extends AbstractController
@@ -57,10 +59,9 @@ class ExtensionController extends AbstractController
 
     /**
      * @Route("/list/{pos}")
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaExtensionsModule/Extension/list.html.twig")
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function listAction(
         Request $request,
@@ -70,9 +71,6 @@ class ExtensionController extends AbstractController
         RouterInterface $router,
         int $pos = 1
     ): array {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $modulesJustInstalled = $request->query->get('justinstalled');
         if (!empty($modulesJustInstalled)) {
             // notify the event dispatcher that new routes are available (ids of modules just installed avail as args)
@@ -110,10 +108,11 @@ class ExtensionController extends AbstractController
 
     /**
      * @Route("/activate/{id}/{token}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
+     * @PermissionCheck("admin")
      *
      * Activate an extension.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
+     * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
     public function activateAction(
         int $id,
@@ -122,10 +121,6 @@ class ExtensionController extends AbstractController
         ExtensionStateHelper $extensionStateHelper,
         CacheClearer $cacheClearer
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         if (!$this->isCsrfTokenValid('activate-extension', $token)) {
             throw new AccessDeniedException();
         }
@@ -146,10 +141,11 @@ class ExtensionController extends AbstractController
 
     /**
      * @Route("/deactivate/{id}/{token}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
+     * @PermissionCheck("admin")
      *
      * Deactivate an extension
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
+     * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
     public function deactivateAction(
         int $id,
@@ -158,14 +154,9 @@ class ExtensionController extends AbstractController
         ExtensionStateHelper $extensionStateHelper,
         CacheClearer $cacheClearer
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         if (!$this->isCsrfTokenValid('deactivate-extension', $token)) {
             throw new AccessDeniedException();
         }
-        // @todo check if this is a theme and currently set as default or admin theme
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
@@ -263,13 +254,14 @@ class ExtensionController extends AbstractController
 
     /**
      * @Route("/install/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaExtensionsModule/Extension/install.html.twig")
      *
      * Install and initialise an extension.
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
+     * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
     public function installAction(
         Request $request,
@@ -282,10 +274,6 @@ class ExtensionController extends AbstractController
         ExtensionDependencyHelper $dependencyHelper,
         CacheClearer $cacheClearer
     ) {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $id = $extension->getId();
         if (!$this->isCsrfTokenValid('install-extension', $token)) {
             throw new AccessDeniedException();
@@ -401,20 +389,17 @@ class ExtensionController extends AbstractController
 
     /**
      * @Route("/upgrade/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
+     * @PermissionCheck("admin")
      *
      * Upgrade an extension.
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
+     * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
     public function upgradeAction(
         ExtensionEntity $extension,
         $token,
         ExtensionHelper $extensionHelper
     ): RedirectResponse {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         if (!$this->isCsrfTokenValid('upgrade-extension', $token)) {
             throw new AccessDeniedException();
         }
@@ -431,13 +416,14 @@ class ExtensionController extends AbstractController
 
     /**
      * @Route("/uninstall/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
+     * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaExtensionsModule/Extension/uninstall.html.twig")
      *
      * Uninstall an extension.
      *
      * @return array|Response|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
+     * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
     public function uninstallAction(
         Request $request,
@@ -450,10 +436,6 @@ class ExtensionController extends AbstractController
         ExtensionDependencyHelper $dependencyHelper,
         CacheClearer $cacheClearer
     ) {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         if (!$this->isCsrfTokenValid('uninstall-extension', $token)) {
             throw new AccessDeniedException();
         }
@@ -509,13 +491,10 @@ class ExtensionController extends AbstractController
 
     /**
      * @Route("/theme-preview/{themeName}")
+     * @PermissionCheck("admin")
      */
     public function previewAction(Engine $engine, string $themeName): Response
     {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $engine->setActiveTheme($themeName);
         $this->addFlash('warning', 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.');
 

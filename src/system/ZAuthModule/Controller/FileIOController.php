@@ -17,16 +17,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ZAuthModule\Form\Type\ImportUserType;
 use Zikula\ZAuthModule\Helper\FileIOHelper;
 
 /**
  * @Route("/fileIO")
+ * @PermissionCheck("admin")
  */
 class FileIOController extends AbstractController
 {
@@ -36,7 +37,6 @@ class FileIOController extends AbstractController
      * @Template("@ZikulaZAuthModule/FileIO/import.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function importAction(
         Request $request,
@@ -44,10 +44,6 @@ class FileIOController extends AbstractController
         GroupRepositoryInterface $groupRepository,
         FileIOHelper $ioHelper
     ) {
-        if (!$this->hasPermission('ZikulaZAuthModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(ImportUserType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

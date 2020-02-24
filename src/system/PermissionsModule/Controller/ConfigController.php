@@ -17,16 +17,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\PermissionsModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ConfigController
+ *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -35,7 +37,6 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaPermissionsModule/Config/config.html.twig")
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|Response
      */
     public function configAction(
@@ -43,10 +44,6 @@ class ConfigController extends AbstractController
         VariableApiInterface $variableApi,
         PermissionRepositoryInterface $permissionRepository
     ) {
-        if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $modVars = $variableApi->getAll('ZikulaPermissionsModule');
         $modVars['lockadmin'] = (bool)$modVars['lockadmin'];
         $modVars['filter'] = (bool)$modVars['filter'];

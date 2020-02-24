@@ -17,15 +17,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\GroupsModule\Form\Type\ConfigType;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class ConfigController
+ *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -34,15 +36,10 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Config/config.html.twig")
      *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
     public function configAction(Request $request, GroupRepositoryInterface $groupRepository)
     {
-        if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         // build a groups array suitable for the form choices
         $groupsList = [];
         $groups = $groupRepository->findAll();

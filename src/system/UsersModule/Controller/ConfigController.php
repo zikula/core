@@ -17,13 +17,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -33,6 +33,7 @@ use Zikula\UsersModule\UserEvents;
 
 /**
  * @Route("/admin")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
@@ -40,17 +41,11 @@ class ConfigController extends AbstractController
      * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/Config/config.html.twig")
-     *
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function configAction(
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ): array {
-        if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
         $form = $this->createForm(ConfigType::class, $this->getVars());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -76,7 +71,6 @@ class ConfigController extends AbstractController
      * @Template("@ZikulaUsersModule/Config/authenticationMethods.html.twig")
      *
      * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function authenticationMethodsAction(
         Request $request,
@@ -84,9 +78,6 @@ class ConfigController extends AbstractController
         AuthenticationMethodCollector $authenticationMethodCollector,
         CacheClearer $cacheClearer
     ) {
-        if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
         $allMethods = $authenticationMethodCollector->getAll();
         $authenticationMethodsStatus = $variableApi->getSystemVar('authenticationMethodsStatus', []);
         foreach ($allMethods as $alias => $method) {
