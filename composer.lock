@@ -6905,12 +6905,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "c6edd7cf55a20a00b0b0eeeb36dc5260843a4f84"
+                "reference": "9a611fcbe726d00de4814f7d8be6918bd51ada2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/c6edd7cf55a20a00b0b0eeeb36dc5260843a4f84",
-                "reference": "c6edd7cf55a20a00b0b0eeeb36dc5260843a4f84",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/9a611fcbe726d00de4814f7d8be6918bd51ada2d",
+                "reference": "9a611fcbe726d00de4814f7d8be6918bd51ada2d",
                 "shasum": ""
             },
             "require": {
@@ -6946,7 +6946,7 @@
                 }
             ],
             "description": "Page locking support",
-            "time": "2020-02-23T08:31:02+00:00"
+            "time": "2020-02-24T13:31:55+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6954,12 +6954,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "6b903ead781846e0ef2c7a79f36b4bc90a0dc052"
+                "reference": "601f0cf81db5ec310eaa87f3062e951206ee9db9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/6b903ead781846e0ef2c7a79f36b4bc90a0dc052",
-                "reference": "6b903ead781846e0ef2c7a79f36b4bc90a0dc052",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/601f0cf81db5ec310eaa87f3062e951206ee9db9",
+                "reference": "601f0cf81db5ec310eaa87f3062e951206ee9db9",
                 "shasum": ""
             },
             "require": {
@@ -7015,7 +7015,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-02-24T08:09:41+00:00"
+            "time": "2020-02-24T13:23:16+00:00"
         },
         {
             "name": "zikula/sortable-columns",

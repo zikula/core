@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         $('#toggle_notallowed').click( function() {
              $('.notallowed_radio').prop('checked', true);
