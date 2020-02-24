@@ -33,6 +33,7 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -160,9 +161,14 @@ class ExtensionController extends AbstractController
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
+        $defaultTheme = $this->getVariableApi()->get(VariableApi::CONFIG, 'defaulttheme');
+        $adminTheme = $this->getVariableApi()->get('ZikulaAdminModule', 'admintheme');
+
         if (null !== $extension) {
             if (ZikulaKernel::isCoreExtension($extension->getName())) {
                 $this->addFlash('error', $this->trans('Error! You cannot deactivate the %name%. It is required by the system.', ['%name%' => $extension->getName()]));
+            } elseif (in_array($extension->getName(), [$defaultTheme, $adminTheme])) {
+                $this->addFlash('error', $this->trans('Error! You cannot deactivate the %name%. The theme is in use.', ['%name%' => $extension->getName()]));
             } else {
                 // Update state
                 $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
