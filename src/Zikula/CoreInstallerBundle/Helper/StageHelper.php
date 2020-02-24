@@ -105,7 +105,7 @@ class StageHelper
         $currentVersion = $this->parameterHelper->getYamlHelper()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         switch ($stageName) {
             case 'bundles':
-                return $this->createBundles(); // @todo this stage may no longer be necessary since all core is hard-coded & loaded in kernel
+                return $this->createBundles();
             case 'install_event':
                 return $this->fireEvent(CoreEvents::CORE_INSTALL_PRE_MODULE);
             case 'extensions':
