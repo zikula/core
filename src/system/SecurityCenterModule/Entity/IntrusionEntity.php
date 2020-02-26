@@ -49,8 +49,8 @@ class IntrusionEntity extends EntityAccess
     /**
      * Tag
      *
-     * @ORM\Column(name="tag", type="string", length=40, nullable=true)
-     * @Assert\Length(min="0", max="40", allowEmptyString="true")
+     * @ORM\Column(name="tag", type="string", length=150, nullable=true)
+     * @Assert\Length(min="0", max="150", allowEmptyString="true")
      * @var string
      */
     private $tag;

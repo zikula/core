@@ -190,6 +190,16 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $this->setSystemVar('idsrulepath', 'Resources/config/phpids_zikula_default.xml');
                 $this->setSystemVar('idscachingtype', 'none');
                 $this->setSystemVar('idscachingexpiration', 600);
+
+                $connection = $this->entityManager->getConnection();
+
+                // extend length of tag field of intrusion table
+                $sql = '
+                    ALTER TABLE `sc_intrusion`
+                    MODIFY `tag` VARCHAR(150) NOT NULL
+                ';
+                $stmt = $connection->prepare($sql);
+                $stmt->execute();
             case '1.5.3':
                 // current version
         }
