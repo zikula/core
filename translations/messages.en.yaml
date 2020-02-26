@@ -443,7 +443,6 @@ PHP: null
 'Style sheet contents': null
 'Pending Content': null
 'File Include': null
-'No permission for this action.': null
 'Done! Position saved.': null
 'Done! Position deleted.': null
 'Done! Block saved.': null
@@ -816,7 +815,7 @@ Open: null
 'You already have a pending application. Please wait until the administrator notifies you.': null
 'Done! The application has been sent. You will be notified by email when the application is processed.': null
 'Application cancelled.': null
-'Sorry!, You cannot apply to join the requested group': null
+'Error! You cannot apply to join the requested group': null
 'This group is a core-only group': null
 'This group is closed.': null
 'This group is has reached its membership limit.': null
@@ -828,13 +827,13 @@ Open: null
 'Done! Group deleted.': null
 'The selected user is already a member of this group.': null
 'Done! The user was added to the group.': null
-'Sorry! You must register for a user account on this site before you can join a group.': null
+'Error! You must register for a user account on this site before you can join a group.': null
 'Joined the "%groupName%" group': null
 'Invalid Group ID or User ID.': null
 'Invalid Group ID.': null
 'Invalid User ID.': null
 'Done! The user was removed from the group.': null
-'Sorry! You must be logged in before you can leave a group.': null
+'Error! You must be logged in before you can leave a group.': null
 'Left the "%groupName%" group': null
 'This group is a private group': null
 'All groups': null
@@ -1021,6 +1020,7 @@ URL: null
 'Error! Activation of %name% not allowed.': null
 'Done! Activated %name%.': null
 'Error! You cannot deactivate the %name%. It is required by the system.': null
+'Error! You cannot deactivate the %name%. The theme is in use.': null
 'Done! Deactivated %name%.': null
 'Default values reloaded. Save to confirm.': null
 'Done! Extension updated.': null
@@ -1735,6 +1735,10 @@ Provision: null
 'Module "%name%" is not a valid provider.': null
 'Provider module "%name%" is not available.': null
 'Providers'' areas order is not an array.': null
+'No permission for this action.': null
+'Sorry!, You cannot apply to join the requested group': null
+'Sorry! You must register for a user account on this site before you can join a group.': null
+'Sorry! You must be logged in before you can leave a group.': null
 'The minimum length for user passwords is %sub% characters.': null
 SHA1: null
 SHA256: null

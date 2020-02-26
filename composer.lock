@@ -4044,16 +4044,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "dev-master",
+            "version": "0.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "7f737fee38031331cb433bbf564658c6504c26c9"
+                "reference": "7fbc991062d6cf7d862122d07428adfa972fce78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/7f737fee38031331cb433bbf564658c6504c26c9",
-                "reference": "7f737fee38031331cb433bbf564658c6504c26c9",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/7fbc991062d6cf7d862122d07428adfa972fce78",
+                "reference": "7fbc991062d6cf7d862122d07428adfa972fce78",
                 "shasum": ""
             },
             "require": {
@@ -4095,7 +4095,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.11-dev"
+                    "dev-master": "0.12-dev"
                 }
             },
             "autoload": {
@@ -4116,7 +4116,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "time": "2020-02-24T10:04:44+00:00"
+            "time": "2020-02-25T16:44:05+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -7186,7 +7186,6 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
-        "php-translation/symfony-bundle": 20,
         "matthiasnoback/symfony-console-form": 20,
         "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,

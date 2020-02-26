@@ -68,6 +68,7 @@ All: null
 'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.': null
 'days (if ''Remember me'' is activated)': null
 'minutes of inactivity': null
+seconds: null
 Monthly: null
 Weekly: null
 Daily: null
@@ -83,6 +84,9 @@ JSON: null
 'React on impact per request (uses the values from above)': null
 'React on impact sum per session [loose] (uses the values from above * 10)': null
 'React on impact sum per session [strict] (uses the values from above * 5)': null
+Session: null
+Memcached: null
+None: null
 'Use internal output filter only': null
 'Use ''HTML Purifier'' + internal mechanism as output filter': null
 'More information in <a href=''%url%'' target="_blank">PHP documentation</a>.': null
@@ -108,6 +112,8 @@ JSON: null
 'Define which fields contain HTML and need preparation': null
 'Define which fields contain JSON data and should be treated as such': null
 'Define which fields should not be monitored': null
+'Caching method': null
+'Cache expiration time': null
 'Select output filter': null
 'Comma (,)': null
 'Semicolon (;)': null
