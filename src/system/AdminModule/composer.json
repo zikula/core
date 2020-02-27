@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=7.2.5",
-        "FrDH/mmenu.js": "8.*"
+        "frdh/mmenu.js": "8.*"
     },
     "repositories": [
         {
