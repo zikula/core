@@ -24,6 +24,32 @@
     "require-dev": {
         "symfony/phpunit-bridge": "5.*"
     },
+    "replace": {
+        "zikula/core-bundle": "self.version",
+        "zikula/coreinstaller-bundle": "self.version",
+        "zikula/formextension-bundle": "self.version",
+        "zikula/hook-bundle": "self.version",
+        "zikula/workflow-bundle": "self.version",
+        "zikula/admin-module": "self.version",
+        "zikula/blocks-module": "self.version",
+        "zikula/categories-module": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/groups-module": "self.version",
+        "zikula/mailer-module": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/routes-module": "self.version",
+        "zikula/search-module": "self.version",
+        "zikula/securitycenter-module": "self.version",
+        "zikula/settings-module": "self.version",
+        "zikula/theme-module": "self.version",
+        "zikula/users-module": "self.version",
+        "zikula/zauth-module": "self.version",
+        "zikula/atom-theme": "self.version",
+        "zikula/bootstrap-theme": "self.version",
+        "zikula/printer-theme": "self.version",
+        "zikula/rss-theme": "self.version"
+    },
     "scripts": {
         "zikula-scripts": [
             "Zikula\\Composer\\CopyRequirementsFile::copy",

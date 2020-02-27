@@ -30,8 +30,6 @@
         "league/html-to-markdown": "^4.8",
         "michelf/php-markdown": "^1.9",
 
-        "oro/twig-inspector": "1.*",
-
         "components/jquery": "3.*",
         "components/jqueryui": "1.*",
         "components/bootstrap": "4.*",
@@ -39,6 +37,9 @@
         "itsjavi/fontawesome-iconpicker": "3.*",
         "dimsemenov/magnific-popup": "1.*",
         "vakata/jstree": "3.*"
+    },
+    "require-dev": {
+        "oro/twig-inspector": "1.*"
     },
     "extra": {
         "zikula": {

@@ -23,11 +23,35 @@
         "zikula/pagelock-module": "dev-master",
         "zikula/sortable-columns": "1.*",
 
+        "zikula/coreinstaller-bundle": "dev-master",
+        "zikula/formextension-bundle": "dev-master",
+        "zikula/hook-bundle": "dev-master",
+        "zikula/workflow-bundle": "dev-master",
+
+        "zikula/admin-module": "dev-master",
+        "zikula/blocks-module": "dev-master",
+        "zikula/categories-module": "dev-master",
+        "zikula/extensions-module": "dev-master",
+        "zikula/groups-module": "dev-master",
+        "zikula/mailer-module": "dev-master",
+        "zikula/menu-module": "dev-master",
+        "zikula/permissions-module": "dev-master",
+        "zikula/routes-module": "dev-master",
+        "zikula/search-module": "dev-master",
+        "zikula/securitycenter-module": "dev-master",
+        "zikula/settings-module": "dev-master",
+        "zikula/theme-module": "dev-master",
+        "zikula/users-module": "dev-master",
+        "zikula/zauth-module": "dev-master",
+
+        "zikula/atom-theme": "dev-master",
+        "zikula/bootstrap-theme": "dev-master",
+        "zikula/printer-theme": "dev-master",
+        "zikula/rss-theme": "dev-master",
+
         "symfony/symfony": "5.*",
         "symfony/monolog-bundle": "3.*",
         "sensio/framework-extra-bundle": "5.*",
-        "symfony/maker-bundle": "1.*",
-        "symfony/profiler-pack": "^1.0",
         "sensiolabs/security-checker" : "6.*",
 
         "symfony/polyfill-intl-messageformatter": "1.*",
@@ -41,6 +65,10 @@
         "antishov/doctrine-extensions-bundle": "1.*",
         "gedmo/doctrine-extensions": "2.*",
         "liip/imagine-bundle": "2.*"
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "1.*",
+        "symfony/profiler-pack": "^1.0"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreBundle\\": "" }
