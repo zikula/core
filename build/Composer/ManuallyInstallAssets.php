@@ -28,8 +28,8 @@ class ManuallyInstallAssets
      * The list of assets. [[vendorPath => destinationPath]]
      */
     protected static $assets = [
-        '/mmenu.js/dist/mmenu.js' => '/mmenu/js/mmenu.js',
-        '/mmenu.js/dist/mmenu.css' => '/mmenu/css/mmenu.css',
+        '/frdh/mmenu.js/dist/mmenu.js' => '/mmenu/js/mmenu.js',
+        '/frdh/mmenu.js/dist/mmenu.css' => '/mmenu/css/mmenu.css',
         '/itsjavi/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.css' => '/fontawesome-iconpicker/fontawesome-iconpicker.css',
         '/itsjavi/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css' => '/fontawesome-iconpicker/fontawesome-iconpicker.min.css',
         '/itsjavi/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.js' => '/fontawesome-iconpicker/fontawesome-iconpicker.js',
