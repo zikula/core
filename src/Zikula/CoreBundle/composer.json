@@ -52,6 +52,8 @@
         "symfony/symfony": "5.*",
         "symfony/monolog-bundle": "3.*",
         "sensio/framework-extra-bundle": "5.*",
+        "symfony/maker-bundle": "1.*",
+        "symfony/profiler-pack": "^1.0",
         "sensiolabs/security-checker" : "6.*",
 
         "symfony/polyfill-intl-messageformatter": "1.*",
@@ -65,10 +67,6 @@
         "antishov/doctrine-extensions-bundle": "1.*",
         "gedmo/doctrine-extensions": "2.*",
         "liip/imagine-bundle": "2.*"
-    },
-    "require-dev": {
-        "symfony/maker-bundle": "1.*",
-        "symfony/profiler-pack": "^1.0"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreBundle\\": "" }
