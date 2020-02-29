@@ -248,7 +248,7 @@
   - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
   - knplabs/knp-menu updated from 2.2.0 to 3.1.0
   - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
-  - league/commonmark installed in 1.3.0
+  - league/commonmark installed in 1.3.1
   - league/html-to-markdown installed in 4.9.1
   - liip/imagine-bundle updated from 1.9.1 to 2.3.0
   - lorenzo/pinky installed in 1.0.5
