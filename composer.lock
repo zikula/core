@@ -732,16 +732,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "cbe23383749496fe0f373345208b79568e4bc248"
+                "reference": "1ab9842d69e64fb3a01be6b656501032d1b78cb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/cbe23383749496fe0f373345208b79568e4bc248",
-                "reference": "cbe23383749496fe0f373345208b79568e4bc248",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/1ab9842d69e64fb3a01be6b656501032d1b78cb7",
+                "reference": "1ab9842d69e64fb3a01be6b656501032d1b78cb7",
                 "shasum": ""
             },
             "require": {
@@ -772,7 +772,7 @@
                 "Xdebug",
                 "performance"
             ],
-            "time": "2019-11-06T16:40:04+00:00"
+            "time": "2020-03-01T12:26:26+00:00"
         },
         {
             "name": "dimsemenov/magnific-popup",
@@ -7072,12 +7072,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "fd484c61b2c090a2d410ca6a252b5204f9e11fe9"
+                "reference": "2e75afa4cf4af412f8ba85144edb1c5591a62eb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/fd484c61b2c090a2d410ca6a252b5204f9e11fe9",
-                "reference": "fd484c61b2c090a2d410ca6a252b5204f9e11fe9",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/2e75afa4cf4af412f8ba85144edb1c5591a62eb5",
+                "reference": "2e75afa4cf4af412f8ba85144edb1c5591a62eb5",
                 "shasum": ""
             },
             "require": {
@@ -7109,7 +7109,7 @@
                 "step",
                 "wizard"
             ],
-            "time": "2020-02-18T12:04:34+00:00"
+            "time": "2020-02-29T13:01:31+00:00"
         }
     ],
     "packages-dev": [
