@@ -11,6 +11,7 @@
             "homepage": "https://ziku.la"
         }
     ],
+    "bin": ["bin/console"],
     "require": {
         "php": ">=7.2.5",
         "composer/composer": "1.*",
