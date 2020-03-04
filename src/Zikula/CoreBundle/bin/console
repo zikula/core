@@ -12,7 +12,12 @@ if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
 
 set_time_limit(0);
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
+    if (file_exists($file)) {
+        require $file;
+        break;
+    }
+}
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
@@ -33,7 +38,12 @@ if ($input->hasParameterOption('--no-debug', true)) {
     putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
 }
 
-require __DIR__ . '/../../../../config/bootstrap.php';
+foreach ([__DIR__ . '/../../../../config/bootstrap.php', __DIR__ . '/../config/bootstrap.php'] as $file) {
+    if (file_exists($file)) {
+        require $file;
+        break;
+    }
+}
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
