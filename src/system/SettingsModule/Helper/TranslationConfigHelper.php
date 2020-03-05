@@ -53,10 +53,6 @@ class TranslationConfigHelper
 
     public function updateConfiguration()
     {
-        if (!$this->installed) {
-            return;
-        }
-
         $configName = 'translation';
         $transConfigOld = $this->configDumper->getConfiguration($configName);
         $transConfigNew = [
@@ -65,6 +61,7 @@ class TranslationConfigHelper
                 'extension' => $transConfigOld['configs']['extension']
             ]
         ];
+
         if (file_exists($this->kernel->getProjectDir() . '/src/system')) {
             // development system: core bundles and system modules are in "src/"
             $transConfigNew['configs']['zikula']['dirs'] = [
@@ -74,35 +71,38 @@ class TranslationConfigHelper
             ];
             // note we can not set this in a distribution system when core components are in "vendor/"
         }
-        $configTemplate = [
-            'excluded_names' => ['*TestCase.php', '*Test.php'],
-            'excluded_dirs' => ['vendor'],
-            'output_format' => 'yaml',
-            'local_file_storage_options' => [
-                'default_output_format' => 'yaml'
-            ]
-        ];
-        foreach ($this->kernel->getModules() as $bundle) {
-            if ($this->kernel->isCoreExtension($bundle->getName())) {
-                continue;
+
+        if ($this->installed) {
+            $configTemplate = [
+                'excluded_names' => ['*TestCase.php', '*Test.php'],
+                'excluded_dirs' => ['vendor'],
+                'output_format' => 'yaml',
+                'local_file_storage_options' => [
+                    'default_output_format' => 'yaml'
+                ]
+            ];
+            foreach ($this->kernel->getModules() as $bundle) {
+                if ($this->kernel->isCoreExtension($bundle->getName())) {
+                    continue;
+                }
+                $bundleConfig = $configTemplate;
+                $translationDirectory = $bundle->getPath() . '/Resources/translations';
+                $bundleConfig['output_dir'] = $translationDirectory;
+                $bundleConfig['external_translations_dir'] = $translationDirectory;
+                $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
             }
-            $bundleConfig = $configTemplate;
-            $translationDirectory = $bundle->getPath() . '/Resources/translations';
-            $bundleConfig['output_dir'] = $translationDirectory;
-            $bundleConfig['external_translations_dir'] = $translationDirectory;
-            $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
-        }
-        foreach ($this->kernel->getThemes() as $bundle) {
-            // lets include core themes as they need translation as all other themes, too
-            // (/system is included in "zikula" config while /themes is not)
-            /*if (in_array($bundle->getName(), ['ZikulaBootstrapTheme', 'ZikulaAtomTheme', 'ZikulaPrinterTheme', 'ZikulaRssTheme'], true)) {
-                continue;
-            }*/
-            $bundleConfig = $configTemplate;
-            $translationDirectory = $bundle->getPath() . '/Resources/translations';
-            $bundleConfig['output_dir'] = $translationDirectory;
-            $bundleConfig['external_translations_dir'] = $translationDirectory;
-            $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
+            foreach ($this->kernel->getThemes() as $bundle) {
+                // lets include core themes as they need translation as all other themes, too
+                // (/system is included in "zikula" config while /themes is not)
+                /*if (in_array($bundle->getName(), ['ZikulaBootstrapTheme', 'ZikulaAtomTheme', 'ZikulaPrinterTheme', 'ZikulaRssTheme'], true)) {
+                    continue;
+                }*/
+                $bundleConfig = $configTemplate;
+                $translationDirectory = $bundle->getPath() . '/Resources/translations';
+                $bundleConfig['output_dir'] = $translationDirectory;
+                $bundleConfig['external_translations_dir'] = $translationDirectory;
+                $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
+            }
         }
 
         $this->configDumper->setConfiguration($configName, $transConfigNew);
