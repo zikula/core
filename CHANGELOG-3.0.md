@@ -83,6 +83,7 @@
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)
     - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
+    - Removed composer/installers
     - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
     - Removed elao/web-profiler-extra-bundle
     - Removed jms/translation-bundle (in favour of php-translation/*)
@@ -220,7 +221,6 @@
   - components/font-awesome updated from 4.7.0 to 5.12.1
   - composer/ca-bundle updated from 1.2.4 to 1.2.6
   - composer/composer installed in 1.10.0-RC
-  - composer/installers updated from 1.7.0 to 1.8.0
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.3
   - composer/xdebug-handler installed in 1.4.1
@@ -272,7 +272,7 @@
   - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
   - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
   - symfony/contracts installed in 2.0.1
-  - symfony/maker-bundle installed in 1.14.4
+  - symfony/maker-bundle installed in 1.14.6
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.5
   - symfony/polyfill-ctype updated from 1.12.0 to 1.14.0
