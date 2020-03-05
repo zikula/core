@@ -81,8 +81,10 @@ class ConfigController extends AbstractController
             $dataValues['modulecategory' . $adminModule['name']] = isset($category) ? $category->getCid() : $this->getVar('defaultcategory');
         }
 
-        $form = $this->createForm(ConfigType::class,
-            $dataValues, [
+        $form = $this->createForm(
+            ConfigType::class,
+            $dataValues,
+            [
                 'categories' => $categories,
                 'modules' => $modules,
             ]

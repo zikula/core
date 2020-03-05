@@ -133,7 +133,8 @@ class ExtensionDependencyHelper
     {
         $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
         if (MetaData::DEPENDENCY_REQUIRED === $dependency->getStatus()
-            && (null === $foundExtension // never in the filesystem
+            && (
+                null === $foundExtension // never in the filesystem
                 || Constant::STATE_MISSING === $foundExtension->getState()
                 || Constant::STATE_INVALID === $foundExtension->getState()
                 || $foundExtension->getState() > 10 // not compatible with current core
