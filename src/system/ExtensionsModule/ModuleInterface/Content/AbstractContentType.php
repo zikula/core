@@ -95,7 +95,8 @@ abstract class AbstractContentType implements ContentTypeInterface
         TranslatorInterface $translator,
         Environment $twig,
         FilesystemLoader $twigLoader,
-        /*PermissionHelper */$permissionHelper,
+        /*PermissionHelper */
+        $permissionHelper,
         Asset $assetHelper
     ) {
         $this->translator = $translator;

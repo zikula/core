@@ -58,7 +58,8 @@ class AssetsInstallCommand extends Command
             ->addOption('symlink', null, InputOption::VALUE_NONE, 'Symlinks the assets instead of copying it')
             ->addOption('relative', null, InputOption::VALUE_NONE, 'Make relative symlinks')
             ->setDescription('Installs web assets under a public web directory')
-            ->setHelp(<<<'EOT'
+            ->setHelp(
+                <<<'EOT'
 The <info>%command.name%</info> command installs bundle assets into a given
 directory (e.g. the public directory).
 

@@ -59,8 +59,10 @@ class SettingsController extends AbstractController
 
         $variables = $variableApi->getAll(VariableApi::CONFIG);
         $variables['UseCompression'] = (bool)$variables['UseCompression'];
-        $form = $this->createForm(MainSettingsType::class,
-            $variables, [
+        $form = $this->createForm(
+            MainSettingsType::class,
+            $variables,
+            [
                 'languages' => $installedLanguageNames,
                 'profileModules' => $profileModules,
                 'messageModules' => $messageModules
@@ -103,14 +105,16 @@ class SettingsController extends AbstractController
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
 
-        $form = $this->createForm(LocaleSettingsType::class,
+        $form = $this->createForm(
+            LocaleSettingsType::class,
             [
                 'multilingual' => (bool)$variableApi->getSystemVar('multilingual'),
                 'languageurl' => $variableApi->getSystemVar('languageurl'),
                 'language_detect' => (bool)$variableApi->getSystemVar('language_detect'),
                 'locale' => $variableApi->getSystemVar('locale'),
                 'timezone' => $variableApi->getSystemVar('timezone'),
-            ], [
+            ],
+            [
                 'languages' => $installedLanguageNames,
                 'locale' => $request->getLocale()
             ]

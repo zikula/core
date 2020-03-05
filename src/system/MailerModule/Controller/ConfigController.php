@@ -47,8 +47,10 @@ class ConfigController extends AbstractController
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper
     ): array {
-        $form = $this->createForm(ConfigType::class,
-            $this->getDataValues($variableApi, $configDumper), [
+        $form = $this->createForm(
+            ConfigType::class,
+            $this->getDataValues($variableApi, $configDumper),
+            [
                 'charset' => $kernel->getCharset()
             ]
         );

@@ -96,20 +96,29 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         // Pull out the script blocks
         preg_match_all('!<script[^>]*?>.*?</script>!is', $content, $match);
         $scriptBlocks = $match[0];
-        $content = preg_replace('!<script[^>]*?>.*?</script>!is',
-                            '@@@TWIG:TRIM:SCRIPT@@@', $content);
+        $content = preg_replace(
+            '!<script[^>]*?>.*?</script>!is',
+            '@@@TWIG:TRIM:SCRIPT@@@',
+            $content
+        );
 
         // Pull out the pre blocks
         preg_match_all('!<pre[^>]*?>.*?</pre>!is', $content, $match);
         $preBlocks = $match[0];
-        $content = preg_replace('!<pre[^>]*?>.*?</pre>!is',
-                            '@@@TWIG:TRIM:PRE@@@', $content);
+        $content = preg_replace(
+            '!<pre[^>]*?>.*?</pre>!is',
+            '@@@TWIG:TRIM:PRE@@@',
+            $content
+        );
 
         // Pull out the textarea blocks
         preg_match_all('!<textarea[^>]*?>.*?</textarea>!is', $content, $match);
         $textareaBlocks = $match[0];
-        $content = preg_replace('!<textarea[^>]*?>.*?</textarea>!is',
-                            '@@@TWIG:TRIM:TEXTAREA@@@', $content);
+        $content = preg_replace(
+            '!<textarea[^>]*?>.*?</textarea>!is',
+            '@@@TWIG:TRIM:TEXTAREA@@@',
+            $content
+        );
 
         // remove all leading spaces, tabs and carriage returns NOT
         // preceeded by a php close tag.

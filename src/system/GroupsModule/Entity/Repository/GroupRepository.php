@@ -58,8 +58,11 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
     }
 
     public function getGroups(
-        array $filters = [], array $exclusions = [], array $sorting = [],
-        int $limit = 0, int $offset = 0
+        array $filters = [],
+        array $exclusions = [],
+        array $sorting = [],
+        int $limit = 0,
+        int $offset = 0
     ): array {
         $qb = $this->createQueryBuilder('g');
 
