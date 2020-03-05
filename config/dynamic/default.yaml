@@ -29,8 +29,7 @@ parameters:
 translation:
     configs:
         zikula:
-            dirs: ['%kernel.project_dir%/templates', '%kernel.project_dir%/src/system', '%kernel.project_dir%/src/Zikula']
-            #dirs: ['%kernel.project_dir%/templates', '%kernel.project_dir%/src'] # default value
+            dirs: [] # will be set dynamically
             output_dir: '%kernel.project_dir%/translations'
             excluded_names: ['*TestCase.php', '*Test.php']
             excluded_dirs: [vendor, cache, data, log]
