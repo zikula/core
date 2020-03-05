@@ -52,7 +52,6 @@
     },
     "scripts": {
         "zikula-scripts": [
-            "Zikula\\Composer\\CopyRequirementsFile::copy",
             "composer dump-autoload",
             "bin/console cache:clear --env prod",
             "bin/console cache:clear",

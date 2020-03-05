@@ -33,10 +33,7 @@ class ZikulaRequirements
     public function runSymfonyChecks(array $parameters = []): void
     {
         try {
-            $projectDir = dirname(__DIR__, 4); // should work when Bundle in vendor too
-            $path = $projectDir . '/var/SymfonyRequirements.php';
-            require_once $path;
-            $symfonyRequirements = new SymfonyRequirements($projectDir);
+            $symfonyRequirements = new SymfonyRequirements($parameters['kernel.project_dir'], '5.0.0');
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
 
             foreach ($symfonyRequirements->getRequirements() as $req) {
@@ -62,23 +59,23 @@ class ZikulaRequirements
 
     private function addZikulaPathRequirements(SymfonyRequirements $symfonyRequirements, array $parameters = []): void
     {
-        $rootDir = dirname(__DIR__, 4) . '/';
+        $projectDir = $parameters['kernel.project_dir'];
         $symfonyRequirements->addRequirement(
-            is_writable($rootDir . 'config'),
+            is_writable($projectDir . '/config'),
             'config/ directory must be writable',
             'Change the permissions of "<strong>config/</strong>" directory so that the web server can write into it.'
         );
         $symfonyRequirements->addRequirement(
-            is_writable($rootDir . 'config/dynamic'),
+            is_writable($projectDir . '/config/dynamic'),
             'config/dynamic/ directory must be writable',
             'Change the permissions of "<strong>config/dynamic/</strong>" directory so that the web server can write into it.'
         );
         $symfonyRequirements->addRequirement(
-            is_writable($rootDir . $parameters['datadir']),
+            is_writable($projectDir . '/' . $parameters['datadir']),
             $parameters['datadir'] . '/ directory must be writable',
             'Change the permissions of "<strong>' . $parameters['datadir'] . '</strong>" directory so that the web server can write into it.'
         );
-        $customParametersPath = $rootDir . 'config/services_custom.yaml';
+        $customParametersPath = $projectDir . '/config/services_custom.yaml';
         if (file_exists($customParametersPath)) {
             $symfonyRequirements->addRequirement(
                 is_writable($customParametersPath),
@@ -86,7 +83,7 @@ class ZikulaRequirements
                 'Change the permissions of "<strong>config/services_custom.yaml</strong>" so that the web server can write into it.'
             );
         }
-        $customEnvVarsPath = $rootDir . '.env.local';
+        $customEnvVarsPath = $projectDir . '/.env.local';
         if (!file_exists($customEnvVarsPath)) {
             // try to create the file
             $fileSystem = new Filesystem();

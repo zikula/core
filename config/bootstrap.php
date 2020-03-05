@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreInstallerBundle\Util\RequirementChecker;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
-require dirname(__DIR__) . '/src/RequirementChecker.php';
 
 // Load cached env vars if the .env.local.php file exists
 // Run "composer dump-env prod" to create it (requires symfony/flex >=1.2)
@@ -39,20 +38,13 @@ $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = ($_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'
 $_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? 'prod' !== $_SERVER['APP_ENV'];
 $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = (int) $_SERVER['APP_DEBUG'] || filter_var($_SERVER['APP_DEBUG'], FILTER_VALIDATE_BOOLEAN) ? '1' : '0';
 
-$kernelConfig = Yaml::parse(file_get_contents(realpath(__DIR__ . '/services.yaml')));
-if (is_readable($file = __DIR__ . '/services_custom.yaml')) {
-    $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
-}
-$parameters = $kernelConfig['parameters'];
+// on install or upgrade, check if system requirements are met.
+RequirementChecker::verify();
 
 // set default locale for Intl classes
 if (extension_loaded('intl')) {
-    Locale::setDefault($parameters['locale']);
+    Locale::setDefault(RequirementChecker::getParameter('locale'));
 }
 
 // globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
 AnnotationReader::addGlobalIgnoredName('type');
-
-// on install or upgrade, check if system requirements are met.
-$requirementChecker = new RequirementChecker();
-$requirementChecker->verify($parameters);
