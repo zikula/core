@@ -2,7 +2,7 @@
     "name": "zikula/atom-theme",
     "version": "3.0.0",
     "description": "The Atom theme is an auxiliary theme specially designed for rendering pages in Atom mark-up.",
-    "type": "zikula-theme",
+    "type": "zikula-system-theme",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {

@@ -2,7 +2,7 @@
     "name": "zikula/admin-module",
     "version": "3.0.0",
     "description": "Backend administration interface",
-    "type": "zikula-module",
+    "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
