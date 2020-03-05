@@ -105,8 +105,11 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         // Pull out the pre blocks
         preg_match_all('!<pre[^>]*?>.*?</pre>!is', $content, $match);
         $preBlocks = $match[0];
-        $content = preg_replace('!<pre[^>]*?>.*?</pre>!is',
-                            '@@@TWIG:TRIM:PRE@@@', $content);
+        $content = preg_replace(
+            '!<pre[^>]*?>.*?</pre>!is',
+            '@@@TWIG:TRIM:PRE@@@',
+            $content
+        );
 
         // Pull out the textarea blocks
         preg_match_all(
