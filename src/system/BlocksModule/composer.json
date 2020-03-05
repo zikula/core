@@ -2,7 +2,7 @@
     "name": "zikula/blocks-module",
     "version": "3.9.9",
     "description": "Blocks administration",
-    "type": "zikula-module",
+    "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
