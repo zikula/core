@@ -72,9 +72,7 @@ class TranslationConfigHelper
                 '%kernel.project_dir%/src/system',
                 '%kernel.project_dir%/src/Zikula'
             ];
-            // default value: ['%kernel.project_dir%/templates', '%kernel.project_dir%/src']
-        } else {
-            // distribution system: core bundles and system modules are in "vendor/"
+            // note we can not set this in a distribution system when core components are in "vendor/"
         }
         $configTemplate = [
             'excluded_names' => ['*TestCase.php', '*Test.php'],

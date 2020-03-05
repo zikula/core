@@ -104,26 +104,35 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
             ->delete();
         switch ($level) {
             case ZikulaSessionStorage::SECURITY_LEVEL_LOW:
-                $qb->where($qb->expr()->andX(
-                    $qb->expr()->eq('s.remember', 0),
-                    $qb->expr()->lt('s.lastused', '?1'))
+                $qb->where(
+                    $qb->expr()->andX(
+                        $qb->expr()->eq('s.remember', 0),
+                        $qb->expr()->lt('s.lastused', '?1')
+                    )
                 )->setParameter(1, $inactive);
                 break;
             case ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM:
                 $qb->where(
                     $qb->expr()->andX(
                         $qb->expr()->eq('s.remember', 0),
-                        $qb->expr()->lt('s.lastused', '?1'))
-                    )->setParameter(1, $inactive)
-                    ->orWhere($qb->expr()->lt('s.lastused', '?2'))->setParameter(2, $daysOld)
-                    ->orWhere($qb->expr()->andX(
+                        $qb->expr()->lt('s.lastused', '?1')
+                    )
+                )->setParameter(1, $inactive)
+                ->orWhere(
+                    $qb->expr()->lt('s.lastused', '?2')
+                )->setParameter(2, $daysOld)
+                ->orWhere(
+                    $qb->expr()->andX(
                         $qb->expr()->eq('s.uid', Constant::USER_ID_ANONYMOUS),
                         $qb->expr()->lt('s.lastused', '?3')
-                    ))->setParameter(3, $inactive);
+                    )
+                )->setParameter(3, $inactive);
                 break;
             case ZikulaSessionStorage::SECURITY_LEVEL_HIGH:
             default:
-                $qb->where($qb->expr()->lt('s.lastused', '?1'))->setParameter(1, $inactive);
+                $qb->where(
+                    $qb->expr()->lt('s.lastused', '?1')
+                )->setParameter(1, $inactive);
                 break;
         }
         $qb->getQuery()->execute();

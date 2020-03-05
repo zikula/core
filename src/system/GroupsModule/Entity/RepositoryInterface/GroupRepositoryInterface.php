@@ -30,8 +30,11 @@ interface GroupRepositoryInterface extends ObjectRepository, Selectable
      * Returns groups for given arguments.
      */
     public function getGroups(
-        array $filters = [], array $exclusions = [], array $sorting = [],
-        int $limit = 0, int $offset = 0
+        array $filters = [],
+        array $exclusions = [],
+        array $sorting = [],
+        int $limit = 0,
+        int $offset = 0
     ): array;
 
     public function findAllAndIndexBy(string $indexField): array;
