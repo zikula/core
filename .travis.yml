@@ -40,6 +40,8 @@ before_install:
 
     - php bin/simple-phpunit
 
+    # update translation configurations to update core directories
+    - php bin/console zikula:translation:updateconfig
     # extract en translations
     - php bin/console translation:extract zikula en
 
