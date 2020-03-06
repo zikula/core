@@ -19,7 +19,12 @@
     ],
     "require": {
         "php": "^7.2.5",
-        "wikimedia/composer-merge-plugin": "1.*"
+        "wikimedia/composer-merge-plugin": "1.*",
+
+        "zikula/legal-module": "dev-master",
+        "zikula/profile-module": "dev-master",
+        "zikula/oauth-module": "dev-master",
+        "zikula/pagelock-module": "dev-master"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "5.*"

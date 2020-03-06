@@ -18,10 +18,6 @@
         "composer/installers": "1.*",
         "robloach/component-installer": "*",
 
-        "zikula/legal-module": "dev-master",
-        "zikula/profile-module": "dev-master",
-        "zikula/oauth-module": "dev-master",
-        "zikula/pagelock-module": "dev-master",
         "zikula/sortable-columns": "1.*",
 
         "zikula/coreinstaller-bundle": "dev-master",
