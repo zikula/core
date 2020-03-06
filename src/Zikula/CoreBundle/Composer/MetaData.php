@@ -35,6 +35,10 @@ class MetaData implements ArrayAccess
 
     public const EXTENSION_TYPE_THEME = 'zikula-theme';
 
+    public const SYSTEM_TYPE_MODULE = 'zikula-system-module';
+
+    public const SYSTEM_TYPE_THEME = 'zikula-system-theme';
+
     public const DEPENDENCY_REQUIRED = 1;
 
     public const DEPENDENCY_RECOMMENDED = 2;

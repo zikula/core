@@ -95,11 +95,14 @@ class Scanner
 
     private function computeExtensionType(array $json): int
     {
-        if (ZikulaKernel::isCoreExtension($json['extra']['zikula']['short-name'])) {
-            return MetaData::EXTENSION_TYPE_THEME === $json['type'] ? MetaData::TYPE_SYSTEM_THEME : MetaData::TYPE_SYSTEM_MODULE;
-        }
+        $types = [
+            MetaData::EXTENSION_TYPE_THEME => MetaData::TYPE_THEME,
+            MetaData::EXTENSION_TYPE_MODULE => MetaData::TYPE_MODULE,
+            MetaData::SYSTEM_TYPE_THEME => MetaData::TYPE_SYSTEM_THEME,
+            MetaData::SYSTEM_TYPE_MODULE => MetaData::TYPE_SYSTEM_MODULE,
+        ];
 
-        return MetaData::EXTENSION_TYPE_THEME === $json['type'] ? MetaData::TYPE_THEME : MetaData::TYPE_MODULE;
+        return $types[$json['type']];
     }
 
     public function getExtensionsMetaData(): array
