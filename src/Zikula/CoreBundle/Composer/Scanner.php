@@ -17,7 +17,6 @@ use const JSON_ERROR_NONE;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class Scanner
 {
