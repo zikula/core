@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Composer;
+namespace Zikula\ExtensionsModule\Composer;
 
 use ComponentInstaller\Process\BuildJsProcess;
 use ComponentInstaller\Process\Process;
 use Composer\Script\Event;
 use RuntimeException;
-use Zikula\Composer\Process\RequireJsProcess;
+use Zikula\ExtensionsModule\Composer\Process\RequireJsProcess;
 
 /**
  * A class to rewrite RequireJS configuration
@@ -61,7 +61,7 @@ class RequireJsConfigGenerator
         }
 
         // move files into subfolder
-        $publicDir = 'public/';
+        $publicDir = $composer->getConfig()->get('public-dir') . '/';
         $requireDir = $publicDir . 'require/';
         if (!file_exists($requireDir) && !mkdir($requireDir, 0755) && !is_dir($requireDir)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $requireDir));

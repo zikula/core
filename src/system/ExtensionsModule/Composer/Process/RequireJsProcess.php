@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Composer\Process;
+namespace Zikula\ExtensionsModule\Composer\Process;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
@@ -46,7 +46,8 @@ class RequireJsProcess extends Process
         // Construct the require.js and stick it in the destination.
         $json = $this->requireJson($this->packages);
         $requireConfig = $this->requireJs($json);
-        $vendorPath = str_replace('build/Composer', 'vendor/robloach/component-installer/src/ComponentInstaller', dirname(__DIR__));
+//        $vendorPath = str_replace('build/Composer', 'vendor/robloach/component-installer/src/ComponentInstaller', dirname(__DIR__));
+        $vendorPath = $this->config->get('vendor-dir') . '/robloach/component-installer/src/ComponentInstaller';
 
         // Attempt to write the require.config.js file.
         $destination = $this->componentDir . '/require.config.js';

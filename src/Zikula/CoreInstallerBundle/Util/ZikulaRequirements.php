@@ -59,6 +59,7 @@ class ZikulaRequirements
 
     private function addZikulaPathRequirements(SymfonyRequirements $symfonyRequirements, array $parameters = []): void
     {
+        $fileSystem = new Filesystem();
         $projectDir = $parameters['kernel.project_dir'];
         $symfonyRequirements->addRequirement(
             is_writable($projectDir . '/config'),
@@ -70,8 +71,12 @@ class ZikulaRequirements
             'config/dynamic/ directory must be writable',
             'Change the permissions of "<strong>config/dynamic/</strong>" directory so that the web server can write into it.'
         );
+        $dataDir = $projectDir . '/' . $parameters['datadir'];
+        if (!is_dir($dataDir)) {
+            $fileSystem->mkdir($dataDir);
+        }
         $symfonyRequirements->addRequirement(
-            is_writable($projectDir . '/' . $parameters['datadir']),
+            is_writable($dataDir),
             $parameters['datadir'] . '/ directory must be writable',
             'Change the permissions of "<strong>' . $parameters['datadir'] . '</strong>" directory so that the web server can write into it.'
         );
@@ -86,7 +91,6 @@ class ZikulaRequirements
         $customEnvVarsPath = $projectDir . '/.env.local';
         if (!file_exists($customEnvVarsPath)) {
             // try to create the file
-            $fileSystem = new Filesystem();
             try {
                 $fileSystem->touch($customEnvVarsPath);
             } catch (IOExceptionInterface $exception) {
@@ -101,7 +105,6 @@ class ZikulaRequirements
             $content = file_get_contents($customEnvVarsPath);
             if (false === mb_strpos($content, 'DATABASE_URL')) {
                 // no database credentials are set yet
-                $fileSystem = new Filesystem();
                 try {
                     $fileSystem->dumpFile($customEnvVarsPath, 'Test');
                     $fileSystem->dumpFile($customEnvVarsPath, '');
