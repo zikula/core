@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class RequirementChecker
 {
