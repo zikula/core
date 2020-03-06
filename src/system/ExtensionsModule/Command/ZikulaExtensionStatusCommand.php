@@ -79,7 +79,7 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
                 ['Status', $status],
                 ['Description', $extension->getDescription()],
                 ['Core Compatibility', $extension->getCoreCompatibility()],
-        ]
+            ]
         );
 
         return 0;

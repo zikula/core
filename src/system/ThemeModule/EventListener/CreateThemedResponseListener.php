@@ -112,7 +112,11 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         );
 
         // Pull out the textarea blocks
-        preg_match_all('!<textarea[^>]*?>.*?</textarea>!is', $content, $match);
+        preg_match_all(
+            '!<textarea[^>]*?>.*?</textarea>!is',
+            $content,
+            $match
+        );
         $textareaBlocks = $match[0];
         $content = preg_replace(
             '!<textarea[^>]*?>.*?</textarea>!is',

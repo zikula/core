@@ -87,12 +87,12 @@ class HtmlFilterApi implements HtmlFilterApiInterface
             $value = preg_replace_callback(
                 '#\022([^\024]*)\024#',
                 static function($matches) {
-                        if (!$matches) {
-                            return '';
-                        }
+                    if (!$matches) {
+                        return '';
+                    }
 
-                        return '<' . strtr($matches[1], ['&gt;' => '>', '&lt;' => '<', '&quot;' => '"']) . '>';
-                    },
+                    return '<' . strtr($matches[1], ['&gt;' => '>', '&lt;' => '<', '&quot;' => '"']) . '>';
+                },
                 $value
             );
             // Fix entities if required
