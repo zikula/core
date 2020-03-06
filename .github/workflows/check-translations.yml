@@ -28,4 +28,5 @@ jobs:
 
     - name: Check translations
       run: |
+        php bin/console zikula:translation:updateconfig
         php bin/console translation:check-missing en zikula

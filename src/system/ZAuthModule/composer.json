@@ -2,7 +2,7 @@
     "name": "zikula/zauth-module",
     "version": "3.0.0",
     "description": "Native zikula authentication",
-    "type": "zikula-module",
+    "type": "zikula-system-module",
     "license": "MIT",
     "authors": [
         {

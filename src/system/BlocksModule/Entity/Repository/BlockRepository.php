@@ -35,7 +35,8 @@ class BlockRepository extends ServiceEntityRepository implements BlockRepository
             $subQb = $this->_em->createQueryBuilder();
             $query
                 ->join('b.placements', 'p')
-                ->where($qb->expr()->in('p.position',
+                ->where($qb->expr()->in(
+                    'p.position',
                     $subQb->select('bp')
                         ->from('ZikulaBlocksModule:BlockPositionEntity', 'bp')
                         ->where('bp.pid = ?1')
