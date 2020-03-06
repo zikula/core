@@ -1,0 +1,17 @@
+name: Copy Files to Distribution
+on:
+  push:
+    branches: [master]
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy Kernel
+        uses: andstor/copycat-action@v2
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          src_path: /src/Kernel.php
+          dst_path: /src/Kernel.php
+          dst_owner: zikula
+          dst_repo_name: distribution
+      # adding additional steps if this works.
