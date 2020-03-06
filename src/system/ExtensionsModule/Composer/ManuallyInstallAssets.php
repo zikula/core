@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Composer;
+namespace Zikula\ExtensionsModule\Composer;
 
 use Composer\Script\Event;
 use Symfony\Component\Filesystem\Filesystem;
