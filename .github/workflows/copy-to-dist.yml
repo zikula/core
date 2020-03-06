@@ -6,6 +6,8 @@ jobs:
   copy:
     runs-on: ubuntu-latest
     steps:
+      - name: Fix up git URLs
+        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git@github.com:"' >> ~/.gitconfig
       - name: Copy Kernel
         uses: andstor/copycat-action@v2
         with:
