@@ -11,7 +11,7 @@ jobs:
       - name: Copy Kernel
         uses: andstor/copycat-action@v2
         with:
-          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.CORE_COPY }}
           src_path: /src/Kernel.php
           dst_path: /src/Kernel.php
           dst_owner: zikula
