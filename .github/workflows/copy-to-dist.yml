@@ -44,7 +44,7 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config
-          src_filter: '*.yaml|*.php'
+          src_filter: 'bootstrap.php|bundles.php|routes.yaml|services.yaml'
           dst_path: /
           dst_owner: zikula
           dst_repo_name: distribution
