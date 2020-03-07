@@ -37,7 +37,6 @@ class Kernel extends ZikulaKernel
             }
         }
     }
-    // test commit. remove this
 
     // could be remove when upgrading Symfony to 5.1.0 (wanted?)
     public function getProjectDir(): string
