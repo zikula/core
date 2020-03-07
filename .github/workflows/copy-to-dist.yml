@@ -6,12 +6,10 @@ jobs:
   copy:
     runs-on: ubuntu-latest
     steps:
-      - name: Fix up git URLs
-        run: echo -e '[url "https://github.com/"]\n  insteadOf = "git@github.com:"' >> ~/.gitconfig
       - name: Copy Kernel
         uses: andstor/copycat-action@v2
         with:
-          personal_token: ${{ secrets.CORE_COPY }}
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
           src_path: /src/Kernel.php
           dst_path: /src/Kernel.php
           dst_owner: zikula
