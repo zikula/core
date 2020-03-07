@@ -76,17 +76,10 @@
             "php": "7.2.5"
         },
         "sort-packages": true,
-        "bin-dir": "bin",
-        "component-dir": "public",
-        "public-dir": "public",
-        "vendor-dir": "vendor"
+        "component-dir": "public"
     },
     "extra": {
-        "symfony-app-dir": "app",
-        "symfony-web-dir": "public",
-        "symfony-var-dir": "var",
-        "symfony-bin-dir": "bin",
-        "symfony-tests-dir": "tests",
+        "tests-dir": "tests",
         "symfony-assets-install": "relative",
         "installer-paths": {
             "src/extensions/{$vendor}/{$name}": ["type:zikula-module", "type:zikula-theme"]
