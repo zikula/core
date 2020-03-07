@@ -67,7 +67,7 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/packages
-          src_filter: '*.yaml'
+          src_filter: '!/test/*|!/dev/*'
           dst_path: /config
           dst_owner: zikula
           dst_repo_name: distribution
@@ -90,6 +90,7 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/routes
+          src_filter: '!/dev/*'
           dst_path: /config
           dst_owner: zikula
           dst_repo_name: distribution
