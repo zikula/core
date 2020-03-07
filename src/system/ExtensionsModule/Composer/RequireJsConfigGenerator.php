@@ -61,7 +61,8 @@ class RequireJsConfigGenerator
         }
 
         // move files into subfolder
-        $publicDir = $composer->getConfig()->get('public-dir') . '/';
+        $extra = $event->getComposer()->getPackage()->getExtra();
+        $publicDir = isset($extra['public-dir']) ? $extra['public-dir'] . '/' : 'public/';
         $requireDir = $publicDir . 'require/';
         if (!file_exists($requireDir) && !mkdir($requireDir, 0755) && !is_dir($requireDir)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $requireDir));

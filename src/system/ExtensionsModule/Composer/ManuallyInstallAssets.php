@@ -41,13 +41,15 @@ class ManuallyInstallAssets
 
     public static function install(Event $event): void
     {
-        $webDir = $event->getComposer()->getPackage()->getExtra()['symfony-web-dir'];
-        if (!is_dir($webDir)) {
-            $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'symfony-web-dir', $webDir, getcwd(), 'manually install assets'));
+        $extra = $event->getComposer()->getPackage()->getExtra();
+        $publicDir = $extra['public-dir'] ?? 'public';
+        if (!is_dir($publicDir)) {
+            $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'public-dir', $publicDir, getcwd(), 'manually install assets'));
 
             return;
         }
-        $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+        $config = $event->getComposer()->getConfig();
+        $vendorDir = $config->has('vendor-dir') ? $config->get('vendor-dir') : 'vendor';
         if (!is_dir($vendorDir)) {
             $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'vendor-dir', $vendorDir, getcwd(), 'manually install assets'));
 
@@ -56,8 +58,8 @@ class ManuallyInstallAssets
         $fs = new Filesystem();
         $event->getIO()->write('<info>Zikula manually installing assets:</info>');
         foreach (static::$assets as $assetPath => $destinationPath) {
-            $fs->copy($vendorDir . $assetPath, $webDir . $destinationPath, true);
-            $event->getIO()->write(sprintf('Zikula installed <comment>%s</comment> in <comment>%s</comment>', $assetPath, $webDir . $destinationPath));
+            $fs->copy($vendorDir . $assetPath, $publicDir . $destinationPath, true);
+            $event->getIO()->write(sprintf('Zikula installed <comment>%s</comment> in <comment>%s</comment>', $assetPath, $publicDir . $destinationPath));
         }
     }
 }
