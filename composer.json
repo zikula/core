@@ -75,6 +75,7 @@
         "platform": {
             "php": "7.2.5"
         },
+        "bin-dir": "bin",
         "sort-packages": true,
         "component-dir": "public"
     },
