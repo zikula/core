@@ -51,12 +51,12 @@ jobs:
   copy_dynamic:
     runs-on: ubuntu-latest
     steps:
-      - name: Copy config/dynamic/default.yml
+      - name: Copy config/dynamic/default.yaml
         uses: andstor/copycat-action@v2
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_path: /config/dynamic/default.yml
-          dst_path: /config/dynamic/default.yml
+          src_path: /config/dynamic/default.yaml
+          dst_path: /config/dynamic/default.yaml
           dst_owner: zikula
           dst_repo_name: distribution
   copy_packages:
