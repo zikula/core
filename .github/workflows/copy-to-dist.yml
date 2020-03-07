@@ -9,7 +9,7 @@ jobs:
       - name: Copy Kernel
         uses: andstor/copycat-action@v2
         with:
-          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /src/Kernel.php
           dst_path: /src/Kernel.php
           dst_owner: zikula
