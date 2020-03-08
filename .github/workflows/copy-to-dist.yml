@@ -25,6 +25,17 @@ jobs:
           dst_path: /public/index.php
           dst_owner: zikula
           dst_repo_name: distribution
+  copy_htaccess:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy .htaccess
+        uses: andstor/copycat-action@v2
+        with:
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          src_path: /public/.htaccess
+          dst_path: /public/.htaccess
+          dst_owner: zikula
+          dst_repo_name: distribution
   copy_env:
     runs-on: ubuntu-latest
     steps:
