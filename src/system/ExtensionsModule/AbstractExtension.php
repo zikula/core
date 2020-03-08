@@ -133,6 +133,7 @@ abstract class AbstractExtension extends Bundle
                 $metaData->setUrl($extensionEntity->getUrl());
                 $metaData->setDisplayName($extensionEntity->getDisplayname());
                 $metaData->setDescription($extensionEntity->getDescription());
+                $metaData->setIcon($extensionEntity->getIcon());
             }
         }
 

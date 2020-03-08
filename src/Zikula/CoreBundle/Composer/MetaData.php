@@ -288,6 +288,7 @@ class MetaData implements ArrayAccess
             'type' => $this->getExtensionType(),
             'displayname' => $this->getDisplayName(),
             'oldnames' => $this->getOldNames(),
+            'icon' => $this->getIcon(),
             'description' => $this->getDescription(),
             'version' => $this->getVersion(),
             'url' => $this->getUrl(),
