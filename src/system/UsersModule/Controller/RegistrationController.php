@@ -239,7 +239,7 @@ class RegistrationController extends AbstractController
     {
         // Check for illegal user agents trying to register.
         $userAgent = $request->server->get('HTTP_USER_AGENT', '');
-        $illegalUserAgents = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '');
+        $illegalUserAgents = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '') ?? '';
         // Convert the comma-separated list into a regexp pattern.
         $pattern = ['/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D'];
         $replace = ['', '|', ''];
