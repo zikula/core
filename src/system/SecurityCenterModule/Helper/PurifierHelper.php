@@ -15,10 +15,6 @@ namespace Zikula\SecurityCenterModule\Helper;
 
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
@@ -30,30 +26,23 @@ class PurifierHelper
     private $kernel;
 
     /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var VariableApiInterface
      */
     private $variableApi;
 
+    /**
+     * @var CacheDirHelper
+     */
+    private $cacheDirHelper;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        SessionInterface $session,
-        TranslatorInterface $translator,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        CacheDirHelper $cacheDirHelper
     ) {
         $this->kernel = $kernel;
-        $this->session = $session;
-        $this->translator = $translator;
         $this->variableApi = $variableApi;
+        $this->cacheDirHelper = $cacheDirHelper;
     }
 
     /**
@@ -87,7 +76,7 @@ class PurifierHelper
         $def = $config->getHTMLDefinition(true);
         $def->addAttribute('iframe', 'allowfullscreen', 'Bool');
 
-        $this->ensureCacheDirectoryExists($config->get('Cache.SerializerPath'));
+        $this->cacheDirHelper->ensureCacheDirectoryExists($config->get('Cache.SerializerPath'), true);
 
         return $config;
     }
@@ -150,31 +139,5 @@ class PurifierHelper
         $config->set('Cache.SerializerPath', $cacheDirectory);
 
         return $config;
-    }
-
-    private function ensureCacheDirectoryExists(string $cacheDirectory): void
-    {
-        $fs = new Filesystem();
-
-        try {
-            if (!$fs->exists($cacheDirectory)) {
-                // this uses always a fixed environment (e.g. "prod") that is serialized
-                // in purifier configuration
-                // so ensure the main directory exists even if another environment is currently used
-                $parentDirectory = mb_substr($cacheDirectory, 0, -9);
-                if (!$fs->exists($parentDirectory)) {
-                    $fs->mkdir($parentDirectory);
-                }
-                $fs->mkdir($cacheDirectory);
-            }
-        } catch (IOExceptionInterface $e) {
-            $this->session->getFlashBag()->add(
-                'error',
-                $this->translator->trans(
-                    'An error occurred while creating HTML Purifier cache directory at %path',
-                    ['%path' => $e->getPath()]
-                )
-            );
-        }
     }
 }

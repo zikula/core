@@ -23,6 +23,8 @@ use IDS\Report as IdsReport;
 use RuntimeException;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -31,6 +33,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
+use Zikula\SecurityCenterModule\Helper\CacheDirHelper;
 use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\UsersModule\Constant;
 
@@ -72,6 +75,11 @@ class FilterListener implements EventSubscriberInterface
     private $cacheDir;
 
     /**
+     * @var CacheDirHelper
+     */
+    private $cacheDirHelper;
+
+    /**
      * @var bool
      */
     private $installed;
@@ -88,6 +96,7 @@ class FilterListener implements EventSubscriberInterface
         MailerApiInterface $mailer,
         TranslatorInterface $translator,
         string $cacheDir,
+        CacheDirHelper $cacheDirHelper,
         bool $installed,
         $isUpgrading // cannot cast to bool because set with expression language
     ) {
@@ -97,6 +106,7 @@ class FilterListener implements EventSubscriberInterface
         $this->mailer = $mailer;
         $this->translator = $translator;
         $this->cacheDir = $cacheDir;
+        $this->cacheDirHelper = $cacheDirHelper;
         $this->installed = $installed;
         $this->isUpgrading = $isUpgrading;
     }
@@ -206,14 +216,14 @@ class FilterListener implements EventSubscriberInterface
         // we don't use the base path because the tmp directory is in zkTemp (see below)
         $config['General']['use_base_path'] = false;
 
+        $fs = new Filesystem();
+
         // path to the filters used
         $defaultPath = 'Resources/config/phpids_zikula_default.xml';
         $config['General']['filter_path'] = $this->securityCenterModule->getPath() . '/' . $this->getSystemVar('idsrulepath', $defaultPath);
         // path to (writable) tmp directory
         $config['General']['tmp_path'] = $this->cacheDir . '/idsTmp';
-        if (!file_exists($config['General']['tmp_path'])) {
-            mkdir($config['General']['tmp_path']);
-        }
+        $this->cacheDirHelper->ensureCacheDirectoryExists($config['General']['tmp_path']);
         $config['General']['scan_keys'] = false;
 
         // we use a different HTML Purifier source
@@ -221,9 +231,7 @@ class FilterListener implements EventSubscriberInterface
         // we do this more efficiently in boostrap (drak).
         $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IdsMonitor will never fill in the HTML_Purifier_Cache property (drak).
         $config['General']['HTML_Purifier_Cache'] = $this->cacheDir . '/purifier';
-        if (!file_exists($config['General']['HTML_Purifier_Cache'])) {
-            mkdir($config['General']['HTML_Purifier_Cache']);
-        }
+        $this->cacheDirHelper->ensureCacheDirectoryExists($config['General']['tmp_path'], true);
 
         // define which fields contain html and need preparation before hitting the PHPIDS rules
         $config['General']['html'] = $this->getSystemVar('idshtmlfields', []);
