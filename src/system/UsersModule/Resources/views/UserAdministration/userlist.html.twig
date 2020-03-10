@@ -12,6 +12,9 @@
                 {{ user.lastLogin|format_datetime('medium', 'short') }}
             {% endif %}
         </td>
+        <td headers="hAuthMethod">
+            {{ _self.authMethod(user, authMethodCollector) }}
+        </td>
         <td headers="hGroups">
             {% for group in user.groups %}
                 <div>{{ group.name }}</div>
@@ -47,3 +50,8 @@
 {% else %}
     <tr class="info"><td colspan="7" class="text-center">{% trans %}No records found.{% endtrans %}</td></tr>
 {% endfor %}
+
+{% macro authMethod(user, authMethodCollector) %}
+    {% set alias = user.attributes.authenticationMethod|default %}
+    {{ authMethodCollector.get(alias).getDisplayName }}
+{% endmacro %}

@@ -27,6 +27,7 @@
             <col id="cId" />
             <col id="cRegistrationDate" />
             <col id="cLastLogin" />
+            <col id="cAuthMethod" />
             <col id="cGroups" />
             <col id="cStatus" />
             <col id="cActions" />
@@ -34,9 +35,10 @@
         <thead>
             <tr>
                 <th id="hUserName" scope="col"><a class="{{ sort.uname.class }}" href="{{ sort.uname.url }}">{% trans %}User name{% endtrans %}</a></th>
-                <th id="hId" scope="col"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{% trans %}Internal ID{% endtrans %}</a></th>
+                <th id="hId" scope="col"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}" title="{% trans %}Internal ID{% endtrans %}">UID</a></th>
                 <th id="hRegistrationDate" scope="col"><a class="{{ sort.registrationDate.class }}" href="{{ sort.registrationDate.url }}">{% trans %}Registration date{% endtrans %}</a></th>
                 <th id="hLastLogin" scope="col"><a class="{{ sort.lastLogin.class }}" href="{{ sort.lastLogin.url }}">{% trans %}Last login{% endtrans %}</a></th>
+                <th id="hAuthMethod" scope="col">{% trans %}Auth Method{% endtrans %}</th>
                 <th id="hGroups" scope="col">{% trans %}Users groups{% endtrans %}</th>
                 <th id="hStatus" scope="col"><a class="{{ sort.activated.class }}" href="{{ sort.activated.url }}">{% trans %}Status{% endtrans %}</a></th>
                 <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
@@ -56,6 +58,7 @@
         <col id="cSearchId" />
         <col id="cSearchRegistrationDate" />
         <col id="cSearchLastLogin" />
+        <col id="cSearchAuthMethod" />
         <col id="cSearchGroups" />
         <col id="cSearchStatus" />
         <col id="cSearchActions" />
@@ -66,6 +69,7 @@
             <th id="hSearchId" scope="col"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{% trans %}Internal ID{% endtrans %}</a></th>
             <th id="hSearchRegistrationDate" scope="col"><a class="{{ sort.registrationDate.class }}" href="{{ sort.registrationDate.url }}">{% trans %}Registration date{% endtrans %}</a></th>
             <th id="hSearchLastLogin" scope="col"><a class="{{ sort.lastLogin.class }}" href="{{ sort.lastLogin.url }}">{% trans %}Last login{% endtrans %}</a></th>
+            <th id="hSearchAuthMethod" scope="col">{% trans %}Auth Method{% endtrans %}</th>
             <th id="hSearchGroups" scope="col">{% trans %}Users groups{% endtrans %}</th>
             <th id="hSearchStatus" scope="col"><a class="{{ sort.activated.class }}" href="{{ sort.activated.url }}">{% trans %}Status{% endtrans %}</a></th>
             <th id="hSearchActions" scope="col">{% trans %}Actions{% endtrans %}</th>

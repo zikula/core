@@ -39,6 +39,7 @@ use Zikula\GroupsModule\Constant;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -75,6 +76,7 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         RouterInterface $router,
         AdministrationActionsHelper $actionsHelper,
+        AuthenticationMethodCollector $authenticationMethodCollector,
         string $sort = 'uid',
         string $sortdir = 'DESC',
         string $letter = 'all',
@@ -104,6 +106,7 @@ class UserAdministrationController extends AbstractController
                 'limit' => $limit
             ],
             'actionsHelper' => $actionsHelper,
+            'authMethodCollector' => $authenticationMethodCollector,
             'users' => $users
         ];
     }

@@ -212,6 +212,7 @@
   - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
   - Added "Connections" menu to ExtensionsMenu so extensions can add menu children to other connected extension's admin UI.
   - Added @PermissionCheck annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
+  - Added display of authentication method to user list (#3704).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
