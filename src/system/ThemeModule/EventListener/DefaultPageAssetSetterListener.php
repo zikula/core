@@ -143,11 +143,12 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addFosJsRouting(): void
     {
-        if ('dev' !== $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
-            $routeScript = $this->assetHelper->resolve('js/fos_js_routes.js');
-        } else {
+        // disabled to avoid problems with routes which did not unset i18n property
+        //if ('dev' !== $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
+        //    $routeScript = $this->assetHelper->resolve('js/fos_js_routes.js');
+        //} else {
             $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
-        }
+        //}
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
             $routeScript => AssetBag::WEIGHT_ROUTES_JS

@@ -211,6 +211,9 @@ class FilterListener implements EventSubscriberInterface
         $config['General']['filter_path'] = $this->securityCenterModule->getPath() . '/' . $this->getSystemVar('idsrulepath', $defaultPath);
         // path to (writable) tmp directory
         $config['General']['tmp_path'] = $this->cacheDir . '/idsTmp';
+        if (!file_exists($config['General']['tmp_path'])) {
+            mkdir($config['General']['tmp_path']);
+        }
         $config['General']['scan_keys'] = false;
 
         // we use a different HTML Purifier source
@@ -218,6 +221,9 @@ class FilterListener implements EventSubscriberInterface
         // we do this more efficiently in boostrap (drak).
         $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IdsMonitor will never fill in the HTML_Purifier_Cache property (drak).
         $config['General']['HTML_Purifier_Cache'] = $this->cacheDir . '/purifier';
+        if (!file_exists($config['General']['HTML_Purifier_Cache'])) {
+            mkdir($config['General']['HTML_Purifier_Cache']);
+        }
 
         // define which fields contain html and need preparation before hitting the PHPIDS rules
         $config['General']['html'] = $this->getSystemVar('idshtmlfields', []);
