@@ -91,7 +91,7 @@ jobs:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/routes/
           exclude: '*+(/dev/)*'
-          dst_path: /config/routes
+          dst_path: /config/
           dst_owner: zikula
           dst_repo_name: distribution
   copy_workflows:
@@ -102,6 +102,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/workflows/
-          dst_path: /config/workflows
+          dst_path: /config/
           dst_owner: zikula
           dst_repo_name: distribution
