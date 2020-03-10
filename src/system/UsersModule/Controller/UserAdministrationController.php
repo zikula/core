@@ -112,7 +112,7 @@ class UserAdministrationController extends AbstractController
      * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
      *
-     * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true})
+     * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true, "i18n"=false})
      */
     public function getUsersByFragmentAsTableAction(
         Request $request,
