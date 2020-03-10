@@ -23,8 +23,6 @@ use IDS\Report as IdsReport;
 use RuntimeException;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -215,8 +213,6 @@ class FilterListener implements EventSubscriberInterface
         $config['General']['base_path'] = ''; //PHPIDS_PATH_PREFIX;
         // we don't use the base path because the tmp directory is in zkTemp (see below)
         $config['General']['use_base_path'] = false;
-
-        $fs = new Filesystem();
 
         // path to the filters used
         $defaultPath = 'Resources/config/phpids_zikula_default.xml';
