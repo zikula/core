@@ -1,8 +1,3 @@
-'Translation UI': null
-'Configs:': null
-'Zikula Core': null
-Modules: null
-Themes: null
 Settings: null
 'Native authorisation settings': null
 'User Credential Settings': null
@@ -296,7 +291,7 @@ Value: null
 Page: null
 'IP Address': null
 Impact: null
-'An error occurred while creating HTML Purifier cache directory at %path': null
+'An error occurred while creating cache directory at %path%': null
 'Error! Session path not writeable!': null
 'Error! PHPIDS rule file %filePath% does not exist or is not readable.': null
 'Session handling variables have changed. You must log in again.': null
@@ -464,6 +459,7 @@ Blocks: null
 Users: null
 Groups: null
 Permissions: null
+Themes: null
 Menu: null
 'MenuItemName (menuItemId). The id is needed for permissions.': null
 'Edit item': null
@@ -530,6 +526,7 @@ Overview: null
 'Check interval': null
 'Last checked': null
 Releases: null
+'Zikula Core': null
 'Currently used version': null
 'Latest stable relese': null
 'Stable Zikula Core available': null
@@ -622,6 +619,7 @@ Member: null
 'Delete user account': null
 'Registration date': null
 'Last login': null
+'Auth Method': null
 'Users groups': null
 Status: null
 'Delete confirmation': null
@@ -881,6 +879,7 @@ Categories: null
 'Display description': null
 'Category attributes': null
 'Category root': null
+Modules: null
 General: null
 'Publication status (extended)': null
 Checked: null
@@ -1318,6 +1317,7 @@ milliseconds: null
 Localisation: null
 'Disable edit in place': null
 'Enable edit in place': null
+'Translation UI': null
 'Edit translations directly in the context of a page': null
 'Web interface to add, edit and remove translations': null
 Administrator: null
@@ -1735,6 +1735,8 @@ Provision: null
 'Module "%name%" is not a valid provider.': null
 'Provider module "%name%" is not available.': null
 'Providers'' areas order is not an array.': null
+'Configs:': null
+'An error occurred while creating HTML Purifier cache directory at %path': null
 'No permission for this action.': null
 'Sorry!, You cannot apply to join the requested group': null
 'Sorry! You must register for a user account on this site before you can join a group.': null

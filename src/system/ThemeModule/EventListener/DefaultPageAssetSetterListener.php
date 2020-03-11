@@ -122,7 +122,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             $this->assetHelper->resolve($this->params['zikula.javascript.bootstrap.min.path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
             $this->assetHelper->resolve('bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
         ]);
-        $this->addFosJsRouting();
+        $this->addFosJsRouting($event->getRequest()->getLocale());
         $this->addJsTranslation();
 
         // add default stylesheets to cssAssetBag
@@ -141,11 +141,11 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         ]);
     }
 
-    private function addFosJsRouting(): void
+    private function addFosJsRouting(string $locale): void
     {
-        // disabled to avoid problems with routes which did not unset i18n property
-        //if ('dev' !== $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
-        //    $routeScript = $this->assetHelper->resolve('js/fos_js_routes.js');
+        // reenable after https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/221 OR https://github.com/zikula/core/issues/4027 is solved
+        //if ('dev' !== $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.' . $locale . '.js')) {
+        //    $routeScript = $this->assetHelper->resolve('js/fos_js_routes.' . $locale . '.js');
         //} else {
         $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
         //}

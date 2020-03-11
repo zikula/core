@@ -140,7 +140,6 @@ zikulausersmodule_fileio_export: /fileIO/export
 zikulausersmodule_livesearch_getusers: /livesearch/getUsers
 zikulausersmodule_registration_register: /register
 zikulausersmodule_useradministration_list: '/admin/list/{sort}/{sortdir}/{letter}/{startnum}'
-zikulausersmodule_useradministration_getusersbyfragmentastable: /admin/getusersbyfragmentastable
 zikulausersmodule_useradministration_modify: '/admin/user/modify/{user}'
 zikulausersmodule_useradministration_approve: '/admin/approve/{user}/{force}'
 zikulausersmodule_useradministration_delete: '/admin/delete/{user}'
@@ -156,7 +155,6 @@ zikulazauthmodule_config_config: /admin/config
 zikulazauthmodule_fileio_import: /fileIO/import
 zikulazauthmodule_registration_verify: '/verify-registration/{uname}/{verifycode}'
 zikulazauthmodule_useradministration_list: '/admin/list/{sort}/{sortdir}/{letter}/{startnum}'
-zikulazauthmodule_useradministration_getusersbyfragmentastable: /admin/getusersbyfragmentastable
 zikulazauthmodule_useradministration_create: /admin/user/create
 zikulazauthmodule_useradministration_modify: '/admin/user/modify/{mapping}'
 zikulazauthmodule_useradministration_verify: '/admin/verify/{mapping}'
@@ -165,5 +163,7 @@ zikulazauthmodule_useradministration_sendusername: '/admin/send-username/{mappin
 zikulazauthmodule_useradministration_togglepasswordchange: '/admin/toggle-password-change/{user}'
 zikulazauthmodule_useradministration_batchforcepasswordchange: /admin/batch-force-password-change
 zikulabootstraptheme_ajax_changeuserstyle: /ajax/changeUserStyle
+zikulausersmodule_useradministration_getusersbyfragmentastable: /admin/getusersbyfragmentastable
+zikulazauthmodule_useradministration_getusersbyfragmentastable: /admin/getusersbyfragmentastable
 zikulaextensionsmodule_extensionsinterface_help: /extensionsinterface/help
 zikulaextensionsmodule_services_moduleservices: '/services/{moduleName}'

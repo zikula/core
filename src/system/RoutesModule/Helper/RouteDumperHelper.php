@@ -12,12 +12,13 @@
 
 namespace Zikula\RoutesModule\Helper;
 
-use Exception;
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use JMS\I18nRoutingBundle\Router\I18nLoader;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -41,6 +42,11 @@ class RouteDumperHelper
     private $localeApi;
 
     /**
+     * @var Filesystem
+     */
+    private $fileSystem;
+
+    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -54,20 +60,20 @@ class RouteDumperHelper
         ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
         LocaleApiInterface $localeApi,
+        Filesystem $fileSystem,
         TranslatorInterface $translator,
         DumpCommand $dumpCommand
     ) {
         $this->kernel = $kernel;
         $this->variableApi = $variableApi;
         $this->localeApi = $localeApi;
+        $this->fileSystem = $fileSystem;
         $this->translator = $translator;
         $this->dumpCommand = $dumpCommand;
     }
 
     /**
-     * Dump the routes exposed to javascript to '/public/js/fos_js_routes.js'
-     *
-     * @throws Exception
+     * Dump the routes exposed to javascript to '/public/js/'.
      */
     public function dumpJsRoutes(string $lang = null): string
     {
@@ -93,15 +99,16 @@ class RouteDumperHelper
         foreach ($langs as $locale) {
             // force deletion of existing file
             $targetPath = sprintf(
-                '%s/public/js/fos_js_routes%s.%s',
+                '%s/public/js/fos_js_routes%s.%s.%s',
                 $this->kernel->getProjectDir(),
                 empty($domain) ? '' : ('_' . implode('_', $domain)),
+                $locale,
                 $format
             );
-            if (file_exists($targetPath)) {
+            if ($this->fileSystem->exists($targetPath)) {
                 try {
-                    unlink($targetPath);
-                } catch (Exception $exception) {
+                    $this->fileSystem->remove($targetPath);
+                } catch (IOExceptionInterface $exception) {
                     $errors .= $this->translator->trans('Error: Could not delete "%path%" because %message%.', [
                         '%path%' => $targetPath,
                         '%message%' => $exception->getMessage()
