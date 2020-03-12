@@ -1,4 +1,4 @@
 # Support options for Zikula
 
-- [Developer Docs](https://github.com/zikula/core/tree/master/docs)
+- [Documentation](https://docs.ziku.la/)
 - [Slack](https://zikula.slack.com/)  -  [join here](https://joinslack.ziku.la/)
