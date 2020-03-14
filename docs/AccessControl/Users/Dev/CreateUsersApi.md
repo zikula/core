@@ -4,7 +4,7 @@ currentMenu: users
 # CreateUsersApi
 
 Interface: `\Zikula\ZAuthModule\Api\ApiInterface\CreateUsersApiInterface`.  
-Class: `\Zikula\UsersModule\Api\CreateUsersApi`.
+Class: `\Zikula\ZAuthModule\Api\CreateUsersApi`.
 
 The CreateUsersApi can be used to create a ZAuth-method User. This can be useful in development contexts where users
 must be created. There are methods for creating one user or creating multiple users from an array. Additionally, you
