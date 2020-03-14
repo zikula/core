@@ -27,8 +27,8 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
-use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Api\ApiInterface\CreateUsersApiInterface;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -96,7 +96,7 @@ class CreateUsersApi implements CreateUsersApiInterface
         $this->encoderFactory = $encoderFactory;
         $this->managerRegistry = $managerRegistry;
         $this->variableApi = $variableApi;
-        $this->groups = $groupRepository->findAllAndIndexBy('gid');;
+        $this->groups = $groupRepository->findAllAndIndexBy('gid');
         $this->constraint = new Constraints\Collection(['fields' => [
             'uname' => new ValidUname(),
             'pass' => new ValidPassword(),
@@ -163,7 +163,7 @@ class CreateUsersApi implements CreateUsersApiInterface
         $this->createMapping($userEntity, $password, $hash);
     }
 
-    private function createMapping(UserEntity $userEntity, string $pass,  string $hash): void
+    private function createMapping(UserEntity $userEntity, string $pass, string $hash): void
     {
         $mapping = new AuthenticationMappingEntity();
         $mapping->setUname($userEntity->getUname());
