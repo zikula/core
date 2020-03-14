@@ -15,7 +15,7 @@ namespace Zikula\ZAuthModule\Api\ApiInterface;
 
 use Symfony\Component\Validator\ConstraintViolationList;
 
-interface CreateUsersApiInterface
+interface UserCreationApiInterface
 {
     /**
      * Create a ZAuth user from an array.

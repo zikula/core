@@ -213,7 +213,7 @@
   - Added "Connections" menu to ExtensionsMenu so extensions can add menu children to other connected extension's admin UI.
   - Added @PermissionCheck annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
   - Added display of authentication method to user list (#3704).
-  - Added CreateUsersApi to assist with the manual creation of ZAuth-method users (#3265).
+  - Added UserCreationApi to assist with the manual creation of ZAuth-method users (#3265).
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

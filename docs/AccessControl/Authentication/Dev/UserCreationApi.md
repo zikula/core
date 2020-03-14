@@ -1,12 +1,12 @@
 ---
-currentMenu: users
+currentMenu: authentication
 ---
-# CreateUsersApi
+# UserCreationApi
 
-Interface: `\Zikula\ZAuthModule\Api\ApiInterface\CreateUsersApiInterface`.  
-Class: `\Zikula\ZAuthModule\Api\CreateUsersApi`.
+Interface: `\Zikula\ZAuthModule\Api\ApiInterface\UserCreationApiInterface`.  
+Class: `\Zikula\ZAuthModule\Api\UserCreationApi`.
 
-The CreateUsersApi can be used to create a ZAuth-method User. This can be useful in development contexts where users
+The UserCreationApi can be used to create a ZAuth-method User. This can be useful in development contexts where users
 must be created. There are methods for creating one user or creating multiple users from an array. Additionally, you
 can also validate the values in either a single user array or an array of users arrays.
 
@@ -48,7 +48,7 @@ Here is an example of how the class might be used:
 
 ```php
 
-$api = $container->get(CreateUsersApi::class); // Do not fetch the service from the container, use Dependency Injection.
+$api = $container->get(UserCreationApi::class); // Do not fetch the service from the container, use Dependency Injection.
 
 $userArrays = [/*...my array of user arrays...*/];
 

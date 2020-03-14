@@ -27,12 +27,12 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
-use Zikula\ZAuthModule\Api\ApiInterface\CreateUsersApiInterface;
+use Zikula\ZAuthModule\Api\ApiInterface\UserCreationApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\ZAuthConstant;
 
-class CreateUsersApi implements CreateUsersApiInterface
+class UserCreationApi implements UserCreationApiInterface
 {
     /**
      * array of created users
