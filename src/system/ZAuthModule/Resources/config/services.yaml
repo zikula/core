@@ -17,3 +17,6 @@ services:
     Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface: '@Zikula\ZAuthModule\Api\PasswordApi'
     Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface: '@Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository'
     Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface: '@Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository'
+
+    Zikula\ZAuthModule\Api\CreateUsersApi:
+        public: true #temp
