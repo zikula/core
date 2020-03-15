@@ -55,3 +55,4 @@ TBD
 - [AuthenticationMethodInterface](Dev/AuthenticationMethodInterface.md)
 - [Authentication related events](Dev/AuthenticationRelatedEvents.md)
 - [PasswordApi](Dev/PasswordApi.md)
+- [UserCreationApi](Dev/UserCreationApi.md)
