@@ -9,7 +9,7 @@
     {% form_theme form with [
         '@ZikulaZAuthModule/Authentication/input_group_layout.html.twig',
         '@ZikulaFormExtension/Form/form_div_layout.html.twig'
-    ] %}
+    ] only %}
     <li class="nav-item">
         {{ form_start(form, {attr: {class: 'form-inline'} }) }}
         {{ form_errors(form) }}

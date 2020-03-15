@@ -1,8 +1,4 @@
 {% set templateTitle = 'Administrate membership application'|trans %}
-{% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
-] %}
 {{ adminHeader() }}
 <h3>
     <span class="fas fa-{% if action == 'accept' %}user-plus{% else %}user-times{% endif %}"></span>

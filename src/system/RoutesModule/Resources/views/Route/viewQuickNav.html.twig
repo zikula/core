@@ -13,7 +13,7 @@
 {% if permissionHelper.mayUseQuickNav('route') %}
     {% form_theme quickNavForm with [
         'bootstrap_4_layout.html.twig'
-    ] %}
+    ] only %}
     {{ form_start(quickNavForm, {attr: {id: 'zikulaRoutesModuleRouteQuickNavForm', class: 'zikularoutesmodule-quicknav form-inline', role: 'navigation'}}) }}
     {{ form_errors(quickNavForm) }}
     <a href="#collapseRouteQuickNav" role="button" data-toggle="collapse" class="btn btn-secondary" aria-expanded="false" aria-controls="collapseRouteQuickNav">
