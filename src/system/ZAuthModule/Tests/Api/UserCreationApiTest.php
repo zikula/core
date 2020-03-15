@@ -19,7 +19,6 @@ use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validation;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -207,7 +206,6 @@ class UserCreationApiTest extends KernelTestCase
             ['uname' => 'foo9', 'pass' => '12345678', 'email' => 'foo9@bar.com', 'activated' => 1, 'sendmail' => 1, 'groups' => 'users'], // invalid
         ];
     }
-
 
     protected function createPasswordEncoder($isPasswordValid = true)
     {
