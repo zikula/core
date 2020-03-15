@@ -25,6 +25,10 @@ class ZikulaExtensionsExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
+        $env = $container->getParameter('kernel.environment');
+        if (in_array($env, ['dev', 'test'])) {
+            $loader->load('services_' . $env . '.yaml');
+        }
 
         $container->registerForAutoconfiguration(ExtensionInstallerInterface::class)
             ->addTag('zikula.extension_installer')

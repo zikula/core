@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Tests\Api;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validation;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant as GroupsConstant;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Api\ApiInterface\UserCreationApiInterface;
 use Zikula\ZAuthModule\Api\UserCreationApi;
@@ -41,7 +47,25 @@ class UserCreationApiTest extends KernelTestCase
 
         self::bootKernel();
         $container = self::$container;
-        $this->api = $container->get(UserCreationApi::class);
+        $validator = $container->get('validator');
+
+        $currentUserApi = $this->createMock(CurrentUserApiInterface::class);
+        $currentUserApi->method('get')->willReturn(UsersConstant::USER_ID_ADMIN);
+        $encoder = $this->createPasswordEncoder();
+        $encoderFactory = $this->createEncoderFactory($encoder);
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
+        $variableApi = $this->createMock(VariableApiInterface::class);
+        $variableApi->method('get')->willReturn(ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
+        $groupRepository = $this->createMock(GroupRepositoryInterface::class);
+        $groupRepository->method('findAllAndIndexBy')->willReturn($this->createGroups());
+        $this->api = new UserCreationApi(
+            $validator,
+            $currentUserApi,
+            $encoderFactory,
+            $managerRegistry,
+            $variableApi,
+            $groupRepository
+        );
     }
 
     /**
@@ -64,7 +88,7 @@ class UserCreationApiTest extends KernelTestCase
         $this->assertInstanceOf(ConstraintViolationList::class, $errors);
         $this->assertEquals(4, $errors->count());
         $this->assertEquals('This value is not a valid email address.', $errors[0]->getMessage());
-        $this->assertEquals('This value is too short. It should have 8 characters or more.', $errors[1]->getMessage());
+        $this->assertEquals('This value is too short. It should have 5 characters or more.', $errors[1]->getMessage());
         $this->assertEquals('The value you selected is not a valid choice.', $errors[2]->getMessage());
         $this->assertEquals('This value is not valid.', $errors[3]->getMessage());
     }
@@ -76,7 +100,6 @@ class UserCreationApiTest extends KernelTestCase
             'email' => 'foo@bar.com',
             'pass' => '12345678'
         ]);
-        $userGroup = self::$container->get(GroupRepositoryInterface::class)->find(GroupsConstant::GROUP_ID_USERS);
 
         $users = $this->api->getCreatedUsers();
         $hash = array_key_first($users);
@@ -85,7 +108,7 @@ class UserCreationApiTest extends KernelTestCase
         $this->assertEquals('foo', $newUser->getUname());
         $this->assertEquals('foo@bar.com', $newUser->getEmail());
         $this->assertEquals(1, $newUser->getActivated());
-        $this->assertEquals(new ArrayCollection([$userGroup]), $newUser->getGroups());
+        $this->assertEquals(1, $newUser->getGroups()->count());
         $this->assertEquals(null, $newUser->getUid());
 
         $mappings = $this->api->getCreatedMappings();
@@ -94,8 +117,7 @@ class UserCreationApiTest extends KernelTestCase
         $newMapping = $mappings[$hash];
         $this->assertEquals('foo', $newMapping->getUname());
         $this->assertEquals('foo@bar.com', $newMapping->getEmail());
-        $passwordEncoder = self::$container->get(EncoderFactoryInterface::class)->getEncoder(AuthenticationMappingEntity::class);
-        $this->assertEquals(true, $passwordEncoder->isPasswordValid($newMapping->getPass(), '12345678', null));
+        $this->assertEquals('thisIsAnEncodedPassword!', $newMapping->getPass());
         $this->assertEquals(ZAuthConstant::AUTHENTICATION_METHOD_EITHER, $newMapping->getMethod());
         $this->assertNotEquals(ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED, $newMapping->isVerifiedEmail());
     }
@@ -129,7 +151,7 @@ class UserCreationApiTest extends KernelTestCase
             ['This field is missing.', ['uname' => 'foo', 'email' => 'foo@bar.com']],
             ['This value is not a valid email address.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo']],
             ['This value should not be blank.', ['uname' => '', 'pass' => '12345678', 'email' => 'foo@bar.com']],
-            ['This value is too short. It should have 8 characters or more.', ['uname' => 'foo', 'pass' => '123', 'email' => 'foo@bar.com']],
+            ['This value is too short. It should have 5 characters or more.', ['uname' => 'foo', 'pass' => '123', 'email' => 'foo@bar.com']],
             [true, ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com']],
 
             ['The value you selected is not a valid choice.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => 2]],
@@ -184,5 +206,54 @@ class UserCreationApiTest extends KernelTestCase
             ['uname' => 'foo8', 'pass' => '12345678', 'email' => 'foo8@bar.com', 'activated' => '1', 'sendmail' => '1', 'groups' => '1'],
             ['uname' => 'foo9', 'pass' => '12345678', 'email' => 'foo9@bar.com', 'activated' => 1, 'sendmail' => 1, 'groups' => 'users'], // invalid
         ];
+    }
+
+
+    protected function createPasswordEncoder($isPasswordValid = true)
+    {
+        $mock = $this->getMockBuilder(PasswordEncoderInterface::class)->getMock();
+        $mock->method('encodePassword')->willReturn('thisIsAnEncodedPassword!');
+
+        return $mock;
+    }
+
+    protected function createEncoderFactory($encoder = null)
+    {
+        $mock = $this->getMockBuilder(EncoderFactoryInterface::class)->getMock();
+
+        $mock
+            ->expects($this->any())
+            ->method('getEncoder')
+            ->willReturn($encoder)
+        ;
+
+        return $mock;
+    }
+
+    protected function createGroups(): array
+    {
+        $records = [
+            [
+                'gid' => GroupsConstant::GROUP_ID_USERS,
+                'name' => 'Users',
+                'description' => 'By default, all users are made members of this group.'
+            ],
+            [
+                'gid' => GroupsConstant::GROUP_ID_ADMIN,
+                'name' => 'Administrators',
+                'description' => 'Group of administrators of this site.',
+            ]
+        ];
+
+        $groups = [];
+        foreach ($records as $record) {
+            $group = new GroupEntity();
+            $group->setGid($record['gid']);
+            $group->setName($record['name']);
+            $group->setDescription($record['description']);
+            $groups[$record['gid']] = $group;
+        }
+
+        return $groups;
     }
 }
