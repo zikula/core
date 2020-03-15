@@ -8,10 +8,6 @@
     {{ pageSetVar('title', 'Search results'|trans) }}
 </h3>
 
-{% form_theme resultsForm with [
-    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
-] %}
 <div>
     {{ form_start(resultsForm) }}
     {{ form_errors(resultsForm) }}

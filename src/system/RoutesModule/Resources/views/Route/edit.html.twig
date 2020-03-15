@@ -8,7 +8,7 @@
         {% form_theme form with [
             '@ZikulaRoutesModule/Form/bootstrap_4.html.twig',
             '@ZikulaFormExtension/Form/form_div_layout.html.twig'
-        ] %}
+        ] only %}
         {{ form_start(form, {attr: {id: 'routeEditForm', class: 'zikularoutes-edit-form'}}) }}
         {{ form_errors(form) }}
         <fieldset>
