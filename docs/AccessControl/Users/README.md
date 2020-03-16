@@ -41,6 +41,10 @@ like Google or Facebook (via OAuth) and therefore relieve the Zikula site admin 
 
 TBD
 
+## Importing users from a CSV file
+
+- [Importing Users](ImportFromFile.md)
+
 ## For developers
 
 - [CurrentUserApi](Dev/CurrentUserApi.md)

@@ -101,8 +101,8 @@ class UserCreationApi implements UserCreationApiInterface
             'uname' => new ValidUname(),
             'pass' => new ValidPassword(),
             'email' => new ValidEmail(),
-            'activated' => new Constraints\Optional([new Constraints\Type('numeric'), new Constraints\Choice([0, 1, '0', '1'])]),
-            'sendmail' => new Constraints\Optional([new Constraints\Type('numeric'), new Constraints\Choice([0, 1, '0', '1'])]),
+            'activated' => new Constraints\Optional([new Constraints\Choice([null, 0, 1, '', '0', '1'])]),
+            'sendmail' => new Constraints\Optional([new Constraints\Choice([null, 0, 1, '', '0', '1'])]),
             'groups' => new Constraints\Optional([new Constraints\Type('string'), new Constraints\Regex(['pattern' => '%^[0-9\|]+$%'])])
         ]]);
     }
@@ -146,6 +146,7 @@ class UserCreationApi implements UserCreationApiInterface
         $userEntity->merge($userArray);
         $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
         $userEntity->setRegistrationDate($nowUTC);
+        $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
         if (1 === $userEntity->getActivated()) {
             $userEntity->setApprovedDate($nowUTC);
             $currentUser = $this->currentUserApi->get('uid') ?? UsersConstant::USER_ID_ADMIN;
@@ -168,7 +169,7 @@ class UserCreationApi implements UserCreationApiInterface
         $mapping = new AuthenticationMappingEntity();
         $mapping->setUname($userEntity->getUname());
         $mapping->setEmail($userEntity->getEmail());
-        $mapping->setPass($this->encoderFactory->getEncoder($mapping)->encodePassword($pass, null));
+        $mapping->setPass($this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->encodePassword($pass, null));
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
         $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         $mapping->setVerifiedEmail(!$userMustVerify);
@@ -194,11 +195,11 @@ class UserCreationApi implements UserCreationApiInterface
         foreach ($this->users as $userEntity) {
             $this->managerRegistry->getManager()->persist($userEntity);
         }
+        $this->managerRegistry->getManager()->flush();
         foreach ($this->mappings as $hash => $mapping) {
             $mapping->setUid($this->users[$hash]->getUid());
             $this->managerRegistry->getManager()->persist($mapping);
         }
-
         $this->managerRegistry->getManager()->flush();
     }
 

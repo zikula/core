@@ -51,7 +51,8 @@ class FileIOController extends AbstractController
                 $data = $form->getData();
                 $importErrors = $ioHelper->importUsersFromFile($data['file'], $data['delimiter']);
                 if (empty($importErrors)) {
-                    $this->addFlash('status', 'Done! Users imported.');
+                    $createdUsers = $ioHelper->getCreatedUsers();
+                    $this->addFlash('status', $this->trans('Done! %count% users imported.', ['%count%' => count($createdUsers)]));
                 } else {
                     $this->addFlash('error', $importErrors);
                 }

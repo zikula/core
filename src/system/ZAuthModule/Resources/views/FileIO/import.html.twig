@@ -23,6 +23,9 @@
 <div class="alert alert-info">
     <h4>{% trans %}About the CSV file{% endtrans %}</h4>
     <dl>
+        <dt>{% trans %}Line endings in the file must NOT be the old Macintosh-type{% endtrans %} <code>(\r)</code></dt>
+    </dl>
+    <dl>
         <dt>{% trans %}The first row of the CSV file must contain the field names. It must be like this:{% endtrans %}</dt>
         <dd>uname,pass,email,activated,sendmail,groups</dd>
     </dl>
@@ -33,7 +36,7 @@
         <dd>* email{% trans %} (mandatory) - The user email. If the validation method is based on the user email this value must be unique.{% endtrans %}</dd>
         <dd>* activated{% trans %} - Type 0 if user is not active, 1 if the user must be active. The default value is 1.{% endtrans %}</dd>
         <dd>* sendmail{% trans %} - Type 1 if the system must send the password to the user via email and 0 otherwise. The default value is 1. The module Mailer must be active and correctly configured. The email is sent only if user activated value is upper than 0.{% endtrans %}</dd>
-        <dd>* groups{% trans with {"%sub%": defaultGroupName} %} - The identities of the groups where the user must belong separated by the character |. If you do not specify any group, the default group is %sub%.{% endtrans %}</dd>
+        <dd>* groups{% trans with {"%sub%": defaultGroupName} %} - The identities of the groups where the user must belong separated by the character |. If you do not specify any group, the default group is %sub%.  Undefined groups will be ignored.{% endtrans %}</dd>
     </dl>
     <dl>
         <dt>{% trans %}An example of a valid CSV file{% endtrans %}</dt>
