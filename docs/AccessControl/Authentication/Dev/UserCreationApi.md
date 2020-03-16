@@ -47,7 +47,6 @@ The structure of an user array is mandated:
 Here is an example of how the class might be used:
 
 ```php
-
 $api = $container->get(UserCreationApi::class); // Do not fetch the service from the container, use Dependency Injection.
 
 $userArrays = [/*...my array of user arrays...*/];
