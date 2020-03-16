@@ -79,6 +79,7 @@
   - All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName.
   - `Zikula\ZAuthModule\Api\PasswordApi` & `Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface` are deprecated and will be removed in Core-4.0.0
     - Use `Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface` or `bin2hex(random_bytes(8))`
+  - Support for ancient Macintosh-type line-endings (\r) on user CSV file import has been dropped.
   - Dropped vendors:
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)
@@ -170,6 +171,7 @@
   - Set correct port for Gmail transport type (#4142).
   - Fixed broken drag n drop of categories and menu items when target position is the top of a subtree.
   - Fixed logic of `CategoryProcessingHelper#mayCategoryBeDeletedOrMoved` (#3920).
+  - Fixed import of users from a file (#4161).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -214,6 +216,7 @@
   - Added @PermissionCheck annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
   - Added display of authentication method to user list (#3704).
   - Added UserCreationApi to assist with the manual creation of ZAuth-method users (#3265).
+  - Added CLI Command to import users `bin/console zikula:users:import`.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

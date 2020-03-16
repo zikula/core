@@ -109,6 +109,7 @@ class UserCreationApiTest extends KernelTestCase
         $this->assertEquals(1, $newUser->getActivated());
         $this->assertEquals(1, $newUser->getGroups()->count());
         $this->assertEquals(null, $newUser->getUid());
+        $this->assertEquals(ZAuthConstant::AUTHENTICATION_METHOD_EITHER, $newUser->getAttributeValue(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY));
 
         $mappings = $this->api->getCreatedMappings();
         $this->assertArrayHasKey($hash, $mappings);
@@ -155,13 +156,13 @@ class UserCreationApiTest extends KernelTestCase
 
             ['The value you selected is not a valid choice.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => 2]],
             ['The value you selected is not a valid choice.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => '2']],
-            ['This value should be of type numeric.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => 'foo']],
+            ['The value you selected is not a valid choice.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => 'foo']],
             [true, ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => '1']],
             [true, ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => 0]],
             [true, ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'activated' => 1]],
             ['The value you selected is not a valid choice.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'sendmail' => 2]],
             ['The value you selected is not a valid choice.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'sendmail' => '2']],
-            ['This value should be of type numeric.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'sendmail' => 'foo']],
+            ['The value you selected is not a valid choice.', ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'sendmail' => 'foo']],
             [true, ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'sendmail' => '1']],
             [true, ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'sendmail' => 0]],
             [true, ['uname' => 'foo', 'pass' => '12345678', 'email' => 'foo@bar.com', 'sendmail' => 1]],

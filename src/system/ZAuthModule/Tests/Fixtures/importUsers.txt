@@ -1,0 +1,4 @@
+uname,pass,email,activated,sendmail,groups
+albert,12secure09,albert@example.org,1,1,2
+george,lesssecure,george@example.org,1,0,1|5
+robert,hispassword,robert@example.org,,,
