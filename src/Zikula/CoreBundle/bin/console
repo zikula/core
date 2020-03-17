@@ -20,7 +20,7 @@ foreach ([__DIR__ . '/../../../../vendor/autoload.php', __DIR__ . '/../vendor/au
 }
 
 $getZikulaEnv = function(ArgvInput $input) {
-    $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
+    $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('APP_ENV') ?: 'dev');
     // prefer install and upgrade commands default to prod environment
     $isInstallUpgradeCommand = ((strpos($input->getFirstArgument(), 'zikula:install') !== false)
         || (strpos($input->getFirstArgument(), 'zikula:upgrade') !== false));
