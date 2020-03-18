@@ -13,6 +13,7 @@
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <env name="ZIKULA_INSTALLED" value="3.0.0" />
     </php>
     <testsuites>
         <testsuite name="Zikula Bundle Tests">
