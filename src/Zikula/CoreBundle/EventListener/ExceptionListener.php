@@ -51,13 +51,12 @@ class ExceptionListener implements EventSubscriberInterface
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        CurrentUserApiInterface $currentUserApi,
-        bool $installed
+        CurrentUserApiInterface $currentUserApi
     ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->currentUserApi = $currentUserApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

@@ -23,17 +23,10 @@ class AjaxUpgraderStage implements AjaxStageInterface
 {
     use TranslatorTrait;
 
-    /**
-     * @var string
-     */
-    private $oldVersion;
-
     public function __construct(
-        TranslatorInterface $translator,
-        ParameterBagInterface $params
+        TranslatorInterface $translator
     ) {
         $this->setTranslator($translator);
-        $this->oldVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
     }
 
     public function getName(): string
@@ -84,7 +77,7 @@ class AjaxUpgraderStage implements AjaxStageInterface
             ],
             5 => [
                 AjaxStageInterface::NAME => 'versionupgrade',
-                AjaxStageInterface::PRE => $this->trans('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $this->oldVersion, '%newVersion%' => ZikulaKernel::VERSION]),
+                AjaxStageInterface::PRE => $this->trans('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $_ENV['ZIKULA_INSTALLED'], '%newVersion%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::DURING => $this->trans('Upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::SUCCESS => $this->trans('Upgraded to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::FAIL => $this->trans('There was an error upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION])

@@ -126,7 +126,7 @@ abstract class AbstractExtension extends Bundle
         if (!empty($this->container)) {
             $metaData->setTranslator($this->container->get('translator'));
         }
-        if (!empty($this->container) && $this->container->getParameter('installed')) {
+        if (!empty($this->container) && $this->zikulaInstalled()) {
             // overwrite composer.json settings with dynamic values from extension repository
             $extensionEntity = $this->container->get(ExtensionRepository::class)->get($this->getName());
             if (null !== $extensionEntity) {
@@ -138,5 +138,10 @@ abstract class AbstractExtension extends Bundle
         }
 
         return $metaData;
+    }
+
+    public function zikulaInstalled(): bool
+    {
+        return '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 }

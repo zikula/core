@@ -43,13 +43,12 @@ class MultilingualRoutingHelper
     public function __construct(
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper,
-        CacheClearer $cacheClearer,
-        bool $installed = false
+        CacheClearer $cacheClearer
     ) {
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     /**

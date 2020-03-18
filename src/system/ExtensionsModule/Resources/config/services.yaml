@@ -23,7 +23,6 @@ services:
     Zikula\ExtensionsModule\Api\VariableApi:
         public: true
         arguments:
-          $installed: '%installed%'
           $multisitesParameters: '%multisites%'
 
     # public because AbstractExtension accesses this using container
@@ -33,10 +32,6 @@ services:
     Zikula\ExtensionsModule\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaExtensionsAdminMenu }
-
-    Zikula\ExtensionsModule\Helper\ExtensionHelper:
-        arguments:
-            $installed: '%installed%'
 
     Zikula\ExtensionsModule\Collector\InstallerCollector:
         arguments:

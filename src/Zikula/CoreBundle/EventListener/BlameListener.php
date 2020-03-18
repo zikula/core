@@ -50,13 +50,12 @@ class BlameListener implements EventSubscriberInterface
     public function __construct(
         BlameableListener $blameableListener,
         EntityManagerInterface $entityManager,
-        SessionInterface $session,
-        bool $installed
+        SessionInterface $session
     ) {
         $this->blameableListener = $blameableListener;
         $this->entityManager = $entityManager;
         $this->session = $session;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

@@ -78,7 +78,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         Asset $assetHelper,
         Engine $themeEngine,
         VariableApiInterface $variableApi,
-        bool $installed,
         string $bootstrapJavascriptPath,
         string $bootstrapStylesheetPath,
         string $fontAwesomePath
@@ -91,7 +90,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->themeEngine = $themeEngine;
         $this->variableApi = $variableApi;
         $this->params = [
-            'installed' => $installed,
+            'installed' => '0.0.0' !== $_ENV['ZIKULA_INSTALLED'],
             'zikula.javascript.bootstrap.min.path' => $bootstrapJavascriptPath,
             'zikula.stylesheet.bootstrap.min.path' => $bootstrapStylesheetPath,
             'zikula.stylesheet.fontawesome.min.path' => $fontAwesomePath

@@ -59,12 +59,11 @@ class VariableApi implements VariableApiInterface
     private $variables;
 
     public function __construct(
-        bool $installed,
         ExtensionVarRepositoryInterface $repository,
         ZikulaHttpKernelInterface $kernel,
         array $multisitesParameters
     ) {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->repository = $repository;
         $this->kernel = $kernel;
         $this->protectedSystemVars = $multisitesParameters['protected.systemvars'];

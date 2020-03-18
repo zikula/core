@@ -28,10 +28,6 @@ services:
         calls:
             - setLockingApi: ['@?Zikula\PageLockModule\Api\LockingApi']
 
-    Zikula\RoutesModule\Helper\MultilingualRoutingHelper:
-        arguments:
-          $installed: '%installed%'
-
     Zikula\RoutesModule\Helper\RouteDumperHelper:
         arguments:
             $dumpCommand: '@fos_js_routing.dump_command'

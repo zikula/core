@@ -41,9 +41,9 @@ class CreateThemedResponseListener implements EventSubscriberInterface
      */
     private $installed;
 
-    public function __construct($installed, Engine $themeEngine, VariableApiInterface $variableApi)
+    public function __construct(Engine $themeEngine, VariableApiInterface $variableApi)
     {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->themeEngine = $themeEngine;
         $this->variableApi = $variableApi;
     }

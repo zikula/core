@@ -38,11 +38,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     protected static $defaultName = 'zikula:upgrade';
 
     /**
-     * @var string
-     */
-    private $currentInstalledVersion;
-
-    /**
      * @var ParameterBagInterface
      */
     private $params;
@@ -93,7 +88,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
         $this->params = $params;
-        $this->currentInstalledVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
         parent::__construct($kernel, $translator);
     }
 
@@ -118,8 +112,8 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (version_compare($this->currentInstalledVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
-            $output->writeln($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $this->currentInstalledVersion, '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
+        if (version_compare($_ENV['ZIKULA_INSTALLED'], UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
+            $output->writeln($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $_ENV['ZIKULA_INSTALLED'], '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
             return 1;
         }
@@ -176,7 +170,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $ajaxStage = new AjaxUpgraderStage($this->translator, $this->params);
+        $ajaxStage = new AjaxUpgraderStage($this->translator);
         $this->stageHelper->handleAjaxStage($ajaxStage, $io);
 
         $io->success($this->translator->trans('UPGRADE COMPLETE!'));
@@ -186,7 +180,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
     private function migrateUsers(SymfonyStyle $io, OutputInterface $output): void
     {
-        if (version_compare($this->currentInstalledVersion, '2.0.0', '>=')) {
+        if (version_compare($_ENV['ZIKULA_INSTALLED'], '2.0.0', '>=')) {
             return;
         }
         $count = $this->migrationHelper->countUnMigratedUsers();

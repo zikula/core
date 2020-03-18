@@ -140,9 +140,6 @@ class ParameterHelper
             $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
         }
         $params['umask'] = $params['umask'] ?? null;
-        $params['installed'] = true;
-        // set currently installed version into parameters
-        $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
@@ -187,6 +184,7 @@ class ParameterHelper
         $lines[] = 'APP_DEBUG=1';
         $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
         $lines[] = $databaseSetting;
+        $lines[] = 'ZIKULA_INSTALLED=\'' . ZikulaKernel::VERSION .'\'';
 
         $fileSystem = new Filesystem();
         try {

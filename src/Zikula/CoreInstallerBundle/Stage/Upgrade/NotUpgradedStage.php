@@ -53,9 +53,8 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary(): bool
     {
-        $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
-            throw new AbortStageException($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $currentVersion, '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
+        if (version_compare($_ENV['ZIKULA_INSTALLED'], UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
+            throw new AbortStageException($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $_ENV['ZIKULA_INSTALLED'], '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();

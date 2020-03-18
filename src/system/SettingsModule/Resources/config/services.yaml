@@ -6,7 +6,6 @@ services:
         bind:
             $extension: '@Zikula\SettingsModule\ZikulaSettingsModule'
             $defaultLocale: '%locale%'
-            $installed: '%installed%'
 
     Zikula\SettingsModule\:
         resource: '../../*'

@@ -67,8 +67,7 @@ class LocaleApi implements LocaleApiInterface
         ZikulaHttpKernelInterface $kernel,
         RequestStack $requestStack,
         LocaleConfigHelper $localeConfigHelper,
-        string $defaultLocale = 'en',
-        bool $installed = false
+        string $defaultLocale = 'en'
     ) {
         $this->supportedLocales = [
             'withRegions' => [],
@@ -78,7 +77,7 @@ class LocaleApi implements LocaleApiInterface
         $this->requestStack = $requestStack;
         $this->localeConfigHelper = $localeConfigHelper;
         $this->defaultLocale = $defaultLocale;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->translationPath = $this->kernel->getProjectDir() . '/translations';
     }
 

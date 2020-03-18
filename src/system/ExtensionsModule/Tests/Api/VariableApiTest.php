@@ -42,7 +42,7 @@ class VariableApiTest extends TestCase
         ;
 
         $repo = new ExtensionVarStubRepository();
-        $this->api = new VariableApi(true, $repo, $kernel, ['protected.systemvars' => []]);
+        $this->api = new VariableApi($repo, $kernel, ['protected.systemvars' => []]);
     }
 
     /**

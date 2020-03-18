@@ -102,7 +102,6 @@ class StageHelper
      */
     public function executeStage(string $stageName): bool
     {
-        $currentVersion = $this->parameterHelper->getYamlHelper()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         switch ($stageName) {
             case 'bundles':
                 return $this->createBundles();
@@ -157,11 +156,11 @@ class StageHelper
             case 'reinitparams':
                 return $this->parameterHelper->reInitParameters();
             case 'upgrade_event':
-                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $currentVersion]);
+                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $_ENV['ZIKULA_INSTALLED']]);
             case 'upgradeextensions':
                 return $this->coreInstallerExtensionHelper->upgrade();
             case 'versionupgrade':
-                return $this->coreInstallerExtensionHelper->executeCoreMetaUpgrade($currentVersion);
+                return $this->coreInstallerExtensionHelper->executeCoreMetaUpgrade($_ENV['ZIKULA_INSTALLED']);
             case 'clearcaches':
                 return $this->cacheHelper->clearCaches();
         }

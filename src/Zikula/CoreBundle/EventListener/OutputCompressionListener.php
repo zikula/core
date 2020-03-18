@@ -30,10 +30,10 @@ class OutputCompressionListener implements EventSubscriberInterface
      */
     private $installed;
 
-    public function __construct(VariableApiInterface $variableApi, $installed)
+    public function __construct(VariableApiInterface $variableApi)
     {
         $this->variableApi = $variableApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

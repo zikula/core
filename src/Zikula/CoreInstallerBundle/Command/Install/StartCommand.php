@@ -63,14 +63,13 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        bool $installed,
         ControllerHelper $controllerHelper,
         LocaleApiInterface $localeApi,
         ParameterHelper $parameterHelper,
         TranslatorInterface $translator
     ) {
         $this->kernel = $kernel;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;

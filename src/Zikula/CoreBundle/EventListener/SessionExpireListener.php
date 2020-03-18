@@ -25,9 +25,9 @@ class SessionExpireListener implements EventSubscriberInterface
      */
     private $installed;
 
-    public function __construct(bool $installed)
+    public function __construct()
     {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

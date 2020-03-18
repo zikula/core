@@ -89,7 +89,7 @@ class HtmlFilterApiTest extends TestCase
             $eventDispatcher->addSubscriber($subscriber);
         }
 
-        return new HtmlFilterApi($variableApi, true, $eventDispatcher);
+        return new HtmlFilterApi($variableApi, $eventDispatcher);
     }
 
     private function getAllowableHTML(): array

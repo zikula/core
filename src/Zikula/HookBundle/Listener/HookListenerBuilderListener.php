@@ -38,12 +38,11 @@ class HookListenerBuilderListener implements EventSubscriberInterface
 
     public function __construct(
         ContainerInterface $container,
-        HookRuntimeRepositoryInterface $hookRuntimeRepository,
-        bool $installed
+        HookRuntimeRepositoryInterface $hookRuntimeRepository
     ) {
         $this->container = $container;
         $this->hookRuntimeRepository = $hookRuntimeRepository;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

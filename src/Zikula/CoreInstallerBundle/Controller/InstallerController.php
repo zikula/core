@@ -31,13 +31,14 @@ class InstallerController extends AbstractController
 
     public function installAction(Request $request, string $stage): Response
     {
+        $installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         // already installed?
-        if ('complete' !== $stage && true === $this->container->getParameter('installed')) {
+        if ('complete' !== $stage && $installed) {
             $stage = 'installed';
         }
 
         // not installed but requesting installed stage?
-        if ('installed' === $stage && false === $this->container->getParameter('installed')) {
+        if ('installed' === $stage && !$installed) {
             $stage = 'notinstalled';
         }
 

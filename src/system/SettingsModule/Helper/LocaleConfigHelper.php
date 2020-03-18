@@ -57,15 +57,14 @@ class LocaleConfigHelper
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
-        string $defaultLocale = 'en',
-        bool $installed = false
+        string $defaultLocale = 'en'
     ) {
         $this->kernel = $kernel;
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
         $this->defaultLocale = $defaultLocale;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public function updateConfiguration(array $locales = [])

@@ -48,13 +48,12 @@ class LoggerListener
     public function __construct(
         LoggableListener $loggableListener,
         TranslatorInterface $translator,
-        CurrentUserApiInterface $currentUserApi,
-        bool $installed
+        CurrentUserApiInterface $currentUserApi
     ) {
         $this->loggableListener = $loggableListener;
         $this->translator = $translator;
         $this->currentUserApi = $currentUserApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

@@ -67,7 +67,7 @@ class MailerApiTest extends TestCase
         );
 
         $mailer = new Swift_Mailer($transport);
-        $this->api = new MailerApi(true, $kernel, new IdentityTranslator(), new EventDispatcher(), $configDumper, $variableApi, $mailer);
+        $this->api = new MailerApi($kernel, new IdentityTranslator(), new EventDispatcher(), $configDumper, $variableApi, $mailer);
     }
 
     public function testInstance(): void

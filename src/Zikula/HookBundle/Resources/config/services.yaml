@@ -12,7 +12,3 @@ services:
         arguments:
           $providers: !tagged_iterator zikula.hook_provider
           $subscribers: !tagged_iterator zikula.hook_subscriber
-
-    Zikula\Bundle\HookBundle\Listener\HookListenerBuilderListener:
-        arguments:
-          $installed: '%installed%'

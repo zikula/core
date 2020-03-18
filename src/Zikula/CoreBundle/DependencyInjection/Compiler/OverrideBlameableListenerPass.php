@@ -28,8 +28,7 @@ class OverrideBlameableListenerPass implements CompilerPassInterface
             ->setArguments([
                 new Reference('stof_doctrine_extensions.listener.blameable'),
                 new Reference('doctrine.orm.default_entity_manager'),
-                new Reference('session'),
-                new Parameter('installed')
+                new Reference('session')
             ]);
     }
 }

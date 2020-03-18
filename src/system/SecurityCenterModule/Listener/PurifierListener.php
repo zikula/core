@@ -42,12 +42,11 @@ class PurifierListener implements EventSubscriberInterface
     private $purifierHelper;
 
     public function __construct(
-        bool $installed,
         $isUpgrading, // cannot cast to bool because set with expression language
         VariableApiInterface $variableApi,
         PurifierHelper $purifierHelper
     ) {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->isUpgrading = $isUpgrading;
         $this->variableApi = $variableApi;
         $this->purifierHelper = $purifierHelper;

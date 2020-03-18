@@ -16,7 +16,3 @@ services:
 
     Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface: '@Zikula\AdminModule\Entity\Repository\AdminCategoryRepository'
     Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface: '@Zikula\AdminModule\Entity\Repository\AdminModuleRepository'
-
-    Zikula\AdminModule\Listener\ModuleEventListener:
-        arguments:
-          $installed: '%installed%'

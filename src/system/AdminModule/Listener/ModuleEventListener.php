@@ -46,13 +46,12 @@ class ModuleEventListener implements EventSubscriberInterface
     public function __construct(
         AdminModuleRepositoryInterface $adminModuleRepository,
         ExtensionRepositoryInterface $extensionRepository,
-        VariableApiInterface $variableApi,
-        bool $installed
+        VariableApiInterface $variableApi
     ) {
         $this->adminModuleRepository = $adminModuleRepository;
         $this->extensionRepository = $extensionRepository;
         $this->variableApi = $variableApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

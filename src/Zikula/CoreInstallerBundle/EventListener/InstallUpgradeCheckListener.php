@@ -30,11 +30,6 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
     private $installed;
 
     /**
-     * @var string
-     */
-    private $currentVersion;
-
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -45,13 +40,10 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
     private $multiLingualRoutingHelper;
 
     public function __construct(
-        string $installed,
-        string $currentVersion,
         RouterInterface $router,
         MultilingualRoutingHelper $multiLingualRoutingHelper
     ) {
-        $this->installed = $installed;
-        $this->currentVersion = $currentVersion;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->router = $router;
         $this->multiLingualRoutingHelper = $multiLingualRoutingHelper;
     }
@@ -65,8 +57,8 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $request = $event->getRequest();
         // create several booleans to test condition of request regarding install/upgrade
         $requiresUpgrade = false;
-        if ($this->installed && !empty($this->currentVersion)) {
-            $requiresUpgrade = $this->installed && version_compare($this->currentVersion, ZikulaKernel::VERSION, '<');
+        if ($this->installed) {
+            $requiresUpgrade = $this->installed && version_compare($_ENV['ZIKULA_INSTALLED'], ZikulaKernel::VERSION, '<');
         }
 
         try {

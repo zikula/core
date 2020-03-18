@@ -62,15 +62,14 @@ class SiteOffListener implements EventSubscriberInterface
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
         Environment $twig,
-        RouterInterface $router,
-        bool $installed
+        RouterInterface $router
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
         $this->currentUserApi = $currentUserApi;
         $this->twig = $twig;
         $this->router = $router;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
     }
 
     public static function getSubscribedEvents()

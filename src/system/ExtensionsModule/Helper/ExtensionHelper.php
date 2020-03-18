@@ -90,7 +90,6 @@ class ExtensionHelper
     private $doctrine;
 
     public function __construct(
-        $installed,
         InstallerCollector $installerCollector,
         KernelInterface $kernel,
         ManagerRegistry $managerRegistry,
@@ -101,7 +100,7 @@ class ExtensionHelper
         CacheClearer $cacheClearer,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->installerCollector = $installerCollector;
         $this->kernel = $kernel;
         $this->doctrine = $managerRegistry;

@@ -51,13 +51,12 @@ class CollapseableBlockListener implements EventSubscriberInterface
         AssetBag $jsAssetBag,
         VariableApiInterface $variableApi,
         Asset $assetHelper,
-        bool $installed,
         $isUpgrading = false // cannot cast to bool because set with expression language
     ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->variableApi = $variableApi;
         $this->assetHelper = $assetHelper;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->isUpgrading = $isUpgrading;
     }
 

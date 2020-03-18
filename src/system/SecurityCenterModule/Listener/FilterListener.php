@@ -95,7 +95,6 @@ class FilterListener implements EventSubscriberInterface
         TranslatorInterface $translator,
         string $cacheDir,
         CacheDirHelper $cacheDirHelper,
-        bool $installed,
         $isUpgrading // cannot cast to bool because set with expression language
     ) {
         $this->securityCenterModule = $securityCenterModule;
@@ -105,7 +104,7 @@ class FilterListener implements EventSubscriberInterface
         $this->translator = $translator;
         $this->cacheDir = $cacheDir;
         $this->cacheDirHelper = $cacheDirHelper;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->isUpgrading = $isUpgrading;
     }
 

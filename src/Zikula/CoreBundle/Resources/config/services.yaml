@@ -4,7 +4,6 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $installed: '%installed%'
             $projectDir: '%kernel.project_dir%'
 
     # alias interface to doctrine service

@@ -38,11 +38,10 @@ class FinishCommand extends AbstractCoreInstallerCommand
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        bool $installed,
         StageHelper $stageHelper,
         TranslatorInterface $translator
     ) {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $_ENV['ZIKULA_INSTALLED'];
         $this->stageHelper = $stageHelper;
         parent::__construct($kernel, $translator);
     }
