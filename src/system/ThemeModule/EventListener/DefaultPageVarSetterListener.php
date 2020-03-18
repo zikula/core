@@ -57,13 +57,13 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         ParameterBag $pageVars,
         RouterInterface $routerInterface,
         ZikulaHttpKernelInterface $kernel,
-        bool $installed
+        string $installed
     ) {
         $this->site = $site;
         $this->pageVars = $pageVars;
         $this->router = $routerInterface;
         $this->kernel = $kernel;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()

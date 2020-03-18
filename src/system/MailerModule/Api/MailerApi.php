@@ -68,7 +68,7 @@ class MailerApi implements MailerApiInterface
     protected $dataValues;
 
     public function __construct(
-        bool $installed,
+        string $installed,
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
@@ -76,7 +76,7 @@ class MailerApi implements MailerApiInterface
         VariableApiInterface $variableApi,
         Swift_Mailer $mailer
     ) {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->kernel = $kernel;
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;

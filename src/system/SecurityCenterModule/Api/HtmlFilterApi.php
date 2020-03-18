@@ -37,11 +37,11 @@ class HtmlFilterApi implements HtmlFilterApiInterface
 
     public function __construct(
         VariableApiInterface $variableApi,
-        bool $installed,
+        string $installed,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->variableApi = $variableApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->eventDispatcher = $eventDispatcher;
     }
 

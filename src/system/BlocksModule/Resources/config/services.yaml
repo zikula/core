@@ -31,5 +31,5 @@ services:
     Zikula\BlocksModule\Listener\CollapseableBlockListener:
         arguments:
           $jsAssetBag: '@zikula_core.common.theme.assets_js'
-          $installed: '%installed%'
+          $installed: '%env(ZIKULA_INSTALLED)%'
           $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"

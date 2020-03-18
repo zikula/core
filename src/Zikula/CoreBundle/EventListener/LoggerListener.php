@@ -49,12 +49,12 @@ class LoggerListener
         LoggableListener $loggableListener,
         TranslatorInterface $translator,
         CurrentUserApiInterface $currentUserApi,
-        bool $installed
+        string $installed
     ) {
         $this->loggableListener = $loggableListener;
         $this->translator = $translator;
         $this->currentUserApi = $currentUserApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()

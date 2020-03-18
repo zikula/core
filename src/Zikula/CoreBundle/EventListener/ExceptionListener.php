@@ -52,12 +52,12 @@ class ExceptionListener implements EventSubscriberInterface
         TranslatorInterface $translator,
         RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
-        bool $installed
+        string $installed
     ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->currentUserApi = $currentUserApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()

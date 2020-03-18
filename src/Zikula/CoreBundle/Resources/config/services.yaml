@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
             $projectDir: '%kernel.project_dir%'
 
     # alias interface to doctrine service

@@ -28,10 +28,10 @@ class LocaleListener implements EventSubscriberInterface
     public function __construct(
         CurrentUserApiInterface $currentUserApi,
         string $defaultLocale = 'en',
-        bool $installed = false
+        string $installed = '0.0.0'
     ) {
         // compute default locale considering user preference
-        $userSelectedLocale = $installed ? $currentUserApi->get('locale') : '';
+        $userSelectedLocale = ('0.0.0' !== $installed) ? $currentUserApi->get('locale') : '';
         $this->defaultLocale = !empty($userSelectedLocale) ? $userSelectedLocale : $defaultLocale;
     }
 

@@ -20,6 +20,6 @@ services:
 
     Zikula\SearchModule\Listener\FrontControllerListener:
         arguments:
-          $headerAssetBag: '@zikula_core.common.theme.assets_header'
-          $installed: '%installed%'
-          $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
+            $headerAssetBag: '@zikula_core.common.theme.assets_header'
+            $installed: '%env(ZIKULA_INSTALLED)%'
+            $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"

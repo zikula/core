@@ -51,12 +51,12 @@ class BlameListener implements EventSubscriberInterface
         BlameableListener $blameableListener,
         EntityManagerInterface $entityManager,
         SessionInterface $session,
-        bool $installed
+        string $installed
     ) {
         $this->blameableListener = $blameableListener;
         $this->entityManager = $entityManager;
         $this->session = $session;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()

@@ -25,9 +25,9 @@ class SessionExpireListener implements EventSubscriberInterface
      */
     private $installed;
 
-    public function __construct(bool $installed)
+    public function __construct(string $installed)
     {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()

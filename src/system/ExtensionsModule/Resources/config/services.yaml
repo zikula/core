@@ -23,8 +23,8 @@ services:
     Zikula\ExtensionsModule\Api\VariableApi:
         public: true
         arguments:
-          $installed: '%installed%'
-          $multisitesParameters: '%multisites%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
+            $multisitesParameters: '%multisites%'
 
     # public because AbstractExtension accesses this using container
     Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository:
@@ -36,7 +36,7 @@ services:
 
     Zikula\ExtensionsModule\Helper\ExtensionHelper:
         arguments:
-            $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\ExtensionsModule\Collector\InstallerCollector:
         arguments:

@@ -68,7 +68,7 @@ class LocaleApi implements LocaleApiInterface
         RequestStack $requestStack,
         LocaleConfigHelper $localeConfigHelper,
         string $defaultLocale = 'en',
-        bool $installed = false
+        string $installed = '0.0.0'
     ) {
         $this->supportedLocales = [
             'withRegions' => [],
@@ -78,7 +78,7 @@ class LocaleApi implements LocaleApiInterface
         $this->requestStack = $requestStack;
         $this->localeConfigHelper = $localeConfigHelper;
         $this->defaultLocale = $defaultLocale;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->translationPath = $this->kernel->getProjectDir() . '/translations';
     }
 

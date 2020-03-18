@@ -47,12 +47,12 @@ class ModuleEventListener implements EventSubscriberInterface
         AdminModuleRepositoryInterface $adminModuleRepository,
         ExtensionRepositoryInterface $extensionRepository,
         VariableApiInterface $variableApi,
-        bool $installed
+        string $installed
     ) {
         $this->adminModuleRepository = $adminModuleRepository;
         $this->extensionRepository = $extensionRepository;
         $this->variableApi = $variableApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()

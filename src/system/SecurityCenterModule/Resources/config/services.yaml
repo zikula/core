@@ -5,7 +5,7 @@ services:
         public: false
         bind:
             $extension: '@Zikula\SecurityCenterModule\ZikulaSecurityCenterModule'
-            $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
             $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
 
     Zikula\SecurityCenterModule\:

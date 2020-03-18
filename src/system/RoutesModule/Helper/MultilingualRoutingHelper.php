@@ -44,12 +44,12 @@ class MultilingualRoutingHelper
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
-        bool $installed = false
+        string $installed
     ) {
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     /**

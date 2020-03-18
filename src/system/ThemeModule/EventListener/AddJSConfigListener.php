@@ -55,14 +55,14 @@ class AddJSConfigListener implements EventSubscriberInterface
     private $installed;
 
     public function __construct(
-        bool $installed,
+        string $installed,
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
         Environment $twig,
         AssetBag $headers,
         string $defaultSessionName = '_zsid'
     ) {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->variableApi = $variableApi;
         $this->currentUserApi = $currentUserApi;
         $this->twig = $twig;

@@ -30,7 +30,7 @@ services:
 
     Zikula\RoutesModule\Helper\MultilingualRoutingHelper:
         arguments:
-          $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\RoutesModule\Helper\RouteDumperHelper:
         arguments:

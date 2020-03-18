@@ -5,7 +5,7 @@ services:
         public: false
         bind:
             $extension: '@Zikula\ThemeModule\ZikulaThemeModule'
-            $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
             Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface: '@zikula.site_definition'
 
     Zikula\ThemeModule\:

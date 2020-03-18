@@ -10,11 +10,11 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand:
         arguments:
-            $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\Bundle\CoreInstallerBundle\Command\Install\FinishCommand:
         arguments:
-            $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper:
         arguments:
@@ -26,6 +26,6 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener:
         arguments:
-            $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
 #            $currentVersion: '%core_installed_version%' # ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
             $currentVersion: "@=container.hasParameter('core_installed_version') ? parameter('core_installed_version') : ''"

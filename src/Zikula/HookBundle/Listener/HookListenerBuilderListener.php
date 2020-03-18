@@ -39,11 +39,11 @@ class HookListenerBuilderListener implements EventSubscriberInterface
     public function __construct(
         ContainerInterface $container,
         HookRuntimeRepositoryInterface $hookRuntimeRepository,
-        bool $installed
+        string $installed
     ) {
         $this->container = $container;
         $this->hookRuntimeRepository = $hookRuntimeRepository;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()
