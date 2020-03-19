@@ -27,7 +27,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
     protected static $defaultName = 'zikula:install:finish';
 
     /**
-     * @var string
+     * @var bool
      */
     private $installed;
 
@@ -38,11 +38,11 @@ class FinishCommand extends AbstractCoreInstallerCommand
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        bool $installed,
+        string $installed,
         StageHelper $stageHelper,
         TranslatorInterface $translator
     ) {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->stageHelper = $stageHelper;
         parent::__construct($kernel, $translator);
     }

@@ -26,12 +26,9 @@ class RequirementChecker
      */
     public static function verify(): void
     {
-        self::loadParametersFromFile();
-
         // on install or upgrade, check if system requirements are met.
-        if ((false === self::$parameters['installed'])
-            || (!empty(self::$parameters[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM])
-                && version_compare(self::$parameters[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM], ZikulaKernel::VERSION, '<'))) {
+        if (version_compare($_ENV['ZIKULA_INSTALLED'], ZikulaKernel::VERSION, '<')) {
+            self::loadParametersFromFile();
             $versionChecker = new ZikulaRequirements();
             $versionChecker->runSymfonyChecks(self::$parameters);
             if (empty($versionChecker->requirementsErrors)) {

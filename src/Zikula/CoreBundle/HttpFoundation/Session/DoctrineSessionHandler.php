@@ -60,12 +60,12 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         UserSessionRepositoryInterface $userSessionRepository,
         VariableApiInterface $variableApi,
         RequestStack $requestStack,
-        bool $installed
+        string $installed
     ) {
         $this->userSessionRepository = $userSessionRepository;
         $this->variableApi = $variableApi;
         $this->requestStack = $requestStack;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     /**

@@ -64,14 +64,14 @@ class ValidUnameValidator extends ConstraintValidator
         TranslatorInterface $translator,
         ValidatorInterface $validator,
         PermissionApiInterface $permissionApi,
-        bool $installed,
+        string $installed,
         $isUpgrading // cannot cast to bool because set with expression language
     ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->validator = $validator;
         $this->permissionApi = $permissionApi;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->isUpgrading = $isUpgrading;
     }
 

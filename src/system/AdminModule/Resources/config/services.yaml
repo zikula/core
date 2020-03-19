@@ -19,4 +19,4 @@ services:
 
     Zikula\AdminModule\Listener\ModuleEventListener:
         arguments:
-          $installed: '%installed%'
+          $installed: '%env(ZIKULA_INSTALLED)%'

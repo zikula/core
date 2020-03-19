@@ -37,7 +37,7 @@ class StartCommand extends AbstractCoreInstallerCommand
     protected static $defaultName = 'zikula:install:start';
 
     /**
-     * @var string
+     * @var bool
      */
     private $installed;
 
@@ -63,14 +63,14 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        bool $installed,
+        string $installed,
         ControllerHelper $controllerHelper,
         LocaleApiInterface $localeApi,
         ParameterHelper $parameterHelper,
         TranslatorInterface $translator
     ) {
         $this->kernel = $kernel;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;

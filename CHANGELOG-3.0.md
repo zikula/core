@@ -139,11 +139,15 @@
     - YAML files use the `.yaml` extension instead of `.yml`.
     - The `%temp_dir%` parameter has been removed. If you need a temporary folder use `sys_get_temp_dir()`.
     - The parameters `system.chmod_dir` and `url_secret` have been removed without any replacement.
+    - Symfony 5.* uses environment variables for local configuration in a `.env` or `.env.local` file at the root of the project.
     - Some other parameter have been removed in favour of environment variables
       - `env` became `APP_ENV`.
       - `debug` became `APP_DEBUG`.
       - `secret` became `APP_SECRET`.
       - `database_*` became `DATABASE_URL`.
+      - `installed` is re-purposed. It now holds the value of `%env(ZIKULA_INSTALLED)%` and is no longer a `bool` but a `string`
+        - To determine a bool if needed, compare the value to '0.0.0', e.g. `$isInstalled = '0.0.0' !== $installed;`
+      - `core_installed_version` is removed in favor of `installed` or `%env(ZIKULA_INSTALLED)%`
 
 - Fixes:
   - Check if verification record is already deleted when confirming a changed mail address.

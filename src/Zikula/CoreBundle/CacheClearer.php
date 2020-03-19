@@ -64,7 +64,7 @@ class CacheClearer
         ContainerInterface $container,
         string $cacheDir,
         string $kernelContainerClass,
-        bool $installed,
+        string $installed,
         array $routingLocales = []
     ) {
         $this->container = $container;
@@ -72,7 +72,7 @@ class CacheClearer
         $refClass = new \ReflectionClass($container);
         $this->containerDirectory = $cacheDir . DIRECTORY_SEPARATOR . $refClass->getNamespaceName();
         $this->kernelContainerClass = $kernelContainerClass;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
         $this->routingLocales = $routingLocales;
         $this->fileSystem = new Filesystem();
     }

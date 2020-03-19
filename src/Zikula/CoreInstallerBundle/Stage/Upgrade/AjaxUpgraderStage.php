@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
@@ -26,14 +25,14 @@ class AjaxUpgraderStage implements AjaxStageInterface
     /**
      * @var string
      */
-    private $oldVersion;
+    private $installed;
 
     public function __construct(
         TranslatorInterface $translator,
-        ParameterBagInterface $params
+        string $installed
     ) {
         $this->setTranslator($translator);
-        $this->oldVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
+        $this->installed = $installed;
     }
 
     public function getName(): string
@@ -84,7 +83,7 @@ class AjaxUpgraderStage implements AjaxStageInterface
             ],
             5 => [
                 AjaxStageInterface::NAME => 'versionupgrade',
-                AjaxStageInterface::PRE => $this->trans('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $this->oldVersion, '%newVersion%' => ZikulaKernel::VERSION]),
+                AjaxStageInterface::PRE => $this->trans('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $this->installed, '%newVersion%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::DURING => $this->trans('Upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::SUCCESS => $this->trans('Upgraded to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::FAIL => $this->trans('There was an error upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION])

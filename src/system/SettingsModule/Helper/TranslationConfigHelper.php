@@ -43,12 +43,12 @@ class TranslationConfigHelper
         ZikulaHttpKernelInterface $kernel,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
-        bool $installed = false
+        string $installed = '0.0.0'
     ) {
         $this->kernel = $kernel;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public function updateConfiguration()

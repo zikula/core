@@ -58,14 +58,14 @@ class LocaleConfigHelper
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
         string $defaultLocale = 'en',
-        bool $installed = false
+        string $installed = '0.0.0'
     ) {
         $this->kernel = $kernel;
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
         $this->defaultLocale = $defaultLocale;
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public function updateConfiguration(array $locales = [])

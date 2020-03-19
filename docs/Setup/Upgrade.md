@@ -22,7 +22,7 @@ All the dependencies and requirements are included in this package.
 ## Upgrading
 
 The minimum upgrade version is Zikula Core 1.4.3. Please upgrade to at least this version before attempting to upgrade
-to Core-2.0.x.
+to Core-3.0.x.
 
 The following process should be followed for all upgrades even small point releases (e.g. `2.0.x`).
 
@@ -41,16 +41,18 @@ The following process should be followed for all upgrades even small point relea
     recommended, please use the Web Installer.
 - Copy your previous installation's `/app/config/custom_parameters.yml` to `/config/services_custom.yaml` in your new installation.
   - **Add an entry named `core_installed_version: a.b.c`** whereby `a.b.c` should be your old version if it does not exist yet.
-  - **Change the value of `datadir` to `public/uploads`**
-  - Do not change any other values.
-
+    - **Remove** the key/value pairs for `core_installed_version` and `installed`.
+    - **Change the value of `datadir` to `public/uploads`**
+    - Do not change any other values.
+  - From the new installation, copy the `.env` file to `.env.local`
+    - **Add** `ZIKULA_INSTALLED='a.b.c'` to the end of the file. Change `a.b.c` to the exact version of your existing install (e.g. `2.0.11`).
 ### Continue
 
 - Copy your custom theme to your new installation. The folders of your theme should be in the exact same place as your backup.
 - Return compatible extensions to the `/src/extensions` directory.
   - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
 - Copy your backup contents of `/userdata` into `/public/uploads`
-- Then **start the upgrade (do one or the other)**
+- Then **start the upgrade (do one or the other, CLI is recommended)**
   - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.
   - Via CLI:
     - Access your main zikula directory and run this command:

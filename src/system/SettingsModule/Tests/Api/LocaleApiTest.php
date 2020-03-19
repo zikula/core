@@ -103,6 +103,6 @@ class LocaleApiTest extends TestCase
             ->getMock()
         ;
 
-        return new LocaleApi($kernel, $requestStack, $localeConfigHelper, 'en', true);
+        return new LocaleApi($kernel, $requestStack, $localeConfigHelper, 'en', '3.0.0');
     }
 }

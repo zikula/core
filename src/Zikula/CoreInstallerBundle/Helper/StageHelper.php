@@ -20,7 +20,6 @@ use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
@@ -72,6 +71,11 @@ class StageHelper
      */
     private $cacheHelper;
 
+    /**
+     * @var string
+     */
+    private $installed;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         BundlesSchemaHelper $bundlesSchemaHelper,
@@ -81,7 +85,8 @@ class StageHelper
         BlockHelper $blockHelper,
         ParameterHelper $parameterHelper,
         SuperUserHelper $superUserHelper,
-        CacheHelper $cacheHelper
+        CacheHelper $cacheHelper,
+        string $installed
     ) {
         $this->kernel = $kernel;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
@@ -92,6 +97,7 @@ class StageHelper
         $this->parameterHelper = $parameterHelper;
         $this->superUserHelper = $superUserHelper;
         $this->cacheHelper = $cacheHelper;
+        $this->installed = $installed;
     }
 
     /**
@@ -102,7 +108,6 @@ class StageHelper
      */
     public function executeStage(string $stageName): bool
     {
-        $currentVersion = $this->parameterHelper->getYamlHelper()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         switch ($stageName) {
             case 'bundles':
                 return $this->createBundles();
@@ -157,11 +162,11 @@ class StageHelper
             case 'reinitparams':
                 return $this->parameterHelper->reInitParameters();
             case 'upgrade_event':
-                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $currentVersion]);
+                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $this->installed]);
             case 'upgradeextensions':
                 return $this->coreInstallerExtensionHelper->upgrade();
             case 'versionupgrade':
-                return $this->coreInstallerExtensionHelper->executeCoreMetaUpgrade($currentVersion);
+                return $this->coreInstallerExtensionHelper->executeCoreMetaUpgrade($this->installed);
             case 'clearcaches':
                 return $this->cacheHelper->clearCaches();
         }

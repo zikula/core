@@ -22,22 +22,25 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class InstallerController extends AbstractController
 {
-    public function __construct(ContainerInterface $container)
+    private $installed;
+
+    public function __construct(ContainerInterface $container, string $installed)
     {
         parent::__construct($container);
         $this->router = $container->get('router');
         $this->form = $this->container->get('form.factory');
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public function installAction(Request $request, string $stage): Response
     {
         // already installed?
-        if ('complete' !== $stage && true === $this->container->getParameter('installed')) {
+        if ('complete' !== $stage && $this->installed) {
             $stage = 'installed';
         }
 
         // not installed but requesting installed stage?
-        if ('installed' === $stage && false === $this->container->getParameter('installed')) {
+        if ('installed' === $stage && !$this->installed) {
             $stage = 'notinstalled';
         }
 

@@ -3,18 +3,12 @@ services:
         autowire: true
         autoconfigure: true
         public: true # default to public because installer still uses container directly
+        bind:
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\Bundle\CoreInstallerBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
-
-    Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand:
-        arguments:
-            $installed: '%installed%'
-
-    Zikula\Bundle\CoreInstallerBundle\Command\Install\FinishCommand:
-        arguments:
-            $installed: '%installed%'
 
     Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper:
         arguments:
@@ -23,9 +17,3 @@ services:
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
             $symfonyCacheClearer: '@cache_clearer'
-
-    Zikula\Bundle\CoreInstallerBundle\EventListener\InstallUpgradeCheckListener:
-        arguments:
-            $installed: '%installed%'
-#            $currentVersion: '%core_installed_version%' # ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
-            $currentVersion: "@=container.hasParameter('core_installed_version') ? parameter('core_installed_version') : ''"

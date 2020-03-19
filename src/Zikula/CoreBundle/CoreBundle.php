@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\DoctrinePass;
-use Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\OverrideBlameableListenerPass;
 
 class CoreBundle extends Bundle
 {
@@ -26,7 +25,5 @@ class CoreBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new DoctrinePass(), PassConfig::TYPE_OPTIMIZE);
-
-        $container->addCompilerPass(new OverrideBlameableListenerPass());
     }
 }

@@ -14,4 +14,4 @@ services:
 
     Zikula\MailerModule\Api\MailerApi:
         arguments:
-          $installed: '%installed%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
