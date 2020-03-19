@@ -184,7 +184,7 @@ class ParameterHelper
         $lines[] = 'APP_DEBUG=1';
         $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
         $lines[] = $databaseSetting;
-        $lines[] = 'ZIKULA_INSTALLED=\'' . ZikulaKernel::VERSION .'\'';
+        $lines[] = 'ZIKULA_INSTALLED=\'' . ZikulaKernel::VERSION . '\'';
 
         $fileSystem = new Filesystem();
         try {
