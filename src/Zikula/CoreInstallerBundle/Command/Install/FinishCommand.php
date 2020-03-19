@@ -27,7 +27,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
     protected static $defaultName = 'zikula:install:finish';
 
     /**
-     * @var string
+     * @var bool
      */
     private $installed;
 

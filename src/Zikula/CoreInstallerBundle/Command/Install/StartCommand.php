@@ -37,7 +37,7 @@ class StartCommand extends AbstractCoreInstallerCommand
     protected static $defaultName = 'zikula:install:start';
 
     /**
-     * @var string
+     * @var bool
      */
     private $installed;
 

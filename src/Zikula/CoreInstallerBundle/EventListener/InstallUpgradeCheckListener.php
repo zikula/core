@@ -25,7 +25,7 @@ use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 class InstallUpgradeCheckListener implements EventSubscriberInterface
 {
     /**
-     * @var string
+     * @var bool
      */
     private $installed;
 
