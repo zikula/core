@@ -126,7 +126,7 @@ abstract class AbstractExtension extends Bundle
         if (!empty($this->container)) {
             $metaData->setTranslator($this->container->get('translator'));
         }
-        if (!empty($this->container) && $this->container->getParameter('installed')) {
+        if (!empty($this->container) && '0.0.0' !== $this->container->getParameter('installed')) {
             // overwrite composer.json settings with dynamic values from extension repository
             $extensionEntity = $this->container->get(ExtensionRepository::class)->get($this->getName());
             if (null !== $extensionEntity) {

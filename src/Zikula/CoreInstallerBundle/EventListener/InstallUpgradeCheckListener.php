@@ -46,12 +46,11 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
 
     public function __construct(
         string $installed,
-        string $currentVersion,
         RouterInterface $router,
         MultilingualRoutingHelper $multiLingualRoutingHelper
     ) {
-        $this->installed = $installed;
-        $this->currentVersion = $currentVersion;
+        $this->installed = '0.0.0' !== $installed;
+        $this->currentVersion = $installed;
         $this->router = $router;
         $this->multiLingualRoutingHelper = $multiLingualRoutingHelper;
     }

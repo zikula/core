@@ -17,6 +17,7 @@ services:
             $installed: '%env(ZIKULA_INSTALLED)%'
         calls:
             - setStorage: ['@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine']
+
     zikula_core.bridge.http_foundation.doctrine_session_handler:
         alias: Zikula\Bundle\CoreBundle\HttpFoundation\Session\DoctrineSessionHandler
 

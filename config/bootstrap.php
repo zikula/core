@@ -41,10 +41,5 @@ $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = (int) $_SERVER['APP_DEBUG'] || filt
 // on install or upgrade, check if system requirements are met.
 RequirementChecker::verify();
 
-// set default locale for Intl classes
-if (extension_loaded('intl')) {
-    Locale::setDefault(RequirementChecker::getParameter('locale'));
-}
-
 // globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
 AnnotationReader::addGlobalIgnoredName('type');

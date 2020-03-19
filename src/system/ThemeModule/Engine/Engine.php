@@ -147,7 +147,7 @@ class Engine
      */
     public function getTheme(): ?AbstractTheme
     {
-        if (!isset($this->activeThemeBundle) && $this->kernel->getContainer()->getParameter('installed')) {
+        if (!isset($this->activeThemeBundle) && '0.0.0' !== $this->kernel->getContainer()->getParameter('installed')) {
             $this->setActiveTheme();
         }
 

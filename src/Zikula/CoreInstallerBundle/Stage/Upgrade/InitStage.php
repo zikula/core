@@ -45,7 +45,7 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary(): bool
     {
-        $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->container->getParameter('installed');
         if (version_compare($currentVersion, '2.0.0', '>=')) {
             return false;
         }
