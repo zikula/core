@@ -15,7 +15,6 @@ namespace Zikula\BlocksModule\Twig\Extension;
 
 use RuntimeException;
 use Twig\Extension\AbstractExtension;
-use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use Twig\TwigFunction;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
