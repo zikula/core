@@ -244,7 +244,7 @@
   - doctrine/lexer updated from 1.0.2 to 1.2.0
   - doctrine/orm updated from 2.5.14 to 2.7.1
   - doctrine/persistence installed in 1.3.6
-  - doctrine/reflection installed in 1.1.0
+  - doctrine/reflection installed in 1.2.0
   - egulias/email-validator installed in 2.1.17
   - erusev/parsedown installed in 1.7.4
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
