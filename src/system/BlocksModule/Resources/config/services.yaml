@@ -24,10 +24,6 @@ services:
         arguments:
           $blocks: !tagged_iterator zikula.block_handler
 
-    Zikula\BlocksModule\Twig\Extension\BlocksExtension:
-        arguments:
-          $loader: '@twig.loader'
-
     Zikula\BlocksModule\Listener\CollapseableBlockListener:
         arguments:
           $jsAssetBag: '@zikula_core.common.theme.assets_js'
