@@ -101,7 +101,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
     {
         return [
             'kernel.request' => [
-                ['onKernelRequest', 200]
+                ['onKernelRequest', 2000]
             ],
         ];
     }

@@ -24,6 +24,7 @@ Zikula uses the Twig template engine, like Symfony does.
 - [Twig template global variables](GlobalVariables.md)
 - [Debugging Twig templates](DebuggingTwig.md)
 - [Image manipulation with Imagine](Imagine.md)
+- [Errors](Errors.md)
 
 ## External resources
 

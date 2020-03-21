@@ -30,4 +30,4 @@ Symfony has a system in place to override Resources of any bundle. See
 
 ## Override references
 
-- See `\Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides`
+- See `\Zikula\ThemeModule\EventListener\AddThemePathsToLoaderListener::addThemePaths`

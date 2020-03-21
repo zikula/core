@@ -53,10 +53,6 @@ services:
     Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener:
         lazy: true
 
-    Zikula\Bundle\CoreBundle\EventListener\ExceptionListener:
-        tags:
-            - { name: monolog.logger, channel: request }
-
     Zikula\Bundle\CoreBundle\EventListener\LoggerListener:
         arguments:
           $loggableListener: '@stof_doctrine_extensions.listener.loggable'

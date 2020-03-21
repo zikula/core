@@ -261,10 +261,15 @@ class Engine
 
                 return;
             }
+            if (isset($requestAttributes['error']) && $requestAttributes['error'] && isset($themeConfig['error'])) {
+                $this->realm = 'error';
+
+                return;
+            }
             $pathInfo = $request->getPathInfo();
         }
 
-        unset($themeConfig['admin'], $themeConfig['home'], $themeConfig['master']); // remove to avoid scanning/matching in loop
+        unset($themeConfig['admin'], $themeConfig['home'], $themeConfig['master'], $themeConfig['error']); // remove to avoid scanning/matching in loop
         foreach ($themeConfig as $realm => $config) {
             if (!empty($config['pattern'])) {
                 $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive

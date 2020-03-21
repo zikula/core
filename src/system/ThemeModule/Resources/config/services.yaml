@@ -99,6 +99,8 @@ services:
     Twig\Environment: '@twig'
 
     Zikula\ThemeModule\EventListener\CreateThemedResponseListener:
+        arguments:
+            $debug: '%env(APP_DEBUG)%'
         tags:
             - { name: monolog.logger, channel: request }
 
@@ -122,11 +124,9 @@ services:
         tags:
             - { name: monolog.logger, channel: request }
 
-    Zikula\ThemeModule\EventListener\TemplatePathOverrideListener:
-        arguments:
-          $loader: '@twig.loader'
-        tags:
-            - { name: monolog.logger, channel: request }
+    Zikula\ThemeModule\EventListener\AddThemePathsToLoaderListener:
+      arguments:
+        $loader: '@twig.loader'
 
     Zikula\ThemeModule\EventListener\AddJSConfigListener:
         arguments:
@@ -136,3 +136,7 @@ services:
     Zikula\ThemeModule\EventListener\ExtensionInstallationListener:
         arguments:
           $mergerActive: '%zikula_asset_manager.combine%'
+
+    Zikula\ThemeModule\EventListener\ExceptionListener:
+        arguments:
+            $debug: '%env(APP_DEBUG)%'

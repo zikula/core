@@ -20,3 +20,9 @@ services:
     Zikula\PermissionsModule\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminActionsMenu, alias: zikulaPermissionsAdminActionsMenu }
+
+    Zikula\PermissionsModule\Listener\AccessDeniedExceptionListener:
+        arguments:
+            $installed: '%env(ZIKULA_INSTALLED)%'
+        tags:
+            - { name: monolog.logger, channel: request }

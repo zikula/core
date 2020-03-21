@@ -56,7 +56,7 @@ class BlocksExtension extends AbstractExtension
         BlockFilterApiInterface $blockFilterApi,
         Engine $themeEngine,
         ZikulaHttpKernelInterface $kernel,
-        FilesystemLoader $loader
+        LoaderInterface $loader
     ) {
         $this->blockApi = $blockApi;
         $this->blockFilter = $blockFilterApi;
@@ -107,20 +107,6 @@ class BlocksExtension extends AbstractExtension
         $moduleInstance = $this->kernel->getModule($bundleName);
         if (!isset($moduleInstance) || !$block->getActive() || !$this->blockFilter->isDisplayable($block)) {
             return '';
-        }
-
-        // add theme path to twig loader for theme overrides using namespace notation (e.g. @BundleName/foo)
-        // this duplicates functionality from \Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides
-        // but because blockHandlers don't call (and are not considered) a controller, that listener doesn't get called.
-        $theme = $this->themeEngine->getTheme();
-        if ($theme) {
-            $overridePath = $theme->getPath() . '/Resources/' . $bundleName . '/views';
-            if (is_readable($overridePath)) {
-                $paths = $this->loader->getPaths($bundleName);
-                // inject themeOverridePath before the original path in the array
-                array_splice($paths, count($paths) - 1, 0, [$overridePath]);
-                $this->loader->setPaths($paths, $bundleName);
-            }
         }
 
         try {

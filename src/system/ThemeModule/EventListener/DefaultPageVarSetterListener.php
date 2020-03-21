@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -69,8 +69,8 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => [
-                ['setDefaultPageVars', 1]
+            KernelEvents::RESPONSE => [
+                ['setDefaultPageVars', 1028]
             ]
         ];
     }
@@ -78,7 +78,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     /**
      * Add default pagevar settings to every page.
      */
-    public function setDefaultPageVars(RequestEvent $event): void
+    public function setDefaultPageVars(ResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

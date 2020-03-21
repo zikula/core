@@ -13,9 +13,11 @@ Description: define various 'realms' within a theme. Within a realm, a pattern i
 to match the (1) path, (2) route id, or (3) the module name. The realms are matched from top to bottom returning the
 first match (case-insensitive). Therefore, more specific definitions must be higher than general definitions.
 
-Two additional 'alias' realms may be defined and neither requires a pattern:
+Three additional 'alias' realms may be defined and neither requires a pattern:
   1) Defining an 'admin' realm will be used when `@Theme('admin')` controller method annotation is detected in the method
   2) Defining a 'home' realm will be used when the path = `/`
+  3) Defining an 'error' realm will be used when an exception is thrown (other than AccessDeniedException) and the error
+     template is rendered.
 
 Any block positions in the page's template must be defined here.
 

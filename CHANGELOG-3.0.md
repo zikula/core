@@ -205,7 +205,6 @@
   - The location for choosing the default theme and admin theme has been moved to the Theme module settings.
   - System themes (Bootstrap, Atom, Printer, Rss) are now located in `system/` and are loaded directly into the kernel.
   - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
-  - If a record is not found for a guest this is now similarly treated like an access denied exception (redirect to login form).
   - Persist the locale a user used during his registration (#4098).
   - Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
   - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).

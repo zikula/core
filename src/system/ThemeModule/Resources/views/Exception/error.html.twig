@@ -1,0 +1,12 @@
+{{ pageSetVar('title', status_code ~ ' ' ~ status_text) }}
+<h1 class="text-danger"><i class="fas fa-exclamation-circle"></i> {% trans %}Apologies!{% endtrans %}</h1>
+
+<p>{% trans %}An error has been encountered when attempting to view this page. See below for details!{% endtrans %}</p>
+
+{{ showflashes() }}
+
+<h2>
+    <a class="btn btn-success btn-lg active" role="button" href="{{ path('zikulasearchmodule_search_execute') }}">
+        <i class="fas fa-search"></i> {% trans %}Search the site{% endtrans %}
+    </a>
+</h2>
