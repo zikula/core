@@ -15,7 +15,6 @@ namespace Zikula\BlocksModule\Twig\Extension;
 
 use RuntimeException;
 use Twig\Extension\AbstractExtension;
-use Twig\Loader\LoaderInterface;
 use Twig\TwigFunction;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
@@ -45,23 +44,16 @@ class BlocksExtension extends AbstractExtension
      */
     private $kernel;
 
-    /**
-     * @var LoaderInterface
-     */
-    private $loader;
-
     public function __construct(
         BlockApiInterface $blockApi,
         BlockFilterApiInterface $blockFilterApi,
         Engine $themeEngine,
-        ZikulaHttpKernelInterface $kernel,
-        LoaderInterface $loader
+        ZikulaHttpKernelInterface $kernel
     ) {
         $this->blockApi = $blockApi;
         $this->blockFilter = $blockFilterApi;
         $this->themeEngine = $themeEngine;
         $this->kernel = $kernel;
-        $this->loader = $loader;
     }
 
     public function getFunctions()
