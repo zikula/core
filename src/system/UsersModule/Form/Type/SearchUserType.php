@@ -15,6 +15,7 @@ namespace Zikula\UsersModule\Form\Type;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\UsersModule\Constant;
 
 class SearchUserType extends AbstractType
 {
@@ -37,6 +39,16 @@ class SearchUserType extends AbstractType
                 'label' => 'Email address',
                 'required' => false,
                 'input_group' => ['left' => '%', 'right' => '%']
+            ])
+            ->add('activated', ChoiceType::class, [
+                'label' => 'User status',
+                'required' => false,
+                'choices' => [
+                    'pending' => Constant::ACTIVATED_PENDING_REG,
+                    'active' => Constant::ACTIVATED_ACTIVE,
+                    'inactive' => Constant::ACTIVATED_INACTIVE,
+                    'marked for deletion' => Constant::ACTIVATED_PENDING_DELETE
+                ]
             ])
             ->add('groups', EntityType::class, [
                 'class' => GroupEntity::class,

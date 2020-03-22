@@ -1,3 +1,4 @@
+{% from '@ZikulaUsersModule/UserAdministration/userlist.html.twig' import userStatus as userStatus %}
 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
     {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
 {% endif %}
@@ -18,6 +19,7 @@
             {% endif %}
             <col id="cUser" />
             <col id="cEmail" />
+            <col id="cStatus" />
             <col id="cActions" />
         </colgroup>
         <thead>
@@ -27,6 +29,7 @@
                 {% endif %}
                 <th id="hUser" scope="col">{% trans %}User name{% endtrans %}</th>
                 <th id="hEmail" scope="col">{% trans %}Email address{% endtrans %}</th>
+                <th id="hStatus" scope="col">{% trans %}Status{% endtrans %}</th>
                 <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
             </tr>
         </thead>
@@ -41,8 +44,13 @@
                 {% endif %}
                 <td headers="hUser">{{ user.vars.label }}</td>
                 <td headers="hEmail">
-                    {% if (user.parent.vars.choices[user.vars.name].data.email is defined) and (user.vars.name != 1) %}
+                    {% if (user.parent.vars.choices[user.vars.name].data.email is defined) %}
                     {{ user.parent.vars.choices[user.vars.name].data.email }}
+                    {% endif %}
+                </td>
+                <td headers="hStatus">
+                    {% if (user.parent.vars.choices[user.vars.name].data.activated is defined) %}
+                        {{ userStatus(user.parent.vars.choices[user.vars.name].data.activated) }}
                     {% endif %}
                 </td>
                 <td headers="hActions" class="actions">

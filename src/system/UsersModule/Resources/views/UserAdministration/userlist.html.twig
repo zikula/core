@@ -21,22 +21,7 @@
             {% endfor %}
         </td>
         <td headers="hStatus" class="users_activated">
-            {% switch user.activated %}
-            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_ACTIVE') %}
-            <span class="badge badge-success">{% trans %}Active{% endtrans %}</span>
-            {% break %}
-            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_INACTIVE') %}
-            <span class="badge badge-default">{% trans %}Inactive{% endtrans %}</span>
-            {% break %}
-            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_REG') %}
-            <span class="badge badge-warning">{% trans %}Pending{% endtrans %}</span>
-            {% break %}
-            {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_DELETE') %}
-            <span class="badge badge-warning">{% trans %}Marked for deletion{% endtrans %}</span>
-            {% break %}
-            {% default %}
-            <span class="badge badge-danger">{% trans %}Status unknown{% endtrans %}</span>
-            {% endswitch %}
+            {{ _self.userStatus(user.activated) }}
         </td>
         <td headers="hActions" class="actions">
             {% if user.uid == constant('Zikula\\UsersModule\\Constant::USER_ID_ANONYMOUS') %}
@@ -54,4 +39,23 @@
 {% macro authMethod(user, authMethodCollector) %}
     {% set alias = user.attributes.authenticationMethod|default %}
     {{ authMethodCollector.get(alias).getDisplayName }}
+{% endmacro %}
+
+{% macro userStatus(status) %}
+    {% switch status %}
+    {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_ACTIVE') %}
+        <span class="badge badge-success">{% trans %}Active{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_INACTIVE') %}
+        <span class="badge badge-default">{% trans %}Inactive{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_REG') %}
+        <span class="badge badge-warning">{% trans %}Pending{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_DELETE') %}
+        <span class="badge badge-warning">{% trans %}Marked for deletion{% endtrans %}</span>
+    {% break %}
+    {% default %}
+        <span class="badge badge-danger">{% trans %}Status unknown{% endtrans %}</span>
+    {% endswitch %}
 {% endmacro %}

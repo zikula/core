@@ -98,7 +98,7 @@ class ExtensionMenu implements ExtensionMenuInterface
             $menu->addChild('Export users', [
                 'route' => 'zikulausersmodule_fileio_export',
             ])->setAttribute('icon', 'fas fa-download');
-            $menu->addChild('Find/Mail/Delete users', [
+            $menu->addChild('Find & Mail|Delete users', [
                 'route' => 'zikulausersmodule_useradministration_search',
             ])->setAttribute('icon', 'fas fa-search');
         }

@@ -76,7 +76,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function queryBySearchForm(array $formData = [])
     {
-        $filter = ['activated' => ['operator' => '!=', 'operand' => UsersConstant::ACTIVATED_PENDING_REG]];
+        $filter = [];
         foreach ($formData as $k => $v) {
             if (!empty($v)) {
                 switch ($k) {
@@ -91,6 +91,9 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
                         if (!$v->isEmpty()) {
                             $filter['groups'] = ['operator' => 'in', 'operand' => $v->getValues()];
                         }
+                        break;
+                    case 'activated':
+                        $filter['activated'] = ['operator' => '=', 'operand' => $v];
                         break;
                     default:
                         $filter[$k] = ['operator' => 'like', 'operand' => "%${v}%"];
