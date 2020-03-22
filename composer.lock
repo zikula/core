@@ -1624,20 +1624,6 @@
                 "database",
                 "orm"
             ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine/orm",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-19T06:41:02+00:00"
         },
         {
@@ -1720,20 +1706,6 @@
                 "odm",
                 "orm",
                 "persistence"
-            ],
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fpersistence",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-03-21T15:13:52+00:00"
         },
@@ -7100,12 +7072,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "c76896ab32f7e2aae2a217a36d8417942b7c0d00"
+                "reference": "978318a1d70024cc1ff7e296c5bde0dcf97ebac2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/c76896ab32f7e2aae2a217a36d8417942b7c0d00",
-                "reference": "c76896ab32f7e2aae2a217a36d8417942b7c0d00",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/978318a1d70024cc1ff7e296c5bde0dcf97ebac2",
+                "reference": "978318a1d70024cc1ff7e296c5bde0dcf97ebac2",
                 "shasum": ""
             },
             "require": {
@@ -7137,7 +7109,7 @@
                 "step",
                 "wizard"
             ],
-            "time": "2020-03-21T13:28:23+00:00"
+            "time": "2020-03-22T05:59:29+00:00"
         }
     ],
     "packages-dev": [
@@ -7250,6 +7222,5 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.2.5"
-    },
-    "plugin-api-version": "1.1.0"
+    }
 }
