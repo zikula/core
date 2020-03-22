@@ -73,7 +73,7 @@ fieldset {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    background: linear-gradient(#fafafa, #f2f2f2);
+    background-color: #fafafa;
 }
 
 legend {
