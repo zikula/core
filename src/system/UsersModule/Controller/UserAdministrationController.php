@@ -137,7 +137,7 @@ class UserAdministrationController extends AbstractController
 
         return $this->render('@ZikulaUsersModule/UserAdministration/userlist.html.twig', [
             'users' => $users,
-            'actionsHelper' => ${$actionsHelper}
+            'actionsHelper' => $actionsHelper
         ], new PlainResponse());
     }
 
