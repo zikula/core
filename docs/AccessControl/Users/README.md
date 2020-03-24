@@ -45,6 +45,10 @@ TBD
 
 - [Importing Users](ImportFromFile.md)
 
+## Generate users
+
+- [Generate users for test purposes](GenerateUsers.md)
+
 ## For developers
 
 - [CurrentUserApi](Dev/CurrentUserApi.md)
