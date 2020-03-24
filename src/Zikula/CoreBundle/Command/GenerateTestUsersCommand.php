@@ -206,7 +206,7 @@ EOT
         return (int) $this->conn->lastInsertId();
     }
 
-    private function insertGroup(int $uid, int $gid) : void
+    private function insertGroup(int $uid, int $gid): void
     {
         $types = [\PDO::PARAM_INT, \PDO::PARAM_INT];
         try {
