@@ -37,7 +37,7 @@ class DeletionType extends AbstractType
                 'validate' => false,
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn-default'
+                    'class' => 'btn-secondary'
                 ]
             ])
         ;
