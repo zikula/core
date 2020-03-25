@@ -19,54 +19,21 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\GroupsModule\Constant;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
-use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
-use Zikula\UsersModule\RegistrationEvents;
-use Zikula\UsersModule\UserEvents;
+use Zikula\UsersModule\Helper\DeleteHelper;
 
 class DeleteCommand extends Command
 {
     protected static $defaultName = 'zikula:users:delete';
 
     /**
-     * @var EventDispatcherInterface
+     * @var DeleteHelper
      */
-    private $eventDispatcher;
+    private $deleteHelper;
 
-    /**
-     * @var HookDispatcherInterface
-     */
-    private $hookDispatcher;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRespository;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher,
-        UserRepositoryInterface $userRepository,
-        GroupRepositoryInterface $groupRespository
-    ) {
+    public function __construct(DeleteHelper $deleteHelper)
+    {
         parent::__construct();
-        $this->eventDispatcher = $eventDispatcher;
-        $this->hookDispatcher = $hookDispatcher;
-        $this->userRepository = $userRepository;
-        $this->groupRespository = $groupRespository;
+        $this->deleteHelper = $deleteHelper;
     }
 
     protected function configure()
@@ -103,59 +70,31 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $uid = $input->getOption('uid');
-        $gid = $input->getOption('gid');
-        $status = $input->getOption('status');
+        $params = [
+            'gid' => $input->getOption('gid'),
+            'status' => $input->getOption('status'),
+            'uid' => $input->getOption('uid'),
+        ];
         $date = $input->getOption('date');
 
-        if (($uid && $gid) || ($uid && $status) || ($gid && $status)) {
+        if (count(array_filter($params)) > 1) {
             $io->error('Do not use more than one option or argument.');
 
             return 1;
         }
 
-        if (isset($gid)) {
-            if (Constant::GROUP_ID_USERS === (int) $gid) {
-                if (!$io->confirm('You have selected to delete from the main user group. This is not recommended. Do you wish to proceed?', false)) {
-                    $io->caution('Deletion cancelled');
+        $users = new ArrayCollection();
+        foreach ($params as $name => $value) {
+            if (isset($value)) {
+                try {
+                    $users = $this->deleteHelper->getUserCollection($name, $value, $date);
+                } catch (\InvalidArgumentException $exception) {
+                    $io->error($exception->getMessage());
 
-                    return 0;
+                    return 2;
                 }
+                break;
             }
-            $users = $this->groupRespository->find($gid)->getUsers();
-        }
-
-        if (isset($status)) {
-            $statuses = [
-                'I' => UsersConstant::ACTIVATED_INACTIVE,
-                'P' => UsersConstant::ACTIVATED_PENDING_REG,
-                'M' => UsersConstant::ACTIVATED_PENDING_DELETE
-            ];
-            if (!array_key_exists($status, $statuses)) {
-                $io->error('Invalid status value');
-
-                return 2;
-            }
-            $users = $this->userRepository->findBy(['activated' => $statuses[$status]]);
-            $users = new ArrayCollection($users);
-        }
-
-        if (isset($uid)) {
-            $user = $this->userRepository->find($uid);
-            $users = new ArrayCollection([$user]);
-        }
-
-        if (isset($date)) {
-            $date = \DateTime::createFromFormat('YmdHis', $date, new \DateTimeZone('UTC'));
-            $users = $users->filter(function (UserEntity $user) use ($date) {
-                return $user->getRegistrationDate() < $date;
-            });
-        }
-
-        $adminUser = $this->userRepository->find(UsersConstant::USER_ID_ADMIN);
-        if ($users->contains($adminUser)) {
-            $users->removeElement($adminUser);
-            $io->note(sprintf('The main admin user cannot be deleted (uname: %s)', $adminUser->getUname()));
         }
 
         if ($users->isEmpty()) {
@@ -168,11 +107,7 @@ EOT
         $count = count($users);
         $io->progressStart($count);
         foreach ($users as $user) {
-            $eventName = UsersConstant::ACTIVATED_ACTIVE === $user->getActivated() ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
-            $this->eventDispatcher->dispatch(new GenericEvent($user->getUid()), $eventName);
-            $this->eventDispatcher->dispatch(new GenericEvent(null, ['id' => $user->getUid()]), UserEvents::DELETE_PROCESS);
-            $this->hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($user->getUid()));
-            $this->userRepository->removeAndFlush($user);
+            $this->deleteHelper->deleteUser($user);
             $io->progressAdvance();
         }
         $io->progressFinish();
