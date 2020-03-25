@@ -128,7 +128,6 @@ EOT
         $amount = (int) abs($input->getArgument('amount'));
         $key = bin2hex(random_bytes(3));
         $groupId = $this->createGroup($key);
-        $divisor = (int) ceil($amount / 100);
         $this->active = (string) $input->getOption('active');
         $this->verified = in_array((int) $input->getOption('verified'), [0, 1, 2]) ? (int) $input->getOption('verified') : 1;
         $regDate = $input->getOption('regdate') ?? $this->nowUTC;
@@ -146,9 +145,7 @@ EOT
             $this->insertAttributes($uid);
             $this->insertMapping($uid, $uname);
             $this->insertGroup($uid, $groupId);
-            if (0 === $i % $divisor) {
-                $io->progressAdvance((int) ceil($amount / $divisor));
-            }
+            $io->progressAdvance();
         }
 
         $io->progressFinish();
