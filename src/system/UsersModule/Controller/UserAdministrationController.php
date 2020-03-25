@@ -290,25 +290,11 @@ class UserAdministrationController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         UserEntity $user = null
     ) {
-        $users = new ArrayCollection();
-        if ('POST' === $request->getMethod()) {
-            $deleteForm = $this->createForm(DeleteType::class, [], [
-                'choices' => $userRepository->queryBySearchForm(),
-                'action' => $this->generateUrl('zikulausersmodule_useradministration_delete')
-            ]);
-            $deleteForm->handleRequest($request);
-            if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
-                $data = $deleteForm->getData();
-                $users = $data['users'];
-            }
-        } else {
-            if (isset($user)) {
-                $users->add($user);
-            }
-        }
         $uids = [];
-        foreach ($users as $affectedUser) {
-            $uids[] = $affectedUser->getUid();
+        if (!isset($user) && 'POST' === $request->getMethod() && $request->request->has('zikulausersmodule_delete')) {
+            $uids = $request->request->get('zikulausersmodule_delete')['users'];
+        } elseif (isset($user)) {
+            $uids = [$user->getUid()];
         }
         $usersImploded = implode(',', $uids);
 
@@ -316,7 +302,7 @@ class UserAdministrationController extends AbstractController
             'users' => $usersImploded
         ]);
         $deleteConfirmationForm->handleRequest($request);
-        if ($users instanceof ArrayCollection && $users->isEmpty() && !$deleteConfirmationForm->isSubmitted()) {
+        if (empty($uids) && !$deleteConfirmationForm->isSubmitted()) {
             throw new InvalidArgumentException($this->trans('No users selected.'));
         }
         if ($deleteConfirmationForm->isSubmitted()) {
@@ -365,6 +351,7 @@ class UserAdministrationController extends AbstractController
                 return $this->redirectToRoute('zikulausersmodule_useradministration_list');
             }
         }
+        $users = $userRepository->findByUids($uids);
 
         return [
             'users' => $users,
