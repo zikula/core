@@ -4446,16 +4446,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801"
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/446d54b4cb6bf489fc9d75f55843658e6f25d801",
-                "reference": "446d54b4cb6bf489fc9d75f55843658e6f25d801",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
                 "shasum": ""
             },
             "require": {
@@ -4489,7 +4489,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2019-11-01T11:05:21+00:00"
+            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -7072,12 +7072,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "978318a1d70024cc1ff7e296c5bde0dcf97ebac2"
+                "reference": "06f21ab44de359cb0662631d925eba3eeca51bfe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/978318a1d70024cc1ff7e296c5bde0dcf97ebac2",
-                "reference": "978318a1d70024cc1ff7e296c5bde0dcf97ebac2",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/06f21ab44de359cb0662631d925eba3eeca51bfe",
+                "reference": "06f21ab44de359cb0662631d925eba3eeca51bfe",
                 "shasum": ""
             },
             "require": {
@@ -7109,7 +7109,7 @@
                 "step",
                 "wizard"
             ],
-            "time": "2020-03-22T05:59:29+00:00"
+            "time": "2020-03-24T19:22:43+00:00"
         }
     ],
     "packages-dev": [
@@ -7222,5 +7222,6 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.2.5"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }
