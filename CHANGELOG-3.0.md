@@ -274,6 +274,7 @@
   - php-translation/symfony-bundle installed in 0.12.1
   - php-translation/symfony-storage installed in 2.2.0
   - psr/event-dispatcher installed in 1.0.0
+  - psr/log updated from 1.1.2 to 1.1.3
   - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
   - seld/jsonlint installed in 1.7.2
   - seld/phar-utils installed in 1.1.0
