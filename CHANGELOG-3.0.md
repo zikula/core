@@ -176,6 +176,7 @@
   - Fixed broken drag n drop of categories and menu items when target position is the top of a subtree.
   - Fixed logic of `CategoryProcessingHelper#mayCategoryBeDeletedOrMoved` (#3920).
   - Fixed import of users from a file (#4161).
+  - Fixed problem with deleting user(s) from a very large database (#3953).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
