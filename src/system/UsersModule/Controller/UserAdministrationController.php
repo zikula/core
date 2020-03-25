@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
