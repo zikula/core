@@ -222,6 +222,7 @@
   - Added UserCreationApi to assist with the manual creation of ZAuth-method users (#3265).
   - Added CLI Command to import users `bin/console zikula:users:import`.
   - Added CLI Command to create any number of users for testing purposes `bin/console zikula:users:generate`.
+  - Added CLI Command to delete any number of users `bin/console zikula:users:delete`.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
