@@ -10,6 +10,9 @@
 </h3>
 
 <div>
+    <div class="alert alert-warning" role="alert">
+        {% trans %}Be advised: If your search resulted in more than 250 records, that display has been limited to 250.{% endtrans %}
+    </div>
     {{ form_start(resultsForm) }}
     {{ form_errors(resultsForm) }}
     <table class="table table-bordered table-striped">

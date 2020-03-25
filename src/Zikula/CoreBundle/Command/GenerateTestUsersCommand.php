@@ -42,7 +42,17 @@ class GenerateTestUsersCommand extends Command
     private $startUTC;
 
     /**
-     * @var int
+     * @var \DateTime
+     */
+    private $regDate;
+
+    /**
+     * @var bool
+     */
+    private $range = false;
+
+    /**
+     * @var string
      */
     private $active;
 
@@ -73,8 +83,8 @@ class GenerateTestUsersCommand extends Command
                 'active',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'All the users are 1=active, 0=inactive, 2=random choice 0|1',
-                UsersConstant::ACTIVATED_ACTIVE
+                'All the users are A=active, I=inactive, P=all users pending, M=all users marked for deletion, R=random choice A|I|P|M',
+                'A'
             )
             ->addOption(
                 'verified',
@@ -82,6 +92,12 @@ class GenerateTestUsersCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'All the user emails marked as 1=verified, 0=unverified, 2=random choice 0|1',
                 1
+            )
+            ->addOption(
+                'regdate',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Registration date in format YYYYMMDD or >YYYYMMDD if random dates between provided date and now'
             )
             ->setDescription('Generates users for testing purposes')
             ->setHelp(
@@ -94,11 +110,13 @@ These users will not be able to login. The users are placed into a newly created
 This will generate 1000 randomly named users using all the default values.
 
 Options:
-<info>--active (-a)</info> 0|1|2 (default: 1) 1=all users active, 0=all users inactive, 2=random assignment 0|1
+<info>--active</info> A|I|P|M|R (default: A) A=all users active, I=all users inactive, P=all users pending, M=all users marked for deletion R=random assignment A|I|P|M
 
-<info>--verified (-v)</info> 0|1|2 (default: 1) 1=all user emails verified, 0=all user emails unverified, 2=random assignment 0|1
+<info>--verified</info> 0|1|2 (default: 1) 1=all user emails verified, 0=all user emails unverified, 2=random assignment 0|1
 
-<info>php %command.full_name% 1000 --active=0 --verified=2</info>
+<info>--regdate</info> YYYYMMDD or >YYYYMMDD if random dates between provided date and now
+
+<info>php %command.full_name% 1000 --active=I --verified=2 --regdate='>20200101'</info>
 
 EOT
             );
@@ -111,8 +129,11 @@ EOT
         $key = bin2hex(random_bytes(3));
         $groupId = $this->createGroup($key);
         $divisor = (int) ceil($amount / 100);
-        $this->active = in_array((int) $input->getOption('active'), [0, 1, 2]) ? (int) $input->getOption('active') : UsersConstant::ACTIVATED_ACTIVE;
+        $this->active = (string) $input->getOption('active');
         $this->verified = in_array((int) $input->getOption('verified'), [0, 1, 2]) ? (int) $input->getOption('verified') : 1;
+        $regDate = $input->getOption('regdate') ?? $this->nowUTC;
+        $this->range = '>' === $regDate[0];
+        $this->regDate = $this->range ? mb_substr($regDate, 1) : $regDate;
 
         $io->title('User generation utility');
         $io->text('Generating users...');
@@ -137,6 +158,35 @@ EOT
         return 0;
     }
 
+    private function configureActivatedStatus(string $value): int {
+        $statuses = [
+            'A' => UsersConstant::ACTIVATED_ACTIVE,
+            'I' => UsersConstant::ACTIVATED_INACTIVE,
+            'P' => UsersConstant::ACTIVATED_PENDING_REG,
+            'M' => UsersConstant::ACTIVATED_PENDING_DELETE
+        ];
+        if ('R' === $value) {
+            return array_rand(array_flip($statuses));
+        }
+
+        return array_key_exists($value, $statuses) ? $statuses[$value] : UsersConstant::ACTIVATED_ACTIVE;
+    }
+
+    private function configureRegDate(): \DateTime
+    {
+        if ($this->regDate instanceof \DateTime) {
+            return $this->regDate;
+        }
+        $utcTz = new \DateTimeZone('UTC');
+        $regDate = \DateTime::createFromFormat('Ymd', $this->regDate, $utcTz);
+        if (!$this->range) {
+            return $regDate;
+        }
+        $randTimeStamp = mt_rand($regDate->getTimestamp(), $this->nowUTC->getTimestamp());
+
+        return \DateTime::createFromFormat("U", "$randTimeStamp", $utcTz);
+    }
+
     private function insertUser(string $uname): void
     {
         $types = [\PDO::PARAM_STR, \PDO::PARAM_STR, \PDO::PARAM_INT, 'datetime', \PDO::PARAM_INT, 'datetime', 'datetime', \PDO::PARAM_STR, \PDO::PARAM_STR];
@@ -144,10 +194,10 @@ EOT
             $this->conn->insert('users', [
                 'uname' => $uname,
                 'email' => $uname . '@example.com',
-                'activated' => 2 === $this->active ? random_int(0, 1) : $this->active,
-                'approved_date' => $this->nowUTC,
-                'approved_by' => 2,
-                'user_regdate' => $this->nowUTC,
+                'activated' => $activated = $this->configureActivatedStatus($this->active),
+                'approved_date' => UsersConstant::ACTIVATED_ACTIVE === $activated ? $this->nowUTC : $this->startUTC,
+                'approved_by' => UsersConstant::ACTIVATED_ACTIVE === $activated ? 2 : 0,
+                'user_regdate' => $this->configureRegDate(),
                 'lastlogin' => $this->startUTC,
                 'tz' => '',
                 'locale' => ''

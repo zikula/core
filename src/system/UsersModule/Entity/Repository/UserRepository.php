@@ -74,7 +74,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $this->_em->flush();
     }
 
-    public function queryBySearchForm(array $formData = [])
+    public function queryBySearchForm(array $formData = [], $limit = 0)
     {
         $filter = [];
         foreach ($formData as $k => $v) {
@@ -101,7 +101,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             }
         }
 
-        return $this->query($filter);
+        return $this->query($filter, [], $limit);
     }
 
     public function getSearchResults(array $words = [])
