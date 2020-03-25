@@ -158,7 +158,8 @@ EOT
         return 0;
     }
 
-    private function configureActivatedStatus(string $value): int {
+    private function configureActivatedStatus(string $value): int
+    {
         $statuses = [
             'A' => UsersConstant::ACTIVATED_ACTIVE,
             'I' => UsersConstant::ACTIVATED_INACTIVE,
@@ -184,7 +185,7 @@ EOT
         }
         $randTimeStamp = mt_rand($regDate->getTimestamp(), $this->nowUTC->getTimestamp());
 
-        return \DateTime::createFromFormat("U", "$randTimeStamp", $utcTz);
+        return \DateTime::createFromFormat("U", "${randTimeStamp}", $utcTz);
     }
 
     private function insertUser(string $uname): void
