@@ -103,7 +103,7 @@ class RegistrationController extends AbstractController
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $authenticationMethodId = null;
         if (null !== $session) {
-            $session->get('authenticationMethodId');
+            $authenticationMethodId = $session->get('authenticationMethodId');
         }
 
         // authenticate user if required && check to make sure user doesn't already exist.

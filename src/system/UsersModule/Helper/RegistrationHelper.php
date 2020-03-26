@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Helper;
 
 use DateTime;
-use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
@@ -101,14 +101,11 @@ class RegistrationHelper
             // Everything is in order for a full user record
             $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
 
-            // Add user to default group @todo refactor with Groups module
-            $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
-            if (!$defaultGroup) {
-                throw new RuntimeException($this->trans('Warning! The user account was created, but there was a problem adding the account to the default group.'));
-            }
-            if (!$userEntity->getGroups()->containsKey($defaultGroup)) {
+            // Add user to default group
+            $defaultGroupId = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup', Constant::GROUP_ID_USERS);
+            if (!$userEntity->getGroups()->containsKey($defaultGroupId)) {
                 /** @var GroupEntity $defaultGroupEntity */
-                $defaultGroupEntity = $this->groupRepository->find($defaultGroup);
+                $defaultGroupEntity = $this->groupRepository->find($defaultGroupId);
                 $userEntity->addGroup($defaultGroupEntity);
             }
             $this->userRepository->persistAndFlush($userEntity);

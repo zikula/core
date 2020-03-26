@@ -122,7 +122,7 @@ class LostPasswordVerificationHelper
     public function checkConfirmationCode(int $userId, string $code): bool
     {
         $changePasswordExpireDays = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
-        $this->userVerificationRepository->purgeExpiredRecords($changePasswordExpireDays);
+        $this->userVerificationRepository->purgeExpiredRecords($changePasswordExpireDays, ZAuthConstant::VERIFYCHGTYPE_PWD, false);
 
         /** @var UserVerificationEntity $userVerificationEntity */
         $userVerificationEntity = $this->userVerificationRepository->findOneBy([
