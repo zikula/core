@@ -76,7 +76,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             $this->setSystemVar('slogan_' . $lang, $this->trans('Site description'));
             $this->setSystemVar('defaultpagetitle_' . $lang, $this->trans('Site name'));
             $this->setSystemVar('defaultmetadescription_' . $lang, $this->trans('Site description'));
-            $this->setSystemVar('startController_' . $lang);
+            $this->setSystemVar('startController_' . $lang, ['controller' => '', 'query' => '', 'request' => '', 'attributes' => '']);
         }
 
         $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE);
