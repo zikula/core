@@ -5,11 +5,6 @@
     {{ pageSetVar('title', 'Mailer settings'|trans) }}
 </h3>
 
-<p class="alert alert-info">
-    {% set link = '<a href="https://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fas fa-external-link-alt"></i>' ~ 'SwiftMailer configuration'|trans ~'</a>' %}
-    {% trans with {'%link%' : link|raw } %}Mailer relies on %link%{% endtrans %}
-</p>
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
 

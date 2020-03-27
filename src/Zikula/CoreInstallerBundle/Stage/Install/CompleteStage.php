@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
-use Swift_Message;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -98,14 +99,15 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 visit <a href="https://ziku.la">ziku.la</a></p>
 </body>
 EOF;
-        $message = new Swift_Message($subject, $body, 'text/html');
-        $message->setFrom($adminUser->getEmail());
-        $message->setTo($adminUser->getEmail());
+        $email = (new Email())
+            ->from($adminUser->getEmail())
+            ->to($adminUser->getEmail())
+            ->subject($subject)
+            ->html($body);
 
-        $mailer = $this->container->get('mailer');
         try {
-            $mailer->send($message);
-        } catch (\Exception $exception) {
+            $this->container->get('mailer')->send($email);
+        } catch (TransportExceptionInterface $exception) {
             return 0;
         }
 

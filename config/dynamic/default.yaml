@@ -4,16 +4,6 @@
 
 jms_i18n_routing:
     strategy: prefix_except_default
-swiftmailer:
-    transport: smtp
-    username: ''
-    password: ''
-    host: 'localhost'
-    port: 25
-    encryption: null
-    auth_mode: null
-    delivery_addresses: []
-    disable_delivery: false
 parameters:
     localisation.locales: [en]
     zikula.session.name: _zsid

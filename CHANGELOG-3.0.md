@@ -36,6 +36,7 @@
     - `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
+  - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
     - `ZikulaHttpKernelInterface` has dropped `getConnectionConfig()` method. Use environment variable `DATABASE_URL` instead.

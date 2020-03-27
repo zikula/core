@@ -10,8 +10,7 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    Zikula\MailerModule\Api\ApiInterface\MailerApiInterface: '@Zikula\MailerModule\Api\MailerApi'
-
-    Zikula\MailerModule\Api\MailerApi:
-        arguments:
-            $installed: '%env(ZIKULA_INSTALLED)%'
+    # A public mailer service is needed in Zikula
+    symfony.mailer:
+        alias: mailer.mailer
+        public: true

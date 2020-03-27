@@ -19,7 +19,7 @@ Zikula can quickly become a Content Management System utilizing community-driven
 - Based on Symfony 5.x which provides stability, continuity and extensibility
 - Uses Doctrine for persisting data
 - Uses Twig as template engine
-- Uses SwiftMailer for email handling
+- Uses Mailer Component for email handling
 
 ### Extensions and bundles
 
