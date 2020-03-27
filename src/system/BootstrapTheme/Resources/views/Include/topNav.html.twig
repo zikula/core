@@ -8,7 +8,7 @@
         </div>
         <div id="themeNavBarCollapse" class="navbar-collapse collapse">
             <ul class="navbar-nav">
-                <li>{{ adminPanelMenu() }}</li>
+                <li class="mr-2">{{ adminPanelMenu() }}</li>
             </ul>
             {% if admin|default %}
                 {{ knp_menu_render('zikulaBootstrapThemeAdminMenu', {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
