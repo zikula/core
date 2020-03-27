@@ -81,14 +81,6 @@ class RegistrationController extends AbstractController
         }
 
         $setPass = false;
-        // remove expired registrations
-        $regExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, ZAuthConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION);
-        if ($regExpireDays > 0) {
-            $deletedUsers = $userVerificationRepository->purgeExpiredRecords($regExpireDays);
-            foreach ($deletedUsers as $deletedUser) {
-                $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), RegistrationEvents::DELETE_REGISTRATION);
-            }
-        }
         $codeValidationErrors = $validator->validate(
             ['uname' => $uname, 'verifycode' => $verifycode],
             new ValidRegistrationVerification()
