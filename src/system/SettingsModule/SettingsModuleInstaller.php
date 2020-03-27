@@ -185,7 +185,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
     /**
      * @return string|array|null
      */
-    private getDefaultValue(string $name)
+    private function getDefaultValue(string $name)
     {
         if ('permasearch' === $name) {
             return $this->trans('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü');
