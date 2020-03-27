@@ -1711,16 +1711,16 @@
         },
         {
             "name": "doctrine/reflection",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/reflection.git",
-                "reference": "b699ecc7f2784d1e49924fd9858cf1078db6b0e2"
+                "reference": "55e71912dfcd824b2fdd16f2d9afe15684cfce79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/reflection/zipball/b699ecc7f2784d1e49924fd9858cf1078db6b0e2",
-                "reference": "b699ecc7f2784d1e49924fd9858cf1078db6b0e2",
+                "url": "https://api.github.com/repos/doctrine/reflection/zipball/55e71912dfcd824b2fdd16f2d9afe15684cfce79",
+                "reference": "55e71912dfcd824b2fdd16f2d9afe15684cfce79",
                 "shasum": ""
             },
             "require": {
@@ -1785,7 +1785,7 @@
                 "reflection",
                 "static"
             ],
-            "time": "2020-03-21T11:34:59+00:00"
+            "time": "2020-03-27T11:06:43+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -7226,12 +7226,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "06f21ab44de359cb0662631d925eba3eeca51bfe"
+                "reference": "d9e4e4e463d728437c3d203853ed9d9bedb762bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/06f21ab44de359cb0662631d925eba3eeca51bfe",
-                "reference": "06f21ab44de359cb0662631d925eba3eeca51bfe",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/d9e4e4e463d728437c3d203853ed9d9bedb762bf",
+                "reference": "d9e4e4e463d728437c3d203853ed9d9bedb762bf",
                 "shasum": ""
             },
             "require": {
@@ -7263,7 +7263,7 @@
                 "step",
                 "wizard"
             ],
-            "time": "2020-03-24T19:22:43+00:00"
+            "time": "2020-03-27T06:15:39+00:00"
         }
     ],
     "packages-dev": [
