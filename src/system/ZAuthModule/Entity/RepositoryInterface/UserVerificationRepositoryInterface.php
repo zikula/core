@@ -45,7 +45,7 @@ interface UserVerificationRepositoryInterface extends ObjectRepository, Selectab
      *                         not specifed, all verifychg records for the user will be
      *                         removed. Note: specifying an empty array will remove none
      */
-    public function resetVerifyChgFor(int $userId, $types = null): array;
+    public function resetVerifyChgFor(int $userId, $types = null): void;
 
     public function isVerificationEmailSent(int $userId): bool;
 

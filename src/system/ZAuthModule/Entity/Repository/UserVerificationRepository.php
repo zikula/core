@@ -99,7 +99,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         return $deletedUsers;
     }
 
-    public function resetVerifyChgFor(int $userId, $types = null): array
+    public function resetVerifyChgFor(int $userId, $types = null): void
     {
         $qb = $this->createQueryBuilder('v')
             ->delete()
@@ -110,8 +110,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
                 ->setParameter('changeType', $types);
         }
         $query = $qb->getQuery();
-
-        return $query->getResult();
+        $query->execute();
     }
 
     public function isVerificationEmailSent(int $userId): bool
