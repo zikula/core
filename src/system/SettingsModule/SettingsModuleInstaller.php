@@ -76,7 +76,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             $this->setSystemVar('slogan_' . $lang, $this->trans('Site description'));
             $this->setSystemVar('defaultpagetitle_' . $lang, $this->trans('Site name'));
             $this->setSystemVar('defaultmetadescription_' . $lang, $this->trans('Site description'));
-            $this->setSystemVar('startController_' . $lang, ['controller' => '', 'query' => '', 'request' => '', 'attributes' => '']);
+            $this->setSystemVar('startController_' . $lang, $this->getDefaultValue('startController'));
         }
 
         $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE);
@@ -84,9 +84,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('languageurl', 0);
         $this->setSystemVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks
-        $this->setSystemVar('permasearch', $this->trans('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+        $this->setSystemVar('permasearch', $this->getDefaultValue('permasearch'));
         //! this is a comma-separated list of special characters to replace in permalinks
-        $this->setSystemVar('permareplace', $this->trans('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+        $this->setSystemVar('permareplace', $this->getDefaultValue('permareplace'));
 
         $this->setSystemVar('locale', $this->locale);
 
@@ -103,11 +103,11 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             case '2.9.8':
                 $permasearch = $this->getSystemVar('permasearch');
                 if (empty($permasearch)) {
-                    $this->setSystemVar('permasearch', $this->trans('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+                    $this->setSystemVar('permasearch', $this->getDefaultValue('permasearch'));
                 }
                 $permareplace = $this->getSystemVar('permareplace');
                 if (empty($permareplace)) {
-                    $this->setSystemVar('permareplace', $this->trans('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+                    $this->setSystemVar('permareplace', $this->getDefaultValue('permareplace'));
                 }
                 $locale = $this->getSystemVar('locale');
                 if (empty($locale)) {
@@ -117,7 +117,12 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             case '2.9.9':
                 // update certain System vars to multilingual. provide default values for all locales using current value.
                 // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values
-                $varsToChange = ['sitename', 'slogan', 'defaultpagetitle', 'defaultmetadescription'];
+                $varsToChange = [
+                    'sitename',
+                    'slogan',
+                    'defaultpagetitle',
+                    'defaultmetadescription'
+                ];
                 $systemVars = $this->managerRegistry->getRepository(ExtensionVarEntity::class)->findBy(['modname' => VariableApi::CONFIG]);
                 /** @var ExtensionVarEntity $modVar */
                 foreach ($systemVars as $modVar) {
@@ -161,7 +166,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                     $this->getVariableApi()->del(VariableApi::CONFIG, $varName);
                 }
                 foreach ($this->localeApi->getSupportedLocales() as $lang) {
-                    $this->setSystemVar('startController_' . $lang);
+                    $this->setSystemVar('startController_' . $lang, $this->getDefaultValue('startController'));
                 }
             case '2.9.16': // ship with Core-3.0.0
                 // current version
@@ -175,6 +180,29 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
     {
         // This module cannot be uninstalled.
         return false;
+    }
+
+    /**
+     * @return string|array|null
+     */
+    private getDefaultValue(string $name)
+    {
+        if ('permasearch' === $name) {
+            return $this->trans('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü');
+        }
+        if ('permareplace' === $name) {
+            return $this->trans('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue');
+        }
+        if ('startController' === $name) {
+            return [
+                'controller' => '',
+                'query' => '',
+                'request' => '',
+                'attributes' => ''
+            ];
+        }
+
+        return null;
     }
 
     private function setSystemVar(string $name, $value = ''): void
