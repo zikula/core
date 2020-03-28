@@ -65,9 +65,6 @@ menu:
                 localisation:
                     text: Localisation
                     relativeUrl: Configuration/Localisation/index.html
-                mailer:
-                    text: Mailer
-                    relativeUrl: Configuration/Mailer/index.html
                 admin-panel:
                     text: Admin panel
                     relativeUrl: Configuration/AdminPanel/index.html
