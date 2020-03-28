@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\MailerModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Form\Type\ConfigType;
@@ -44,49 +45,40 @@ class ConfigController extends AbstractController
      */
     public function configAction(
         Request $request,
-        ZikulaHttpKernelInterface $kernel,
-        VariableApiInterface $variableApi
+        ZikulaHttpKernelInterface $kernel
     ): array {
         $form = $this->createForm(
             ConfigType::class,
-            $this->getDataValues($variableApi),
-            [
-                'charset' => $kernel->getCharset()
-            ]
+            $this->getVars()
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-
-                // save modvars
-                $vars = [];
-                foreach (['charset', 'encoding', 'html', 'wordwrap', 'enableLogging'] as $varName) {
-                    $vars[$varName] = $formData[$varName];
+                $this->setVars($formData);
+                $transportStrings = [
+                    'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@example.com',
+                    'sendmail' => 'sendmail+smtp://default',
+                    'amazon' => 'ses://$MAILER_ID:$MAILER_KEY@default',
+                    'gmail' => 'gmail://$MAILER_ID:$MAILER_KEY@default',
+                    'mailchimp' => 'mandrill://$MAILER_ID:$MAILER_KEY@default',
+                    'mailgun' => 'mailgun://$MAILER_ID:$MAILER_KEY@default',
+                    'postmark' => 'postmark://$MAILER_ID:$MAILER_KEY@default',
+                    'sendgrid' => 'sendgrid://apikey:$MAILER_KEY@default', // unclear if 'apikey' is supposed to be literal, or replaced
+                    'test' => 'null://null',
+                ];
+                try {
+                    $vars = [
+                        'MAILER_ID' => $formData['mailer_id'],
+                        'MAILER_KEY' => $formData['mailer_key'],
+                        'MAILER_DSN' => '!' . $transportStrings[$formData['transport']]
+                    ];
+                    $helper = new LocalDotEnvHelper($kernel->getProjectDir());
+                    $helper->writeLocalEnvVars($vars);
+                    $this->addFlash('status', 'Done! Configuration updated.');
+                } catch (IOExceptionInterface $exception) {
+                    $this->addFlash('error', $this->trans('Cannot write to %file%.' . ' ' . $exception->getMessage(), ['%file%' => $kernel->getProjectDir() . '\.env.local']));
                 }
-                $this->setVars($vars);
-
-                // fetch different username and password fields depending on the transport type
-                $credentialsSuffix = 'gmail' === $formData['transport'] ? 'Gmail' : '';
-
-                $transport = (string)$formData['transport'];
-                $disableDelivery = false;
-                if ('test' === $transport) {
-                    $transport = null;
-                    $disableDelivery = true;
-                }
-
-                $deliveryAddresses = [];
-                if (isset($currentConfig['delivery_addresses']) && !empty($currentConfig['delivery_addresses'])) {
-                    $deliveryAddresses = $currentConfig['delivery_addresses'];
-                } elseif (isset($currentConfig['delivery_address']) && !empty($currentConfig['delivery_address'])) {
-                    $deliveryAddresses = [$currentConfig['delivery_address']];
-                }
-
-                // write the config file
-                // @todo update the .env.local file
-
-                $this->addFlash('status', 'Done! Configuration updated.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
             }
