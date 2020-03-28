@@ -55,7 +55,7 @@ class LocalDotEnvHelper
     {
         $lines = [];
         foreach ($vars as $key => $value) {
-            $value = '!' === mb_substr(strval($value), 0, 1) ? mb_substr(strval($value), 1) : str_replace(['#', '@', '(', ')'], ['%23', '%40', '%28', '%29'], strval($value));
+            $value = '!' === mb_substr((string) $value, 0, 1) ? mb_substr((string) $value, 1) : str_replace(['#', '@', '(', ')'], ['%23', '%40', '%28', '%29'], (string) $value);
             $lines[] = $key . '=' . $value;
         }
 
