@@ -35,7 +35,7 @@ class ConfigType extends AbstractType
                     'Google gmail' => 'gmail',
                     'Mailchimp Mandrill' => 'mailchimp',
                     'Mailgun' => 'mailgun',
-                    'Postmarkk' => 'postmark',
+                    'Postmark' => 'postmark',
                     'Sendgrid' => 'sendgrid',
                     'SMTP mail transfer protocol' => 'smtp',
                     'Sendmail binary' => 'sendmail',
