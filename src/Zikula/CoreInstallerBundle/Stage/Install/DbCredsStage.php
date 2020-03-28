@@ -105,7 +105,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         $databaseUrl = $dbCredsHelper->buildDatabaseUrl($form->getData());
 
         try {
-            $vars = ['DATABASE_URL' => '\'' . $databaseUrl . '\''];
+            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
             $helper = new LocalDotEnvHelper($this->projectDir);
             $helper->writeLocalEnvVars($vars);
         } catch (IOExceptionInterface $exception) {
