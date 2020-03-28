@@ -133,7 +133,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $dbCredsHelper = new DbCredsHelper();
         $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
         try {
-            $vars = ['DATABASE_URL' => '\'' . $databaseUrl . '\''];
+            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
             $helper = new LocalDotEnvHelper($this->kernel->getProjectDir());
             $helper->writeLocalEnvVars($vars);
         } catch (IOExceptionInterface $exception) {
