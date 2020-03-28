@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\CoreBundle\Tests\Helper;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
-use PHPUnit\Framework\TestCase;
 
 class LocalDotEnvHelperTest extends TestCase
 {

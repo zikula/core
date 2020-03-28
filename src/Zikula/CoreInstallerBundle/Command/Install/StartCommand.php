@@ -18,7 +18,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -31,7 +30,6 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
-use Zikula\Component\Wizard\AbortStageException;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand
