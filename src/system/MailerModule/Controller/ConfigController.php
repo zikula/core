@@ -101,7 +101,6 @@ class ConfigController extends AbstractController
         VariableApiInterface $variableApi,
         MailerInterface $mailer
     ): array {
-
         $form = $this->createForm(TestType::class, $this->getDataValues($variableApi));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
