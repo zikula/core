@@ -18,8 +18,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
@@ -56,11 +56,6 @@ class StartCommand extends AbstractCoreInstallerCommand
      */
     private $parameterHelper;
 
-    /**
-     * @var string
-     */
-    private $localEnvFile;
-
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         string $installed,
@@ -74,7 +69,6 @@ class StartCommand extends AbstractCoreInstallerCommand
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
-        $this->localEnvFile = $kernel->getProjectDir() . '/.env.local';
         parent::__construct($kernel, $translator);
     }
 
@@ -138,7 +132,13 @@ class StartCommand extends AbstractCoreInstallerCommand
 
         $dbCredsHelper = new DbCredsHelper();
         $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
-        $this->writeDatabaseUrl($io, $databaseUrl);
+        try {
+            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
+            $helper = new LocalDotEnvHelper($this->kernel->getProjectDir());
+            $helper->writeLocalEnvVars($vars);
+        } catch (IOExceptionInterface $exception) {
+            $io->error(sprintf('Cannot write to %s file.', $this->kernel->getProjectDir() . '/.env.local') . ' ' . $exception->getMessage());
+        }
 
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
         foreach ($data as $k => $v) {
@@ -170,18 +170,5 @@ class StartCommand extends AbstractCoreInstallerCommand
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
 
         return 0;
-    }
-
-    private function writeDatabaseUrl(SymfonyStyle $io, string $databaseUrl): void
-    {
-        // write env vars into .env.local
-        $content = 'DATABASE_URL=\'' . $databaseUrl . "'\n";
-
-        $fileSystem = new Filesystem();
-        try {
-            $fileSystem->dumpFile($this->localEnvFile, $content);
-        } catch (IOExceptionInterface $exception) {
-            $io->error(sprintf('Cannot write parameters to %s file.', $this->localEnvFile) . ' ' . $exception->getMessage());
-        }
     }
 }

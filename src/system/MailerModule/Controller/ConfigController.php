@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\MailerModule\Controller;
 
-use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Swift_Message;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\MailerModule\Form\Type\ConfigType;
 use Zikula\MailerModule\Form\Type\TestType;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
@@ -43,72 +45,40 @@ class ConfigController extends AbstractController
      */
     public function configAction(
         Request $request,
-        ZikulaHttpKernelInterface $kernel,
-        VariableApiInterface $variableApi,
-        DynamicConfigDumper $configDumper
+        ZikulaHttpKernelInterface $kernel
     ): array {
         $form = $this->createForm(
             ConfigType::class,
-            $this->getDataValues($variableApi, $configDumper),
-            [
-                'charset' => $kernel->getCharset()
-            ]
+            $this->getVars()
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-
-                // save modvars
-                $vars = [];
-                foreach (['charset', 'encoding', 'html', 'wordwrap', 'enableLogging'] as $varName) {
-                    $vars[$varName] = $formData[$varName];
-                }
-                $this->setVars($vars);
-
-                // fetch different username and password fields depending on the transport type
-                $credentialsSuffix = 'gmail' === $formData['transport'] ? 'Gmail' : '';
-
-                $transport = (string)$formData['transport'];
-                $disableDelivery = false;
-                if ('test' === $transport) {
-                    $transport = null;
-                    $disableDelivery = true;
-                }
-
-                $currentConfig = $configDumper->getConfiguration('swiftmailer');
-
-                $deliveryAddresses = [];
-                if (isset($currentConfig['delivery_addresses']) && !empty($currentConfig['delivery_addresses'])) {
-                    $deliveryAddresses = $currentConfig['delivery_addresses'];
-                } elseif (isset($currentConfig['delivery_address']) && !empty($currentConfig['delivery_address'])) {
-                    $deliveryAddresses = [$currentConfig['delivery_address']];
-                }
-
-                // write the config file
-                // https://symfony.com/doc/current/reference/configuration/swiftmailer.html
-                $config = [
-                    'transport' => $transport,
-                    'username' => $formData['username' . $credentialsSuffix],
-                    'password' => $formData['password' . $credentialsSuffix],
-                    'host' => $formData['host'],
-                    'port' => 'gmail' === $formData['transport'] ? 465 : $formData['port'],
-                    'encryption' => $formData['encryption'],
-                    'auth_mode' => $formData['auth_mode'],
-                    // the items below can be configured by modifying the /config/dynamic/generated.yaml file
-                    // 'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : ['type' => 'memory'],
-                    'delivery_addresses' => $deliveryAddresses,
-                    'disable_delivery' => $disableDelivery
+                $this->setVars($formData);
+                $transportStrings = [
+                    'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@example.com',
+                    'sendmail' => 'sendmail+smtp://default',
+                    'amazon' => 'ses://$MAILER_ID:$MAILER_KEY@default',
+                    'gmail' => 'gmail://$MAILER_ID:$MAILER_KEY@default',
+                    'mailchimp' => 'mandrill://$MAILER_ID:$MAILER_KEY@default',
+                    'mailgun' => 'mailgun://$MAILER_ID:$MAILER_KEY@default',
+                    'postmark' => 'postmark://$MAILER_ID:$MAILER_KEY@default',
+                    'sendgrid' => 'sendgrid://apikey:$MAILER_KEY@default', // unclear if 'apikey' is supposed to be literal, or replaced
+                    'test' => 'null://null',
                 ];
-                if ('' === $config['encryption']) {
-                    $config['encryption'] = null;
+                try {
+                    $vars = [
+                        'MAILER_ID' => $formData['mailer_id'],
+                        'MAILER_KEY' => $formData['mailer_key'],
+                        'MAILER_DSN' => '!' . $transportStrings[$formData['transport']]
+                    ];
+                    $helper = new LocalDotEnvHelper($kernel->getProjectDir());
+                    $helper->writeLocalEnvVars($vars);
+                    $this->addFlash('status', 'Done! Configuration updated.');
+                } catch (IOExceptionInterface $exception) {
+                    $this->addFlash('error', $this->trans('Cannot write to %file%.' . ' ' . $exception->getMessage(), ['%file%' => $kernel->getProjectDir() . '\.env.local']));
                 }
-                if ('' === $config['auth_mode']) {
-                    $config['auth_mode'] = null;
-                }
-                $configDumper->setConfiguration('swiftmailer', $config);
-
-                $this->addFlash('status', 'Done! Configuration updated.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
             }
@@ -129,64 +99,31 @@ class ConfigController extends AbstractController
     public function testAction(
         Request $request,
         VariableApiInterface $variableApi,
-        DynamicConfigDumper $configDumper,
-        MailerApiInterface $mailerApi
+        MailerInterface $mailer
     ): array {
-        $paramHtml = $configDumper->getConfigurationForHtml('swiftmailer');
-        // avoid exposing a password
-        $paramHtml = preg_replace('/<li><strong>password:(.*?)<\/li>/is', '', $paramHtml);
-
-        $form = $this->createForm(TestType::class, $this->getDataValues($variableApi, $configDumper));
+        $form = $this->createForm(TestType::class, $this->getDataValues($variableApi));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('test')->isClicked()) {
                 $formData = $form->getData();
-
                 $html = in_array($formData['messageType'], ['html', 'multipart']) ? true : false;
-
-                $textBody = $formData['bodyText'];
-                $htmlBody = $formData['bodyHtml'];
-
-                $msgBody = $textBody;
-                $altBody = '';
-                if ($html) {
-                    $msgBody = $htmlBody;
-                    $altBody = $textBody;
-                }
-
-                // add swiftmailer config to message for testing
-                $swiftConfigHtml = "<h4>Swiftmailer Config:</h4>\n";
-                $swiftConfigHtml .= $paramHtml;
-
-                if ($html) {
-                    $msgBody .= $swiftConfigHtml;
-                    $altBody .= !empty($altBody) ? strip_tags($swiftConfigHtml) : '';
-                } else {
-                    $msgBody .= strip_tags($swiftConfigHtml);
-                }
-
-                // send the email
                 try {
                     $siteName = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
                     $adminMail = $variableApi->getSystemVar('adminmail');
 
-                    // create new message instance
-                    $message = new Swift_Message();
-
-                    $message->setFrom([$adminMail => $siteName]);
-                    $message->setTo([$formData['toAddress'] => $formData['toName']]);
-
-                    $result = $mailerApi->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);
-
-                    // check our result and return the correct error code
-                    if (true === $result) {
-                        // success
-                        $this->addFlash('status', 'Done! Message sent.');
-                    } else {
-                        $this->addFlash('error', 'It looks like the message could not be sent properly.');
+                    $email = (new Email())
+                        ->from(new Address($adminMail, $siteName))
+                        ->to(new Address($formData['toAddress'], $formData['toName']))
+                        ->subject($formData['subject'])
+                        ->text($formData['bodyText'])
+                    ;
+                    if ($html) {
+                        $email->html($formData['bodyHtml']);
                     }
-                } catch (RuntimeException $exception) {
-                    $this->addFlash('error', 'The message could not be sent properly.');
+                    $mailer->send($email);
+                    $this->addFlash('status', 'Done! Message sent.');
+                } catch (TransportExceptionInterface $exception) {
+                    $this->addFlash('error', $exception->getMessage());
                 }
             }
             if ($form->get('cancel')->isClicked()) {
@@ -196,32 +133,23 @@ class ConfigController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'swiftmailerHtml' => $paramHtml
         ];
     }
 
     /**
-     * Returns required data from module variables and SwiftMailer configuration.
+     * Returns required data from module variables and mailer configuration.
      */
     private function getDataValues(
-        VariableApiInterface $variableApi,
-        DynamicConfigDumper $configDumper
+        VariableApiInterface $variableApi
     ): array {
-        $params = $configDumper->getConfiguration('swiftmailer');
         $modVars = $variableApi->getAll('ZikulaMailerModule');
 
-        if (null === $params['transport']) {
-            $params['transport'] = 'test';
-        }
+        $modVars['sitename'] = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
+        $modVars['adminmail'] = $variableApi->getSystemVar('adminmail');
 
-        $dataValues = array_merge($params, $modVars);
+        $modVars['fromName'] = $modVars['sitename'];
+        $modVars['fromAddress'] = $modVars['adminmail'];
 
-        $dataValues['sitename'] = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
-        $dataValues['adminmail'] = $variableApi->getSystemVar('adminmail');
-
-        $dataValues['fromName'] = $dataValues['sitename'];
-        $dataValues['fromAddress'] = $dataValues['adminmail'];
-
-        return $dataValues;
+        return $modVars;
     }
 }

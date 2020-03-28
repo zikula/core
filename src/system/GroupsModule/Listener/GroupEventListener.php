@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule\Listener;
 
-use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\GroupEvents;
-use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 
 class GroupEventListener implements EventSubscriberInterface
 {
@@ -35,7 +36,7 @@ class GroupEventListener implements EventSubscriberInterface
     protected $translator;
 
     /**
-     * @var MailerApiInterface
+     * @var MailerInterface
      */
     protected $mailer;
 
@@ -47,12 +48,12 @@ class GroupEventListener implements EventSubscriberInterface
     public function __construct(
         VariableApiInterface $variableApi,
         TranslatorInterface $translator,
-        MailerApiInterface $mailerApi,
+        MailerInterface $mailer,
         RouterInterface $router
     ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
-        $this->mailer = $mailerApi;
+        $this->mailer = $mailer;
         $this->router = $router;
     }
 
@@ -75,11 +76,14 @@ class GroupEventListener implements EventSubscriberInterface
         $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');
 
-        $message = new Swift_Message();
-        $message->setFrom([$adminMail => $siteName]);
         $user = $applicationEntity->getUser();
-        $message->setTo([$user->getEmail() => $user->getUname()]);
-        $this->mailer->sendMessage($message, $title, $title . '\n\n' . $formData['reason']);
+        $email = (new Email())
+            ->from(new Address($adminMail, $siteName))
+            ->to(new Address($user->getEmail(), $user->getUname()))
+            ->subject($title)
+            ->html($title . '\n\n' . $formData['reason'])
+        ;
+        $this->mailer->send($email);
     }
 
     /**
@@ -99,9 +103,12 @@ class GroupEventListener implements EventSubscriberInterface
         $adminMail = $this->variableApi->getSystemVar('adminmail');
         $siteName = $this->variableApi->getSystemVar('sitename');
 
-        $message = new Swift_Message();
-        $message->setFrom([$adminMail => $siteName]);
-        $message->setTo([$adminMail => $siteName]);
-        $this->mailer->sendMessage($message, $this->translator->trans('New group application'), $body);
+        $email = (new Email())
+            ->from(new Address($adminMail, $siteName))
+            ->to(new Address($adminMail, $siteName))
+            ->subject($this->translator->trans('New group application'))
+            ->html($body)
+        ;
+        $this->mailer->send($email);
     }
 }

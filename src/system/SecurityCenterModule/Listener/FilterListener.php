@@ -21,15 +21,16 @@ use IDS\Init as IdsInit;
 use IDS\Monitor as IdsMonitor;
 use IDS\Report as IdsReport;
 use RuntimeException;
-use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\CacheDirHelper;
 use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
@@ -58,7 +59,7 @@ class FilterListener implements EventSubscriberInterface
     private $em;
 
     /**
-     * @var MailerApiInterface
+     * @var MailerInterface
      */
     private $mailer;
 
@@ -91,7 +92,7 @@ class FilterListener implements EventSubscriberInterface
         ZikulaSecurityCenterModule $securityCenterModule,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
-        MailerApiInterface $mailer,
+        MailerInterface $mailer,
         TranslatorInterface $translator,
         string $cacheDir,
         CacheDirHelper $cacheDirHelper,
@@ -383,18 +384,14 @@ class FilterListener implements EventSubscriberInterface
             $mailBody .= $this->translator->trans('Affected parameters: %parameters%', ['%parameters%' => trim($attackedParameters)]) . "\n";
             $mailBody .= isset($currentPage) ? $this->translator->trans('Request URI: %uri%', ['%uri%' => urlencode($currentPage)]) : '';
 
-            // prepare other mail arguments
-            $siteName = $this->getSystemVar('sitename', $this->getSystemVar('sitename_en'));
             $adminMail = $this->getSystemVar('adminmail');
 
-            // create new message instance
-            $message = new Swift_Message();
-
-            $message->setFrom([$adminMail => $siteName]);
-            $message->setTo([$adminMail => $this->translator->trans('Site Administrator')]);
-
-            $subject = $this->translator->trans('Intrusion attempt detected by PHPIDS');
-            $this->mailer->sendMessage($message, $subject, $mailBody);
+            $email = (new Email())
+                ->to(new Address($adminMail, $this->translator->trans('Site Administrator')))
+                ->subject($this->translator->trans('Intrusion attempt detected by PHPIDS'))
+                ->html($mailBody)
+            ;
+            $this->mailer->send($email);
         }
 
         if ($usedImpact > $impactThresholdThree) {

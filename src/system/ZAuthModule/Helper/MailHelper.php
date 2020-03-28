@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Helper;
 
-use Swift_Message;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 
 class MailHelper
 {
@@ -38,20 +40,20 @@ class MailHelper
     private $variableApi;
 
     /**
-     * @var MailerApiInterface
+     * @var MailerInterface
      */
-    private $mailerApi;
+    private $mailer;
 
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
         VariableApiInterface $variableApi,
-        MailerApiInterface $mailerApi
+        MailerInterface $mailer
     ) {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
-        $this->mailerApi = $mailerApi;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -85,15 +87,24 @@ class MailHelper
             $subject = $this->generateEmailSubject($notificationType);
         }
 
-        $sitename = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
+        $siteName = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
 
-        $message = new Swift_Message($subject);
-        $message->setFrom([$this->variableApi->getSystemVar('adminmail') => $sitename]);
-        $message->setTo([$toAddress]);
-        $body = $html ? $htmlBody : $textBody;
-        $altBody = $html ? $textBody : '';
+        $email = (new Email())
+            ->from(new Address($this->variableApi->getSystemVar('adminmail'), $siteName))
+            ->to($toAddress)
+            ->subject($subject)
+            ->text($textBody)
+        ;
+        if ($html) {
+            $email->html($htmlBody);
+        }
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $exception) {
+            return false;
+        }
 
-        return $this->mailerApi->sendMessage($message, null, $body, $altBody, $html);
+        return true;
     }
 
     private function generateEmailSubject(string $notificationType): string

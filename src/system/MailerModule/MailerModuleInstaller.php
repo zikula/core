@@ -84,44 +84,14 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                 // new modvar for 1.4.0
                 $this->setVarWithDefault('enableLogging', false);
 
-                // write the config file
-                $mailerTypeConversion = [
-                    1 => 'mail',
-                    2 => 'sendmail',
-                    3 => 'mail',
-                    4 => 'smtp',
-                    5 => 'mail',
-                ];
-                $config = [
-                    'transport' => $mailerTypeConversion[$modVars['mailertype']],
-                    'username' => $modVars['smtpusername'],
-                    'password' => $modVars['smtppassword'],
-                    'host' => $modVars['smtpserver'],
-                    'port' => $modVars['smtpport'],
-                    'encryption' => isset($modVars['smtpsecuremethod']) && in_array($modVars['smtpsecuremethod'], ['ssl', 'tls']) ? $modVars['smtpsecuremethod'] : 'ssl',
-                    'auth_mode' => !empty($modVars['auth']) ? 'login' : null,
-                    'spool' => ['type' => 'memory'],
-                    'delivery_addresses' => [],
-                    'disable_delivery' => 5 === $modVars['mailertype'],
-                ];
-                $this->configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.0':
-                $config = $this->configDumper->getConfiguration('swiftmailer');
-                // remove spool parameter
-                unset($config['spool']);
-                $this->configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.1':
-                // install subscriber hooks
             case '1.4.2':
-                $config = $this->configDumper->getConfiguration('swiftmailer');
-                // delivery_address has changed to an array named delivery_addresses
-                $config['delivery_addresses'] = !empty($config['delivery_address']) ? [$config['delivery_address']] : [];
-                unset($config['delivery_address']);
-            $this->configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.3':
-                // nothing
             case '1.5.0':
             case '1.5.1':
+                // all swiftmailer config changes removed from previous version upgrades above
+                $this->configDumper->delConfiguration('swiftmailer');
                 // future upgrade routines
         }
 

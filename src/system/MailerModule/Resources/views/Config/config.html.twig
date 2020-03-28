@@ -5,38 +5,15 @@
     {{ pageSetVar('title', 'Mailer settings'|trans) }}
 </h3>
 
-<p class="alert alert-info">
-    {% set link = '<a href="https://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fas fa-external-link-alt"></i>' ~ 'SwiftMailer configuration'|trans ~'</a>' %}
-    {% trans with {'%link%' : link|raw } %}Mailer relies on %link%{% endtrans %}
-</p>
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
 <fieldset>
-    <legend>{% trans %}General settings{% endtrans %}</legend>
+    <legend>{% trans %}Mailer settings{% endtrans %}</legend>
     {{ form_row(form.transport) }}
-    {{ form_row(form.charset) }}
-    {{ form_row(form.encoding) }}
-    {{ form_row(form.html) }}
-    {{ form_row(form.wordwrap) }}
+    {{ form_row(form.mailer_id) }}
+    {{ form_row(form.mailer_key) }}
     {{ form_row(form.enableLogging) }}
-</fieldset>
-<fieldset data-switch="zikulamailermodule_config[transport]" data-switch-value="smtp">
-    <legend>{% trans %}SMTP settings{% endtrans %}</legend>
-    {{ form_row(form.host) }}
-    {{ form_row(form.port) }}
-    {{ form_row(form.encryption) }}
-    {{ form_row(form.auth_mode) }}
-    <div data-switch="zikulamailermodule_config[auth_mode]" data-switch-value="plain,login,cram-md5">
-        {{ form_row(form.username) }}
-        {{ form_row(form.password) }}
-    </div>
-</fieldset>
-<fieldset data-switch="zikulamailermodule_config[transport]" data-switch-value="gmail">
-    <legend>{% trans %}Gmail settings{% endtrans %}</legend>
-    {{ form_row(form.usernameGmail) }}
-    {{ form_row(form.passwordGmail) }}
 </fieldset>
 
 <div class="form-group row">

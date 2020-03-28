@@ -36,6 +36,7 @@
     - `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
+  - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
     - `ZikulaHttpKernelInterface` has dropped `getConnectionConfig()` method. Use environment variable `DATABASE_URL` instead.
@@ -223,6 +224,7 @@
   - Added CLI Command to import users `bin/console zikula:users:import`.
   - Added CLI Command to create any number of users for testing purposes `bin/console zikula:users:generate`.
   - Added CLI Command to delete any number of users `bin/console zikula:users:delete`.
+  - Added `Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper` to assist in writing to the `.env.local` file.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
