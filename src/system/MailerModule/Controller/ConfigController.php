@@ -53,7 +53,7 @@ class ConfigController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-                $this->setVars($formData);
+                $this->setVar('enableLogging', $formData['enableLogging']);
                 if (true === $mailTransportHelper->handleFormData($formData)) {
                     $this->addFlash('status', 'Done! Configuration updated.');
                 } else {
