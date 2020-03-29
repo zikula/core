@@ -15,13 +15,15 @@ namespace Zikula\UsersModule\Helper;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Swift_Message;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -45,9 +47,9 @@ class MailHelper
     private $variableApi;
 
     /**
-     * @var MailerApiInterface
+     * @var MailerInterface
      */
-    private $mailerApi;
+    private $mailer;
 
     /**
      * @var PermissionApiInterface
@@ -63,14 +65,14 @@ class MailHelper
         TranslatorInterface $translator,
         Environment $twig,
         VariableApiInterface $variableApi,
-        MailerApiInterface $mailerApi,
+        MailerInterface $mailer,
         PermissionApiInterface $permissionApi,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository
     ) {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
-        $this->mailerApi = $mailerApi;
+        $this->mailer = $mailer;
         $this->permissionApi = $permissionApi;
         $this->authenticationMappingRepository = $authenticationMappingRepository;
     }
@@ -198,29 +200,35 @@ class MailHelper
      */
     public function mailUsers(array $users, array $messageData): bool
     {
-        $mailSent = true;
-        $message = new Swift_Message($messageData['subject'], $messageData['message']);
-        $message->setFrom([$messageData['replyto'] => $messageData['from']]);
+        $email = (new Email())
+            ->from(new Address($messageData['replyto'], $messageData['from']))
+            ->subject($messageData['subject'])
+            ->html($messageData['message'])
+        ;
         if (1 === count($users)) {
-            $message->setTo([$users[0]->getEmail() => $users[0]->getUname()]);
+            $email->to(new Address($users[0]->getEmail(), $users[0]->getUname()));
         } else {
-            $message->setTo([$messageData['replyto'] => $messageData['from']]);
+            $email->to(new Address($messageData['replyto'], $messageData['from']));
         }
-        if (count($users) > 1) {
-            $bcc = [];
-            foreach ($users as $user) {
-                $bcc[] = $user->getEmail();
-                if (count($bcc) === $messageData['batchsize']) {
-                    $message->setBcc($bcc);
-                    $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' === $messageData['format']);
-                    $bcc = [];
+        try {
+            if (count($users) > 1) {
+                $bcc = [];
+                foreach ($users as $user) {
+                    $bcc[] = $user->getEmail();
+                    if (count($bcc) === $messageData['batchsize']) {
+                        $email->bcc($bcc);
+                        $this->mailer->send($email);
+                        $bcc = [];
+                    }
                 }
+                $email->bcc($bcc);
             }
-            $message->setBcc($bcc);
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $exception) {
+            return false;
         }
-        $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' === $messageData['format']);
 
-        return $mailSent;
+        return true;
     }
 
     /**
@@ -259,14 +267,24 @@ class MailHelper
             $subject = $this->generateEmailSubject($notificationType, $templateArgs);
         }
 
-        $sitename = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
+        $siteName = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
 
-        $message = new Swift_Message($subject);
-        $message->setFrom([$this->variableApi->getSystemVar('adminmail') => $sitename]);
-        $message->setTo([$toAddress]);
-        $message->setBody($html ? $htmlBody : $textBody);
+        $email = (new Email())
+            ->from(new Address($this->variableApi->getSystemVar('adminmail'), $siteName))
+            ->to($toAddress)
+            ->subject($subject)
+            ->text($textBody)
+        ;
+        if ($html) {
+            $email->html($htmlBody);
+        }
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $exception) {
+            return false;
+        }
 
-        return $this->mailerApi->sendMessage($message, null, null, $textBody, $html);
+        return true;
     }
 
     private function generateEmailSubject(string $notificationType, array $templateArgs = []): string

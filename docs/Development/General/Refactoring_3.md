@@ -54,6 +54,64 @@ used as the service name.
 removed. Extension menus are not implemented using Knp Menu instead. See docs and system modules for further
 information and examples.
 
+## Sending mails
+
+The `MailerApi` and `SwiftMailer` have been removed in favour of the Symfony Mailer component.
+
+You will see the new interface is more intuitive. Start by injecting `Symfony\Component\Mailer\MailerInterface` and reading through the docs linked further below.
+
+Here is a first example of how to migrate the code for sending mails:
+
+```php
+// OLD
+
+use Swift_Message;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
+
+class MyService
+{
+    // ...
+
+    public function send()
+    {
+        // ...
+        $message = new Swift_Message();
+        $message->setFrom([$adminMail => $siteName]);
+        $message->setTo([$user->getEmail() => $user->getUname()]);
+        $this->mailer->sendMessage($message, $title, $htmlBody, '', true);
+    }
+}
+
+// NEW
+
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
+
+class MyService
+{
+    // ...
+
+    public function send()
+    {
+        // ...
+        try {
+            $email = (new Email())
+                ->from(new Address($adminMail, $siteName))
+                ->to(new Address($user->getEmail(), $user->getUname()))
+                ->subject($title)
+                ->html($htmlBody)
+            ;
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $exception) {
+            // ...
+        }
+}
+```
+
+For more information please refer to [Mailer docs](../../Configuration/Mailer/README.md).
+
 ## Translations
 
 All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.

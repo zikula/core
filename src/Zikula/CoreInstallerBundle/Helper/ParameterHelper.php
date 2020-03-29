@@ -15,10 +15,10 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use RandomLib\Factory;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -35,7 +35,7 @@ class ParameterHelper
     /**
      * @var string
      */
-    private $localEnvFile;
+    private $projectDir;
 
     /**
      * @var VariableApiInterface
@@ -68,7 +68,7 @@ class ParameterHelper
         ZikulaHttpKernelInterface $kernel
     ) {
         $this->configDir = $projectDir . '/config';
-        $this->localEnvFile = $projectDir . '/.env.local';
+        $this->projectDir = $projectDir;
         $this->variableApi = $variableApi;
         $this->cacheClearer = $cacheClearer;
         $this->requestStack = $requestStack;
@@ -173,25 +173,16 @@ class ParameterHelper
 
     private function writeEnvVars()
     {
-        // write env vars into .env.local
-        $content = explode("\n", file_get_contents($this->localEnvFile));
-        $databaseSetting = $content[0];
-
         $randomLibFactory = new Factory();
         $generator = $randomLibFactory->getMediumStrengthGenerator();
-        $lines = [];
-        $lines[] = 'APP_ENV=prod';
-        $lines[] = 'APP_DEBUG=1';
-        $lines[] = 'APP_SECRET=\'' . $generator->generateString(50) . '\'';
-        $lines[] = $databaseSetting;
-        $lines[] = 'ZIKULA_INSTALLED=\'' . ZikulaKernel::VERSION . '\'';
-
-        $fileSystem = new Filesystem();
-        try {
-            $fileSystem->dumpFile($this->localEnvFile, implode("\n", $lines));
-        } catch (IOExceptionInterface $exception) {
-            throw $exception;
-        }
+        $vars = [
+            'APP_ENV' => 'prod',
+            'APP_DEBUG' => 1,
+            'APP_SECRET' => '\'' . $generator->generateString(50) . '\'',
+            'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
+        ];
+        $helper = new LocalDotEnvHelper($this->projectDir);
+        $helper->writeLocalEnvVars($vars);
     }
 
     public function protectFiles(): bool
@@ -202,7 +193,7 @@ class ParameterHelper
             $this->protectFile($this->configDir . '/' . $file);
         }
 
-        $this->protectFile($this->localEnvFile);
+        $this->protectFile($this->projectDir . '/.env.local');
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');

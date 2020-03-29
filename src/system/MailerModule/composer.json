@@ -14,8 +14,8 @@
         "psr-4": { "Zikula\\MailerModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
-        "symfony/swiftmailer-bundle": ">=3.4.0"
+        "egulias/email-validator": "^2.1.10",
+        "php": ">=7.2.5"
     },
     "extra": {
         "zikula": {

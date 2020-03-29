@@ -91,7 +91,36 @@ abstract class AbstractCoreInstallerCommand extends Command
         'locale' => [
             'description' => 'The locale to use.',
             'default' => 'en'
-        ]
+        ],
+        /* mailer settings */
+        'transport' => [
+            'description' => 'The mailer transport to use.',
+            'default' => 'test'
+        ],
+        'mailer_id' => [
+            'description' => 'The ACCESS_KEY, USERNAME, ID or apikey for the selected transport.',
+            'default' => null
+        ],
+        'mailer_key' => [
+            'description' => 'The SECRET_KEY, PASSWORD, ID or KEY for the selected transport.',
+            'default' => null
+        ],
+        'host' => [
+            'description' => 'SMTP host server',
+            'default' => null
+        ],
+        'port' => [
+            'description' => 'SMTP port',
+            'default' => null
+        ],
+        'customParameters' => [
+            'description' => 'Use query parameters syntax, for example: <code>?param1=value1&amp;param2=value2</code>.',
+            'default' => null
+        ],
+        'enableLogging' => [
+            'description' => 'Enable logging of sent mail.',
+            'default' => false
+        ],
     ];
 
     public function __construct(

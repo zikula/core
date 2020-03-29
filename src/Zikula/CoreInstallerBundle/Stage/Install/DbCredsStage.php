@@ -18,9 +18,8 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
-use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
@@ -44,14 +43,14 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     /**
      * @var string
      */
-    private $localEnvFile;
+    private $projectDir;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $projectDir = $this->container->get('kernel')->getProjectDir();
         $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
-        $this->localEnvFile = $projectDir . '/.env.local';
+        $this->projectDir = $projectDir;
     }
 
     public function getName(): string
@@ -105,25 +104,15 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         $dbCredsHelper = new DbCredsHelper();
         $databaseUrl = $dbCredsHelper->buildDatabaseUrl($form->getData());
 
-        $this->writeDatabaseUrl($databaseUrl);
-
-        return true;
-    }
-
-    private function writeDatabaseUrl(string $databaseUrl): void
-    {
-        // write env vars into .env.local
-        $content = 'DATABASE_URL=\'' . $databaseUrl . "'\n";
-
-        $fileSystem = new Filesystem();
         try {
-            $fileSystem->dumpFile($this->localEnvFile, $content);
+            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
+            $helper = new LocalDotEnvHelper($this->projectDir);
+            $helper->writeLocalEnvVars($vars);
         } catch (IOExceptionInterface $exception) {
-            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', $this->localEnvFile) . ' ' . $exception->getMessage());
+            throw new AbortStageException(sprintf('Cannot write to %s file.', $this->projectDir . '\.env.local') . ' ' . $exception->getMessage());
         }
 
-        // clear the cache
-        $this->container->get(CacheClearer::class)->clear('symfony.config');
+        return true;
     }
 
     public function testDBConnection(string $databaseUrl = '')

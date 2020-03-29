@@ -163,7 +163,3 @@ zikulazauthmodule_useradministration_sendusername: '/admin/send-username/{mappin
 zikulazauthmodule_useradministration_togglepasswordchange: '/admin/toggle-password-change/{user}'
 zikulazauthmodule_useradministration_batchforcepasswordchange: /admin/batch-force-password-change
 zikulabootstraptheme_ajax_changeuserstyle: /ajax/changeUserStyle
-zikulausersmodule_useradministration_getusersbyfragmentastable: /admin/getusersbyfragmentastable
-zikulazauthmodule_useradministration_getusersbyfragmentastable: /admin/getusersbyfragmentastable
-zikulaextensionsmodule_extensionsinterface_help: /extensionsinterface/help
-zikulaextensionsmodule_services_moduleservices: '/services/{moduleName}'
