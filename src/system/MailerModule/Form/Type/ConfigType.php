@@ -33,12 +33,12 @@ class ConfigType extends AbstractType
                 'label' => 'Mailer transport',
                 'choices' => [
                     'Amazon SES' => 'amazon',
-                    'Google gmail' => 'gmail',
+                    'Google Gmail' => 'gmail',
                     'Mailchimp Mandrill' => 'mailchimp',
                     'Mailgun' => 'mailgun',
                     'Postmark' => 'postmark',
                     'Sendgrid' => 'sendgrid',
-                    'SMTP mail transfer protocol' => 'smtp',
+                    'SMTP server' => 'smtp',
                     'Sendmail binary' => 'sendmail',
                     'Development/debug mode (Do not send any email)' => 'test'/*'null'*/
                 ]
