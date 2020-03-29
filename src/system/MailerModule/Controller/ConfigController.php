@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\MailerModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -22,8 +21,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Form\Type\TestType;
