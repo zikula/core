@@ -5,6 +5,7 @@ currentMenu: users
 
 The following classes provide different events:
 
+- `\Zikula\UsersModule\Events\*`
 - `\Zikula\UsersModule\AccessEvents`
 - `\Zikula\UsersModule\RegistrationEvents`
 - `\Zikula\UsersModule\UserEvents`

@@ -35,6 +35,7 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\DeletedRegistrationEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
@@ -178,7 +179,7 @@ class RegistrationController extends AbstractController
                         // revert registration
                         $this->addFlash('error', 'The registration process failed.');
                         $userRepository->removeAndFlush($userEntity);
-                        $eventDispatcher->dispatch(new GenericEvent($userEntity->getUid()), RegistrationEvents::DELETE_REGISTRATION);
+                        $eventDispatcher->dispatch(new DeletedRegistrationEvent($userEntity));
 
                         return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
                     }

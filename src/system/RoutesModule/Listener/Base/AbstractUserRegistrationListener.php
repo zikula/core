@@ -16,6 +16,7 @@ namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\UsersModule\Event\DeletedRegistrationEvent;
 use Zikula\UsersModule\RegistrationEvents;
 
 /**
@@ -32,11 +33,11 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
             RegistrationEvents::REGISTRATION_FAILED         => ['failed', 5],
             RegistrationEvents::CREATE_REGISTRATION         => ['create', 5],
             RegistrationEvents::UPDATE_REGISTRATION         => ['update', 5],
-            RegistrationEvents::DELETE_REGISTRATION         => ['delete', 5],
+            DeletedRegistrationEvent::class                 => ['delete', 5],
             RegistrationEvents::FORCE_REGISTRATION_APPROVAL => ['forceApproval', 5]
         ];
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.started` event.
      *
@@ -51,7 +52,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function started(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `full.user.create.veto` event.
      *
@@ -82,7 +83,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function createVeto(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.succeeded` event.
      *
@@ -150,7 +151,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function succeeded(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.registration.failed` event.
      *
@@ -181,7 +182,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function failed(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `user.registration.create` event.
      *
@@ -201,7 +202,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function create(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `user.registration.update` event.
      *
@@ -219,9 +220,9 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function update(GenericEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `user.registration.delete` event.
+     * Listener for the `Zikula\UsersModule\Event\DeletedRegistrationEvent` event.
      *
      * Occurs after a registration record is deleted. This could occur as a result of the administrator deleting
      * the record through the approval/denial process, or it could happen because the registration request expired.
@@ -229,16 +230,16 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * a `user.account.create` event will fire. This is a storage-level event, not a UI event. It should not be
      * used for UI-level actions such as redirects. The subject of the event is set to the Uid being deleted.
      *
-     * You can access general data available in the event.
+     * You can access the user and date in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
+     * The user:
+     *     `echo 'UID: ' . $event->getUser()->getUid();`
      *
      */
-    public function delete(GenericEvent $event): void
+    public function delete(DeletedRegistrationEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `force.registration.approval` event.
      *
