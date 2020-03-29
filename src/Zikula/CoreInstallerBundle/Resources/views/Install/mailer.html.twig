@@ -91,10 +91,6 @@
 <script>
     $(document).ready(function() {
         $('form:first *:input:text:first').focus();
-
-        $('#submit_button').closest('form').submit(function(event) {
-            $('#db-check').removeClass('d-none');
-        });
-      });
+    });
 </script>
 {% endblock %}
