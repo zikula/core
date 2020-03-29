@@ -106,7 +106,7 @@ EOF;
             ->html($body);
 
         try {
-            $this->container->get('mailer')->send($email);
+            $this->container->get('symfony.mailer')->send($email);
         } catch (TransportExceptionInterface $exception) {
             return 0;
         }

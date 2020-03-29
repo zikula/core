@@ -1,0 +1,57 @@
+{% extends '@ZikulaCoreInstaller/theme.html.twig' %}
+{% block title 'Zikula Core Installer :: Enter mailer transport information' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <strong>{% trans %}Mailer transport information{% endtrans %}</strong>
+    </div>
+    <div class="card-body">
+
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        <div class="form-group row">
+            {{ form_label(form.transport) }}
+            <div class="col-md-9">
+                {{ form_errors(form.transport) }}
+                {{ form_widget(form.transport) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.mailer_id) }}
+            <div class="col-sm-9">
+                {{ form_errors(form.mailer_id) }}
+                {{ form_widget(form.mailer_id) }}
+                {{ form_help(form.mailer_id) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.mailer_key) }}
+            <div class="col-sm-9">
+                {{ form_errors(form.mailer_key) }}
+                {{ form_widget(form.mailer_key) }}
+                {{ form_help(form.mailer_key) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.enableLogging) }}
+            <div class="col-md-9">
+                {{ form_errors(form.enableLogging) }}
+                {{ form_widget(form.enableLogging) }}
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('form:first *:input:text:first').focus();
+
+        $('#submit_button').closest('form').submit(function(event) {
+            $('#db-check').removeClass('d-none');
+        });
+      });
+</script>
+{% endblock %}

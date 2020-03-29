@@ -25,8 +25,9 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Form\Type\ConfigType;
+use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Form\Type\TestType;
+use Zikula\MailerModule\Helper\MailTransportHelper;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -45,10 +46,10 @@ class ConfigController extends AbstractController
      */
     public function configAction(
         Request $request,
-        ZikulaHttpKernelInterface $kernel
+        MailTransportHelper $mailTransportHelper
     ): array {
         $form = $this->createForm(
-            ConfigType::class,
+            MailTransportConfigType::class,
             $this->getVars()
         );
         $form->handleRequest($request);
@@ -56,28 +57,10 @@ class ConfigController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
                 $this->setVars($formData);
-                $transportStrings = [
-                    'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@example.com',
-                    'sendmail' => 'sendmail+smtp://default',
-                    'amazon' => 'ses://$MAILER_ID:$MAILER_KEY@default',
-                    'gmail' => 'gmail://$MAILER_ID:$MAILER_KEY@default',
-                    'mailchimp' => 'mandrill://$MAILER_ID:$MAILER_KEY@default',
-                    'mailgun' => 'mailgun://$MAILER_ID:$MAILER_KEY@default',
-                    'postmark' => 'postmark://$MAILER_ID:$MAILER_KEY@default',
-                    'sendgrid' => 'sendgrid://apikey:$MAILER_KEY@default', // unclear if 'apikey' is supposed to be literal, or replaced
-                    'test' => 'null://null',
-                ];
-                try {
-                    $vars = [
-                        'MAILER_ID' => $formData['mailer_id'],
-                        'MAILER_KEY' => $formData['mailer_key'],
-                        'MAILER_DSN' => '!' . $transportStrings[$formData['transport']]
-                    ];
-                    $helper = new LocalDotEnvHelper($kernel->getProjectDir());
-                    $helper->writeLocalEnvVars($vars);
+                if (true === $mailTransportHelper->handleFormData($formData)) {
                     $this->addFlash('status', 'Done! Configuration updated.');
-                } catch (IOExceptionInterface $exception) {
-                    $this->addFlash('error', $this->trans('Cannot write to %file%.' . ' ' . $exception->getMessage(), ['%file%' => $kernel->getProjectDir() . '\.env.local']));
+                } else {
+                    $this->addFlash('error', $this->trans('Cannot write to %file%.', ['%file%' => '\.env.local']));
                 }
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');

@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * Configuration form type class.
  */
-class ConfigType extends AbstractType
+class MailTransportConfigType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

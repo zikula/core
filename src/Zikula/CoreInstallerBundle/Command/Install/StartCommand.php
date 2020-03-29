@@ -30,6 +30,8 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
+use Zikula\MailerModule\Form\Type\MailTransportConfigType;
+use Zikula\MailerModule\Helper\MailTransportHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand
@@ -117,34 +119,15 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
-            'choices' => $this->localeApi->getSupportedLocaleNames(),
-            'choice_loader' => null
-        ]);
-        $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
-        foreach ($data as $k => $v) {
-            $newKey = str_replace(':', '.', $k);
-            $data[$newKey] = $v;
-            unset($data[$k]);
+        $settings = $this->doLocale($input, $output);
+        $settings = array_merge($settings, $this->doRequestContext($input, $output));
+        if (!$this->doDBCreds($input, $output)) {
+            $io->error(sprintf('Cannot write database DSN to %s file.', '/.env.local'));
         }
-        $settings = array_merge($settings, $data);
-        $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
-
-        $dbCredsHelper = new DbCredsHelper();
-        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
-        try {
-            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
-            $helper = new LocalDotEnvHelper($this->kernel->getProjectDir());
-            $helper->writeLocalEnvVars($vars);
-        } catch (IOExceptionInterface $exception) {
-            $io->error(sprintf('Cannot write to %s file.', $this->kernel->getProjectDir() . '/.env.local') . ' ' . $exception->getMessage());
+        if (!$this->doMailer($input, $output)) {
+            $io->error(sprintf('Cannot write mailer DSN to %s file.', '/.env.local'));
         }
-
-        $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
-        foreach ($data as $k => $v) {
-            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
-        }
-        $settings = array_merge($settings, $data);
+        $settings = array_merge($settings, $this->doAdmin($input, $output));
 
         if ($input->isInteractive()) {
             $io->success($this->translator->trans('Configuration successful. Please verify your parameters below:'));
@@ -170,5 +153,58 @@ class StartCommand extends AbstractCoreInstallerCommand
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
 
         return 0;
+    }
+
+    private function doLocale(InputInterface $input, OutputInterface $output): array
+    {
+        return $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
+            'choices' => $this->localeApi->getSupportedLocaleNames(),
+            'choice_loader' => null
+        ]);
+    }
+
+    private function doRequestContext(InputInterface $input, OutputInterface $output): array
+    {
+        $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
+        foreach ($data as $k => $v) {
+            $newKey = str_replace(':', '.', $k);
+            $data[$newKey] = $v;
+            unset($data[$k]);
+        }
+
+        return $data;
+    }
+
+    private function doDBCreds(InputInterface $input, OutputInterface $output): bool
+    {
+        $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
+        $dbCredsHelper = new DbCredsHelper();
+        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
+        try {
+            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
+            $helper = new LocalDotEnvHelper($this->kernel->getProjectDir());
+            $helper->writeLocalEnvVars($vars);
+
+            return true;
+        } catch (IOExceptionInterface $exception) {
+            return false;
+        }
+    }
+
+    private function doMailer(InputInterface $input, OutputInterface $output): bool
+    {
+        $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
+
+        return (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
+    }
+
+    private function doAdmin(InputInterface $input, OutputInterface $output): array
+    {
+        $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
+        foreach ($data as $k => $v) {
+            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+        }
+
+        return $data;
     }
 }
