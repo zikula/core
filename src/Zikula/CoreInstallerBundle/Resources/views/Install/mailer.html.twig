@@ -34,14 +34,53 @@
                 {{ form_help(form.mailer_key) }}
             </div>
         </div>
-        <div class="form-group row">
-            {{ form_label(form.enableLogging) }}
-            <div class="col-md-9">
-                {{ form_errors(form.enableLogging) }}
-                {{ form_widget(form.enableLogging) }}
+
+        <div data-switch="zikulamailermodule_config[transport]" data-switch-value="smtp">
+            <div class="alert alert-info">{% trans %}SMTP settings{% endtrans %}</div>
+            <div class="form-group row">
+                {{ form_label(form.host) }}
+                <div class="col-sm-9">
+                    {{ form_errors(form.host) }}
+                    {{ form_widget(form.host) }}
+                    {{ form_help(form.host) }}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form_label(form.port) }}
+                <div class="col-sm-9">
+                    {{ form_errors(form.port) }}
+                    {{ form_widget(form.port) }}
+                    {{ form_help(form.port) }}
+                </div>
             </div>
         </div>
 
+        <div>
+            <div class="alert alert-info">{% trans %}Additional options{% endtrans %}</div>
+            <div class="form-group row">
+                {{ form_label(form.customParameters) }}
+                <div class="col-md-9">
+                    {{ form_errors(form.customParameters) }}
+                    {{ form_widget(form.customParameters) }}
+                    {{ form_help(form.customParameters) }}
+                </div>
+            </div>
+            <div class="form-group row">
+                {{ form_label(form.enableLogging) }}
+                <div class="col-md-9">
+                    {{ form_errors(form.enableLogging) }}
+                    {{ form_widget(form.enableLogging) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
+                <input type="submit" id="submit_button" value="{% trans %}Next{% endtrans %}" class="btn btn-success" />
+            </div>
+        </div>
+        {% do form.save.setRendered() %}
+        {% do form.cancel.setRendered() %}
         {{ form_end(form) }}
     </div>
 </div>

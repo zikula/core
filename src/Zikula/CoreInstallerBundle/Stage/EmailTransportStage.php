@@ -55,6 +55,11 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface, Injec
 
     public function isNecessary(): bool
     {
+        $mailerDsn = $_ENV['MAILER_DSN'] ?? '';
+        if (!empty($mailerDsn) && 'smtp://localhost' !== $mailerDsn) {
+            return false;
+        }
+
         return true;
     }
 
