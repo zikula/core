@@ -921,12 +921,12 @@ Links: null
 'Message type': null
 'Send test email': null
 'Amazon SES': null
-'Google gmail': null
+'Google Gmail': null
 'Mailchimp Mandrill': null
 Mailgun: null
 Postmark: null
 Sendgrid: null
-'SMTP mail transfer protocol': null
+'SMTP server': null
 'Sendmail binary': null
 'Development/debug mode (Do not send any email)': null
 'The ACCESS_KEY, USERNAME, ID or apikey for the selected transport.': null
