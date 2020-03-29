@@ -96,7 +96,7 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
             ->from(new Address($adminMail, $siteName))
             ->to(new Address($event->getUser()->getEmail(), $event->getUser()->getUname()))
             ->subject($this->translator->trans('Registration deleted at %site%', ['%site%' => $siteName]))
-            ->text($this->translator->trans(<<<EOT
+            ->text($this->translator->trans(<<<'EOT'
 Your registration at %site% associated with this email (%email%) has been deleted from the site.
 This could have happened because you have delayed too long in confirming your email address, or because the administrator manually deleted your registration.
 If you have any questions, please contact the site administrator or re-register.
