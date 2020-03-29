@@ -12,15 +12,18 @@ stages:
     dbcreds:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\DbCredsStage
         order: 4
+    emailtransport:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\EmailTransportStage
+        order: 5
     createadmin:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\CreateAdminStage
-        order: 5
+        order: 6
     ajaxinstaller:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage
-        order: 6
+        order: 7
     complete:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\CompleteStage
-        order: 7
+        order: 8
     installed:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\AlreadyInstalledStage
-        order: 8
+        order: 9

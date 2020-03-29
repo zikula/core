@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\MailerModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -22,11 +21,10 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Form\Type\ConfigType;
+use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Form\Type\TestType;
+use Zikula\MailerModule\Helper\MailTransportHelper;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -45,49 +43,21 @@ class ConfigController extends AbstractController
      */
     public function configAction(
         Request $request,
-        ZikulaHttpKernelInterface $kernel
+        MailTransportHelper $mailTransportHelper
     ): array {
         $form = $this->createForm(
-            ConfigType::class,
+            MailTransportConfigType::class,
             $this->getVars()
         );
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-                $this->setVars($formData);
-                $transportStrings = [
-                    'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@',
-                    'sendmail' => 'sendmail+smtp://default',
-                    'amazon' => 'ses://$MAILER_ID:$MAILER_KEY@default',
-                    'gmail' => 'gmail://$MAILER_ID:$MAILER_KEY@default',
-                    'mailchimp' => 'mandrill://$MAILER_ID:$MAILER_KEY@default',
-                    'mailgun' => 'mailgun://$MAILER_ID:$MAILER_KEY@default',
-                    'postmark' => 'postmark://$MAILER_ID:$MAILER_KEY@default',
-                    'sendgrid' => 'sendgrid://apikey:$MAILER_KEY@default', // unclear if 'apikey' is supposed to be literal, or replaced
-                    'test' => 'null://null',
-                ];
-                try {
-                    $dsn = $transportStrings[$formData['transport']];
-                    if ('smtp' === $formData['transport']) {
-                        $dsn .= $formData['host'] ?? 'localhost';
-                        if (!empty($formData['port'])) {
-                            $dsn .= ':' . $formData['port'];
-                        }
-                    }
-                    if (!empty($formData['customParameters'])) {
-                        $dsn .= $formData['customParameters'];
-                    }
-                    $vars = [
-                        'MAILER_ID' => $formData['mailer_id'],
-                        'MAILER_KEY' => $formData['mailer_key'],
-                        'MAILER_DSN' => '!' . $dsn
-                    ];
-                    $helper = new LocalDotEnvHelper($kernel->getProjectDir());
-                    $helper->writeLocalEnvVars($vars);
+                $this->setVar('enableLogging', $formData['enableLogging']);
+                if (true === $mailTransportHelper->handleFormData($formData)) {
                     $this->addFlash('status', 'Done! Configuration updated.');
-                } catch (IOExceptionInterface $exception) {
-                    $this->addFlash('error', $this->trans('Cannot write to %file%.' . ' ' . $exception->getMessage(), ['%file%' => $kernel->getProjectDir() . '\.env.local']));
+                } else {
+                    $this->addFlash('error', $this->trans('Cannot write to %file%.', ['%file%' => '\.env.local']));
                 }
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');

@@ -18,10 +18,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 /**
@@ -30,17 +28,11 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 class MailerModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
      * @var DynamicConfigDumper
      */
     private $configDumper;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
         DynamicConfigDumper $configDumper,
         AbstractExtension $extension,
         ManagerRegistry $managerRegistry,
@@ -49,7 +41,6 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
     ) {
-        $this->kernel = $kernel;
         $this->configDumper = $configDumper;
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
     }
@@ -67,31 +58,20 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.3.1':
-                $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':
-                // clear old modvars
-                // use manual method because getVars() is not available during system upgrade
-                $modVarEntities = $this->managerRegistry->getRepository(ExtensionVarEntity::class)->findBy(['modname' => $this->name]);
-                $modVars = [];
-                foreach ($modVarEntities as $var) {
-                    $modVars[$var['name']] = $var['value'];
-                }
-                $this->delVars();
-                $this->setVarWithDefault('charset', $modVars['charset']);
-                $this->setVarWithDefault('encoding', $modVars['encoding']);
-                $this->setVarWithDefault('html', $modVars['html']);
-                $this->setVarWithDefault('wordwrap', $modVars['wordwrap']);
                 // new modvar for 1.4.0
                 $this->setVarWithDefault('enableLogging', false);
-
             case '1.4.0':
             case '1.4.1':
             case '1.4.2':
             case '1.4.3':
             case '1.5.0':
             case '1.5.1':
-                // all swiftmailer config changes removed from previous version upgrades above
+                // all swiftmailer config changes and module-vars removed from previous version upgrades above
                 $this->configDumper->delConfiguration('swiftmailer');
+                $enableLogging = $this->getVar('enableLogging');
+                $this->delVars();
+                $this->setVar('enableLogging', $enableLogging);
                 // future upgrade routines
         }
 
@@ -114,10 +94,6 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
     private function getDefaults(): array
     {
         return [
-            'charset' => $this->kernel->getCharset(),
-            'encoding' => '8bit',
-            'html' => false,
-            'wordwrap' => 50,
             'enableLogging' => false
         ];
     }
