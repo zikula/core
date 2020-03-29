@@ -1,3 +1,8 @@
+'Translation UI': null
+'Configs:': null
+'Zikula Core': null
+Modules: null
+Themes: null
 Settings: null
 'Native authorisation settings': null
 'User Credential Settings': null
@@ -59,6 +64,7 @@ Actions: null
 'Import users': null
 'Select the CSV file': null
 'About the CSV file': null
+'Line endings in the file must NOT be the old Macintosh-type': null
 'The first row of the CSV file must contain the field names. It must be like this:': null
 'where:': null
 ' (mandatory) - The user name. This value must be unique.': null
@@ -66,7 +72,7 @@ Actions: null
 ' (mandatory) - The user email. If the validation method is based on the user email this value must be unique.': null
 ' - Type 0 if user is not active, 1 if the user must be active. The default value is 1.': null
 ' - Type 1 if the system must send the password to the user via email and 0 otherwise. The default value is 1. The module Mailer must be active and correctly configured. The email is sent only if user activated value is upper than 0.': null
-' - The identities of the groups where the user must belong separated by the character |. If you do not specify any group, the default group is %sub%.': null
+' - The identities of the groups where the user must belong separated by the character |. If you do not specify any group, the default group is %sub%.  Undefined groups will be ignored.': null
 'An example of a valid CSV file': null
 'albert,12secure09,albert@example.org,1,1,2': null
 'george,lesssecure,george@example.org,1,0,1|5': null
@@ -168,12 +174,7 @@ days: null
 'Error! It has not been possible to read the import file.': null
 'Error! The import file does not have the expected field %s in the first row. Please check your import file.': null
 'Error! The number of parameters in line %s is not correct. Please check your import file.': null
-'Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.': null
-'Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.': null
-'Sorry! The identity of the group %gid% is not not valid. Perhaps it does not exist. Please check your import file.': null
 'Error! The import file does not have values.': null
-'Error! The creation of users has failed.': null
-'%type% error in line %line%': null
 'Send an e-mail verification code for %sub%': null
 'Send a new e-mail verification code for %sub%': null
 'Send user name to %sub%': null
@@ -228,7 +229,7 @@ username: null
 'Done! A password change will no longer be required for %userName%.': null
 'Done! A password change will be required the next time %userName% logs in.': null
 plural_n.users.processed.: null
-'Done! Users imported.': null
+'Done! %count% users imported.': null
 'New users': null
 'Batch password change': null
 'Change e-mail address': null
@@ -459,7 +460,6 @@ Blocks: null
 Users: null
 Groups: null
 Permissions: null
-Themes: null
 Menu: null
 'MenuItemName (menuItemId). The id is needed for permissions.': null
 'Edit item': null
@@ -526,7 +526,6 @@ Overview: null
 'Check interval': null
 'Last checked': null
 Releases: null
-'Zikula Core': null
 'Currently used version': null
 'Latest stable relese': null
 'Stable Zikula Core available': null
@@ -594,11 +593,11 @@ Security: null
 'Account Page Settings': null
 'User Login Settings': null
 'Choose a login authentication method': null
+'This user cannot be edited. Group memberships can be edited in the groups module. Click here.': null
+'Edit?': null
 Pending: null
 'Marked for deletion': null
 'Status unknown': null
-'This user cannot be edited. Group memberships can be edited in the groups module. Click here.': null
-'Edit?': null
 'Approve registration of %sub%': null
 'Approve registration': null
 'Account Information': null
@@ -617,6 +616,7 @@ Group: null
 Member: null
 'Other actions for %s': null
 'Delete user account': null
+'This search does not include <em>pending</em> users.': null
 'Registration date': null
 'Last login': null
 'Auth Method': null
@@ -624,6 +624,7 @@ Member: null
 Status: null
 'Delete confirmation': null
 'Are you sure you want to delete the user (%un)?': null
+'Be advised: If your search resulted in more than 250 records, that display has been limited to 250.': null
 'Delete %n': null
 'Delete %sub%': null
 'Select all': null
@@ -659,6 +660,9 @@ plural_n.anonymous.guest: "{count, plural,\n  one   {one anonymous guest}\n  oth
 'register here': null
 'You can %registerLink%': null
 '%': null
+pending: null
+'marked for deletion': null
+'User status': null
 'Registration date before': null
 registered_after: null
 'Any group': null
@@ -696,7 +700,6 @@ authenticationMethodsStatus: null
 'Failed login displays inactive status': null
 'Failed login displays verification status': null
 'Failed login displays approval status': null
-'User status': null
 groups: null
 'Choose language': null
 'Site default': null
@@ -712,7 +715,6 @@ Download: null
 'Registration management hooks': null
 'User management hooks': null
 'Login form and block hooks': null
-'Warning! The user account was created, but there was a problem adding the account to the default group.': null
 'Approve %sub%': null
 'New registration: %userName%': null
 'Login denied: Your account has been disabled. Please contact a site administrator for more information.': null
@@ -747,7 +749,7 @@ Inbox: null
 'Messages inbox': null
 'Send a message to this user': null
 Profile: null
-'Find/Mail/Delete users': null
+'Find & Mail|Delete users': null
 'Log in': null
 'New account': null
 'Users pending approval': null
@@ -879,7 +881,6 @@ Categories: null
 'Display description': null
 'Category attributes': null
 'Category root': null
-Modules: null
 General: null
 'Publication status (extended)': null
 Checked: null
@@ -908,13 +909,8 @@ categoryAssignments: null
 'Category registry': null
 Links: null
 'Test mailer settings': null
-'Current settings from': null
 'Settings test': null
 'Mailer settings': null
-'SwiftMailer configuration': null
-'Mailer relies on %link%': null
-'SMTP settings': null
-'Gmail settings': null
 'Plain-text message': null
 'HTML-formatted message': null
 'Multi-part message': null
@@ -924,39 +920,23 @@ Links: null
 'Recipient''s e-mail address': null
 'Message type': null
 'Send test email': null
-'Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.': null
+'Amazon SES': null
 'Google gmail': null
-'Development/debug mode (Do not send any email)': null
-'Sendmail message transfer agent': null
+'Mailchimp Mandrill': null
+Mailgun: null
+Postmark: null
+Sendgrid: null
 'SMTP mail transfer protocol': null
-8bit: null
-7bit: null
-binary: null
-base64: null
-quoted-printable: null
-SSL: null
-TLS: null
-Plain: null
-Cram-MD5: null
-'Default: ''%value%''': null
-'Mail transport': null
-'Character set': null
-Encoding: null
-'HTML-formatted messages': null
-'Word wrap': null
+'Sendmail binary': null
+'Development/debug mode (Do not send any email)': null
+'The ACCESS_KEY, USERNAME, ID or apikey for the selected transport.': null
+'The SECRET_KEY, PASSWORD, ID or KEY for the selected transport.': null
+'Mailer transport': null
+'Mailer ID': null
+'Mailer Key': null
 'Enable logging of sent mail': null
-'SMTP host server': null
-'SMTP port': null
-'SMTP encryption method': null
-'SMTP authentication type': null
-'SMTP user name': null
-'SMTP password': null
-'Gmail user name': null
-'Gmail password': null
 'HTML mail hook': null
 'Done! Message sent.': null
-'It looks like the message could not be sent properly.': null
-'The message could not be sent properly.': null
 'Test current settings': null
 Extension: null
 'Extension settings': null
@@ -1251,6 +1231,9 @@ Backend: null
 'Theme settings': null
 'Theme config': null
 'Theme configuration': null
+Apologies!: null
+'An error has been encountered when attempting to view this page. See below for details!': null
+'Search the site': null
 'Theme to use for main site': null
 'Theme to use for admin controllers': null
 'Use site''s theme': null
@@ -1317,7 +1300,6 @@ milliseconds: null
 Localisation: null
 'Disable edit in place': null
 'Enable edit in place': null
-'Translation UI': null
 'Edit translations directly in the context of a page': null
 'Web interface to add, edit and remove translations': null
 Administrator: null
@@ -1378,6 +1360,8 @@ Invalid: null
 'Edit this permission rule': null
 'Delete this permission rule': null
 'Check a users permission': null
+'You do not have permission. You must login first.': null
+'You do not have permission for that action.': null
 'Workflow editor': null
 'Decrease zoom level': null
 'Reset zoom level': null
@@ -1467,8 +1451,6 @@ model_timezone: null
 'The site is currently off-line.': null
 'Administrator log-in': null
 'Proudly powered by Zikula': null
-'You do not have permission. You must login first.': null
-'You do not have permission for that action.': null
 'Admin credentials required when site is disabled.': null
 'Page not found': null
 'Function does not exist or is not callable.': null
@@ -1735,28 +1717,3 @@ Provision: null
 'Module "%name%" is not a valid provider.': null
 'Provider module "%name%" is not available.': null
 'Providers'' areas order is not an array.': null
-'Configs:': null
-'An error occurred while creating HTML Purifier cache directory at %path': null
-'No permission for this action.': null
-'Sorry!, You cannot apply to join the requested group': null
-'Sorry! You must register for a user account on this site before you can join a group.': null
-'Sorry! You must be logged in before you can leave a group.': null
-'The minimum length for user passwords is %sub% characters.': null
-SHA1: null
-SHA256: null
-'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than five.': null
-'The default hashing method is ''SHA256''.': null
-'Password hashing method': null
-'Module services': null
-'Module Services are functions provided by the core or other modules for this module.': null
-'There aren\''t any modules services available.': null
-Services: null
-'Error! Could not login with provided credentials. Please try again.': null
-'%extension% must implement ExtensionInstallerInterface': null
-'No such route found.': null
-'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>': null
-'Separate with & for example: <code>foo=2&bar=5</code>': null
-'Start controller': null
-'Start function arguments': null
-'The startController was reset to a static frontpage.': null
-'The file you requested (%name%) could not be found.': null
