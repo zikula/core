@@ -92,10 +92,12 @@
     - Removed ramsey/array_column
     - Removed sensio/distribution-bundle (in favour of Flex)
     - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
+    - Removed swiftmailer/swiftmailer (in favour of symfony/mailer)
     - Removed symfony/polyfill-apcu
     - Removed symfony/polyfill-php56
     - Removed symfony/polyfill-php70
     - Removed symfony/polyfill-util
+    - Removed symfony/swiftmailer-bundle (in favour of symfony/mailer)
     - Removed twig/extensions (use new Twig Extra extensions instead)
     - Removed zikula/andreas08-theme (in favour of different styles in bootstrap theme)
     - Removed zikula/bootstrap-bundle (in favour of direct usage of components/bootstrap)
@@ -284,13 +286,11 @@
   - seld/phar-utils installed in 1.1.0
   - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.3
   - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
-  - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
   - symfony/contracts installed in 2.0.1
   - symfony/maker-bundle installed in 1.14.6
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.6
   - symfony/polyfill-ctype updated from 1.12.0 to 1.15.0
-  - symfony/polyfill-iconv installed in 1.15.0
   - symfony/polyfill-intl-grapheme installed in 1.15.0
   - symfony/polyfill-intl-icu updated from 1.11.0 to 1.15.0
   - symfony/polyfill-intl-idn updated from 1.11.0 to 1.15.0
@@ -300,7 +300,6 @@
   - symfony/polyfill-php72 installed in 1.15.0
   - symfony/polyfill-php73 installed in 1.15.0
   - symfony/profiler-pack installed in 1.0.4
-  - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
   - symfony/symfony updated from 3.4.35 to 5.0.6
   - thomaspark/bootswatch installed in 4.4.1
   - tijsverkoyen/css-to-inline-styles installed in 2.2.2
