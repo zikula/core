@@ -3,7 +3,7 @@
     <h2>{% trans %}Installer script{% endtrans %}</h2>
     <ol class="wizard">
         <li{% if currentstage == 'locale' %} class="active"{% endif %}>
-            <a href="{{ path('install', { 'stage': 'locale' }) }}">{% trans %}Language{% endtrans %}</a>
+            {% trans %}Language{% endtrans %}
         </li>
         <li{% if currentstage == 'requirements' %} class="active"{% endif %}>
             {% trans %}Requirements{% endtrans %}
@@ -16,6 +16,9 @@
         </li>
         <li{% if currentstage == 'createadmin' %} class="active"{% endif %}>
             {% trans %}Create admin{% endtrans %}
+        </li>
+        <li{% if currentstage == 'ajaxinstaller' %} class="active"{% endif %}>
+            {% trans %}Install{% endtrans %}
         </li>
     </ol>
     <p class="installguide">

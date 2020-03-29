@@ -1,4 +1,8 @@
 {% extends '@ZikulaCoreInstaller/theme.html.twig' %}
+{% block childjavascripts %}
+    <script src="{{ asset('bundles/core/js/bootstrap-zikula.js') }}"></script>
+{% endblock %}
+
 {% block title 'Zikula Core Installer :: Enter mailer transport information' %}
 
 {% block content %}
