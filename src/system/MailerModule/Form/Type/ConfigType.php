@@ -16,6 +16,7 @@ namespace Zikula\MailerModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -57,6 +58,37 @@ class ConfigType extends AbstractType
                 ],
                 'help' => 'The SECRET_KEY, PASSWORD, ID or KEY for the selected transport.',
                 'required' => false
+            ])
+            ->add('host', TextType::class, [
+                'label' => 'SMTP host server',
+                'attr' => [
+                    'maxlength' => 255
+                ],
+                'required' => false,
+                'help' => "Default: '%value%'",
+                'help_translation_parameters' => [
+                    '%value%' => 'localhost'
+                ]
+            ])
+            ->add('port', IntegerType::class, [
+                'label' => 'SMTP port',
+                'attr' => [
+                    'maxlength' => 5
+                ],
+                'required' => false,
+                'help' => "Default: '%value%'",
+                'help_translation_parameters' => [
+                    '%value%' => '25'
+                ]
+            ])
+            ->add('customParameters', TextType::class, [
+                'label' => 'Custom parameters',
+                'attr' => [
+                    'maxlength' => 255
+                ],
+                'required' => false,
+                'help' => 'Use query parameters syntax, for example: <code>?param1=value1&amp;param2=value2</code>',
+                'help_html' => true
             ])
             ->add('enableLogging', CheckboxType::class, [
                 'label' => 'Enable logging of sent mail',

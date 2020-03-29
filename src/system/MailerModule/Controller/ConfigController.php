@@ -57,7 +57,7 @@ class ConfigController extends AbstractController
                 $formData = $form->getData();
                 $this->setVars($formData);
                 $transportStrings = [
-                    'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@example.com',
+                    'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@',
                     'sendmail' => 'sendmail+smtp://default',
                     'amazon' => 'ses://$MAILER_ID:$MAILER_KEY@default',
                     'gmail' => 'gmail://$MAILER_ID:$MAILER_KEY@default',
@@ -68,10 +68,20 @@ class ConfigController extends AbstractController
                     'test' => 'null://null',
                 ];
                 try {
+                    $dsn = $transportStrings[$formData['transport']];
+                    if ('smtp' === $formData['transport']) {
+                        $dsn .= $formData['host'] ?? 'localhost';
+                        if (!empty($formData['port'])) {
+                            $dsn .= ':' . $formData['port'];
+                        }
+                    }
+                    if (!empty($formData['customParameters'])) {
+                        $dsn .= $formData['customParameters'];
+                    }
                     $vars = [
                         'MAILER_ID' => $formData['mailer_id'],
                         'MAILER_KEY' => $formData['mailer_key'],
-                        'MAILER_DSN' => '!' . $transportStrings[$formData['transport']]
+                        'MAILER_DSN' => '!' . $dsn
                     ];
                     $helper = new LocalDotEnvHelper($kernel->getProjectDir());
                     $helper->writeLocalEnvVars($vars);

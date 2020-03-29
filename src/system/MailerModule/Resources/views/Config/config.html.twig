@@ -13,6 +13,17 @@
     {{ form_row(form.transport) }}
     {{ form_row(form.mailer_id) }}
     {{ form_row(form.mailer_key) }}
+</fieldset>
+
+<fieldset data-switch="zikulamailermodule_config[transport]" data-switch-value="smtp">
+    <legend>{% trans %}SMTP settings{% endtrans %}</legend>
+    {{ form_row(form.host) }}
+    {{ form_row(form.port) }}
+</fieldset>
+
+<fieldset>
+    <legend>{% trans %}Additional options{% endtrans %}</legend>
+    {{ form_row(form.customParameters) }}
     {{ form_row(form.enableLogging) }}
 </fieldset>
 
