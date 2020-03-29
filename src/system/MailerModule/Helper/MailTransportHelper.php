@@ -52,11 +52,13 @@ class MailTransportHelper
             if (!empty($formData['customParameters'])) {
                 $dsn .= $formData['customParameters'];
             }
-            $vars = [
-                'MAILER_ID' => $formData['mailer_id'],
-                'MAILER_KEY' => $formData['mailer_key'],
-                'MAILER_DSN' => '!' . $dsn
-            ];
+            $vars = ['MAILER_DSN' => '!' . $dsn];
+            if (!empty($formData['mailer_id'])) {
+                $vars['MAILER_ID'] = $formData['mailer_id'];
+            }
+            if (!empty($formData['mailer_key'])) {
+                $vars['MAILER_KEY'] = $formData['mailer_key'];
+            }
             $helper = new LocalDotEnvHelper($this->projectDir);
             $helper->writeLocalEnvVars($vars);
 
