@@ -154,7 +154,7 @@ zikulazauthmodule_account_changepassword: /account/change-password
 zikulazauthmodule_config_config: /admin/config
 zikulazauthmodule_fileio_import: /fileIO/import
 zikulazauthmodule_registration_verify: '/verify-registration/{uname}/{verifycode}'
-zikulazauthmodule_useradministration_list: '/admin/list/{sort}/{sortdir}/{letter}/{startnum}'
+zikulazauthmodule_useradministration_list: '/admin/list/{sort}/{sortdir}/{letter}/{page}'
 zikulazauthmodule_useradministration_create: /admin/user/create
 zikulazauthmodule_useradministration_modify: '/admin/user/modify/{mapping}'
 zikulazauthmodule_useradministration_verify: '/admin/verify/{mapping}'

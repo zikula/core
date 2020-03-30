@@ -15,7 +15,7 @@ namespace Zikula\ZAuthModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -60,19 +60,17 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
     }
 
     /**
-     * Fetch a collection of users. Optionally filter, sort, limit, offset results.
+     * Fetch a collection of users. Optionally filter, sort results.
      *   filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
      *   when value is not an array, operator is assumed to be '='
-     *
-     * @return Paginator|AuthenticationMappingEntity[]
      */
     public function query(
         array $filter = [],
         array $sort = [],
-        int $limit = 0,
-        int $offset = 0,
-        string $exprType = 'and'
-    ) {
+        string $exprType = 'and',
+        int $page = 1,
+        int $pageSize = 25
+    ): Paginator {
         $qb = $this->createQueryBuilder('m')
             ->select('m');
         if (!empty($filter)) {
@@ -82,16 +80,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         if (!empty($sort)) {
             $qb->orderBy($this->orderByFromArray($sort));
         }
-        $query = $qb->getQuery();
-
-        if ($limit > 0) {
-            $query->setMaxResults($limit);
-            $query->setFirstResult($offset);
-
-            return new Paginator($query);
-        }
-
-        return $query->getResult();
+        return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
     public function getByExpiredPasswords()
