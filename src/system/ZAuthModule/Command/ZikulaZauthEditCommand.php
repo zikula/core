@@ -19,9 +19,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Validator\Constraints\ValidEmail;
+use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
 class ZikulaZauthEditCommand extends Command
 {
@@ -47,17 +51,24 @@ class ZikulaZauthEditCommand extends Command
      */
     private $encoderFactory;
 
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
     public function __construct(
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         UserRepositoryInterface $userRepository,
         TranslatorInterface $translator,
-        EncoderFactoryInterface $encoderFactory
+        EncoderFactoryInterface $encoderFactory,
+        ValidatorInterface $validator
     ) {
         parent::__construct();
         $this->authenticationMappingRepository = $authenticationMappingRepository;
         $this->userRepository = $userRepository;
         $this->translator = $translator;
         $this->encoderFactory = $encoderFactory;
+        $this->validator = $validator;
     }
 
     protected function configure()
@@ -65,7 +76,22 @@ class ZikulaZauthEditCommand extends Command
         $this
             ->addArgument('id', InputArgument::REQUIRED, 'uid, uname or email')
             ->setDescription('Edit a ZAuth user mapping')
-        ;
+            ->setHelp(
+                <<<'EOT'
+The <info>%command.name%</info> command can be used to modify the password, email or username of a user.
+
+<info>php %command.full_name% 2</info>
+
+This will load user uid=2 and then ask which property to set.
+
+You can look up users by their <info>UID</info>, their <info>email address</info> or their <info>username</info>.
+
+<info>php %command.full_name% foo@bar.com</info>
+
+<info>php %command.full_name% fabien</info>
+
+EOT
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -91,20 +117,29 @@ class ZikulaZauthEditCommand extends Command
 
             return 1;
         }
-        $choice = $io->choice($this->translator->trans('Value to change?'), [
+        $choices = [
             $this->translator->trans('password'),
             $this->translator->trans('email'),
             $this->translator->trans('username'),
-        ], $this->translator->trans('password'));
+        ];
+        $choice = $io->choice($this->translator->trans('Value to change?'), $choices, $this->translator->trans('password'));
+        $method = $this->translator->trans('password') === $choice ? 'askHidden' : 'ask';
+        $value = $io->{$method}($this->translator->trans('New value for %choice%?', ['%choice%' => $choice]));
+        $validators = array_combine($choices, [new ValidPassword(), new ValidEmail(), new ValidUname()]);
+        $errors = $this->validator->validate($value, $validators[$choice]);
+        if (0 !== count($errors)) {
+            $io->error($this->translator->trans('Invalid %choice%', ['%choice%' => $choice]) . '. ' . $errors[0]->getMessage());
+
+            return 2;
+        }
 
         switch ($choice) {
             case 'password':
-                $value = $io->askHidden($this->translator->trans('New value for %choice%?', ['%choice%' => $choice]));
                 $mapping->setPass($this->encoderFactory->getEncoder($mapping)->encodePassword($value, null));
                 break;
             default:
-                $value = $io->ask($this->translator->trans('New value for %choice%?', ['%choice%' => $choice]));
-                $methods = ['email' => 'setEmail', 'username' => 'setUname'];
+                unset($choices[0]);
+                $methods = array_combine($choices, ['setEmail', 'setUname']);
                 $mapping->{$methods[$choice]}($value);
                 $userEntity = $this->userRepository->findOneBy($criteria);
                 $userEntity->{$methods[$choice]}($value);
