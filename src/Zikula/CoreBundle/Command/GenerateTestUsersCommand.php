@@ -131,7 +131,7 @@ EOT
         $this->active = (string) $input->getOption('active');
         $this->verified = in_array((int) $input->getOption('verified'), [0, 1, 2]) ? (int) $input->getOption('verified') : 1;
         $regDate = $input->getOption('regdate') ?? $this->nowUTC;
-        $this->range = '>' === $regDate[0];
+        $this->range = is_string($regDate) && '>' === $regDate[0];
         $this->regDate = $this->range ? mb_substr($regDate, 1) : $regDate;
 
         $io->title('User generation utility');
