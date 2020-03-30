@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -30,7 +29,6 @@ use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
-use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\VerifyRegistrationType;
@@ -81,14 +79,6 @@ class RegistrationController extends AbstractController
         }
 
         $setPass = false;
-        // remove expired registrations
-        $regExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, ZAuthConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION);
-        if ($regExpireDays > 0) {
-            $deletedUsers = $userVerificationRepository->purgeExpiredRecords($regExpireDays);
-            foreach ($deletedUsers as $deletedUser) {
-                $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), RegistrationEvents::DELETE_REGISTRATION);
-            }
-        }
         $codeValidationErrors = $validator->validate(
             ['uname' => $uname, 'verifycode' => $verifycode],
             new ValidRegistrationVerification()
