@@ -175,7 +175,6 @@ class AccessController extends AbstractController
             }
         }
         // login failed
-        // implement auto-register setting here. If true, do so and proceed. #2915
         $this->addFlash('error', 'Login failed.');
         if (null !== $session) {
             $session->remove('authenticationMethod');
