@@ -25,6 +25,13 @@ In contrast to external authentication methods ZAuth does that simply local inst
 
 - [ZAuth configuration](ZAuthConfiguration.md)
 
+#### Recovery/Editing users on CLI
+
+A CLI command is provided (`bin/console zikula:zauth:edit`) to edit any user without needing to work through the web
+interface. This can be useful if the admin user has forgotten their password or something catastrophic happens.
+
+    bin/console zikula:zauth:edit 2  // edit uid=2 see --help for more information
+
 ### OAuth
 
 The OAuthModule provides the ability to use OAuth for authentication with common services, like:

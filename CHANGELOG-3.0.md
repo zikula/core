@@ -230,6 +230,7 @@
   - Added CLI Command to delete any number of users `bin/console zikula:users:delete`.
   - Added `Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper` to assist in writing to the `.env.local` file.
   - Added email notification to deleted pending registrations (#2915).
+  - Added CLI Command to edit password, email, username properties of ZAuth user mappings (a replacement for the old Zikula Recovery Console). 
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
