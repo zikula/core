@@ -41,6 +41,7 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\DeletedRegistrationEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
@@ -197,19 +198,18 @@ class UserAdministrationController extends AbstractController
                     $this->addFlash('error', 'Errors creating user!');
                     $this->addFlash('error', implode('<br />', $notificationErrors));
                 }
-                $userId = $user->getUid();
                 $mapping->setUid($user->getUid());
                 $mapping->setVerifiedEmail(!$form['usermustverify']->getData());
                 if (!$authMethod->register($mapping->toArray())) {
                     $this->addFlash('error', 'The create process failed for an unknown reason.');
                     $userRepository->removeAndFlush($user);
-                    $eventDispatcher->dispatch(new GenericEvent($userId), RegistrationEvents::DELETE_REGISTRATION);
+                    $eventDispatcher->dispatch(new DeletedRegistrationEvent($user));
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
                 }
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
-                $hook = new ProcessHook($userId);
+                $hook = new ProcessHook($user->getUid());
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
                 $eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::REGISTRATION_SUCCEEDED);
 

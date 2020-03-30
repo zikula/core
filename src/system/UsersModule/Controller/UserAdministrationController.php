@@ -42,6 +42,7 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\DeletedRegistrationEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
@@ -54,7 +55,6 @@ use Zikula\UsersModule\Helper\AdministrationActionsHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
-use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
 /**
@@ -332,8 +332,11 @@ class UserAdministrationController extends AbstractController
                 // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
-                    $eventName = UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated() ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
-                    $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), $eventName);
+                    if (UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated()) {
+                        $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), UserEvents::DELETE_ACCOUNT);
+                    } else {
+                        $eventDispatcher->dispatch(new DeletedRegistrationEvent($deletedUser));
+                    }
                     $eventDispatcher->dispatch(new GenericEvent(null, ['id' => $deletedUser->getUid()]), UserEvents::DELETE_PROCESS);
                     $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
                     $userRepository->removeAndFlush($deletedUser);

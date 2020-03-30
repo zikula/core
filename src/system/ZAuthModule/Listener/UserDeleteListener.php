@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\UsersModule\RegistrationEvents;
+use Zikula\UsersModule\Event\DeletedRegistrationEvent;
 use Zikula\UsersModule\UserEvents;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
@@ -46,16 +45,15 @@ class UserDeleteListener implements EventSubscriberInterface
             UserEvents::DELETE_ACCOUNT => [
                 'deleteUsers'
             ],
-            RegistrationEvents::DELETE_REGISTRATION => [
+            DeletedRegistrationEvent::class => [
                 'deleteUsers'
             ]
         ];
     }
 
-    public function deleteUsers(GenericEvent $event): void
+    public function deleteUsers(DeletedRegistrationEvent $event): void
     {
-        $deletedUid = (int) $event->getSubject();
-        $this->mappingRepository->removeByZikulaId($deletedUid);
-        $this->verificationRepository->removeByZikulaId($deletedUid);
+        $this->mappingRepository->removeByZikulaId($event->getUser()->getUid());
+        $this->verificationRepository->removeByZikulaId($event->getUser()->getUid());
     }
 }
