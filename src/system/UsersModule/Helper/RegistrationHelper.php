@@ -26,6 +26,7 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\CreateActiveUserEvent;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
@@ -83,9 +84,8 @@ class RegistrationHelper
         if (null === $userEntity->getUid()) {
             $userEntity->setRegistrationDate(new DateTime());
         }
-        $userCreateEvent = new GenericEvent($userEntity);
-        $this->eventDispatcher->dispatch($userCreateEvent, RegistrationEvents::FULL_USER_CREATE_VETO);
-        if (($adminApprovalRequired && !$userEntity->isApproved()) || $userCreateEvent->isPropagationStopped()) {
+        $this->eventDispatcher->dispatch($createActiveUser = new CreateActiveUserEvent($userEntity));
+        if (($adminApprovalRequired && !$userEntity->isApproved()) || $createActiveUser->isPropagationStopped()) {
             // We need a registration record
             $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
             $this->userRepository->persistAndFlush($userEntity);
