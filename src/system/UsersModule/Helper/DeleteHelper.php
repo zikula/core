@@ -24,6 +24,7 @@ use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\UsersModule\UserEvents;
@@ -114,7 +115,7 @@ class DeleteHelper
     public function deleteUser(UserEntity $user): void
     {
         if (UsersConstant::ACTIVATED_ACTIVE === $user->getActivated()) {
-            $this->eventDispatcher->dispatch(new GenericEvent($user->getUid()), UserEvents::DELETE_ACCOUNT);
+            $this->eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($user));
         } else {
             $this->eventDispatcher->dispatch(new RegistrationPostDeletedEvent($user));
         }

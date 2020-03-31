@@ -43,6 +43,7 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
@@ -332,7 +333,7 @@ class UserAdministrationController extends AbstractController
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
                     if (UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated()) {
-                        $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), UserEvents::DELETE_ACCOUNT);
+                        $eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($deletedUser));
                     } else {
                         $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
                     }

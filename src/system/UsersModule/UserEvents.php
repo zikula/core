@@ -19,12 +19,6 @@ namespace Zikula\UsersModule;
 class UserEvents
 {
     /**
-     * Occurs after the deletion of a user account. Subject is $uid.
-     * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     */
-    public const DELETE_ACCOUNT = 'user.account.delete';
-
-    /**
      * A hook-like UI event that is triggered when a user's account detail is viewed. This allows another module
      * to intercept the display of the user account detail in order to add its own information.
      * To add display elements to the user account detail, render output and add this as an element in the event's

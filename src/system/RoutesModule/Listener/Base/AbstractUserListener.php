@@ -21,6 +21,7 @@ use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
+use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\UserEvents;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
@@ -67,7 +68,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
         return [
             ActiveUserPostCreatedEvent::class => ['create', 5],
             ActiveUserPostUpdatedEvent::class => ['update', 5],
-            UserEvents::DELETE_ACCOUNT => ['delete', 5]
+            ActiveUserPostDeletedEvent::class => ['delete', 5]
         ];
     }
 
@@ -106,21 +107,11 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     }
 
     /**
-     * Listener for the `user.account.delete` event.
-     *
-     * Occurs after the deletion of a user account. Subject is $userId.
-     * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Listener for the `ActiveUserPostDeletedEvent::class.
      */
-    public function delete(GenericEvent $event): void
+    public function delete(ActiveUserPostDeletedEvent $event): void
     {
-        $userId = (int) $event->getSubject();
-
+        $userId = (int) $event->getUser()->getUid();
 
         $repo = $this->entityFactory->getRepository('route');
         // set creator to admin (UsersConstant::USER_ID_ADMIN) for all routes created by this user
