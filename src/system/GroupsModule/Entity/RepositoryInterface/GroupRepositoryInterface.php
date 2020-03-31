@@ -15,8 +15,8 @@ namespace Zikula\GroupsModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 
 interface GroupRepositoryInterface extends ObjectRepository, Selectable
 {
