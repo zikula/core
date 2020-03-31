@@ -16,6 +16,7 @@ namespace Zikula\SearchModule\Entity\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchResultRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 
@@ -31,7 +32,7 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
         parent::__construct($registry, SearchResultEntity::class);
     }
 
-    public function getResults(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator
+    public function getResults(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): PaginatorInterface
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');

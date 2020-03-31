@@ -17,6 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
@@ -64,7 +65,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
         array $sorting = [],
         int $page = 1,
         int $pageSize = 25
-    ): Paginator {
+    ): PaginatorInterface {
         $qb = $this->createQueryBuilder('g');
 
         // add clauses for where

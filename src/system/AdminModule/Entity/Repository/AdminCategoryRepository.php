@@ -18,6 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 
 class AdminCategoryRepository extends ServiceEntityRepository implements AdminCategoryRepositoryInterface
 {
@@ -67,7 +68,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
         return $collection;
     }
 
-    public function getPagedCategories(array $orderBy = [], int $page = 1, int $pageSize = 25): Paginator
+    public function getPagedCategories(array $orderBy = [], int $page = 1, int $pageSize = 25): PaginatorInterface
     {
         $qb = $this->createQueryBuilder('c');
 

@@ -15,7 +15,7 @@ namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 interface ExtensionRepositoryInterface extends ObjectRepository, Selectable
@@ -30,7 +30,7 @@ interface ExtensionRepositoryInterface extends ObjectRepository, Selectable
         array $orderBy = null,
         int $page = 1,
         int $pageSize = 25
-    ): Paginator;
+    ): PaginatorInterface;
 
     public function getIndexedArrayCollection(string $indexBy): array;
 

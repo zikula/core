@@ -17,6 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
@@ -70,7 +71,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         string $exprType = 'and',
         int $page = 1,
         int $pageSize = 25
-    ): Paginator {
+    ): PaginatorInterface {
         $qb = $this->createQueryBuilder('m')
             ->select('m');
         if (!empty($filter)) {

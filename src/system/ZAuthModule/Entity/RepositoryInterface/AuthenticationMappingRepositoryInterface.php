@@ -15,7 +15,7 @@ namespace Zikula\ZAuthModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Selectable
@@ -29,7 +29,7 @@ interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Sel
     public function setEmailVerification(int $userId, bool $value = true): void;
 
     /**
-     * @return Paginator
+     * @return PaginatorInterface
      */
     public function query(
         array $filter = [],
@@ -37,7 +37,7 @@ interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Sel
         string $exprType = 'and',
         int $page = 1,
         int $pageSize = 25
-    ): Paginator;
+    ): PaginatorInterface;
 
     public function getByExpiredPasswords();
 }

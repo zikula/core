@@ -45,35 +45,33 @@ class SearchApiTest extends TestCase
     {
         $api = $this->getApi();
         $searchResult = $api->search('bar', true);
-        $this->assertEquals(1, $searchResult['resultCount']);
-        $this->assertCount(1, $searchResult['sqlResult']);
+        $this->assertEquals(1, $searchResult['paginator']->getNumResults());
         $this->assertCount(0, $searchResult['errors']);
-        $results = $searchResult['sqlResult'];
-        $result = array_shift($results);
+        /** @var \Doctrine\Common\Collections\ArrayCollection $results */
+        $results = $searchResult['paginator']->getResults();
+        $result = $results->get(0);
         $this->assertEquals('test', $result->getSesid());
         $this->assertEquals('ZikulaFooModule found using bar', $result->getText());
         $this->assertEquals('ZikulaFooModule result', $result->getTitle());
 
         $searchResult = $api->search('fee', true);
-        $this->assertEquals(0, $searchResult['resultCount']);
-        $this->assertCount(0, $searchResult['sqlResult']);
+        $this->assertEquals(0, $searchResult['paginator']->getNumResults());
         $this->assertCount(0, $searchResult['errors']);
 
         $searchResult = $api->search('top bar fee', true);
-        $this->assertEquals(2, $searchResult['resultCount']);
-        $this->assertCount(2, $searchResult['sqlResult']);
+        $this->assertEquals(2, $searchResult['paginator']->getNumResults());
         $this->assertCount(0, $searchResult['errors']);
-        $results = $searchResult['sqlResult'];
-        $result = array_shift($results);
+        $results = $searchResult['paginator']->getResults();
+        $result = $results->get(0);
         $this->assertEquals('test', $result->getSesid());
         $this->assertEquals('ZikulaFooModule found using top, bar, fee', $result->getText());
         $this->assertEquals('ZikulaFooModule result', $result->getTitle());
-        $result = array_shift($results);
+        $result = $results->get(1);
         $this->assertEquals('ZikulaBarModule found using top, bar, fee', $result->getText());
         $this->assertEquals('ZikulaBarModule result', $result->getTitle());
 
         $searchResult = $api->search('top bar fee', true, 'EXACT');
-        $this->assertEquals(0, $searchResult['resultCount']);
+        $this->assertEquals(0, $searchResult['paginator']->getNumResults());
     }
 
     public function testLog(): void

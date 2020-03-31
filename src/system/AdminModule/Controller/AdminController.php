@@ -27,7 +27,7 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface
 use Zikula\AdminModule\Form\Type\AdminCategoryType;
 use Zikula\AdminModule\Helper\AdminLinksHelper;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
@@ -65,7 +65,7 @@ class AdminController extends AbstractController
     {
         $pageSize = $this->getVar('itemsperpage');
 
-        /** @var Paginator $paginator */
+        /** @var PaginatorInterface $paginator */
         $paginator = $repository->getPagedCategories(['sortorder' => 'ASC'], $page, $pageSize);
         $paginator->setRoute('zikulaadminmodule_admin_view');
 

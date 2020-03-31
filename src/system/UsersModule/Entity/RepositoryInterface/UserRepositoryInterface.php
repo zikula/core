@@ -17,7 +17,7 @@ use DateTime;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
 interface UserRepositoryInterface extends ObjectRepository, Selectable
@@ -34,7 +34,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void;
 
     /**
-     * @return Paginator|UserEntity[]
+     * @return PaginatorInterface|UserEntity[]
      */
     public function queryBySearchForm(array $formData = []);
 
@@ -47,10 +47,10 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
 
     /**
      * Fetch a collection of users. Optionally filter, sort, limit, offset results.
-     *   filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
-     *   when value is not an array, operator is assumed to be '='
+     * filter = [field => value, field => value, field => ['operator => '!=', 'operand' => value], ...]
+     * when value is not an array, operator is assumed to be '='
      *
-     * @return Paginator|UserEntity[]
+     * @return PaginatorInterface|UserEntity[]
      */
     public function query(
         array $filter = [],
@@ -68,7 +68,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function findAllAsIterable(): IterableResult;
 
     /**
-     * @return Paginator|UserEntity[]
+     * @return PaginatorInterface|UserEntity[]
      */
     public function searchActiveUser(array $unameFilter = [], int $limit = 50);
 }

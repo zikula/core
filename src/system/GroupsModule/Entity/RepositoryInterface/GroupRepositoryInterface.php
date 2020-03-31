@@ -16,7 +16,7 @@ namespace Zikula\GroupsModule\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 
 interface GroupRepositoryInterface extends ObjectRepository, Selectable
 {
@@ -36,7 +36,7 @@ interface GroupRepositoryInterface extends ObjectRepository, Selectable
         array $sorting = [],
         int $page = 1,
         int $pageSize = 25
-    ): Paginator;
+    ): PaginatorInterface;
 
     public function findAllAndIndexBy(string $indexField): array;
 

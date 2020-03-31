@@ -15,7 +15,7 @@ namespace Zikula\SearchModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 
 interface SearchStatRepositoryInterface extends ObjectRepository, Selectable
@@ -28,7 +28,7 @@ interface SearchStatRepositoryInterface extends ObjectRepository, Selectable
     /**
      * Returns stats for given arguments.
      */
-    public function getStats(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator;
+    public function getStats(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): PaginatorInterface;
 
     /**
      * Persist and flush a search stat entity.
