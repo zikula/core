@@ -42,7 +42,7 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Event\DeletedRegistrationEvent;
+use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
@@ -335,7 +335,7 @@ class UserAdministrationController extends AbstractController
                     if (UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated()) {
                         $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), UserEvents::DELETE_ACCOUNT);
                     } else {
-                        $eventDispatcher->dispatch(new DeletedRegistrationEvent($deletedUser));
+                        $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
                     }
                     $eventDispatcher->dispatch(new GenericEvent(null, ['id' => $deletedUser->getUid()]), UserEvents::DELETE_PROCESS);
                     $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));

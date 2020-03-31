@@ -21,6 +21,6 @@ namespace Zikula\UsersModule\Event;
  * UI-level actions such as redirects.
  * The subject of the event is set to the Uid being deleted.
  */
-class DeletedRegistrationEvent extends UserEntityEvent
+class RegistrationPostDeletedEvent extends UserEntityEvent
 {
 }

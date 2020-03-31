@@ -23,7 +23,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\UsersModule\Event\DeletedRegistrationEvent;
+use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -72,7 +72,7 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::TERMINATE => ['delete'],
-            DeletedRegistrationEvent::class => ['sendEmail']
+            RegistrationPostDeletedEvent::class => ['sendEmail']
         ];
     }
 
@@ -83,12 +83,12 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
         if ($regExpireDays > 0) {
             $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays);
             foreach ($deletedUsers as $deletedUser) {
-                $this->eventDispatcher->dispatch(new DeletedRegistrationEvent($deletedUser));
+                $this->eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
             }
         }
     }
 
-    public function sendEmail(DeletedRegistrationEvent $event): void
+    public function sendEmail(RegistrationPostDeletedEvent $event): void
     {
         $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');

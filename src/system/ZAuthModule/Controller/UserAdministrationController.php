@@ -42,7 +42,7 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Event\DeletedRegistrationEvent;
+use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
@@ -205,7 +205,7 @@ class UserAdministrationController extends AbstractController
                 if (!$authMethod->register($mapping->toArray())) {
                     $this->addFlash('error', 'The create process failed for an unknown reason.');
                     $userRepository->removeAndFlush($user);
-                    $eventDispatcher->dispatch(new DeletedRegistrationEvent($user));
+                    $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($user));
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
                 }
