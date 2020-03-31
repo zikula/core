@@ -15,10 +15,8 @@ namespace Zikula\UsersModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Helper\MailHelper;
-use Zikula\UsersModule\RegistrationEvents;
 
 class RegistrationEventsListener implements EventSubscriberInterface
 {

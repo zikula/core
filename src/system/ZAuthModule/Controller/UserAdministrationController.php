@@ -49,7 +49,6 @@ use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
-use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
