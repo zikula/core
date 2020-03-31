@@ -29,12 +29,12 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     {
         return [
             RegistrationEvents::REGISTRATION_STARTED        => ['started', 5],
-            ActiveUserPreCreatedEvent::class                    => ['createVeto', 5],
+            ActiveUserPreCreatedEvent::class                => ['createVeto', 5],
             RegistrationEvents::REGISTRATION_SUCCEEDED      => ['succeeded', 5],
             RegistrationEvents::REGISTRATION_FAILED         => ['failed', 5],
             RegistrationEvents::CREATE_REGISTRATION         => ['create', 5],
             RegistrationEvents::UPDATE_REGISTRATION         => ['update', 5],
-            RegistrationPostDeletedEvent::class                 => ['delete', 5],
+            RegistrationPostDeletedEvent::class             => ['delete', 5],
             RegistrationEvents::FORCE_REGISTRATION_APPROVAL => ['forceApproval', 5]
         ];
     }
@@ -55,7 +55,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     }
 
     /**
-     * Listener for the `full.user.create.veto` event.
+     * Listener for ActiveUserPreCreatedEvent::class.
      *
      * Occurs when the Registration process is determining whether to create a 'registration' or a 'full user'.
      *
