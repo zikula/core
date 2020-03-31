@@ -94,8 +94,8 @@ class UserAdministrationController extends AbstractController
         if (!empty($letter) && 'all' !== $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
-        $itemsPerPage = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
-        $paginator = $userRepository->query($filter, [$sort => $sortdir], $itemsPerPage, $page);
+        $pageSize = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
+        $paginator = $userRepository->query($filter, [$sort => $sortdir], 'and', $page, $pageSize);
         $paginator->setRoute('zikulausersmodule_useradministration_list');
         $routeParameters = [
             'sort' => $sort,

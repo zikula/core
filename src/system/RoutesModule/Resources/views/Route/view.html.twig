@@ -159,9 +159,9 @@
             </table>
             </div>
 
-            {% if all != 1 and pager|default %}
+            {#% if all != 1 and pager|default %}
                 {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
-            {% endif %}
+            {% endif %#}
         {% if routeArea == 'admin' %}
                 <fieldset class="my-3 pt-3">
                     <div class="row">
