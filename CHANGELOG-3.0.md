@@ -231,6 +231,8 @@
   - Added `Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper` to assist in writing to the `.env.local` file.
   - Added email notification to deleted pending registrations (#2915).
   - Added CLI Command to edit password, email, username properties of ZAuth user mappings (a replacement for the old Zikula Recovery Console). 
+  - Added new Doctrine Paginator wrapper `Zikula\Bundle\CoreBundle\Doctrine\Paginator` and paginator template. See docs.
+  - Added new AlphaFilter class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

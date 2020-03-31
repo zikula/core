@@ -23,8 +23,9 @@ use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
  *
  * usage:
  *     in Repository class:
- *         return (new Paginator($qb))->paginate($page);
+ *         return (new Paginator($qb, $pageSize))->paginate($pageNumber);
  *     in controller:
+ *         $latestPosts = $repository->getLatestPosts($criteria, $pageSize);
  *         return $this->render('blog/index.'.$_format.'.twig', [
  *             'paginator' => $latestPosts,
  *         ]);

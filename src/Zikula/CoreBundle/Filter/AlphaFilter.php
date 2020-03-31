@@ -13,6 +13,16 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Filter;
 
+/**
+ * Assist in the display of an alphabetical selector for large result sets
+ * In controller:
+ *     return [
+ *         'templateParam' => $value,
+ *         'alpha' => new AlphaFilter('mycustomroute', $routeParameters, $currentLetter),
+ *     ];
+ * In template:
+ *     {{ include(alpha.template) }}
+ */
 class AlphaFilter
 {
     private $currentLetter;

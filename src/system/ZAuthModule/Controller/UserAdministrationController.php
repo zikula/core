@@ -137,7 +137,7 @@ class UserAdministrationController extends AbstractController
         $mappings = $authenticationMappingRepository->query($filter);
 
         return $this->render('@ZikulaZAuthModule/UserAdministration/userlist.html.twig', [
-            'mappings' => $mappings,
+            'mappings' => $mappings->getResults(),
             'actionsHelper' => $actionsHelper
         ], new PlainResponse());
     }

@@ -37,3 +37,5 @@ Zikula uses the Twig template engine, like Symfony does.
 ## For developers
 
 - [PageAssetApi](Dev/PageAssetApi.md)
+- [Pagination of large result sets](Dev/Pagination.md)
+- [Display an Alpha filter](Dev/AlphaFilter.md)
