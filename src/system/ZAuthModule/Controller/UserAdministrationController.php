@@ -24,7 +24,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
@@ -42,13 +41,14 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
+use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
-use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
@@ -213,7 +213,7 @@ class UserAdministrationController extends AbstractController
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
                 $hook = new ProcessHook($user->getUid());
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
-                $eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::REGISTRATION_SUCCEEDED);
+                $eventDispatcher->dispatch(new RegistrationPostSuccessEvent($user));
 
                 if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
                     $this->addFlash('status', 'Done! Created new registration application.');
@@ -273,6 +273,8 @@ class UserAdministrationController extends AbstractController
         $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
+        $originalUser = clone $userRepository->find($mapping->getUid());
+
         if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 /** @var AuthenticationMappingEntity $mapping */
@@ -287,14 +289,8 @@ class UserAdministrationController extends AbstractController
                 $user = $userRepository->find($mapping->getUid());
                 $user->merge($mapping->getUserEntityData());
                 $userRepository->persistAndFlush($user);
-                $eventArgs = [
-                    'action'    => 'setVar',
-                    'field'     => 'uname',
-                    'attribute' => null,
-                ];
-                $eventData = ['old_value' => $originalMapping->getUname()];
-                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
-                $eventDispatcher->dispatch($updateEvent, UserEvents::UPDATE_ACCOUNT);
+
+                $eventDispatcher->dispatch(new ActiveUserPostUpdatedEvent($user, $originalUser));
 
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);

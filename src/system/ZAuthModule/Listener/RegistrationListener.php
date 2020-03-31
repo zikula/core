@@ -15,13 +15,13 @@ namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
-use Zikula\UsersModule\RegistrationEvents;
+use Zikula\UsersModule\Event\RegistrationPostApprovedEvent;
+use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Helper\RegistrationVerificationHelper;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -80,10 +80,10 @@ class RegistrationListener implements EventSubscriberInterface
             ActiveUserPreCreatedEvent::class => [
                 'vetoFullUserCreate'
             ],
-            RegistrationEvents::REGISTRATION_SUCCEEDED => [
+            RegistrationPostSuccessEvent::class => [
                 'sendEmailVerificationEmail'
             ],
-            RegistrationEvents::FORCE_REGISTRATION_APPROVAL => [
+            RegistrationPostApprovedEvent::class => [
                 'forceRegistrationApproval'
             ]
         ];
@@ -119,9 +119,9 @@ class RegistrationListener implements EventSubscriberInterface
         }
     }
 
-    public function sendEmailVerificationEmail(GenericEvent $event): void
+    public function sendEmailVerificationEmail(RegistrationPostSuccessEvent $event): void
     {
-        $userEntity = $event->getSubject();
+        $userEntity = $event->getUser();
         if (null !== $userEntity->getUid()) {
             $mapping = $this->mappingRepository->getByZikulaId($userEntity->getUid());
             if (isset($mapping) && !$mapping->isVerifiedEmail()) {
@@ -130,9 +130,8 @@ class RegistrationListener implements EventSubscriberInterface
         }
     }
 
-    public function forceRegistrationApproval(GenericEvent $event): void
+    public function forceRegistrationApproval(RegistrationPostApprovedEvent $event): void
     {
-        $userEntity = $event->getSubject();
-        $this->mappingRepository->setEmailVerification($userEntity->getUid());
+        $this->mappingRepository->setEmailVerification($event->getUser()->getUid());
     }
 }

@@ -16,9 +16,7 @@ namespace Zikula\UsersModule\Event;
 use Psr\EventDispatcher\StoppableEventInterface;
 
 /**
- * A 'Generic' event that requires a UserEntity on construction and sets
- * an immutable datetime object for tracking purposes.
- * This class adds the ability to stop the propagation.
+ * An UserEntityEvent that adds the ability to stop the propagation.
  */
 class StoppableUserEntityEvent extends UserEntityEvent implements StoppableEventInterface
 {

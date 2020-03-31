@@ -23,7 +23,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
@@ -36,6 +35,8 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
+use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
+use Zikula\UsersModule\Event\RegistrationPreCreatedEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
@@ -43,7 +44,6 @@ use Zikula\UsersModule\Form\Type\RegistrationType\DefaultRegistrationType;
 use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\RegistrationUiHooksSubscriber;
-use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
 /**
@@ -193,8 +193,8 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $event = $eventDispatcher->dispatch(new GenericEvent($userEntity, ['redirectUrl' => '']), RegistrationEvents::REGISTRATION_SUCCEEDED);
-                    $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
+                    $eventDispatcher->dispatch($event = new RegistrationPostSuccessEvent($userEntity));
+                    $redirectUrl = $event->getRedirectUrl();
 
                     if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
                         $accessHelper->login($userEntity);
@@ -215,11 +215,11 @@ class RegistrationController extends AbstractController
                 $session->invalidate();
             }
 
-            return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
         }
 
         // Notify that we are beginning a registration session.
-        $eventDispatcher->dispatch(new GenericEvent(), RegistrationEvents::REGISTRATION_STARTED);
+        $eventDispatcher->dispatch(new RegistrationPreCreatedEvent());
 
         $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationTemplateName()
