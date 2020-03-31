@@ -26,7 +26,9 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
+use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
@@ -96,7 +98,7 @@ class RegistrationHelper
             // account record. This is so that modules that do default actions on the creation
             // of a user account do not perform those actions on a pending registration, which
             // may be deleted at any point.
-            $eventName = RegistrationEvents::CREATE_REGISTRATION;
+            $event = new RegistrationPostCreatedEvent($userEntity);
         } else {
             // Everything is in order for a full user record
             $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
@@ -114,13 +116,13 @@ class RegistrationHelper
             // registration is created. It is not a "real" record until now, so it wasn't really
             // "created" until now. It is way down here so that the activated state can be properly
             // saved before the hook is fired.
-            $eventName = UserEvents::CREATE_ACCOUNT;
+            $event = new ActiveUserPostCreatedEvent($userEntity);
         }
         if (!$adminApprovalRequired) {
             $approvedBy = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : $userEntity->getUid();
             $this->userRepository->setApproved($userEntity, new DateTime(), $approvedBy); // flushes EM
         }
-        $this->eventDispatcher->dispatch(new GenericEvent($userEntity), $eventName);
+        $this->eventDispatcher->dispatch($event);
     }
 
     /**

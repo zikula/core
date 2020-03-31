@@ -17,6 +17,7 @@ namespace Zikula\RoutesModule\Listener\Base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
+use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\RegistrationEvents;
 
@@ -32,7 +33,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
             ActiveUserPreCreatedEvent::class                => ['createVeto', 5],
             RegistrationEvents::REGISTRATION_SUCCEEDED      => ['succeeded', 5],
             RegistrationEvents::REGISTRATION_FAILED         => ['failed', 5],
-            RegistrationEvents::CREATE_REGISTRATION         => ['create', 5],
+            RegistrationPostCreatedEvent::class             => ['create', 5],
             RegistrationEvents::UPDATE_REGISTRATION         => ['update', 5],
             RegistrationPostDeletedEvent::class             => ['delete', 5],
             RegistrationEvents::FORCE_REGISTRATION_APPROVAL => ['forceApproval', 5]
@@ -88,7 +89,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * Listener for the `module.users.ui.registration.succeeded` event.
      *
      * Occurs after a user has successfully registered a new account in the system. It will follow either
-     * a `user.registration.create` event, or a `user.account.create` event, depending on the result of the
+     * a `user.registration.create` event, or a ActiveUserPostCreatedEvent::class, depending on the result of the
      * registration process, the information provided by the user, and several configuration options set in
      * the Users module. The resultant record might be a fully activated user record, or it might be a
      * registration record pending approval, e-mail verification, or both.
@@ -184,22 +185,22 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     }
 
     /**
-     * Listener for the `user.registration.create` event.
+     * Listener for RegistrationPostCreatedEvent::class.
      *
      * Occurs after a registration record is created, either through the normal user registration process,
      * or through the administration panel for the Users module. This event will not fire if the result of the
-     * registration process is a full user record. Instead, a `user.account.create` event will fire.
+     * registration process is a full user record. Instead, a ActiveUserPostCreatedEvent::class will fire.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the UserEntity that was created.
      * This event occurs before the $authenticationMethod->register() method is called.
      *
-     * You can access general data available in the event.
+     * You can access the user and date in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
+     * The user:
+     *     `echo 'UID: ' . $event->getUser()->getUid();`
      *
      */
-    public function create(GenericEvent $event): void
+    public function create(RegistrationPostCreatedEvent $event): void
     {
     }
 
@@ -227,7 +228,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * Occurs after a registration record is deleted. This could occur as a result of the administrator deleting
      * the record through the approval/denial process, or it could happen because the registration request expired.
      * This event will not fire if a registration record is converted to a full user account record. Instead,
-     * a `user.account.create` event will fire. This is a storage-level event, not a UI event. It should not be
+     * a ActiveUserPostCreatedEvent::class will fire. This is a storage-level event, not a UI event. It should not be
      * used for UI-level actions such as redirects. The subject of the event is set to the Uid being deleted.
      *
      * You can access the user and date in the event.

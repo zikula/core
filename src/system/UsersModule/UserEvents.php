@@ -19,14 +19,6 @@ namespace Zikula\UsersModule;
 class UserEvents
 {
     /**
-     * Occurs after a user account is created. All handlers are notified. It does not apply to creation of a pending
-     * registration. The full user record created is available as the subject. This is a storage-level event,
-     * not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the user record that was created.
-     */
-    public const CREATE_ACCOUNT = 'user.account.create';
-
-    /**
      * Occurs after a user is updated. All handlers are notified. The full updated user record is available
      * as the subject. This is a storage-level event, not a UI event. It should not be used for UI-level
      * actions such as redirects.
