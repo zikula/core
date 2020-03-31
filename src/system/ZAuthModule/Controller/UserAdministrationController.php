@@ -42,6 +42,7 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
@@ -273,6 +274,8 @@ class UserAdministrationController extends AbstractController
         $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
+        $originalUser = clone $userRepository->find($mapping->getUid());
+
         if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 /** @var AuthenticationMappingEntity $mapping */
@@ -287,14 +290,8 @@ class UserAdministrationController extends AbstractController
                 $user = $userRepository->find($mapping->getUid());
                 $user->merge($mapping->getUserEntityData());
                 $userRepository->persistAndFlush($user);
-                $eventArgs = [
-                    'action'    => 'setVar',
-                    'field'     => 'uname',
-                    'attribute' => null,
-                ];
-                $eventData = ['old_value' => $originalMapping->getUname()];
-                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
-                $eventDispatcher->dispatch($updateEvent, UserEvents::UPDATE_ACCOUNT);
+
+                $eventDispatcher->dispatch(new ActiveUserPostUpdatedEvent($user, $originalUser));
 
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);

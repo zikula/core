@@ -21,6 +21,7 @@ use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
+use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\UserEvents;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 
@@ -65,7 +66,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     {
         return [
             ActiveUserPostCreatedEvent::class => ['create', 5],
-            UserEvents::UPDATE_ACCOUNT => ['update', 5],
+            ActiveUserPostUpdatedEvent::class => ['update', 5],
             UserEvents::DELETE_ACCOUNT => ['delete', 5]
         ];
     }
@@ -88,20 +89,19 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     }
 
     /**
-     * Listener for the `user.account.update` event.
+     * Listener for the ActiveUserPostUpdatedEvent::class.
      *
      * Occurs after a user is updated. All handlers are notified.
-     * The full updated user record is available as the subject.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the user record, with the updated values.
+     * The User property is the *new* data. The oldUser property is the *old* data
      *
-     * You can access general data available in the event.
+     * You can access the user and date in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
+     * The user:
+     *     `echo 'UID: ' . $event->getUser()->getUid();`
      *
      */
-    public function update(GenericEvent $event): void
+    public function update(ActiveUserPostUpdatedEvent $event): void
     {
     }
 

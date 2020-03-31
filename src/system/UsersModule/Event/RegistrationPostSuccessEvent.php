@@ -62,21 +62,6 @@ use Zikula\UsersModule\Entity\UserEntity;
  * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second,
  * an event handler that was notified prior to the current handler may already have changed the `'redirectUrl'`.
  */
-class RegistrationPostSuccessEvent extends UserEntityEvent
+class RegistrationPostSuccessEvent extends RedirectableUserEntityEvent
 {
-    /**
-     * @var string
-     */
-    private $redirectUrl;
-
-    public function __construct(UserEntity $userEntity, string $redirectUrl = '')
-    {
-        parent::__construct($userEntity);
-        $this->redirectUrl = $redirectUrl;
-    }
-
-    public function getRedirectUrl(): string
-    {
-        return $this->redirectUrl;
-    }
 }

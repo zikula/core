@@ -43,7 +43,9 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
+use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
@@ -56,6 +58,7 @@ use Zikula\UsersModule\Helper\AdministrationActionsHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
+use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
 /**
@@ -167,10 +170,8 @@ class UserAdministrationController extends AbstractController
         }
 
         $form = $this->createForm(AdminModifyUserType::class, $user);
-        $originalUserName = $user->getUname();
-        $originalGroups = $user->getGroups()->toArray();
-        $formEvent = new UserFormAwareEvent($form);
-        $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
+        $originalUser = clone $user;
+        $eventDispatcher->dispatch(new UserFormAwareEvent($form), UserEvents::EDIT_FORM);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -180,21 +181,17 @@ class UserAdministrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
-                $this->checkSelf($currentUserApi, $variableApi, $user, $originalGroups);
+                $this->checkSelf($currentUserApi, $variableApi, $user, $originalUser->getGroups()->toArray());
 
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
 
                 $this->getDoctrine()->getManager()->flush();
 
-                $eventArgs = [
-                    'action'    => 'setVar',
-                    'field'     => 'uname',
-                    'attribute' => null,
-                ];
-                $eventData = ['old_value' => $originalUserName];
-                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
-                $eventDispatcher->dispatch($updateEvent, UserEvents::UPDATE_ACCOUNT);
+                $updateEvent = UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()
+                    ? new RegistrationPostUpdatedEvent($user, $originalUser)
+                    : new ActiveUserPostUpdatedEvent($user, $originalUser);
+                $eventDispatcher->dispatch($updateEvent);
 
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
 

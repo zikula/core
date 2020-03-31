@@ -20,6 +20,7 @@ use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
+use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
 use Zikula\UsersModule\RegistrationEvents;
 
 /**
@@ -33,9 +34,8 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
             RegistrationEvents::REGISTRATION_STARTED        => ['started', 5],
             ActiveUserPreCreatedEvent::class                => ['createVeto', 5],
             RegistrationPostSuccessEvent::class              => ['succeeded', 5],
-            RegistrationEvents::REGISTRATION_FAILED         => ['failed', 5],
             RegistrationPostCreatedEvent::class             => ['create', 5],
-            RegistrationEvents::UPDATE_REGISTRATION         => ['update', 5],
+            RegistrationPostUpdatedEvent::class             => ['update', 5],
             RegistrationPostDeletedEvent::class             => ['delete', 5],
             RegistrationEvents::FORCE_REGISTRATION_APPROVAL => ['forceApproval', 5]
         ];
@@ -145,37 +145,6 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     }
 
     /**
-     * Listener for the `module.users.ui.registration.failed` event.
-     *
-     * Occurs after a user attempts to submit a registration request, but the request is not saved successfully.
-     * The next step for the user is a page that displays the status, including any possible error messages.
-     * The event subject contains null.
-     * The arguments of the event are as follows:
-     * `'redirecturl'` will initially contain an empty string. This can be modified to change where the user
-     * is redirected following the failed login.
-     *
-     * __The `'redirecturl'` argument__ controls where the user will be directed following a failed log-in attempt.
-     * Initially, it will be an empty string, indicating that the user will be redirected to the home page.
-     *
-     * If a `'redirecturl'` is specified by any entity intercepting and processing the `user.login.failed` event, then
-     * the user will be redirected to the URL provided, instead of being redirected to the status/error display page.
-     *
-     * An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate.
-     * First, the user may be expecting to be directed to a page containing information on why the registration
-     * failed. Being redirected to a different page might be disorienting to the user. Second, an event handler
-     * that was notified prior to the current handler may already have changed the `'redirectUrl'`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     */
-    public function failed(GenericEvent $event): void
-    {
-    }
-
-    /**
      * Listener for RegistrationPostCreatedEvent::class.
      *
      * Occurs after a registration record is created, either through the normal user registration process,
@@ -196,20 +165,19 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     }
 
     /**
-     * Listener for the `user.registration.update` event.
+     * Listener for the RegistrationPostUpdatedEvent::class.
      *
      * Occurs after a registration record is updated (likely through the admin panel, but not guaranteed).
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the UserEntity, with the updated values. The event data contains the
-     * original UserEntity in an array `['oldValue' => $originalUser]`.
+     * The User property is the *new* data. The oldUser property is the *old* data
      *
-     * You can access general data available in the event.
+     * You can access the user and date in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
+     * The user:
+     *     `echo 'UID: ' . $event->getUser()->getUid();`
      *
      */
-    public function update(GenericEvent $event): void
+    public function update(RegistrationPostUpdatedEvent $event): void
     {
     }
 
