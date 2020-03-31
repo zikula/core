@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\SearchModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchResultRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
@@ -28,7 +27,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
 
     public function getResults(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): PaginatorInterface
     {
-        return $this->results;
+        return new MockPaginator($this->results);
     }
 
     public function clearOldResults(string $sessionId = ''): void
