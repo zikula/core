@@ -16,6 +16,7 @@ namespace Zikula\UsersModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\RegistrationEvents;
 
@@ -40,13 +41,13 @@ class RegistrationEventsListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RegistrationEvents::REGISTRATION_SUCCEEDED => ['sendRegistrationEmail']
+            RegistrationPostSuccessEvent::class => ['sendRegistrationEmail']
         ];
     }
 
-    public function sendRegistrationEmail(GenericEvent $event): void
+    public function sendRegistrationEmail(RegistrationPostSuccessEvent $event): void
     {
-        $userEntity = $event->getSubject();
+        $userEntity = $event->getUser();
         $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
         if (empty($notificationErrors)) {
             return;

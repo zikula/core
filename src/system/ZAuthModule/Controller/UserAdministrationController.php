@@ -43,6 +43,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
+use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
@@ -213,7 +214,7 @@ class UserAdministrationController extends AbstractController
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
                 $hook = new ProcessHook($user->getUid());
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
-                $eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::REGISTRATION_SUCCEEDED);
+                $eventDispatcher->dispatch(new RegistrationPostSuccessEvent($user));
 
                 if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
                     $this->addFlash('status', 'Done! Created new registration application.');

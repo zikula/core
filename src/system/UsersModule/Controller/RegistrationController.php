@@ -36,6 +36,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
+use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
@@ -193,8 +194,8 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $event = $eventDispatcher->dispatch(new GenericEvent($userEntity, ['redirectUrl' => '']), RegistrationEvents::REGISTRATION_SUCCEEDED);
-                    $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
+                    $eventDispatcher->dispatch($event = new RegistrationPostSuccessEvent($userEntity));
+                    $redirectUrl = $event->getRedirectUrl();
 
                     if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
                         $accessHelper->login($userEntity);
@@ -215,7 +216,7 @@ class RegistrationController extends AbstractController
                 $session->invalidate();
             }
 
-            return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
         }
 
         // Notify that we are beginning a registration session.
