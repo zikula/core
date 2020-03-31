@@ -58,7 +58,6 @@ use Zikula\UsersModule\Helper\AdministrationActionsHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
-use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
 /**

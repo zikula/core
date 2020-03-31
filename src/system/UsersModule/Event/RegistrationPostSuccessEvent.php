@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Event;
 
-use Zikula\UsersModule\Entity\UserEntity;
-
 /**
  * Occurs after a user has successfully registered a new account in the system. It will follow either a
  * ResgistrationPostCreatedEvent, or a ActiveUserPostCreatedEvent, depending on the result of the registration process, the
