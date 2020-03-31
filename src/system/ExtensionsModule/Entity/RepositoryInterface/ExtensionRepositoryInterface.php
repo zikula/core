@@ -15,7 +15,6 @@ namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 

@@ -17,7 +17,6 @@ use DateTime;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 

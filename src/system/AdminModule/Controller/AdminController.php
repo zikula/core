@@ -27,7 +27,6 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface
 use Zikula\AdminModule\Form\Type\AdminCategoryType;
 use Zikula\AdminModule\Helper\AdminLinksHelper;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;

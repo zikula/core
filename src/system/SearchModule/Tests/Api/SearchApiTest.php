@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SearchModule\Api\ApiInterface\SearchApiInterface;
 use Zikula\SearchModule\Api\SearchApi;
