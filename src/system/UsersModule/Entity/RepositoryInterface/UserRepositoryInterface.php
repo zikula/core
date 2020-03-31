@@ -46,10 +46,9 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function getSearchResults(array $words = []);
 
     /**
-     * Fetch a collection of users. Optionally filter, sort, limit, offset
-     * results. filter = [field => value, field => value, field => ['operator'
-     * => '!=', 'operand' => value], ...] when value is not an array, operator
-     * is assumed to be '='
+     * Fetch a collection of users. Optionally filter, sort, limit, offset results.
+     * filter = [field => value, field => value, field => ['operator => '!=', 'operand' => value], ...]
+     * when value is not an array, operator is assumed to be '='
      *
      * @return PaginatorInterface|UserEntity[]
      */
