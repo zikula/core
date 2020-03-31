@@ -20,6 +20,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Event\CreateActiveUserEvent;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Helper\RegistrationVerificationHelper;
@@ -76,7 +77,7 @@ class RegistrationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RegistrationEvents::FULL_USER_CREATE_VETO => [
+            CreateActiveUserEvent::class => [
                 'vetoFullUserCreate'
             ],
             RegistrationEvents::REGISTRATION_SUCCEEDED => [
@@ -88,9 +89,9 @@ class RegistrationListener implements EventSubscriberInterface
         ];
     }
 
-    public function vetoFullUserCreate(GenericEvent $event): void
+    public function vetoFullUserCreate(CreateActiveUserEvent $event): void
     {
-        $userEntity = $event->getSubject();
+        $userEntity = $event->getUser();
         if ($userEntity->getAttributes()->containsKey(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
             $method = $userEntity->getAttributeValue(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY);
             if (!in_array($method, [ZAuthConstant::AUTHENTICATION_METHOD_EMAIL, ZAuthConstant::AUTHENTICATION_METHOD_UNAME, ZAuthConstant::AUTHENTICATION_METHOD_EITHER], true)) {
