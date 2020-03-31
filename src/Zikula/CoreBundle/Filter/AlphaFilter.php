@@ -67,7 +67,7 @@ class AlphaFilter
         return $this;
     }
 
-    public function setRouteParameter(string $name, string $value): void
+    public function setRouteParameter(string $name, ?string $value): void
     {
         $this->routeParameters[$name] = $value;
     }
