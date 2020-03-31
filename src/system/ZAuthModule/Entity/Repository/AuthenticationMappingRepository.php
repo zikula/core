@@ -80,6 +80,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         if (!empty($sort)) {
             $qb->orderBy($this->orderByFromArray($sort));
         }
+
         return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
