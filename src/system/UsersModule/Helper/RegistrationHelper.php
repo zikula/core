@@ -30,7 +30,6 @@ use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersModule\RegistrationEvents;
-use Zikula\UsersModule\UserEvents;
 
 class RegistrationHelper
 {
