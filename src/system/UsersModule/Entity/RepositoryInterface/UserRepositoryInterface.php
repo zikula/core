@@ -16,8 +16,8 @@ namespace Zikula\UsersModule\Entity\RepositoryInterface;
 use DateTime;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\UsersModule\Entity\UserEntity;
 
 interface UserRepositoryInterface extends ObjectRepository, Selectable
@@ -56,7 +56,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
         array $filter = [],
         array $sort = [],
         int $limit = 0,
-        int $offset = 0,
+        int $page = 1,
         string $exprType = 'and'
     );
 

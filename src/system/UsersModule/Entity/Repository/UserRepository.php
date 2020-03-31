@@ -18,8 +18,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query\Expr\OrderBy;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -128,7 +128,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         array $filter = [],
         array $sort = [],
         int $limit = 0,
-        int $offset = 0,
+        int $page = 1,
         string $exprType = 'and'
     ) {
         $qb = $this->createQueryBuilder('u')
@@ -143,16 +143,12 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         if (!empty($sort)) {
             $qb->orderBy($this->orderByFromArray($sort));
         }
-        $query = $qb->getQuery();
 
         if ($limit > 0) {
-            $query->setMaxResults($limit);
-            $query->setFirstResult($offset);
-
-            return new Paginator($query);
+            return (new Paginator($qb, $limit))->paginate($page);
         }
 
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function count(array $filter = [], string $exprType = 'and'): int
