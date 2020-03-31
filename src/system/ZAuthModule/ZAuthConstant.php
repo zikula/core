@@ -135,4 +135,14 @@ class ZAuthConstant
      * Set value to (bool) TRUE if change is required. The existence of the key and the value are both tested.
      */
     public const REQUIRE_PASSWORD_CHANGE_KEY = '_Users_mustChangePassword';
+
+    /**
+     * Module variable key for the number of items (e.g., records) to display per list "page."
+     */
+    public const MODVAR_ITEMS_PER_PAGE = 'itemsperpage';
+
+    /**
+     * Default value for the number of items (e.g., records) to display per list "page."
+     */
+    public const DEFAULT_ITEMS_PER_PAGE = 25;
 }

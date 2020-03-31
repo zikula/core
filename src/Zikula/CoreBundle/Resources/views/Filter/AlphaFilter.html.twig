@@ -1,0 +1,43 @@
+{% if alpha.route is empty and app.request.attributes.has('_route') %}
+    {% set alpha = alpha|merge({ ('route'): app.request.attributes.get('_route')}) %}
+{% endif %}
+{% if alpha.routeParameters is empty and app.request.attributes.has('_route_params') %}
+    {% set alpha = alpha|merge({ ('routeParameters'): app.request.attributes.get('_route_params')}) %}
+{% endif %}
+<nav aria-label="Alphabetcial page navigation">
+    <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item{% if alpha.currentLetter is empty or alpha.currentLetter == 'all' %} active{% endif %}">
+            {% do alpha.setRouteParameter('letter', null) %}
+            <a class="page-link" title="{% trans %}All{% endtrans %}" href="{{ path(alpha.route, alpha.routeParameters) }}">{% trans %}All{% endtrans %}</a>
+        </li>
+
+        {% for letter in 'a'|upper..'z'|upper %}
+            {% do alpha.setRouteParameter('letter', letter) %}
+            {% if letter == alpha.currentLetter %}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" title="{{ letter }}" href="{{ path(alpha.route, alpha.routeParameters) }}">{{ letter }} <span class="sr-only">{{ 'alpha.current'|trans }}</span></a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" title="{{ letter }}" href="{{ path(alpha.route, alpha.routeParameters) }}">{{ letter }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if alpha.includeNumbers %}
+            {% for number in 0..9 %}
+                {% do alpha.setRouteParameter('letter', number) %}
+                {% if number == alpha.currentLetter %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" title="{{ number }}" href="{{ path(alpha.route, alpha.routeParameters) }}">{{ number }} <span class="sr-only">{{ 'alpha.current'|trans }}</span></a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" title="{{ number }}" href="{{ path(alpha.route, alpha.routeParameters) }}">{{ number }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+    </ul>
+</nav>

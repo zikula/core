@@ -25,6 +25,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
@@ -70,7 +71,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class UserAdministrationController extends AbstractController
 {
     /**
-     * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
+     * @Route("/list/{sort}/{sortdir}/{letter}/{page}")
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/list.html.twig")
@@ -83,34 +84,35 @@ class UserAdministrationController extends AbstractController
         string $sort = 'uid',
         string $sortdir = 'DESC',
         string $letter = 'all',
-        int $startnum = 0
+        int $page = 1
     ): array {
-        $startnum = $startnum > 0 ? $startnum - 1 : 0;
-
         $sortableColumns = new SortableColumns($router, 'zikulazauthmodule_useradministration_list', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid')]);
         $sortableColumns->setOrderByFromRequest($request);
         $sortableColumns->setAdditionalUrlParameters([
             'letter' => $letter,
-            'startnum' => $startnum
+            'page' => $page
         ]);
 
         $filter = [];
         if (!empty($letter) && 'all' !== $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
-        $limit = 25;
-
-        $mappings = $authenticationMappingRepository->query($filter, [$sort => $sortdir], $limit, $startnum);
+        $itemsPerPage = $this->getVar(ZAuthConstant::MODVAR_ITEMS_PER_PAGE, ZAuthConstant::DEFAULT_ITEMS_PER_PAGE);
+        $paginator = $authenticationMappingRepository->query($filter, [$sort => $sortdir], 'and', $page, $itemsPerPage);
+        $paginator->setRoute('zikulazauthmodule_useradministration_list');
+        $routeParameters = [
+            'sort' => $sort,
+            'sortdir' => $sortdir,
+            'letter' => $letter,
+        ];
+        $paginator->setRouteParameters($routeParameters);
 
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
-            'pager' => [
-                'count' => $mappings->count(),
-                'limit' => $limit
-            ],
             'actionsHelper' => $actionsHelper,
-            'mappings' => $mappings
+            'alpha' => new AlphaFilter('zikulazauthmodule_useradministration_list', $routeParameters, $letter),
+            'paginator' => $paginator
         ];
     }
 
@@ -135,7 +137,7 @@ class UserAdministrationController extends AbstractController
         $mappings = $authenticationMappingRepository->query($filter);
 
         return $this->render('@ZikulaZAuthModule/UserAdministration/userlist.html.twig', [
-            'mappings' => $mappings,
+            'mappings' => $mappings->getResults(),
             'actionsHelper' => $actionsHelper
         ], new PlainResponse());
     }

@@ -120,6 +120,14 @@ class ConfigType extends AbstractType
                     new Type('string')
                 ]
             ])
+            ->add(ZAuthConstant::MODVAR_ITEMS_PER_PAGE, IntegerType::class, [
+                'label' => 'Number of users displayed per page',
+                'help' => 'When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.',
+                'constraints' => [
+                    new NotBlank(),
+                    new GreaterThanOrEqual(['value' => 1])
+                ]
+            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
