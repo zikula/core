@@ -38,7 +38,7 @@
     - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
   - Event changes (requires listener modifications)
     - `Zikula\UsersModule\RegistrationEvents::DELETE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostDeletedEvent`
-    - `Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO` is removed in favor of `Zikula\UsersModule\Event\CreateActiveUserEvent`
+    - `Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPreCreatedEvent`
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).

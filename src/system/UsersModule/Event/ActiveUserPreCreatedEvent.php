@@ -31,6 +31,6 @@ namespace Zikula\UsersModule\Event;
  * Because this event will not necessarily notify ALL listeners (if propagation is stopped) it CANNOT be relied upon
  * to effect change of any kind with regard to the entity.
  */
-class CreateActiveUserEvent extends StoppableUserEntityEvent
+class ActiveUserPreCreatedEvent extends StoppableUserEntityEvent
 {
 }

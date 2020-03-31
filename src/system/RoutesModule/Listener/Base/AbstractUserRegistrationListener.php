@@ -16,7 +16,7 @@ namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\UsersModule\Event\CreateActiveUserEvent;
+use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\RegistrationEvents;
 
@@ -29,7 +29,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     {
         return [
             RegistrationEvents::REGISTRATION_STARTED        => ['started', 5],
-            CreateActiveUserEvent::class                    => ['createVeto', 5],
+            ActiveUserPreCreatedEvent::class                    => ['createVeto', 5],
             RegistrationEvents::REGISTRATION_SUCCEEDED      => ['succeeded', 5],
             RegistrationEvents::REGISTRATION_FAILED         => ['failed', 5],
             RegistrationEvents::CREATE_REGISTRATION         => ['create', 5],
@@ -80,7 +80,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      *     `echo 'UID: ' . $event->getUser()->getUid();`
      *
      */
-    public function createVeto(CreateActiveUserEvent $event): void
+    public function createVeto(ActiveUserPreCreatedEvent $event): void
     {
     }
 
