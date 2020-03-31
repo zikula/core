@@ -98,9 +98,9 @@ class MockUserRepository implements UserRepositoryInterface
     public function query(
         array $filter = [],
         array $sort = [],
-        int $limit = 0,
-        int $offset = 0,
-        string $exprType = 'and'
+        string $exprType = 'and',
+        int $page = 1,
+        int $pageSize = 25
     ) {
     }
 
