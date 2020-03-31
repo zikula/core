@@ -53,8 +53,7 @@
                 }
             },
             "securityschema": {
-                "ZikulaThemeModule::": "ThemeName::",
-                "ZikulaThemeModule::ThemeChange": ":(ThemeName|ThemeName):"
+                "ZikulaThemeModule::": "ThemeName::"
             }
         }
     }

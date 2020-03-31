@@ -44,20 +44,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.1.1':
-                $lastPerm = $this->managerRegistry->getRepository(PermissionEntity::class)
-                    ->findOneBy([], ['sequence' => 'DESC']);
-                // allow access to non-html themes
-                $record = new PermissionEntity();
-                $record['gid']       = -1;
-                $record['sequence']  = $lastPerm->getSequence();
-                $record['component'] = 'ZikulaThemeModule::ThemeChange';
-                $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
-                $record['level']     = ACCESS_COMMENT; // 300
-                $this->entityManager->persist($record);
-                $lastPerm->setSequence($record->getSequence() + 1);
-                $this->entityManager->flush();
-                //$this->addFlash('success', 'A permission rule was added to allow users access to "utility" themes. Please check the sequence.');
-
             case '1.1.2':
             case '1.2.0':
             case '1.2.1':
@@ -89,15 +75,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_ADMIN; // 800
-        $this->entityManager->persist($record);
-
-        // allow access to non-html themes
-        $record = new PermissionEntity();
-        $record['gid']       = -1;
-        $record['sequence']  = 2;
-        $record['component'] = 'ZikulaThemeModule::ThemeChange';
-        $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
-        $record['level']     = ACCESS_COMMENT; // 300
         $this->entityManager->persist($record);
 
         // give user group comment access to everything as second priority
