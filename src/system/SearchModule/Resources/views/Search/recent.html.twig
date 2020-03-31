@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for recentSearch in recentSearches %}
+        {% for recentSearch in paginator.results %}
             <tr>
                 <th id="hSearchRow{{ loop.index }}" scope="row" headers="hSearchKeywords">
                     <a href="{{ path('zikulasearchmodule_search_execute', {q: recentSearch.search}) }}">{{ recentSearch.search|replace({' ': ', '}) }}</a>
@@ -30,5 +30,4 @@
         {% endfor %}
     </tbody>
 </table>
-
-{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', includePostVars: false, route: 'zikulasearchmodule_search_recent'}) }}
+{{ include(paginator.template) }}

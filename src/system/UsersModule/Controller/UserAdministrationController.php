@@ -26,6 +26,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
@@ -65,7 +66,7 @@ use Zikula\UsersModule\UserEvents;
 class UserAdministrationController extends AbstractController
 {
     /**
-     * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
+     * @Route("/list/{sort}/{sortdir}/{letter}/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/UserAdministration/list.html.twig")
@@ -79,34 +80,36 @@ class UserAdministrationController extends AbstractController
         string $sort = 'uid',
         string $sortdir = 'DESC',
         string $letter = 'all',
-        int $startnum = 0
+        int $page = 1
     ): array {
-        $startnum = $startnum > 0 ? $startnum - 1 : 0;
-
         $sortableColumns = new SortableColumns($router, 'zikulausersmodule_useradministration_list', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid'), new Column('registrationDate'), new Column('lastLogin'), new Column('activated')]);
         $sortableColumns->setOrderByFromRequest($request);
         $sortableColumns->setAdditionalUrlParameters([
             'letter' => $letter,
-            'startnum' => $startnum
+            'page' => $page
         ]);
 
         $filter = [];
         if (!empty($letter) && 'all' !== $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
-        $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
-        $users = $userRepository->query($filter, [$sort => $sortdir], $limit, $startnum);
+        $itemsPerPage = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
+        $paginator = $userRepository->query($filter, [$sort => $sortdir], $itemsPerPage, $page);
+        $paginator->setRoute('zikulausersmodule_useradministration_list');
+        $routeParameters = [
+            'sort' => $sort,
+            'sortdir' => $sortdir,
+            'letter' => $letter,
+        ];
+        $paginator->setRouteParameters($routeParameters);
 
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
-            'pager' => [
-                'count' => $users->count(),
-                'limit' => $limit
-            ],
             'actionsHelper' => $actionsHelper,
             'authMethodCollector' => $authenticationMethodCollector,
-            'users' => $users
+            'alpha' => new AlphaFilter('zikulausersmodule_useradministration_list', $routeParameters, $letter),
+            'paginator' => $paginator
         ];
     }
 

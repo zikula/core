@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -98,8 +98,8 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
     public function getPagedCollectionBy(
         array $criteria,
         array $orderBy = null,
-        int $limit = 0,
-        int $offset = 1
+        int $pageSize = 0,
+        int $page = 1
     ): Paginator {
         return null;
     }

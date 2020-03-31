@@ -15,24 +15,24 @@
     </li>
 </ul>
 
-{% if logEntries|length > 0 %}
+{% if paginator.numResults > 0 %}
     {{ form_start(filterForm, {attr: {id: 'zikulaSecurityCenterModuleIdsLogFilterForm', class: 'navbar-form', role: 'navigation'}}) }}
     {{ form_errors(filterForm) }}
     <fieldset>
         <legend>{% trans %}Filter{% endtrans %}</legend>
-        {{ form_row(filterForm.username) }}
+        {{ form_row(filterForm.uid) }}
         {{ form_row(filterForm.name) }}
         {{ form_row(filterForm.tag) }}
         {{ form_row(filterForm.value) }}
         {{ form_row(filterForm.page) }}
         {{ form_row(filterForm.ip) }}
         {{ form_row(filterForm.impact) }}
-        {% if filter.uid or filter.name or filter.tag or filter.value or filter.page or filter.ip or filter.impact %}
-            <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{% trans %}Clear filter{% endtrans %}"><i class="fas fa-times"></i></a>
+        {% if hasFilters %}
+            <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{% trans %}Clear filter{% endtrans %}" class="btn btn-secondary"><i class="fas fa-times"></i> {% trans %}Clear filter{% endtrans %}</a>
         {% endif %}
     </fieldset>
     {{ form_end(filterForm) }}
-
+    <div class="table-responsive">
     <table class="table table-bordered table-striped">
         <colgroup>
             <col id="cName" />
@@ -82,17 +82,17 @@
         </thead>
         <tbody>
             {% set csrfToken = csrf_token('delete-idsentry') %}
-            {% for event in logEntries %}
+            {% for event in paginator.results %}
                 <tr>
                     <td headers="hName">{{ event.name }}</td>
                     <td headers="hTag">{{ event.tag }}</td>
                     <td headers="hValue">{{ event.value }}</td>
                     <td headers="hPage">{{ event.page }}</td>
-                    <td headers="hUsername">{{ event.username }}</td>
+                    <td headers="hUsername">{{ event.user.uname }}</td>
                     <td headers="hIp">{{ event.ip }}</td>
                     <td headers="hImpact">{{ event.impact }}</td>
                     <td headers="hFilters">
-                    {% for filter in event.filters %}
+                    {% for filter in event.filters|php('unserialize') %}
                         <a id="f_{{ event.id }}_{{ loop.index }}" href="#f_{{ event.id }}_{{ loop.index }}_content" title="{% trans with {'%s': filter.id} %}PHPIDS filter %s{% endtrans %}" class="eventfilter">{{ filter.id }}</a>{% if not loop.last %}, {% endif %}
                         <div id="f_{{ event.id }}_{{ loop.index }}_content" style="display: none">
                             <p><strong>{% trans %}Impact{% endtrans %}:</strong> {{ filter.impact }}</p>
@@ -109,10 +109,11 @@
             {% endfor %}
         </tbody>
     </table>
+    </div>
+    {{ include(paginator.template) }}
 {% else %}
     <p class="alert alert-info text-center">{% trans %}No logged intrusions found.{% endtrans %}</p>
 {% endif %}
-{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulasecuritycentermodule_idslog_view'}) }}
 {{ adminFooter() }}
 {% set filterFormScript %}
     <script type="text/javascript">

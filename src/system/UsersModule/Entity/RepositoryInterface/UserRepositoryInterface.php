@@ -55,9 +55,9 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function query(
         array $filter = [],
         array $sort = [],
-        int $limit = 0,
+        string $exprType = 'and',
         int $page = 1,
-        string $exprType = 'and'
+        int $pageSize = 25
     );
 
     public function count(array $filter = [], string $exprType = 'and'): int;

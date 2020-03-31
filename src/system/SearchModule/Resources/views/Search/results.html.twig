@@ -11,10 +11,10 @@
     </div>
 {% endif %}
 
-<p>{% trans with { '%s': resultCount } %}Number of hits: %s{% endtrans %}</p>
+<p>{% trans with { '%s': paginator.numResults } %}Number of hits: %s{% endtrans %}</p>
 
 <dl class="search_results">
-    {% for result in results %}
+    {% for result in paginator.results %}
     <dt class="search_hit">
         {% if result.url|default %}
             <a href="{{ result.url|zikulasearchmodule_generateUrl|e('html_attr') }}">
@@ -32,4 +32,4 @@
     </dd>
     {% endfor %}
 </dl>
-{{ pager({ rowcount: resultCount, limit: numlimit, posvar: 'page', display: 'page', includePostVars: false, route: 'zikulasearchmodule_search_execute'}) }}
+{{ include(paginator.template) }}

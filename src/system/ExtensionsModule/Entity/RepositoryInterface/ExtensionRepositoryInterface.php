@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 interface ExtensionRepositoryInterface extends ObjectRepository, Selectable
@@ -28,8 +28,8 @@ interface ExtensionRepositoryInterface extends ObjectRepository, Selectable
     public function getPagedCollectionBy(
         array $criteria,
         array $orderBy = null,
-        int $limit = 0,
-        int $offset = 1
+        int $page = 1,
+        int $pageSize = 25
     ): Paginator;
 
     public function getIndexedArrayCollection(string $indexBy): array;

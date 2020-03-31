@@ -20,9 +20,7 @@
 </div>
 <p id="user-search-min-char" class="d-none">{% trans %}Please enter at least 3 characters{% endtrans %}</p>
 
-<p id="users-alphafilter">
-    {{ pagerabc({posvar: 'letter', forwardvars: 'sortby', printempty: true, route: 'zikulausersmodule_useradministration_list'}) }}
-</p>
+<div class="pt-2">{{ include(alpha.template) }}</div>
 
 <div id="user-list">
     <table id="user-table" class="table table-bordered table-striped">
@@ -49,10 +47,10 @@
             </tr>
         </thead>
         <tbody>
-            {{ include('@ZikulaUsersModule/UserAdministration/userlist.html.twig') }}
+            {{ include('@ZikulaUsersModule/UserAdministration/userlist.html.twig', {users: paginator.results}) }}
         </tbody>
     </table>
-    {{ pager({rowcount: pager.count, limit: pager.limit, route: 'zikulausersmodule_useradministration_list', posvar: 'startnum'}) }}
+    {{ include(paginator.template) }}
 </div>
 
 {# This table is for ajax search results and is hidden until needed and populated then with the results. #}

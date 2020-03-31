@@ -128,7 +128,7 @@ class SearchResultEntity
         return $this;
     }
 
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
@@ -207,7 +207,7 @@ class SearchResultEntity
         return $this;
     }
 
-    public function getUrl(): UrlInterface
+    public function getUrl(): ?UrlInterface
     {
         return $this->url;
     }

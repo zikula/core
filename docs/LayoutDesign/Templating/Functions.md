@@ -22,8 +22,6 @@ functions, filters, tags, tests and global variables.
 - pageAddAsset(type, value, weight = 100)
 - pageGetVar(name, default = null)
 - pageSetVar(name, value)
-- pager(params)
-- pagerabc(params)
 - showflashes(params = [])
 - stateLabel(extensionEntity, upgradedExtensions = null)
 - zasset(path)

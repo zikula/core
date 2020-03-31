@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +27,7 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface
 use Zikula\AdminModule\Form\Type\AdminCategoryType;
 use Zikula\AdminModule\Helper\AdminLinksHelper;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
@@ -54,33 +54,23 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/categories/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
+     * @Route("/categories/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaAdminModule/Admin/view.html.twig")
      *
      * Views all admin categories.
      */
-    public function viewAction(AdminCategoryRepositoryInterface $repository, int $startnum = 0): array
+    public function viewAction(AdminCategoryRepositoryInterface $repository, int $page = 1): array
     {
-        $itemsPerPage = $this->getVar('itemsperpage');
+        $pageSize = $this->getVar('itemsperpage');
 
-        $categories = [];
-        /** @var Paginator $items */
-        $items = $repository->getPagedCategories(['sortorder' => 'ASC'], $itemsPerPage, $startnum);
-
-        foreach ($items as $item) {
-            if ($this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
-                $categories[] = $item;
-            }
-        }
+        /** @var Paginator $paginator */
+        $paginator = $repository->getPagedCategories(['sortorder' => 'ASC'], $page, $pageSize);
+        $paginator->setRoute('zikulaadminmodule_admin_view');
 
         return [
-            'categories' => $categories,
-            'pager' => [
-                'amountOfItems' => $items->count(),
-                'itemsPerPage' => $itemsPerPage
-            ]
+            'paginator' => $paginator
         ];
     }
 

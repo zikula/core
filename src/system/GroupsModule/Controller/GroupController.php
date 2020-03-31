@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule\Controller;
 
-use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,40 +35,35 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class GroupController extends AbstractController
 {
     /**
-     * @Route("/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
+     * @Route("/list/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("overview")
      * @Template("@ZikulaGroupsModule/Group/list.html.twig")
      *
      * View a list of all groups (user view).
      */
-    public function listAction(GroupRepositoryInterface $groupRepository, int $startnum = 0): array
+    public function listAction(GroupRepositoryInterface $groupRepository, int $page = 1): array
     {
-        $itemsPerPage = $this->getVar('itemsperpage', 25);
+        $pageSize = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
+
         $excludedGroups = [CommonHelper::GTYPE_CORE];
         if ($this->getVar('hidePrivate')) {
             $excludedGroups[] = CommonHelper::GTYPE_PRIVATE;
         }
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->notIn('gtype', $excludedGroups))
-            ->setMaxResults($itemsPerPage)
-            ->setFirstResult($startnum);
-        $groups = $groupRepository->matching($criteria);
+
+        $paginator = $groupRepository->getGroups([], ['gtype' => $excludedGroups], [], $page, $pageSize);
+        $paginator->setRoute('zikulagroupsmodule_group_list');
 
         return [
-            'groups' => $groups,
+            'paginator' => $paginator,
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
-            'defaultGroup' => $this->getVar('defaultgroup'),
-            'pager' => [
-                'amountOfItems' => count($groups),
-                'itemsPerPage' => $itemsPerPage
-            ]
+            'defaultGroup' => $this->getVar('defaultgroup')
         ];
     }
 
     /**
-     * @Route("/admin/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
+     * @Route("/admin/list/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Group/adminList.html.twig")
@@ -79,22 +73,20 @@ class GroupController extends AbstractController
     public function adminListAction(
         GroupRepositoryInterface $groupRepository,
         GroupApplicationRepository $applicationRepository,
-        int $startnum = 0
+        int $page = 1
     ): array {
-        $itemsPerPage = $this->getVar('itemsperpage', 25);
+        $pageSize = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
-        $groups = $groupRepository->findBy([], [], $itemsPerPage, $startnum);
+
+        $paginator = $groupRepository->getGroups([], [], [], $page, $pageSize);
+        $paginator->setRoute('zikulagroupsmodule_group_adminlist');
 
         return [
-            'groups' => $groups,
+            'paginator' => $paginator,
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
             'applications' => $applicationRepository->findAll(),
-            'defaultGroup' => $this->getVar('defaultgroup', GroupsConstant::GROUP_ID_USERS),
-            'pager' => [
-                'amountOfItems' => count($groups),
-                'itemsPerPage' => $itemsPerPage
-            ]
+            'defaultGroup' => $this->getVar('defaultgroup', GroupsConstant::GROUP_ID_USERS)
         ];
     }
 

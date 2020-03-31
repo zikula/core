@@ -59,7 +59,7 @@ class ExtensionController extends AbstractController
     private const NEW_ROUTES_AVAIL = 'new.routes.avail';
 
     /**
-     * @Route("/list/{pos}")
+     * @Route("/list/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaExtensionsModule/Extension/list.html.twig")
@@ -70,7 +70,7 @@ class ExtensionController extends AbstractController
         ExtensionRepositoryInterface $extensionRepository,
         BundleSyncHelper $bundleSyncHelper,
         RouterInterface $router,
-        int $pos = 1
+        int $page = 1
     ): array {
         $modulesJustInstalled = $request->query->get('justinstalled');
         if (!empty($modulesJustInstalled)) {
@@ -86,23 +86,22 @@ class ExtensionController extends AbstractController
         $upgradedExtensions = [];
         $vetoEvent = new GenericEvent();
         $eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
-        if (1 === $pos && !$vetoEvent->isPropagationStopped()) {
+        if (1 === $page && !$vetoEvent->isPropagationStopped()) {
             // regenerate the extension list only when viewing the first page
             $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
             $upgradedExtensions = $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
         }
 
-        $pagedResult = $extensionRepository->getPagedCollectionBy([], [
+        $pageSize = $this->getVar('itemsperpage');
+
+        $paginator = $extensionRepository->getPagedCollectionBy([], [
             $sortableColumns->getSortColumn()->getName() => $sortableColumns->getSortDirection()
-        ], $this->getVar('itemsperpage'), $pos);
+        ], $pageSize, $page);
+        $paginator->setRoute('zikulaextensionsmodule_extension_list');
 
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
-            'pager' => [
-                'limit' => $this->getVar('itemsperpage'),
-                'count' => count($pagedResult)
-            ],
-            'extensions' => $pagedResult,
+            'paginator' => $paginator,
             'upgradedExtensions' => $upgradedExtensions
         ];
     }

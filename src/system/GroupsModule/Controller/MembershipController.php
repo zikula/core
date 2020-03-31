@@ -47,7 +47,7 @@ use Zikula\UsersModule\Entity\UserEntity;
 class MembershipController extends AbstractController
 {
     /**
-     * @Route("/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
+     * @Route("/list/{gid}/{letter}/{page}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "page" = "\d+"})
      * @PermissionCheck({"$_zkModule::memberslist", "::", "overview"})
      * @Template("@ZikulaGroupsModule/Membership/list.html.twig")
      *
@@ -58,7 +58,7 @@ class MembershipController extends AbstractController
         VariableApiInterface $variableApi,
         UserSessionRepositoryInterface $userSessionRepository,
         string $letter = '*',
-        int $startNum = 0
+        int $page = 1
     ): array {
         $groupsCommon = new CommonHelper($this->getTranslator());
         $inactiveLimit = $variableApi->getSystemVar('secinactivemins');
@@ -69,16 +69,12 @@ class MembershipController extends AbstractController
             'group' => $group,
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
-            'usersOnline' => $userSessionRepository->getUsersSince($dateTime),
-            'pager' => [
-                'amountOfItems' => $group->getUsers()->count(),
-                'itemsPerPage' => $this->getVar('itemsperpage', 25)
-            ],
+            'usersOnline' => $userSessionRepository->getUsersSince($dateTime)
         ];
     }
 
     /**
-     * @Route("/admin/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
+     * @Route("/admin/list/{gid}/{letter}/{page}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "page" = "\d+"})
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
      * @Template("@ZikulaGroupsModule/Membership/adminList.html.twig")
@@ -88,14 +84,10 @@ class MembershipController extends AbstractController
     public function adminListAction(
         GroupEntity $group,
         string $letter = '*',
-        int $startNum = 0
+        int $page = 1
     ): array {
         return [
-            'group' => $group,
-            'pager' => [
-                'amountOfItems' => $group->getUsers()->count(),
-                'itemsPerPage' => $this->getVar('itemsperpage', 25)
-            ]
+            'group' => $group
         ];
     }
 

@@ -16,6 +16,7 @@ namespace Zikula\GroupsModule\Entity\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
@@ -61,25 +62,33 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
         array $filters = [],
         array $exclusions = [],
         array $sorting = [],
-        int $limit = 0,
-        int $offset = 0
-    ): array {
+        int $page = 1,
+        int $pageSize = 25
+    ): Paginator {
         $qb = $this->createQueryBuilder('g');
 
         // add clauses for where
         if (count($filters) > 0) {
             $i = 1;
             foreach ($filters as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->eq('g.' . $w_key, '?' . $i))
-                   ->setParameter($i, $w_value);
+                if (is_array($w_value)) {
+                    $qb->andWhere($qb->expr()->in('g.' . $w_key, '?' . $i));
+                } else {
+                    $qb->andWhere($qb->expr()->eq('g.' . $w_key, '?' . $i));
+                }
+                $qb->setParameter($i, $w_value);
                 $i++;
             }
         }
         if (count($exclusions) > 0) {
             $i = 1;
             foreach ($exclusions as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->neq('g.' . $w_key, '?' . $i))
-                   ->setParameter($i, $w_value);
+                if (is_array($w_value)) {
+                    $qb->andWhere($qb->expr()->notIn('g.' . $w_key, '?' . $i));
+                } else {
+                    $qb->andWhere($qb->expr()->neq('g.' . $w_key, '?' . $i));
+                }
+                $qb->setParameter($i, $w_value);
                 $i++;
             }
         }
@@ -91,17 +100,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
             }
         }
 
-        // add limit and offset
-        if ($limit > 0) {
-            $qb->setMaxResults($limit);
-            if ($offset > 0) {
-                $qb->setFirstResult($offset);
-            }
-        }
-
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
     public function findAllAndIndexBy(string $indexField): array

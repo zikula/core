@@ -37,10 +37,10 @@
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
   - Event changes (requires listener modifications)
-    - `Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPreCreatedEvent`
-    - `Zikula\UsersModule\RegistrationEvents::CREATE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostCreatedEvent`
-    - `Zikula\UsersModule\RegistrationEvents::DELETE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostDeletedEvent`
-    - `Zikula\UsersModule\UserEvents::CREATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostCreatedEvent`
+    - `Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPreCreatedEvent`.
+    - `Zikula\UsersModule\RegistrationEvents::CREATE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostCreatedEvent`.
+    - `Zikula\UsersModule\RegistrationEvents::DELETE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostDeletedEvent`.
+    - `Zikula\UsersModule\UserEvents::CREATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostCreatedEvent`.
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
@@ -86,6 +86,8 @@
   - `Zikula\ZAuthModule\Api\PasswordApi` & `Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface` are deprecated and will be removed in Core-4.0.0
     - Use `Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface` or `bin2hex(random_bytes(8))`
   - Support for ancient Macintosh-type line-endings (\r) on user CSV file import has been dropped.
+  - Old `pager` Twig function has been removed in favour of a new [Pagination utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/pagination.html).
+  - Old `abcpager` Twig function has been removed in favour of a new [AlphaFilter utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/alphafilter.html).
   - Dropped vendors:
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)

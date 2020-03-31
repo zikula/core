@@ -15,16 +15,15 @@ namespace Zikula\SearchModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 
 interface SearchResultRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function countResults(string $sessionId = ''): int;
-
     /**
      * Returns results for given arguments.
      */
-    public function getResults(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array;
+    public function getResults(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator;
 
     /**
      * Deletes all results for the current session.

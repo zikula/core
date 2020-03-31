@@ -41,7 +41,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class IdsLogController extends AbstractController
 {
     /**
-     * @Route("/view")
+     * @Route("/view/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenterModule/IdsLog/view.html.twig")
@@ -51,7 +51,8 @@ class IdsLogController extends AbstractController
     public function viewAction(
         Request $request,
         IntrusionRepository $repository,
-        RouterInterface $router
+        RouterInterface $router,
+        int $page = 1
     ): array {
         // sorting
         $sort = $request->query->get('sort', 'date DESC');
@@ -70,36 +71,29 @@ class IdsLogController extends AbstractController
             'ip' => null,
             'impact' => null
         ];
-        $filters = $request->query->get('filter', $defaultFilter);
-        $where = [];
-        foreach ($filters as $flt_key => $flt_value) {
-            if (isset($flt_value) && !empty($flt_value)) {
-                $where[$flt_key] = $flt_value;
-            }
-        }
-
-        $filterForm = $this->createForm(IdsLogFilterType::class, $filters, [
+        $filterForm = $this->createForm(IdsLogFilterType::class, $defaultFilter, [
             'repository' => $repository
         ]);
+        $filters = $where = [];
+        $filterForm->handleRequest($request);
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $filters = $filterForm->getData();
+            foreach ($filters as $flt_key => $flt_value) {
+                if (isset($flt_value) && !empty($flt_value)) {
+                    $where[$flt_key] = $flt_value;
+                }
+            }
+        }
+        $hasFilters = 0 < count($where);
+
 
         // number of items to show
         $pageSize = (int)$this->getVar('pagesize', 25);
 
-        // offset
-        $startOffset = (int)$request->query->getInt('startnum', 0);
-
         // get data
-        $items = $repository->getIntrusions($where, $sorting, $pageSize, $startOffset);
-        $amountOfItems = $repository->countIntrusions($where);
-
-        $data = [];
-        foreach ($items as $item) {
-            $dta = $item->toArray();
-            $dta['username'] = $dta['user']['uname'];
-            $dta['filters'] = unserialize($dta['filters']);
-            unset($dta['user']);
-            $data[] = $dta;
-        }
+        $paginator = $repository->getIntrusions($where, $sorting, $page, $pageSize);
+        $paginator->setRoute('zikulasecuritycentermodule_idslog_view');
+        $paginator->setRouteParameters(['sort' => $sort, 'filter' => $filters]);
 
         $sortableColumns = new SortableColumns($router, 'zikulasecuritycentermodule_idslog_view', 'sort', 'sortdir');
         $sortableColumns->addColumns([
@@ -116,12 +110,9 @@ class IdsLogController extends AbstractController
 
         $templateParameters = [
             'filterForm' => $filterForm->createView(),
+            'hasFilters' => $hasFilters,
             'sort' => $sortableColumns,
-            'logEntries' => $data,
-            'pager' => [
-                'amountOfItems' => $amountOfItems,
-                'itemsPerPage' => $pageSize
-            ]
+            'paginator' => $paginator
         ];
 
         return $templateParameters;

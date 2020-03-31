@@ -71,7 +71,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class UserAdministrationController extends AbstractController
 {
     /**
-     * @Route("/list/{sort}/{sortdir}/{letter}/{page}")
+     * @Route("/list/{sort}/{sortdir}/{letter}/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/list.html.twig")

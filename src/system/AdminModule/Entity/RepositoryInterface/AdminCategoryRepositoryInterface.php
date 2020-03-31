@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\AdminModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 
 interface AdminCategoryRepositoryInterface extends ObjectRepository, Selectable
 {
@@ -26,5 +26,5 @@ interface AdminCategoryRepositoryInterface extends ObjectRepository, Selectable
 
     public function getIndexedCollection(string $indexBy);
 
-    public function getPagedCategories(array $orderBy = [], int $offset = 0, int $limit = 0): Paginator;
+    public function getPagedCategories(array $orderBy = [], int $page = 1, int $pageSize = 25): Paginator;
 }

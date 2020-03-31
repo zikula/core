@@ -15,6 +15,7 @@ namespace Zikula\SearchModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchResultRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 
@@ -30,22 +31,7 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
         parent::__construct($registry, SearchResultEntity::class);
     }
 
-    public function countResults(string $sessionId = ''): int
-    {
-        $qb = $this->createQueryBuilder('tbl')
-            ->select('COUNT(tbl.sesid)');
-
-        if ('' !== $sessionId) {
-            $qb->where('tbl.sesid = :sid')
-               ->setParameter('sid', $sessionId);
-        }
-
-        $query = $qb->getQuery();
-
-        return (int)$query->getSingleScalarResult();
-    }
-
-    public function getResults(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
+    public function getResults(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
@@ -67,17 +53,7 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
             }
         }
 
-        // add limit and offset
-        if ($limit > 0) {
-            $qb->setMaxResults($limit);
-            if ($offset > 0) {
-                $qb->setFirstResult($offset);
-            }
-        }
-
-        $query = $qb->getQuery();
-
-        return $query->getArrayResult();
+        return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
     public function clearOldResults(string $sessionId = ''): void

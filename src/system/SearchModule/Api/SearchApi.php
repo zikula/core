@@ -69,12 +69,12 @@ class SearchApi implements SearchApiInterface
         bool $firstPage = false,
         string $searchType = 'AND',
         string $searchOrder = 'newest',
-        int $limit = -1,
         int $page = 1,
+        int $pageSize = 25,
         array $moduleData = []
     ): array {
-        $limit = isset($limit) && !empty($limit) ? $limit : $this->variableApi->get('ZikulaSearchModule', 'itemsperpage', 25);
-        $offset = $limit > 0 ? (($page - 1) * $limit) : 0;
+        $pageSize = isset($pageSize) && !empty($pageSize) ? $pageSize : $this->variableApi->get('ZikulaSearchModule', 'itemsperpage', 25);
+        $page = 0 < $page ? $page : 1;
 
         // obtain and persist search results from searchableModules
         if ($firstPage) {
@@ -95,18 +95,12 @@ class SearchApi implements SearchApiInterface
                 }
             }
             $this->searchResultRepository->flush();
-
-            $resultCount = $this->searchResultRepository->countResults($this->session->getId());
-            $this->session->set('searchResultCount', $resultCount);
-        } else {
-            $resultCount = $this->session->get('searchResultCount');
         }
 
-        $results = $this->searchResultRepository->getResults(['sesid' => $this->session->getId()], $this->computeSort($searchOrder), $limit, $offset);
+        $paginator = $this->searchResultRepository->getResults(['sesid' => $this->session->getId()], $this->computeSort($searchOrder), $page, $pageSize);
 
         return [
-            'resultCount' => $resultCount,
-            'sqlResult' => $results,
+            'paginator' => $paginator,
             'errors' => isset($searchableInstance) ? $searchableInstance->getErrors() : []
         ];
     }

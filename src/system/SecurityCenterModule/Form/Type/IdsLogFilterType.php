@@ -60,6 +60,9 @@ class IdsLogFilterType extends AbstractType
 
         $choices = [];
         foreach ($listEntries as $entry) {
+            if (is_array($entry)) {
+                $entry = array_shift($entry);
+            }
             $choices[$entry] = $entry;
         }
 
@@ -86,6 +89,7 @@ class IdsLogFilterType extends AbstractType
     {
         $resolver->setDefaults([
             'repository' => null,
+            'csrf_protection' => false,
             'translation_domain' => 'security'
         ]);
     }

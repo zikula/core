@@ -127,9 +127,9 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     public function query(
         array $filter = [],
         array $sort = [],
-        int $limit = 0,
+        string $exprType = 'and',
         int $page = 1,
-        string $exprType = 'and'
+        int $pageSize = 25
     ) {
         $qb = $this->createQueryBuilder('u')
             ->select('u');
@@ -144,11 +144,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             $qb->orderBy($this->orderByFromArray($sort));
         }
 
-        if ($limit > 0) {
-            return (new Paginator($qb, $limit))->paginate($page);
-        }
-
-        return $qb->getQuery()->getResult();
+        return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
     public function count(array $filter = [], string $exprType = 'and'): int

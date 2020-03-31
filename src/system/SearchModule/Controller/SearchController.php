@@ -49,7 +49,7 @@ class SearchController extends AbstractController
         ZikulaHttpKernelInterface $kernel,
         SearchableModuleCollector $collector,
         SearchApiInterface $searchApi,
-        int $page = -1
+        int $page = 1
     ) {
         $setActiveDefaults = false;
         if (!$request->query->has('active')) {
@@ -97,15 +97,16 @@ class SearchController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-            $formData['numlimit'] = $this->getVar('itemsperpage', 25);
+            $pageSize = $this->getVar('itemsperpage', 25);
+            $formData['numlimit'] = $pageSize;
             $formData['firstPage'] = $page < 1;
-            $formData['page'] = $page < 1 ? 1 : $page;
-            $result = $searchApi->search($formData['q'], $page < 1, $formData['searchType'], $formData['searchOrder'], $this->getVar('itemsperpage', 25), $page, $formData['modules']);
+            $formData['page'] = 0 < $page ? $page : 1;
+            $result = $searchApi->search($formData['q'], 1 > $page, $formData['searchType'], $formData['searchOrder'], $page, $pageSize, $formData['modules']);
             $searchApiErrors = $result['errors'];
-            if ($result['resultCount'] > 0) {
+            if (0 < $result['paginator']->getNumResults()) {
+                $result['paginator']->setRoute('zikulasearchmodule_search_execute');
                 $templateParameters = array_merge($formData, [
-                    'resultCount' => $result['resultCount'],
-                    'results' => $result['sqlResult'],
+                    'paginator' => $result['paginator'],
                     'router' => $router,
                     'limitSummary' => $this->getVar('limitsummary', 200),
                     'errors' => $searchApiErrors ?? []
@@ -127,25 +128,22 @@ class SearchController extends AbstractController
     }
 
     /**
-     * @Route("/recent")
+     * @Route("/recent/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @Template("@ZikulaSearchModule/Search/recent.html.twig")
      *
      * Display a list of recent searches.
      */
     public function recentAction(
         Request $request,
-        SearchStatRepositoryInterface $searchStatRepository
+        SearchStatRepositoryInterface $searchStatRepository,
+        int $page = 1
     ): array {
-        $startnum = $request->query->getInt('startnum');
-        $itemsPerPage = $this->getVar('itemsperpage', 25);
-        $items = $searchStatRepository->getStats([], ['date' => 'DESC'], $itemsPerPage, $startnum);
+        $pageSize = $this->getVar('itemsperpage', 25);
+        $paginator = $searchStatRepository->getStats([], ['date' => 'DESC'], $page, $pageSize);
+        $paginator->setRoute('zikulasearchmodule_search_recent');
 
         return [
-            'recentSearches' => $items,
-            'pager' => [
-                'amountOfItems' => $searchStatRepository->countStats(),
-                'itemsPerPage'  => $itemsPerPage
-            ]
+            'paginator' => $paginator
         ];
     }
 

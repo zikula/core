@@ -15,6 +15,7 @@ namespace Zikula\SearchModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 
@@ -40,7 +41,7 @@ class SearchStatRepository extends ServiceEntityRepository implements SearchStat
         return (int)$query->getSingleScalarResult();
     }
 
-    public function getStats(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
+    public function getStats(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
@@ -62,17 +63,7 @@ class SearchStatRepository extends ServiceEntityRepository implements SearchStat
             }
         }
 
-        // add limit and offset
-        if ($limit > 0) {
-            $qb->setMaxResults($limit);
-            if ($offset > 0) {
-                $qb->setFirstResult($offset);
-            }
-        }
-
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
     public function persistAndFlush(SearchStatEntity $entity): void

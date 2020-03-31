@@ -53,14 +53,14 @@
     </thead>
     <tbody>
         {% for user in group.users %}
-        <tr>
-            <td headers="hUserName">{{ user.uid|profileLinkByUserId }}</td>
-            <td headers="hStatus"><span class="badge {% if user.uid in usersOnline %}badge-success">{% trans %}Online{% endtrans %}{% else %}badge-danger">{% trans %}Offline{% endtrans %}{% endif %}</span></td>
-        </tr>
+            <tr>
+                <td headers="hUserName">{{ user.uid|profileLinkByUserId }}</td>
+                <td headers="hStatus"><span class="badge {% if user.uid in usersOnline %}badge-success">{% trans %}Online{% endtrans %}{% else %}badge-danger">{% trans %}Offline{% endtrans %}{% endif %}</span></td>
+            </tr>
         {% else %}
-            <tr class="table-info"><td colspan="4" class="text-center">{% trans %}No users found.{% endtrans %}</td></tr>
+            <tr class="table-info"><td colspan="2" class="text-center">{% trans %}No users found.{% endtrans %}</td></tr>
         {% endfor %}
     </tbody>
 </table>
-{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startNum', route: 'zikulagroupsmodule_membership_list'}) }}
+{#{ include(paginator.template) }#}
 {{ moduleFooter() }}

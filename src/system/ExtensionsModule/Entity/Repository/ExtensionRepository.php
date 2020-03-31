@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
@@ -34,8 +34,8 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
     public function getPagedCollectionBy(
         array $criteria,
         array $orderBy = null,
-        int $limit = 0,
-        int $offset = 1
+        int $page = 1,
+        int $pageSize = 25
     ): Paginator {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('e')->from($this->_entityName, 'e');
@@ -51,13 +51,8 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
                 $qb->orderBy("e.${field}", $direction);
             }
         }
-        $query = $qb->getQuery();
-        if ($limit > 0) {
-            $query->setMaxResults($limit)
-                ->setFirstResult($offset - 1);
-        }
 
-        return new Paginator($query);
+        return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
     public function getIndexedArrayCollection(string $indexBy): array

@@ -22,22 +22,22 @@
     </thead>
     <tbody>
         {% for user in group.users %}
-        <tr>
-            <td headers="hUserId">{{ user.uid }}</td>
-            <td headers="hUserName">{{ user.uname }}</td>
-            <td headers="hEmail">{{ user.email }}</td>
-            <td headers="hActions" class="text-right">
-                {% if user.uid != currentUser.uid %}
-                    <a href="{{ path('zikulagroupsmodule_membership_remove', {gid: group.gid, uid: user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{% trans %}Remove user from group{% endtrans %}"><span class="fas fa-lg fa-user-times"></span></a>
-                {% endif %}
-            </td>
-        </tr>
+            <tr>
+                <td headers="hUserId">{{ user.uid }}</td>
+                <td headers="hUserName">{{ user.uname }}</td>
+                <td headers="hEmail">{{ user.email }}</td>
+                <td headers="hActions" class="text-right">
+                    {% if user.uid != currentUser.uid %}
+                        <a href="{{ path('zikulagroupsmodule_membership_remove', {gid: group.gid, uid: user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{% trans %}Remove user from group{% endtrans %}"><span class="fas fa-lg fa-user-times"></span></a>
+                    {% endif %}
+                </td>
+            </tr>
         {% else %}
             <tr class="table table-borderedempty"><td colspan="4">{% trans %}No users found.{% endtrans %}</td></tr>
         {% endfor %}
     </tbody>
 </table>
-{#{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startNum', route: 'zikulagroupsmodule_membership_adminlist'}) }}#}
+{#{ include(paginator.template) }#}
 
 <h3><i class="fas fa-user-plus"></i> {% trans %}Add user to this group{% endtrans %}</h3>
 <h4>{% trans %}Seach by username{% endtrans %}</h4>

@@ -17,6 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 
 /**
@@ -32,24 +33,9 @@ class IntrusionRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns amount of intrusions for given arguments.
-     */
-    public function countIntrusions(array $filters = []): int
-    {
-        $qb = $this->createQueryBuilder('tbl')
-            ->select('COUNT(tbl.id)');
-
-        $qb = $this->addCommonFilters($qb, $filters);
-
-        $query = $qb->getQuery();
-
-        return (int)$query->getSingleScalarResult();
-    }
-
-    /**
      * Returns intrusions for given arguments.
      */
-    public function getIntrusions(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
+    public function getIntrusions(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
@@ -72,17 +58,7 @@ class IntrusionRepository extends ServiceEntityRepository
             }
         }
 
-        // add limit and offset
-        if ($limit > 0) {
-            $qb->setMaxResults($limit);
-            if ($offset > 0) {
-                $qb->setFirstResult($offset);
-            }
-        }
-
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return (new Paginator($qb, $pageSize))->paginate($page);
     }
 
     /**
@@ -130,7 +106,7 @@ class IntrusionRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('tbl');
 
         if ('uid' === $fieldName) {
-            $qb->select('DISTINCT(u.' . $fieldName . ')')
+            $qb->select('DISTINCT(u.uname)')
                ->from('ZikulaUsersModule:UserEntity', 'u')
                ->where($qb->expr()->eq('tbl.user', 'u.uid'))
                ->addOrderBy('u.uname', 'ASC');
@@ -139,9 +115,7 @@ class IntrusionRepository extends ServiceEntityRepository
                ->addOrderBy('tbl.' . $fieldName, 'ASC');
         }
 
-        $query = $qb->getQuery();
-
-        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     /**

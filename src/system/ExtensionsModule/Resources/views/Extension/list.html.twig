@@ -32,7 +32,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for extension in extensions %}
+    {% for extension in paginator.results %}
         <tr class="extension-type-{{ extension.type }}">
             <td headers="hType" class="text-center" class="d-none d-md-table-cell">{{ _self.badge(extension.type) }}</td>
             <td headers="hName">
@@ -57,7 +57,7 @@
     {% endfor %}
     </tbody>
 </table>
-{{ pager({rowcount: pager.count, limit: pager.limit, route: 'zikulaextensionsmodule_extension_list'}) }}
+{{ include(paginator.template) }}
 {{ adminFooter() }}
 
 {% macro adminRoute(extension) %}

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SearchModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 
@@ -29,7 +30,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
         return count($this->results);
     }
 
-    public function getStats(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
+    public function getStats(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator
     {
         return $this->results;
     }
