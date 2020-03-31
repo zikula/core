@@ -20,6 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersModule\UserEvents;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 
@@ -32,22 +33,22 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * @var TranslatorInterface
      */
     protected $translator;
-    
+
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-    
+
     /**
      * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
-    
+
     /**
      * @var LoggerInterface
      */
     protected $logger;
-    
+
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
@@ -59,35 +60,33 @@ abstract class AbstractUserListener implements EventSubscriberInterface
         $this->currentUserApi = $currentUserApi;
         $this->logger = $logger;
     }
-    
+
     public static function getSubscribedEvents()
     {
         return [
-            UserEvents::CREATE_ACCOUNT => ['create', 5],
+            ActiveUserPostCreatedEvent::class => ['create', 5],
             UserEvents::UPDATE_ACCOUNT => ['update', 5],
             UserEvents::DELETE_ACCOUNT => ['delete', 5]
         ];
     }
-    
+
     /**
-     * Listener for the `user.account.create` event.
+     * Listener for ActiveUserPostCreatedEvent::class.
      *
      * Occurs after a user account is created. All handlers are notified.
      * It does not apply to creation of a pending registration.
-     * The full user record created is available as the subject.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the user record that was created.
      *
-     * You can access general data available in the event.
+     * You can access the user and date in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
+     * The user:
+     *     `echo 'UID: ' . $event->getUser()->getUid();`
      *
      */
-    public function create(GenericEvent $event): void
+    public function create(ActiveUserPostCreatedEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `user.account.update` event.
      *
@@ -105,7 +104,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     public function update(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `user.account.delete` event.
      *
@@ -121,8 +120,8 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     public function delete(GenericEvent $event): void
     {
         $userId = (int) $event->getSubject();
-    
-        
+
+
         $repo = $this->entityFactory->getRepository('route');
         // set creator to admin (UsersConstant::USER_ID_ADMIN) for all routes created by this user
         $repo->updateCreator(
@@ -132,7 +131,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
             $this->logger,
             $this->currentUserApi
         );
-        
+
         // set last editor to admin (UsersConstant::USER_ID_ADMIN) for all routes updated by this user
         $repo->updateLastEditor(
             $userId,
@@ -141,7 +140,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
             $this->logger,
             $this->currentUserApi
         );
-        
+
         $logArgs = [
             'app' => 'ZikulaRoutesModule',
             'user' => $this->currentUserApi->get('uname'),

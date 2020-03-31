@@ -98,16 +98,6 @@ class RegistrationEvents
     public const REGISTRATION_FAILED = 'module.users.ui.registration.failed';
 
     /**
-     * Occurs after a registration record is created, either through the normal user registration process, or through
-     * the administration panel for the Users module. This event will not fire if the result of the registration process
-     * is a full user record. Instead, a user.account.create event will fire.
-     * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The subject of the event is set to the UserEntity that was created.
-     * This event occurs before the $authenticationMethod->register() method is called.
-     */
-    public const CREATE_REGISTRATION = 'user.registration.create';
-
-    /**
      * Occurs after a registration record is updated (likely through the admin panel, but not guaranteed).
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the UserEntity, with the updated values. The event data contains the
