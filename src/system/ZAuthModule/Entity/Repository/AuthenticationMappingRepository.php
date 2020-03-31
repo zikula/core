@@ -15,8 +15,8 @@ namespace Zikula\ZAuthModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;

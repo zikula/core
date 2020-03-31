@@ -99,7 +99,7 @@ class UserAdministrationController extends AbstractController
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
         $itemsPerPage = $this->getVar(ZAuthConstant::MODVAR_ITEMS_PER_PAGE, ZAuthConstant::DEFAULT_ITEMS_PER_PAGE);
-        $paginator = $authenticationMappingRepository->query($filter, [$sort => $sortdir],'and', $page, $itemsPerPage);
+        $paginator = $authenticationMappingRepository->query($filter, [$sort => $sortdir], 'and', $page, $itemsPerPage);
         $paginator->setRoute('zikulazauthmodule_useradministration_list');
         $routeParameters = [
             'sort' => $sort,
