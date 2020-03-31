@@ -16,6 +16,7 @@ namespace Zikula\SearchModule\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 
 interface SearchResultRepositoryInterface extends ObjectRepository, Selectable
@@ -23,7 +24,7 @@ interface SearchResultRepositoryInterface extends ObjectRepository, Selectable
     /**
      * Returns results for given arguments.
      */
-    public function getResults(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator;
+    public function getResults(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): PaginatorInterface;
 
     /**
      * Deletes all results for the current session.

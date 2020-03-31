@@ -16,6 +16,7 @@ namespace Zikula\ExtensionsModule\Entity\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
@@ -36,7 +37,7 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
         array $orderBy = null,
         int $page = 1,
         int $pageSize = 25
-    ): Paginator {
+    ): PaginatorInterface {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('e')->from($this->_entityName, 'e');
         $i = 1;

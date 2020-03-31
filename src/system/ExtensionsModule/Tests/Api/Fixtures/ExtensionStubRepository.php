@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -100,7 +101,7 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
         array $orderBy = null,
         int $pageSize = 0,
         int $page = 1
-    ): Paginator {
+    ): PaginatorInterface {
         return null;
     }
 

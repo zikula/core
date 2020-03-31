@@ -17,22 +17,7 @@ use Doctrine\ORM\QueryBuilder as DoctrineQueryBuilder;
 use Doctrine\ORM\Tools\Pagination\CountWalker;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 
-/**
- * @author Javier Eguiluz <javier.eguiluz@gmail.com>
- * Most of this file is copied from https://github.com/javiereguiluz/symfony-demo/blob/master/src/Pagination/Paginator.php
- *
- * usage:
- *     in Repository class:
- *         return (new Paginator($qb, $pageSize))->paginate($pageNumber);
- *     in controller:
- *         $latestPosts = $repository->getLatestPosts($criteria, $pageSize);
- *         return $this->render('blog/index.'.$_format.'.twig', [
- *             'paginator' => $latestPosts,
- *         ]);
- *     results in template {% for post in paginator.results %}
- *     include template: {{ include(paginator.template) }}
- */
-class Paginator
+class Paginator implements PaginatorInterface
 {
     private const PAGE_SIZE = 25;
 
@@ -58,7 +43,7 @@ class Paginator
         $this->pageSize = $pageSize;
     }
 
-    public function paginate(int $page = 1): self
+    public function paginate(int $page = 1): PaginatorInterface
     {
         $this->currentPage = max(1, $page);
         $firstResult = ($this->currentPage - 1) * $this->pageSize;
@@ -133,7 +118,7 @@ class Paginator
         return $this->results;
     }
 
-    public function setRoute(string $route): self
+    public function setRoute(string $route): PaginatorInterface
     {
         $this->route = $route;
 
@@ -145,7 +130,7 @@ class Paginator
         return $this->route;
     }
 
-    public function setRouteParameters(array $parameters): self
+    public function setRouteParameters(array $parameters): PaginatorInterface
     {
         $this->routeParameters = $parameters;
 

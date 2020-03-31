@@ -18,6 +18,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 
 /**
@@ -35,7 +36,7 @@ class IntrusionRepository extends ServiceEntityRepository
     /**
      * Returns intrusions for given arguments.
      */
-    public function getIntrusions(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): Paginator
+    public function getIntrusions(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): PaginatorInterface
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
