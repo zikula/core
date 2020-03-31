@@ -33,4 +33,4 @@ new AlphaFilter('mycustomroute', $routeParameters, $currentLetter, true);
 ```
 
 The template can be customized by overriding `@Core/Filter/AlphaFilter.html.twig` in all the normal ways.
-You can also simply set your own custom template in the controller `$myAlphaFilter->setTemplate('@MyBundle/Custom/Template.html.twig');`
+You can also simply set your own custom template in the controller `$myAlphaFilter->setTemplate('@MyBundle/Custom/template.html.twig');`

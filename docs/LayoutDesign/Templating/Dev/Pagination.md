@@ -24,7 +24,7 @@ return (new Paginator($qb, $pageSize))->paginate($page); // returns Paginator ob
 $latestPosts = $repository->getLatestPosts($criteria, $pageSize);
 $latestPosts->setRoute('mycustomroute');
 $latestPosts->setRouteParameters(['foo' => 'bar']);
-return $this->render('blog/index.'.$_format.'.twig', [
+return $this->render('blog/index.' . $_format . '.twig', [
     'paginator' => $latestPosts,
 ]);
 ```
@@ -41,4 +41,4 @@ return $this->render('blog/index.'.$_format.'.twig', [
 ### Customization
 
 The template can be customized by overriding `@Core/Paginator/Paginator.html.twig` in all the normal ways.
-You can also simply set your own custom template in the controller `$latestPosts->setTemplate('@MyBundle/Custom/Template.html.twig');`
+You can also simply set your own custom template in the controller `$latestPosts->setTemplate('@MyBundle/Custom/template.html.twig');`
