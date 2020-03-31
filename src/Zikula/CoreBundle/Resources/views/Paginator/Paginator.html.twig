@@ -2,19 +2,25 @@
     {% do paginator.setRoute(app.request.attributes.get('_route')) %}
 {% endif %}
 {% if paginator.hasToPaginate %}
-    <nav aria-label="Page navigation">
+    <nav aria-label="{% trans %}Page navigation{% endtrans %}">
         <ul class="pagination justify-content-center">
+            {% do paginator.setRouteParameter('page', 1) %}
+            <li class="page-item">
+                <a class="page-link" title="{% trans %}First page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
+                    <i class="fas fa-angle-double-left"></i>
+                </a>
+            </li>
             {% if paginator.hasPreviousPage %}
                 {% do paginator.setRouteParameter('page', paginator.previousPage) %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ path(paginator.route, paginator.routeParameters) }}">
-                        <i class="fa fw fa-arrow-left"></i>
+                    <a class="page-link" title="{% trans %}Previous page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
+                        <i class="fas fw fa-arrow-left"></i>
                     </a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true"><i class="fa fw fa-arrow-left"></i></span>
+                    <a class="page-link" title="{% trans %}Previous page{% endtrans %}" href="#" aria-label="{% trans %}Previous page{% endtrans %}">
+                        <span aria-hidden="true"><i class="fas fw fa-arrow-left"></i></span>
                     </a>
                 </li>
             {% endif %}
@@ -35,17 +41,23 @@
             {% if paginator.hasNextPage %}
                 {% do paginator.setRouteParameter('page', paginator.nextPage) %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ path(paginator.route, paginator.routeParameters) }}">
-                        <i class="fa fw fa-arrow-right"></i>
+                    <a class="page-link" title="{% trans %}Next page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
+                        <i class="fas fw fa-arrow-right"></i>
                     </a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true"><i class="fa fw fa-arrow-right"></i></span>
+                    <a class="page-link" title="{% trans %}Next page{% endtrans %}" href="#" aria-label="{% trans %}Next page{% endtrans %}">
+                        <span aria-hidden="true"><i class="fas fw fa-arrow-right"></i></span>
                     </a>
                 </li>
             {% endif %}
+            {% do paginator.setRouteParameter('page', paginator.lastPage) %}
+            <li class="page-item">
+                <a class="page-link" title="{% trans %}Last page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
+                    <i class="fas fa-angle-double-right"></i>
+                </a>
+            </li>
         </ul>
     </nav>
 {% endif %}
