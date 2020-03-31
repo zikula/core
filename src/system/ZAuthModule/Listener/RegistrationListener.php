@@ -21,6 +21,7 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
+use Zikula\UsersModule\Event\RegistrationPostApprovedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
@@ -84,7 +85,7 @@ class RegistrationListener implements EventSubscriberInterface
             RegistrationPostSuccessEvent::class => [
                 'sendEmailVerificationEmail'
             ],
-            RegistrationEvents::FORCE_REGISTRATION_APPROVAL => [
+            RegistrationPostApprovedEvent::class => [
                 'forceRegistrationApproval'
             ]
         ];
@@ -131,9 +132,8 @@ class RegistrationListener implements EventSubscriberInterface
         }
     }
 
-    public function forceRegistrationApproval(GenericEvent $event): void
+    public function forceRegistrationApproval(RegistrationPostApprovedEvent $event): void
     {
-        $userEntity = $event->getSubject();
-        $this->mappingRepository->setEmailVerification($userEntity->getUid());
+        $this->mappingRepository->setEmailVerification($event->getUser()->getUid());
     }
 }

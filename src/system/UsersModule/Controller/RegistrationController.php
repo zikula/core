@@ -37,6 +37,7 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
+use Zikula\UsersModule\Event\RegistrationPreCreatedEvent;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
@@ -220,7 +221,7 @@ class RegistrationController extends AbstractController
         }
 
         // Notify that we are beginning a registration session.
-        $eventDispatcher->dispatch(new GenericEvent(), RegistrationEvents::REGISTRATION_STARTED);
+        $eventDispatcher->dispatch(new RegistrationPreCreatedEvent());
 
         $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationTemplateName()

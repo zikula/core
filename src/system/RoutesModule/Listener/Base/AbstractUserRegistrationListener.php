@@ -17,10 +17,12 @@ namespace Zikula\RoutesModule\Listener\Base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
+use Zikula\UsersModule\Event\RegistrationPostApprovedEvent;
 use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
+use Zikula\UsersModule\Event\RegistrationPreCreatedEvent;
 use Zikula\UsersModule\RegistrationEvents;
 
 /**
@@ -31,28 +33,23 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public static function getSubscribedEvents()
     {
         return [
-            RegistrationEvents::REGISTRATION_STARTED        => ['started', 5],
-            ActiveUserPreCreatedEvent::class                => ['createVeto', 5],
-            RegistrationPostSuccessEvent::class              => ['succeeded', 5],
-            RegistrationPostCreatedEvent::class             => ['create', 5],
-            RegistrationPostUpdatedEvent::class             => ['update', 5],
-            RegistrationPostDeletedEvent::class             => ['delete', 5],
-            RegistrationEvents::FORCE_REGISTRATION_APPROVAL => ['forceApproval', 5]
+            RegistrationPreCreatedEvent::class   => ['started', 5],
+            ActiveUserPreCreatedEvent::class     => ['createVeto', 5],
+            RegistrationPostSuccessEvent::class  => ['succeeded', 5],
+            RegistrationPostCreatedEvent::class  => ['create', 5],
+            RegistrationPostUpdatedEvent::class  => ['update', 5],
+            RegistrationPostDeletedEvent::class  => ['delete', 5],
+            RegistrationPostApprovedEvent::class => ['forceApproval', 5]
         ];
     }
 
     /**
-     * Listener for the `module.users.ui.registration.started` event.
+     * Listener for the RegistrationPreCreatedEvent::class.
      *
      * Occurs at the beginning of the registration process, before the registration form is displayed to the user.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * There is no content to the event. It is simply an alert.
      */
-    public function started(GenericEvent $event): void
+    public function started(RegistrationPreCreatedEvent $event): void
     {
     }
 
@@ -201,17 +198,17 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     }
 
     /**
-     * Listener for the `force.registration.approval` event.
+     * Listener for the RegistrationPostApprovedEvent::class.
      *
-     * Occurs when an administrator approves a registration. The UserEntity is the subject.
+     * Occurs when an administrator approves a registration.
      *
-     * You can access general data available in the event.
+     * You can access the user and date in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
+     * The user:
+     *     `echo 'UID: ' . $event->getUser()->getUid();`
      *
      */
-    public function forceApproval(GenericEvent $event): void
+    public function forceApproval(RegistrationPostApprovedEvent $event): void
     {
     }
 }

@@ -28,6 +28,7 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
+use Zikula\UsersModule\Event\RegistrationPostApprovedEvent;
 use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersModule\RegistrationEvents;
 
@@ -135,7 +136,7 @@ class RegistrationHelper
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);
-        $this->eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::FORCE_REGISTRATION_APPROVAL);
+        $this->eventDispatcher->dispatch(new RegistrationPostApprovedEvent($user));
 
         $this->registerNewUser($user);
     }
