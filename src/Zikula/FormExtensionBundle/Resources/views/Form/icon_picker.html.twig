@@ -1,12 +1,4 @@
 {{ pageAddAsset('stylesheet', asset('fontawesome-iconpicker/fontawesome-iconpicker.min.css')) }}
 {{ pageAddAsset('javascript', asset('fontawesome-iconpicker/fontawesome-iconpicker.min.js')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaFormExtensionBundle:css/ZikulaFormExtensionBundle.IconPicker.css')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaFormExtensionBundle:js/ZikulaFormExtensionBundle.IconPicker.js')) }}
-{% set customStyle %}
-    {# temporary fix for making BS3 component work with BS4 - see https://github.com/itsjavi/fontawesome-iconpicker/issues/65 #}
-    <style>
-        .fade.in {
-            opacity: 1;
-        }
-    </style>
-{% endset %}
-{{ pageAddAsset('header', customStyle) }}

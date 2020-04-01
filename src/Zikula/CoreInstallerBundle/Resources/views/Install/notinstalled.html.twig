@@ -15,7 +15,7 @@
                     {% trans with {'%inst%': inst, '%docs%': docs} %}You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>
                 <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>
-                <div id="startButton" class="row">
+                <div id="startButton" class="row d-none">
                     <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         <a class="btn btn-success btn-lg d-flex align-items-center" href="{{ path('install', {'stage': 'locale' }) }}">
                             <i class="fas fa-thumbs-up fa-3x float-left mr-3"></i> {% trans %}Install Zikula!{% endtrans %}<br />{% trans %}Version{% endtrans %} {{ version }}
@@ -31,9 +31,4 @@
         </div>
     </div>
 </div>
-<script>
-    jQuery(document).ready(function($) {
-        $('#startButton').removeClass('d-none');
-    });
-</script>
 {% endblock %}

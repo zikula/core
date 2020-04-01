@@ -2,76 +2,68 @@
 {% block title 'Zikula Core Installer :: Enter database information' %}
 
 {% block content %}
-<div class="card">
+<div class="card" id="databaseCredentials">
     <div class="card-header">
         <strong>{% trans %}Database information{% endtrans %}</strong>
     </div>
     <div class="card-body">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+        <div class="form-group row">
+            {{ form_label(form.database_driver) }}
+            <div class="col-md-9">
+                {{ form_errors(form.database_driver) }}
+                {{ form_widget(form.database_driver) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.database_host) }}
+            <div class="col-sm-9">
+                {{ form_errors(form.database_host) }}
+                {{ form_widget(form.database_host) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.database_port) }}
+            <div class="col-sm-9">
+                {{ form_errors(form.database_port) }}
+                {{ form_widget(form.database_port) }}
+                {{ form_help(form.database_port) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.database_user) }}
+            <div class="col-md-9">
+                {{ form_errors(form.database_user) }}
+                {{ form_widget(form.database_user) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.database_password) }}
+            <div class="col-md-9">
+                {{ form_errors(form.database_password) }}
+                {{ form_widget(form.database_password) }}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form_label(form.database_name) }}
+            <div class="col-md-9">
+                {{ form_errors(form.database_name) }}
+                {{ form_widget(form.database_name) }}
+                <small class="form-text text-danger">{% trans %}Ensure the database is in UTF-8 format.{% endtrans %}</small>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
+                <p id="dbCheck" class="d-none">
+                    <i class="fas fa-cog fa-spin fa-fw text-success"></i>{% trans %}Checking database connection...{% endtrans %}
+                </p>
+                <input type="submit" id="submitButton" value="{% trans %}Next{% endtrans %}" class="btn btn-success" />
+            </div>
+        </div>
 
-    <div class="form-group row">
-        {{ form_label(form.database_driver) }}
-        <div class="col-md-9">
-            {{ form_errors(form.database_driver) }}
-            {{ form_widget(form.database_driver) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        {{ form_label(form.database_host) }}
-        <div class="col-sm-9">
-            {{ form_errors(form.database_host) }}
-            {{ form_widget(form.database_host) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        {{ form_label(form.database_port) }}
-        <div class="col-sm-9">
-            {{ form_errors(form.database_port) }}
-            {{ form_widget(form.database_port) }}
-            {{ form_help(form.database_port) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        {{ form_label(form.database_user) }}
-        <div class="col-md-9">
-            {{ form_errors(form.database_user) }}
-            {{ form_widget(form.database_user) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        {{ form_label(form.database_password) }}
-        <div class="col-md-9">
-            {{ form_errors(form.database_password) }}
-            {{ form_widget(form.database_password) }}
-        </div>
-    </div>
-    <div class="form-group row">
-        {{ form_label(form.database_name) }}
-        <div class="col-md-9">
-            {{ form_errors(form.database_name) }}
-            {{ form_widget(form.database_name) }}
-            <small class="form-text text-danger">{% trans %}Ensure the database is in UTF-8 format.{% endtrans %}</small>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-9 offset-md-3">
-            <p id="db-check" class="d-none"><i class="fas fa-cog fa-spin fa-fw text-success"></i>{% trans %}Checking database connection...{% endtrans %}</p>
-            <input type="submit" id="submit_button" value="{% trans %}Next{% endtrans %}" class="btn btn-success" />
-        </div>
-    </div>
-
-    {{ form_end(form) }}
+        {{ form_end(form) }}
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('form:first *:input:text:first').focus();
-
-        $('#submit_button').closest('form').submit(function(event) {
-            $('#db-check').removeClass('d-none');
-        });
-      });
-</script>
 {% endblock %}

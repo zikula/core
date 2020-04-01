@@ -16,7 +16,7 @@
                         on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>
                 <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>
-                <div id="startButton" class="row">
+                <div id="startButton" class="row d-none">
                     <div class="col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         <a class="btn btn-success btn-lg d-flex align-items-center" href="{{ path('upgrade', {'stage': 'init' }) }}">
                             <i class="fas fa-thumbs-up fa-3x float-left mr-3"></i> {% trans %}Upgrade Zikula!{% endtrans %}<br />{% trans %}To version{% endtrans %} {{ version }}
@@ -26,15 +26,10 @@
                 <br />
                 <p class="text-muted">
                     {% trans %}Zikula is free software released under the GPL license!{% endtrans %}<br />
-                    {% trans with { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage" onclick="window.open(this.href);return false;">https://ziku.la</a>'}|raw %}For more information, please visit %link%.{% endtrans %}
+                    {% trans with {'%link%': '<a href="https://ziku.la/" title="Zikula Homepage" class="external">https://ziku.la</a>'}|raw %}For more information, please visit %link%.{% endtrans %}
                 </p>
             </div>
         </div>
     </div>
 </div>
-<script>
-    jQuery(document).ready(function( $ ) {
-        $('#startButton').removeClass('d-none');
-    });
-</script>
 {% endblock %}

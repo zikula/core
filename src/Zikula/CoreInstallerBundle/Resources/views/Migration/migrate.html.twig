@@ -3,7 +3,7 @@
 {% block title 'Migrating Users...'|trans %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid" id="userMigration">
     <div class="row">
         <h3>
             <span class="fas fa-cogs"></span>
@@ -20,40 +20,9 @@
                 <span class="sr-only">{% trans %}Progress bar{% endtrans %}</span>
             </div>
         </div>
-        <div class="alert alert-info">{% trans with {'%f': count} %}There are %f users to try to migrate.{% endtrans %}</div>
+        <div class="alert alert-info">{% trans with {'%amount%': count} %}There are %amount% users to try to migrate.{% endtrans %}</div>
         <div class="text-center"><i id="spinner" class="fas fa-cog fa-2x fa-spin fa-fw" class="d-none"></i> <button id="migrate" class="btn btn-lg btn-success">{% trans %}Begin migration{% endtrans %}</button></div>
+        <div id="pathHolder" data-migrate-route="{{ path('zauth_migration') }}" data-redirect-route="{{ path('upgrade', {stage: 'locale'}) }}"></div>
     </div>
 </div>
-<script>
-    (function($) {
-        $(document).ready(function() {
-            $('#migrate').on('click', function() {
-                $('#spinner').removeClass('d-none');
-                $(this).addClass('disabled');
-                $(this).bind('click', false);
-                migrate();
-            });
-            function migrate() {
-                $.ajax({
-                    data: {},
-                    url: '{{ path('zauth_migration') }}',
-                    success: function(data, textStatus, jqXHR) {
-                        $('.progress-bar').css('width', data.data.percentcomplete + '%');
-                        if (data.data.percentcomplete === 100) {
-                            $('.progress-bar').removeClass('progress-bar-striped active');
-                            var redirect = setTimeout(function() {
-                                window.location = '{{ path('upgrade', {stage: 'locale'}) }}';
-                            }, 800);
-                        } else {
-                            migrate();
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        alert(jqXHR.responseText);
-                    }
-                });
-            }
-        });
-    })(jQuery);
-</script>
 {% endblock %}

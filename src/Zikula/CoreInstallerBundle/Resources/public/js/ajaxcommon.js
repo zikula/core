@@ -1,7 +1,8 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-jQuery( document ).ready(function( $ ) {
-    // the `stages` array is declared in the template
+jQuery(document).ready(function ($) {
+    var stages = $('#stageDefinitions').data('stages');
+
     var route;
     var progressbar = 0;
     var percentage = (1 / stages.length) * 100;
@@ -78,13 +79,13 @@ jQuery( document ).ready(function( $ ) {
     }
 
     function getNextStage(stagename) {
-        if (typeof stagename == 'undefined') return stages[0];
+        if ('undefined' == typeof stagename) return stages[0];
         var key = stages.indexOf(stagename);
-        return (-1 === key) ? stages[0] : stages[++key];
+        return -1 === key ? stages[0] : stages[++key];
     }
 
     function updateProgressBar(stagename) {
-        progressbar = ('finish' === stagename) ? 100 : progressbar + percentage;
+        progressbar = 'finish' === stagename ? 100 : progressbar + percentage;
         $('#progress-bar').css('width', progressbar + '%');
         if ('finish' === stagename) {
             $('#progress-bar').removeClass('progress-bar-striped active');
@@ -101,7 +102,7 @@ jQuery( document ).ready(function( $ ) {
         var table = '<table class="table"><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>';
         var index;
         for (index = 0; index < resultArray.length; ++index) {
-            table += '<tr><td>'+resultArray[index][0]+'</td><td>'+resultArray[index][1]+'</td></tr>';
+            table += '<tr><td>' + resultArray[index][0] + '</td><td>' + resultArray[index][1] + '</td></tr>';
         }
         table += '</tbody></table>';
 

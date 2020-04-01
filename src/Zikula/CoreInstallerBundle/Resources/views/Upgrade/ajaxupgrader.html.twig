@@ -1,13 +1,12 @@
 {% extends '@ZikulaCoreInstaller/theme.html.twig' %}
-
+{% block childstylesheets %}
+    <link href="{{ asset('bundles/zikulacoreinstaller/css/ajaxinstaller.css') }}" rel="stylesheet" />
+{% endblock %}
 {% block childjavascripts %}
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/zikulacoreinstaller/js/ajaxcommon.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    <script src="{{ asset('bundles/zikulacoreinstaller/js/ajaxcommon.js') }}"></script>
 {% endblock %}
-{%  block childstylesheets %}
-    <link href="{{ asset('bundles/zikulacoreinstaller/css/ajaxinstaller.css') }}" rel="stylesheet" />
-{%  endblock %}
 
 {% block title 'Zikula is upgrading!'|trans %}
 
@@ -20,10 +19,10 @@
     </div>
 
     <div class="text-center">
-        <a href="#upgrade-card" id="beginUpgrade" class="btn btn-lg btn-success">{% trans %}Begin Upgrader{% endtrans %}<br />{% trans %}be patient!{% endtrans %} <i class="fas fa-clock"></i></a>
+        <a href="#upgradeCard" id="beginUpgrade" class="btn btn-lg btn-success">{% trans %}Begin Upgrader{% endtrans %}<br />{% trans %}be patient!{% endtrans %} <i class="fas fa-clock"></i></a>
     </div>
 
-    <div class="card" id="upgrade-card">
+    <div class="card" id="upgradeCard">
         <div class="card-header">
             <strong>{% trans %}Upgrading Modules and Helpers{% endtrans %}</strong>
         </div>
@@ -46,12 +45,5 @@
         <a id="continueButton" href="{{ url('upgrade', {'stage': 'complete'}) }}" class="btn btn-lg btn-success d-none">{% trans %}Finish{% endtrans %} <i class="fas fa-angle-double-right"></i></a>
     </div>
 </div>
-{# create a javascript array of all the stages #}
-<script>
-    var stages = [
-    {% for stage in stages %}
-        "{{ stage.name }}",
-    {% endfor %}
-    ];
-</script>
+<div id="stageDefinitions" data-stages='[{% for stage in stages %}"{{ stage.name }}"{% if not loop.last %},{% endif %}{% endfor %}]'></div>
 {% endblock %}

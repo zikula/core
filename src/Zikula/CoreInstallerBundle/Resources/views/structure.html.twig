@@ -19,13 +19,7 @@
         {# always load jquery and bootstrap #}
         <script src="{{ asset('jquery/jquery.min.js') }}"></script>
         <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-        <script>
-            (function($) {
-                $(document).ready(function() {
-                    $('label.col-form-label').removeClass('col-md-2');
-                });
-            })(jQuery);
-        </script>
+        <script src="{{ asset('bundles/zikulacoreinstaller/js/common.js') }}"></script>
         {# allow child templates to load additional scripts #}
         {% block javascripts '' %}
 

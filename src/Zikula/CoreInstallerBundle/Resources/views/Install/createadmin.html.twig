@@ -2,12 +2,11 @@
 {% block title "Zikula Core Installer :: Create administrator's account" %}
 
 {% block content %}
-<div class="card">
+<div class="card" id="adminCredentials">
     <div class="card-header">
         <strong>{% trans %}Create administrator's account{% endtrans %}</strong>
     </div>
     <div class="card-body">
-
         {{ form_start(form) }}
         {{ form_errors(form) }}
 
@@ -47,9 +46,4 @@
         {{ form_end(form) }}
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('form:first *:input:text:first').focus();
-    });
-</script>
 {% endblock %}

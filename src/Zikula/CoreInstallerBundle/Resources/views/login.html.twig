@@ -2,12 +2,11 @@
 {% block title "Zikula Core Installer :: Login" %}
 
 {% block content %}
-<div class="card">
+<div class="card" id="loginCredentials">
     <div class="card-header">
         <strong>{% trans %}Please Login with Admin credentials{% endtrans %}</strong>
     </div>
     <div class="card-body">
-
         {{ form_start(form) }}
         {{ form_errors(form) }}
 
@@ -33,9 +32,4 @@
         {{ form_end(form) }}
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('form:first *:input:text:first').focus();
-    });
-</script>
 {% endblock %}

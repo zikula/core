@@ -1,0 +1,4 @@
+/* temporary fix for making BS3 component work with BS4 - see https://github.com/itsjavi/fontawesome-iconpicker/issues/65 */
+.fade.in {
+    opacity: 1;
+}

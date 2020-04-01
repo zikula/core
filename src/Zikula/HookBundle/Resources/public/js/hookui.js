@@ -1,10 +1,27 @@
 // Copyright Zikula Foundation, licensed MIT.
 
+var subscriberAreas = [];
 var appendItemBeforeResponse = true;
 var removeItemBeforeResponse = true;
 var cloneDraggedItem = true;
 
 ( function($) {
+    $(document).ready(function() {
+        subscriberAreas = $('#areaDefinitions').data('areas');
+
+        $('#hookSubscriberAreas a.detachlink, #hookProviderAreas a.detachlink').click(function (event) {
+            event.preventDefault();
+
+            unbindProviderAreaFromSubscriberArea($(this).data('sareaid'), $(this).data('sarea'), $(this).data('pareaid'), $(this).data('parea'));
+        });
+
+        $('#subscribersListForProvider input.subscriber-toggle').click(function (event) {
+            subscriberAreaToggle($(this).data('sarea'), $(this).data('parea'));
+        });
+
+        initHookSubscriber();
+    });
+
     var initHookAccordion = function(containerId) {
         $('#' + containerId + ' h4').addClass('z-panel-header z-pointer');
         $('#' + containerId).accordion({
@@ -16,7 +33,7 @@ var cloneDraggedItem = true;
         });
     };
 
-    var initHookSubscriber = function() {
+    function initHookSubscriber() {
         initAreasSortables();
 
         // init dragging of available provider areas

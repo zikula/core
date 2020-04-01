@@ -1,3 +1,5 @@
+<div class="alert alert-info">{% trans %}Drag items from the right column to the left column to connect the hooks. Only areas with the same category can be connected.{% endtrans %}</div>
+
 <div class="row">
 <div id="hookSubscriberAreas" class="col-md-6">
     <fieldset>
@@ -11,7 +13,7 @@
                         <input type="hidden" id="sarea_{{ sarea_md5 }}_a" value="{{ sarea }}" />
                         <input type="hidden" id="sarea_{{ sarea_md5 }}_c" value="{{ subscriberAreasToCategories[sarea] }}" />
                         <input type="hidden" id="sarea_{{ sarea_md5 }}_i" value="{{ sarea_md5 }}" />
-                        <h4><i class="fas fa-caret-right"></i> {{ subscriberAreasToTitles[sarea] }} <span class="small">({{ sarea }})</span></h4>
+                        <h4>{{ subscriberAreasToTitles[sarea] }} <span class="small">({{ sarea }})</span></h4>
                         <ol id="sarea_{{ sarea_md5 }}_list" class="">
                             {% if areasSorting[category][sarea] is defined %}
                                 {% for parea in areasSorting[category][sarea] %}
@@ -21,11 +23,11 @@
                                         <i class="fas fa-arrows"></i>
                                         <span>
                                             {{ areasSortingTitles[parea] }} <span class="small">({{ parea }})</span>
-                                            <a class="detachlink" title="{% trans %}Detach{% endtrans %} {{ areasSortingTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{{ sarea_md5 }}', '{{ sarea }}', '{{ parea_md5 }}', '{{ parea }}');"><i class="fas fa-remove"></i></a>
+                                            <a class="detachlink" title="{% trans %}Detach{% endtrans %} {{ areasSortingTitles[parea] }}" href="#" data-sareaid="{{ sarea_md5|e('html_attr') }}" data-sarea="{{ sarea|e('html_attr') }}" data-pareaid="{{ parea_md5|e('html_attr') }}" data-parea="{{ parea|e('html_attr') }}"><i class="fas fa-remove"></i></a>
                                         </span>
-                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_a" value="{{ parea }}" />
-                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_c" value="{{ category }}" />
-                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_i" value="{{ parea_md5 }}" />
+                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_a" value="{{ parea|e('html_attr') }}" />
+                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_c" value="{{ category|e('html_attr') }}" />
+                                        <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_i" value="{{ parea_md5|e('html_attr') }}" />
                                     </li>
                                 {% endfor %}
                             {% endif %}
@@ -62,7 +64,7 @@
                                     <span>
                                         {{ provider.areasToTitles[parea]|default('Area') }} <span class="small">({{ parea }})
                                     </span>
-                                    <a class="detachlink d-none" title="{% trans %}Detach{% endtrans %} {{ provider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fas fa-times"></i></a></span>
+                                    <a class="detachlink d-none" title="{% trans %}Detach{% endtrans %} {{ provider.areasToTitles[parea] }}" href="#" data-sareaid="##id" data-sarea="##name" data-pareaid="{{ parea_md5|e('html_attr') }}" data-parea="{{ parea|e('html_attr') }}"><i class="fas fa-times"></i></a></span>
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_a" value="{{ parea }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_c" value="{{ provider.areasToCategories[parea] }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_i" value="{{ parea_md5 }}" />
