@@ -22,6 +22,7 @@ use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
+use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\CollectionFilterHelper;
@@ -347,7 +348,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Selects a list of objects with a given where clause and pagination parameters.
      *
-     * @return Paginator
+     * @return PaginatorInterface
      */
     public function selectWherePaginated(
         string $where = '',
@@ -356,7 +357,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         int $resultsPerPage = 25,
         bool $useJoins = true,
         bool $slimMode = false
-    ): Paginator {
+    ): PaginatorInterface {
         $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
     
         return $this->retrieveCollectionResult($qb, true, $currentPage, $resultsPerPage);
@@ -390,7 +391,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Performs a given database selection and post-processed the results.
      *
-     * @return Paginator|array Paginator (for paginated queries) or retrieved collection
+     * @return PaginatorInterface|array Paginator (for paginated queries) or retrieved collection
      */
     public function retrieveCollectionResult(
         QueryBuilder $qb,
