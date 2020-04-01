@@ -46,41 +46,33 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
 
     public function flush(SearchResultEntity $entity = null): void
     {
-        // nothing
     }
 
     public function truncateTable(): void
     {
-        // nothing
     }
 
     public function find($id)
     {
-        // TODO: Implement find() method.
     }
 
     public function findAll()
     {
-        // TODO: Implement findAll() method.
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        // TODO: Implement findBy() method.
     }
 
     public function findOneBy(array $criteria)
     {
-        // TODO: Implement findOneBy() method.
     }
 
     public function getClassName()
     {
-        // TODO: Implement getClassName() method.
     }
 
     public function matching(Criteria $criteria)
     {
-        // TODO: Implement matching() method.
     }
 }

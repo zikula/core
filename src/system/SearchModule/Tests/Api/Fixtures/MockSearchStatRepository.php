@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\SearchModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchStatEntity;
@@ -33,7 +32,7 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
 
     public function getStats(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): PaginatorInterface
     {
-        return $this->results;
+        return new MockPaginator($this->results);
     }
 
     public function persistAndFlush(SearchStatEntity $entity): void
@@ -43,17 +42,14 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
 
     public function find($id)
     {
-        // TODO: Implement find() method.
     }
 
     public function findAll()
     {
-        // TODO: Implement findAll() method.
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        // TODO: Implement findBy() method.
     }
 
     public function findOneBy(array $criteria)
@@ -63,11 +59,9 @@ class MockSearchStatRepository implements SearchStatRepositoryInterface
 
     public function getClassName()
     {
-        // TODO: Implement getClassName() method.
     }
 
     public function matching(Criteria $criteria)
     {
-        // TODO: Implement matching() method.
     }
 }
