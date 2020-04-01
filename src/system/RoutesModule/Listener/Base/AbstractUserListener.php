@@ -79,13 +79,8 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the user record that was created.
      *
-     * You can access general data available in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
@@ -101,13 +96,8 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The User property is the *new* data. The oldUser property is the *old* data.
      *
-     * You can access general data available in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
@@ -122,13 +112,8 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * Occurs after the deletion of a user account.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      *
-     * You can access general data available in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`

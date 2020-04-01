@@ -78,13 +78,8 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * Because this event will not necessarily notify ALL listeners (if propagation is stopped) it CANNOT be relied upon
      * to effect change of any kind with regard to the entity.
      *
-     * You can access general data available in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
@@ -142,13 +137,8 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second,
      * an event handler that was notified prior to the current handler may already have changed the `'redirectUrl'`.
      *
-     * You can access general data available in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
@@ -162,18 +152,13 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      *
      * Occurs after a registration record is created, either through the normal user registration process,
      * or through the administration panel for the Users module. This event will not fire if the result of the
-     * registration process is a full user record. Instead, a `user.account.create` event will fire.
+     * registration process is a full user record. Instead, an `ActiveUserPostCreatedEvent` will fire.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the UserEntity that was created.
-     * This event occurs before the $authenticationMethod->register() method is called.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
+     * This event occurs before the `$authenticationMethod->register()` method is called.
      *
      *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
@@ -190,13 +175,8 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * The subject of the event is set to the UserEntity, with the updated values. The event data contains the
      * original UserEntity in an array `['oldValue' => $originalUser]`.
      *
-     * You can access general data available in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
@@ -211,16 +191,11 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * Occurs after a registration record is deleted. This could occur as a result of the administrator deleting
      * the record through the approval/denial process, or it could happen because the registration request expired.
      * This event will not fire if a registration record is converted to a full user account record. Instead,
-     * a `user.account.create` event will fire. This is a storage-level event, not a UI event. It should not be
+     * an `ActiveUserPostCreatedEvent` will fire. This is a storage-level event, not a UI event. It should not be
      * used for UI-level actions such as redirects. The subject of the event is set to the Uid being deleted.
      *
-     * You can access general data available in the event.
      *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * You can also access the user and date in the event.
+     * You can access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
