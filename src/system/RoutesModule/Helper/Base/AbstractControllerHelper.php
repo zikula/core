@@ -219,22 +219,21 @@ abstract class AbstractControllerHelper
             $entities = $repository->selectWhere($where, $sort . ' ' . $sortdir, false);
         } else {
             // the current offset which is used to calculate the pagination
-            $currentPage = $request->query->getInt('pos', 1);
+            $currentPage = $request->query->getInt('page', 1);
     
             // retrieve item list with pagination
-            list($entities, $objectCount) = $repository->selectWherePaginated(
+            $paginator = $repository->selectWherePaginated(
                 $where,
                 $sort . ' ' . $sortdir,
                 $currentPage,
                 $resultsPerPage,
                 false
             );
+            $paginator->setRoute('zikularoutesmodule_' . strtolower($objectType) . '_' . $templateParameters['routeArea'] . 'view');
+            $paginator->setRouteParameters($urlParameters);
     
-            $templateParameters['currentPage'] = $currentPage;
-            $templateParameters['pager'] = [
-                'amountOfItems' => $objectCount,
-                'itemsPerPage' => $resultsPerPage
-            ];
+            $templateParameters['paginator'] = $paginator;
+            $entities = $paginator->getResults();
         }
     
         $templateParameters['sort'] = $sort;

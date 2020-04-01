@@ -80,7 +80,7 @@ abstract class AbstractRouteController extends AbstractController
         ViewHelper $viewHelper,
         string $sort,
         string $sortdir,
-        int $pos,
+        int $page,
         int $num,
         bool $isAdmin = false
     ): Response {
@@ -97,7 +97,7 @@ abstract class AbstractRouteController extends AbstractController
         
         $request->query->set('sort', $sort);
         $request->query->set('sortdir', $sortdir);
-        $request->query->set('pos', $pos);
+        $request->query->set('page', $page);
         
         $routeName = 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view';
         $sortableColumns = new SortableColumns($router, $routeName, 'sort', 'sortdir');

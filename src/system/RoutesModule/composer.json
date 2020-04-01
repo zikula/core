@@ -34,11 +34,11 @@
             "url": "routes",
             "icon": "fas fa-map-marked-alt",
             "capabilities": {
-                "user": {
-                    "route": "zikularoutesmodule_route_index"
-                },
                 "admin": {
                     "route": "zikularoutesmodule_route_adminindex"
+                },
+                "user": {
+                    "route": "zikularoutesmodule_route_index"
                 }
             },
             "securityschema": {

@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostApprovedEvent;
 use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
@@ -23,7 +22,6 @@ use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPreCreatedEvent;
-use Zikula\UsersModule\RegistrationEvents;
 
 /**
  * Event handler base class for user registration events.
@@ -42,19 +40,26 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
             RegistrationPostApprovedEvent::class => ['forceApproval', 5]
         ];
     }
-
+    
     /**
-     * Listener for the RegistrationPreCreatedEvent::class.
+     * Listener for the `RegistrationPreCreatedEvent`.
      *
      * Occurs at the beginning of the registration process, before the registration form is displayed to the user.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
      * There is no content to the event. It is simply an alert.
      */
     public function started(RegistrationPreCreatedEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for ActiveUserPreCreatedEvent::class.
+     * Listener for the `ActiveUserPreCreatedEvent`.
      *
      * Occurs when the Registration process is determining whether to create a 'registration' or a 'full user'.
      *
@@ -73,22 +78,27 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * Because this event will not necessarily notify ALL listeners (if propagation is stopped) it CANNOT be relied upon
      * to effect change of any kind with regard to the entity.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
-     *
      */
     public function createVeto(ActiveUserPreCreatedEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the RegistrationPostSuccessEvent::class.
+     * Listener for the `RegistrationPostSuccessEvent`.
      *
      * Occurs after a user has successfully registered a new account in the system. It will follow either a
-     * ResgistrationPostCreatedEvent, or a ActiveUserPostCreatedEvent, depending on the result of the registration process, the
-     * information provided by the user, and several configuration options set in the Users module. The resultant record
+     * `RegistrationPostCreatedEvent`, or a `ActiveUserPostCreatedEvent`, depending on the result of the registration process,
+     * the information provided by the user, and several configuration options set in the Users module. The resultant record
      * might be a fully activated user record, or it might be a registration record pending approval, e-mail
      * verification, or both.
      *
@@ -132,7 +142,13 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second,
      * an event handler that was notified prior to the current handler may already have changed the `'redirectUrl'`.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
@@ -140,72 +156,88 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function succeeded(RegistrationPostSuccessEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for RegistrationPostCreatedEvent::class.
+     * Listener for the `RegistrationPostCreatedEvent`.
      *
      * Occurs after a registration record is created, either through the normal user registration process,
      * or through the administration panel for the Users module. This event will not fire if the result of the
-     * registration process is a full user record. Instead, a ActiveUserPostCreatedEvent::class will fire.
+     * registration process is a full user record. Instead, a `user.account.create` event will fire.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the UserEntity that was created.
      * This event occurs before the $authenticationMethod->register() method is called.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
-     *
      */
     public function create(RegistrationPostCreatedEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the RegistrationPostUpdatedEvent::class.
+     * Listener for the `RegistrationPostUpdatedEvent`.
      *
      * Occurs after a registration record is updated (likely through the admin panel, but not guaranteed).
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The User property is the *new* data. The oldUser property is the *old* data
+     * The subject of the event is set to the UserEntity, with the updated values. The event data contains the
+     * original UserEntity in an array `['oldValue' => $originalUser]`.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
-     *
      */
     public function update(RegistrationPostUpdatedEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the `Zikula\UsersModule\Event\RegistrationPostDeletedEvent` event.
+     * Listener for the `RegistrationPostDeletedEvent`.
      *
      * Occurs after a registration record is deleted. This could occur as a result of the administrator deleting
      * the record through the approval/denial process, or it could happen because the registration request expired.
      * This event will not fire if a registration record is converted to a full user account record. Instead,
-     * a ActiveUserPostCreatedEvent::class will fire. This is a storage-level event, not a UI event. It should not be
+     * a `user.account.create` event will fire. This is a storage-level event, not a UI event. It should not be
      * used for UI-level actions such as redirects. The subject of the event is set to the Uid being deleted.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
-     *
      */
     public function delete(RegistrationPostDeletedEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the RegistrationPostApprovedEvent::class.
+     * Listener for the `RegistrationPostApprovedEvent`.
      *
      * Occurs when an administrator approves a registration.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
      *
-     * The user:
-     *     `echo 'UID: ' . $event->getUser()->getUid();`
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
      *
      */
     public function forceApproval(RegistrationPostApprovedEvent $event): void

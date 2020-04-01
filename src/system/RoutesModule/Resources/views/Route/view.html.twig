@@ -62,31 +62,31 @@
                         <th id="hSortable" scope="col" class="">{% trans %}Sorting{% endtrans %}</th>
                     {% endif %}
                     <th id="hBundle" scope="col" class="text-left">
-                        <a href="{{ sort.bundle.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'bundle'})|e('html_attr') }}" class="{{ sort.bundle.class }}">{% trans %}Bundle{% endtrans %}</a>
+                        <a href="{{ sort.bundle.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'bundle'})|e('html_attr') }}" class="{{ sort.bundle.class }}">{% trans %}Bundle{% endtrans %}</a>
                     </th>
                     <th id="hPath" scope="col" class="text-left">
-                        <a href="{{ sort.path.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'path'})|e('html_attr') }}" class="{{ sort.path.class }}">{% trans %}Path{% endtrans %}</a>
+                        <a href="{{ sort.path.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'path'})|e('html_attr') }}" class="{{ sort.path.class }}">{% trans %}Path{% endtrans %}</a>
                     </th>
                     <th id="hHost" scope="col" class="text-left">
-                        <a href="{{ sort.host.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'host'})|e('html_attr') }}" class="{{ sort.host.class }}">{% trans %}Host{% endtrans %}</a>
+                        <a href="{{ sort.host.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'host'})|e('html_attr') }}" class="{{ sort.host.class }}">{% trans %}Host{% endtrans %}</a>
                     </th>
                     <th id="hSchemes" scope="col" class="text-left">
-                        <a href="{{ sort.schemes.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'schemes'})|e('html_attr') }}" class="{{ sort.schemes.class }}">{% trans %}Schemes{% endtrans %}</a>
+                        <a href="{{ sort.schemes.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'schemes'})|e('html_attr') }}" class="{{ sort.schemes.class }}">{% trans %}Schemes{% endtrans %}</a>
                     </th>
                     <th id="hMethods" scope="col" class="text-left">
-                        <a href="{{ sort.methods.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'methods'})|e('html_attr') }}" class="{{ sort.methods.class }}">{% trans %}Methods{% endtrans %}</a>
+                        <a href="{{ sort.methods.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'methods'})|e('html_attr') }}" class="{{ sort.methods.class }}">{% trans %}Methods{% endtrans %}</a>
                     </th>
                     <th id="hPrependBundlePrefix" scope="col" class="text-center">
-                        <a href="{{ sort.prependBundlePrefix.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'prepend bundle prefix'})|e('html_attr') }}" class="{{ sort.prependBundlePrefix.class }}">{% trans %}Prepend bundle prefix{% endtrans %}</a>
+                        <a href="{{ sort.prependBundlePrefix.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'prepend bundle prefix'})|e('html_attr') }}" class="{{ sort.prependBundlePrefix.class }}">{% trans %}Prepend bundle prefix{% endtrans %}</a>
                     </th>
                     <th id="hTranslatable" scope="col" class="text-center">
-                        <a href="{{ sort.translatable.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'translatable'})|e('html_attr') }}" class="{{ sort.translatable.class }}">{% trans %}Translatable{% endtrans %}</a>
+                        <a href="{{ sort.translatable.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'translatable'})|e('html_attr') }}" class="{{ sort.translatable.class }}">{% trans %}Translatable{% endtrans %}</a>
                     </th>
                     <th id="hTranslationPrefix" scope="col" class="text-left">
-                        <a href="{{ sort.translationPrefix.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'translation prefix'})|e('html_attr') }}" class="{{ sort.translationPrefix.class }}">{% trans %}Translation prefix{% endtrans %}</a>
+                        <a href="{{ sort.translationPrefix.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'translation prefix'})|e('html_attr') }}" class="{{ sort.translationPrefix.class }}">{% trans %}Translation prefix{% endtrans %}</a>
                     </th>
                     <th id="hDescription" scope="col" class="text-left">
-                        <a href="{{ sort.description.url }}" title="'Sort by %fieldName%'|trans({'%fieldName%': 'description'})|e('html_attr') }}" class="{{ sort.description.class }}">{% trans %}Description{% endtrans %}</a>
+                        <a href="{{ sort.description.url }}" title="{{ 'Sort by %fieldName%'|trans({'%fieldName%': 'description'})|e('html_attr') }}" class="{{ sort.description.class }}">{% trans %}Description{% endtrans %}</a>
                     </th>
                 </tr>
                 </thead>
@@ -99,10 +99,10 @@
                             <input type="checkbox" name="items[]" value="{{ route.getKey() }}" class="zikularoutes-toggle-checkbox" />
                         </td>
                     {% endif %}
-                    <td id="itemActions{{ route.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap">
+                    <td id="itemActions{{ route.getKey() }}Start" headers="hItemActionsStart" class="actions">
                         {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'view'}) %}
                         <div class="dropdown item-actions">
-                            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fas fa-tasks"></i></a>
+                            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="d-none dropdown-toggle"><i class="fas fa-tasks"></i></a>
                             {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                         </div>
                     </td>
@@ -135,9 +135,9 @@
                     </td>
                     <td headers="hTranslatable" class="text-center">
                         {% if route.translatable %}
-                            <i class="fas fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
+                            <i class="fas fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
                         {% else %}
-                            <i class="fas fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
+                            <i class="fas fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
                         {% endif %}
                     </td>
                     <td headers="hTranslationPrefix" class="text-left">
@@ -149,7 +149,7 @@
                 </tr>
             {% else %}
                 <tr class="table-info">
-                    <td colspan="{% if routeArea == 'admin' %}12{% else %}11{% endif %}" class="text-center">
+                    <td colspan="{% if routeArea == 'admin' %}11{% else %}10{% endif %}" class="text-center">
                 {% trans %}No custom routes found.{% endtrans %}
                   </td>
                 </tr>
@@ -159,9 +159,9 @@
             </table>
             </div>
 
-            {#% if all != 1 and pager|default %}
-                {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
-            {% endif %#}
+            {% if all != 1 %}
+                {{ include(paginator.template) }}
+            {% endif %}
         {% if routeArea == 'admin' %}
                 <fieldset class="my-3 pt-3">
                     <div class="row">

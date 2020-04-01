@@ -17,11 +17,11 @@ namespace Zikula\RoutesModule\Entity\Repository\Base;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\CollectionFilterHelper;
@@ -341,39 +341,13 @@ abstract class AbstractRouteRepository extends SortableRepository
     ): array {
         $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
     
-        $query = $this->getQueryFromBuilder($qb);
-    
-        return $this->retrieveCollectionResult($query);
+        return $this->retrieveCollectionResult($qb);
     }
 
     /**
-     * Returns query builder instance for retrieving a list of objects with a given
-     * where clause and pagination parameters.
-     */
-    public function getSelectWherePaginatedQuery(
-        QueryBuilder $qb,
-        int $currentPage = 1,
-        int $resultsPerPage = 25
-    ): Query {
-        if (1 > $currentPage) {
-            $currentPage = 1;
-        }
-        if (1 > $resultsPerPage) {
-            $resultsPerPage = 25;
-        }
-        $query = $this->getQueryFromBuilder($qb);
-        $offset = ($currentPage - 1) * $resultsPerPage;
-    
-        $query->setFirstResult($offset)
-              ->setMaxResults($resultsPerPage);
-    
-        return $query;
-    }
-    
-    /**
      * Selects a list of objects with a given where clause and pagination parameters.
      *
-     * @return array Retrieved collection and the amount of total records affected
+     * @return Paginator
      */
     public function selectWherePaginated(
         string $where = '',
@@ -382,11 +356,10 @@ abstract class AbstractRouteRepository extends SortableRepository
         int $resultsPerPage = 25,
         bool $useJoins = true,
         bool $slimMode = false
-    ): array {
+    ): Paginator {
         $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
-        $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
     
-        return $this->retrieveCollectionResult($query, true);
+        return $this->retrieveCollectionResult($qb, true, $currentPage, $resultsPerPage);
     }
 
     /**
@@ -411,33 +384,27 @@ abstract class AbstractRouteRepository extends SortableRepository
             $qb = $this->collectionFilterHelper->addSearchFilter('route', $qb, $fragment);
         }
     
-        $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
-    
-        return $this->retrieveCollectionResult($query, true);
+        return $this->retrieveCollectionResult($qb, true, $currentPage, $resultsPerPage);
     }
 
     /**
      * Performs a given database selection and post-processed the results.
      *
-     * @return array Retrieved collection and (for paginated queries) the amount of total records affected
+     * @return Paginator|array Paginator (for paginated queries) or retrieved collection
      */
-    public function retrieveCollectionResult(Query $query, bool $isPaginated = false): array
-    {
-        $count = 0;
+    public function retrieveCollectionResult(
+        QueryBuilder $qb,
+        bool $isPaginated = false,
+        int $currentPage = 1,
+        int $resultsPerPage = 25
+    ) {
         if (!$isPaginated) {
-            $result = $query->getResult();
-        } else {
-            $paginator = new Paginator($query, false);
+            $query = $this->getQueryFromBuilder($qb);
     
-            $count = count($paginator);
-            $result = $paginator;
+            return $query->getResult();
         }
     
-        if (!$isPaginated) {
-            return $result;
-        }
-    
-        return [$result, $count];
+        return (new Paginator($qb, $resultsPerPage))->paginate($currentPage);
     }
 
     /**
@@ -477,7 +444,6 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         return (int)$query->getSingleScalarResult();
     }
-
 
     /**
      * Checks for unique values.

@@ -13,7 +13,7 @@
         <testsuite name="ZikulaRoutesModule Test Suite">
             <directory>./Tests</directory>
             <exclude>./Tests/Entity/*/Repository</exclude>
-            <exclude>./vendor</exclude>
+            <exclude>./vendor/</exclude>
         </testsuite>
     </testsuites>
     <filter>

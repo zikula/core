@@ -4,7 +4,7 @@ application "Routes" targets ZK30 {
     author "Zikula contributors"
     email "info@ziku.la"
     url "https://ziku.la"
-    version "1.2.0"
+    version "3.0.0"
     prefix "routes"
     isSystemModule true
     generateAccountApi false

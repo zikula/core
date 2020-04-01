@@ -17,13 +17,11 @@ namespace Zikula\RoutesModule\Listener\Base;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
-use Zikula\UsersModule\UserEvents;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 
 /**
@@ -35,22 +33,22 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * @var TranslatorInterface
      */
     protected $translator;
-
+    
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-
+    
     /**
      * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
-
+    
     /**
      * @var LoggerInterface
      */
     protected $logger;
-
+    
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
@@ -62,7 +60,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
         $this->currentUserApi = $currentUserApi;
         $this->logger = $logger;
     }
-
+    
     public static function getSubscribedEvents()
     {
         return [
@@ -71,48 +69,74 @@ abstract class AbstractUserListener implements EventSubscriberInterface
             ActiveUserPostDeletedEvent::class => ['delete', 5]
         ];
     }
-
+    
     /**
-     * Listener for ActiveUserPostCreatedEvent::class.
+     * Listener for the `ActiveUserPostCreatedEvent`.
      *
      * Occurs after a user account is created. All handlers are notified.
      * It does not apply to creation of a pending registration.
+     * The full user record created is available as the subject.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
+     * The subject of the event is set to the user record that was created.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
-     *
      */
     public function create(ActiveUserPostCreatedEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the ActiveUserPostUpdatedEvent::class.
+     * Listener for the `ActiveUserPostUpdatedEvent`.
      *
      * Occurs after a user is updated. All handlers are notified.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
-     * The User property is the *new* data. The oldUser property is the *old* data
+     * The User property is the *new* data. The oldUser property is the *old* data.
      *
-     * You can access the user and date in the event.
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
-     *
      */
     public function update(ActiveUserPostUpdatedEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the `ActiveUserPostDeletedEvent::class.
+     * Listener for the `ActiveUserPostDeletedEvent`.
+     *
+     * Occurs after the deletion of a user account.
+     * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     *
+     * You can also access the user and date in the event.
+     *
+     * The user:
+     *     `echo 'UID: ' . $event->getUser()->getUid();`
      */
     public function delete(ActiveUserPostDeletedEvent $event): void
     {
-        $userId = (int) $event->getUser()->getUid();
-
+        $userId = $event->getUser()->getUid();
+        
         $repo = $this->entityFactory->getRepository('route');
         // set creator to admin (UsersConstant::USER_ID_ADMIN) for all routes created by this user
         $repo->updateCreator(
@@ -122,7 +146,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
             $this->logger,
             $this->currentUserApi
         );
-
+        
         // set last editor to admin (UsersConstant::USER_ID_ADMIN) for all routes updated by this user
         $repo->updateLastEditor(
             $userId,
@@ -131,7 +155,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
             $this->logger,
             $this->currentUserApi
         );
-
+        
         $logArgs = [
             'app' => 'ZikulaRoutesModule',
             'user' => $this->currentUserApi->get('uname'),

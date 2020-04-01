@@ -73,9 +73,9 @@ class RouteController extends AbstractRouteController
     
     /**
      *
-     * @Route("/admin/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
+     * @Route("/admin/routes/view/{sort}/{sortdir}/{page}/{num}.{_format}",
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "page" = "\d+", "num" = "\d+", "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "page" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      * @Theme("admin")
@@ -88,7 +88,7 @@ class RouteController extends AbstractRouteController
         ViewHelper $viewHelper,
         string $sort,
         string $sortdir,
-        int $pos,
+        int $page,
         int $num
     ): Response {
         return $this->viewInternal(
@@ -99,7 +99,7 @@ class RouteController extends AbstractRouteController
             $viewHelper,
             $sort,
             $sortdir,
-            $pos,
+            $page,
             $num,
             true
         );
@@ -107,9 +107,9 @@ class RouteController extends AbstractRouteController
     
     /**
      *
-     * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
+     * @Route("/routes/view/{sort}/{sortdir}/{page}/{num}.{_format}",
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "page" = "\d+", "num" = "\d+", "_format" = "html"},
+     *        defaults = {"sort" = "", "sortdir" = "asc", "page" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
      */
@@ -121,7 +121,7 @@ class RouteController extends AbstractRouteController
         ViewHelper $viewHelper,
         string $sort,
         string $sortdir,
-        int $pos,
+        int $page,
         int $num
     ): Response {
         return $this->viewInternal(
@@ -132,7 +132,7 @@ class RouteController extends AbstractRouteController
             $viewHelper,
             $sort,
             $sortdir,
-            $pos,
+            $page,
             $num,
             false
         );

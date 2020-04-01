@@ -104,8 +104,8 @@ zikularoutesmodule_ajax_updatesortpositions: /ajax/updateSortPositions
 zikularoutesmodule_config_config: /config/config
 zikularoutesmodule_route_adminindex: /admin/routes
 zikularoutesmodule_route_index: /routes
-zikularoutesmodule_route_adminview: '/admin/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}'
-zikularoutesmodule_route_view: '/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}'
+zikularoutesmodule_route_adminview: '/admin/routes/view/{sort}/{sortdir}/{page}/{num}.{_format}'
+zikularoutesmodule_route_view: '/routes/view/{sort}/{sortdir}/{page}/{num}.{_format}'
 zikularoutesmodule_route_admindisplay: '/admin/route/{id}.{_format}'
 zikularoutesmodule_route_display: '/route/{id}.{_format}'
 zikularoutesmodule_route_adminedit: '/admin/route/edit/{id}.{_format}'

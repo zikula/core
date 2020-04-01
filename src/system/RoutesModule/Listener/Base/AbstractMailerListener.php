@@ -25,10 +25,10 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            MessageEvent::class   => ['onMessageSend', 5],
+            MessageEvent::class => ['onMessageSend', 5]
         ];
     }
-
+    
     /**
      * Listener for the `MessageEvent` event.
      * Allows the transformation of a Message and the Envelope before the email is sent.
