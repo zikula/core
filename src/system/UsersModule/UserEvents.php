@@ -19,16 +19,6 @@ namespace Zikula\UsersModule;
 class UserEvents
 {
     /**
-     * A hook-like UI event that is triggered when a user's account detail is viewed. This allows another module
-     * to intercept the display of the user account detail in order to add its own information.
-     * To add display elements to the user account detail, render output and add this as an element in the event's
-     * data array.
-     * The subject contains the user's account record.
-     * The `'id'` argument contain's the user's uid.
-     */
-    public const DISPLAY_VIEW = 'module.users.ui.display_view';
-
-    /**
      * A hook-like event process that is triggered when the delete confirmation form is displayed. It allows other modules
      * to intercept and add to the delete confirmation form.
      * The subject of the event is not set.

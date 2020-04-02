@@ -45,6 +45,7 @@
     - `Zikula\UsersModule\RegistrationEvents::UPDATE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostUpdatedEvent`.
     - `Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPreCreatedEvent`.
     - `Zikula\UsersModule\RegistrationEvents::REGISTRATION_FAILED` has been deleted.
+    - `Zikula\UsersModule\UserEvents::DISPLAY_VIEW` is removed in favor of `Zikula\UsersModule\Event\UserAccountDisplayEvent`
     - `Zikula\UsersModule\UserEvents::CREATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostCreatedEvent`.
     - `Zikula\UsersModule\UserEvents::UPDATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent`.
     - `Zikula\UsersModule\UserEvents::DELETE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostDeletedEvent`.
@@ -99,6 +100,7 @@
   - Support for ancient Macintosh-type line-endings (\r) on user CSV file import has been dropped.
   - Old `pager` Twig function has been removed in favour of a new [Pagination utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/pagination.html).
   - Old `abcpager` Twig function has been removed in favour of a new [AlphaFilter utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/alphafilter.html).
+  - `dispatchEvent` Twig function changed to dispatch _any_ type of event. Old functionality still available in `dispatchGenericEvent`.
   - Dropped vendors:
     - Removed afarkas/html5shiv
     - Removed afarkas/webshim (#3925)
