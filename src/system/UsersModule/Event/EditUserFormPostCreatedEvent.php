@@ -16,9 +16,9 @@ namespace Zikula\UsersModule\Event;
 use Zikula\Bundle\FormExtensionBundle\Event\FormPostCreatedEvent;
 
 /**
- * Called on user registration or admin user creation.
- * See also UserFormPostValidatedEvent
+ * Called on user registration or admin user creation & modify.
+ * See also EditUserFormPostValidatedEvent
  */
-class UserFormPostCreatedEvent extends FormPostCreatedEvent
+class EditUserFormPostCreatedEvent extends FormPostCreatedEvent
 {
 }

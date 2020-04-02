@@ -44,8 +44,8 @@ use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
-use Zikula\UsersModule\Event\UserFormPostCreatedEvent;
-use Zikula\UsersModule\Event\UserFormPostValidatedEvent;
+use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
+use Zikula\UsersModule\Event\EditUserFormPostValidatedEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
@@ -163,8 +163,8 @@ class UserAdministrationController extends AbstractController
         $form = $this->createForm(AdminCreatedUserType::class, $mapping, [
             'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
         ]);
-        $userFormPostCreatedEvent = new UserFormPostCreatedEvent($form);
-        $eventDispatcher->dispatch($userFormPostCreatedEvent);
+        $editUserFormPostCreatedEvent = new EditUserFormPostCreatedEvent($form);
+        $eventDispatcher->dispatch($editUserFormPostCreatedEvent);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -208,7 +208,7 @@ class UserAdministrationController extends AbstractController
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
                 }
-                $eventDispatcher->dispatch(new UserFormPostValidatedEvent($form, $user));
+                $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
                 $hook = new ProcessHook($user->getUid());
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
                 $eventDispatcher->dispatch(new RegistrationPostSuccessEvent($user));
@@ -230,7 +230,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'additionalTemplates' => isset($userFormPostCreatedEvent) ? $userFormPostCreatedEvent->getTemplates() : []
+            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : []
         ];
     }
 
@@ -263,8 +263,8 @@ class UserAdministrationController extends AbstractController
             'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
         ]);
         $originalMapping = clone $mapping;
-        $userFormPostCreatedEvent = new UserFormPostCreatedEvent($form);
-        $eventDispatcher->dispatch($userFormPostCreatedEvent);
+        $editUserFormPostCreatedEvent = new EditUserFormPostCreatedEvent($form);
+        $eventDispatcher->dispatch($editUserFormPostCreatedEvent);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -290,7 +290,7 @@ class UserAdministrationController extends AbstractController
 
                 $eventDispatcher->dispatch(new ActiveUserPostUpdatedEvent($user, $originalUser));
 
-                $eventDispatcher->dispatch(new UserFormPostValidatedEvent($form, $user));
+                $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
                 $this->addFlash('status', "Done! Saved user's account information.");
@@ -303,7 +303,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'additionalTemplates' => isset($userFormPostCreatedEvent) ? $userFormPostCreatedEvent->getTemplates() : []
+            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : []
         ];
     }
 

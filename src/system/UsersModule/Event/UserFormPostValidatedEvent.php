@@ -17,10 +17,6 @@ use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\FormExtensionBundle\Event\FormPostValidatedEvent;
 use Zikula\UsersModule\Entity\UserEntity;
 
-/**
- * Called on user registration or admin user creation to handle form submission.
- * See also UserFormPostCreatedEvent
- */
 class UserFormPostValidatedEvent extends FormPostValidatedEvent
 {
     /**

@@ -49,10 +49,10 @@
     - `Zikula\UsersModule\UserEvents::CREATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostCreatedEvent`.
     - `Zikula\UsersModule\UserEvents::UPDATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent`.
     - `Zikula\UsersModule\UserEvents::DELETE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostDeletedEvent`.
-    - `Zikula\UsersModule\UserEvents::EDIT_FORM` is removed in favor of `Zikula\UsersModule\Event\UserFormPostCreatedEvent`
-      - The event class changed from `Zikula\UsersModule\Event\UserFormAwareEvent` to `UserFormPostCreatedEvent`
-    - `Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\UserFormPostValidatedEvent`
-      - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `UserFormPostValidatedEvent`
+    - `Zikula\UsersModule\UserEvents::EDIT_FORM` is removed in favor of `Zikula\UsersModule\Event\EditUserFormPostCreatedEvent`
+      - The event class changed from `Zikula\UsersModule\Event\UserFormAwareEvent` to `EditUserFormPostCreatedEvent`
+    - `Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\EditUserFormPostValidatedEvent`
+      - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `EditUserFormPostValidatedEvent`
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).

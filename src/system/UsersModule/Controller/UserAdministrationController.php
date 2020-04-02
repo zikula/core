@@ -47,8 +47,8 @@ use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
-use Zikula\UsersModule\Event\UserFormPostCreatedEvent;
-use Zikula\UsersModule\Event\UserFormPostValidatedEvent;
+use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
+use Zikula\UsersModule\Event\EditUserFormPostValidatedEvent;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
 use Zikula\UsersModule\Form\Type\DeleteConfirmationType;
 use Zikula\UsersModule\Form\Type\DeleteType;
@@ -171,8 +171,8 @@ class UserAdministrationController extends AbstractController
 
         $form = $this->createForm(AdminModifyUserType::class, $user);
         $originalUser = clone $user;
-        $userFormPostCreatedEvent = new UserFormPostCreatedEvent($form);
-        $eventDispatcher->dispatch($userFormPostCreatedEvent);
+        $editUserFormPostCreatedEvent = new EditUserFormPostCreatedEvent($form);
+        $eventDispatcher->dispatch($editUserFormPostCreatedEvent);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -184,7 +184,7 @@ class UserAdministrationController extends AbstractController
                 $user = $form->getData();
                 $this->checkSelf($currentUserApi, $variableApi, $user, $originalUser->getGroups()->toArray());
 
-                $eventDispatcher->dispatch(new UserFormPostValidatedEvent($form, $user));
+                $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
 
                 $this->getDoctrine()->getManager()->flush();
 
@@ -205,7 +205,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'additionalTemplates' => isset($userFormPostCreatedEvent) ? $userFormPostCreatedEvent->getTemplates() : []
+            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : []
         ];
     }
 
