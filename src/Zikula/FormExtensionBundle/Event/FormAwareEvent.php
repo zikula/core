@@ -56,7 +56,7 @@ class FormAwareEvent
 
     /**
      * @param FormInterface|string|int $child
-     * @param string|NULL $type
+     * @param string|null $type
      * @param array $options
      *
      * @return $this
