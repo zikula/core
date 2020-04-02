@@ -26,10 +26,8 @@
     </div>
 </fieldset>
 
-{% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::DISPLAY_VIEW'), null, user, {id:user.uid}) %}
-{% for data in eventData %}
-    {{ data|raw }}
-{% endfor %}
+{% set userAccountDisplayEvent = dispatchEvent('Zikula\\UsersModule\\Event\\UserAccountDisplayEvent', {user}) %}
+{{ userAccountDisplayEvent|raw }}
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_DISPLAY'), user.uid) }}
 
 <fieldset>

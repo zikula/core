@@ -34,11 +34,28 @@ class EventDispatcherExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('dispatchEvent', [$this, 'dispatchEvent'])
+            new TwigFunction('dispatchEvent', [$this, 'dispatchEvent']),
+            new TwigFunction('dispatchGenericEvent', [$this, 'dispatchGenericEvent'])
         ];
     }
 
-    public function dispatchEvent(string $name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
+    /**
+     * @param string $name
+     * @param array $arguments the arguments, MUST be values only and in the correct order
+     */
+    public function dispatchEvent(string $name, $arguments = [])
+    {
+        if (class_exists($name)) {
+            $event = new $name(...$arguments);
+            $this->eventDispatcher->dispatch($event);
+
+            return $event;
+        }
+
+        return null;
+    }
+
+    public function dispatchGenericEvent(string $name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
     {
         $event = $providedEvent ?? new GenericEvent($subject, $arguments, $data);
         $this->eventDispatcher->dispatch($event, $name);
