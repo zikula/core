@@ -41,7 +41,8 @@ class UserAccountDisplayEvent extends UserEntityEvent
         return $this->contents;
     }
 
-    public function getContent(string $key): string {
+    public function getContent(string $key): string
+    {
         if (isset($this->contents[$key])) {
             return $this->contents[$key];
         }
