@@ -796,20 +796,21 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.8.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc"
+                "reference": "233e36632422cfc5cc499f14ad6c1476b50cb7b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/904dca4eb10715b92569fbcd79e201d5c349b6bc",
-                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/233e36632422cfc5cc499f14ad6c1476b50cb7b1",
+                "reference": "233e36632422cfc5cc499f14ad6c1476b50cb7b1",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "1.*",
+                "ext-tokenizer": "*",
                 "php": "^7.1"
             },
             "require-dev": {
@@ -819,7 +820,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-master": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -860,7 +861,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2019-10-01T18:55:10+00:00"
+            "time": "2020-04-02T08:15:55+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -6900,12 +6901,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "e5e4049e7be0485c7617d0295ac80b973277ccbb"
+                "reference": "82b2acb46cbe42fe692752bd7ef68b18c0d9e02c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/e5e4049e7be0485c7617d0295ac80b973277ccbb",
-                "reference": "e5e4049e7be0485c7617d0295ac80b973277ccbb",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/82b2acb46cbe42fe692752bd7ef68b18c0d9e02c",
+                "reference": "82b2acb46cbe42fe692752bd7ef68b18c0d9e02c",
                 "shasum": ""
             },
             "require": {
@@ -6937,7 +6938,7 @@
                 "step",
                 "wizard"
             ],
-            "time": "2020-03-31T05:53:13+00:00"
+            "time": "2020-04-01T13:46:28+00:00"
         }
     ],
     "packages-dev": [
