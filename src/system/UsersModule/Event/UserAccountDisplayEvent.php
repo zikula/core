@@ -21,7 +21,7 @@ namespace Zikula\UsersModule\Event;
  * When rendering this events output in a template, simply render the event itself
  * and the magic __toString() method will take care of the rest:
  *
- * {% set userAccountDisplayEvent = dispatchEvent('Zikula\\UsersModule\\Event\\UserAccountDisplayEvent', {userEntity}) %}
+ * {% set userAccountDisplayEvent = dispatchEvent('Zikula\\UsersModule\\Event\\UserAccountDisplayEvent', [userEntity]) %}
  * {{ userAccountDisplayEvent|raw }}
  */
 class UserAccountDisplayEvent extends UserEntityEvent
