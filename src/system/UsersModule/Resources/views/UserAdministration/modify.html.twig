@@ -38,8 +38,8 @@
         </tbody>
     </table>
 </fieldset>
-{% for additional_template in additional_templates %}
-    {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
+{% for template in additionalTemplates %}
+    include(template.view, template.params, ignore_missing = true)
 {% endfor %}
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM'), form.vars.value.uid) }}
 <div class="form-group row">
