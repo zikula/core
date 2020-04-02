@@ -26,8 +26,6 @@ class UserEvents
      */
     public const DELETE_FORM = 'module.users.ui.form_delete';
 
-    public const DELETE_VALIDATE = 'module.users.ui.validate_delete';
-
     public const DELETE_PROCESS = 'module.users.ui.process_delete';
 
     /**

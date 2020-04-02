@@ -50,6 +50,7 @@
     - `Zikula\UsersModule\UserEvents::UPDATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent`.
     - `Zikula\UsersModule\UserEvents::DELETE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostDeletedEvent`.
     - `Zikula\UsersModule\UserEvents::EDIT_FORM` is removed in favor of `Zikula\UsersModule\Event\EditUserFormPostCreatedEvent`
+    - `Zikula\UsersModule\UserEvents::DELETE_VALIDATE` has been deleted.
       - The event class changed from `Zikula\UsersModule\Event\UserFormAwareEvent` to `EditUserFormPostCreatedEvent`
     - `Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\EditUserFormPostValidatedEvent`
       - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `EditUserFormPostValidatedEvent`

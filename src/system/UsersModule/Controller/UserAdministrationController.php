@@ -319,12 +319,8 @@ class UserAdministrationController extends AbstractController
                     $this->addFlash('danger', $this->trans('You are not allowed to delete user id %uid%', ['%uid%' => $uid]));
                     continue;
                 }
-                $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
-                $validators = $eventDispatcher->dispatch($event, UserEvents::DELETE_VALIDATE)->getData();
-                $hook = new ValidationHook($validators);
-                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook);
-                $validators = $hook->getValidators();
-                if ($validators->hasErrors()) {
+                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook = new ValidationHook());
+                if ($hook->getValidators()->hasErrors()) {
                     $valid = false;
                 }
             }
