@@ -47,8 +47,8 @@ use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
-use Zikula\UsersModule\Event\UserFormAwareEvent;
-use Zikula\UsersModule\Event\UserFormDataEvent;
+use Zikula\UsersModule\Event\UserFormPostCreatedEvent;
+use Zikula\UsersModule\Event\UserFormPostValidatedEvent;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
 use Zikula\UsersModule\Form\Type\DeleteConfirmationType;
 use Zikula\UsersModule\Form\Type\DeleteType;
@@ -171,7 +171,8 @@ class UserAdministrationController extends AbstractController
 
         $form = $this->createForm(AdminModifyUserType::class, $user);
         $originalUser = clone $user;
-        $eventDispatcher->dispatch(new UserFormAwareEvent($form), UserEvents::EDIT_FORM);
+        $userFormPostCreatedEvent = new UserFormPostCreatedEvent($form);
+        $eventDispatcher->dispatch($userFormPostCreatedEvent);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -183,8 +184,7 @@ class UserAdministrationController extends AbstractController
                 $user = $form->getData();
                 $this->checkSelf($currentUserApi, $variableApi, $user, $originalUser->getGroups()->toArray());
 
-                $formDataEvent = new UserFormDataEvent($user, $form);
-                $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
+                $eventDispatcher->dispatch(new UserFormPostValidatedEvent($form, $user));
 
                 $this->getDoctrine()->getManager()->flush();
 
@@ -205,7 +205,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'additional_templates' => isset($formEvent) ? $formEvent->getTemplates() : []
+            'additionalTemplates' => isset($userFormPostCreatedEvent) ? $userFormPostCreatedEvent->getTemplates() : []
         ];
     }
 

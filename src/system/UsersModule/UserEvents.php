@@ -29,25 +29,6 @@ class UserEvents
     public const DISPLAY_VIEW = 'module.users.ui.display_view';
 
     /**
-     * Event called on user registration or admin user creation.
-     * @see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
-     * Event is \Zikula\UsersModule\Event\UserFormAwareEvent
-     * Contains instance of the Form in order to add elements for inclusion in the user edit form.
-     * Has a `templates` property that can be added to via `$event->addTemplate('@FooBundle/Area/foo.html.twig')`
-     *   templates will be included/rendered within the user form output
-     */
-    public const EDIT_FORM = 'module.users.edit.form';
-
-    /**
-     * Event called on user registration of admin user creation to handle form submission.
-     * @see \Zikula\UsersModule\UserEvents::EDIT_FORM
-     * Event is \Zikula\UsersModule\Event\UserFormDataEvent
-     * Contains instance of \Zikula\UsersModule\Entity\UserEntity
-     * Has a `formData` property to access data from form after it has handled the Request.
-     */
-    public const EDIT_FORM_HANDLE = 'module.users.edit.form.handle';
-
-    /**
      * A hook-like event process that is triggered when the delete confirmation form is displayed. It allows other modules
      * to intercept and add to the delete confirmation form.
      * The subject of the event is not set.
