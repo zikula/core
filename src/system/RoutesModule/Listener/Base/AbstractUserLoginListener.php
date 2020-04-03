@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\UsersModule\AccessEvents;
-use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
+use Zikula\UsersModule\Event\UserPostLoginFailureEvent;
+use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
+use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 
 /**
  * Event handler base class for user login events.
@@ -27,14 +27,14 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UserPreSuccessLoginEvent::class => ['veto', 5],
-            AccessEvents::LOGIN_SUCCESS => ['succeeded', 5],
-            AccessEvents::LOGIN_FAILED  => ['failed', 5]
+            UserPreLoginSuccessEvent::class => ['veto', 5],
+            UserPostLoginSuccessEvent::class => ['succeeded', 5],
+            UserPostLoginFailureEvent::class  => ['failed', 5]
         ];
     }
 
     /**
-     * Listener for the `UserPreSuccessLoginEvent`.
+     * Listener for the `UserPreLoginSuccessEvent`.
      *
      * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
      * successful login have been checked and are satisfied.) This event allows an extension to
@@ -55,73 +55,46 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      * should be taken to ensure that sensitive operations done within a handler for this event
      * do not introduce breaches of security.
      */
-    public function veto(UserPreSuccessLoginEvent $event): void
+    public function veto(UserPreLoginSuccessEvent $event): void
     {
     }
 
     /**
-     * Listener for the `module.users.ui.login.succeeded` event.
+     * Listener for the `UserPostLoginSuccessEvent`.
      *
      * Occurs right after a successful attempt to log in, and just prior to redirecting the user to the desired page.
      *
-     * The event subject contains the UserEntity.
-     * The arguments of the event are as follows:
-     *     `'authentication_module'` will contain the alias (name) of the method that was used to authenticate the user.
-     *     `'returnUrl'` will contain the value of the 'returnurl' parameter, if one was supplied, or an empty
-     *       string. This can be modified to change where the user is redirected following the login.
+     * If a `'returnUrl'` is specified by any entity intercepting and processing the event, then
+     * the URL provided replaces the one provided by the returnUrl parameter to the login process. If it is set to an empty
+     * string, then the user is redirected to the site's home page. An event handler should carefully consider whether
+     * changing the `'returnUrl'` argument is appropriate. First, the user may be expecting to return to the page where
+     * he was when he initiated the log-in process. Being redirected to a different page might be disorienting to the user.
+     * Second, an event handler that was notified prior to the current handler may already have changed the `'returnUrl'`.
      *
-     * If a `'returnUrl'` is specified by any entity intercepting and processing the `module.users.ui.login.succeeded`
-     * event, then the URL provided replaces the one provided by the returnurl parameter to the login process. If it is
-     * set to an empty string, then the user is redirected to the site's home page.
-     *
-     * An event handler should carefully consider whether changing the `'returnUrl'` argument is appropriate. First, the
-     * user may be expecting to return to the page where he was when he initiated the log-in process. Being redirected
-     * to a different page might be disorienting to the user. Second, an event handler that was notified prior to the
-     * current handler may already have changed the `'returnUrl'`.
-     *
-     * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting
-     * to log in programmatically by directly calling the core functions will not see this event fired.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
+     * programmatically by directly calling the login function will not see this event fired.
      */
-    public function succeeded(GenericEvent $event): void
+    public function succeeded(UserPostLoginSuccessEvent $event): void
     {
     }
 
     /**
-     * Listener for the `module.users.ui.login.failed` event.
+     * Listener for the `UserPostLoginFailureEvent`.
      *
      * Occurs right after an unsuccessful attempt to log in.
      *
-     * The event subject contains the UserEntity if it has been found, otherwise null.
-     * The arguments of the event are as follows:
-     *     `'authenticationMethod'` will contain an instance of the authenticationMethod used
-     *     that produced the failed login.
-     *     `'returnUrl'` will initially contain an empty string. This can be modified to change
-     *     where the user is redirected following the failed login.
+     * The event contains the userEntity if it has been found, otherwise null.
      *
-     * If a `'returnUrl'` is specified by any entity intercepting and processing the `module.users.ui.login
-     * .failed` event, then the user will be redirected to the URL provided.
+     * If a `'returnUrl'` is specified by any entity intercepting and processing this event, then
+     * the user will be redirected to the URL provided.  An event handler
+     * should carefully consider whether changing the `'returnUrl'` argument is appropriate. First, the user may be expecting
+     * to return to the log-in screen . Being redirected to a different page might be disorienting to the user.
+     * Second, an event handler that was notified prior to the current handler may already have changed the `'returnUrl'`.
      *
-     * An event handler should carefully consider whether changing the `'returnUrl'` argument is appropriate.
-     * First, the user may be expecting to return to the log-in screen. Being redirected to a different page
-     * might be disorienting to the user. Second, an event handler that was notified prior to the current handler
-     * may already have changed the `'returnUrl'`.
-     *
-     * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting
-     * to log in programmatically by directly calling core functions will not see this event fired.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
+     * programmatically by directly calling core functions will not see this event fired.
      */
-    public function failed(GenericEvent $event): void
+    public function failed(UserPostLoginFailureEvent $event): void
     {
     }
 }

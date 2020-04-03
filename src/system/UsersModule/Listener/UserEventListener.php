@@ -19,10 +19,10 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\Event;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
 
 class UserEventListener implements EventSubscriberInterface
 {
@@ -46,7 +46,7 @@ class UserEventListener implements EventSubscriberInterface
     {
         return [
             AccessEvents::LOGOUT_SUCCESS => ['clearUsersNamespace'],
-            AccessEvents::LOGIN_SUCCESS => ['setLocale'],
+            UserPostLoginSuccessEvent::class => ['setLocale'],
             KernelEvents::EXCEPTION => ['clearUsersNamespace']
         ];
     }
@@ -54,10 +54,10 @@ class UserEventListener implements EventSubscriberInterface
     /**
      * Set the locale in the session based on previous user selection after successful login.
      */
-    public function setLocale(GenericEvent $event, string $eventName): void
+    public function setLocale(UserPostLoginSuccessEvent $event): void
     {
         /** @var UserEntity $userEntity */
-        $userEntity = $event->getSubject();
+        $userEntity = $event->getUser();
         $locale = $userEntity->getLocale();
         if (empty($locale)) {
             return;
@@ -68,7 +68,7 @@ class UserEventListener implements EventSubscriberInterface
             return;
         }
 
-        $url = $event->getArgument('returnUrl');
+        $url = $event->getRedirectUrl();
         if ('' !== $url) {
             $httpRoot = $request->getSchemeAndHttpHost() . $request->getBaseUrl();
             if (0 === mb_strpos($url, $httpRoot)) {
@@ -77,7 +77,7 @@ class UserEventListener implements EventSubscriberInterface
             try {
                 $pathInfo = $this->router->match($url);
                 if ($pathInfo['_route']) {
-                    $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+                    $event->setRedirectUrl($this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
                 }
             } catch (\Exception $exception) {
                 // ignore

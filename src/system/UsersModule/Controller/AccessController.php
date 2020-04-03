@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Controller;
 
-use DateTime;
 use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,6 @@ use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
@@ -36,7 +34,9 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
-use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
+use Zikula\UsersModule\Event\UserPostLoginFailureEvent;
+use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
+use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
 use Zikula\UsersModule\Helper\AccessHelper;
@@ -155,18 +155,21 @@ class AccessController extends AbstractController
                         $eventDispatcher->dispatch($formDataEvent);
                     }
                     $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
-                    $event = new UserPreSuccessLoginEvent($user, $selectedMethod);
-                    $eventDispatcher->dispatch($event);
-                    if (!$event->isPropagationStopped()) {
+                    $userPreSuccessLoginEvent = new UserPreLoginSuccessEvent($user, $selectedMethod);
+                    $eventDispatcher->dispatch($userPreSuccessLoginEvent);
+                    if (!$userPreSuccessLoginEvent->isPropagationStopped()) {
                         $returnUrlFromSession = null !== $session ? $session->get('returnUrl', $returnUrl) : $returnUrl;
                         $returnUrlFromSession = urldecode($returnUrlFromSession);
                         $accessHelper->login($user, $rememberMe);
-                        $returnUrl = $this->dispatchLoginSuccessEvent($eventDispatcher, $selectedMethod, $returnUrlFromSession, $user);
+                        $userPostSuccessLoginEvent = new UserPostLoginSuccessEvent($user, $selectedMethod);
+                        $userPostSuccessLoginEvent->setRedirectUrl($returnUrlFromSession);
+                        $eventDispatcher->dispatch($userPostSuccessLoginEvent);
+                        $returnUrl = $userPostSuccessLoginEvent->getRedirectUrl();
                     } else {
-                        if ($event->hasFlashes()) {
-                            $this->addFlash('danger', $event->getFlashesAsString());
+                        if ($userPreSuccessLoginEvent->hasFlashes()) {
+                            $this->addFlash('danger', $userPreSuccessLoginEvent->getFlashesAsString());
                         }
-                        $returnUrl = $event->getRedirectUrl();
+                        $returnUrl = $userPreSuccessLoginEvent->getRedirectUrl();
                     }
 
                     return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
@@ -178,46 +181,11 @@ class AccessController extends AbstractController
         if (null !== $session) {
             $session->remove('authenticationMethod');
         }
-        $returnUrl = $this->dispatchLoginFailedEvent($eventDispatcher, $authenticationMethod, $returnUrl, $user);
+        $userPostFailLoginEvent = new UserPostLoginFailureEvent($user, $authenticationMethod->getAlias());
+        $userPostFailLoginEvent->setRedirectUrl($returnUrl);
+        $returnUrl = $userPostFailLoginEvent->getRedirectUrl();
 
         return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
-    }
-
-    private function dispatchLoginSuccessEvent(
-        EventDispatcherInterface $eventDispatcher,
-        string $selectedMethod,
-        string $returnUrl,
-        UserEntity $user
-    ): string {
-        $eventArgs = [
-            'authenticationMethod' => $selectedMethod,
-            'returnUrl' => $returnUrl,
-        ];
-        $defaultLastLogin = new DateTime('1970-01-01 00:00:00');
-        $actualLastLogin = $user->getLastlogin();
-        if (null === $actualLastLogin || $actualLastLogin === $defaultLastLogin) {
-            $eventArgs['isFirstLogin'] = true;
-        }
-        $event = new GenericEvent($user, $eventArgs);
-        $event = $eventDispatcher->dispatch($event, AccessEvents::LOGIN_SUCCESS);
-
-        return $event->hasArgument('returnUrl') ? $event->getArgument('returnUrl') : $returnUrl;
-    }
-
-    private function dispatchLoginFailedEvent(
-        EventDispatcherInterface $eventDispatcher,
-        AuthenticationMethodInterface $authenticationMethod,
-        string $returnUrl,
-        UserEntity $user = null
-    ) {
-        $eventArgs = [
-            'authenticationMethod' => $authenticationMethod,
-            'returnUrl' => $returnUrl,
-        ];
-        $event = new GenericEvent($user, $eventArgs);
-        $event = $eventDispatcher->dispatch($event, AccessEvents::LOGIN_FAILED);
-
-        return $event->hasArgument('returnUrl') ? $event->getArgument('returnUrl') : $returnUrl;
     }
 
     /**

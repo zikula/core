@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
+use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class UserEventListener implements EventSubscriberInterface
@@ -41,13 +41,13 @@ class UserEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UserPreSuccessLoginEvent::class => ['forcedPasswordChange']
+            UserPreLoginSuccessEvent::class => ['forcedPasswordChange']
         ];
     }
 
     /**
      * Vetoes (denies) a login attempt, and forces the user to change his password.
-     * This handler is triggered by the 'UserPreSuccessLoginEvent'.  It vetoes (denies) a
+     * This handler is triggered by the 'UserPreLoginSuccessEvent'.  It vetoes (denies) a
      * login attempt if the users's account record is flagged to force the user to change
      * his password maintained by the Users module. If the user does not maintain a
      * password on his Users account (e.g., he registered with and logs in with a Google
@@ -56,7 +56,7 @@ class UserEventListener implements EventSubscriberInterface
      *
      * @see \Zikula\ZAuthModule\Controller\AccountController::changePasswordAction
      */
-    public function forcedPasswordChange(UserPreSuccessLoginEvent $event): void
+    public function forcedPasswordChange(UserPreLoginSuccessEvent $event): void
     {
         $user = $event->getUser();
         if ($user->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && $user->getAttributes()->get(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
