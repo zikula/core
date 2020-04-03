@@ -36,6 +36,7 @@ use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
 use Zikula\UsersModule\Event\UserPostLoginFailureEvent;
 use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
+use Zikula\UsersModule\Event\UserPostLogoutSuccessEvent;
 use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
@@ -207,11 +208,7 @@ class AccessController extends AbstractController
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     $authMethod = $session->get('authenticationMethod');
                 }
-                $event = new GenericEvent($user, [
-                    'authenticationMethod' => $authMethod,
-                    'uid' => $uid,
-                ]);
-                $eventDispatcher->dispatch($event, AccessEvents::LOGOUT_SUCCESS);
+                $eventDispatcher->dispatch(new UserPostLogoutSuccessEvent($user, $authMethod->getAlias()));
             } else {
                 $this->addFlash('error', 'Error! You have not been logged out.');
             }

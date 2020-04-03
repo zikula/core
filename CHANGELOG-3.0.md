@@ -67,6 +67,7 @@
     - `Zikula\UsersModule\AccessEvents::LOGIN_VETO` is removed in favor of `Zikula\UsersModule\Event\UserPreLoginSuccessEvent`
     - `Zikula\UsersModule\AccessEvents::LOGIN_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginSuccessEvent`
     - `Zikula\UsersModule\AccessEvents::LOGIN_FAILED` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginFailureEvent`
+    - `Zikula\UsersModule\AccessEvents::LOGOUT_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostLogoutSuccessEvent`
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).

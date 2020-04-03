@@ -18,11 +18,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\EventDispatcher\Event;
-use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
+use Zikula\UsersModule\Event\UserPostLogoutSuccessEvent;
 
 class UserEventListener implements EventSubscriberInterface
 {
@@ -45,7 +44,7 @@ class UserEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AccessEvents::LOGOUT_SUCCESS => ['clearUsersNamespace'],
+            UserPostLogoutSuccessEvent::class => ['clearUsersNamespace'],
             UserPostLoginSuccessEvent::class => ['setLocale'],
             KernelEvents::EXCEPTION => ['clearUsersNamespace']
         ];
@@ -96,7 +95,7 @@ class UserEventListener implements EventSubscriberInterface
      * if it detects session variables containing authentication information which might make it think
      * that a re-attempt is in progress.
      */
-    public function clearUsersNamespace(Event $event, string $eventName): void
+    public function clearUsersNamespace(UserPostLogoutSuccessEvent $event, string $eventName): void
     {
         $request = $this->requestStack->getCurrentRequest();
 
