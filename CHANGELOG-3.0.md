@@ -56,6 +56,8 @@
       - The event class changed from `Zikula\UsersModule\Event\UserFormAwareEvent` to `EditUserFormPostCreatedEvent`
     - `Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\EditUserFormPostValidatedEvent`
       - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `EditUserFormPostValidatedEvent`
+    - `Zikula\UsersModule\UserEvents::FORM_SEARCH` has been deleted.
+    - `Zikula\UsersModule\UserEvents::FORM_SEARCH_PROCESS` has been deleted.
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
