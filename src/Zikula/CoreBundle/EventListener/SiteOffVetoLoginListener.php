@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Event\UserPreSuccessfulLoginEvent;
+use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
 
 class SiteOffVetoLoginListener implements EventSubscriberInterface
 {
@@ -65,7 +65,7 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UserPreSuccessfulLoginEvent::class => [
+            UserPreSuccessLoginEvent::class => [
                 ['vetoNonAdminsOnSiteOff']
             ]
         ];
@@ -74,7 +74,7 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
     /**
      * Veto a login by a non-admin when the site is disabled.
      */
-    public function vetoNonAdminsOnSiteOff(UserPreSuccessfulLoginEvent $event): void
+    public function vetoNonAdminsOnSiteOff(UserPreSuccessLoginEvent $event): void
     {
         if (!$this->siteOff) {
             return;

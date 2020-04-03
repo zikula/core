@@ -36,7 +36,7 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
-use Zikula\UsersModule\Event\UserPreSuccessfulLoginEvent;
+use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
 use Zikula\UsersModule\Helper\AccessHelper;
@@ -155,7 +155,7 @@ class AccessController extends AbstractController
                         $eventDispatcher->dispatch($formDataEvent);
                     }
                     $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
-                    $event = new UserPreSuccessfulLoginEvent($user, $selectedMethod);
+                    $event = new UserPreSuccessLoginEvent($user, $selectedMethod);
                     $eventDispatcher->dispatch($event);
                     if (!$event->isPropagationStopped()) {
                         $returnUrlFromSession = null !== $session ? $session->get('returnUrl', $returnUrl) : $returnUrl;

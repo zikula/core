@@ -17,7 +17,7 @@ namespace Zikula\RoutesModule\Listener\Base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
-use Zikula\UsersModule\Event\UserPreSuccessfulLoginEvent;
+use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
 
 /**
  * Event handler base class for user login events.
@@ -27,14 +27,14 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UserPreSuccessfulLoginEvent::class => ['veto', 5],
+            UserPreSuccessLoginEvent::class => ['veto', 5],
             AccessEvents::LOGIN_SUCCESS => ['succeeded', 5],
             AccessEvents::LOGIN_FAILED  => ['failed', 5]
         ];
     }
 
     /**
-     * Listener for the `UserPreSuccessfulLoginEvent`.
+     * Listener for the `UserPreSuccessLoginEvent`.
      *
      * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
      * successful login have been checked and are satisfied.) This event allows an extension to
@@ -55,7 +55,7 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      * should be taken to ensure that sensitive operations done within a handler for this event
      * do not introduce breaches of security.
      */
-    public function veto(UserPreSuccessfulLoginEvent $event): void
+    public function veto(UserPreSuccessLoginEvent $event): void
     {
     }
 

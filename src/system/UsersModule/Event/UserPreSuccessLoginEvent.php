@@ -36,7 +36,7 @@ use Zikula\UsersModule\Entity\UserEntity;
  * should be taken to ensure that sensitive operations done within a handler for this event
  * do not introduce breaches of security.
  */
-class UserPreSuccessfulLoginEvent extends RedirectableUserEntityEvent implements StoppableEventInterface
+class UserPreSuccessLoginEvent extends RedirectableUserEntityEvent implements StoppableEventInterface
 {
     private $propagationStopped = false;
 
