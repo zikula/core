@@ -52,7 +52,6 @@ class ConfigController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 $this->setVars($data);
-                $eventDispatcher->dispatch(new GenericEvent(null, [], $data), UserEvents::CONFIG_UPDATED);
                 $this->addFlash('status', 'Done! Configuration updated.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');

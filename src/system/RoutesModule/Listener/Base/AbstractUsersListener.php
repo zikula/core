@@ -23,13 +23,6 @@ use Zikula\UsersModule\UserEvents;
  */
 abstract class AbstractUsersListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
-    {
-        return [
-            UserEvents::CONFIG_UPDATED => ['configUpdated', 5]
-        ];
-    }
-    
     /**
      * Listener for the `module.users.config.updated` event.
      *
