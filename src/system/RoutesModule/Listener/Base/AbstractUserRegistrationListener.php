@@ -21,7 +21,6 @@ use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
-use Zikula\UsersModule\Event\RegistrationPreCreatedEvent;
 
 /**
  * Event handler base class for user registration events.
@@ -31,7 +30,6 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public static function getSubscribedEvents()
     {
         return [
-            RegistrationPreCreatedEvent::class   => ['started', 5],
             ActiveUserPreCreatedEvent::class     => ['createVeto', 5],
             RegistrationPostSuccessEvent::class  => ['succeeded', 5],
             RegistrationPostCreatedEvent::class  => ['create', 5],
@@ -40,24 +38,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
             RegistrationPostApprovedEvent::class => ['forceApproval', 5]
         ];
     }
-    
-    /**
-     * Listener for the `RegistrationPreCreatedEvent`.
-     *
-     * Occurs at the beginning of the registration process, before the registration form is displayed to the user.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     *
-     * There is no content to the event. It is simply an alert.
-     */
-    public function started(RegistrationPreCreatedEvent $event): void
-    {
-    }
-    
+
     /**
      * Listener for the `ActiveUserPreCreatedEvent`.
      *
@@ -87,7 +68,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function createVeto(ActiveUserPreCreatedEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `RegistrationPostSuccessEvent`.
      *
@@ -146,7 +127,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function succeeded(RegistrationPostSuccessEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `RegistrationPostCreatedEvent`.
      *
@@ -166,7 +147,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function create(RegistrationPostCreatedEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `RegistrationPostUpdatedEvent`.
      *
@@ -184,7 +165,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function update(RegistrationPostUpdatedEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `RegistrationPostDeletedEvent`.
      *
@@ -203,7 +184,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function delete(RegistrationPostDeletedEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `RegistrationPostApprovedEvent`.
      *
