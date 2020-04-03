@@ -38,7 +38,6 @@ use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostValidatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
-use Zikula\UsersModule\Event\RegistrationPreCreatedEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
 use Zikula\UsersModule\Form\Type\RegistrationType\DefaultRegistrationType;
 use Zikula\UsersModule\Helper\AccessHelper;
