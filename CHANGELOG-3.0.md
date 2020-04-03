@@ -37,7 +37,7 @@
     - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
     - `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
   - Event changes (requires listener modifications)
-    - `Zikula\UsersModule\RegistrationEvents::REGISTRATION_STARTED` is removed in favor of `Zikula\UsersModule\Event\RegistrationPreCreatedEvent`.
+    - `Zikula\UsersModule\RegistrationEvents::REGISTRATION_STARTED` has been deleted.
     - `Zikula\UsersModule\RegistrationEvents::CREATE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostCreatedEvent`.
     - `Zikula\UsersModule\RegistrationEvents::DELETE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostDeletedEvent`.
     - `Zikula\UsersModule\RegistrationEvents::REGISTRATION_SUCCEEDED` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostSuccessEvent`.
@@ -63,6 +63,7 @@
       - The event class changed from `Zikula\UsersModule\Event\UserFormAwareEvent` to `LoginFormPostCreatedEvent`
     - `Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\LoginFormPostValidatedEvent`
       - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `LoginFormPostValidatedEvent`
+    - `Zikula\UsersModule\AccessEvents::LOGIN_STARTED` has been deleted.
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).

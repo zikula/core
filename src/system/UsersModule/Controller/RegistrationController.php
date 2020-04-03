@@ -216,9 +216,6 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        // Notify that we are beginning a registration session.
-        $eventDispatcher->dispatch(new RegistrationPreCreatedEvent());
-
         $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationTemplateName()
             : '@ZikulaUsersModule\Registration\defaultRegister.html.twig';

@@ -89,8 +89,6 @@ class AccessController extends AbstractController
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $rememberMe = false;
 
-        $eventDispatcher->dispatch(new GenericEvent(), AccessEvents::LOGIN_STARTED);
-
         $loginHeader = $this->renderView('@ZikulaUsersModule/Access/loginHeader.html.twig');
         $loginFooter = $this->renderView('@ZikulaUsersModule/Access/loginFooter.html.twig');
 
