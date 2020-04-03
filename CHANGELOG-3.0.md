@@ -267,7 +267,7 @@
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.3
   - composer/xdebug-handler installed in 1.4.1
-  - doctrine/annotations updated from 1.2.7 to 1.10.0
+  - doctrine/annotations updated from 1.2.7 to 1.10.1
   - doctrine/collections updated from 1.3.0 to 1.6.4
   - doctrine/common updated from 2.6.2 to 2.12.0
   - doctrine/dbal updated from 2.5.13 to 2.10.1
