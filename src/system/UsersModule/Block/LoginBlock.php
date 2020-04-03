@@ -18,12 +18,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
-use Zikula\UsersModule\Event\UserFormAwareEvent;
 
 /**
  * A block that allows users to log into the system.
