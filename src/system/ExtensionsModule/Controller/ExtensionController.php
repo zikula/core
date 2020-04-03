@@ -96,7 +96,7 @@ class ExtensionController extends AbstractController
 
         $paginator = $extensionRepository->getPagedCollectionBy([], [
             $sortableColumns->getSortColumn()->getName() => $sortableColumns->getSortDirection()
-        ], $pageSize, $page);
+        ], $page, $pageSize);
         $paginator->setRoute('zikulaextensionsmodule_extension_list');
 
         return [
