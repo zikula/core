@@ -34,8 +34,8 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Event\UserFormAwareEvent;
-use Zikula\UsersModule\Event\UserFormDataEvent;
+use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
+use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
 use Zikula\UsersModule\Helper\AccessHelper;
@@ -100,8 +100,8 @@ class AccessController extends AbstractController
             if (!$form->has('rememberme')) {
                 throw new InvalidAuthenticationMethodLoginFormException();
             }
-            $loginFormEvent = new UserFormAwareEvent($form);
-            $eventDispatcher->dispatch($loginFormEvent, AccessEvents::AUTHENTICATION_FORM);
+            $loginFormEvent = new LoginFormPostCreatedEvent($form);
+            $eventDispatcher->dispatch($loginFormEvent);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
@@ -112,19 +112,19 @@ class AccessController extends AbstractController
                     'loginHeader' => $loginHeader,
                     'loginFooter' => $loginFooter,
                     'form' => $form->createView(),
-                    'additional_templates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
+                    'additionalTemplates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             // provide temp value for uid until form gives real value.
             $uid = 'POST' === $request->getMethod() ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
-            $hasListeners = $eventDispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM);
+            $hasListeners = $eventDispatcher->hasListeners(LoginFormPostCreatedEvent::class);
             $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
                 $form = $this->createForm(DefaultLoginType::class, ['uid' => $uid]);
-                $loginFormEvent = new UserFormAwareEvent($form);
-                $eventDispatcher->dispatch($loginFormEvent, AccessEvents::AUTHENTICATION_FORM);
-                if ($form->count() > 3) { // count > 3 means that the AUTHENTICATION_FORM event added some form children
+                $loginFormEvent = new LoginFormPostCreatedEvent($form);
+                $eventDispatcher->dispatch($loginFormEvent);
+                if ($form->count() > 3) { // count > 3 means that the LoginFormPostCreatedEvent event added some form children
                     $form->handleRequest($request);
                     if ($form->isSubmitted() && $form->isValid()) {
                         $uid = $form->get('uid')->getData();
@@ -134,7 +134,7 @@ class AccessController extends AbstractController
                             'loginHeader' => $loginHeader,
                             'loginFooter' => $loginFooter,
                             'form' => $form->createView(),
-                            'additional_templates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
+                            'additionalTemplates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
                         ]);
                     }
                 }
@@ -152,8 +152,8 @@ class AccessController extends AbstractController
                 $validators = $hook->getValidators();
                 if (!$validators->hasErrors() && $accessHelper->loginAllowed($user)) {
                     if (isset($form)) {
-                        $formDataEvent = new UserFormDataEvent($user, $form);
-                        $eventDispatcher->dispatch($formDataEvent, AccessEvents::AUTHENTICATION_FORM_HANDLE);
+                        $formDataEvent = new LoginFormPostValidatedEvent($form, $user);
+                        $eventDispatcher->dispatch($formDataEvent);
                     }
                     $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);

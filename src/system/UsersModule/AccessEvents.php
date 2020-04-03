@@ -104,23 +104,4 @@ class AccessEvents
      * 'uid'=> $uid];`
      */
     public const LOGOUT_SUCCESS = 'module.users.ui.logout.succeeded';
-
-    /**
-     * Event called on user login.
-     * @see \Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM_HANDLE
-     * Event is \Zikula\UsersModule\Event\UserFormAwareEvent
-     * Contains instance of the Form in order to add elements for inclusion in the user edit form.
-     * Has a `templates` property that can be added to via `$event->addTemplate('@FooBundle/Area/foo.html.twig')`
-     *   templates will be included/rendered within the user form output
-     */
-    public const AUTHENTICATION_FORM = 'module.users.authentication.form';
-
-    /**
-     * Event called on user login handle form submission.
-     * @see \Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM
-     * Event is \Zikula\UsersModule\Event\UserFormDataEvent
-     * Contains instance of \Zikula\UsersModule\Entity\UserEntity
-     * Has a `formData` property to access data from form after it has handled the Request.
-     */
-    public const AUTHENTICATION_FORM_HANDLE = 'module.users.authentication.form.handle';
 }
