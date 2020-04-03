@@ -1,3 +1,5 @@
+// Copyright Zikula Foundation, licensed MIT.
+
 var plumbInstance;
 var currentZoom;
 

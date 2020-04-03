@@ -2,6 +2,7 @@
 
 (function($) {
     $(document).ready(function() {
+        var filterCount = $('#filterDefinitions').data('count');
         $('#add-filter').click(function (event) {
             event.preventDefault();
 

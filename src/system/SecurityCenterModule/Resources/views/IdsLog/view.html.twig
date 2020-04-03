@@ -115,17 +115,4 @@
     <p class="alert alert-info text-center">{% trans %}No logged intrusions found.{% endtrans %}</p>
 {% endif %}
 {{ adminFooter() }}
-{% set filterFormScript %}
-    <script type="text/javascript">
-    /* <![CDATA[ */
-        ( function($) {
-            $(document).ready(function() {
-                $('#zikulaSecurityCenterModuleIdsLogFilterForm select').change(function() {
-                    $('#zikulaSecurityCenterModuleIdsLogFilterForm').submit();
-                });
-            });
-        })(jQuery);
-    /* ]]> */
-    </script>
-{% endset %}
-{{ pageAddAsset('footer', filterFormScript) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/ZikulaSecurityCenterModule.IdsLogFilter.js')) }}
