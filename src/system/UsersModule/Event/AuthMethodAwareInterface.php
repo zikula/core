@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Event;
 
-use Psr\EventDispatcher\StoppableEventInterface;
 
-/**
- * An UserEntityEvent that adds the ability to stop the propagation.
- */
-class StoppableUserEntityEvent extends UserEntityEvent implements StoppableEventInterface
+interface AuthMethodAwareInterface
 {
-    use StoppableTrait;
+    public function getAuthenticationMethod(): string;
 }

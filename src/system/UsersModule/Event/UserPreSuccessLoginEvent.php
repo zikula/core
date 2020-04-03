@@ -36,14 +36,9 @@ use Zikula\UsersModule\Entity\UserEntity;
  * should be taken to ensure that sensitive operations done within a handler for this event
  * do not introduce breaches of security.
  */
-class UserPreSuccessLoginEvent extends RedirectableUserEntityEvent implements StoppableEventInterface
+class UserPreSuccessLoginEvent extends RedirectableUserEntityEvent implements StoppableEventInterface, AuthMethodAwareInterface
 {
-    private $propagationStopped = false;
-
-    /**
-     * @var string
-     */
-    private $authenticationMethod;
+    use AuthMethodTrait, StoppableTrait;
 
     /**
      * @var array
@@ -54,21 +49,6 @@ class UserPreSuccessLoginEvent extends RedirectableUserEntityEvent implements St
     {
         parent::__construct($userEntity);
         $this->authenticationMethod = $authenticationMethod;
-    }
-
-    public function isPropagationStopped(): bool
-    {
-        return $this->propagationStopped;
-    }
-
-    public function stopPropagation(): void
-    {
-        $this->propagationStopped = true;
-    }
-
-    public function getAuthenticationMethod(): string
-    {
-        return $this->authenticationMethod;
     }
 
     public function getFlashesAsString(): string
