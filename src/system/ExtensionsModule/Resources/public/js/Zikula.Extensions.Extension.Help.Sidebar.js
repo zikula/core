@@ -20,10 +20,11 @@
 
             var helpUrl = $(this).attr('href');
             $('#helpBar').html(`
-                <iframe id="helpFrame" width="100%" onload="updateIframeHeight()" src="${helpUrl}?raw=1" frameborder="0" scrolling="yes"></iframe>
+                <iframe id="helpFrame" width="100%" src="${helpUrl}?raw=1" frameborder="0" scrolling="yes"></iframe>
                 <button id="btnCloseHelp" type="button" class="btn btn-secondary btn-sm my-3"><i class="fas fa-times"></i> ${Translator.trans('Close help')}</button>
                 <button id="btnOpenSeparateHelp" type="button" class="btn btn-secondary btn-sm"><i class="fas fa-window-restore"></i> ${Translator.trans('Open in new window')}</button>
             `);
+            $('#helpFrame').on('load', updateIframeHeight);
             $('#btnCloseHelp').click(function (innerEvent) {
                 $('#helpBar').remove();
                 $('body').removeClass('help-open');

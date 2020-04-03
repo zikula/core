@@ -1,0 +1,11 @@
+body {
+    background-color: transparent !important;
+    padding-bottom: 100px !important;/* for developer toolbar */
+}
+a {
+    color: #000 !important;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}

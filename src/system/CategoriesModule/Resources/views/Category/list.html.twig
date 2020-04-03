@@ -1,15 +1,8 @@
 {{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaThemeModule:css/jstree.Common.css')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.List.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
-{% set customStyle %}
-    <style>
-        .jstree-contextmenu {
-            z-index: 100;
-        }
-    </style>
-{% endset %}
-{{ pageAddAsset('header', customStyle) }}
 {{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>

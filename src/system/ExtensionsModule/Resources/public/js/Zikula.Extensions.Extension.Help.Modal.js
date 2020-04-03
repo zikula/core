@@ -26,7 +26,8 @@
             $('body').append(modal);
 
             var helpUrl = $(this).attr('href');
-            $('#helpModal .modal-body').html('<iframe id="helpFrame" width="100%" onload="updateIframeHeight()" src="' + helpUrl + '?raw=1" frameborder="0" scrolling="yes"></iframe>');
+            $('#helpModal .modal-body').html('<iframe id="helpFrame" width="100%" src="' + helpUrl + '?raw=1" frameborder="0" scrolling="yes"></iframe>');
+            $('#helpFrame').on('load', updateIframeHeight);
             $('#helpModal').modal('show');
             $('#btnOpenSeparateHelp').click(function (innerEvent) {
                 window.open(helpUrl);

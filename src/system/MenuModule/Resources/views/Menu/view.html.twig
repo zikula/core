@@ -1,15 +1,8 @@
 {{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaThemeModule:css/jstree.Common.css')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/ZikulaMenuModule.Admin.View.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/Zikula.Menu.Node.Edit.js')) }}
-{% set customStyle %}
-    <style>
-        .jstree-contextmenu {
-            z-index: 100;
-        }
-    </style>
-{% endset %}
-{{ pageAddAsset('header', customStyle) }}
 {{ adminHeader() }}
 {{ pageSetVar('title', 'Menu'|trans) }}
 <h3>
