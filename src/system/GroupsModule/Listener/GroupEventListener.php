@@ -19,9 +19,9 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\GroupsModule\GroupEvents;
+use Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent;
+use Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent;
 
 class GroupEventListener implements EventSubscriberInterface
 {
@@ -60,18 +60,17 @@ class GroupEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            GroupEvents::GROUP_APPLICATION_PROCESSED => ['applicationProcessed'],
-            GroupEvents::GROUP_NEW_APPLICATION => ['newApplication']
+            GroupApplicationPostProcessedEvent::class => ['applicationProcessed'],
+            GroupApplicationPostCreatedEvent::class => ['newApplication']
         ];
     }
 
     /**
      * Send an email to the user with results when a group application is processed.
      */
-    public function applicationProcessed(GenericEvent $event): void
+    public function applicationProcessed(GroupApplicationPostProcessedEvent $event): void
     {
-        $applicationEntity = $event->getSubject();
-        $formData = $event->getArguments();
+        $applicationEntity = $event->getGroupApplication();
         $title = $this->translator->trans('Regarding your %groupName% group membership application', ['%groupName%' => $applicationEntity->getGroup()->getName()]);
         $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');
@@ -81,7 +80,7 @@ class GroupEventListener implements EventSubscriberInterface
             ->from(new Address($adminMail, $siteName))
             ->to(new Address($user->getEmail(), $user->getUname()))
             ->subject($title)
-            ->html($title . '\n\n' . $formData['reason'])
+            ->html($title . '\n\n' . $event->getMessage())
         ;
         $this->mailer->send($email);
     }
@@ -89,12 +88,12 @@ class GroupEventListener implements EventSubscriberInterface
     /**
      * Send an email to the admin when a new group application is created.
      */
-    public function newApplication(GenericEvent $event): void
+    public function newApplication(GroupApplicationPostCreatedEvent $event): void
     {
         if (!$this->variableApi->get('ZikulaGroupsModule', 'mailwarning')) {
             return;
         }
-        $applicationEntity = $event->getSubject();
+        $applicationEntity = $event->getGroupApplication();
         $body = $this->translator->trans('A new application has been created by %userName% to %groupName%. Please attend to this request at %url%', [
             '%userName%' => $applicationEntity->getUser()->getUname(),
             '%groupName%' => $applicationEntity->getGroup()->getName(),

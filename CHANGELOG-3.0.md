@@ -68,6 +68,14 @@
     - `Zikula\UsersModule\AccessEvents::LOGIN_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginSuccessEvent`
     - `Zikula\UsersModule\AccessEvents::LOGIN_FAILED` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginFailureEvent`
     - `Zikula\UsersModule\AccessEvents::LOGOUT_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostLogoutSuccessEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_CREATE` is removed in favor of `Zikula\GroupsModule\Event\GroupPostCreatedEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_UPDATE` is removed in favor of `Zikula\GroupsModule\Event\GroupPostUpdatedEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_PRE_DELETE` is removed in favor of `Zikula\GroupsModule\Event\GroupPreDeletedEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_DELETE` is removed in favor of `Zikula\GroupsModule\Event\GroupPostDeletedEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_ADD_USER` is removed in favor of `Zikula\GroupsModule\Event\GroupPostUserAddedEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_REMOVE_USER` is removed in favor of `Zikula\GroupsModule\Event\GroupPostUserRemovedEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_APPLICATION_PROCESSED` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent`
+    - `Zikula\GroupsModule\GroupEvents::GROUP_GROUP_NEW_APPLICATIONCREATE` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent`
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
