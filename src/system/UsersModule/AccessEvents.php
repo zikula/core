@@ -19,32 +19,6 @@ namespace Zikula\UsersModule;
 class AccessEvents
 {
     /**
-     * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
-     * successful login have been checked and are satisfied.) This event allows a module to
-     * intercept the login process and prevent a successful login from taking place.
-     *
-     * A handler that needs to veto a login attempt
-     * should call `stopPropagation()`. This will prevent other handlers from receiving the event, will
-     * return to the login process, and will prevent the login from taking place. A handler that
-     * vetoes a login attempt should set an appropriate session flash message and give any additional
-     * feedback to the user attempting to log in that might be appropriate.
-     *
-     * If vetoing the login, the 'returnUrl' argument should be set to redirect the user to an appropriate action.
-     * Also, a 'flash' argument may be set to provide information to the user for the veto.
-     *
-     * Note: the user __will not__ be logged in at the point where the event handler is
-     * executing. Any attempt to check a user's permissions, his logged-in status, or any
-     * operation will return a value equivalent to what an anonymous (guest) user would see. Care
-     * should be taken to ensure that sensitive operations done within a handler for this event
-     * do not introduce breaches of security.
-     *
-     * The subject of the event will contain the userEntity
-     * The arguments of the event are:
-     * `'authenticationMethod'` will contain the alias (name) of the method that was used to authenticate the user.
-     */
-    public const LOGIN_VETO = 'user.login.veto';
-
-    /**
      * Occurs right after a successful attempt to log in, and just prior to redirecting the user to the desired page.
      *
      * The event subject contains the userEntity

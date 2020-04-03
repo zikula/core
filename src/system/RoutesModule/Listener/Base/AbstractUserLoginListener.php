@@ -17,6 +17,7 @@ namespace Zikula\RoutesModule\Listener\Base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
+use Zikula\UsersModule\Event\UserPreSuccessfulLoginEvent;
 
 /**
  * Event handler base class for user login events.
@@ -26,44 +27,35 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AccessEvents::LOGIN_VETO    => ['veto', 5],
+            UserPreSuccessfulLoginEvent::class => ['veto', 5],
             AccessEvents::LOGIN_SUCCESS => ['succeeded', 5],
             AccessEvents::LOGIN_FAILED  => ['failed', 5]
         ];
     }
 
     /**
-     * Listener for the `module.users.ui.login.veto` event.
+     * Listener for the `UserPreSuccessfulLoginEvent`.
      *
-     * Occurs immediately prior to a log-in that is expected to succeed.
-     * (All prerequisites for a successful login have been checked and are satisfied.)
-     * This event allows a module to intercept the login process and prevent a successful login from taking place.
+     * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
+     * successful login have been checked and are satisfied.) This event allows an extension to
+     * intercept the login process and prevent a successful login from taking place.
      *
-     * A handler that needs to veto a login attempt should call `stopPropagation()`. This will prevent other handlers
-     * from receiving the event, will return to the login process, and will prevent the login from taking place.
-     * A handler that vetoes a login attempt should set an appropriate error message and give any additional
+     * A handler that needs to veto a login attempt should call `stopPropagation()`.
+     * This will prevent other handlers from receiving the event, will
+     * return to the login process, and will prevent the login from taking place. A handler that
+     * vetoes a login attempt should set an appropriate session flash message and give any additional
      * feedback to the user attempting to log in that might be appropriate.
      *
-     * If vetoing the login, the 'returnUrl' argument should be set to redirect the user to an appropriate action.
+     * If vetoing the login, the 'returnUrl' property should be set to redirect the user to an appropriate action.
+     * Also, a 'flash' property may be set to provide information to the user for the veto.
      *
-     * Note: the user __will not__ be logged in when the event handler is executing.
-     * Any attempt to check a user's permissions, his logged-in status, or any operation will
-     * return a value equivalent to what an anonymous (guest) user would see.
-     * Care should be taken to ensure that sensitive operations done within a handler for this event
+     * Note: the user __will not__ be logged in at the point where the event handler is
+     * executing. Any attempt to check a user's permissions, his logged-in status, or any
+     * operation will return a value equivalent to what an anonymous (guest) user would see. Care
+     * should be taken to ensure that sensitive operations done within a handler for this event
      * do not introduce breaches of security.
-     *
-     * The subject of the event will contain the UserEntity.
-     * The arguments of the event are:
-     *     `'authentication_method'` will contain the name of the module
-     *     and the name of the method that was used to authenticated the user.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
      */
-    public function veto(GenericEvent $event): void
+    public function veto(UserPreSuccessfulLoginEvent $event): void
     {
     }
 
