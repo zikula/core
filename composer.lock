@@ -7041,12 +7041,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "f9ff48db4ba14c99b947b3c5c3d7a88e02df87a5"
+                "reference": "1d400af00403d7d379ec4ff30f09e20b08632c27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/f9ff48db4ba14c99b947b3c5c3d7a88e02df87a5",
-                "reference": "f9ff48db4ba14c99b947b3c5c3d7a88e02df87a5",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/1d400af00403d7d379ec4ff30f09e20b08632c27",
+                "reference": "1d400af00403d7d379ec4ff30f09e20b08632c27",
                 "shasum": ""
             },
             "require": {
@@ -7078,7 +7078,7 @@
                 "step",
                 "wizard"
             ],
-            "time": "2020-04-02T12:08:07+00:00"
+            "time": "2020-04-03T07:00:56+00:00"
         }
     ],
     "packages-dev": [
