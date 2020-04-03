@@ -19,16 +19,6 @@ namespace Zikula\UsersModule;
 class UserEvents
 {
     /**
-     * A hook-like event process that is triggered when the delete confirmation form is displayed. It allows other modules
-     * to intercept and add to the delete confirmation form.
-     * The subject of the event is not set.
-     * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
-     */
-    public const DELETE_FORM = 'module.users.ui.form_delete';
-
-    public const DELETE_PROCESS = 'module.users.ui.process_delete';
-
-    /**
      * A hook-like UI event triggered when the users search form is displayed. Allows other
      * modules to intercept and insert their own elements for submission to the search form.
      * To add elements to the search form, render the output and then add this as an array element to the event's

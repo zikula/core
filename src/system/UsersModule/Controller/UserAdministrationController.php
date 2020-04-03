@@ -25,7 +25,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
@@ -45,6 +44,8 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
+use Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent;
+use Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostValidatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
@@ -59,7 +60,6 @@ use Zikula\UsersModule\Helper\AdministrationActionsHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
-use Zikula\UsersModule\UserEvents;
 
 /**
  * Class UserAdministrationController
@@ -300,6 +300,8 @@ class UserAdministrationController extends AbstractController
         $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class, [
             'users' => $usersImploded
         ]);
+        $deleteUserFormPostCreatedEvent = new DeleteUserFormPostCreatedEvent($deleteConfirmationForm);
+        $eventDispatcher->dispatch($deleteUserFormPostCreatedEvent);
         $deleteConfirmationForm->handleRequest($request);
         if (empty($uids) && !$deleteConfirmationForm->isSubmitted()) {
             throw new InvalidArgumentException($this->trans('No users selected.'));
@@ -333,7 +335,7 @@ class UserAdministrationController extends AbstractController
                     } else {
                         $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
                     }
-                    $eventDispatcher->dispatch(new GenericEvent(null, ['id' => $deletedUser->getUid()]), UserEvents::DELETE_PROCESS);
+                    $eventDispatcher->dispatch(new DeleteUserFormPostValidatedEvent($deleteConfirmationForm, $deletedUser));
                     $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
                     $userRepository->removeAndFlush($deletedUser);
                 }
@@ -353,7 +355,8 @@ class UserAdministrationController extends AbstractController
 
         return [
             'users' => $users,
-            'form' => $deleteConfirmationForm->createView()
+            'form' => $deleteConfirmationForm->createView(),
+            'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : []
         ];
     }
 

@@ -16,7 +16,6 @@ namespace Zikula\UsersModule\Helper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\GroupsModule\Constant;
@@ -27,7 +26,6 @@ use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
-use Zikula\UsersModule\UserEvents;
 
 class DeleteHelper
 {
@@ -119,7 +117,6 @@ class DeleteHelper
         } else {
             $this->eventDispatcher->dispatch(new RegistrationPostDeletedEvent($user));
         }
-        $this->eventDispatcher->dispatch(new GenericEvent(null, ['id' => $user->getUid()]), UserEvents::DELETE_PROCESS);
         $this->hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($user->getUid()));
         $this->userRepository->removeAndFlush($user);
     }

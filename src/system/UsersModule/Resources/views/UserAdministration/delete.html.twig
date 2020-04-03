@@ -9,9 +9,8 @@
 {% endfor %}
 {{ form_start(form) }}
 {{ form_errors(form) }}
-{% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::DELETE_FORM')) %}
-{% for data in eventData %}
-    {{ data }}
+{% for template in additionalTemplates %}
+    include(template.view, template.params, ignore_missing = true)
 {% endfor %}
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::DELETE_FORM')) }}
 <div class="form-group row">
