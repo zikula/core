@@ -36,6 +36,7 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
+use Zikula\UsersModule\Event\UserPreSuccessfulLoginEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
 use Zikula\UsersModule\Helper\AccessHelper;
@@ -154,18 +155,18 @@ class AccessController extends AbstractController
                         $eventDispatcher->dispatch($formDataEvent);
                     }
                     $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
-                    $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
-                    $eventDispatcher->dispatch($event, AccessEvents::LOGIN_VETO);
+                    $event = new UserPreSuccessfulLoginEvent($user, $selectedMethod);
+                    $eventDispatcher->dispatch($event);
                     if (!$event->isPropagationStopped()) {
                         $returnUrlFromSession = null !== $session ? $session->get('returnUrl', $returnUrl) : $returnUrl;
                         $returnUrlFromSession = urldecode($returnUrlFromSession);
                         $accessHelper->login($user, $rememberMe);
                         $returnUrl = $this->dispatchLoginSuccessEvent($eventDispatcher, $selectedMethod, $returnUrlFromSession, $user);
                     } else {
-                        if ($event->hasArgument('flash')) {
-                            $this->addFlash('danger', $event->getArgument('flash'));
+                        if ($event->hasFlashes()) {
+                            $this->addFlash('danger', $event->getFlashesAsString());
                         }
-                        $returnUrl = $event->getArgument('returnUrl');
+                        $returnUrl = $event->getRedirectUrl();
                     }
 
                     return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');

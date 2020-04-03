@@ -17,10 +17,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\AccessEvents;
+use Zikula\UsersModule\Event\UserPreSuccessfulLoginEvent;
 
 class SiteOffVetoLoginListener implements EventSubscriberInterface
 {
@@ -66,7 +65,7 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AccessEvents::LOGIN_VETO => [
+            UserPreSuccessfulLoginEvent::class => [
                 ['vetoNonAdminsOnSiteOff']
             ]
         ];
@@ -75,12 +74,12 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
     /**
      * Veto a login by a non-admin when the site is disabled.
      */
-    public function vetoNonAdminsOnSiteOff(GenericEvent $event): void
+    public function vetoNonAdminsOnSiteOff(UserPreSuccessfulLoginEvent $event): void
     {
         if (!$this->siteOff) {
             return;
         }
-        $user = $event->getSubject();
+        $user = $event->getUser();
         if (!$this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, $user->getUid())) {
             $event->stopPropagation();
 
@@ -88,8 +87,8 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
             if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
                 $session->remove('authenticationMethod');
             }
-            $event->setArgument('flash', $this->translator->trans('Admin credentials required when site is disabled.'));
-            $event->setArgument('returnUrl', $this->router->generate('home'));
+            $event->addFlash($this->translator->trans('Admin credentials required when site is disabled.'));
+            $event->setRedirectUrl($this->router->generate('home'));
         }
     }
 }
