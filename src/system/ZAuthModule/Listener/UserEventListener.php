@@ -16,10 +16,8 @@ namespace Zikula\ZAuthModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class UserEventListener implements EventSubscriberInterface
@@ -43,41 +41,34 @@ class UserEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AccessEvents::LOGIN_VETO => ['forcedPasswordChange']
+            UserPreSuccessLoginEvent::class => ['forcedPasswordChange']
         ];
     }
 
     /**
-     * Vetos (denies) a login attempt, and forces the user to change his password.
-     * This handler is triggered by the 'user.login.veto' event.  It vetos (denies) a
+     * Vetoes (denies) a login attempt, and forces the user to change his password.
+     * This handler is triggered by the 'UserPreSuccessLoginEvent'.  It vetoes (denies) a
      * login attempt if the users's account record is flagged to force the user to change
      * his password maintained by the Users module. If the user does not maintain a
      * password on his Users account (e.g., he registered with and logs in with a Google
      * Account or an OpenID, and never established a Users password), then this handler
      * will not trigger a change of password.
      *
-     * @param GenericEvent $event The event that triggered this handler
-     *
      * @see \Zikula\ZAuthModule\Controller\AccountController::changePasswordAction
      */
-    public function forcedPasswordChange(GenericEvent $event): void
+    public function forcedPasswordChange(UserPreSuccessLoginEvent $event): void
     {
-        /** @var UserEntity $user */
-        $user = $event->getSubject();
+        $user = $event->getUser();
         if ($user->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && $user->getAttributes()->get(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
             $event->stopPropagation();
-            $event->setArgument('returnUrl', $this->router->generate('zikulazauthmodule_account_changepassword'));
+            $event->setRedirectUrl($this->router->generate('zikulazauthmodule_account_changepassword'));
 
             $request = $this->requestStack->getCurrentRequest();
             if ($request->hasSession() && ($session = $request->getSession())) {
-                $session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
+                $session->set('authenticationMethod', $event->getAuthenticationMethod());
                 $session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
-
-                $session->getFlashBag()->add(
-                    'error',
-                    "Your log-in request was not completed. You must change your web site account's password first."
-                );
             }
+            $event->addFlash("Your log-in request was not completed. You must change your web site account's password first.");
         }
     }
 }

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Event;
 
-use Zikula\UsersModule\Entity\UserEntity;
-
 /**
  * An UserEntityEvent that adds the ability to set/get a redirectUrl.
  */
@@ -25,9 +23,8 @@ class RedirectableUserEntityEvent extends UserEntityEvent
      */
     private $redirectUrl;
 
-    public function __construct(UserEntity $userEntity, string $redirectUrl = '')
+    public function setRedirectUrl(string $redirectUrl): void
     {
-        parent::__construct($userEntity);
         $this->redirectUrl = $redirectUrl;
     }
 

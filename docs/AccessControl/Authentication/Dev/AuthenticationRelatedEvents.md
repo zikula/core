@@ -23,6 +23,6 @@ currentMenu: authentication
 
 - React to the deletion of a pending user.
 
-`Zikula\UsersModule\AccessEvents::LOGIN_VETO`
+`Zikula\UsersModule\Event\UserPreSuccessLoginEvent`
 
 - force the halt of an otherwise successful login and require user action.
