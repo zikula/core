@@ -26,7 +26,6 @@ use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
@@ -35,6 +34,7 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
+use Zikula\UsersModule\Event\UserPostLoginFailureEvent;
 use Zikula\UsersModule\Event\UserPostSuccessLoginEvent;
 use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
@@ -181,25 +181,11 @@ class AccessController extends AbstractController
         if (null !== $session) {
             $session->remove('authenticationMethod');
         }
-        $returnUrl = $this->dispatchLoginFailedEvent($eventDispatcher, $authenticationMethod, $returnUrl, $user);
+        $userPostFailLoginEvent = new UserPostLoginFailureEvent($user, $authenticationMethod->getAlias());
+        $userPostFailLoginEvent->setRedirectUrl($returnUrl);
+        $returnUrl = $userPostFailLoginEvent->getRedirectUrl();
 
         return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
-    }
-
-    private function dispatchLoginFailedEvent(
-        EventDispatcherInterface $eventDispatcher,
-        AuthenticationMethodInterface $authenticationMethod,
-        string $returnUrl,
-        UserEntity $user = null
-    ) {
-        $eventArgs = [
-            'authenticationMethod' => $authenticationMethod,
-            'returnUrl' => $returnUrl,
-        ];
-        $event = new GenericEvent($user, $eventArgs);
-        $event = $eventDispatcher->dispatch($event, AccessEvents::LOGIN_FAILED);
-
-        return $event->hasArgument('returnUrl') ? $event->getArgument('returnUrl') : $returnUrl;
     }
 
     /**

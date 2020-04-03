@@ -16,13 +16,13 @@ namespace Zikula\UsersModule\Event;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**
- * A 'Generic' event that requires a UserEntity on construction and sets
+ * A 'Generic' event that accepts a UserEntity on construction and sets
  * an immutable datetime object for tracking purposes.
  */
 class UserEntityEvent
 {
     /**
-     * @var UserEntity
+     * @var UserEntity|null
      */
     private $user;
 
@@ -31,13 +31,13 @@ class UserEntityEvent
      */
     private $date;
 
-    public function __construct(UserEntity $user)
+    public function __construct(?UserEntity $user)
     {
         $this->user = $user;
         $this->date = new \DateTimeImmutable('now');
     }
 
-    public function getUser(): UserEntity
+    public function getUser(): ?UserEntity
     {
         return $this->user;
     }
