@@ -25,6 +25,7 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
+use Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\UsersModule\UserEvents;
@@ -119,7 +120,6 @@ class DeleteHelper
         } else {
             $this->eventDispatcher->dispatch(new RegistrationPostDeletedEvent($user));
         }
-        $this->eventDispatcher->dispatch(new GenericEvent(null, ['id' => $user->getUid()]), UserEvents::DELETE_PROCESS);
         $this->hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($user->getUid()));
         $this->userRepository->removeAndFlush($user);
     }

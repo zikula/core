@@ -45,6 +45,8 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
+use Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent;
+use Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostValidatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
@@ -300,6 +302,8 @@ class UserAdministrationController extends AbstractController
         $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class, [
             'users' => $usersImploded
         ]);
+        $deleteUserFormPostCreatedEvent = new DeleteUserFormPostCreatedEvent($deleteConfirmationForm);
+        $eventDispatcher->dispatch($deleteUserFormPostCreatedEvent);
         $deleteConfirmationForm->handleRequest($request);
         if (empty($uids) && !$deleteConfirmationForm->isSubmitted()) {
             throw new InvalidArgumentException($this->trans('No users selected.'));
@@ -333,7 +337,7 @@ class UserAdministrationController extends AbstractController
                     } else {
                         $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
                     }
-                    $eventDispatcher->dispatch(new GenericEvent(null, ['id' => $deletedUser->getUid()]), UserEvents::DELETE_PROCESS);
+                    $eventDispatcher->dispatch(new DeleteUserFormPostValidatedEvent($deleteConfirmationForm, $deletedUser));
                     $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
                     $userRepository->removeAndFlush($deletedUser);
                 }
@@ -353,7 +357,8 @@ class UserAdministrationController extends AbstractController
 
         return [
             'users' => $users,
-            'form' => $deleteConfirmationForm->createView()
+            'form' => $deleteConfirmationForm->createView(),
+            'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : []
         ];
     }
 
