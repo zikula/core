@@ -22,7 +22,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Event\UserPostSuccessLoginEvent;
+use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
 
 class UserEventListener implements EventSubscriberInterface
 {
@@ -46,7 +46,7 @@ class UserEventListener implements EventSubscriberInterface
     {
         return [
             AccessEvents::LOGOUT_SUCCESS => ['clearUsersNamespace'],
-            UserPostSuccessLoginEvent::class => ['setLocale'],
+            UserPostLoginSuccessEvent::class => ['setLocale'],
             KernelEvents::EXCEPTION => ['clearUsersNamespace']
         ];
     }
@@ -54,7 +54,7 @@ class UserEventListener implements EventSubscriberInterface
     /**
      * Set the locale in the session based on previous user selection after successful login.
      */
-    public function setLocale(UserPostSuccessLoginEvent $event): void
+    public function setLocale(UserPostLoginSuccessEvent $event): void
     {
         /** @var UserEntity $userEntity */
         $userEntity = $event->getUser();

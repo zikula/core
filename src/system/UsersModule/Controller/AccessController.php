@@ -35,8 +35,8 @@ use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
 use Zikula\UsersModule\Event\UserPostLoginFailureEvent;
-use Zikula\UsersModule\Event\UserPostSuccessLoginEvent;
-use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
+use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
+use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
 use Zikula\UsersModule\Helper\AccessHelper;
@@ -155,13 +155,13 @@ class AccessController extends AbstractController
                         $eventDispatcher->dispatch($formDataEvent);
                     }
                     $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
-                    $userPreSuccessLoginEvent = new UserPreSuccessLoginEvent($user, $selectedMethod);
+                    $userPreSuccessLoginEvent = new UserPreLoginSuccessEvent($user, $selectedMethod);
                     $eventDispatcher->dispatch($userPreSuccessLoginEvent);
                     if (!$userPreSuccessLoginEvent->isPropagationStopped()) {
                         $returnUrlFromSession = null !== $session ? $session->get('returnUrl', $returnUrl) : $returnUrl;
                         $returnUrlFromSession = urldecode($returnUrlFromSession);
                         $accessHelper->login($user, $rememberMe);
-                        $userPostSuccessLoginEvent = new UserPostSuccessLoginEvent($user, $selectedMethod);
+                        $userPostSuccessLoginEvent = new UserPostLoginSuccessEvent($user, $selectedMethod);
                         $userPostSuccessLoginEvent->setRedirectUrl($returnUrlFromSession);
                         $eventDispatcher->dispatch($userPostSuccessLoginEvent);
                         $returnUrl = $userPostSuccessLoginEvent->getRedirectUrl();

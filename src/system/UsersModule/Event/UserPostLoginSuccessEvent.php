@@ -28,7 +28,7 @@ use Zikula\UsersModule\Entity\UserEntity;
  * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
  * programmatically by directly calling the login function will not see this event fired.
  */
-class UserPostSuccessLoginEvent extends RedirectableUserEntityEvent implements AuthMethodAwareInterface
+class UserPostLoginSuccessEvent extends RedirectableUserEntityEvent implements AuthMethodAwareInterface
 {
     use AuthMethodTrait;
 

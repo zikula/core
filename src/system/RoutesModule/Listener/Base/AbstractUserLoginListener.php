@@ -16,8 +16,8 @@ namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\UsersModule\Event\UserPostLoginFailureEvent;
-use Zikula\UsersModule\Event\UserPostSuccessLoginEvent;
-use Zikula\UsersModule\Event\UserPreSuccessLoginEvent;
+use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
+use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 
 /**
  * Event handler base class for user login events.
@@ -27,14 +27,14 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UserPreSuccessLoginEvent::class => ['veto', 5],
-            UserPostSuccessLoginEvent::class => ['succeeded', 5],
+            UserPreLoginSuccessEvent::class => ['veto', 5],
+            UserPostLoginSuccessEvent::class => ['succeeded', 5],
             UserPostLoginFailureEvent::class  => ['failed', 5]
         ];
     }
 
     /**
-     * Listener for the `UserPreSuccessLoginEvent`.
+     * Listener for the `UserPreLoginSuccessEvent`.
      *
      * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
      * successful login have been checked and are satisfied.) This event allows an extension to
@@ -55,12 +55,12 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      * should be taken to ensure that sensitive operations done within a handler for this event
      * do not introduce breaches of security.
      */
-    public function veto(UserPreSuccessLoginEvent $event): void
+    public function veto(UserPreLoginSuccessEvent $event): void
     {
     }
 
     /**
-     * Listener for the `UserPostSuccessLoginEvent`.
+     * Listener for the `UserPostLoginSuccessEvent`.
      *
      * Occurs right after a successful attempt to log in, and just prior to redirecting the user to the desired page.
      *
@@ -74,7 +74,7 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
      * programmatically by directly calling the login function will not see this event fired.
      */
-    public function succeeded(UserPostSuccessLoginEvent $event): void
+    public function succeeded(UserPostLoginSuccessEvent $event): void
     {
     }
 

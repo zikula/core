@@ -81,7 +81,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * If the registration record is a fully activated user, and the Users module is configured for automatic log-in,
      * then the system's next step (without any interaction from the user) will be the log-in process. All the customary
      * events that might fire during the log-in process could be fired at this point, including (but not limited to)
-     * `Zikula\UsersModule\Event\UserPreSuccessLoginEvent` (which might result in the user having to perform some action
+     * `Zikula\UsersModule\Event\UserPreLoginSuccessEvent` (which might result in the user having to perform some action
      * in order to proceed with the log-in process), `user.login.succeeded`, and/or `user.login.failed`.
      *
      * The `redirectUrl` property controls where the user will be directed at the end of the registration process.

@@ -64,8 +64,8 @@
     - `Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\LoginFormPostValidatedEvent`
       - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `LoginFormPostValidatedEvent`
     - `Zikula\UsersModule\AccessEvents::LOGIN_STARTED` has been deleted.
-    - `Zikula\UsersModule\AccessEvents::LOGIN_VETO` is removed in favor of `Zikula\UsersModule\Event\UserPreSuccessLoginEvent`
-    - `Zikula\UsersModule\AccessEvents::LOGIN_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostSuccessLoginEvent`
+    - `Zikula\UsersModule\AccessEvents::LOGIN_VETO` is removed in favor of `Zikula\UsersModule\Event\UserPreLoginSuccessEvent`
+    - `Zikula\UsersModule\AccessEvents::LOGIN_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginSuccessEvent`
     - `Zikula\UsersModule\AccessEvents::LOGIN_FAILED` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginFailureEvent`
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
