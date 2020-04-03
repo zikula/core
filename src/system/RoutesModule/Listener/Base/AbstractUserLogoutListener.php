@@ -15,8 +15,7 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\UsersModule\AccessEvents;
+use Zikula\UsersModule\Event\UserPostLogoutSuccessEvent;
 
 /**
  * Event handler base class for user logout events.
@@ -26,25 +25,16 @@ abstract class AbstractUserLogoutListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AccessEvents::LOGOUT_SUCCESS => ['succeeded', 5]
+            UserPostLogoutSuccessEvent::class => ['succeeded', 5]
         ];
     }
-    
+
     /**
-     * Listener for the `module.users.ui.logout.succeeded` event.
+     * Listener for the `UserPostLogoutSuccessEvent`.
      *
-     * Occurs right after a successful logout. All handlers are notified.
-     * The event's subject contains the user's UserEntity.
-     * Args contain array of `['authentication_method' => $authenticationMethod,
-     *                         'uid'                   => $uid];`
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs right after a successful logout.
      */
-    public function succeeded(GenericEvent $event): void
+    public function succeeded(UserPostLogoutSuccessEvent $event): void
     {
     }
 }

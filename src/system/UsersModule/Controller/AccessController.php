@@ -20,11 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
@@ -36,6 +34,7 @@ use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
 use Zikula\UsersModule\Event\UserPostLoginFailureEvent;
 use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
+use Zikula\UsersModule\Event\UserPostLogoutSuccessEvent;
 use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
@@ -207,11 +206,7 @@ class AccessController extends AbstractController
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     $authMethod = $session->get('authenticationMethod');
                 }
-                $event = new GenericEvent($user, [
-                    'authenticationMethod' => $authMethod,
-                    'uid' => $uid,
-                ]);
-                $eventDispatcher->dispatch($event, AccessEvents::LOGOUT_SUCCESS);
+                $eventDispatcher->dispatch(new UserPostLogoutSuccessEvent($user, $authMethod->getAlias()));
             } else {
                 $this->addFlash('error', 'Error! You have not been logged out.');
             }
