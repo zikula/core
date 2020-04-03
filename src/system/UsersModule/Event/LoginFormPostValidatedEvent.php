@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Event;
 
 /**
- * Occurs at the beginning of the registration process, before the registration form is displayed to the user.
- * There is no content to the event. It is simply an alert.
+ * Event called on user login handle form submission.
+ * See also LoginFormPostCreatedEvent
  */
-class RegistrationPreCreatedEvent
+class LoginFormPostValidatedEvent extends UserFormPostValidatedEvent
 {
 }

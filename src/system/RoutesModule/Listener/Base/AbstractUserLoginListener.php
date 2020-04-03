@@ -26,40 +26,12 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AccessEvents::LOGIN_STARTED => ['started', 5],
             AccessEvents::LOGIN_VETO    => ['veto', 5],
             AccessEvents::LOGIN_SUCCESS => ['succeeded', 5],
             AccessEvents::LOGIN_FAILED  => ['failed', 5]
         ];
     }
-    
-    /**
-     * Listener for the `module.users.ui.login.started` event.
-     *
-     * Occurs at the beginning of the log-in process, before the registration form is displayed to the user.
-     *
-     * NOTE: This event will not fire if the log-in process is entered through any other method
-     * other than visiting the log-in screen directly.
-     * For example, if automatic log-in is enabled following registration, then this event
-     * will not fire when the system passes control from the registration process to the log-in process.
-     *
-     * Likewise, this event will not fire if a user begins the log-in process from the log-in block or a log-in
-     * plugin if the user provides valid authentication information.
-     * This event will fire, however, if invalid information is provided to the log-in block or log-in plugin,
-     * resulting in the user being redirected to the full log-in screen for corrections.
-     *
-     * This event does not have any subject, arguments, or data.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     */
-    public function started(GenericEvent $event): void
-    {
-    }
-    
+
     /**
      * Listener for the `module.users.ui.login.veto` event.
      *
@@ -94,7 +66,7 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public function veto(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.succeeded` event.
      *
@@ -127,7 +99,7 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public function succeeded(GenericEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `module.users.ui.login.failed` event.
      *

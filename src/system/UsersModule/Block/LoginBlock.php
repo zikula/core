@@ -18,11 +18,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
-use Zikula\UsersModule\Event\UserFormAwareEvent;
+use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 
 /**
  * A block that allows users to log into the system.
@@ -76,10 +75,10 @@ class LoginBlock extends AbstractBlockHandler
             'position' => $properties['position']
         ];
         $addedContent = false;
-        if ($this->eventDispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM)) {
+        if ($this->eventDispatcher->hasListeners(LoginFormPostCreatedEvent::class)) {
             $mockForm = $this->formFactory->create();
-            $mockLoginFormEvent = new UserFormAwareEvent($mockForm);
-            $this->eventDispatcher->dispatch($mockLoginFormEvent, AccessEvents::AUTHENTICATION_FORM);
+            $mockLoginFormEvent = new LoginFormPostCreatedEvent($mockForm);
+            $this->eventDispatcher->dispatch($mockLoginFormEvent);
             $addedContent = $mockForm->count() > 0;
         }
         $hookBindings = $this->hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
