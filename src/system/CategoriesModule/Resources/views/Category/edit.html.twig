@@ -62,7 +62,4 @@
     </div>
 </fieldset>
 {{ form_end(form) }}
-<script>
-    {# used in @ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js #}
-    var attributeCount = '{{ form.attributes|length }}';
-</script>
+<div id="attributeDefinitions" data-count="{{ form.attributes|length }}"></div>

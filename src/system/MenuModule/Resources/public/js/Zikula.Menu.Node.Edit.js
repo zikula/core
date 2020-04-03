@@ -2,6 +2,7 @@
 
 (function($) {
     $(document).ready(function() {
+        var optionCount = $('#optionDefinitions').data('count');
         $(document).on('click', '#add-option', function (event) {
             event.preventDefault();
 

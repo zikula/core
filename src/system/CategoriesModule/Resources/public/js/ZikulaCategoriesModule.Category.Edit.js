@@ -2,6 +2,7 @@
 
 (function($) {
     $(document).ready(function() {
+        var attributeCount = $('#attributeDefinitions').data('count');
         function removeTr(event) {
             event.preventDefault();
             $(this).closest('tr').remove();
