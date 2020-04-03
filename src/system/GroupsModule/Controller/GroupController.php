@@ -18,16 +18,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Event\GroupPostCreatedEvent;
+use Zikula\GroupsModule\Event\GroupPostDeletedEvent;
+use Zikula\GroupsModule\Event\GroupPostUpdatedEvent;
+use Zikula\GroupsModule\Event\GroupPreDeletedEvent;
 use Zikula\GroupsModule\Form\Type\CreateGroupType;
 use Zikula\GroupsModule\Form\Type\EditGroupType;
-use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -109,7 +111,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->getDoctrine()->getManager()->persist($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
-                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_CREATE);
+                $eventDispatcher->dispatch(new GroupPostCreatedEvent($groupEntity));
                 $this->addFlash('status', 'Done! Created the group.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -143,7 +145,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->getDoctrine()->getManager()->persist($groupEntity); // this isn't technically required
                 $this->getDoctrine()->getManager()->flush();
-                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_UPDATE);
+                $eventDispatcher->dispatch(new GroupPostUpdatedEvent($groupEntity));
                 $this->addFlash('status', 'Done! Updated the group.');
             }
             if ($form->get('cancel')->isClicked()) {
@@ -191,10 +193,10 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $groupEntity = $form->getData();
-                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_PRE_DELETE);
+                $eventDispatcher->dispatch(new GroupPreDeletedEvent($groupEntity));
                 $this->getDoctrine()->getManager()->remove($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
-                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_DELETE);
+                $eventDispatcher->dispatch(new GroupPostDeletedEvent($groupEntity));
                 $this->addFlash('status', 'Done! Group deleted.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');

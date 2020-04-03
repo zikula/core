@@ -15,8 +15,14 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\GroupsModule\GroupEvents;
+use Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent;
+use Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent;
+use Zikula\GroupsModule\Event\GroupPostCreatedEvent;
+use Zikula\GroupsModule\Event\GroupPostDeletedEvent;
+use Zikula\GroupsModule\Event\GroupPostUpdatedEvent;
+use Zikula\GroupsModule\Event\GroupPostUserAddedEvent;
+use Zikula\GroupsModule\Event\GroupPostUserRemovedEvent;
+use Zikula\GroupsModule\Event\GroupPreDeletedEvent;
 
 /**
  * Event handler implementation class for group-related events.
@@ -26,144 +32,86 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            GroupEvents::GROUP_CREATE                => ['create', 5],
-            GroupEvents::GROUP_UPDATE                => ['update', 5],
-            GroupEvents::GROUP_PRE_DELETE            => ['preDelete', 5],
-            GroupEvents::GROUP_DELETE                => ['delete', 5],
-            GroupEvents::GROUP_ADD_USER              => ['addUser', 5],
-            GroupEvents::GROUP_REMOVE_USER           => ['removeUser', 5],
-            GroupEvents::GROUP_APPLICATION_PROCESSED => ['applicationProcessed', 5],
-            GroupEvents::GROUP_NEW_APPLICATION       => ['newApplication', 5]
+            GroupPostCreatedEvent::class              => ['create', 5],
+            GroupPostUpdatedEvent::class              => ['update', 5],
+            GroupPreDeletedEvent::class               => ['preDelete', 5],
+            GroupPostDeletedEvent::class              => ['delete', 5],
+            GroupPostUserAddedEvent::class            => ['addUser', 5],
+            GroupPostUserRemovedEvent::class          => ['removeUser', 5],
+            GroupApplicationPostProcessedEvent::class => ['applicationProcessed', 5],
+            GroupApplicationPostCreatedEvent::class   => ['newApplication', 5]
         ];
     }
-    
+
     /**
-     * Listener for the `group.create` event.
+     * Listener for the `GroupPostCreatedEvent`.
      *
-     * Occurs after a group is created. All handlers are notified.
-     * The full group record created is available as the subject.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs after a group is created.
      */
-    public function create(GenericEvent $event): void
+    public function create(GroupPostCreatedEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `group.update` event.
+     * Listener for the `GroupPostUpdatedEvent`.
      *
-     * Occurs after a group is updated. All handlers are notified.
-     * The full updated group record is available as the subject.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs after a group is updated.
      */
-    public function update(GenericEvent $event): void
+    public function update(GroupPostUpdatedEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `group.pre_delete` event.
+     * Listener for the `GroupPreDeletedEvent`.
      *
-     * Occurs before a group is deleted from the system. All handlers are notified.
-     * The full group record to be deleted is available as the subject.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs before a group is deleted from the system.
      */
-    public function preDelete(GenericEvent $event): void
+    public function preDelete(GroupPreDeletedEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `group.delete` event.
+     * Listener for the `GroupPostDeletedEvent`.
      *
-     * Occurs after a group is deleted from the system. All handlers are notified.
-     * The full group record deleted is available as the subject.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs after a group is deleted from the system.
      */
-    public function delete(GenericEvent $event): void
+    public function delete(GroupPostDeletedEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `group.adduser` event.
+     * Listener for the `GroupPostUserAddedEvent`.
      *
-     * Occurs after a user is added to a group. All handlers are notified.
-     * It does not apply to pending membership requests.
-     * The uid and gid are available as the subject.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs after a user is added to a group.
      */
-    public function addUser(GenericEvent $event): void
+    public function addUser(GroupPostUserAddedEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `group.removeuser` event.
+     * Listener for the `GroupPostUserRemovedEvent`.
      *
-     * Occurs after a user is removed from a group. All handlers are notified.
-     * The uid and gid are available as the subject.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs after a user is removed from a group.
      */
-    public function removeUser(GenericEvent $event): void
+    public function removeUser(GroupPostUserRemovedEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `group.application.processed` event.
+     * Listener for the `GroupApplicationPostProcessedEvent`.
      *
      * Occurs after a group application has been processed.
-     * The subject is the GroupApplicationEntity.
-     * Arguments are the form data from \Zikula\GroupsModule\Form\Type\ManageApplicationType
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
      */
-    public function applicationProcessed(GenericEvent $event): void
+    public function applicationProcessed(GroupApplicationPostProcessedEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `group.application.new` event.
+     * Listener for the `GroupApplicationPostCreatedEvent`.
      *
      * Occurs after the successful creation of a group application.
-     * The subject is the GroupApplicationEntity.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
      */
-    public function newApplication(GenericEvent $event): void
+    public function newApplication(GroupApplicationPostCreatedEvent $event): void
     {
     }
 }

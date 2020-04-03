@@ -30,8 +30,8 @@ class ManageApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $reason = 'accept' === $options['data']['theAction']
-            ? 'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.'
-            : 'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.'
+            ? /** @Translate */'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.'
+            : /** @Translate */'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.'
         ;
         $builder
             ->add('theAction', HiddenType::class)
