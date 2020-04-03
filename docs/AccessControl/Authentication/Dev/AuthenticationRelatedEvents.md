@@ -3,23 +3,23 @@ currentMenu: authentication
 ---
 # Authentication related events
 
-`Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO`
+`Zikula\UsersModule\Event\ActiveUserPreCreatedEvent`
 
 - Force the registration to create a 'pending' user instead of a full user.
 
-`Zikula\UsersModule\RegistrationEvents::REGISTRATION_SUCCEEDED`
+`Zikula\UsersModule\Event\RegistrationPostSuccessEvent`
 
 - React to a successfully completed registration
 
-`Zikula\UsersModule\RegistrationEvents::FORCE_REGISTRATION_APPROVAL`
+`Zikula\UsersModule\Event\RegistrationPostApprovedEvent`
 
 - React to an administrator's wish to force a user to become a 'full' user.
 
-`Zikula\UsersModule\UserEvents::DELETE_ACCOUNT`
+`Zikula\UsersModule\Event\ActiveUserPostDeletedEvent`
 
 - React to the deletion of a user.
 
-`Zikula\UsersModule\RegistrationEvents::DELETE_REGISTRATION`
+`Zikula\UsersModule\Event\RegistrationPostDeletedEvent`
 
 - React to the deletion of a pending user.
 
