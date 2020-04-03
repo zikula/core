@@ -377,7 +377,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $resultsForm = $this->createForm(DeleteType::class, [], [
-                'choices' => $userRepository->queryBySearchForm($form->getData(), 250),
+                'choices' => $userRepository->queryBySearchForm($form->getData()),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete')
             ]);
 
