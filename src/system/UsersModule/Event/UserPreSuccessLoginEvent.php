@@ -38,7 +38,8 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class UserPreSuccessLoginEvent extends RedirectableUserEntityEvent implements StoppableEventInterface, AuthMethodAwareInterface
 {
-    use AuthMethodTrait, StoppableTrait;
+    use AuthMethodTrait;
+    use StoppableTrait;
 
     /**
      * @var array

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Event;
 
-
 interface AuthMethodAwareInterface
 {
     public function getAuthenticationMethod(): string;

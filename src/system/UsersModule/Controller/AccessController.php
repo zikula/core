@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Controller;
 
-use DateTime;
 use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
