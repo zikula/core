@@ -7,26 +7,23 @@
     {% endset %}
     {% set text %}
     <div class="sf-toolbar-info-piece">
-        <b>Zikula</b>
+        <strong>Zikula</strong>
         {#<span>{{ collector.version }}</span>#}
     </div>
     <div class="sf-toolbar-info-piece">
-        <b>Theme name</b>{{ collector.themeEngine.theme }}
+        <strong>Theme name</strong>{{ collector.themeEngine.theme }}
     </div>
     <div class="sf-toolbar-info-piece">
-        <b>Theme realm</b>{{ collector.themeEngine.realm }}
+        <strong>Theme realm</strong>{{ collector.themeEngine.realm }}
     </div>
     <div class="sf-toolbar-info-piece">
-        <b>Theme annotation</b>{{ collector.themeEngine.annotation }}
+        <strong>Theme annotation</strong>{{ collector.themeEngine.annotation }}
     </div>
     <div class="sf-toolbar-info-piece">
-        <a href="{{ collector.ghZikulaCoreUrl }}">GitHub Core Repository</a>
+        <a href="{{ collector.ghZikulaCoreUrl }}" title="Zikula Core @ GitHub" target="_blank">GitHub Core Repository</a>
     </div>
     <div class="sf-toolbar-info-piece">
-        <a href="{{ collector.ghZikulaDocsUrl }}">GitHub Documentation Repository</a>
-    </div>
-    <div class="sf-toolbar-info-piece">
-        <a href="{{ collector.ghZikulaBootstrapDocsUrl }}">Styling Documentation</a>
+        <a href="{{ collector.ghZikulaDocsUrl }}" title="Zikula Docs" target="_blank">Documentation</a>
     </div>
     {% endset %}
     {% include '@WebProfiler/Profiler/toolbar_item.html.twig' with { 'link': profiler_url } %}
