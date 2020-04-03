@@ -74,7 +74,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $this->_em->flush();
     }
 
-    public function queryBySearchForm(array $formData = [], $limit = 0)
+    public function queryBySearchForm(array $formData = [])
     {
         $filter = [];
         foreach ($formData as $k => $v) {
@@ -101,7 +101,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             }
         }
 
-        return $this->query($filter, [], $limit);
+        return $this->query($filter);
     }
 
     public function getSearchResults(array $words = [])
@@ -157,7 +157,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         }
         $query = $qb->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     /**
@@ -195,6 +195,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             'uname' => $unameFilter
         ];
 
-        return $this->query($filter, ['uname' => 'asc'], $limit);
+        return $this->query($filter, ['uname' => 'asc'], 'and', 1, $limit);
     }
 }
