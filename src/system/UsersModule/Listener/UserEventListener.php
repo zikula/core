@@ -95,7 +95,7 @@ class UserEventListener implements EventSubscriberInterface
      * if it detects session variables containing authentication information which might make it think
      * that a re-attempt is in progress.
      */
-    public function clearUsersNamespace(UserPostLogoutSuccessEvent $event, string $eventName): void
+    public function clearUsersNamespace($event, string $eventName): void
     {
         $request = $this->requestStack->getCurrentRequest();
 
