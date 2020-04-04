@@ -15,8 +15,12 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 
 /**
  * Event handler base class for extension installer events.
@@ -26,114 +30,67 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::EXTENSION_INSTALL     => ['extensionInstalled', 5],
-            ExtensionEvents::EXTENSION_POSTINSTALL => ['extensionPostInstalled', 5],
-            ExtensionEvents::EXTENSION_UPGRADE     => ['extensionUpgraded', 5],
-            ExtensionEvents::EXTENSION_ENABLE      => ['extensionEnabled', 5],
-            ExtensionEvents::EXTENSION_DISABLE     => ['extensionDisabled', 5],
-            ExtensionEvents::EXTENSION_REMOVE      => ['extensionRemoved', 5]
+            ExtensionPostInstallEvent::class => ['extensionInstalled', 5],
+            ExtensionPostCacheRebuildEvent::class => ['extensionPostInstalled', 5],
+            ExtensionPostUpgradeEvent::class => ['extensionUpgraded', 5],
+            ExtensionPostEnabledEvent::class => ['extensionEnabled', 5],
+            ExtensionPostDisabledEvent::class => ['extensionDisabled', 5],
+            ExtensionPostRemoveEvent::class => ['extensionRemoved', 5]
         ];
     }
-    
+
     /**
-     * Listener for the `extension.install` event.
+     * Listener for the `ExtensionPostInstallEvent`.
      *
-     * Called after an extension has been successfully installed.
-     * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getExtension()` and `$event->getInfo()`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs when a module has been successfully installed but before the Cache has been reloaded.
      */
-    public function extensionInstalled(ExtensionStateEvent $event): void
+    public function extensionInstalled(ExtensionPostInstallEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `extension.postinstall` event.
+     * Listener for the `ExtensionPostCacheRebuildEvent`.
      *
-     * Called after an extension has been installed (on reload of the extensions view).
-     * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getExtension()` and `$event->getInfo()`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs when a module has been successfully installed
+     * and then the Cache has been reloaded after a second Request.
      */
-    public function extensionPostInstalled(ExtensionStateEvent $event): void
+    public function extensionPostInstalled(ExtensionPostCacheRebuildEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `extension.upgrade` event.
+     * Listener for the `ExtensionPostUpgradeEvent`.
      *
-     * Called after an extension has been successfully upgraded.
-     * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getExtension()` and `$event->getInfo()`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs when a module has been upgraded to a newer version.
      */
-    public function extensionUpgraded(ExtensionStateEvent $event): void
+    public function extensionUpgraded(ExtensionPostUpgradeEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `extension.enable` event.
+     * Listener for the `ExtensionPostEnabledEvent`.
      *
-     * Called after an extension has been successfully enabled.
-     * The event allows accessing the extension bundle and the extension
-     * information array using `$event->getExtension()` and `$event->getInfo()`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs when a module has been enabled after it was previously disabled.
      */
-    public function extensionEnabled(ExtensionStateEvent $event): void
+    public function extensionEnabled(ExtensionPostEnabledEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `extension.disable` event.
+     * Listener for the `ExtensionPostDisabledEvent`.
      *
-     * Called after an extension has been successfully disabled.
-     * The event allows accessing the module bundle and the extension
-     * information array using `$event->getExtension()` and `$event->getInfo()`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs when a module has been disabled.
      */
-    public function extensionDisabled(ExtensionStateEvent $event): void
+    public function extensionDisabled(ExtensionPostDisabledEvent $event): void
     {
     }
-    
+
     /**
-     * Listener for the `extension.remove` event.
+     * Listener for the `ExtensionPostRemoveEvent`.
      *
-     * Called after an extension has been successfully removed.
-     * The event allows accessing the module bundle and the extension
-     * information array using `$event->getExtension()` and `$event->getInfo()`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
+     * Occurs when a module has been removed entirely.
      */
-    public function extensionRemoved(ExtensionStateEvent $event): void
+    public function extensionRemoved(ExtensionPostRemoveEvent $event): void
     {
     }
 }

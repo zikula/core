@@ -77,7 +77,17 @@
     - `Zikula\GroupsModule\GroupEvents::GROUP_APPLICATION_PROCESSED` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent`
     - `Zikula\GroupsModule\GroupEvents::GROUP_GROUP_NEW_APPLICATIONCREATE` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent`
     - `Zikula\ThemeModule::PRE_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent` (Same event, simply rename in Listener). 
-    - `Zikula\ThemeModule::POST_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` (Same event, simply rename in Listener). 
+    - `Zikula\ThemeModule::POST_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` (Same event, simply rename in Listener).
+    - `Zikula\ExtensionsModule\ExtensionEvents::REGENERATE_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::INSERT_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionEntityPreInsertEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::REMOVE_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionEntityPreRemoveEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::UPDATE_STATE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPreStateChangeEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_INSTALL` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_POSTINSTALL` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_UPGRADE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_ENABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_DISABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent`.
+    - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_REMOVE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent`.
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).

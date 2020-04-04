@@ -16,8 +16,11 @@ namespace Zikula\SearchModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
+use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
 use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 
 /**
@@ -48,14 +51,14 @@ class ModuleEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::EXTENSION_INSTALL => ['extensionEnable'],
-            ExtensionEvents::EXTENSION_ENABLE => ['extensionEnable'],
-            ExtensionEvents::EXTENSION_DISABLE => ['extensionDisable'],
-            ExtensionEvents::EXTENSION_REMOVE => ['extensionRemove']
+            ExtensionPostInstallEvent::class => ['extensionEnable'],
+            ExtensionPostEnabledEvent::class => ['extensionEnable'],
+            ExtensionPostDisabledEvent::class => ['extensionDisable'],
+            ExtensionPostRemoveEvent::class => ['extensionRemove']
         ];
     }
 
-    public function extensionEnable(ExtensionStateEvent $event): void
+    public function extensionEnable(ExtensionPostEnabledEvent $event): void
     {
         $extensionName = $this->getExtensionName($event);
         if (null === $extensionName) {
@@ -76,7 +79,7 @@ class ModuleEventListener implements EventSubscriberInterface
         }
     }
 
-    public function extensionDisable(ExtensionStateEvent $event): void
+    public function extensionDisable(ExtensionPostDisabledEvent $event): void
     {
         $extensionName = $this->getExtensionName($event);
         if (null === $extensionName) {
@@ -97,7 +100,7 @@ class ModuleEventListener implements EventSubscriberInterface
         }
     }
 
-    public function extensionRemove(ExtensionStateEvent $event): void
+    public function extensionRemove(ExtensionPostRemoveEvent $event): void
     {
         $extensionName = $this->getExtensionName($event);
         if (null === $extensionName) {
@@ -119,10 +122,10 @@ class ModuleEventListener implements EventSubscriberInterface
 
     private function getExtensionName(ExtensionStateEvent $event): ?string
     {
-        if (null === $event->getExtension()) {
+        if (null === $event->getExtensionBundle()) {
             return null;
         }
-        $extensionName = $event->getExtension()->getName();
+        $extensionName = $event->getExtensionBundle()->getName();
         if (null === $this->searchableModuleCollector->get($extensionName)) {
             return null;
         }

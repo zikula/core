@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -31,7 +30,7 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
-use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Event\ExtensionEntityPreInsertEvent;
 
 /**
  * Helper functions for the extensions bundle
@@ -374,9 +373,9 @@ class BundleSyncHelper
                 // insert new extension to db
                 $newExtension = new ExtensionEntity();
                 $newExtension->merge($extensionFromFile);
-                $vetoEvent = new GenericEvent($newExtension);
-                $this->dispatcher->dispatch($vetoEvent, ExtensionEvents::INSERT_VETO);
-                if (!$vetoEvent->isPropagationStopped()) {
+                $extensionPreInsertEvent = new ExtensionEntityPreInsertEvent($newExtension);
+                $this->dispatcher->dispatch($extensionPreInsertEvent);
+                if (!$extensionPreInsertEvent->isPropagationStopped()) {
                     $this->extensionRepository->persistAndFlush($newExtension);
                 }
             } else {

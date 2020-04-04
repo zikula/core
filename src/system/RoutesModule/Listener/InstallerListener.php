@@ -16,8 +16,9 @@ namespace Zikula\RoutesModule\Listener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
@@ -57,9 +58,9 @@ class InstallerListener extends AbstractInstallerListener
     {
         // override subscription to ALL available events to only needed events.
         return [
-            ExtensionEvents::EXTENSION_POSTINSTALL => ['extensionPostInstalled', 5],
-            ExtensionEvents::EXTENSION_UPGRADE => ['extensionUpgraded', 5],
-            ExtensionEvents::EXTENSION_REMOVE => ['extensionRemoved', 5],
+            ExtensionPostCacheRebuildEvent::class => ['extensionPostInstalled', 5],
+            ExtensionPostUpgradeEvent::class => ['extensionUpgraded', 5],
+            ExtensionPostRemoveEvent::class => ['extensionRemoved', 5],
             'new.routes.avail' => ['newRoutesAvail', 5]
         ];
     }
@@ -78,11 +79,11 @@ class InstallerListener extends AbstractInstallerListener
         $this->requestStack = $requestStack;
     }
 
-    public function extensionPostInstalled(ExtensionStateEvent $event): void
+    public function extensionPostInstalled(ExtensionPostCacheRebuildEvent $event): void
     {
         parent::extensionPostInstalled($event);
 
-        $extension = $event->getExtension();
+        $extension = $event->getExtensionBundle();
         if (null === $extension) {
             return;
         }
@@ -98,11 +99,11 @@ class InstallerListener extends AbstractInstallerListener
         $this->updateJsRoutes();
     }
 
-    public function extensionUpgraded(ExtensionStateEvent $event): void
+    public function extensionUpgraded(ExtensionPostUpgradeEvent $event): void
     {
         parent::extensionUpgraded($event);
 
-        $extension = $event->getExtension();
+        $extension = $event->getExtensionBundle();
         if (null === $extension) {
             return;
         }
@@ -113,11 +114,11 @@ class InstallerListener extends AbstractInstallerListener
         $this->updateJsRoutes();
     }
 
-    public function extensionRemoved(ExtensionStateEvent $event): void
+    public function extensionRemoved(ExtensionPostRemoveEvent $event): void
     {
         parent::extensionRemoved($event);
 
-        $extension = $event->getExtension();
+        $extension = $event->getExtensionBundle();
         if (null === $extension || 'ZikulaRoutesModule' === $extension->getName()) {
             return;
         }

@@ -13,39 +13,34 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-/**
- * Class ExtensionStateEvent
- */
-class ExtensionStateEvent extends Event
+class ExtensionStateEvent
 {
     /**
-     * @var null|AbstractExtension The module instance. Null when Module object is not available
+     * @var null|AbstractExtension
      */
-    private $extension;
+    private $extensionBundle;
 
     /**
-     * An array of info for the module. Possibly a result of calling $extensionEntity->toArray().
-     *
-     * @var null|array
+     * @var null|ExtensionEntity
      */
-    private $info;
+    private $extensionEntity;
 
-    public function __construct(AbstractExtension $extension = null, array $info = null)
+    public function __construct(?AbstractExtension $extensionBundle = null, ?ExtensionEntity $extensionEntity = null)
     {
-        $this->extension = $extension;
-        $this->info = $info;
+        $this->extensionBundle = $extensionBundle;
+        $this->extensionEntity = $extensionEntity;
     }
 
-    public function getExtension(): ?AbstractExtension
+    public function getExtensionBundle(): ?AbstractExtension
     {
-        return $this->extension;
+        return $this->extensionBundle;
     }
 
-    public function getInfo(): ?array
+    public function getExtensionEntity(): ?ExtensionEntity
     {
-        return $this->info;
+        return $this->extensionEntity;
     }
 }

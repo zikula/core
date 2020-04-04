@@ -23,8 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
 
 class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
 {
@@ -93,8 +92,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
             return 5;
         }
 
-        $event = new ExtensionStateEvent($this->kernel->getModule($extension->getName()), $extension->toArray());
-        $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_POSTINSTALL);
+        $this->eventDispatcher->dispatch(new ExtensionPostCacheRebuildEvent($this->kernel->getModule($extension->getName()), $extension));
 
         if ($input->isInteractive()) {
             $io->success('Extension installed');

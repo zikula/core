@@ -37,8 +37,8 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
 use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
 use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
@@ -84,9 +84,9 @@ class ExtensionController extends AbstractController
         $sortableColumns->setOrderByFromRequest($request);
 
         $upgradedExtensions = [];
-        $vetoEvent = new GenericEvent();
-        $eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
-        if (1 === $page && !$vetoEvent->isPropagationStopped()) {
+        $extensionListPreReSyncEvent = new ExtensionListPreReSyncEvent();
+        $eventDispatcher->dispatch($extensionListPreReSyncEvent);
+        if (1 === $page && !$extensionListPreReSyncEvent->isPropagationStopped()) {
             // regenerate the extension list only when viewing the first page
             $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
             $upgradedExtensions = $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
@@ -367,8 +367,7 @@ class ExtensionController extends AbstractController
                 if (null === $extensionBundle) {
                     continue;
                 }
-                $event = new ExtensionStateEvent($extensionBundle, $extensionEntity->toArray());
-                $eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_POSTINSTALL);
+                $eventDispatcher->dispatch(new ExtensionPostCacheRebuildEvent($extensionBundle, $extensionEntity));
             }
         }
 

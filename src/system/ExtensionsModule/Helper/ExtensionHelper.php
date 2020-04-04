@@ -24,7 +24,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\AbstractExtension;
@@ -33,8 +32,10 @@ use Zikula\ExtensionsModule\Collector\InstallerCollector;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Event\ExtensionEntityPreRemoveEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 
 class ExtensionHelper
@@ -139,8 +140,7 @@ class ExtensionHelper
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
         $this->cacheClearer->clear('symfony.config');
 
-        $event = new ExtensionStateEvent($extensionBundle, $extension->toArray());
-        $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_INSTALL);
+        $this->eventDispatcher->dispatch(new ExtensionPostInstallEvent($extensionBundle, $extension));
 
         return true;
     }
@@ -189,8 +189,7 @@ class ExtensionHelper
 
         if ($this->installed) {
             // Upgrade succeeded, issue event.
-            $event = new ExtensionStateEvent($extensionBundle, $extension->toArray());
-            $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_UPGRADE);
+            $this->eventDispatcher->dispatch(new ExtensionPostUpgradeEvent($extensionBundle, $extension));
         }
 
         return true;
@@ -210,9 +209,9 @@ class ExtensionHelper
         }
 
         // allow event to prevent extension removal
-        $vetoEvent = new GenericEvent($extension);
-        $this->eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REMOVE_VETO);
-        if ($vetoEvent->isPropagationStopped()) {
+        $extensionEntityPreRemoveEvent = new ExtensionEntityPreRemoveEvent($extension);
+        $this->eventDispatcher->dispatch($extensionEntityPreRemoveEvent);
+        if ($extensionEntityPreRemoveEvent->isPropagationStopped()) {
             return false;
         }
 
@@ -235,8 +234,7 @@ class ExtensionHelper
 
         $this->cacheClearer->clear('symfony.config');
 
-        $event = new ExtensionStateEvent($extensionBundle, $extension->toArray());
-        $this->eventDispatcher->dispatch($event, ExtensionEvents::EXTENSION_REMOVE);
+        $this->eventDispatcher->dispatch(new ExtensionPostRemoveEvent($extensionBundle, $extension));
 
         return true;
     }

@@ -17,13 +17,13 @@ use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPreStateChangeEvent;
 
 class ExtensionStateHelper
 {
@@ -73,17 +73,17 @@ class ExtensionStateHelper
     {
         /** @var ExtensionEntity $extension */
         $extension = $this->extensionRepository->find($id);
-        $this->dispatcher->dispatch(new GenericEvent($extension, ['state' => $state]), ExtensionEvents::UPDATE_STATE);
+        $this->dispatcher->dispatch(new ExtensionPreStateChangeEvent($extension, $state));
 
         // Check valid state transition
         switch ($state) {
             case Constant::STATE_INACTIVE:
-                $eventName = ExtensionEvents::EXTENSION_DISABLE;
+                $eventClass = ExtensionPostDisabledEvent::class;
                 break;
             case Constant::STATE_ACTIVE:
                 if (Constant::STATE_INACTIVE === $extension->getState()) {
                     // ACTIVE is used for freshly installed modules, so only register the transition if previously inactive.
-                    $eventName = ExtensionEvents::EXTENSION_ENABLE;
+                    $eventClass = ExtensionPostEnabledEvent::class;
                 }
                 break;
             case Constant::STATE_UPGRADED:
@@ -100,10 +100,9 @@ class ExtensionStateHelper
         // clear the cache before calling events
         $this->cacheClearer->clear('symfony');
 
-        if (isset($eventName) && $this->kernel->isBundle($extension->getName())) {
+        if (isset($eventClass) && $this->kernel->isBundle($extension->getName())) {
             $bundle = $this->kernel->getBundle($extension->getName());
-            $event = new ExtensionStateEvent($bundle, $extension->toArray());
-            $this->dispatcher->dispatch($event, $eventName);
+            $this->dispatcher->dispatch(new $eventClass($bundle, $extension));
         }
 
         return true;

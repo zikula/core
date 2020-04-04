@@ -14,8 +14,12 @@ declare(strict_types=1);
 namespace Zikula\SettingsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\SettingsModule\Helper\TranslationConfigHelper;
 
 /**
@@ -36,17 +40,11 @@ class ExtensionInstallerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            //ExtensionEvents::MODULE_INSTALL     => ['updateTranslationConfig', 5],
-            ExtensionEvents::EXTENSION_POSTINSTALL => ['updateTranslationConfig', 5],
-            ExtensionEvents::EXTENSION_UPGRADE     => ['updateTranslationConfig', 5],
-            ExtensionEvents::EXTENSION_ENABLE      => ['updateTranslationConfig', 5],
-            ExtensionEvents::EXTENSION_DISABLE     => ['updateTranslationConfig', 5],
-            ExtensionEvents::EXTENSION_REMOVE      => ['updateTranslationConfig', 5]
-
-            // NOTE as there are no events for theme state changes yet,
-            // we simply call translationConfigHelper->updateConfiguration
-            // in ThemeController at the moment, too
-            // refs #3644
+            ExtensionPostCacheRebuildEvent::class => ['updateTranslationConfig', 5],
+            ExtensionPostUpgradeEvent::class => ['updateTranslationConfig', 5],
+            ExtensionPostEnabledEvent::class => ['updateTranslationConfig', 5],
+            ExtensionPostDisabledEvent::class => ['updateTranslationConfig', 5],
+            ExtensionPostRemoveEvent::class => ['updateTranslationConfig', 5]
         ];
     }
 
