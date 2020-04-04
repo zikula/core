@@ -1,4 +1,3 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Admin.View.js')) }}
 {{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>
@@ -16,7 +15,6 @@
     <small class="form-text text-muted">
         {% trans %}This search does not include <em>pending</em> users.{% endtrans %}
     </small>
-
 </div>
 <p id="user-search-min-char" class="d-none">{% trans %}Please enter at least 3 characters{% endtrans %}</p>
 
@@ -81,3 +79,4 @@
     </tbody>
 </table>
 {{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Admin.View.js')) }}

@@ -1,12 +1,12 @@
 (function($) {
     $(document).ready(function() {
-        var passwordInput = $('#generated-password');
-        var passwordModal = $('#password-generator-modal');
+        var passwordInput = $('#generatedPassword');
+        var passwordModal = $('#passwordGeneratorModal');
         function createPassword() {
             // copied from https://stackoverflow.com/a/1497512/2600812 and modified
             var length = 16,
-                charset = "abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",
-                retVal = "";
+                charset = 'abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789',
+                retVal = '';
             for (var i = 0, n = charset.length; i < length; ++i) {
                 retVal += charset.charAt(Math.floor(Math.random() * n));
             }

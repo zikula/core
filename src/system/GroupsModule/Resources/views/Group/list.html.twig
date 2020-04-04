@@ -57,13 +57,3 @@
 </table>
 {{ include(paginator.template) }}
 {{ moduleFooter() }}
-{% set initScript %}
-    <script>
-      ( function($) {
-        $(document).ready(function() {
-          $('[data-toggle="tooltip"]').tooltip()
-        });
-      })(jQuery);
-    </script>
-{% endset %}
-{{ pageAddAsset('footer', initScript) }}

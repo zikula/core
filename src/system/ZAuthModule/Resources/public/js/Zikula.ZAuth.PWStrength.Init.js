@@ -10,7 +10,7 @@
             }
             options.ui = {
                 showVerdictsInsideProgressBar: true,
-                progressExtraCssClasses: "mt-2"
+                progressExtraCssClasses: 'mt-2'
             };
             $(this).pwstrength(options);
         });

@@ -1,7 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
 (function($) {
-
     var lastFragment = null;
     var queryId = 0;
     var resultStore = {};

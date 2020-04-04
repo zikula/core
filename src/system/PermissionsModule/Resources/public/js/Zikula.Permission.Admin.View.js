@@ -39,7 +39,7 @@ var currentDelete;
         var pid = $('#zikulapermissionsmodule_permission_pid').val();
         if ('' === pid) {
             pid = '-1';
-        } else if (pid === adminPermission && 1 === lockAdmin) {
+        } else if (pid === $('#adminPermissionParameters').data('adminid') && '1' == $('#adminPermissionParameters').data('locked')) {
             return;
         }
         // fetch each input and hidden field and store the value to POST

@@ -19,18 +19,6 @@
     </div>
 </div>
 {{ form_end(form) }}
+<div id="hardResetParameters" data-elementid="{{ form.hardreset.vars.id }}"></div>
 {{ adminFooter() }}
-{% set customScript %}
-<script>
-    (function($) {
-        $(document).ready(function() {
-            $('#{{ form.hardreset.vars.id }}').click(function(event) {
-                if (!confirm('Warning! Do you really want to reset ALL displayname, url and description to defaults? This may break your existing indexed URLs, affecting SEO.')) {
-                    $(this).prop('checked', false);
-                }
-            });
-        });
-    })(jQuery);
-</script>
-{% endset %}
-{{ pageAddAsset('footer', customScript) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaExtensionsModule:js/Zikula.Extensions.Config.js')) }}

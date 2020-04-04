@@ -111,7 +111,7 @@
                 <td headers="hUserName">{{ application.user.uid|profileLinkByUserId }}</td>
                 <td headers="hGroupName">{{ application.group.name }}</td>
                 <td headers="hComment">{{ application.application }}</td>
-                <td headers="hActions" class="text-right">
+                <td headers="hActions" class="actions">
                     <a href="{{ path('zikulagroupsmodule_application_admin', {app_id: application.appId, action: 'accept'}) }}" title="{% trans with {'%username%': application.user.uname} %}Accept %username%{% endtrans %}" class="fas fa-user-plus fa-lg tooltips"></a>&nbsp;
                     <a href="{{ path('zikulagroupsmodule_application_admin', {app_id: application.appId, action: 'deny'}) }}" title="{% trans with {'%username%': application.user.uname} %}Deny %username%{% endtrans %}" class="fas fa-user-times fa-lg tooltips"></a>
                 </td>

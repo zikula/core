@@ -18,7 +18,7 @@
         var text  = $this.data('text') || '';
 
         if (0 === $('#confimationModal').length) {
-            var Modal = '<div class="modal fade" id="confimationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">' + title + '</h5><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></div><div class="modal-body">' + text + '</div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">' + Zikula.__('No') + '</button><button id="confirmationOkButton" type="button" class="btn btn-primary" data-dismiss="modal">' + Zikula.__('Yes') + '</button></div></div></div></div>';
+            var Modal = '<div class="modal fade" id="confimationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">' + title + '</h5><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></div><div class="modal-body">' + text + '</div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">' + Translator.trans('No') + '</button><button id="confirmationOkButton" type="button" class="btn btn-primary" data-dismiss="modal">' + Translator.trans('Yes') + '</button></div></div></div></div>';
             $(document.body).append(Modal);
             $(document).on('click', '#confirmationOkButton', function (e) {
                 window.location = $this.attr('href');
@@ -29,27 +29,7 @@
             $this.is(':visible') && $this.focus();
         });
     });
-    
-    /**
-     * Return a value of input.
-     *
-     * @param element The input element
-     *
-     * @return string Value
-     */
-    function getValueOfElement(element) {
-        if ($(element).is(':checkbox')) {
-            return $(element).is(':checked') ? '1' : '0';
-        }
-        if ($(element).is(':radio')) {
-            var name = $(element).attr('name');
 
-            return $('input[name="' + name + '"]:checked').val();
-        }
-
-        return $(element).val();
-    }
-    
     $(document).ready(function() {
         // remove "d-none" class because bootstrap is using important, that is not
         // working with jQuery.show();

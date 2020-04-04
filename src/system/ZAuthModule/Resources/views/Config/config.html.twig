@@ -35,33 +35,6 @@
     </div>
 </div>
 {{ form_end(form) }}
+<div id="antispamQuestionIdentifiers" data-question="{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}" data-answer="{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', ZAC)].vars.id }}"></div>
 {{ adminFooter() }}
-{% set customScript %}
-<script>
-    (function($) {
-        /**
-         * show & require or hide anti-spam answer based on question value
-         */
-        function toggleAntiSpamAnswerDisplay() {
-            var antiSpamAnswerElementId = '{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', ZAC)].vars.id }}';
-            if ($('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').val() != '') {
-                $('label[for="' + antiSpamAnswerElementId + '"]').addClass('required');
-                $('#'+antiSpamAnswerElementId).prop('required', true);
-                $('#antispam_answer').collapse('show');
-            } else {
-                $('label[for="' + antiSpamAnswerElementId + '"]').removeClass('required');
-                $('#'+antiSpamAnswerElementId).prop('required', false).val('');
-                $('#antispam_answer').collapse('hide');
-            }
-        }
-
-        $(document).ready(function() {
-            // set up event handlers
-            $('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').on('change', toggleAntiSpamAnswerDisplay);
-            // initialize form - show|hide appropriate inputs
-            toggleAntiSpamAnswerDisplay();
-        });
-    })(jQuery);
-</script>
-{% endset %}
-{{ pageAddAsset('footer', customScript) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.Config.js')) }}

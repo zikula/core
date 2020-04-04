@@ -1,11 +1,3 @@
-{% set scriptInit %}
-    <script>
-        // some defines
-        var adminPermission = {{ adminId }};
-        var lockAdmin = {{ lockadmin }};
-    </script>
-{% endset %}
-{{ pageAddAsset('header', scriptInit) }}
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
 {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaPermissionsModule:js/Zikula.Permission.Admin.View.js')) }}
@@ -93,7 +85,7 @@
     </div>
 </fieldset>
 {{ form_end(permissionCheckForm) }}
-
+<div id="adminPermissionParameters" data-adminid="{{ adminId }}" data-locked="{{ lockadmin }}"></div>
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
