@@ -10,7 +10,7 @@
 {{ form_errors(form) }}
 
 {% for template in additionalTemplates %}
-    include(template.view, template.params, ignore_missing = true)
+    {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
 
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) }}

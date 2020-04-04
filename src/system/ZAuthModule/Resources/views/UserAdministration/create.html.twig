@@ -29,7 +29,7 @@
     {{ form_row(form.usermustverify) }}
 </fieldset>
 {% for template in additionalTemplates %}
-    include(template.view, template.params, ignore_missing = true)
+    {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}
 <div class="form-group row">

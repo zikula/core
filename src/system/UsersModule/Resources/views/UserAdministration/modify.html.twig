@@ -39,7 +39,7 @@
     </table>
 </fieldset>
 {% for template in additionalTemplates %}
-    include(template.view, template.params, ignore_missing = true)
+    {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM'), form.vars.value.uid) }}
 <div class="form-group row">

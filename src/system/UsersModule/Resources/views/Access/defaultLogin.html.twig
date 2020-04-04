@@ -7,7 +7,7 @@
     {{ form_row(form.rememberme) }}
 
     {% for template in additionalTemplates %}
-        include(template.view, template.params, ignore_missing = true)
+        {{ include(template.view, template.params, ignore_missing = true) }}
     {% endfor %}
     {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\LoginUiHooksSubscriber::LOGIN_FORM')) }}
     <div class="form-group row">
