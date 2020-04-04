@@ -39,12 +39,12 @@ class EventEnabledTwigEngine extends Environment
     public function render($name, array $context = []): string
     {
         $preEvent = new TwigPreRenderEvent($name, $context);
-        $this->eventDispatcher->dispatch($preEvent, ThemeEvents::PRE_RENDER);
+        $this->eventDispatcher->dispatch($preEvent);
 
         $content = parent::render($preEvent->getTemplateName(), $preEvent->getParameters());
 
         $postEvent = new TwigPostRenderEvent($content, $preEvent->getTemplateName(), $preEvent->getParameters());
-        $this->eventDispatcher->dispatch($postEvent, ThemeEvents::POST_RENDER);
+        $this->eventDispatcher->dispatch($postEvent);
 
         return $postEvent->getContent();
     }

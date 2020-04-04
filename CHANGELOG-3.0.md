@@ -76,6 +76,8 @@
     - `Zikula\GroupsModule\GroupEvents::GROUP_REMOVE_USER` is removed in favor of `Zikula\GroupsModule\Event\GroupPostUserRemovedEvent`
     - `Zikula\GroupsModule\GroupEvents::GROUP_APPLICATION_PROCESSED` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent`
     - `Zikula\GroupsModule\GroupEvents::GROUP_GROUP_NEW_APPLICATIONCREATE` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent`
+    - `Zikula\ThemeModule::PRE_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent` (Same event, simply rename in Listener). 
+    - `Zikula\ThemeModule::POST_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` (Same event, simply rename in Listener). 
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).

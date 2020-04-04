@@ -17,7 +17,6 @@ namespace Zikula\RoutesModule\Listener\Base;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
-use Zikula\ThemeModule\ThemeEvents;
 
 /**
  * Event handler base class for theme-related events.
@@ -27,11 +26,11 @@ abstract class AbstractThemeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ThemeEvents::PRE_RENDER  => ['preRender', 5],
-            ThemeEvents::POST_RENDER => ['postRender', 5]
+            TwigPreRenderEvent::class  => ['preRender', 5],
+            TwigPostRenderEvent::class => ['postRender', 5]
         ];
     }
-    
+
     /**
      * Listener for the `theme.pre_render` event.
      *
@@ -46,7 +45,7 @@ abstract class AbstractThemeListener implements EventSubscriberInterface
     public function preRender(TwigPreRenderEvent $event): void
     {
     }
-    
+
     /**
      * Listener for the `theme.post_render` event.
      *
