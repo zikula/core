@@ -35,10 +35,19 @@ class UserEventListener implements EventSubscriberInterface
      */
     private $router;
 
-    public function __construct(RequestStack $requestStack, RouterInterface $router)
-    {
+    /**
+     * @var string
+     */
+    private $environment;
+
+    public function __construct(
+        RequestStack $requestStack,
+        RouterInterface $router,
+        string $environment
+    ) {
         $this->requestStack = $requestStack;
         $this->router = $router;
+        $this->environment = $environment;
     }
 
     public static function getSubscribedEvents()
@@ -89,7 +98,7 @@ class UserEventListener implements EventSubscriberInterface
 
     /**
      * Clears the session variable namespace used by the Users module.
-     * Triggered by the 'user.logout.succeeded' and Kernel::EXCEPTION events.
+     * Triggered by the 'UserPostLogoutSuccessEvent' and Kernel::EXCEPTION events.
      * This is to ensure no leakage of authentication information across sessions or between critical
      * errors. This prevents, for example, the login process from becoming confused about its state
      * if it detects session variables containing authentication information which might make it think
@@ -109,7 +118,7 @@ class UserEventListener implements EventSubscriberInterface
             $doClear = true;
         }
 
-        if ($doClear && $request->hasSession() && ($session = $request->getSession())) {
+        if (('prod' === $this->environment) && $doClear && $request->hasSession() && ($session = $request->getSession())) {
             $session->clear();
         }
     }

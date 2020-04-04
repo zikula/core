@@ -38,3 +38,7 @@ services:
     Zikula\UsersModule\Collector\ProfileModuleCollector:
         arguments:
           $modules: !tagged_iterator zikula.profile_module
+
+    Zikula\UsersModule\Listener\UserEventListener:
+        arguments:
+          $environment: '%env(APP_ENV)%'
