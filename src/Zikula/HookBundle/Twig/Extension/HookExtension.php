@@ -106,8 +106,11 @@ class HookExtension extends AbstractExtension
      */
     public function notifyFilters(string $content, string $filterEventName)
     {
-        $hook = new FilterHook($content);
+        $hook = $this->hookDispatcher->dispatch($filterEventName, new FilterHook($content));
+        if ($hook instanceof FilterHook) {
+            return $hook->getData();
+        }
 
-        return $this->hookDispatcher->dispatch($filterEventName, $hook)->getData();
+        return $content;
     }
 }
