@@ -291,9 +291,17 @@ class UserAdministrationController extends AbstractController
     ) {
         $uids = [];
         if (!isset($user) && 'POST' === $request->getMethod() && $request->request->has('zikulausersmodule_delete')) {
-            $uids = $request->request->get('zikulausersmodule_delete')['users'];
+            $deletionData = $request->request->get('zikulausersmodule_delete');
+            if (isset($deletionData['users']) && !empty($deletionData['users'])) {
+                $uids = $deletionData['users'];
+            }
         } elseif (isset($user)) {
             $uids = [$user->getUid()];
+        }
+        if (!count($uids)) {
+            $this->addFlash('warning', 'No users selected.');
+
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
         }
         $usersImploded = implode(',', $uids);
 
@@ -304,7 +312,9 @@ class UserAdministrationController extends AbstractController
         $eventDispatcher->dispatch($deleteUserFormPostCreatedEvent);
         $deleteConfirmationForm->handleRequest($request);
         if (empty($uids) && !$deleteConfirmationForm->isSubmitted()) {
-            throw new InvalidArgumentException($this->trans('No users selected.'));
+            $this->addFlash('warning', 'No users selected.');
+
+            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
         }
         if ($deleteConfirmationForm->isSubmitted()) {
             if ($deleteConfirmationForm->get('cancel')->isClicked()) {
