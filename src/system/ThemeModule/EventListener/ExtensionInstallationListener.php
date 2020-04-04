@@ -20,8 +20,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
+use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 
 /**
  * Clear the combined asset cache when a module or theme state is changed
@@ -70,11 +74,11 @@ class ExtensionInstallationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::EXTENSION_INSTALL => ['clearCombinedAssetCache'],
-            ExtensionEvents::EXTENSION_UPGRADE => ['clearPublishedAssets'],
-            ExtensionEvents::EXTENSION_ENABLE => ['clearCombinedAssetCache'],
-            ExtensionEvents::EXTENSION_DISABLE => ['clearCombinedAssetCache'],
-            ExtensionEvents::EXTENSION_REMOVE => ['clearPublishedAssets']
+            ExtensionPostInstallEvent::class => ['clearCombinedAssetCache'],
+            ExtensionPostUpgradeEvent::class => ['clearPublishedAssets'],
+            ExtensionPostEnabledEvent::class => ['clearCombinedAssetCache'],
+            ExtensionPostDisabledEvent::class => ['clearCombinedAssetCache'],
+            ExtensionPostRemoveEvent::class => ['clearPublishedAssets']
         ];
     }
 
@@ -89,7 +93,7 @@ class ExtensionInstallationListener implements EventSubscriberInterface
     {
         $this->clearCombinedAssetCache();
 
-        $extension = $event->getExtension();
+        $extension = $event->getExtensionBundle();
         if (null === $extension) {
             return;
         }

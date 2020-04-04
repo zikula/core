@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
 use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -59,17 +60,17 @@ class ModuleListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionEvents::EXTENSION_DISABLE => ['extensionDeactivated']
+            ExtensionPostDisabledEvent::class => ['extensionDeactivated']
         ];
     }
 
     /**
      * Handle extension deactivated event.
      */
-    public function extensionDeactivated(ExtensionStateEvent $event): void
+    public function extensionDeactivated(ExtensionPostDisabledEvent $event): void
     {
-        $extension = $event->getExtension();
-        $deactivatedExtensionName = isset($extension) ? $extension->getName() : $event->getInfo()['name'];
+        $extension = $event->getExtensionBundle();
+        $deactivatedExtensionName = isset($extension) ? $extension->getName() : $event->getExtensionEntity()->getName();
         $request = $this->requestStack->getCurrentRequest();
 
         foreach ($this->localeApi->getSupportedLocales() as $lang) {
@@ -93,7 +94,7 @@ class ModuleListener implements EventSubscriberInterface
             if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
                 $session->getFlashBag()->add(
                     'info',
-                    $this->translator->__trans(
+                    $this->translator->trans(
                         'The start controller for language "%language%" was reset to a static frontpage.',
                         ['%language%' => $lang]
                     )
