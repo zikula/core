@@ -28,7 +28,7 @@ abstract class AbstractUserLogoutListener implements EventSubscriberInterface
             UserPostLogoutSuccessEvent::class => ['succeeded', 5]
         ];
     }
-
+    
     /**
      * Listener for the `UserPostLogoutSuccessEvent`.
      *

@@ -38,7 +38,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
             RegistrationPostApprovedEvent::class => ['forceApproval', 5]
         ];
     }
-
+    
     /**
      * Listener for the `ActiveUserPreCreatedEvent`.
      *
@@ -68,7 +68,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function createVeto(ActiveUserPreCreatedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `RegistrationPostSuccessEvent`.
      *
@@ -127,7 +127,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function succeeded(RegistrationPostSuccessEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `RegistrationPostCreatedEvent`.
      *
@@ -147,7 +147,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function create(RegistrationPostCreatedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `RegistrationPostUpdatedEvent`.
      *
@@ -165,7 +165,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function update(RegistrationPostUpdatedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `RegistrationPostDeletedEvent`.
      *
@@ -184,7 +184,7 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
     public function delete(RegistrationPostDeletedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `RegistrationPostApprovedEvent`.
      *

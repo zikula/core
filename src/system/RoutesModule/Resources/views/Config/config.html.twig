@@ -75,16 +75,5 @@
     {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Validation.js'), 98) }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.EditFunctions.js'), 99) }}
-    {% set formInitScript %}
-        <script>
-        /* <![CDATA[ */
-            ( function($) {
-                $(document).ready(function() {
-                    zikulaRoutesInitEditForm('edit', '1');
-                });
-            })(jQuery);
-        /* ]]> */
-        </script>
-    {% endset %}
-    {{ pageAddAsset('footer', formInitScript) }}
+    <div id="formEditingDefinition" data-mode="edit" data-entityid="1"></div>
 {% endblock %}

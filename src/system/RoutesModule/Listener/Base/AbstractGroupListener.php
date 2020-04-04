@@ -42,7 +42,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
             GroupApplicationPostCreatedEvent::class   => ['newApplication', 5]
         ];
     }
-
+    
     /**
      * Listener for the `GroupPostCreatedEvent`.
      *
@@ -51,7 +51,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public function create(GroupPostCreatedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `GroupPostUpdatedEvent`.
      *
@@ -60,7 +60,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public function update(GroupPostUpdatedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `GroupPreDeletedEvent`.
      *
@@ -69,7 +69,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public function preDelete(GroupPreDeletedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `GroupPostDeletedEvent`.
      *
@@ -78,7 +78,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public function delete(GroupPostDeletedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `GroupPostUserAddedEvent`.
      *
@@ -87,7 +87,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public function addUser(GroupPostUserAddedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `GroupPostUserRemovedEvent`.
      *
@@ -96,7 +96,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public function removeUser(GroupPostUserRemovedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `GroupApplicationPostProcessedEvent`.
      *
@@ -105,7 +105,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
     public function applicationProcessed(GroupApplicationPostProcessedEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `GroupApplicationPostCreatedEvent`.
      *

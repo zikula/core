@@ -32,7 +32,7 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
             UserPostLoginFailureEvent::class  => ['failed', 5]
         ];
     }
-
+    
     /**
      * Listener for the `UserPreLoginSuccessEvent`.
      *
@@ -58,7 +58,7 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public function veto(UserPreLoginSuccessEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `UserPostLoginSuccessEvent`.
      *
@@ -77,7 +77,7 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
     public function succeeded(UserPostLoginSuccessEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `UserPostLoginFailureEvent`.
      *

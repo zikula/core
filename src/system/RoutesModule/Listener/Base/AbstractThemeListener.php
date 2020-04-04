@@ -30,34 +30,20 @@ abstract class AbstractThemeListener implements EventSubscriberInterface
             TwigPostRenderEvent::class => ['postRender', 5]
         ];
     }
-
+    
     /**
-     * Listener for the `theme.pre_render` event.
+     * Listener for the `TwigPreRenderEvent`.
      *
      * Occurs immediately before twig theme engine renders a template.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
      */
     public function preRender(TwigPreRenderEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the `theme.post_render` event.
+     * Listener for the `TwigPostRenderEvent`.
      *
      * Occurs immediately after twig theme engine renders a template.
-     *
-     * An example for implementing this event is \Zikula\ThemeModule\EventListener\TemplateNameExposeListener.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
      */
     public function postRender(TwigPostRenderEvent $event): void
     {

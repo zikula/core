@@ -81,46 +81,10 @@
     {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Validation.js'), 98) }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.EditFunctions.js'), 99) }}
-    {% set formInitScript %}
-        <script>
-        /* <![CDATA[ */
-
-            ( function($) {
-                function updatePathPrefix() {
-                    var i18n = $('#zikularoutesmodule_route_translatable').prop('checked');
-                    var bundlePrefix = $('#zikularoutesmodule_route_prependBundlePrefix').prop('checked');
-                    var baseUrl = {{ app.request.baseUrl|json_encode|raw }}
-                    var moduleUrlNames = {{ moduleUrlNames|json_encode|raw }};
-
-                    if (bundlePrefix) {
-                        var bundle = $('#zikularoutesmodule_route_bundle').val();
-                        bundlePrefix = '/' + moduleUrlNames[bundle];
-                    } else {
-                        bundlePrefix = '';
-                    }
-
-                    if (i18n) {
-                        i18n = '/{' + '{% trans %}lang{% endtrans %}' + '}';
-                    } else {
-                        i18n = '';
-                    }
-
-                    var pathPrefix = baseUrl + i18n + bundlePrefix;
-                    $('#pathPrefix').text(pathPrefix.replace('"', ''));
-                }
-
-                $(document).ready(function() {
-                    zikulaRoutesInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
-                    {% if form.moderationSpecificCreator is defined %}
-                        initUserLiveSearch('zikularoutesmodule_route_moderationSpecificCreator');
-                    {% endif %}
-
-                    updatePathPrefix();
-                    $('#zikularoutesmodule_route_bundle, #zikularoutesmodule_route_prependBundlePrefix, #zikularoutesmodule_route_translatable').change(updatePathPrefix);
-                });
-            })(jQuery);
-        /* ]]> */
-        </script>
-    {% endset %}
-    {{ pageAddAsset('footer', formInitScript) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Edit.PathPrefix.js'), 99) }}
+    <div id="formEditingDefinition" data-mode="{{ mode|e('html_attr') }}" data-entityid="{% if mode != 'create' %}{{ route.id|e('html_attr') }}{% endif %}"></div>
+    {% if form.moderationSpecificCreator is defined %}
+        <div class="field-editing-definition" data-field-type="user" data-field-name="zikularoutesmodule_route_moderationSpecificCreator"></div>
+    {% endif %}
+    <div id="pathPrefixInfo" data-base-url="{{ app.request.baseUrl|e('html_attr') }}" data-module-url-names="{{ moduleUrlNames|json_encode|e('html_attr') }}"></div>
 {% endblock %}

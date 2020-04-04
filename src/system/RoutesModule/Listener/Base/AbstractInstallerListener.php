@@ -30,65 +30,65 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionPostInstallEvent::class => ['extensionInstalled', 5],
+            ExtensionPostInstallEvent::class      => ['extensionInstalled', 5],
             ExtensionPostCacheRebuildEvent::class => ['extensionPostInstalled', 5],
-            ExtensionPostUpgradeEvent::class => ['extensionUpgraded', 5],
-            ExtensionPostEnabledEvent::class => ['extensionEnabled', 5],
-            ExtensionPostDisabledEvent::class => ['extensionDisabled', 5],
-            ExtensionPostRemoveEvent::class => ['extensionRemoved', 5]
+            ExtensionPostUpgradeEvent::class      => ['extensionUpgraded', 5],
+            ExtensionPostEnabledEvent::class      => ['extensionEnabled', 5],
+            ExtensionPostDisabledEvent::class     => ['extensionDisabled', 5],
+            ExtensionPostRemoveEvent::class       => ['extensionRemoved', 5]
         ];
     }
-
+    
     /**
      * Listener for the `ExtensionPostInstallEvent`.
      *
-     * Occurs when a module has been successfully installed but before the Cache has been reloaded.
+     * Occurs when an extension has been successfully installed but before the Cache has been reloaded.
      */
     public function extensionInstalled(ExtensionPostInstallEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `ExtensionPostCacheRebuildEvent`.
      *
-     * Occurs when a module has been successfully installed
+     * Occurs when an extension has been successfully installed
      * and then the Cache has been reloaded after a second Request.
      */
     public function extensionPostInstalled(ExtensionPostCacheRebuildEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `ExtensionPostUpgradeEvent`.
      *
-     * Occurs when a module has been upgraded to a newer version.
+     * Occurs when an extension has been upgraded to a newer version.
      */
     public function extensionUpgraded(ExtensionPostUpgradeEvent $event): void
     {
     }
-
+    
     /**
-     * Listener for the `ExtensionPostEnabledEvent`.
-     *
-     * Occurs when a module has been enabled after it was previously disabled.
+    * Listener for the `ExtensionPostEnabledEvent`.
+    *
+    * Occurs when an extension has been enabled after it was previously disabled.
      */
     public function extensionEnabled(ExtensionPostEnabledEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `ExtensionPostDisabledEvent`.
      *
-     * Occurs when a module has been disabled.
+     * Occurs when an extension has been disabled.
      */
     public function extensionDisabled(ExtensionPostDisabledEvent $event): void
     {
     }
-
+    
     /**
      * Listener for the `ExtensionPostRemoveEvent`.
      *
-     * Occurs when a module has been removed entirely.
+     * Occurs when an extension has been removed entirely.
      */
     public function extensionRemoved(ExtensionPostRemoveEvent $event): void
     {

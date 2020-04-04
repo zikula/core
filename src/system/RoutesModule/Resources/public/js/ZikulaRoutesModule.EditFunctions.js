@@ -81,3 +81,19 @@ function zikulaRoutesInitEditForm(mode, entityId) {
     }
 }
 
+jQuery(document).ready(function () {
+    if (jQuery('.field-editing-definition').length > 0) {
+        jQuery('.field-editing-definition').each(function (index) {
+            if ('user' === jQuery(this).data('field-type')) {
+                initUserLiveSearch(jQuery(this).data('field-name'));
+            } else if ('date' === jQuery(this).data('field-type')) {
+                zikulaRoutesInitDateField(jQuery(this).data('field-name'));
+            } else if ('upload' === jQuery(this).data('field-type')) {
+                zikulaRoutesInitUploadField(jQuery(this).data('field-name'));
+            }
+        });
+    }
+    if (jQuery('#formEditingDefinition').length > 0) {
+        zikulaRoutesInitEditForm(jQuery('#formEditingDefinition').data('mode'), jQuery('#formEditingDefinition').data('entityid'));
+    }
+});
