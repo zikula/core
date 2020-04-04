@@ -13,12 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Hook;
 
-use Symfony\Contracts\EventDispatcher\Event;
-
-/**
- * Hook class.
- */
-class Hook extends Event
+class Hook
 {
     /**
      * Subscriber object id.
@@ -35,8 +30,6 @@ class Hook extends Event
     protected $areaId;
 
     /**
-     * Caller.
-     *
      * @var string
      */
     protected $caller;

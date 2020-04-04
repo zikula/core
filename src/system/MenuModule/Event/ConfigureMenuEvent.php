@@ -15,12 +15,11 @@ namespace Zikula\MenuModule\Event;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event class for extending menus.
  */
-class ConfigureMenuEvent extends Event
+class ConfigureMenuEvent
 {
     public const POST_CONFIGURE = 'zikulamenumodule.menu_post_configure';
 

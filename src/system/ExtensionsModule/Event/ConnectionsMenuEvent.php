@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Event;
 
 use Knp\Menu\ItemInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
-class ConnectionsMenuEvent extends Event
+class ConnectionsMenuEvent
 {
     /**
      * The full menu object

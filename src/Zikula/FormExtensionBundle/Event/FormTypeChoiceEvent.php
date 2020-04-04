@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\FormExtensionBundle\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 
-/**
- * Form type choice event.
- */
-class FormTypeChoiceEvent extends Event
+class FormTypeChoiceEvent
 {
     public const NAME = 'zikula_form_extension_bundle.form_type_choice_event';
 

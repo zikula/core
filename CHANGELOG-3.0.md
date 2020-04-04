@@ -88,6 +88,12 @@
     - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_ENABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent`.
     - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_DISABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent`.
     - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_REMOVE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent`.
+    - `Zikula\ExtensionsModule\Event\ConnectionsMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - `Zikula\MenuModule\Event\ConfigureMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - `Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - `Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - `Zikula\Bundle\HookBundle\Hook\Hook` (and all its subclasses) no longer extends `Symfony\Contracts\EventDispatcher\Event`.
   - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
   - Interface extensions and amendments
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
