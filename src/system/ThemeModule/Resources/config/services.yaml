@@ -130,7 +130,7 @@ services:
 
     Zikula\ThemeModule\EventListener\AddJSConfigListener:
         arguments:
-          $headers: '@zikula_core.common.theme.assets_header'
+          $footers: '@zikula_core.common.theme.assets_footer'
           $defaultSessionName: '%zikula.session.name%'
 
     Zikula\ThemeModule\EventListener\ExtensionInstallationListener:

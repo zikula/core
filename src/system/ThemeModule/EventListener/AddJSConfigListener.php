@@ -42,7 +42,7 @@ class AddJSConfigListener implements EventSubscriberInterface
     /**
      * @var AssetBag
      */
-    private $headers;
+    private $footers;
 
     /**
      * @var string
@@ -59,14 +59,14 @@ class AddJSConfigListener implements EventSubscriberInterface
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
         Environment $twig,
-        AssetBag $headers,
+        AssetBag $footers,
         string $defaultSessionName = '_zsid'
     ) {
         $this->installed = '0.0.0' !== $installed;
         $this->variableApi = $variableApi;
         $this->currentUserApi = $currentUserApi;
         $this->twig = $twig;
-        $this->headers = $headers;
+        $this->footers = $footers;
         $this->defaultSessionName = $defaultSessionName;
     }
 
@@ -80,7 +80,7 @@ class AddJSConfigListener implements EventSubscriberInterface
     }
 
     /**
-     * Generate a configuration for javascript and add script to headers.
+     * Generate a configuration for javascript and add script to site footer.
      */
     public function addJSConfig(ResponseEvent $event): void
     {
@@ -107,6 +107,6 @@ class AddJSConfigListener implements EventSubscriberInterface
         $content = $this->twig->render('@ZikulaThemeModule/Engine/JSConfig.html.twig', [
             'config' => $config
         ]);
-        $this->headers->add([$content => 0]);
+        $this->footers->add([$content => 0]);
     }
 }

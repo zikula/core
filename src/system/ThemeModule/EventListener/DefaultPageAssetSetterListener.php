@@ -137,7 +137,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $jquery = 'dev' !== $this->kernel->getEnvironment() ? 'jquery.min.js' : 'jquery.js';
         $this->jsAssetBag->add([
             $this->assetHelper->resolve("jquery/${jquery}") => AssetBag::WEIGHT_JQUERY,
-            $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1
+            $this->assetHelper->resolve('modules/zikulatheme/js/ZikulaThemeModule.JSConfig.js') => AssetBag::WEIGHT_JQUERY + 1,
+            $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 2
         ]);
     }
 
