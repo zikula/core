@@ -19,8 +19,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class ModuleListener implements EventSubscriberInterface

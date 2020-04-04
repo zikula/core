@@ -17,7 +17,6 @@ use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -25,8 +24,6 @@ use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPreStateChangeEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ExtensionStateHelper
 {

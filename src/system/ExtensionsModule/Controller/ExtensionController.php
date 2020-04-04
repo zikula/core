@@ -39,8 +39,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
 use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;

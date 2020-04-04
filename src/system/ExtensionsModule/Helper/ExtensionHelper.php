@@ -36,8 +36,6 @@ use Zikula\ExtensionsModule\Event\ExtensionEntityPreRemoveEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 
 class ExtensionHelper

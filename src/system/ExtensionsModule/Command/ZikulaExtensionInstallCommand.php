@@ -24,8 +24,6 @@ use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
 {

@@ -19,8 +19,6 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
-use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleEventListener implements EventSubscriberInterface
 {
