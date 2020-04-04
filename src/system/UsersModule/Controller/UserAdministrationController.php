@@ -354,7 +354,7 @@ class UserAdministrationController extends AbstractController
                     /** @Desc("{count, plural,\n  one   {User deleted!}\n  other {# users deleted!}\n}") */
                     $this->getTranslator()->trans(
                         'plural_n.users.deleted',
-                        ['%count%' => count($deletedUsers)]
+                        ['%count%' => $deletedUsers->getNumResults()]
                     )
                 );
 
