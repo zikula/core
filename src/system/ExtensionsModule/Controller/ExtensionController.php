@@ -46,6 +46,7 @@ use Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionStateHelper;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
+use Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Engine\Engine;
 
@@ -56,8 +57,6 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class ExtensionController extends AbstractController
 {
-    private const NEW_ROUTES_AVAIL = 'new.routes.avail';
-
     /**
      * @Route("/list/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("admin")
@@ -75,8 +74,7 @@ class ExtensionController extends AbstractController
         $modulesJustInstalled = $request->query->get('justinstalled');
         if (!empty($modulesJustInstalled)) {
             // notify the event dispatcher that new routes are available (ids of modules just installed avail as args)
-            $event = new GenericEvent(null, json_decode($modulesJustInstalled));
-            $eventDispatcher->dispatch($event, self::NEW_ROUTES_AVAIL);
+            $eventDispatcher->dispatch(new RoutesNewlyAvailableEvent(json_decode($modulesJustInstalled)));
         }
 
         $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_extension_list');

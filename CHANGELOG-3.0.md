@@ -88,6 +88,7 @@
     - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_ENABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent`.
     - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_DISABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent`.
     - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_REMOVE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent`.
+    - `new.routes.avail` event is replaced by `Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent`
     - `Zikula\ExtensionsModule\Event\ConnectionsMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
     - `Zikula\MenuModule\Event\ConfigureMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
     - `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.

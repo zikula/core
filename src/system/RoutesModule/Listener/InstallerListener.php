@@ -15,11 +15,11 @@ namespace Zikula\RoutesModule\Listener;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
+use Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
 use Zikula\RoutesModule\Listener\Base\AbstractInstallerListener;
@@ -61,7 +61,7 @@ class InstallerListener extends AbstractInstallerListener
             ExtensionPostCacheRebuildEvent::class => ['extensionPostInstalled', 5],
             ExtensionPostUpgradeEvent::class => ['extensionUpgraded', 5],
             ExtensionPostRemoveEvent::class => ['extensionRemoved', 5],
-            'new.routes.avail' => ['newRoutesAvail', 5]
+            RoutesNewlyAvailableEvent::class => ['newRoutesAvail', 5]
         ];
     }
 
@@ -132,7 +132,7 @@ class InstallerListener extends AbstractInstallerListener
         $this->cacheClearer->clear('symfony.routing');
     }
 
-    public function newRoutesAvail(GenericEvent $event): void
+    public function newRoutesAvail(RoutesNewlyAvailableEvent $event): void
     {
         // reload **all** JS routes
         $this->updateJsRoutes();
