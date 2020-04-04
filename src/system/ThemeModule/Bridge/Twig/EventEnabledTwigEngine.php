@@ -18,7 +18,6 @@ use Twig\Environment;
 use Twig\Error\Error as TwigError;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
-use Zikula\ThemeModule\ThemeEvents;
 
 class EventEnabledTwigEngine extends Environment
 {
