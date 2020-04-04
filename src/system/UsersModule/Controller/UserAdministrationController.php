@@ -339,7 +339,7 @@ class UserAdministrationController extends AbstractController
             if ($valid && $deleteConfirmationForm->isValid()) {
                 // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
-                foreach ($deletedUsers as $deletedUser) {
+                foreach ($deletedUsers->getResults() as $deletedUser) {
                     if (UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated()) {
                         $eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($deletedUser));
                     } else {
