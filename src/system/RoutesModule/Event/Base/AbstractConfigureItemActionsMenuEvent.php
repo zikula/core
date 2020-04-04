@@ -16,12 +16,11 @@ namespace Zikula\RoutesModule\Event\Base;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Event base class for extending item actions menu.
  */
-class AbstractConfigureItemActionsMenuEvent extends Event
+class AbstractConfigureItemActionsMenuEvent
 {
     /**
      * @var FactoryInterface.

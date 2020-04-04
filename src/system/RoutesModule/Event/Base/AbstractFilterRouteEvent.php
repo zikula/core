@@ -14,13 +14,12 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Event\Base;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**
  * Event base class for filtering route processing.
  */
-class AbstractFilterRouteEvent extends Event
+class AbstractFilterRouteEvent
 {
     /**
      * @var RouteEntity Reference to treated entity instance.
