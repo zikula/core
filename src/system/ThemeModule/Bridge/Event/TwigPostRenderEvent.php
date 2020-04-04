@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Bridge\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
-
-class TwigPostRenderEvent extends Event
+class TwigPostRenderEvent
 {
     /**
      * @var string

@@ -13,18 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
-/**
- * HookDispatcher class.
- */
 class HookDispatcher implements HookDispatcherInterface
 {
     /**
-     * Storage.
-     *
      * @var StorageInterface
      */
     private $storage;
@@ -47,7 +41,7 @@ class HookDispatcher implements HookDispatcherInterface
         return $this->storage;
     }
 
-    public function dispatch(string $name, Hook $hook): Event
+    public function dispatch(string $name, Hook $hook): Hook
     {
         $this->decorateHook($name, $hook);
         if (!$hook->getAreaId()) {

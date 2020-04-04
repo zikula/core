@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
@@ -30,7 +29,7 @@ interface HookDispatcherInterface
     /**
      * Dispatch hook listeners.
      */
-    public function dispatch(string $eventName, Hook $hook): Event;
+    public function dispatch(string $eventName, Hook $hook): Hook;
 
     /**
      * Return all bindings for a given area.
