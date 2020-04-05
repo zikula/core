@@ -18,7 +18,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Collectible\PendingContentCollectible;
 use Zikula\BlocksModule\Event\PendingContentEvent;
 use Zikula\Bundle\CoreBundle\Collection\Container;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;

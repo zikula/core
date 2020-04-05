@@ -16,10 +16,7 @@ namespace Zikula\BlocksModule\Block;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\BlocksModule\Collectible\PendingContentCollectible;
 use Zikula\BlocksModule\Event\PendingContentEvent;
-use Zikula\Bundle\CoreBundle\Collection\Container;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 
 class PendingContentBlock extends AbstractBlockHandler
 {
