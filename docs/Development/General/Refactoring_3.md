@@ -118,6 +118,107 @@ All custom Zikula translation mechanisms have been removed in favour of Symfony'
 
 For more information please refer to [Translation docs](../../Translation/README.md).
 
+## Namespaces
+
+Several namespaces and classes have been relocated.
+
+- `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
+- `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule` moved into `Zikula\ExtensionsModule\`.
+- `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme` moved into `Zikula\ExtensionsModule\`.
+- `Zikula\Bundle\CoreBundle\Bundle\Bootstrap` moved and renamed to `Bundle\CoreBundle\Helper\PersistedBundleHelper`.
+- `Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper` moved and renamed to `Bundle\CoreBundle\Helper\BundlesSchemaHelper`.
+- `Zikula\Bundle\CoreBundle\Bundle\MetaData` moved into `Zikula\Bundle\CoreBundle\Composer\`.
+- `Zikula\Bundle\CoreBundle\Bundle\Scanner` moved into `Zikula\Bundle\CoreBundle\Composer\`.
+- `Zikula\Common\Collection\` moved into `Zikula\Bundle\CoreBundle\Collection\`.
+- `Zikula\Common\Content\` moved into `Zikula\ExtensionsModule\ModuleInterface\Content\`.
+- `Zikula\Common\MultiHook\` moved into `Zikula\ExtensionsModule\ModuleInterface\MultiHook\`.
+- `Zikula\Common\Translator\` moved into `Zikula\Bundle\CoreBundle\Translation\`.
+- `Zikula\Common\ColumnExistsTrait` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
+- `Zikula\Core\AbstractBundle` moved and renamed to `Zikula\ExtensionsModule\AbstractExtension`
+- `Zikula\Core\AbstractExtensionInstaller` moved into `Zikula\ExtensionsModule\Installer\`.
+- `Zikula\Core\AbstractModule` moved into `Zikula\ExtensionsModule\`.
+- `Zikula\Core\Controller\` moved into `Zikula\Bundle\CoreBundle\Controller\`.
+- `Zikula\Core\CoreEvents` was split into `Zikula\Bundle\CoreBundle\CoreEvents` and `Zikula\ExtensionsModule\ExtensionEvents`.
+- `Zikula\Core\Doctrine\` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
+- `Zikula\Core\Event\GenericEvent` moved into `Zikula\Bundle\CoreBundle\Event\`.
+- `Zikula\Core\Event\ModuleStateEvent` moved into `Zikula\ExtensionsModule\Event\`.
+- `Zikula\Core\ExtensionInstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
+- `Zikula\Core\InstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
+- `Zikula\Core\Response\` moved into `Zikula\Bundle\CoreBundle\Response\`.
+- `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
+- `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
+- `Zikula\ThemeModule\AbstractTheme` moved into `Zikula\ExtensionsModule\`.
+
+## Events
+
+Several events have been changed which requires updates in corresponding listeners.
+
+- Core bundles
+  - `Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+  - `Zikula\Bundle\HookBundle\Hook\Hook` (and all its subclasses) no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+- Extensions module
+  - `Zikula\ExtensionsModule\ExtensionEvents::REGENERATE_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::INSERT_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionEntityPreInsertEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::REMOVE_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionEntityPreRemoveEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::UPDATE_STATE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPreStateChangeEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_INSTALL` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_POSTINSTALL` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_UPGRADE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_ENABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_DISABLE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent`.
+  - `Zikula\ExtensionsModule\ExtensionEvents::EXTENSION_REMOVE` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent`.
+  - `Zikula\ExtensionsModule\Event\ConnectionsMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+- Groups module
+  - `Zikula\GroupsModule\GroupEvents::GROUP_CREATE` is removed in favor of `Zikula\GroupsModule\Event\GroupPostCreatedEvent`
+  - `Zikula\GroupsModule\GroupEvents::GROUP_UPDATE` is removed in favor of `Zikula\GroupsModule\Event\GroupPostUpdatedEvent`
+  - `Zikula\GroupsModule\GroupEvents::GROUP_PRE_DELETE` is removed in favor of `Zikula\GroupsModule\Event\GroupPreDeletedEvent`
+  - `Zikula\GroupsModule\GroupEvents::GROUP_DELETE` is removed in favor of `Zikula\GroupsModule\Event\GroupPostDeletedEvent`
+  - `Zikula\GroupsModule\GroupEvents::GROUP_ADD_USER` is removed in favor of `Zikula\GroupsModule\Event\GroupPostUserAddedEvent`
+  - `Zikula\GroupsModule\GroupEvents::GROUP_REMOVE_USER` is removed in favor of `Zikula\GroupsModule\Event\GroupPostUserRemovedEvent`
+  - `Zikula\GroupsModule\GroupEvents::GROUP_APPLICATION_PROCESSED` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent`
+  - `Zikula\GroupsModule\GroupEvents::GROUP_GROUP_NEW_APPLICATIONCREATE` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent`
+- Menu module
+  - `Zikula\MenuModule\Event\ConfigureMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+- Routes module
+  - `new.routes.avail` event is replaced by `Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent`
+- Theme module
+  - `Zikula\ThemeModule::PRE_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent` (Same event, simply rename in Listener). 
+  - `Zikula\ThemeModule::POST_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` (Same event, simply rename in Listener).
+  - `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+  - `Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+- Users module
+  - `Zikula\UsersModule\RegistrationEvents::REGISTRATION_STARTED` has been deleted.
+  - `Zikula\UsersModule\RegistrationEvents::CREATE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostCreatedEvent`.
+  - `Zikula\UsersModule\RegistrationEvents::DELETE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostDeletedEvent`.
+  - `Zikula\UsersModule\RegistrationEvents::REGISTRATION_SUCCEEDED` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostSuccessEvent`.
+  - `Zikula\UsersModule\RegistrationEvents::FORCE_REGISTRATION_APPROVAL` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostApprovedEvent`.
+  - `Zikula\UsersModule\RegistrationEvents::UPDATE_REGISTRATION` is removed in favor of `Zikula\UsersModule\Event\RegistrationPostUpdatedEvent`.
+  - `Zikula\UsersModule\RegistrationEvents::FULL_USER_CREATE_VETO` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPreCreatedEvent`.
+  - `Zikula\UsersModule\RegistrationEvents::REGISTRATION_FAILED` has been deleted.
+  - `Zikula\UsersModule\UserEvents::DISPLAY_VIEW` is removed in favor of `Zikula\UsersModule\Event\UserAccountDisplayEvent`
+  - `Zikula\UsersModule\UserEvents::CREATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostCreatedEvent`.
+  - `Zikula\UsersModule\UserEvents::UPDATE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent`.
+  - `Zikula\UsersModule\UserEvents::DELETE_ACCOUNT` is removed in favor of `Zikula\UsersModule\Event\ActiveUserPostDeletedEvent`.
+  - `Zikula\UsersModule\UserEvents::DELETE_VALIDATE` has been deleted.
+  - `Zikula\UsersModule\UserEvents::DELETE_FORM` is removed in favor of `Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent`.
+  - `Zikula\UsersModule\UserEvents::DELETE_PROCESS` is removed in favor of `Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent`.
+  - `Zikula\UsersModule\UserEvents::EDIT_FORM` is removed in favor of `Zikula\UsersModule\Event\EditUserFormPostCreatedEvent`
+    - The event class changed from `Zikula\UsersModule\Event\UserFormAwareEvent` to `EditUserFormPostCreatedEvent`
+  - `Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\EditUserFormPostValidatedEvent`
+    - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `EditUserFormPostValidatedEvent`
+  - `Zikula\UsersModule\UserEvents::FORM_SEARCH` has been deleted.
+  - `Zikula\UsersModule\UserEvents::FORM_SEARCH_PROCESS` has been deleted.
+  - `Zikula\UsersModule\UserEvents::CONFIG_UPDATED` has been deleted.
+  - `Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM` is removed in favor of `Zikula\UsersModule\Event\LoginFormPostCreatedEvent`
+    - The event class changed from `Zikula\UsersModule\Event\UserFormAwareEvent` to `LoginFormPostCreatedEvent`
+  - `Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM_HANDLE` is removed in favor of `Zikula\UsersModule\Event\LoginFormPostValidatedEvent`
+    - The event class changed from `Zikula\UsersModule\Event\UserFormDataEvent` to `LoginFormPostValidatedEvent`
+  - `Zikula\UsersModule\AccessEvents::LOGIN_STARTED` has been deleted.
+  - `Zikula\UsersModule\AccessEvents::LOGIN_VETO` is removed in favor of `Zikula\UsersModule\Event\UserPreLoginSuccessEvent`
+  - `Zikula\UsersModule\AccessEvents::LOGIN_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginSuccessEvent`
+  - `Zikula\UsersModule\AccessEvents::LOGIN_FAILED` is removed in favor of `Zikula\UsersModule\Event\UserPostLoginFailureEvent`
+  - `Zikula\UsersModule\AccessEvents::LOGOUT_SUCCESS` is removed in favor of `Zikula\UsersModule\Event\UserPostLogoutSuccessEvent`
+
 ## Twig
 
 ### Classes
