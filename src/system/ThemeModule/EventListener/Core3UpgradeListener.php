@@ -15,7 +15,7 @@ namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\ColumnExistsTrait;
-use Zikula\Zikula\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
+use Zikula\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 
 class Core3UpgradeListener implements EventSubscriberInterface
 {

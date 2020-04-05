@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Zikula\CoreInstallerBundle\Event;
+namespace Zikula\CoreInstallerBundle\Event;
 
 /**
  * Occurs during core installation before the modules are installed.

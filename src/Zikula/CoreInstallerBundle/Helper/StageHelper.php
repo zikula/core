@@ -21,9 +21,9 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
-use Zikula\Zikula\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
-use Zikula\Zikula\CoreInstallerBundle\Event\CoreInstallerBundleEvent;
-use Zikula\Zikula\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
+use Zikula\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
+use Zikula\CoreInstallerBundle\Event\CoreInstallerBundleEvent;
+use Zikula\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 
 class StageHelper
 {
