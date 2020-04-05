@@ -20,10 +20,10 @@ use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Component\Wizard\StageInterface;
-use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
 use Zikula\CoreInstallerBundle\Event\CoreInstallerBundleEvent;
 use Zikula\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
+use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 
 class StageHelper
 {
