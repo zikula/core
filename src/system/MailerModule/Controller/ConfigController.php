@@ -54,6 +54,8 @@ class ConfigController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
                 $this->setVar('enableLogging', $formData['enableLogging']);
+                $this->setVar('transport', $formData['transport']);
+                $this->setVar('mailer_id', $formData['mailer_id']);
                 if (true === $mailTransportHelper->handleFormData($formData)) {
                     $this->addFlash('status', 'Done! Configuration updated.');
                 } else {
@@ -88,11 +90,8 @@ class ConfigController extends AbstractController
                 $formData = $form->getData();
                 $html = in_array($formData['messageType'], ['html', 'multipart']) ? true : false;
                 try {
-                    $siteName = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
-                    $adminMail = $variableApi->getSystemVar('adminmail');
-
                     $email = (new Email())
-                        ->from(new Address($adminMail, $siteName))
+                        ->from(new Address($formData['adminmail'], $formData['sitename']))
                         ->to(new Address($formData['toAddress'], $formData['toName']))
                         ->subject($formData['subject'])
                         ->text($formData['bodyText'])
@@ -103,7 +102,7 @@ class ConfigController extends AbstractController
                     $mailer->send($email);
                     $this->addFlash('status', 'Done! Message sent.');
                 } catch (TransportExceptionInterface $exception) {
-                    $this->addFlash('error', $exception->getMessage());
+                    $this->addFlash('error', $exception->getCode() . ': ' . $exception->getMessage());
                 }
             }
             if ($form->get('cancel')->isClicked()) {

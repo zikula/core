@@ -32,12 +32,11 @@ class TestType extends AbstractType
     {
         $builder
             ->add('fromName', TextType::class, [
-                'label' => 'Sender\'s name',
-                'disabled' => true
+                'label' => 'Sender\'s name'
             ])
             ->add('fromAddress', EmailType::class, [
-                'label' => 'Sender\'s e-mail address',
-                'disabled' => true
+                'label' => 'Sender\'s email address',
+                'help' => 'Incorrect sender email may cause sending failure.'
             ])
             ->add('toName', TextType::class, [
                 'label' => 'Recipient\'s name',

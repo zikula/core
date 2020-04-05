@@ -44,7 +44,11 @@ class LocalDotEnvHelper
                     continue;
                 }
                 [$key, $value] = explode('=', $line, 2);
-                $vars[$key] = $newVars[$key] ?? '!' . $value; // never encode existing values
+                if (isset($newVars[$key])) {
+                    unset($vars[$key]); // removing the old $key preserves the order of the $newVars when set
+                } else {
+                    $vars[$key] = '!' . $value; // never encode existing values
+                }
             }
         }
         $vars = $vars + array_diff_assoc($newVars, $vars);

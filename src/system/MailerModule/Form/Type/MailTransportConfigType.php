@@ -56,7 +56,7 @@ class MailTransportConfigType extends AbstractType
                 'attr' => [
                     'maxlength' => 50
                 ],
-                'help' => 'The SECRET_KEY, PASSWORD, ID or KEY for the selected transport.',
+                'help' => 'The SECRET_KEY, PASSWORD, ID or KEY for the selected transport. (not saved to the database, only written to .env.local)',
                 'required' => false
             ])
             ->add('host', TextType::class, [
