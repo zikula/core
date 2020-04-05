@@ -124,12 +124,10 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $qb->getQuery()->getResult();
     }
 
-    public function query(
+    private function makeQueryBuilder(
         array $filter = [],
         array $sort = [],
-        string $exprType = 'and',
-        int $page = 1,
-        int $pageSize = 25
+        string $exprType = 'and'
     ) {
         $qb = $this->createQueryBuilder('u')
             ->select('u');
@@ -143,6 +141,28 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         if (!empty($sort)) {
             $qb->orderBy($this->orderByFromArray($sort));
         }
+
+        return $qb;
+    }
+
+    public function query(
+        array $filter = [],
+        array $sort = [],
+        string $exprType = 'and'
+    ) {
+        $qb = $this->makeQueryBuilder($filter, $sort, $exprType);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function paginatedQuery(
+        array $filter = [],
+        array $sort = [],
+        string $exprType = 'and',
+        int $page = 1,
+        int $pageSize = 25
+    ) {
+        $qb = $this->makeQueryBuilder($filter, $sort, $exprType);
 
         return (new Paginator($qb, $pageSize))->paginate($page);
     }
@@ -181,7 +201,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $qb->getQuery()->iterate();
     }
 
-    public function searchActiveUser(array $unameFilter = [], int $limit = 50)
+    public function searchActiveUser(array $unameFilter = [])
     {
         if (!count($unameFilter)) {
             return [];
@@ -195,6 +215,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             'uname' => $unameFilter
         ];
 
-        return $this->query($filter, ['uname' => 'asc'], 'and', 1, $limit);
+        return $this->query($filter, ['uname' => 'asc']);
     }
 }

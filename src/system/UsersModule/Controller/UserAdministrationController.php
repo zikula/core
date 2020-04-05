@@ -98,7 +98,7 @@ class UserAdministrationController extends AbstractController
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
         $pageSize = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
-        $paginator = $userRepository->query($filter, [$sort => $sortdir], 'and', $page, $pageSize);
+        $paginator = $userRepository->paginatedQuery($filter, [$sort => $sortdir], 'and', $page, $pageSize);
         $paginator->setRoute('zikulausersmodule_useradministration_list');
         $routeParameters = [
             'sort' => $sort,
@@ -339,7 +339,7 @@ class UserAdministrationController extends AbstractController
             if ($valid && $deleteConfirmationForm->isValid()) {
                 // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
-                foreach ($deletedUsers->getResults() as $deletedUser) {
+                foreach ($deletedUsers as $deletedUser) {
                     if (UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated()) {
                         $eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($deletedUser));
                     } else {
@@ -354,7 +354,7 @@ class UserAdministrationController extends AbstractController
                     /** @Desc("{count, plural,\n  one   {User deleted!}\n  other {# users deleted!}\n}") */
                     $this->getTranslator()->trans(
                         'plural_n.users.deleted',
-                        ['%count%' => $deletedUsers->getNumResults()]
+                        ['%count%' => count($deletedUsers)]
                     )
                 );
 

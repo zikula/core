@@ -63,9 +63,8 @@ class BatchForcePasswordChangeType extends AbstractType
 /** @Translate */'Users with old passwords (recommended)' => 'old',
 /** @Translate */'All users' => 'all'
         ];
-        /** @var \Zikula\GroupsModule\Entity\GroupEntity[] $groups */
         $groups = $this->groupRepository->getGroups();
-        foreach ($groups as $group) {
+        foreach ($groups->getResults() as $group) {
             $choices[$group->getName() . ' group'] = $group->getGid();
         }
 

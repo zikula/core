@@ -50,14 +50,23 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
      * filter = [field => value, field => value, field => ['operator => '!=', 'operand' => value], ...]
      * when value is not an array, operator is assumed to be '='
      *
-     * @return PaginatorInterface|UserEntity[]
+     * @return PaginatorInterface
      */
-    public function query(
+    public function paginatedQuery(
         array $filter = [],
         array $sort = [],
         string $exprType = 'and',
         int $page = 1,
         int $pageSize = 25
+    );
+
+    /**
+     * @return UserEntity[]
+     */
+    public function query(
+        array $filter = [],
+        array $sort = [],
+        string $exprType = 'and'
     );
 
     public function count(array $filter = [], string $exprType = 'and'): int;
@@ -68,7 +77,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function findAllAsIterable(): IterableResult;
 
     /**
-     * @return PaginatorInterface|UserEntity[]
+     * @return UserEntity[]
      */
-    public function searchActiveUser(array $unameFilter = [], int $limit = 50);
+    public function searchActiveUser(array $unameFilter = []);
 }

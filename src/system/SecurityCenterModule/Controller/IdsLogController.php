@@ -182,7 +182,7 @@ class IdsLogController extends AbstractController
                 $items = $repository->getIntrusions([], ['date' => 'DESC']);
 
                 $string = $exportTitles ? implode($delimiter, $titles) . PHP_EOL : '';
-                foreach ($items as $item) {
+                foreach ($items->getResults() as $item) {
                     $dta = $item->toArray();
                     $dta['filters'] = unserialize($dta['filters']);
                     $filtersUsed = '';
