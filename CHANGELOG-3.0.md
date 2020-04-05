@@ -354,7 +354,7 @@
   - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.3
   - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
   - symfony/contracts installed in 2.0.1
-  - symfony/maker-bundle installed in 1.14.6
+  - symfony/maker-bundle installed in 1.15.0
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.7
   - symfony/polyfill-ctype updated from 1.12.0 to 1.15.0
