@@ -124,7 +124,7 @@ class RegistrationController extends AbstractController
                     if (!empty($notificationErrors)) {
                         $this->addFlash('error', implode('<br />', $notificationErrors));
                     }
-                    if ('' === $userEntity->getApproved_By()) {
+                    if ('' === $userEntity->getApprovedBy()) {
                         $this->addFlash('status', 'Done! Your account has been verified, and is awaiting administrator approval.');
                     } else {
                         $this->addFlash('status', 'Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.');

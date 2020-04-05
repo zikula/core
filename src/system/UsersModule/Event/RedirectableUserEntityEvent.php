@@ -21,7 +21,7 @@ class RedirectableUserEntityEvent extends UserEntityEvent
     /**
      * @var string
      */
-    private $redirectUrl;
+    private $redirectUrl = '';
 
     public function setRedirectUrl(string $redirectUrl): void
     {
