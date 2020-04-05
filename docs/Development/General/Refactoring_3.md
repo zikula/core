@@ -155,6 +155,7 @@ Several events have been changed which requires updates in corresponding listene
 
 - Core bundles
   - `Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - Also, listeners should respond to the form _class_, the static property `NAME` is removed.
   - `Zikula\Bundle\HookBundle\Hook\Hook` (and all its subclasses) no longer extends `Symfony\Contracts\EventDispatcher\Event`.
 - Extensions module
   - `Zikula\ExtensionsModule\ExtensionEvents::REGENERATE_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent`.

@@ -195,8 +195,7 @@ class DynamicFieldType extends AbstractType
             ]
         ]);
 
-        $event = new FormTypeChoiceEvent($choices);
-        $this->eventDispatcher->dispatch($event, FormTypeChoiceEvent::NAME);
+        $this->eventDispatcher->dispatch(new FormTypeChoiceEvent($choices));
 
         return $choices;
     }

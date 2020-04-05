@@ -17,8 +17,6 @@ use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 
 class FormTypeChoiceEvent
 {
-    public const NAME = 'zikula_form_extension_bundle.form_type_choice_event';
-
     /**
      * @var FormTypesChoices
      */
