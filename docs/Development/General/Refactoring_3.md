@@ -157,6 +157,10 @@ Several events have been changed which requires updates in corresponding listene
   - `Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
     - Also, listeners should respond to the form _class_, the static property `NAME` is removed.
   - `Zikula\Bundle\HookBundle\Hook\Hook` (and all its subclasses) no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+- Blocks module
+  - `get.pending_content` which was formerly in CoreBundle is removed in favor of `Zikula\BlocksModule\Event\PendingContentEvent`
+    - `Zikula\Bundle\CoreBundle\Collection\Collectible\PendingContentCollectible` has changed its namespace to
+      - `Zikula\BlocksModule\Collectible\PendingContentCollectible`
 - Extensions module
   - `Zikula\ExtensionsModule\ExtensionEvents::REGENERATE_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent`.
   - `Zikula\ExtensionsModule\ExtensionEvents::INSERT_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionEntityPreInsertEvent`.

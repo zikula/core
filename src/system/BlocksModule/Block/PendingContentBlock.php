@@ -16,7 +16,8 @@ namespace Zikula\BlocksModule\Block;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\Bundle\CoreBundle\Collection\Collectible\PendingContentCollectible;
+use Zikula\BlocksModule\Collectible\PendingContentCollectible;
+use Zikula\BlocksModule\Event\PendingContentEvent;
 use Zikula\Bundle\CoreBundle\Collection\Container;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 
@@ -37,29 +38,10 @@ class PendingContentBlock extends AbstractBlockHandler
         if (!$this->hasPermission('PendingContent::', $properties['title'] . '::', ACCESS_OVERVIEW)) {
             return '';
         }
-
-        // trigger event
-        $event = new GenericEvent(new Container('pending_content'));
-        $pendingCollection = $this->eventDispatcher->dispatch($event, 'get.pending_content')->getSubject();
-
-        $content = [];
-        foreach ($pendingCollection as $collection) {
-            /** @var Container $collection */
-            foreach ($collection as $item) {
-                $link = '';
-                if ($item instanceof PendingContentCollectible) {
-                    $link = $this->router->generate($item->getRoute(), $item->getArgs());
-                }
-                $content[] = [
-                    'description' => $item->getDescription(),
-                    'link' => $link,
-                    'number' => $item->getNumber()
-                ];
-            }
-        }
+        $pendingCollection = $this->eventDispatcher->dispatch(new PendingContentEvent('pending_content'))->getContainer();
 
         return $this->renderView('@ZikulaBlocksModule/Block/pendingcontent.html.twig', [
-            'content' => $content
+            'pendingCollection' => $pendingCollection
         ]);
     }
 
