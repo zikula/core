@@ -30,6 +30,26 @@
         });
     });
 
+    /**
+     * Return a value of input.
+     *
+     * @param element The input element
+     *
+     * @return string Value
+     */
+    function getValueOfElement(element) {
+        if ($(element).is(':checkbox')) {
+            return $(element).is(':checked') ? '1' : '0';
+        }
+        if ($(element).is(':radio')) {
+            var name = $(element).attr('name');
+
+            return $('input[name="' + name + '"]:checked').val();
+        }
+
+        return $(element).val();
+    }
+
     $(document).ready(function() {
         // remove "d-none" class because bootstrap is using important, that is not
         // working with jQuery.show();
