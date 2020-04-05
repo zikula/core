@@ -98,10 +98,12 @@ class MockUserRepository implements UserRepositoryInterface
     public function query(
         array $filter = [],
         array $sort = [],
-        string $exprType = 'and',
-        int $page = 1,
-        int $pageSize = 25
+        string $exprType = 'and'
     ) {
+    }
+
+    public function paginatedQuery(array $filter = [], array $sort = [], string $exprType = 'and', int $page = 1, int $pageSize = 25)
+    {
     }
 
     public function count(array $filter = [], string $exprType = 'and'): int
