@@ -13,18 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Event;
 
-use Zikula\UsersModule\Entity\UserEntity;
-
 /**
  * Occurs right after a successful logout.
  */
-class UserPostLogoutSuccessEvent extends UserEntityEvent implements AuthMethodAwareInterface
+class UserPostLogoutSuccessEvent extends UserEntityEvent
 {
-    use AuthMethodTrait;
-
-    public function __construct(UserEntity $userEntity, string $authenticationMethod)
-    {
-        parent::__construct($userEntity);
-        $this->authenticationMethod = $authenticationMethod;
-    }
 }

@@ -202,11 +202,7 @@ class AccessController extends AbstractController
             $uid = $currentUserApi->get('uid');
             $user = $userRepository->find($uid);
             if ($accessHelper->logout()) {
-                $authMethod = null;
-                if ($request->hasSession() && ($session = $request->getSession())) {
-                    $authMethod = $session->get('authenticationMethod');
-                }
-                $eventDispatcher->dispatch(new UserPostLogoutSuccessEvent($user, $authMethod->getAlias()));
+                $eventDispatcher->dispatch(new UserPostLogoutSuccessEvent($user));
             } else {
                 $this->addFlash('error', 'Error! You have not been logged out.');
             }
