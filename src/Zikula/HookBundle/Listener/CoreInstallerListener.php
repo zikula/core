@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\HookBundle\HookBundleInstaller;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
+use Zikula\Bundle\HookBundle\HookBundleInstaller;
 
 /**
  * Class CoreInstallerListener

@@ -18,11 +18,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
-use Zikula\Component\Wizard\StageInterface;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallerBundleEvent;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
+use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
+use Zikula\Component\Wizard\StageInterface;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 
 class StageHelper
