@@ -30,9 +30,7 @@ services:
         arguments:
           $configDir: '%kernel.project_dir%/config'
 
-    # public because Core Installer stages access this using container
     Zikula\Bundle\CoreBundle\CacheClearer:
-        public: true
         arguments:
           $cacheDir: '%kernel.cache_dir%'
           $kernelContainerClass: '%kernel.container_class%'

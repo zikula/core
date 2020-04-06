@@ -13,61 +13,22 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Component\Wizard\AbortStageException;
-use Zikula\Component\Wizard\FormHandlerInterface;
-use Zikula\Component\Wizard\StageInterface;
-use Zikula\Component\Wizard\Wizard;
-use Zikula\Component\Wizard\WizardCompleteInterface;
 
 class ControllerHelper
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    public function __construct(
-        ContainerInterface $container,
-        RouterInterface $router,
-        TranslatorInterface $translator
-    ) {
-        $this->container = $container;
-        $this->router = $router;
-        $this->translator = $translator;
-    }
-
-    /**
-     * Return an array of variables to assign to all installer templates.
-     */
-    public function getTemplateGlobals(StageInterface $currentStage): array
+    public function __construct(TranslatorInterface $translator)
     {
-        $globals = [
-            'version' => ZikulaKernel::VERSION,
-            'currentstage' => $currentStage->getName()
-        ];
-
-        return array_merge($globals, $currentStage->getTemplateParams());
+        $this->translator = $translator;
     }
 
     /**
@@ -167,74 +128,5 @@ class ControllerHelper
         } catch (IOException $exception) {
             throw new AbortStageException($this->translator->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'services_custom.yaml']));
         }
-    }
-
-    /**
-     * Executes the wizard for installation or upgrade process.
-     */
-    public function processWizard(Request $request, $stage, $mode = 'install', FormFactory $formFactory, YamlDumper $yamlDumper = null): Response
-    {
-        if (!in_array($mode, ['install', 'upgrade'])) {
-            $mode = 'install';
-        }
-
-        $session = $request->hasSession() ? $request->getSession() : null;
-
-        // check php
-        $iniWarnings = $this->initPhp();
-        if (null !== $session && 0 < count($iniWarnings)) {
-            $session->getFlashBag()->add('warning', implode('<hr />', $iniWarnings));
-        }
-
-        // begin the wizard
-        $wizard = new Wizard($this->container, dirname(__DIR__) . '/Resources/config/' . $mode . '_stages.yaml');
-        $currentStage = $wizard->getCurrentStage($stage);
-        if ($currentStage instanceof WizardCompleteInterface) {
-            if ('upgrade' === $mode && null !== $yamlDumper) {
-                $yamlDumper->setParameter('upgrading', false);
-            }
-
-            return $currentStage->getResponse($request);
-        }
-
-        $templateParams = $this->getTemplateGlobals($currentStage);
-        $templateParams['headertemplate'] = '@ZikulaCoreInstaller/' . $mode . 'Header.html.twig';
-        if ($wizard->isHalted()) {
-            if (null !== $session) {
-                $session->getFlashBag()->add('danger', $wizard->getWarning());
-            }
-
-            return $this->renderResponse('@ZikulaCoreInstaller/error.html.twig', $templateParams);
-        }
-
-        // handle the form
-        if ($currentStage instanceof FormHandlerInterface) {
-            $form = $formFactory->create($currentStage->getFormType(), null, $currentStage->getFormOptions());
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $currentStage->handleFormResult($form);
-                $params = [
-                    'stage' => $wizard->getNextStage()->getName(),
-                    '_locale' => $this->container->getParameter('locale')
-                ];
-
-                $url = $this->router->generate($mode, $params);
-
-                return new RedirectResponse($url);
-            }
-            $templateParams['form'] = $form->createView();
-        }
-
-        return $this->renderResponse($currentStage->getTemplateName(), $templateParams);
-    }
-
-    protected function renderResponse(string $view, array $parameters = [], Response $response = null): Response
-    {
-        if (null === $response) {
-            $response = new PlainResponse();
-        }
-        $response->setContent($this->container->get('twig')->render($view, $parameters));
-
-        return $response;
     }
 }

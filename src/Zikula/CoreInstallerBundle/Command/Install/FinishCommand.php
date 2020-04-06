@@ -36,14 +36,21 @@ class FinishCommand extends AbstractCoreInstallerCommand
      */
     private $stageHelper;
 
+    /**
+     * @var AjaxInstallerStage
+     */
+    private $ajaxInstallerStage;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         string $installed,
         StageHelper $stageHelper,
+        AjaxInstallerStage $ajaxInstallerStage,
         TranslatorInterface $translator
     ) {
         $this->installed = '0.0.0' !== $installed;
         $this->stageHelper = $stageHelper;
+        $this->ajaxInstallerStage = $ajaxInstallerStage;
         parent::__construct($kernel, $translator);
     }
 
@@ -66,9 +73,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
         $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
 
         // install!
-        $ajaxStage = new AjaxInstallerStage();
-        $ajaxStage->setTranslator($this->translator);
-        $this->stageHelper->handleAjaxStage($ajaxStage, $io);
+        $this->stageHelper->handleAjaxStage($this->ajaxInstallerStage, $io);
 
         $io->success($this->translator->trans('INSTALL COMPLETE!'));
 

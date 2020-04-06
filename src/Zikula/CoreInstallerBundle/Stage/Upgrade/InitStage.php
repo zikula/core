@@ -13,23 +13,40 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class InitStage implements StageInterface, InjectContainerInterface
+class InitStage implements StageInterface
 {
     /**
-     * @var ContainerInterface
+     * @var MigrationHelper
      */
-    private $container;
+    private $migrationHelper;
 
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * @var string
+     */
+    private $installed;
+
+    /**
+     * @var int
+     */
     private $count;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        MigrationHelper $migrationHelper,
+        SessionInterface $session,
+        string $installed
+    ) {
+        $this->migrationHelper = $migrationHelper;
+        $this->session = $session;
+        $this->installed = $installed;
     }
 
     public function getName(): string
@@ -44,18 +61,16 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary(): bool
     {
-        $currentVersion = $this->container->getParameter('installed');
-        if (version_compare($currentVersion, '2.0.0', '>=')) {
+        if (version_compare($this->installed, '2.0.0', '>=')) {
             return false;
         }
 
-        $migrationHelper = $this->container->get(MigrationHelper::class);
-        $this->count = $migrationHelper->countUnMigratedUsers();
+        $this->count = $this->migrationHelper->countUnMigratedUsers();
         if ($this->count > 0) {
-            $this->container->get('session')->set('user_migration_count', $this->count);
-            $this->container->get('session')->set('user_migration_complete', 0);
-            $this->container->get('session')->set('user_migration_lastuid', 0);
-            $this->container->get('session')->set('user_migration_maxuid', $migrationHelper->getMaxUnMigratedUid());
+            $this->session->set('user_migration_count', $this->count);
+            $this->session->set('user_migration_complete', 0);
+            $this->session->set('user_migration_lastuid', 0);
+            $this->session->set('user_migration_maxuid', $this->migrationHelper->getMaxUnMigratedUid());
 
             return true;
         }

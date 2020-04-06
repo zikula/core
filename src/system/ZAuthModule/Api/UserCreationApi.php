@@ -81,7 +81,12 @@ class UserCreationApi implements UserCreationApiInterface
     /**
      * @var GroupEntity[]
      */
-    private $groups;
+    private $groups = [];
+
+    /**
+     * @var GroupRepositoryInterface
+     */
+    private $groupRepository;
 
     public function __construct(
         ValidatorInterface $validator,
@@ -96,7 +101,7 @@ class UserCreationApi implements UserCreationApiInterface
         $this->encoderFactory = $encoderFactory;
         $this->managerRegistry = $managerRegistry;
         $this->variableApi = $variableApi;
-        $this->groups = $groupRepository->findAllAndIndexBy('gid');
+        $this->groupRepository = $groupRepository;
         $this->constraint = new Constraints\Collection(['fields' => [
             'uname' => new ValidUname(),
             'pass' => new ValidPassword(),
@@ -137,6 +142,9 @@ class UserCreationApi implements UserCreationApiInterface
 
     public function createUser(array $userArray): void
     {
+        if (empty($this->groups)) {
+            $this->groups = $this->groupRepository->findAllAndIndexBy('gid');
+        }
         $groups = !empty($userArray['groups']) ? explode('|', $userArray['groups']) : [GroupsConstant::GROUP_ID_USERS];
         $password = $userArray['pass'];
         unset($userArray['pass'], $userArray['sendmail'], $userArray['groups']);

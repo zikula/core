@@ -13,25 +13,30 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class LoginStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
+class LoginStage implements StageInterface, FormHandlerInterface
 {
-    private $container;
+    /**
+     * @var ControllerHelper
+     */
+    private $controllerHelper;
 
+    /**
+     * @var YamlDumper
+     */
     private $yamlManager;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ControllerHelper $controllerHelper, string $projectDir)
     {
-        $this->container = $container;
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/config', 'services_custom.yaml');
+        $this->controllerHelper = $controllerHelper;
+        $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
     }
 
     public function getName(): string
@@ -66,7 +71,11 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function handleFormResult(FormInterface $form): bool
     {
-        $this->container->get(ControllerHelper::class)->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+        try {
+            $this->controllerHelper->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+        } catch (AbortStageException $exception) {
+            return false;
+        }
 
         return true;
     }

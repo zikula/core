@@ -14,10 +14,6 @@ services:
 
     Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface: '@Zikula\SettingsModule\Api\LocaleApi'
 
-    # public because core installer and others accesses this using container
-    Zikula\SettingsModule\Api\LocaleApi:
-        public: true
-
     Zikula\SettingsModule\SettingsModuleInstaller:
         arguments:
             $locale: '%locale%'

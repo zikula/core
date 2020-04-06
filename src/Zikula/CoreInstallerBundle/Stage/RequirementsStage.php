@@ -13,23 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class RequirementsStage implements StageInterface, InjectContainerInterface
+class RequirementsStage implements StageInterface
 {
     private $requirementsMet;
 
     /**
-     * @var ContainerInterface
+     * @var ControllerHelper
      */
-    private $container;
+    private $controllerHelper;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ControllerHelper $controllerHelper)
     {
-        $this->container = $container;
+        $this->controllerHelper = $controllerHelper;
     }
 
     public function getName(): string
@@ -44,7 +42,7 @@ class RequirementsStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary(): bool
     {
-        $this->requirementsMet = $this->container->get(ControllerHelper::class)->requirementsMet();
+        $this->requirementsMet = $this->controllerHelper->requirementsMet();
 
         return !$this->requirementsMet;
     }

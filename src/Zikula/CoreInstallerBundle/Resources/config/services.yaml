@@ -2,18 +2,29 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true # default to public because installer still uses container directly
         bind:
             $installed: '%env(ZIKULA_INSTALLED)%'
+            $projectDir: '%kernel.project_dir%'
+            $locale: '%locale%'
+
+    _instanceof:
+        Zikula\Component\Wizard\StageInterface:
+            tags: ['core_installer_bundle.stage']
 
     Zikula\Bundle\CoreInstallerBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Event,Tests,vendor}'
 
-    Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper:
-        arguments:
-            $projectDir: '%kernel.project_dir%'
+    Zikula\Bundle\CoreInstallerBundle\Controller\:
+        resource: '../../Controller/*'
+        public: true
 
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
             $symfonyCacheClearer: '@cache_clearer'
+
+    Zikula\Component\Wizard\StageContainerInterface: '@Zikula\Bundle\CoreInstallerBundle\Container\StageContainer'
+
+    Zikula\Bundle\CoreInstallerBundle\Container\StageContainer:
+        arguments:
+            $stages: !tagged_iterator core_installer_bundle.stage

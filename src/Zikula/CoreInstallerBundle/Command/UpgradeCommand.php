@@ -68,6 +68,11 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     private $stageHelper;
 
     /**
+     * @var AjaxUpgraderStage
+     */
+    private $ajaxUpgraderStage;
+
+    /**
      * @var array
      */
     private $selectedSettings = [
@@ -85,6 +90,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         MigrationHelper $migrationHelper,
         LocaleApiInterface $localeApi,
         StageHelper $stageHelper,
+        AjaxUpgraderStage $ajaxUpgraderStage,
         TranslatorInterface $translator,
         ParameterBagInterface $params,
         string $installed
@@ -93,6 +99,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
+        $this->ajaxUpgraderStage = $ajaxUpgraderStage;
         $this->params = $params;
         $this->installed = $installed;
         parent::__construct($kernel, $translator);
@@ -177,8 +184,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $ajaxStage = new AjaxUpgraderStage($this->translator, $this->installed);
-        $this->stageHelper->handleAjaxStage($ajaxStage, $io);
+        $this->stageHelper->handleAjaxStage($this->ajaxUpgraderStage, $io);
 
         $io->success($this->translator->trans('UPGRADE COMPLETE!'));
 
