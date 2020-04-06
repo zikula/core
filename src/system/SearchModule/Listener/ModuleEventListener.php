@@ -58,7 +58,7 @@ class ModuleEventListener implements EventSubscriberInterface
         ];
     }
 
-    public function extensionEnable(ExtensionPostEnabledEvent $event): void
+    public function extensionEnable(ExtensionStateEvent $event): void
     {
         $extensionName = $this->getExtensionName($event);
         if (null === $extensionName) {
