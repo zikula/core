@@ -1,0 +1,123 @@
+# CHANGELOG-VENDORS - ZIKULA 3.0.x
+
+## 3.0.0 VENDOR CHANGES (unreleased)
+
+- Vendor updates:
+  - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
+  - behat/transliterator updated from 1.2.0 to 1.3.0
+  - components/bootstrap updated from 3.4.1 to 4.4.1
+  - components/font-awesome updated from 4.7.0 to 5.12.1
+  - composer/ca-bundle updated from 1.2.4 to 1.2.6
+  - composer/composer installed in 1.10.1
+  - composer/installers updated from 1.7.0 to 1.8.0
+  - composer/semver updated from 1.5.0 to 1.5.1
+  - composer/spdx-licenses installed in 1.5.3
+  - composer/xdebug-handler installed in 1.4.1
+  - doctrine/annotations updated from 1.2.7 to 1.10.1
+  - doctrine/collections updated from 1.3.0 to 1.6.4
+  - doctrine/common updated from 2.6.2 to 2.12.0
+  - doctrine/dbal updated from 2.5.13 to 2.10.1
+  - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.7
+  - doctrine/event-manager installed in 1.1.0
+  - doctrine/inflector updated from 1.1.0 to 1.3.1
+  - doctrine/instantiator updated from 1.0.5 to 1.3.0
+  - doctrine/lexer updated from 1.0.2 to 1.2.0
+  - doctrine/orm updated from 2.5.14 to 2.7.2
+  - doctrine/persistence installed in 1.3.7
+  - doctrine/reflection installed in 1.2.1
+  - egulias/email-validator installed in 2.1.17
+  - erusev/parsedown installed in 1.7.4
+  - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
+  - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.39
+  - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
+  - imagine/imagine updated from 0.7.1 to 1.3.3
+  - itsjavi/fontawesome-iconpicker installed in 3.2.0
+  - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using remmel/i18n-routing-bundle dev-master instead)
+  - jquery.mmenu updated from 7.3.3 to frdh/mmenu.js 8.5.3
+  - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
+  - knplabs/knp-menu updated from 2.2.0 to 3.1.0
+  - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
+  - league/commonmark installed in 1.3.3
+  - league/html-to-markdown installed in 4.9.1
+  - liip/imagine-bundle updated from 1.9.1 to 2.3.0
+  - lorenzo/pinky installed in 1.0.5
+  - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0 (temporarily using Jeroeny/dev-symfony-5 instead)
+  - michelf/php-markdown updated from 1.7.0 to 1.9.0
+  - monolog/monolog updated from 1.25.2 to 2.0.2
+  - nikic/php-parser updated from 1.4.1 to 4.3.0
+  - nyholm/nsa installed in 1.1.0
+  - ocramius/package-versions installed in 1.4.2
+  - oro/twig-inspector installed in 1.0.2
+  - paragonie/random_compat updated from 2.0.18 to 9.99.99
+  - php-translation/common installed in 3.0.1
+  - php-translation/extractor installed in 2.0.1
+  - php-translation/symfony-bundle installed in 0.12.1
+  - php-translation/symfony-storage installed in 2.2.0
+  - psr/event-dispatcher installed in 1.0.0
+  - psr/log updated from 1.1.2 to 1.1.3
+  - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
+  - seld/jsonlint installed in 1.7.2
+  - seld/phar-utils installed in 1.1.0
+  - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.3
+  - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
+  - symfony/contracts installed in 2.0.1
+  - symfony/maker-bundle installed in 1.15.0
+  - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
+  - symfony/phpunit-bridge updated from 3.4.14 to 5.0.7
+  - symfony/polyfill-ctype updated from 1.12.0 to 1.15.0
+  - symfony/polyfill-intl-grapheme installed in 1.15.0
+  - symfony/polyfill-intl-icu updated from 1.11.0 to 1.15.0
+  - symfony/polyfill-intl-idn updated from 1.11.0 to 1.15.0
+  - symfony/polyfill-intl-messageformatter installed in 1.15.0
+  - symfony/polyfill-intl-normalizer installed in 1.15.0
+  - symfony/polyfill-mbstring updated from 1.12.0 to 1.15.0
+  - symfony/polyfill-php72 installed in 1.15.0
+  - symfony/polyfill-php73 installed in 1.15.0
+  - symfony/profiler-pack installed in 1.0.4
+  - symfony/symfony updated from 3.4.35 to 5.0.7
+  - thomaspark/bootswatch installed in 4.4.1
+  - tijsverkoyen/css-to-inline-styles installed in 2.2.2
+  - twig/extra-bundle installed in 3.0.3
+  - twig/cssinliner-extra installed in 3.0.3
+  - twig/html-extra installed in 3.0.3
+  - twig/inky-extra installed in 3.0.3
+  - twig/intl-extra installed in 3.0.3
+  - twig/markdown-extra installed in 3.0.3
+  - twig/string-extra installed in 3.0.3
+  - twig/twig updated from 1.42.4 to 3.0.3
+  - vakata/jstree updated from 3.3.8 to 3.3.9
+  - webmozart/assert updated from 1.5.0 to 1.7.0
+  - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.1
+  - zikula/legal-module updated from 3.1.2 to dev-master
+  - zikula/oauth-module updated from 1.0.4 to dev-master
+  - zikula/pagelock-module updated from 1.2.3 to dev-master
+  - zikula/profile-module updated from 3.0.6 to dev-master
+  - zikula/wizard updated from 2.0 to 3.0.3
+
+- Dropped vendors:
+  - Removed afarkas/html5shiv
+  - Removed afarkas/webshim (#3925)
+  - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
+  - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
+  - Removed elao/web-profiler-extra-bundle
+  - Removed jms/translation-bundle (in favour of php-translation/*)
+  - Removed oyejorge/less.php
+  - Removed ramsey/array_column
+  - Removed sensio/distribution-bundle (in favour of Flex)
+  - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
+  - Removed swiftmailer/swiftmailer (in favour of symfony/mailer)
+  - Removed symfony/polyfill-apcu
+  - Removed symfony/polyfill-php56
+  - Removed symfony/polyfill-php70
+  - Removed symfony/polyfill-util
+  - Removed symfony/swiftmailer-bundle (in favour of symfony/mailer)
+  - Removed twig/extensions (use new Twig Extra extensions instead)
+  - Removed zikula/andreas08-theme (in favour of different styles in bootstrap theme)
+  - Removed zikula/bootstrap-bundle (in favour of direct usage of components/bootstrap)
+  - Removed zikula/fontawesome-bundle (in favour of direct usage of components/font-awesome)
+  - Removed zikula/generator-bundle (in favour of symfony/maker-bundle)
+  - Removed zikula/jquery-bundle (in favour of direct usage of components/jquery)
+  - Removed zikula/jquery-ui-bundle (in favour of direct usage of components/jqueryui)
+  - Removed zikula/seabreeze-theme (in favour of different styles in bootstrap theme)
+  - Replaced by stof/doctrine-extensions-bundle by antishov/doctrine-extensions-bundle
+  - Downgraded kriswallsmith/assetic from 1.4.0 to 1.0.5
