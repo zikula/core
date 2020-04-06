@@ -16,8 +16,9 @@ namespace Zikula\RoutesModule\Twig;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\TwigFilter;
 use Zikula\RoutesModule\Entity\RouteEntity;
+use Zikula\RoutesModule\Helper\PathBuilderHelper;
 use Zikula\RoutesModule\Twig\Base\AbstractTwigExtension;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
  * Twig extension implementation class.
@@ -28,6 +29,16 @@ class TwigExtension extends AbstractTwigExtension
      * @var ContainerInterface
      */
     private $container;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    /**
+     * @var PathBuilderHelper
+     */
+    private $pathBuilderHelper;
 
     public function getFunctions()
     {
@@ -67,10 +78,8 @@ class TwigExtension extends AbstractTwigExtension
             $prefix = '/' . $translationPrefix;
         }
 
-        $container = $this->container;
-
         if ($route->getTranslatable()) {
-            $languages = $container->get(LocaleApi::class)->getSupportedLocales();
+            $languages = $this->localeApi->getSupportedLocales();
             $isRequiredLangParameter = $this->variableApi->getSystemVar('languageurl', 0);
             if (!$isRequiredLangParameter) {
                 $defaultLanguage = $this->variableApi->getSystemVar('locale');
@@ -83,10 +92,10 @@ class TwigExtension extends AbstractTwigExtension
 
         $prefix = htmlspecialchars($prefix);
         $path = htmlspecialchars(
-            $container->get('zikula_routes_module.path_builder_helper')
-                ->getPathWithBundlePrefix($route)
+            $this->pathBuilderHelper->getPathWithBundlePrefix($route)
         );
 
+        $container = $this->container;
         $path = preg_replace_callback('#%(.*?)%#', static function ($matches) use ($container) {
             return '<abbr title="' . htmlspecialchars($matches[0]) . '">'
                 . htmlspecialchars($container->getParameter($matches[1]))
@@ -120,8 +129,13 @@ class TwigExtension extends AbstractTwigExtension
     /**
      * @required
      */
-    public function setContainer(ContainerInterface $container): void
-    {
+    public function setAdditionalDependencies(
+        ContainerInterface $container,
+        LocaleApiInterface $localeApi,
+        PathBuilderHelper $pathBuilderHelper
+    ): void {
         $this->container = $container;
+        $this->localeApi = $localeApi;
+        $this->pathBuilderHelper = $pathBuilderHelper;
     }
 }
