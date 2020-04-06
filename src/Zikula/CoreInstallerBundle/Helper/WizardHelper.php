@@ -77,14 +77,7 @@ class WizardHelper
         if (!in_array($mode, ['install', 'upgrade'])) {
             $mode = 'install';
         }
-
         $session = $request->hasSession() ? $request->getSession() : null;
-
-        // check php
-        $iniWarnings = $this->initPhp();
-        if (null !== $session && 0 < count($iniWarnings)) {
-            $session->getFlashBag()->add('warning', implode('<hr />', $iniWarnings));
-        }
 
         // begin the wizard
         $wizard = new Wizard($this->stageContainer, dirname(__DIR__) . '/Resources/config/' . $mode . '_stages.yaml');

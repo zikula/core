@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\WizardHelper;
 
 class UpgraderController
@@ -34,6 +35,11 @@ class UpgraderController
      * @var WizardHelper
      */
     private $wizardHelper;
+
+    /**
+     * @var ControllerHelper
+     */
+    private $controllerHelper;
 
     /**
      * @var string
@@ -53,12 +59,14 @@ class UpgraderController
     public function __construct(
         RouterInterface $router,
         WizardHelper $wizardHelper,
+        ControllerHelper $controllerHelper,
         string $installed,
         string $projectDir,
         string $locale
     ) {
         $this->router = $router;
         $this->wizardHelper = $wizardHelper;
+        $this->controllerHelper = $controllerHelper;
         $this->installed = $installed;
         $this->projectDir = $projectDir;
         $this->locale = $locale;
@@ -77,6 +85,11 @@ class UpgraderController
         $yamlDumper = new YamlDumper($this->projectDir . '/config', 'services_custom.yaml');
         $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->locale);
+        $session = $request->hasSession() ? $request->getSession() : null;
+        $iniWarnings = $this->controllerHelper->initPhp();
+        if (null !== $session && 0 < count($iniWarnings)) {
+            $session->getFlashBag()->add('warning', implode('<hr />', $iniWarnings));
+        }
 
         return $this->wizardHelper->processWizard($request, $stage, 'upgrade', $yamlDumper);
     }
