@@ -15,11 +15,12 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\CoreEvents;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
+use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallerBundleEvent;
+use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
@@ -112,7 +113,7 @@ class StageHelper
             case 'bundles':
                 return $this->createBundles();
             case 'install_event':
-                return $this->fireEvent(CoreEvents::CORE_INSTALL_PRE_MODULE);
+                return $this->dispatchEvent(new CoreInstallationPreExtensionInstallation());
             case 'extensions':
                 return $this->coreInstallerExtensionHelper->install('ZikulaExtensionsModule');
             case 'settings':
@@ -162,7 +163,7 @@ class StageHelper
             case 'reinitparams':
                 return $this->parameterHelper->reInitParameters();
             case 'upgrade_event':
-                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $this->installed]);
+                return $this->dispatchEvent(new CoreUpgradePreExtensionUpgrade($this->installed));
             case 'upgradeextensions':
                 return $this->coreInstallerExtensionHelper->upgrade();
             case 'versionupgrade':
@@ -202,11 +203,9 @@ class StageHelper
         return true;
     }
 
-    private function fireEvent(string $eventName, array $args = []): bool
+    private function dispatchEvent(CoreInstallerBundleEvent $event): bool
     {
-        $event = new GenericEvent();
-        $event->setArguments($args);
-        $this->eventDispatcher->dispatch($event, $eventName);
+        $this->eventDispatcher->dispatch($event);
         if ($event->isPropagationStopped()) {
             return false;
         }

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\CoreEvents;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
+use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 use Zikula\Bundle\HookBundle\HookBundleInstaller;
 
 /**
@@ -33,22 +33,21 @@ class CoreInstallerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::CORE_INSTALL_PRE_MODULE => 'installHookBundle',
-            CoreEvents::CORE_UPGRADE_PRE_MODULE => 'upgradeHookBundle'
+            CoreInstallationPreExtensionInstallation::class => 'installHookBundle',
+            CoreUpgradePreExtensionUpgrade::class => 'upgradeHookBundle'
         ];
     }
 
-    public function installHookBundle(GenericEvent $event): void
+    public function installHookBundle(CoreInstallationPreExtensionInstallation $event): void
     {
         if (!$this->hookBundleInstaller->install()) {
             $event->stopPropagation();
         }
     }
 
-    public function upgradeHookBundle(GenericEvent $event): void
+    public function upgradeHookBundle(CoreUpgradePreExtensionUpgrade $event): void
     {
-        $currentVersion = $event->getArgument('currentVersion');
-        if (!$this->hookBundleInstaller->upgrade($currentVersion)) {
+        if (!$this->hookBundleInstaller->upgrade($event->getCurrentCoreVersion())) {
             $event->stopPropagation();
         }
     }

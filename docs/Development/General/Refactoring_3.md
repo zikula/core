@@ -155,7 +155,12 @@ Several events have been changed which requires updates in corresponding listene
 
 - Core bundles
   - `Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - Also, listeners should respond to the form _class_, the static property `NAME` is removed.
   - `Zikula\Bundle\HookBundle\Hook\Hook` (and all its subclasses) no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+- Blocks module
+  - `get.pending_content` which was formerly in CoreBundle is removed in favor of `Zikula\BlocksModule\Event\PendingContentEvent`
+    - `Zikula\Bundle\CoreBundle\Collection\Collectible\PendingContentCollectible` has changed its namespace to
+      - `Zikula\BlocksModule\Collectible\PendingContentCollectible`
 - Extensions module
   - `Zikula\ExtensionsModule\ExtensionEvents::REGENERATE_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent`.
   - `Zikula\ExtensionsModule\ExtensionEvents::INSERT_VETO` is removed in favor of `Zikula\ExtensionsModule\Event\ExtensionEntityPreInsertEvent`.
@@ -181,6 +186,8 @@ Several events have been changed which requires updates in corresponding listene
   - `Zikula\MenuModule\Event\ConfigureMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
 - Routes module
   - `new.routes.avail` event is replaced by `Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent`
+- SecurityCenter module
+  - `Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface::HTML_STRING_FILTER` is removed in favor of `Zikula\SecurityCenterModule\Event\FilterHtmlEvent`
 - Theme module
   - `Zikula\ThemeModule::PRE_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent` (Same event, simply rename in Listener). 
   - `Zikula\ThemeModule::POST_RENDER` is removed in favor of `Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent` (Same event, simply rename in Listener).

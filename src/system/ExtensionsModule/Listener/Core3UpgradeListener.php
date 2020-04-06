@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\CoreEvents;
 use Zikula\Bundle\CoreBundle\Doctrine\ColumnExistsTrait;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 
 class Core3UpgradeListener implements EventSubscriberInterface
 {
@@ -25,13 +24,13 @@ class Core3UpgradeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::CORE_UPGRADE_PRE_MODULE => 'upgrade'
+            CoreUpgradePreExtensionUpgrade::class => 'upgrade'
         ];
     }
 
-    public function upgrade(GenericEvent $event): void
+    public function upgrade(CoreUpgradePreExtensionUpgrade $event): void
     {
-        if (!version_compare($event->getArgument('currentVersion'), '3.0.0', '<')) {
+        if (!version_compare($event->getCurrentCoreVersion(), '3.0.0', '<')) {
             return;
         }
         $sqls = [];

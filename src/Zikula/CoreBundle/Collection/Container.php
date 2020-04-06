@@ -39,7 +39,7 @@ class Container implements CollectionInterface
     public function __construct(string $name, ArrayObject $collection = null)
     {
         $this->name = $name;
-        $this->collection = !$collection ? new ArrayObject([]) : $collection;
+        $this->collection = $collection ?? new ArrayObject([]);
     }
 
     /**

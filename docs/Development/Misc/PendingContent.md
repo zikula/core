@@ -3,10 +3,10 @@ currentMenu: dev-misc
 ---
 # Pending Content
 
-This document details the `get.pending_content` event which is used to collect information from modules about
+This document details the `Zikula\BlocksModule\Event\PendingContentEvent` which is used to collect information from extensions about
 pending content items like news submissions, user verifications or similar.
 
-Modules needing to publish pending content information should create an event handler for `get.pending_content` using
+Extensions needing to publish pending content information should create an event handler for `Zikula\BlocksModule\Event\PendingContentEvent` using
 the DependencyInjection (DI) component of Symfony.
 
 Create a class like this to handle the event:
@@ -17,25 +17,25 @@ Create a class like this to handle the event:
 namespace Acme\FooModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\BlocksModule\Collectible\PendingContentCollectible;
+use Zikula\BlocksModule\Event\PendingContentEvent;
 use Zikula\Bundle\CoreBundle\Collection\Container;
-use Zikula\Bundle\CoreBundle\Collection\Collectible\PendingContentCollectible;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 
 class PendingContentListener implements EventSubscriberInterface
 {
-    public function getPendingContent(GenericEvent $event)
+    public function getPendingContent(PendingContentEvent $event)
     {
         $collection = new Container('AcmeFooModule');
         // PendingContentCollectible(<type>, <description>, <number>, <route>)
         $collection->add(new PendingContentCollectible('foo', $this->translator->trans('Pending foo'), 5, 'acmefoomodule_admin_viewfoo'));
         $collection->add(new PendingContentCollectible('bar', $this->translator->trans('Pending bar'), 7, 'acmefoomodule_admin_viewbar'));
-        $event->getSubject()->add($collection);
+        $event->addCollection($collection);
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            'get.pending_content' => [
+            PendingContentEvent::class => [
                 ['getPendingContent']
             ]
         ];

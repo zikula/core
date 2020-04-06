@@ -14,23 +14,22 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule\Tests\Api\Fixtures;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
+use Zikula\SecurityCenterModule\Event\FilterHtmlEvent;
 
 class FilterTestSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
         return [
-            HtmlFilterApiInterface::HTML_STRING_FILTER => ['test']
+            FilterHtmlEvent::class => ['test']
         ];
     }
 
-    public function test(GenericEvent $event): void
+    public function test(FilterHtmlEvent $event): void
     {
-        $string = $event->getData();
+        $string = $event->getHtmlContent();
         $string = '***' . $string . '***';
 
-        $event->setData($string);
+        $event->setHtmlContent($string);
     }
 }

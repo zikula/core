@@ -16,8 +16,10 @@ namespace Zikula\BlocksModule\Twig\Extension;
 use RuntimeException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Twig\TwigTest;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
+use Zikula\BlocksModule\Collectible\PendingContentCollectible;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\Engine;
@@ -61,7 +63,14 @@ class BlocksExtension extends AbstractExtension
         return [
             new TwigFunction('showblockposition', [$this, 'showBlockPosition'], ['is_safe' => ['html']]),
             new TwigFunction('showblock', [$this, 'showBlock'], ['is_safe' => ['html']]),
-            new TwigFunction('positionavailable', [$this, 'isPositionAvailable'])
+            new TwigFunction('positionavailable', [$this, 'isPositionAvailable']),
+        ];
+    }
+
+    public function getTests()
+    {
+        return [
+            new TwigTest('pendingContentCollectible', function ($obj) { return $obj instanceof PendingContentCollectible; }),
         ];
     }
 

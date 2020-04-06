@@ -1,7 +1,9 @@
 <ul>
-    {% for line in content %}
-    <li><a href="{{ line.link }}">{{ line.description }} <span class="badge">{{ line.number }}</span></a></li>
-    {% else %}
-    <li><em>{% trans %}There is currently no pending content.{% endtrans %}</em></li>
+    {% for collection in pendingCollection %}
+        {% for item in collection|filter(item => item is pendingContentCollectible) %}
+        <li><a href="{{ item.link|default }}">{{ item.description|default('items'|trans) }} <span class="badge">{{ item.number|default(0) }}</span></a></li>
+        {% else %}
+        <li><em>{% trans %}There is currently no pending content.{% endtrans %}</em></li>
+        {% endfor %}
     {% endfor %}
 </ul>

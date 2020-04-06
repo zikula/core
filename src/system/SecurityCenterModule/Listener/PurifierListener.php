@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
+use Zikula\SecurityCenterModule\Event\FilterHtmlEvent;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 class PurifierListener implements EventSubscriberInterface
@@ -56,11 +55,11 @@ class PurifierListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            HtmlFilterApiInterface::HTML_STRING_FILTER => ['purify']
+            FilterHtmlEvent::class => ['purify']
         ];
     }
 
-    public function purify(GenericEvent $event): void
+    public function purify(FilterHtmlEvent $event): void
     {
         if (!$this->installed || $this->isUpgrading) {
             return;
@@ -71,13 +70,13 @@ class PurifierListener implements EventSubscriberInterface
         }
 
         static $safeCache;
-        $string = $event->getData();
+        $string = $event->getHtmlContent();
 
         $md5 = md5($string);
         if (!isset($safeCache[$md5])) {
             $safeCache[$md5] = $this->purifierHelper->getPurifier()->purify($string);
         }
 
-        $event->setData($safeCache[$md5]);
+        $event->setHtmlContent($safeCache[$md5]);
     }
 }
