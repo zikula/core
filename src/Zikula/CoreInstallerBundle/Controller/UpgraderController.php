@@ -13,28 +13,66 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 
 /**
  * Class UpgraderController
  */
-class UpgraderController extends AbstractController
+class UpgraderController
 {
     public const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.4.3';
 
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $form;
+
+    /**
+     * @var ControllerHelper
+     */
+    private $controllerHelper;
+
+    /**
+     * @var string
+     */
     private $installed;
 
-    public function __construct(ContainerInterface $container, string $installed)
-    {
-        parent::__construct($container);
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    /**
+     * @var string
+     */
+    private $locale;
+
+    public function __construct(
+        RouterInterface $router,
+        FormFactoryInterface $formFactory,
+        ControllerHelper $controllerHelper,
+        string $installed,
+        string $projectDir,
+        string $locale
+    ) {
+        $this->router = $router;
+        $this->form = $formFactory;
+        $this->controllerHelper = $controllerHelper;
         $this->installed = $installed;
-        $this->router = $container->get('router');
-        $this->form = $this->container->get('form.factory');
+        $this->projectDir = $projectDir;
+        $this->locale = $locale;
     }
 
     public function upgradeAction(Request $request, $stage): Response
@@ -47,9 +85,9 @@ class UpgraderController extends AbstractController
             return new RedirectResponse($this->router->generate('install'));
         }
 
-        $yamlDumper = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/config', 'services_custom.yaml');
+        $yamlDumper = new YamlDumper($this->projectDir . '/config', 'services_custom.yaml');
         $yamlDumper->setParameter('upgrading', true);
-        $request->setLocale($this->container->getParameter('locale'));
+        $request->setLocale($this->locale);
 
         return $this->controllerHelper->processWizard($request, $stage, 'upgrade', $this->form, $yamlDumper);
     }

@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
-class LocaleStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
+class LocaleStage implements StageInterface, FormHandlerInterface
 {
     /**
      * @var YamlDumper
@@ -33,9 +32,19 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     private $yamlManager;
 
     /**
-     * @var ContainerInterface
+     * @var LocaleApiInterface
      */
-    private $container;
+    private $localeApi;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var CacheClearer
+     */
+    private $cacheClearer;
 
     /**
      * @var array
@@ -47,12 +56,18 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
      */
     private $matchedLocale;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/config', 'services_custom.yaml', 'services.yaml');
-        $this->installedLocales = $container->get(LocaleApi::class)->getSupportedLocales();
-        $this->matchedLocale = $container->get(LocaleApi::class)->getBrowserLocale();
+    public function __construct(
+        LocaleApiInterface $localeApi,
+        TranslatorInterface $translator,
+        CacheClearer $cacheClearer,
+        string $projectDir
+    ) {
+        $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml', 'services.yaml');
+        $this->localeApi = $localeApi;
+        $this->translator = $translator;
+        $this->cacheClearer = $cacheClearer;
+        $this->installedLocales = $localeApi->getSupportedLocales();
+        $this->matchedLocale = $localeApi->getBrowserLocale();
     }
 
     public function getName(): string
@@ -68,7 +83,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     public function getFormOptions(): array
     {
         return [
-            'choices' => $this->container->get(LocaleApi::class)->getSupportedLocaleNames(),
+            'choices' => $this->localeApi->getSupportedLocaleNames(),
             'choice_loader' => null,
             'choice' => $this->matchedLocale
         ];
@@ -110,9 +125,8 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {
-            throw new AbortStageException($this->container->get('translator')->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'services_custom.yaml']));
+            throw new AbortStageException($this->translator->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'services_custom.yaml']));
         }
-        // clear container cache
-        $this->container->get(CacheClearer::class)->clear('symfony.config');
+        $this->cacheClearer->clear('symfony.config');
     }
 }

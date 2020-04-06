@@ -13,25 +13,23 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\WizardCompleteInterface;
 
-class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
+class CompleteStage implements StageInterface, WizardCompleteInterface
 {
     /**
-     * @var ContainerInterface
+     * @var RouterInterface
      */
-    private $container;
+    private $router;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(RouterInterface $router)
     {
-        $this->container = $container;
+        $this->router = $router;
     }
 
     public function getName(): string
@@ -60,6 +58,6 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
             $session->getFlashBag()->add('success', 'Congratulations! Upgrade Complete.');
         }
 
-        return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
+        return new RedirectResponse($this->router->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
     }
 }

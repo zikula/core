@@ -13,25 +13,20 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 
-/**
- * Class AjaxInstallController
- */
-class AjaxInstallController extends AbstractController
+class AjaxInstallController
 {
     /**
      * @var StageHelper
      */
     private $stageHelper;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(StageHelper $stageHelper)
     {
-        parent::__construct($container);
-        $this->stageHelper = $container->get(StageHelper::class);
+        $this->stageHelper = $stageHelper;
     }
 
     public function ajaxAction(Request $request): JsonResponse

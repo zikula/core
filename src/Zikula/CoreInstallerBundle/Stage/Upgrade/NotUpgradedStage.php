@@ -13,31 +13,46 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Component\Wizard\AbortStageException;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
-class NotUpgradedStage implements StageInterface, InjectContainerInterface
+class NotUpgradedStage implements StageInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-        $this->translator = $this->container->get('translator');
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var string
+     */
+    private $installed;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        LocaleApiInterface $localeApi,
+        VariableApiInterface $variableApi,
+        string $installed
+    ) {
+        $this->translator = $translator;
+        $this->localeApi = $localeApi;
+        $this->variableApi = $variableApi;
+        $this->installed = $installed;
     }
 
     public function getName(): string
@@ -52,15 +67,13 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary(): bool
     {
-        $currentVersion = $this->container->getParameter('installed');
-        if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
-            throw new AbortStageException($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $currentVersion, '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
+        if (version_compare($this->installed, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
+            throw new AbortStageException($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $this->installed, '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
         }
         // make sure selected language is installed
-        $DBLocale = $this->fetchDBLocale();
-        if (!in_array($DBLocale, $this->container->get(LocaleApi::class)->getSupportedLocales(), true)) {
-            $variableApi = $this->container->get(VariableApi::class);
-            $variableApi->set(VariableApi::CONFIG, 'locale', 'en');
+        $DBLocale = $this->variableApi->get(VariableApi::CONFIG, 'locale', '');
+        if (empty($DBLocale) || !in_array($DBLocale, $this->localeApi->getSupportedLocales(), true)) {
+            $this->variableApi->set(VariableApi::CONFIG, 'locale', 'en');
         }
 
         return true;
@@ -69,25 +82,5 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     public function getTemplateParams(): array
     {
         return [];
-    }
-
-    /**
-     * @return string Locale code (e.g. `en`)
-     * @throws AbortStageException
-     */
-    private function fetchDBLocale(): string
-    {
-        $conn = $this->container->get('doctrine')->getConnection();
-        $serializedValue = $conn->fetchColumn("
-            SELECT value
-            FROM module_vars
-            WHERE name = 'locale'
-            AND modname = 'ZConfig'
-        ");
-        if ($serializedValue) {
-            return unserialize($serializedValue);
-        }
-
-        throw new AbortStageException($this->translator->trans('The installed language could not be detected.'));
     }
 }

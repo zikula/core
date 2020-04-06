@@ -17,19 +17,29 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 
-class MigrationController extends AbstractController
+class MigrationController
 {
-    public function migrateAction(Request $request, MigrationHelper $migrationHelper): JsonResponse
+    /**
+     * @var MigrationHelper
+     */
+    private $migrationHelper;
+
+    public function __construct(MigrationHelper $migrationHelper)
+    {
+        $this->migrationHelper = $migrationHelper;
+    }
+
+    public function migrateAction(Request $request): JsonResponse
     {
         $percentComplete = 0;
         if ($request->hasSession() && ($session = $request->getSession())) {
             if (!$session->has('user_migration_lastuid')) {
-                $session->set('user_migration_count', $migrationHelper->countUnMigratedUsers());
+                $session->set('user_migration_count', $this->migrationHelper->countUnMigratedUsers());
                 $session->set('user_migration_complete', 0);
                 $session->set('user_migration_lastuid', 0);
-                $session->set('user_migration_maxuid', $migrationHelper->getMaxUnMigratedUid());
+                $session->set('user_migration_maxuid', $this->migrationHelper->getMaxUnMigratedUid());
             }
-            $result = $migrationHelper->migrateUsers($session->get('user_migration_lastuid'));
+            $result = $this->migrationHelper->migrateUsers($session->get('user_migration_lastuid'));
             $session->set('user_migration_complete', $session->get('user_migration_complete') + $result['complete']);
             $session->set('user_migration_lastuid', $result['lastUid']);
             if ($session->get('user_migration_lastuid') === $session->get('user_migration_maxuid')) {

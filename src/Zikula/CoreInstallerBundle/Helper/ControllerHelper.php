@@ -13,30 +13,26 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
+use Zikula\Component\Wizard\StageContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\Wizard;
 use Zikula\Component\Wizard\WizardCompleteInterface;
 
 class ControllerHelper
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     /**
      * @var RouterInterface
      */
@@ -47,14 +43,33 @@ class ControllerHelper
      */
     private $translator;
 
+    /**
+     * @var StageContainerInterface
+     */
+    private $stageContainer;
+
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
+     * @var string
+     */
+    private $locale;
+
     public function __construct(
-        ContainerInterface $container,
         RouterInterface $router,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        StageContainerInterface $stageContainer,
+        Environment $twig,
+        string $locale
     ) {
-        $this->container = $container;
         $this->router = $router;
         $this->translator = $translator;
+        $this->stageContainer = $stageContainer;
+        $this->twig = $twig;
+        $this->locale = $locale;
     }
 
     /**
@@ -172,7 +187,7 @@ class ControllerHelper
     /**
      * Executes the wizard for installation or upgrade process.
      */
-    public function processWizard(Request $request, $stage, $mode = 'install', FormFactory $formFactory, YamlDumper $yamlDumper = null): Response
+    public function processWizard(Request $request, $stage, $mode = 'install', FormFactoryInterface $formFactory, YamlDumper $yamlDumper = null): Response
     {
         if (!in_array($mode, ['install', 'upgrade'])) {
             $mode = 'install';
@@ -187,7 +202,7 @@ class ControllerHelper
         }
 
         // begin the wizard
-        $wizard = new Wizard($this->container, dirname(__DIR__) . '/Resources/config/' . $mode . '_stages.yaml');
+        $wizard = new Wizard($this->stageContainer, dirname(__DIR__) . '/Resources/config/' . $mode . '_stages.yaml');
         $currentStage = $wizard->getCurrentStage($stage);
         if ($currentStage instanceof WizardCompleteInterface) {
             if ('upgrade' === $mode && null !== $yamlDumper) {
@@ -215,7 +230,7 @@ class ControllerHelper
                 $currentStage->handleFormResult($form);
                 $params = [
                     'stage' => $wizard->getNextStage()->getName(),
-                    '_locale' => $this->container->getParameter('locale')
+                    '_locale' => $this->locale
                 ];
 
                 $url = $this->router->generate($mode, $params);
@@ -233,7 +248,7 @@ class ControllerHelper
         if (null === $response) {
             $response = new PlainResponse();
         }
-        $response->setContent($this->container->get('twig')->render($view, $parameters));
+        $response->setContent($this->twig->render($view, $parameters));
 
         return $response;
     }

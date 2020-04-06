@@ -13,22 +13,51 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 
-/**
- * Class InstallerController
- */
-class InstallerController extends AbstractController
+class InstallerController
 {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var Form
+     */
+    private $form;
+
+    /**
+     * @var ControllerHelper
+     */
+    private $controllerHelper;
+
+    /**
+     * @var string
+     */
+    private $locale;
+
+    /**
+     * @var bool
+     */
     private $installed;
 
-    public function __construct(ContainerInterface $container, string $installed)
-    {
-        parent::__construct($container);
-        $this->router = $container->get('router');
-        $this->form = $this->container->get('form.factory');
+    public function __construct(
+        RouterInterface $router,
+        FormFactoryInterface $form,
+        ControllerHelper $controllerHelper,
+        string $locale,
+        string $installed
+    ) {
+        $this->router = $router;
+        $this->form = $form;
+        $this->controllerHelper = $controllerHelper;
+        $this->locale = $locale;
         $this->installed = '0.0.0' !== $installed;
     }
 
@@ -44,7 +73,7 @@ class InstallerController extends AbstractController
             $stage = 'notinstalled';
         }
 
-        $request->setLocale($this->container->getParameter('locale'));
+        $request->setLocale($this->locale);
 
         return $this->controllerHelper->processWizard($request, $stage, 'install', $this->form);
     }

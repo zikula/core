@@ -10,11 +10,6 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    # A public mailer service is needed in Zikula
-    symfony.mailer:
-        alias: mailer.mailer
-        public: true
-
     Zikula\MailerModule\Helper\MailTransportHelper:
         arguments:
             $projectDir: '%kernel.project_dir%'

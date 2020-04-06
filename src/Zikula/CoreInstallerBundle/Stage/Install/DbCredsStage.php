@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
@@ -25,10 +24,9 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
+class DbCredsStage implements StageInterface, FormHandlerInterface
 {
     /**
      * @var YamlDumper
@@ -36,19 +34,12 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     private $yamlManager;
 
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * @var string
      */
     private $projectDir;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(string $projectDir)
     {
-        $this->container = $container;
-        $projectDir = $this->container->get('kernel')->getProjectDir();
         $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
         $this->projectDir = $projectDir;
     }

@@ -13,24 +13,22 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Component\Wizard\FormHandlerInterface;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Helper\MailTransportHelper;
 
-class EmailTransportStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
+class EmailTransportStage implements StageInterface, FormHandlerInterface
 {
     /**
-     * @var ContainerInterface
+     * @var string
      */
-    private $container;
+    private $projectDir;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(string $projectDir)
     {
-        $this->container = $container;
+        $this->projectDir = $projectDir;
     }
 
     public function getName(): string
@@ -70,8 +68,6 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface, Injec
 
     public function handleFormResult(FormInterface $form): bool
     {
-        $projectDir = $this->container->getParameter('kernel.project_dir');
-
-        return (new MailTransportHelper($projectDir))->handleFormData($form->getData());
+        return (new MailTransportHelper($this->projectDir))->handleFormData($form->getData());
     }
 }
