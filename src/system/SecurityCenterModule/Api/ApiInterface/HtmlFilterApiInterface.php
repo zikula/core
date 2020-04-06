@@ -15,12 +15,6 @@ namespace Zikula\SecurityCenterModule\Api\ApiInterface;
 
 interface HtmlFilterApiInterface
 {
-    /**
-     * Occurs when a string is passed to HtmlFilterApi and filtered.
-     * An instance of Zikula\Bundle\CoreBundle\Event\GenericEvent, the data is the filterable string.
-     */
-    public const HTML_STRING_FILTER = 'htmlfilter.outputfilter';
-
     public const TAG_NOT_ALLOWED = 0;
 
     public const TAG_ALLOWED_PLAIN = 1;
