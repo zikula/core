@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\WizardHelper;
 
 class InstallerController
 {
@@ -28,14 +26,9 @@ class InstallerController
     private $router;
 
     /**
-     * @var Form
+     * @var WizardHelper
      */
-    private $form;
-
-    /**
-     * @var ControllerHelper
-     */
-    private $controllerHelper;
+    private $wizardHelper;
 
     /**
      * @var string
@@ -49,14 +42,12 @@ class InstallerController
 
     public function __construct(
         RouterInterface $router,
-        FormFactoryInterface $form,
-        ControllerHelper $controllerHelper,
+        WizardHelper $wizardHelper,
         string $locale,
         string $installed
     ) {
         $this->router = $router;
-        $this->form = $form;
-        $this->controllerHelper = $controllerHelper;
+        $this->wizardHelper = $wizardHelper;
         $this->locale = $locale;
         $this->installed = '0.0.0' !== $installed;
     }
@@ -75,6 +66,6 @@ class InstallerController
 
         $request->setLocale($this->locale);
 
-        return $this->controllerHelper->processWizard($request, $stage, 'install', $this->form);
+        return $this->wizardHelper->processWizard($request, $stage, 'install');
     }
 }

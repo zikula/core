@@ -15,6 +15,10 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Event,Tests,vendor}'
 
+    Zikula\Bundle\CoreInstallerBundle\Controller\:
+        resource: '../../Controller/*'
+        public: true
+
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
             $symfonyCacheClearer: '@cache_clearer'

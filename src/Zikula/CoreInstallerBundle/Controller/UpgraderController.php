@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\WizardHelper;
 
-/**
- * Class UpgraderController
- */
 class UpgraderController
 {
     public const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.4.3';
@@ -35,14 +31,9 @@ class UpgraderController
     private $router;
 
     /**
-     * @var FormFactoryInterface
+     * @var WizardHelper
      */
-    private $form;
-
-    /**
-     * @var ControllerHelper
-     */
-    private $controllerHelper;
+    private $wizardHelper;
 
     /**
      * @var string
@@ -61,15 +52,13 @@ class UpgraderController
 
     public function __construct(
         RouterInterface $router,
-        FormFactoryInterface $formFactory,
-        ControllerHelper $controllerHelper,
+        WizardHelper $wizardHelper,
         string $installed,
         string $projectDir,
         string $locale
     ) {
         $this->router = $router;
-        $this->form = $formFactory;
-        $this->controllerHelper = $controllerHelper;
+        $this->wizardHelper = $wizardHelper;
         $this->installed = $installed;
         $this->projectDir = $projectDir;
         $this->locale = $locale;
@@ -89,6 +78,6 @@ class UpgraderController
         $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->locale);
 
-        return $this->controllerHelper->processWizard($request, $stage, 'upgrade', $this->form, $yamlDumper);
+        return $this->wizardHelper->processWizard($request, $stage, 'upgrade', $yamlDumper);
     }
 }
