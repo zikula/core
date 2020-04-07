@@ -59,3 +59,7 @@ services:
 
     Michelf\:
         resource: '../../../../../vendor/michelf/php-markdown/Michelf/*'
+
+    Zikula\Bundle\CoreBundle\Maker\ExtensionMaker:
+        arguments:
+            $fileManager: '@maker.file_manager'

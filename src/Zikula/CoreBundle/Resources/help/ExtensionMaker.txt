@@ -1,0 +1,11 @@
+The <info>%command.name%</info> command helps you generate a new Zikula extension.
+
+By default, the command interacts with the developer to tweak the generation.
+Any passed option will be used as a default value for the interaction
+optional arguments:
+  <comment>namespace</comment>: e.g. Acme\\BlogModule
+  <comment>type</comment>: Module or Theme
+
+Note that you can use <comment>/</comment> instead of <comment>\\ </comment>for the namespace delimiter if you wish.
+
+<info>php %command.full_name% Acme/BlogModule Module</info>
