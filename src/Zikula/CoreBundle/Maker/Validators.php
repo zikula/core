@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Symfony package.
+ * This file is part of the Zikula package.
  *
- * (c) Fabien Potencier <fabien@symfony.com>
+ * Copyright Zikula Foundation - https://ziku.la/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,17 +27,17 @@ class Validators
         // validate reserved keywords
         $reserved = self::getReservedWords();
         foreach (explode('\\', $namespace) as $word) {
-            if (in_array(strtolower($word), $reserved, true)) {
+            if (in_array(mb_strtolower($word), $reserved, true)) {
                 throw new InvalidArgumentException(sprintf('The namespace cannot contain PHP reserved words ("%s").', $word));
             }
         }
 
         // validate that the namespace is at least one level deep
-        if (false === strpos($namespace, '\\')) {
+        if (false === mb_strpos($namespace, '\\')) {
             throw new InvalidArgumentException(sprintf('The namespace must contain a vendor namespace (e.g. "VendorName\%s" instead of simply "%s").', $namespace, $namespace));
         }
 
-        if (substr_count($namespace, '\\') > 1) {
+        if (mb_substr_count($namespace, '\\') > 1) {
             throw new InvalidArgumentException(sprintf('The namespace must contain only a vendor and BundleName (e.g. "VendorName\BundleName" instead of "%s").', $namespace));
         }
 

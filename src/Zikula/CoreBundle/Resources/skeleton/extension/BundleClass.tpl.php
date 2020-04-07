@@ -1,20 +1,20 @@
-<?= "<?php\n"; ?>
+<?php echo "<?php\n"; ?>
 
 declare(strict_types=1);
 
 /*
- * This file is part of the <?= $namespace; ?> package.
+ * This file is part of the <?php echo $namespace; ?> package.
  *
- * Copyright <?= $vendor; ?>.
+ * Copyright <?php echo $vendor; ?>.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace <?= $namespace; ?>;
+namespace <?php echo $namespace; ?>;
 
-use Zikula\ExtensionsModule\Abstract<?= $type; ?>;
+use Zikula\ExtensionsModule\Abstract<?php echo $type; ?>;
 
-class <?= $name; ?> extends Abstract<?= $type."\n"; ?>
+class <?php echo $name; ?> extends Abstract<?php echo $type."\n"; ?>
 {
 }
