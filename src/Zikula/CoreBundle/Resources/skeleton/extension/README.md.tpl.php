@@ -1,4 +1,5 @@
-<?php echo $namespace . $type . "\n";
+<?php declare(strict_types=1);
+echo $namespace . $type . "\n";
 echo str_repeat("=", mb_strlen($namespace . $type)) . "\n";
 ?>
 

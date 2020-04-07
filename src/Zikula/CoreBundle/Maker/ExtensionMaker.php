@@ -178,7 +178,6 @@ class ExtensionMaker extends AbstractMaker
                     'bundleClass' => $bundleClass
                 ]
             );
-
         }
     }
 
