@@ -43,6 +43,11 @@ class ExtensionMaker extends AbstractMaker
      */
     private $localGenerator;
 
+    /**
+     * @var string
+     */
+    private $extensionPath;
+
     public function __construct(ZikulaHttpKernelInterface $kernel, FileManager $fileManager)
     {
         $this->kernel = $kernel;
@@ -77,11 +82,14 @@ class ExtensionMaker extends AbstractMaker
         $this->localGenerator = new Generator($this->fileManager, $namespace);
 
         $this->createDirAndAutoload($namespace, $type);
-        $this->generateBundleClass($namespace, $type);
+        $bundleClass = $this->generateBundleClass($namespace, $type);
+        $this->generateDIExtensionClass($namespace);
+        $this->generateFiles($namespace, $type, $bundleClass);
+        $this->generateBlankFiles();
 
         $this->localGenerator->writeChanges();
         $this->writeSuccessMessage($io);
-        $io->warning(sprintf('In order to use other make:foo commands, you must change the root_namespace value in /config/packages/dev/maker.yaml to %s.', $namespace));
+        $io->warning(sprintf('In order to use other make:foo commands, you must change the root_namespace value in /config/packages/dev/maker.yaml to %s.', $namespace . $type));
 
         return 0;
     }
@@ -99,12 +107,12 @@ class ExtensionMaker extends AbstractMaker
         $projectDir = $this->fileManager->getRootDirectory();
         $fs = new Filesystem();
         [$vendor, $extensionName] = explode('\\', $namespace, 2);
-        $extensionPath = $projectDir . '/src/extensions/' . mb_strtolower($vendor) . '/' . $extensionName . $type;
-        $fs->mkdir($extensionPath);
-        $this->kernel->getAutoloader()->addPsr4($namespace . '\\', $extensionPath);
+        $this->extensionPath = $projectDir . '/src/extensions/' . mb_strtolower($vendor) . '/' . $extensionName . $type;
+        $fs->mkdir($this->extensionPath);
+        $this->kernel->getAutoloader()->addPsr4($namespace . '\\', $this->extensionPath);
     }
 
-    private function generateBundleClass(string $namespace, string $type): void
+    private function generateBundleClass(string $namespace, string $type): string
     {
         $bundleClassName = str_replace('\\', '', $namespace);
         $bundleClass = $this->localGenerator->createClassNameDetails(
@@ -123,5 +131,67 @@ class ExtensionMaker extends AbstractMaker
                 'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
             ]
         );
+
+        return $bundleClass->getFullName();
+    }
+
+    private function generateDIExtensionClass(string $namespace): void
+    {
+        $shortName = str_replace('\\', '', $namespace);
+        $bundleClass = $this->localGenerator->createClassNameDetails(
+            $shortName,
+            'DependencyInjection',
+            'Extension',
+            'Invalid!'
+        );
+        $this->localGenerator->generateClass(
+            $bundleClass->getFullName(),
+            dirname(__DIR__) . '/Resources/skeleton/extension/DIExtensionClass.tpl.php',
+            [
+                'namespace' => $namespace,
+                'name' => $bundleClass->getShortName(),
+                'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
+            ]
+        );
+    }
+
+    private function getFilesToGenerate(): iterable
+    {
+        return [
+            'Resources/config/services.yaml' => 'services.yaml.tpl.php',
+            'README.md' => 'README.md.tpl.php',
+            'composer.json' => 'composer.json.tpl.php',
+        ];
+    }
+
+    private function generateFiles(string $namespace, string $type, string $bundleClass): void
+    {
+        foreach ($this->getFilesToGenerate() as $targetPath => $templateName) {
+            $this->localGenerator->generateFile(
+                $this->extensionPath . '/' . $targetPath,
+                dirname(__DIR__) . '/Resources/skeleton/extension/' . $templateName,
+                [
+                    'namespace' => $namespace,
+                    'type' => $type,
+                    'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\')),
+                    'name' => mb_substr($namespace, mb_strpos($namespace, '\\') + 1),
+                    'bundleClass' => $bundleClass
+                ]
+            );
+
+        }
+    }
+
+    private function generateBlankFiles(): void
+    {
+        $fs = new Filesystem();
+        $fs->mkdir($this->extensionPath . '/Resources/doc');
+        $fs->touch($this->extensionPath . '/Resources/doc/index.md');
+        $fs->mkdir($this->extensionPath . '/Resources/public/css');
+        $fs->touch($this->extensionPath . '/Resources/public/css/style.css');
+        $fs->mkdir($this->extensionPath . '/Resources/public/images');
+        $fs->touch($this->extensionPath . '/Resources/public/images/.gitkeep');
+        $fs->mkdir($this->extensionPath . '/Resources/public/js');
+        $fs->touch($this->extensionPath . '/Resources/public/js/.gitkeep');
     }
 }
