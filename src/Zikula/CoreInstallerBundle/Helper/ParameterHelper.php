@@ -139,7 +139,6 @@ class ParameterHelper
             $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
             $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
         }
-        $params['umask'] = $params['umask'] ?? null;
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 

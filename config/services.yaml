@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    installed: '%env(ZIKULA_INSTALLED)%'
+    installed:        false
     script_position:  foot
     # script_position defines the location where javascripts will be placed in the page
     # choices are `head` or `foot`
@@ -16,17 +16,6 @@ parameters:
     zikula_asset_manager.lifetime: "1 day"
     zikula_asset_manager.compress: true
     zikula_asset_manager.minify: true
-
-    # Changing the current umask to the octal "022" will set directory permissions
-    # to "755", and file permissions to "644" (for directories such as
-    # "var/cache" and "var/logs"). Changing the current umask to the octal "02"
-    # will set directory permissions to "775", and file permissions to "664".
-    # Changing the current umask to the octal "0" will set (insecure) directory
-    # permissions to "777", and file permissions to "666". Note that using the ACL
-    # is recommended when you have access to them on your server, because changing
-    # the umask is not thread-safe. Set this value to "~" (NULL), to disable support
-    # for umask.
-    umask: ~
 
     # the following parameter is used in the clickjacking protection listener
     # it accepts any values allowed for X-Frame-Options
