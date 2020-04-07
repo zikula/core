@@ -9,7 +9,7 @@
   - components/font-awesome updated from 4.7.0 to 5.12.1
   - composer/ca-bundle updated from 1.2.4 to 1.2.6
   - composer/composer installed in 1.10.1
-  - composer/installers updated from 1.7.0 to 1.8.0
+  - composer/installers updated from 1.7.0 to 1.9.0
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.3
   - composer/xdebug-handler installed in 1.4.1
