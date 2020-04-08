@@ -92,7 +92,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
             return 5;
         }
 
-        $this->eventDispatcher->dispatch(new ExtensionPostCacheRebuildEvent($this->kernel->getModule($extension->getName()), $extension));
+        $this->eventDispatcher->dispatch(new ExtensionPostCacheRebuildEvent($this->kernel->getBundle($extension->getName()), $extension));
 
         if ($input->isInteractive()) {
             $io->success('Extension installed');

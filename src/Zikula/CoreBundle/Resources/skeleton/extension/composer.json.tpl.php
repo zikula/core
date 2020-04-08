@@ -20,7 +20,7 @@
         "zikula" : {
             "core-compatibility": ">=3.0.0",
             "class": "<?php echo str_replace('\\', '\\\\', $namespace); ?>\\<?php echo $bundleClass; ?>",
-            "displayname": "<?php echo ucfirst($name) . ' ' . ucfirst($type); ?>",
+            "displayname": "<?php echo $bundleClass; ?>",
             "icon": "fas fa-layer-group",
             "url": "<?php echo mb_strtolower($vendor.$name.$type); ?>",
 <?php if ('Module' === $type) { ?>

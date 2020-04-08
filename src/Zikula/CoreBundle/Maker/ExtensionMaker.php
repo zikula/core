@@ -24,6 +24,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class ExtensionMaker extends AbstractMaker
@@ -39,6 +40,11 @@ class ExtensionMaker extends AbstractMaker
     private $fileManager;
 
     /**
+     * @var DynamicConfigDumper
+     */
+    private $configDumper;
+
+    /**
      * @var Generator
      */
     private $localGenerator;
@@ -48,10 +54,14 @@ class ExtensionMaker extends AbstractMaker
      */
     private $extensionPath;
 
-    public function __construct(ZikulaHttpKernelInterface $kernel, FileManager $fileManager)
-    {
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        FileManager $fileManager,
+        DynamicConfigDumper $configDumper
+    ) {
         $this->kernel = $kernel;
         $this->fileManager = $fileManager;
+        $this->configDumper = $configDumper;
     }
 
     public static function getCommandName(): string
@@ -88,7 +98,14 @@ class ExtensionMaker extends AbstractMaker
 
         $this->localGenerator->writeChanges();
         $this->writeSuccessMessage($io);
-        $io->warning(sprintf('In order to use other make:foo commands, you must change the root_namespace value in /config/packages/dev/maker.yaml to %s.', $namespace . $type));
+        $this->configDumper->setConfiguration('maker',
+            [
+                'root_namespace' => $namespace . $type,
+            ]
+        );
+        $io->success(sprintf('The `config/generated.yaml` file has been updated to set `maker:root_namespace` value to %s.', $namespace . $type));
+
+        $io->warning(sprintf("In order to use other make:foo commands, you must install the extension!\nfirst run `php bin/console cache:clear`\nsecond run `php bin/console z:e:i %s`", $bundleClass));
 
         return 0;
     }
@@ -105,6 +122,10 @@ class ExtensionMaker extends AbstractMaker
         );
         $dependencies->addClassDependency(
             ZikulaHttpKernelInterface::class,
+            'zikula/core-bundle'
+        );
+        $dependencies->addClassDependency(
+            DynamicConfigDumper::class,
             'zikula/core-bundle'
         );
     }

@@ -158,7 +158,7 @@ class ExtensionHelper
         }
 
         /** @var AbstractExtension $extensionBundle */
-        $extensionBundle = $this->kernel->getModule($extension->getName());
+        $extensionBundle = $this->kernel->getBundle($extension->getName());
 
         // Check status of Dependencies here to be sure they are met for upgraded extension. #3647
 
@@ -229,7 +229,7 @@ class ExtensionHelper
         // remove remaining extension variables
         $this->variableApi->delAll($extension->getName());
 
-        // remove the entry from the modules table
+        // remove the entry from the extensions table
         $this->extensionRepository->removeAndFlush($extension);
 
         $this->cacheClearer->clear('symfony.config');

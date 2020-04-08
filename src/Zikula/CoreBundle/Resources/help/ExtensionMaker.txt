@@ -8,4 +8,9 @@ optional arguments:
 
 Note that you can use <comment>/</comment> instead of <comment>\\ </comment>for the namespace delimiter if you wish.
 
-<info>php %command.full_name% Acme/BlogModule Module</info>
+<info>php %command.full_name% Acme/Blog Module</info>
+
+<comment>Note:
+In order to use other make:foo commands, you must install the extension!
+first run `php bin/console cache:clear`
+second run `php bin/console z:e:i AcmeBlogModule`</comment>
