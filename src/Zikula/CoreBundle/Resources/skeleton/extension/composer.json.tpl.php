@@ -22,18 +22,18 @@
             "class": "<?php echo str_replace('\\', '\\\\', $namespace); ?>\\<?php echo $bundleClass; ?>",
             "displayname": "<?php echo ucfirst($name) . ' ' . ucfirst($type); ?>",
             "icon": "fas fa-layer-group",
-            "url": "<?php echo strtolower($vendor.$name.$type); ?>",
-<?php if ('Module' === $type): ?>
+            "url": "<?php echo mb_strtolower($vendor.$name.$type); ?>",
+<?php if ('Module' === $type) { ?>
             "securityschema": {
-                "<?php echo $vendor.$name.$type ?>::": "::"
+                "<?php echo $vendor.$name.$type; ?>::": "::"
             },
-<?php endif ?>
+<?php } ?>
             "capabilities": {
-<?php if ('Theme' === $type): ?>
+<?php if ('Theme' === $type) { ?>
                 "user": {
                     "theme": true
                 }
-<?php endif ?>
+<?php } ?>
             }
         }
     }

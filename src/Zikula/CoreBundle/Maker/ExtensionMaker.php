@@ -144,7 +144,6 @@ class ExtensionMaker extends AbstractMaker
                     'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
                 ]
             );
-
         }
 
         return $bundleClassFullName;
