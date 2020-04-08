@@ -17,7 +17,7 @@ use InvalidArgumentException;
 
 class Validators
 {
-    public static function validateBundleNamespace(string $namespace): string
+    public static function validateBundleNamespace(string $namespace, $allowSuffix = false): string
     {
         $namespace = trim(str_replace('/', '\\', $namespace));
         if (!preg_match('/^(?:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\?)+$/', $namespace)) {
@@ -32,9 +32,11 @@ class Validators
             }
         }
 
-        foreach (['module', 'theme', 'bundle'] as $word) {
-            if (false !== mb_strpos(mb_strtolower($namespace), $word)) {
-                throw new InvalidArgumentException(sprintf('The namespace cannot contain "%s".', $word));
+        if (!$allowSuffix) {
+            foreach (['module', 'theme', 'bundle'] as $word) {
+                if (false !== mb_strpos(mb_strtolower($namespace), $word)) {
+                    throw new InvalidArgumentException(sprintf('The namespace cannot contain "%s".', $word));
+                }
             }
         }
 

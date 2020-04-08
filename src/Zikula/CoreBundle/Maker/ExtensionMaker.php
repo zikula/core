@@ -105,7 +105,7 @@ class ExtensionMaker extends AbstractMaker
             ],
             true
         );
-        $io->success(sprintf('The `config/generated.yaml` file has been updated to set `maker:root_namespace` value to %s.', $namespace . $type));
+        $io->success(sprintf('The `config/generated_dev.yaml` file has been updated to set `maker:root_namespace` value to %s.', $namespace . $type));
 
         $io->warning(sprintf("In order to use other make:foo commands, you must install the extension!\nfirst run `php bin/console cache:clear`\nsecond run `php bin/console z:e:i %s`", $bundleClass));
 
