@@ -178,13 +178,14 @@ class YamlDumper
     /**
      * Parses a Yaml file and return a configuration array.
      */
-    protected function parseFile(): array
+    protected function parseFile(?string $path = null): array
     {
-        if (!$this->fs->exists($this->fullPath)) {
+        $path = $path ?? $this->fullPath;
+        if (!$this->fs->exists($path)) {
             return [];
         }
 
-        return Yaml::parse(file_get_contents($this->fullPath));
+        return Yaml::parse(file_get_contents($path));
     }
 
     /**

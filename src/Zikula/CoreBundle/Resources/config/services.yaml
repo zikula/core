@@ -29,6 +29,7 @@ services:
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         arguments:
           $configDir: '%kernel.project_dir%/config'
+          $env: '%env(APP_ENV)%'
 
     Zikula\Bundle\CoreBundle\CacheClearer:
         arguments:
@@ -59,3 +60,7 @@ services:
 
     Michelf\:
         resource: '../../../../../vendor/michelf/php-markdown/Michelf/*'
+
+    Zikula\Bundle\CoreBundle\Maker\ExtensionMaker:
+        arguments:
+            $fileManager: '@maker.file_manager'

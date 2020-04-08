@@ -78,6 +78,9 @@ class Kernel extends ZikulaKernel
             $loader->load($configDir . DynamicConfigDumper::CONFIG_DEFAULT);
         } else {
             $loader->load($configDir . DynamicConfigDumper::CONFIG_GENERATED);
+            if (file_exists($configDir . 'dynamic/generated_' . $this->environment . '.yaml')) {
+                $loader->load($configDir . 'dynamic/generated_' . $this->environment . '.yaml');
+            }
         }
     }
 

@@ -185,3 +185,4 @@
   - Added CLI Command to edit password, email, username properties of ZAuth user mappings (a replacement for the old Zikula Recovery Console). 
   - Added new Doctrine Paginator wrapper `Zikula\Bundle\CoreBundle\Doctrine\Paginator` and paginator template. See docs.
   - Added new AlphaFilter class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
+  - Added CLI command to generate an Extension skeleton with instruction on using Symfony MakerBundle to complete development (#4034).
