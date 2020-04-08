@@ -4,8 +4,14 @@
     "description": "This is a description.",
     "type": "zikula-<?php echo mb_strtolower($type); ?>",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "<?php echo $vendor; ?> Team"
+        }
+    ],
+
     "autoload": {
-        "psr-4": { "<?php echo str_replace('\\', '\\\\', $namespace . $type); ?>\\": "" }
+        "psr-4": { "<?php echo str_replace('\\', '\\\\', $namespace); ?>\\": "" }
     },
     "require": {
         "php": ">=7.2.5"
@@ -13,13 +19,21 @@
     "extra": {
         "zikula" : {
             "core-compatibility": ">=3.0.0",
-            "class": "<?php echo str_replace('\\', '\\\\', $bundleClass); ?>",
+            "class": "<?php echo str_replace('\\', '\\\\', $namespace); ?>\\<?php echo $bundleClass; ?>",
             "displayname": "<?php echo ucfirst($name) . ' ' . ucfirst($type); ?>",
             "icon": "fas fa-layer-group",
+            "url": "<?php echo strtolower($vendor.$name.$type); ?>",
+<?php if ('Module' === $type): ?>
+            "securityschema": {
+                "<?php echo $vendor.$name.$type ?>::": "::"
+            },
+<?php endif ?>
             "capabilities": {
+<?php if ('Theme' === $type): ?>
                 "user": {
                     "theme": true
                 }
+<?php endif ?>
             }
         }
     }

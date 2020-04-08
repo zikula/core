@@ -79,11 +79,10 @@ class ExtensionMaker extends AbstractMaker
             return 1;
         }
         $type = 'theme' === trim(mb_strtolower($input->getArgument('type'))) ? 'Theme' : 'Module';
-        $this->localGenerator = new Generator($this->fileManager, $namespace);
+        $this->localGenerator = new Generator($this->fileManager, $namespace . $type);
 
-        $this->createDirAndAutoload($namespace, $type);
-        $bundleClass = $this->generateBundleClass($namespace, $type);
-        $this->generateDIExtensionClass($namespace);
+        $this->createDirAndAutoload($namespace . $type);
+        $bundleClass = $this->generateClasses($namespace, $type);
         $this->generateFiles($namespace, $type, $bundleClass);
         $this->generateBlankFiles();
 
@@ -102,57 +101,53 @@ class ExtensionMaker extends AbstractMaker
         );
     }
 
-    private function createDirAndAutoload(string $namespace, string $type): void
+    private function createDirAndAutoload(string $namespace): void
     {
         $projectDir = $this->fileManager->getRootDirectory();
         $fs = new Filesystem();
         [$vendor, $extensionName] = explode('\\', $namespace, 2);
-        $this->extensionPath = $projectDir . '/src/extensions/' . mb_strtolower($vendor) . '/' . $extensionName . $type;
+        $this->extensionPath = $projectDir . '/src/extensions/' . mb_strtolower($vendor) . '/' . $extensionName;
         $fs->mkdir($this->extensionPath);
         $this->kernel->getAutoloader()->addPsr4($namespace . '\\', $this->extensionPath);
     }
 
-    private function generateBundleClass(string $namespace, string $type): string
+    private function getClassesToGenerate(string $namespace, string $type): iterable
     {
         $bundleClassName = str_replace('\\', '', $namespace);
-        $bundleClass = $this->localGenerator->createClassNameDetails(
-            $bundleClassName,
-            '',
-            $type,
-            'Invalid!'
-        );
-        $this->localGenerator->generateClass(
-            $bundleClass->getFullName(),
-            dirname(__DIR__) . '/Resources/skeleton/extension/BundleClass.tpl.php',
-            [
-                'namespace' => $namespace,
-                'type' => $type,
-                'name' => $bundleClass->getShortName(),
-                'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
-            ]
-        );
+        [$vendor, $extensionName] = explode('\\', $namespace, 2);
 
-        return $bundleClass->getFullName();
+        return [
+            ['name' => $bundleClassName, 'prefix' => '', 'suffix' => $type, 'template' => 'BundleClass.tpl.php'],
+            ['name' => $bundleClassName, 'prefix' => 'DependencyInjection', 'suffix' => 'Extension', 'template' => 'DIExtensionClass.tpl.php'],
+            ['name' => $extensionName . $type, 'prefix' => '', 'suffix' => 'Installer', 'template' => 'InstallerClass.tpl.php'],
+        ];
     }
 
-    private function generateDIExtensionClass(string $namespace): void
+    private function generateClasses(string $namespace, string $type): string
     {
-        $shortName = str_replace('\\', '', $namespace);
-        $bundleClass = $this->localGenerator->createClassNameDetails(
-            $shortName,
-            'DependencyInjection',
-            'Extension',
-            'Invalid!'
-        );
-        $this->localGenerator->generateClass(
-            $bundleClass->getFullName(),
-            dirname(__DIR__) . '/Resources/skeleton/extension/DIExtensionClass.tpl.php',
-            [
-                'namespace' => $namespace,
-                'name' => $bundleClass->getShortName(),
-                'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
-            ]
-        );
+        $bundleClassFullName = '';
+        foreach ($this->getClassesToGenerate($namespace, $type) as $classInfo) {
+            $bundleClassNameDetails = $this->localGenerator->createClassNameDetails(
+                $classInfo['name'],
+                $classInfo['prefix'],
+                $classInfo['suffix'],
+                'Invalid!' . $classInfo['name']
+            );
+            $bundleClassFullName = ('' === $classInfo['prefix'] && $type === $classInfo['suffix']) ? $bundleClassNameDetails->getShortName() : $bundleClassFullName;
+            $this->localGenerator->generateClass(
+                $bundleClassNameDetails->getFullName(),
+                dirname(__DIR__) . '/Resources/skeleton/extension/' . $classInfo['template'],
+                [
+                    'namespace' => $namespace . $type,
+                    'type' => $type,
+                    'name' => $bundleClassNameDetails->getShortName(),
+                    'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
+                ]
+            );
+
+        }
+
+        return $bundleClassFullName;
     }
 
     private function getFilesToGenerate(): iterable
@@ -161,6 +156,7 @@ class ExtensionMaker extends AbstractMaker
             'Resources/config/services.yaml' => 'services.yaml.tpl.php',
             'README.md' => 'README.md.tpl.php',
             'composer.json' => 'composer.json.tpl.php',
+            'LICENSE.txt' => 'MIT.txt.tpl.php',
         ];
     }
 
@@ -171,7 +167,7 @@ class ExtensionMaker extends AbstractMaker
                 $this->extensionPath . '/' . $targetPath,
                 dirname(__DIR__) . '/Resources/skeleton/extension/' . $templateName,
                 [
-                    'namespace' => $namespace,
+                    'namespace' => $namespace . $type,
                     'type' => $type,
                     'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\')),
                     'name' => mb_substr($namespace, mb_strpos($namespace, '\\') + 1),
@@ -192,5 +188,9 @@ class ExtensionMaker extends AbstractMaker
         $fs->touch($this->extensionPath . '/Resources/public/images/.gitkeep');
         $fs->mkdir($this->extensionPath . '/Resources/public/js');
         $fs->touch($this->extensionPath . '/Resources/public/js/.gitkeep');
+        $fs->mkdir($this->extensionPath . '/Resources/translations');
+        $fs->touch($this->extensionPath . '/Resources/translations/.gitkeep');
+        $fs->mkdir($this->extensionPath . '/Resources/views');
+        $fs->touch($this->extensionPath . '/Resources/views/.gitkeep');
     }
 }

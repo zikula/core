@@ -28,7 +28,13 @@ class Validators
         $reserved = self::getReservedWords();
         foreach (explode('\\', $namespace) as $word) {
             if (in_array(mb_strtolower($word), $reserved, true)) {
-                throw new InvalidArgumentException(sprintf('The namespace cannot contain PHP reserved words ("%s").', $word));
+                throw new InvalidArgumentException(sprintf('The namespace cannot contain reserved words ("%s").', $word));
+            }
+        }
+
+        foreach (['module', 'theme', 'bundle'] as $word) {
+            if (false !== mb_strpos(mb_strtolower($namespace), $word)) {
+                throw new InvalidArgumentException(sprintf('The namespace cannot contain "%s".', $word));
             }
         }
 

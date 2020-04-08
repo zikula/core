@@ -4,6 +4,6 @@ services:
         autoconfigure: true
         public: false
 
-    <?php echo $namespace . $type; ?>\:
+    <?php echo $namespace; ?>\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
