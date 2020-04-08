@@ -102,7 +102,8 @@ class ExtensionMaker extends AbstractMaker
             'maker',
             [
                 'root_namespace' => $namespace . $type,
-            ]
+            ],
+            true
         );
         $io->success(sprintf('The `config/generated.yaml` file has been updated to set `maker:root_namespace` value to %s.', $namespace . $type));
 

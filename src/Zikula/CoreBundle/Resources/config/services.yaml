@@ -29,6 +29,7 @@ services:
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         arguments:
           $configDir: '%kernel.project_dir%/config'
+          $env: '%env(APP_ENV)%'
 
     Zikula\Bundle\CoreBundle\CacheClearer:
         arguments:

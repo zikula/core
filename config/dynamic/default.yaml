@@ -5,8 +5,6 @@
 jms_i18n_routing:
     strategy: prefix_except_default
 # this value must be changed reflecting the intended destination bundle of the maker
-maker:
-    root_namespace: ~
 parameters:
     localisation.locales: [en]
     zikula.session.name: _zsid
