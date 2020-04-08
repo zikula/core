@@ -99,6 +99,14 @@ class ExtensionMaker extends AbstractMaker
             Command::class,
             'console'
         );
+        $dependencies->addClassDependency(
+            FileManager::class,
+            'maker-bundle'
+        );
+        $dependencies->addClassDependency(
+            ZikulaHttpKernelInterface::class,
+            'zikula/core-bundle'
+        );
     }
 
     private function createDirAndAutoload(string $namespace): void

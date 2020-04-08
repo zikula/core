@@ -3,6 +3,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $extension: '@<?php echo $namespace; ?>\<?php echo $bundleClass ?>'
 
     <?php echo $namespace; ?>\:
         resource: '../../*'
