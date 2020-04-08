@@ -98,7 +98,8 @@ class ExtensionMaker extends AbstractMaker
 
         $this->localGenerator->writeChanges();
         $this->writeSuccessMessage($io);
-        $this->configDumper->setConfiguration('maker',
+        $this->configDumper->setConfiguration(
+            'maker',
             [
                 'root_namespace' => $namespace . $type,
             ]
