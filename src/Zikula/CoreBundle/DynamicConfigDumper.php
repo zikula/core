@@ -61,7 +61,8 @@ class DynamicConfigDumper extends YamlDumper
     public function setConfiguration(string $name, $value, bool $appendEnv = false): void
     {
         $this->validateName($name, false);
-        $configuration = $appendEnv ? [] : $this->parseFile();
+        $path = $appendEnv ? $this->configDir . '/dynamic/generated_' . $this->env . '.yaml' : $this->fullPath;
+        $configuration = $this->parseFile($path);
         $configuration[$name] = $value;
         $this->dumpFile($configuration, $appendEnv);
     }
