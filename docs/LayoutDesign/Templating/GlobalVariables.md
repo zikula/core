@@ -19,7 +19,7 @@ The `pagevars` variable makes registered variables available in the template.
 When creating a template, variables can be created, modified or retrieved using the template tags:
 
 ```twig
-{{ pageSetVar('title', __('My Custom Page Title')) }}
+{{ pageSetVar('title', 'My Custom Page Title'|trans ) }}
 {{ pageGetVar('title', 'my default value') }}
 ```
 

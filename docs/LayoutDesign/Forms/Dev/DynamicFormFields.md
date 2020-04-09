@@ -28,13 +28,13 @@ public function formTypeChoices(FormTypeChoiceEvent $event)
 {
     $choices = $event->getChoices();
 
-    $groupName = $this->translator->__('Other Fields', 'zikula');
+    $groupName = $this->translator->trans('Other Fields', 'zikula');
     if (!isset($choices[$groupName])) {
         $choices[$groupName] = [];
     }
 
     $groupChoices = $choices[$groupName];
-    $groupChoices[$this->translator->__('Avatar')] = AvatarType::class;
+    $groupChoices[$this->translator->trans('Avatar')] = AvatarType::class;
     $choices[$groupName] = $groupChoices;
 
     $event->setChoices($choices);

@@ -3,6 +3,9 @@ currentMenu: themes
 ---
 # Creating a theme based on ZikulaBootstrapTheme
 
+(Core-3.0.0 note: It is easier to use the [ExtensionMaker](../../Development/Extensions/ExtensionMaker.md) to quickly generate a theme structure.
+But the information below is still useful if you would rather start with a working theme.)
+
 If you want to create your own theme, the starting point of reusing the ZikulaBoostrapTheme is a good idea. This 
 example is based on the ZikulaBoostrapTheme of Zikula 1.4.5
 

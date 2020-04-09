@@ -19,7 +19,7 @@ Please see the [Official JSON Schema](https://getcomposer.org/doc/04-schema.md) 
 - license: (required) License name (string) or an array of license names (array of strings) under which the extension 
   is provided. You must use the standardized identifier acronym for the license as defined by 
   [Software Package Data Exchange](http://spdx.org/licenses/)
-- authors: (optional but recommended) an array of objects indicating author or group information
+- authors: (required) an array of objects indicating author or group information
 - autoload: (required) object defining psr-4 namespace object
 - require: (required) object defining bundle dependencies
 - extra: (required) the zikula object with required keys
@@ -27,9 +27,9 @@ Please see the [Official JSON Schema](https://getcomposer.org/doc/04-schema.md) 
     - core-compatibility: (required) a [version compatibility string](https://getcomposer.org/doc/01-basic-usage.md#package-versions) defining core compatibility
     - class: (required) the fully qualified name of the Bundle class
     - displayname: (required) the common name for the bundle (translatable)
+    - icon: full fontawesome css class
     - capabilities: (required if controllers are used) an object of objects defining capabilities of the extension
       - user:
         - theme: true|false
       - admin:
         - theme: true|false
-        - icon: full fontawesome css class

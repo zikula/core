@@ -19,15 +19,12 @@ SpecTheme/
             services.yaml (required if services are used)
         docs/
             index.md
-        meta/
-            LICENSE
         public/
             css/
             images/
             js/
         translations/
-            messages.en.pot
-            zikulaspectheme.pot
+            messages+intl-icu.en.yaml
         views/
             Block/
                 block.html.twig
@@ -44,6 +41,7 @@ SpecTheme/
     vendor/
     ZikulaSpecTheme.php (required)
     CHANGELOG.md
+    LICENSE
     README.md
     composer.json (required)
     phpunit.xml.dist
