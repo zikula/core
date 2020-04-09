@@ -134,6 +134,7 @@
   - Fixed import of users from a file (#4161).
   - Fixed problem with deleting user(s) from a very large database (#3953).
   - Fixed problem where stale pending registrations were not deleted (#4069).
+  - Fixed problem with preview of theme (#3957).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
