@@ -5,7 +5,7 @@
    Copyright (c) 2009 Zikula Foundation.
 
    This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
+   it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
@@ -14,29 +14,27 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+   You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+   along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
    -----------------------------------------------------------------------------
    NOTICE
-   
-   This distribution is licensed under the GPL however, it contains some
-   files that are licensed under other GPL compatible licenses such as MIT, 
-   "new BSD" and Lesser GPL.  We have included the full text of these licenses
-   in the 'docs/licenses/' folder as COPYING, LGPL, MIT, BSD etc. Unless 
-   otherwise stated, all unmarked files are licensed under the GPL license of
+
+   This distribution is licensed under the LGPL however, it contains some
+   files that are licensed under other LGPL compatible licenses such as MIT,
+   "new BSD" and others.  We have included the full text of these licenses
+   in the 'docs/licenses/' folder as LGPL, MIT, BSD etc. Unless
+   otherwise stated, all unmarked files are licensed under the LGPL license of
    the overall distribution.
 
-   Unless otherwise stated, this work is copyright of the Zikula Foundation. 
+   Unless otherwise stated, this work is copyright of the Zikula Foundation.
    This distribution may contain portions of copyright works that are copyright
-   of their respective authors and is usually noted in the source files where 
+   of their respective authors and is usually noted in the source files where
    applicable.
 
    -----------------------------------------------------------------------------
    CONTACT
-   
-   The Zikula project website can be found at https://ziku.la/
-   By email at info@ziku.la
-   By post at 400 Ranch Drive, Woodland Park, Colorado CO 80836. USA
 
-   
+   The Zikula project website can be found at https://ziku.la/
+
+
