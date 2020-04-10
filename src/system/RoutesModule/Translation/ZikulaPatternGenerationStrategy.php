@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
-use ZikulaKernel;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 /**
  * This strategy duplicates \JMS\I18nRoutingBundle\Router\DefaultPatternGenerationStrategy
@@ -64,7 +64,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     /**
      * @var array
      */
-    private $modUrlMap = [];
+    private $urlMap = [];
 
     public function __construct(
         string $strategy,
@@ -111,7 +111,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
                 $module = $route->getDefault('_zkModule');
                 $zkNoBundlePrefix = $route->getOption('zkNoBundlePrefix');
                 if (!isset($zkNoBundlePrefix) || !$zkNoBundlePrefix) {
-                    $untranslatedPrefix = $this->getModUrlString($module);
+                    $untranslatedPrefix = $this->getUrlString($module);
                     if ($this->translator->getCatalogue($locale)->has($untranslatedPrefix, strtolower($module))) {
                         $prefix = $this->translator->trans(/** @Ignore */$untranslatedPrefix, [], strtolower($module), $locale);
                     } else {
@@ -155,16 +155,16 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     /**
      * Customized method to cache the url string for modules.
      */
-    private function getModUrlString(string $moduleName): string
+    private function getUrlString(string $extensionName): string
     {
-        if (!isset($this->modUrlMap[$moduleName])) {
-            /** @var ZikulaKernel $kernel */
+        if (!isset($this->urlMap[$extensionName])) {
+            /** @var ZikulaHttpKernelInterface $kernel */
             $kernel = $GLOBALS['kernel'];
-            $module = $kernel->getModule($moduleName);
+            $extension = $kernel->getBundle($extensionName);
             // get untranslated url from metaData.
-            $this->modUrlMap[$moduleName] = $module->getMetaData()->getUrl(false);
+            $this->urlMap[$extensionName] = $extension->getMetaData()->getUrl(false);
         }
 
-        return $this->modUrlMap[$moduleName];
+        return $this->urlMap[$extensionName];
     }
 }
