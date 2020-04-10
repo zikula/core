@@ -15,7 +15,6 @@ namespace Zikula\ZAuthModule\Helper;
 
 use Exception;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
@@ -27,11 +26,6 @@ class LostPasswordVerificationHelper
      * @var UserVerificationRepositoryInterface
      */
     private $userVerificationRepository;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
 
     /**
      * @var EncoderFactoryInterface
@@ -50,11 +44,9 @@ class LostPasswordVerificationHelper
 
     public function __construct(
         UserVerificationRepositoryInterface $userVerificationRepository,
-        VariableApiInterface $variableApi,
         EncoderFactoryInterface $encoderFactory
     ) {
         $this->userVerificationRepository = $userVerificationRepository;
-        $this->variableApi = $variableApi;
         $this->encoderFactory = $encoderFactory;
     }
 
