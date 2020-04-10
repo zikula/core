@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 
 (function($) {
 
@@ -7,7 +7,7 @@
 
     /**
      * Confirmation modal
-     * 
+     *
      * Usage: <a data-toggle="confirmation" data-title="..." data-text="..." href="...">...</a>
      */
     $(document).on('click.bs.modal.data-api', '[data-toggle="confirmation"]', function (e) {
@@ -56,15 +56,15 @@
         // $('.d-none').hide().removeClass('d-none');
 
         /**
-        * Input switch container. 
-        * 
-        * This code shows/hide an container dependent on a value of an input 
+        * Input switch container.
+        *
+        * This code shows/hide an container dependent on a value of an input
         * element.
-        * 
-        * Example: 
+        *
+        * Example:
         * <input type="text" name="abc" value="a">
         * <div data-switch="abc" data-switch-value="a">...</div>
-        * 
+        *
         * This example shows the div container if the input value is equal "a"
         */
         $('[data-switch]').each(function() {
@@ -81,7 +81,7 @@
             }
 
             inputElement.change(function() {
-                inputValue = getValueOfElement(inputElement); 
+                inputValue = getValueOfElement(inputElement);
                 if ($.inArray(inputValue, containerValues) === -1) {
                     containerElement.slideUp();
                 } else {

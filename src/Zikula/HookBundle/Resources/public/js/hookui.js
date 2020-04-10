@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 
 var subscriberAreas = [];
 var appendItemBeforeResponse = true;

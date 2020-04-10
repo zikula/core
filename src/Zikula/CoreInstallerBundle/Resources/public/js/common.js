@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 
 jQuery(document).ready(function ($) {
     $('a.external, #footer a').attr('target', '_blank');

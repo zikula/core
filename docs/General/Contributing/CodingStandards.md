@@ -15,7 +15,7 @@ Immediately after the PHP opening tag, on a new line, there should be a file-lev
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - https://ziku.la/
+ * Copyright Zikula - https://ziku.la/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,7 +27,7 @@ Immediately after the PHP opening tag, on a new line, there should be a file-lev
 Non vendor javascript files may use a shortened header:
 
 ```js
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 ```
 
 ## Arrays

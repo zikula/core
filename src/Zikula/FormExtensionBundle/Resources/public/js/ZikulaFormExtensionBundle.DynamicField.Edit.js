@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 (function($) {
     $(document).ready(function() {
         var formTypeField = $("select[id$='_fieldInfo_formType']");

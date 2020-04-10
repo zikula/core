@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 
 // Javascript functions to minimize/hide and maximize/show a block when clicking on a small adjacent icon.
 (function($) {
