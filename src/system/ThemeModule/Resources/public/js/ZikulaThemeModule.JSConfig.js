@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 
 if (typeof(Zikula) == 'undefined') {
     var Zikula = {};

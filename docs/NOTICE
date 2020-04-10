@@ -2,7 +2,7 @@
    LICENSE
 
    This notice applies to the package called Zikula Application Framework
-   Copyright (c) 2009 Zikula Foundation.
+   Copyright (c) 2009 Zikula.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
@@ -27,7 +27,7 @@
    otherwise stated, all unmarked files are licensed under the LGPL license of
    the overall distribution.
 
-   Unless otherwise stated, this work is copyright of the Zikula Foundation.
+   Unless otherwise stated, this work is copyright of Zikula.
    This distribution may contain portions of copyright works that are copyright
    of their respective authors and is usually noted in the source files where
    applicable.
@@ -36,5 +36,3 @@
    CONTACT
 
    The Zikula project website can be found at https://ziku.la/
-
-

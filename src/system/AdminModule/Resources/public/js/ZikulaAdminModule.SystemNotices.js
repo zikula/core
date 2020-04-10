@@ -1,4 +1,4 @@
-// Copyright Zikula Foundation, licensed MIT.
+// Copyright Zikula, licensed MIT.
 
 (function($) {
     $(document).ready(function() {
@@ -18,7 +18,7 @@
                 ul.slideDown();
                 span.removeClass('fas fa-caret-right');
                 span.addClass('fas fa-caret-down');
-            } 
+            }
         });
     });
 })(jQuery);

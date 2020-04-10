@@ -3,13 +3,13 @@ currentMenu: contributing
 ---
 # Contributor License Agreement
 
-## Zikula Foundation Contributor Agreement
+## Zikula Contributor Agreement
 
-These terms apply to your contribution of materials to a product or project owned or managed by us ("project"), and set out the intellectual property rights you grant to us ("Zikula Foundation") in the contributed materials. If this contribution is on behalf of a company, the term 'you' will also mean the company you identify below. If you agree to be bound by these terms, fill in the information requested below and provide your signature.
+These terms apply to your contribution of materials to a product or project owned or managed by us ("project"), and set out the intellectual property rights you grant to us ("Zikula") in the contributed materials. If this contribution is on behalf of a company, the term 'you' will also mean the company you identify below. If you agree to be bound by these terms, fill in the information requested below and provide your signature.
 
 ## Read this agreement carefully before signing
 
-The term 'contribution' means any source code, object code, patch, tool, sample, graphic, specification, manual, documentation, or any other material posted or submitted by you to any Zikula Foundation project.
+The term 'contribution' means any source code, object code, patch, tool, sample, graphic, specification, manual, documentation, or any other material posted or submitted by you to any Zikula project.
 
 With respect to any worldwide copyrights, or copyright applications and registrations, in your contribution:
 you hereby assign to us joint ownership, and to the extent that such assignment is or becomes invalid, ineffective or unenforceable, you hereby grant to us a perpetual, irrevocable, non-exclusive, worldwide, no-charge, royalty-free, unrestricted license to exercise all rights under those copyrights. This includes, at our option, the right to sublicense these same rights to third parties through multiple levels of sublicensees or other licensing arrangements;
