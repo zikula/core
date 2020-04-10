@@ -135,6 +135,7 @@
   - Fixed problem with deleting user(s) from a very large database (#3953).
   - Fixed problem where stale pending registrations were not deleted (#4069).
   - Fixed problem with preview of theme (#3957).
+  - fix orphaned users on attempt to delete stale pending registrations (#4218).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
