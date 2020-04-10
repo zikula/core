@@ -350,7 +350,6 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
         $emailExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL);
-        $userVerificationRepository->purgeExpiredRecords($emailExpireDays, ZAuthConstant::VERIFYCHGTYPE_PWD, false);
 
         /** @var UserVerificationEntity $verificationRecord */
         $verificationRecord = $userVerificationRepository->findOneBy([

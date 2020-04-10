@@ -81,7 +81,7 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
         // remove expired registrations
         $regExpireDays = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, ZAuthConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION);
         if ($regExpireDays > 0) {
-            $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays);
+            $deletedUsers = $this->userVerificationRepository->purgeExpiredRecords($regExpireDays, ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, true);
             foreach ($deletedUsers as $deletedUser) {
                 $this->eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
             }

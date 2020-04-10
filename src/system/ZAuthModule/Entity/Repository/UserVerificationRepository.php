@@ -18,8 +18,8 @@ use DateTimeZone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -78,16 +78,22 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         $staleVerificationRecords = $qb->getQuery()->getResult();
 
         $deletedUsers = [];
+        $userRepo = $this->_em->getRepository(UserEntity::class);
+        $authRepo = $this->_em->getRepository(AuthenticationMappingEntity::class);
         if (!empty($staleVerificationRecords)) {
             foreach ($staleVerificationRecords as $staleVerificationRecord) {
-                // delete user record
-                /** @var UserRepositoryInterface $userRepo */
-                $userRepo = $this->_em->getRepository('ZikulaUsersModule:UserEntity');
                 if ($deleteUserEntities) {
-                    /** @var UserEntity $user */
                     $user = $userRepo->find($staleVerificationRecord['uid']);
-                    $deletedUsers[] = $user;
-                    $userRepo->removeAndFlush($user);
+                    if (null !== $user) {
+                        $deletedUsers[] = $user;
+                        // delete user
+                        $this->_em->remove($user);
+                    }
+                    $mapping = $authRepo->findOneBy(['uid' => $staleVerificationRecord['uid']]);
+                    if (null !== $mapping) {
+                        // delete mapping
+                        $this->_em->remove($mapping);
+                    }
                 }
 
                 // delete verification record
