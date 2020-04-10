@@ -78,16 +78,18 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         $staleVerificationRecords = $qb->getQuery()->getResult();
 
         $deletedUsers = [];
+        $userRepo = $this->_em->getRepository(UserEntity::class);
+        $authRepo = $this->_em->getRepository(AuthenticationMappingRepository::class);
         if (!empty($staleVerificationRecords)) {
             foreach ($staleVerificationRecords as $staleVerificationRecord) {
-                // delete user record
-                /** @var UserRepositoryInterface $userRepo */
-                $userRepo = $this->_em->getRepository('ZikulaUsersModule:UserEntity');
                 if ($deleteUserEntities) {
-                    /** @var UserEntity $user */
+                    // delete user
                     $user = $userRepo->find($staleVerificationRecord['uid']);
                     $deletedUsers[] = $user;
-                    $userRepo->removeAndFlush($user);
+                    $this->_em->remove($user);
+                    // delete mapping
+                    $mapping = $authRepo->findOneBy(['uid' => $staleVerificationRecord['uid']]);
+                    $this->_em->remove($mapping);
                 }
 
                 // delete verification record
