@@ -16,6 +16,7 @@ namespace Zikula\SettingsModule\Tests\Api;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
 use Zikula\SettingsModule\Helper\LocaleConfigHelper;
@@ -102,7 +103,9 @@ class LocaleApiTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+        $variableApi = $this->getMockBuilder(VariableApiInterface::class)->getMock();
+        $variableApi->method('get')->willReturn(1);
 
-        return new LocaleApi($kernel, $requestStack, $localeConfigHelper, 'en', '3.0.0');
+        return new LocaleApi($kernel, $requestStack, $variableApi, $localeConfigHelper, 'en', '3.0.0');
     }
 }

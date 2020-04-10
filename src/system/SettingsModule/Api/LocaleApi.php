@@ -17,6 +17,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Locales;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Helper\LocaleConfigHelper;
 
@@ -37,6 +39,11 @@ class LocaleApi implements LocaleApiInterface
      * @var RequestStack
      */
     private $requestStack;
+
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
 
     /**
      * @var LocaleConfigHelper
@@ -66,6 +73,7 @@ class LocaleApi implements LocaleApiInterface
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         RequestStack $requestStack,
+        VariableApiInterface $variableApi,
         LocaleConfigHelper $localeConfigHelper,
         string $defaultLocale = 'en',
         string $installed = '0.0.0'
@@ -76,6 +84,7 @@ class LocaleApi implements LocaleApiInterface
         ];
         $this->kernel = $kernel;
         $this->requestStack = $requestStack;
+        $this->variableApi = $variableApi;
         $this->localeConfigHelper = $localeConfigHelper;
         $this->defaultLocale = $defaultLocale;
         $this->installed = '0.0.0' !== $installed;
@@ -99,8 +108,11 @@ class LocaleApi implements LocaleApiInterface
             return $this->supportedLocales[$this->sectionKey];
         }
 
-        // read in locales from translation path
-        $this->collectLocales($includeRegions);
+        $multiLingualEnabled = (bool) $this->variableApi->get(VariableApi::CONFIG, 'multilingual', 1);
+        if ($multiLingualEnabled) {
+            // read in locales from translation path
+            $this->collectLocales($includeRegions);
+        }
 
         // ensure config file is still in sync
         if (true === $includeRegions) {

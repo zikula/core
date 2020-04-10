@@ -136,7 +136,8 @@
   - Fixed problem where stale pending registrations were not deleted (#4069).
   - Fixed problem with preview of theme (#3957).
   - Fixed problem where hooks tables are not updated when upgrading from Core-1.x.x (#3977).
-  - fix orphaned users on attempt to delete stale pending registrations (#4218).
+  - Fix orphaned users on attempt to delete stale pending registrations (#4218).
+  - Fix non-default languages being available when multilingual is disabled (#3938).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
