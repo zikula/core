@@ -24,4 +24,5 @@ master:
       right: "Block/block.html.twig"
       center: "Block/block.html.twig"
       topnav: "Block/topnavblock.html.twig"
+bootstrapPath: 'bootswatch/dist/cerulean/bootstrap.min.css'
 #blockWrapping: false

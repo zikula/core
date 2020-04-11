@@ -13,3 +13,7 @@ services:
     Zikula\BootstrapTheme\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaBootstrapThemeAdminMenu }
+
+    Zikula\BootstrapTheme\Listener\BootstrapAssetSetterListener:
+        arguments:
+            $cssAssetBag: '@zikula_core.common.theme.assets_css'
