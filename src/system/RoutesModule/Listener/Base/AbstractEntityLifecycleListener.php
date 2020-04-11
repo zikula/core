@@ -26,7 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
@@ -339,7 +338,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
     /**
      * Returns a filter event instance for the given entity.
      */
-    protected function createFilterEvent(EntityAccess $entity): Event
+    protected function createFilterEvent(EntityAccess $entity)
     {
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
 
