@@ -118,6 +118,7 @@ class PersistedBundleHelper
     private function extensionNameFromClass(string $class): string
     {
         $extensionNameArray = explode('\\', $class);
+
         return array_pop($extensionNameArray);
     }
 

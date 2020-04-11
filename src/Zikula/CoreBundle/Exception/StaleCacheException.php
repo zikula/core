@@ -15,5 +15,4 @@ namespace Zikula\Bundle\CoreBundle\Exception;
 
 class StaleCacheException extends \Exception
 {
-
 }
