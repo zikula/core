@@ -232,10 +232,11 @@ class Engine
 
     /**
      * Find the realm in the theme.yaml that matches the given path, route or module.
-     * Three 'alias' realms may be defined and do not require a pattern:
+     * Four 'alias' realms may be defined and do not require a pattern:
      *  1) 'master' (required) this is the default realm. any non-matching value will utilize the master realm
-     *  2) 'home' (optional) will be used when the path matches `^/$`
-     *  3) 'admin' (optional) will be used when the annotationValue is 'admin'
+     *  2) 'home' (optional) will be used when the route matches `home` (or previewing a theme)
+     *  3) 'error' (optional) will be used if an exception is thrown
+     *  4) 'admin' (optional) will be used when the annotationValue is 'admin'
      * Uses regex to find the FIRST match to a pattern to one of three possible request attribute values.
      *  1) path   e.g. /pages/display/welcome-to-pages-content-manager
      *  2) route  e.g. zikulapagesmodule_user_display
@@ -255,8 +256,8 @@ class Engine
         $request = $this->requestStack->getMasterRequest();
         if (null !== $request) {
             $requestAttributes = $request->attributes->all();
-            // match `/` for home realm
-            if (isset($requestAttributes['_route']) && 'home' === $requestAttributes['_route']) {
+            if (isset($requestAttributes['_route'])
+                && (in_array($requestAttributes['_route'], ['home', 'zikulaextensionsmodule_extension_preview'], true))) {
                 $this->realm = 'home';
 
                 return;
