@@ -91,6 +91,7 @@ class AssetBag implements IteratorAggregate, Countable
     {
         if (!is_array($var)) {
             unset($this->assets[$var]);
+
             return;
         }
         $source = array_key_first($var);
