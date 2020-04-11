@@ -19,6 +19,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Exception;
 use PDO;
+use Zikula\Bundle\CoreBundle\Exception\StaleCacheException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 
@@ -33,6 +34,8 @@ class PersistedBundleHelper
     {
         try {
             $this->doGetPersistedBundles($kernel, $bundles);
+        } catch (StaleCacheException $exception) {
+            throw $exception;
         } catch (Exception $exception) {
             // fail silently on purpose
         }
@@ -43,7 +46,8 @@ class PersistedBundleHelper
         $conn = $this->getConnection();
         $conn->connect();
         $res = $conn->executeQuery('SELECT bundleclass, autoload, bundletype FROM bundles');
-        foreach ($res->fetchAll(PDO::FETCH_NUM) as list($class, $autoload, $type)) {
+        $unavailableExtensions = 0;
+        foreach ($res->fetchAll(PDO::FETCH_NUM) as [$class, $autoload, $type]) {
             $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
             if (!$extensionIsActive) {
                 continue;
@@ -54,12 +58,18 @@ class PersistedBundleHelper
 
                 if (class_exists($class)) {
                     $bundles[$class] = ['all' => true];
+                } else {
+                    $unavailableExtensions += $this->markExtensionUnavailable($conn, $class);
                 }
             } catch (Exception $exception) {
                 // unable to autoload $prefix / $path
             }
         }
         $conn->close();
+        if ($unavailableExtensions > 0) {
+            // clear the cache & start over
+            throw new StaleCacheException('An extension has been removed without uninstalling.');
+        }
     }
 
     private function getConnection(): Connection
@@ -76,8 +86,7 @@ class PersistedBundleHelper
      */
     private function extensionIsActive(Connection $conn, string $class, string $type): ?bool
     {
-        $extensionNameArray = explode('\\', $class);
-        $extensionName = array_pop($extensionNameArray);
+        $extensionName = $this->extensionNameFromClass($class);
         if (isset($this->extensionStateMap[$extensionName])) {
             // used cached value
             $state = $this->extensionStateMap[$extensionName];
@@ -96,6 +105,20 @@ class PersistedBundleHelper
         }
 
         return in_array($state['state'], [Constant::STATE_ACTIVE, Constant::STATE_UPGRADED, Constant::STATE_TRANSITIONAL], true);
+    }
+
+    private function markExtensionUnavailable(Connection $conn, string $class): int
+    {
+        $extensionName = $this->extensionNameFromClass($class);
+        $id = $this->extensionStateMap[$extensionName]['id'];
+
+        return $conn->executeUpdate('UPDATE extensions set state = ? where id = ?', [Constant::STATE_MISSING, $id]);
+    }
+
+    private function extensionNameFromClass(string $class): string
+    {
+        $extensionNameArray = explode('\\', $class);
+        return array_pop($extensionNameArray);
     }
 
     /**
