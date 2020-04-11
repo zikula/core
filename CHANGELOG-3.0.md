@@ -190,4 +190,4 @@
   - Added new Doctrine Paginator wrapper `Zikula\Bundle\CoreBundle\Doctrine\Paginator` and paginator template. See docs.
   - Added new AlphaFilter class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
   - Added CLI command to generate an Extension skeleton with instruction on using Symfony MakerBundle to complete development (#4034).
-  - Added automatical setting of locale parameter when generating routes in JavaScript (#3453).
+  - Added automatic setting of locale parameter when generating routes in JavaScript (#3453).
