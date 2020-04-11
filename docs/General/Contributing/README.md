@@ -20,7 +20,7 @@ This section explains our contribution workflow and guidelines which help us man
 
 ### Prerequisites
 
-All contributors need to have an account at [GitHub](https://github.com) and to sign the [CLA agreement](CLA.md).
+All contributors need to have an account at [GitHub](https://github.com).
 
 ### Basic information about code contributions
 

@@ -5,7 +5,6 @@ currentMenu: contributing
 
 These are the rules and guidelines governing all Zikula projects.
 
-- Before we can accept any contributions you must sign the [Contributor License Agreement](CLA.md).
 - Please follow the [code style guidelines](CodingStandards.md).
 - All contributions must be committed against approved tickets in the project tracker. Ad hoc contributions are not allowed. Feature requests are marked with status 'approved' and assigned to milestones by the project lead. Developers may use their discretion with bug tickets and assign the ticket to most appropriate milestone.
 - You are encouraged to discuss ideas and providing challenging and stimulating relevent debate.
