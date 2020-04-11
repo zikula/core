@@ -136,8 +136,8 @@
   - Fixed problem where stale pending registrations were not deleted (#4069).
   - Fixed problem with preview of theme (#3957).
   - Fixed problem where hooks tables are not updated when upgrading from Core-1.x.x (#3977).
-  - Fix orphaned users on attempt to delete stale pending registrations (#4218).
-  - Fix non-default languages being available when multilingual is disabled (#3938).
+  - Fixed orphaned users on attempt to delete stale pending registrations (#4218).
+  - Fixed non-default languages being available when multilingual is disabled (#3938).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
@@ -190,3 +190,4 @@
   - Added new Doctrine Paginator wrapper `Zikula\Bundle\CoreBundle\Doctrine\Paginator` and paginator template. See docs.
   - Added new AlphaFilter class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
   - Added CLI command to generate an Extension skeleton with instruction on using Symfony MakerBundle to complete development (#4034).
+  - Added automatical setting of locale parameter when generating routes in JavaScript (#3453).
