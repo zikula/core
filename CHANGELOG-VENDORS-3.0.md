@@ -32,7 +32,7 @@
   - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
   - imagine/imagine updated from 0.7.1 to 1.3.3
   - itsjavi/fontawesome-iconpicker installed in 3.2.0
-  - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using remmel/i18n-routing-bundle dev-master instead)
+  - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using lightcoresystems/i18n-routing-bundle dev-master instead)
   - jquery.mmenu updated from 7.3.3 to frdh/mmenu.js 8.5.3
   - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
   - knplabs/knp-menu updated from 2.2.0 to 3.1.0
