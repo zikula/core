@@ -52,6 +52,14 @@ class AssetBagTest extends TestCase
         $bag->add('B');
         $bag->remove('A');
         $this->assertEquals(1, $bag->count());
+        $bag->add(['a' => 0]);
+        $bag->add(['b' => 5]);
+        $bag->add(['c' => 10]);
+        $this->assertEquals(4, $bag->count());
+        $bag->remove(['b' => 5]);
+        $this->assertEquals(3, $bag->count());
+        $bag->remove(['a' => 10]); // doesn't exist
+        $this->assertEquals(3, $bag->count());
     }
 
     /**

@@ -89,7 +89,16 @@ class AssetBag implements IteratorAggregate, Countable
 
     public function remove($var): void
     {
-        unset($this->assets[$var]);
+        if (!is_array($var)) {
+            unset($this->assets[$var]);
+
+            return;
+        }
+        $source = array_key_first($var);
+        $weight = $var[$source];
+        if (isset($this->assets[$source]) && $weight === $this->assets[$source]) {
+            unset($this->assets[$source]);
+        }
     }
 
     public function clear(): void
