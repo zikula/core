@@ -3,9 +3,9 @@
 <p>{% trans %}Hello!{% endtrans %}</p>
 
 {% if requestedByAdmin %}
-<p>{% trans with {'%sub%': getModVar('ZConfig', 'sitename')} %}The administrator at %sub% requested that you receive your user name via e-mail.{% endtrans %}</p>
+<p>{% trans with {'%sub%': siteName()} %}The administrator at %sub% requested that you receive your user name via e-mail.{% endtrans %}</p>
 {% else %}
-<p>{% trans with {'%1$s': app.request.server.get('REMOTE_ADDR'), '%2$s': getModVar('ZConfig', 'sitename')} %}Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.{% endtrans %}</p>
+<p>{% trans with {'%1$s': app.request.server.get('REMOTE_ADDR'), '%2$s': siteName()} %}Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.{% endtrans %}</p>
 {% endif %}
 
 <p>{% trans with {'%user%': uname} %}The user name for your account is: %user%{% endtrans %}</p>

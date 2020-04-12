@@ -10,9 +10,9 @@
 {{ heading }}
 
 {% if not reginfo.isApproved %}
-{% trans with {'%s': getModVar('ZConfig', 'sitename')} %}A new user account has been created but not yet activated on %s.{% endtrans %}
+{% trans with {'%s': siteName()} %}A new user account has been created but not yet activated on %s.{% endtrans %}
 {% else %}
-{% trans with {'%s': getModVar('ZConfig', 'sitename')} %}A new user account has been activated on %s.{% endtrans %}
+{% trans with {'%s': siteName()} %}A new user account has been activated on %s.{% endtrans %}
 {% endif %}
 {% if createdByAdmin %}{% trans %}It was created by an administrator or sub-administrator.{% endtrans %}{% endif %}
 {% trans %}The account details are as follows:{% endtrans %}

@@ -10,7 +10,7 @@
 <h3>{{ heading }}</h3>
 
 <p>
-{% set siteLink = '<a href="%1$s">%2$s</a>'|replace({'%1$s': url('home'), '%2$s': getModVar('ZConfig', 'sitename')}) %}
+{% set siteLink = '<a href="%1$s">%2$s</a>'|replace({'%1$s': url('home'), '%2$s': siteName()}) %}
 {% if not reginfo.isApproved %}
     {% trans with {'%s': siteLink} %}A new user account has been created but not yet activated on %s.{% endtrans %}
 {% else %}

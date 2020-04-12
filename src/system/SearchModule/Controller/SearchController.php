@@ -23,6 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SearchModule\Api\ApiInterface\SearchApiInterface;
@@ -152,11 +153,13 @@ class SearchController extends AbstractController
      *
      * Generate xml for opensearch syndication.
      */
-    public function opensearchAction(VariableApiInterface $variableApi): PlainResponse
-    {
+    public function opensearchAction(
+        SiteDefinitionInterface $site,
+        VariableApiInterface $variableApi
+    ): PlainResponse {
         $templateParameters = [
-            'siteName' => $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en')),
-            'slogan' => $variableApi->getSystemVar('slogan', $variableApi->getSystemVar('slogan_en')),
+            'siteName' => $site->getName(),
+            'slogan' => $site->getSlogan(),
             'adminMail' => $variableApi->getSystemVar('adminmail'),
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content')
         ];

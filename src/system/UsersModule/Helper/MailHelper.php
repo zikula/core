@@ -23,6 +23,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -61,13 +62,19 @@ class MailHelper
      */
     private $authenticationMappingRepository;
 
+    /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
         VariableApiInterface $variableApi,
         MailerInterface $mailer,
         PermissionApiInterface $permissionApi,
-        AuthenticationMappingRepositoryInterface $authenticationMappingRepository
+        AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
+        SiteDefinitionInterface $site
     ) {
         $this->translator = $translator;
         $this->twig = $twig;
@@ -75,6 +82,7 @@ class MailHelper
         $this->mailer = $mailer;
         $this->permissionApi = $permissionApi;
         $this->authenticationMappingRepository = $authenticationMappingRepository;
+        $this->site = $site;
     }
 
     /**
@@ -267,7 +275,7 @@ class MailHelper
             $subject = $this->generateEmailSubject($notificationType, $templateArgs);
         }
 
-        $siteName = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
+        $siteName = $this->site->getName();
 
         $email = (new Email())
             ->from(new Address($this->variableApi->getSystemVar('adminmail'), $siteName))
@@ -289,7 +297,7 @@ class MailHelper
 
     private function generateEmailSubject(string $notificationType, array $templateArgs = []): string
     {
-        $siteName = $this->variableApi->getSystemVar('sitename');
+        $siteName = $this->site->getName();
         switch ($notificationType) {
             case 'regadminnotify':
                 if (!$templateArgs['reginfo']->isApproved()) {

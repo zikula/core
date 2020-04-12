@@ -19,6 +19,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent;
 use Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent;
@@ -45,16 +46,23 @@ class GroupEventListener implements EventSubscriberInterface
      */
     protected $router;
 
+    /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
     public function __construct(
         VariableApiInterface $variableApi,
         TranslatorInterface $translator,
         MailerInterface $mailer,
-        RouterInterface $router
+        RouterInterface $router,
+        SiteDefinitionInterface $site
     ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->mailer = $mailer;
         $this->router = $router;
+        $this->site = $site;
     }
 
     public static function getSubscribedEvents()
@@ -71,9 +79,14 @@ class GroupEventListener implements EventSubscriberInterface
     public function applicationProcessed(GroupApplicationPostProcessedEvent $event): void
     {
         $applicationEntity = $event->getGroupApplication();
-        $title = $this->translator->trans('Regarding your %groupName% group membership application', ['%groupName%' => $applicationEntity->getGroup()->getName()]);
-        $siteName = $this->variableApi->getSystemVar('sitename');
+        $title = $this->translator->trans(
+            'Regarding your %groupName% group membership application',
+            [
+                '%groupName%' => $applicationEntity->getGroup()->getName()
+            ]
+        );
         $adminMail = $this->variableApi->getSystemVar('adminmail');
+        $siteName = $this->site->getName();
 
         $user = $applicationEntity->getUser();
         $email = (new Email())
@@ -94,13 +107,16 @@ class GroupEventListener implements EventSubscriberInterface
             return;
         }
         $applicationEntity = $event->getGroupApplication();
-        $body = $this->translator->trans('A new application has been created by %userName% to %groupName%. Please attend to this request at %url%', [
-            '%userName%' => $applicationEntity->getUser()->getUname(),
-            '%groupName%' => $applicationEntity->getGroup()->getName(),
-            '%url%' => $this->router->generate('zikulagroupsmodule_group_adminlist', [], RouterInterface::ABSOLUTE_URL)
-        ]);
+        $body = $this->translator->trans(
+            'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%',
+            [
+                '%userName%' => $applicationEntity->getUser()->getUname(),
+                '%groupName%' => $applicationEntity->getGroup()->getName(),
+                '%url%' => $this->router->generate('zikulagroupsmodule_group_adminlist', [], RouterInterface::ABSOLUTE_URL)
+            ]
+        );
         $adminMail = $this->variableApi->getSystemVar('adminmail');
-        $siteName = $this->variableApi->getSystemVar('sitename');
+        $siteName = $this->site->getName();
 
         $email = (new Email())
             ->from(new Address($adminMail, $siteName))

@@ -27,6 +27,7 @@ use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
@@ -381,7 +382,8 @@ class UserAdministrationController extends AbstractController
     public function searchAction(
         Request $request,
         UserRepositoryInterface $userRepository,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        SiteDefinitionInterface $site
     ) {
         $form = $this->createForm(SearchUserType::class, []);
         $form->handleRequest($request);
@@ -393,7 +395,7 @@ class UserAdministrationController extends AbstractController
 
             return $this->render('@ZikulaUsersModule/UserAdministration/searchResults.html.twig', [
                 'resultsForm' => $resultsForm->createView(),
-                'mailForm' => $this->buildMailForm($variableApi)->createView()
+                'mailForm' => $this->buildMailForm($variableApi, $site)->createView()
             ]);
         }
 
@@ -410,9 +412,10 @@ class UserAdministrationController extends AbstractController
         Request $request,
         UserRepositoryInterface $userRepository,
         VariableApiInterface $variableApi,
-        MailHelper $mailHelper
+        MailHelper $mailHelper,
+        SiteDefinitionInterface $site
     ): RedirectResponse {
-        $mailForm = $this->buildMailForm($variableApi);
+        $mailForm = $this->buildMailForm($variableApi, $site);
         $mailForm->handleRequest($request);
         if ($mailForm->isSubmitted() && $mailForm->isValid()) {
             $data = $mailForm->getData();
@@ -432,10 +435,12 @@ class UserAdministrationController extends AbstractController
         return $this->redirectToRoute('zikulausersmodule_useradministration_search');
     }
 
-    private function buildMailForm(VariableApiInterface $variableApi): FormInterface
-    {
+    private function buildMailForm(
+        VariableApiInterface $variableApi,
+        SiteDefinitionInterface $site
+    ): FormInterface {
         return $this->createForm(MailType::class, [
-            'from' => $variableApi->getSystemVar('sitename'),
+            'from' => $site->getName(),
             'replyto' => $variableApi->getSystemVar('adminmail'),
             'format' => 'text',
             'batchsize' => 100
