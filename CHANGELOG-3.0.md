@@ -124,7 +124,7 @@
   - Fixed broken JavaScript in ZAuth user modification form (#3992).
   - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
   - When updating a block, orphan properties are removed (#3892).
-  - Refactored page title handling, introducing a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` (#3969).
+  - Refactored page title handling (#3969).
   - Fixed creating new ZAuth users as admin without setting a password.
   - Start page controllers now get properly set the `_route` request argument (#3955).
   - Default minimum length for passwords is now raised to 8. Absolute minimum length is still 5 (#2842).
@@ -191,3 +191,5 @@
   - Added new AlphaFilter class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
   - Added CLI command to generate an Extension skeleton with instruction on using Symfony MakerBundle to complete development (#4034).
   - Added automatic setting of locale parameter when generating routes in JavaScript (#3453).
+  - Introduced a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` for dynamic site attributes (#3972).
+  - Extended site definition and added means for site-wide branding (#3972).
