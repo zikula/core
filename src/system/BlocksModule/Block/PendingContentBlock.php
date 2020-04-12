@@ -13,18 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Block;
 
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Event\PendingContentEvent;
 
 class PendingContentBlock extends AbstractBlockHandler
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
     /**
      * @var EventDispatcherInterface
      */
@@ -45,14 +39,6 @@ class PendingContentBlock extends AbstractBlockHandler
     public function getType(): string
     {
         return $this->trans('Pending Content');
-    }
-
-    /**
-     * @required
-     */
-    public function setRouter(RouterInterface $router): void
-    {
-        $this->router = $router;
     }
 
     /**
