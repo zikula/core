@@ -96,19 +96,16 @@ class SiteDefinition implements SiteDefinitionInterface
 
     public function getLogoPath(): ?string
     {
-        // not used yet, refs #3972
         return '@CoreBundle:images/logo_with_title.png';
     }
 
     public function getMobileLogoPath(): ?string
     {
-        // not used yet, refs #3972
         return '@CoreBundle:images/zk-power.png';
     }
 
     public function getIconPath(): ?string
     {
-        // not used yet, refs #3972
-        return '@CoreBundle:images/logo.gif';
+        return '@CoreBundle:images/icon.png';
     }
 }

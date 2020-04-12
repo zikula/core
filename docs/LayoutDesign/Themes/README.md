@@ -18,6 +18,10 @@ currentMenu: themes
 - [Theme configuration](ThemeConfiguration.md)
 - [Theme variables](ThemeVariables.md)
 
+## Additional topics
+
+- [Branding](Branding.md)
+
 ## For developers
 
 - [Theme class](Dev/ThemeClass.md)

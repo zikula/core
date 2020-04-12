@@ -6,14 +6,11 @@
 <link>{{ pagevars.homepath }}</link>
 <description>{{ pagevars.meta.description }}</description>
 <language>{{ app.request.locale }}</language>
-{# here you can add your image if you want to #}
-{#
 <image>
   <title>{{ siteName() }}</title>
-  <url>{{ zasset('@VendorBundleName:images/logo.png') }}</url>
+  <url>{{ app.request.schemeAndHttpHost ~ siteImagePath('logo') }}</url>
   <link>{{ pagevars.homepath }}</link>
 </image>
-#}
 <managingEditor>{% trans %}Administrator{% endtrans %} {{ getSystemVar('adminmail') }} ({{ siteName() }})</managingEditor>
 <webMaster>{% trans %}Administrator{% endtrans %} {{ getSystemVar('adminmail') }} ({{ siteName() }})</webMaster>
 {{ maincontent|raw }}

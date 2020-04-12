@@ -18,4 +18,65 @@
     </div>
 </div>
 {{ form_end(form) }}
+{% macro imageRow(name, label, description, code, isImage = true) %}
+    {% set useImageFunction = name in ['logo', 'mobileLogo', 'icon'] %}
+    {% set path = useImageFunction ? siteImagePath(code) : asset(code) %}
+    <tr>
+        <th id="h{{ name|capitalize }}" scope="row" headers="hType">{{ label }}</th>
+        <td headers="h{{ name|capitalize }} hDescription">{{ description }}</td>
+        <td headers="h{{ name|capitalize }} hPath">{{ path }}</td>
+        <td headers="h{{ name|capitalize }} hPreview" class="text-center">
+            <a href="{{ path }}" title="{% trans %}Open preview{% endtrans %}" target="_blank">
+                {% if isImage %}
+                    <img src="{{ path }}" class="img-fluid img-thumbnail" />
+                {% else %}
+                    {% trans %}Open preview{% endtrans %}
+                {% endif %}
+            </a>
+        </td>
+        <td headers="h{{ name|capitalize }} hUsage">
+            {% set function = useImageFunction ? 'siteImagePath' : 'asset' %}
+            <code>{{ '{{ ' }}{{ function }}('{{ code }}'){{ ' }}' }}</code>
+        </td>
+    </tr>
+{% endmacro %}
+<fieldset>
+    <legend>{% trans %}Branding images{% endtrans %}</legend>
+    <p class="alert alert-info">{% trans %}The following pathes are used for branding. To customise this please read <a href="https://docs.ziku.la/LayoutDesign/Themes/branding.html" title="Branding docs" target="_blank">the docs</a>.{% endtrans %}</p>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <colgroup>
+                <col id="cType" />
+                <col id="cDescription" />
+                <col id="cPath" />
+                <col id="cPreview" />
+                <col id="cUsage" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th id="hType" scope="col">{% trans %}Type{% endtrans %}</th>
+                    <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
+                    <th id="hPath" scope="col">{% trans %}Path{% endtrans %}</th>
+                    <th id="hPreview" scope="col">{% trans %}Preview{% endtrans %}</th>
+                    <th id="hUsage" scope="col">{% trans %}Usage{% endtrans %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ _self.imageRow('logo', 'Logo'|trans, 'Main site logo'|trans, 'logo') }}
+                {{ _self.imageRow('mobileLogo', 'Mobile logo'|trans, 'Logo for mobile view'|trans, 'mobileLogo') }}
+                {{ _self.imageRow('icon', 'Icon'|trans, 'Main site icon'|trans, 'icon') }}
+                {{ _self.imageRow('favicon', 'favicon'|trans, 'Used by IE'|trans, 'favicon.ico') }}
+                {{ _self.imageRow('favicon16', 'favicon'|trans ~ ' 16', 'Classic favicon'|trans, 'favicon-16x16.png') }}
+                {{ _self.imageRow('favicon32', 'favicon'|trans ~ ' 32', 'For Safari on Mac OS'|trans, 'favicon-32x32.png') }}
+                {{ _self.imageRow('webmanifest', 'Web application manifest'|trans, 'For Android Chrome'|trans, 'site.webmanifest', false) }}
+                {{ _self.imageRow('android192', 'Android Chrome'|trans ~ ' 192', 'For Android Chrome'|trans, 'android-chrome-192x192.png') }}
+                {{ _self.imageRow('android256', 'Android Chrome'|trans ~ ' 256', 'For Android Chrome'|trans, 'android-chrome-256x256.png') }}
+                {{ _self.imageRow('mstileconfig', 'mstile config', 'For Windows 8 / IE11'|trans, 'browserconfig.xml', false) }}
+                {{ _self.imageRow('mstileimage', 'mstile image', 'For Windows 8 / IE11'|trans, 'mstile-150x150.png') }}
+                {{ _self.imageRow('appletouch', 'Apple Touch'|trans, 'For iOS home screen'|trans, 'apple-touch-icon.png') }}
+                {{ _self.imageRow('safaripinnedtab', 'Pinned Tab'|trans, 'Vector icon for Safari'|trans, 'safari-pinned-tab.svg') }}
+            </tbody>
+        </table>
+    </div>
+</fieldset>
 {{ adminFooter() }}
