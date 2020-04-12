@@ -91,7 +91,7 @@ class BrandingExtension extends AbstractExtension
 
         $accessor = 'get' . ucfirst($imageType) . 'Path';
 
-        $assetPath = $this->site->$accessor();
+        $assetPath = $this->site->{$accessor}();
 
         try {
             $imagePath = $this->assetHelper->resolve($assetPath);
