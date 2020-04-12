@@ -39,4 +39,4 @@ The idea behind site definitions and branding functionality is that themes shoul
 1. A theme can be better reused for several pages.
 2. A page can centrally provide several themes with the same branding.
 
-If a site has different themes for spring, summer, autumn and winter, it always uses the same logo, favicon, etc. - and even if it doesn't, it can still map the logic to its own site definition without redundantly adjusting the themes.
+If a site has for example different themes for spring, summer, autumn and winter, it always uses the same logo, favicon, etc. - and even if it doesn't, it can still implement the logic in its own site definition without redundantly adjusting the themes.

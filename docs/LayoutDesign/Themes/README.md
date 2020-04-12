@@ -7,7 +7,6 @@ currentMenu: themes
 
 - [Request / Response cycle](RequestResponseCycle.md)
 - [Using custom Bootstrap and Font Awesome files](CustomBSandFA.md)
-- [Allowing themes to change via permissions](ThemeChangePermissions.md)
 - Special themes: Atom, Printer, RSS
 
 ## Creating a theme
