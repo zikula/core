@@ -28,7 +28,7 @@ You can see an overview of all currently used images when calling `/theme/config
 
 ## Additional assets
 
-If you add `{{ siteBranding() }}` to the `<head>` in your theme it embeds the `system/ThemeModule/Resources/views/Engine/manifest.html.twig`. This references a web application manifests and further images for a more sophisticated branding. Of course you can override this template like any other one if you need custom markup.
+If you add `{{ siteBranding() }}` to the `<head>` section in your theme it embeds the `system/ThemeModule/Resources/views/Engine/manifest.html.twig`. This references a web application manifests and further images for a more sophisticated branding. Of course you can override this template like any other one if you need custom markup.
 
 Note these assets are located directly in `/public` which means they cannot be adjusted with overriding, but must be overwritten. Background is that it is recommended to put these things directly into the root folder of a page.
 
