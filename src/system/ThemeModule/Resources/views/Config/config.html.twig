@@ -42,7 +42,7 @@
 {% endmacro %}
 <fieldset>
     <legend>{% trans %}Branding images{% endtrans %}</legend>
-    <p class="alert alert-info">{% trans %}The following pathes are used for branding.{% endtrans %}</p>
+    <p class="alert alert-info">{% trans %}The following pathes are used for branding. To customise this please read <a href="https://docs.ziku.la/LayoutDesign/Themes/branding.html" title="Branding docs" target="_blank">the docs</a>.{% endtrans %}</p>
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <colgroup>
@@ -78,6 +78,5 @@
             </tbody>
         </table>
     </div>
-    <p class="alert alert-info">{% trans %}To customise this you can use <a href="https://docs.ziku.la/LayoutDesign/Templating/templateandassetlocations.html" title="Templates and Assets" target="_blank">asset overriding</a> and/or overriding the <code>system/ThemeModule/Resources/views/Engine/manifest.html.twig</code> template and/or a custom <a href="https://docs.ziku.la/Configuration/Settings/Dev/sitedefinition.html" title="Site definition" target="_blank">site definition</a>. To generate your own images it is recommended to use <a href="https://realfavicongenerator.net/" title="Favicon Generator" target="_blank">this favicon generator</a>!{% endtrans %}</p>
 </fieldset>
 {{ adminFooter() }}
