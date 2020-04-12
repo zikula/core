@@ -23,7 +23,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/Guite/JMSI18nRoutingBundle/"
+            "url": "https://github.com/lightcoresystems/JMSI18nRoutingBundle/"
         }
     ],
     "extra": {
