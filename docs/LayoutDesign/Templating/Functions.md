@@ -10,26 +10,31 @@ functions, filters, tags, tests and global variables.
 
 ## Functions
 
-### Useful
+### General
 
 - array_unset(array, key)
 - callFunc(callable, params = [])
-- defaultPath(extensionName, type = 'user')
-- dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
-- getModVar(module, name, default = null)
-- getSystemVar(name, default = null)
 - hasPermission(component, instance, level)
-- pageAddAsset(type, value, weight = 100)
-- pageGetVar(name, default = null)
-- pageSetVar(name, value)
 - showflashes(params = [])
-- stateLabel(extensionEntity, upgradedExtensions = null)
-- zasset(path)
 - siteName()
 - siteSlogan()
 
-### Hooks
+### Themes and Assets
 
+- pageAddAsset(type, value, weight = 100)
+- pageGetVar(name, default = null)
+- pageSetVar(name, value)
+- zasset(path)
+
+### Extensions and Variables
+
+- getModVar(module, name, default = null)
+- getSystemVar(name, default = null)
+- defaultPath(extensionName, type = 'user')
+
+### Events and Hooks
+
+- dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
 - notifyDisplayHooks(eventName, id = null, urlObject = null)
 - routeUrl(routeName, routeParameters = [], fragment = null)
 
@@ -72,6 +77,7 @@ functions, filters, tags, tests and global variables.
 
 - adminPanelMenu()
 - extensionActions(extension)
+- stateLabel(extensionEntity, upgradedExtensions = null)
 - getPreviewImagePath(themeName, size = "medium")
 
 #### Blocks
