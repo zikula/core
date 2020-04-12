@@ -76,7 +76,7 @@ class JsResolver implements ResolverInterface
             if ('jquery-ui.min.js' === mb_substr($source, -16)
                 || 'jquery-ui.js' === mb_substr($source, -12)
             ) {
-                $this->bag->add([$source => AssetBag::WEIGHT_JQUERY]);
+                $this->bag->add([$source => AssetBag::WEIGHT_JQUERY_UI]);
             }
         }
     }
