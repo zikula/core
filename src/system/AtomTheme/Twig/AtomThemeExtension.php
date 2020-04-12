@@ -17,6 +17,7 @@ use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class AtomThemeExtension extends AbstractExtension
@@ -31,10 +32,19 @@ class AtomThemeExtension extends AbstractExtension
      */
     private $requestStack;
 
-    public function __construct(VariableApiInterface $variableApi, RequestStack $requestStack)
-    {
+    /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
+    public function __construct(
+        VariableApiInterface $variableApi,
+        RequestStack $requestStack,
+        SiteDefinitionInterface $site
+    ) {
         $this->variableApi = $variableApi;
         $this->requestStack = $requestStack;
+        $this->site = $site;
     }
 
     public function getFunctions()
@@ -52,7 +62,7 @@ class AtomThemeExtension extends AbstractExtension
         $startDateParts = explode('/', $startDate);
         $startTimestamp = strtotime($startDateParts[1] . '-' . $startDateParts[0] . '-01');
         $startDate = strftime('%Y-%m-%d', $startTimestamp);
-        $sitename = Sluggable\Urlizer::urlize($this->variableApi->getSystemVar('sitename'));
+        $sitename = Sluggable\Urlizer::urlize($this->site->getName());
 
         return "tag:{$host},{$startDate}:{$sitename}";
     }

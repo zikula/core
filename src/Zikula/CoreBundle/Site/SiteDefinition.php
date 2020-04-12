@@ -52,13 +52,12 @@ class SiteDefinition implements SiteDefinitionInterface
 
     public function getName(): string
     {
-        return $this->variableApi->getSystemVar('sitename', '');
+        return $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
     }
 
     public function getSlogan(): string
     {
-        // not used yet, refs #3972
-        return $this->variableApi->getSystemVar('slogan', '');
+        return $this->variableApi->getSystemVar('slogan', $this->variableApi->getSystemVar('slogan_en'));
     }
 
     public function getPageTitle(): string

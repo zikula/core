@@ -20,6 +20,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class MailHelper
@@ -44,16 +45,23 @@ class MailHelper
      */
     private $mailer;
 
+    /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
         VariableApiInterface $variableApi,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        SiteDefinitionInterface $site
     ) {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
         $this->mailer = $mailer;
+        $this->site = $site;
     }
 
     /**
@@ -87,7 +95,7 @@ class MailHelper
             $subject = $this->generateEmailSubject($notificationType);
         }
 
-        $siteName = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
+        $siteName = $this->site->getName();
 
         $email = (new Email())
             ->from(new Address($this->variableApi->getSystemVar('adminmail'), $siteName))
@@ -109,7 +117,7 @@ class MailHelper
 
     private function generateEmailSubject(string $notificationType): string
     {
-        $siteName = $this->variableApi->getSystemVar('sitename');
+        $siteName = $this->site->getName();
         switch ($notificationType) {
             case 'importnotify':
                 return $this->translator->trans('Welcome to %siteName%!', ['%siteName%' => $siteName], 'mail');

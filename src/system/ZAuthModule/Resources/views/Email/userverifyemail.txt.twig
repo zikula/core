@@ -1,6 +1,6 @@
 {% trans_default_domain 'mail' %}
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig') }}
-{% trans with {'%uname': uname, '%site': getModVar('ZConfig', 'sitename'), '%email': email, '%newemail': newemail} %}Hello! You requested to change your e-mail address for user account \'%uname\' at %site from %email to %newemail.{% endtrans %}
+{% trans with {'%uname': uname, '%site': siteName(), '%email': email, '%newemail': newemail} %}Hello! You requested to change your e-mail address for user account \'%uname\' at %site from %email to %newemail.{% endtrans %}
 {% trans %}You must confirm this change before it will take effect.{% endtrans %}
 {% set expireDays = getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL')) %}
 {% if expireDays > 0 %}

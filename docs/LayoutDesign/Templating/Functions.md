@@ -25,6 +25,8 @@ functions, filters, tags, tests and global variables.
 - showflashes(params = [])
 - stateLabel(extensionEntity, upgradedExtensions = null)
 - zasset(path)
+- siteName()
+- siteSlogan()
 
 ### Hooks
 

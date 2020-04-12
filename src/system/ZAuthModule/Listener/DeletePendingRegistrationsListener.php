@@ -22,6 +22,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
@@ -54,18 +55,25 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
      */
     private $translator;
 
+    /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
     public function __construct(
         VariableApiInterface $variableApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
         EventDispatcherInterface $eventDispatcher,
         MailerInterface $mailer,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SiteDefinitionInterface $site
     ) {
         $this->variableApi = $variableApi;
         $this->userVerificationRepository = $userVerificationRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
         $this->translator = $translator;
+        $this->site = $site;
     }
 
     public static function getSubscribedEvents()
@@ -90,8 +98,8 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
 
     public function sendEmail(RegistrationPostDeletedEvent $event): void
     {
-        $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');
+        $siteName = $this->site->getName();
         $email = (new Email())
             ->from(new Address($adminMail, $siteName))
             ->to(new Address($event->getUser()->getEmail(), $event->getUser()->getUname()))

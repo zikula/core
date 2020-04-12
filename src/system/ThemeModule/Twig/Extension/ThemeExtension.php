@@ -17,12 +17,18 @@ use Exception;
 use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 class ThemeExtension extends AbstractExtension
 {
+    /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
     /**
      * @var PageAssetApiInterface
      */
@@ -33,8 +39,12 @@ class ThemeExtension extends AbstractExtension
      */
     private $assetHelper;
 
-    public function __construct(PageAssetApiInterface $pageAssetApi, Asset $assetHelper)
-    {
+    public function __construct(
+        SiteDefinitionInterface $site,
+        PageAssetApiInterface $pageAssetApi,
+        Asset $assetHelper
+    ) {
+        $this->site = $site;
         $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;
     }
@@ -44,7 +54,9 @@ class ThemeExtension extends AbstractExtension
         return [
             new TwigFunction('pageAddAsset', [$this, 'pageAddAsset']),
             new TwigFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']]),
-            new TwigFunction('zasset', [$this, 'getAssetPath'])
+            new TwigFunction('zasset', [$this, 'getAssetPath']),
+            new TwigFunction('siteName', [$this, 'getSiteName']),
+            new TwigFunction('siteSlogan', [$this, 'getSiteSlogan'])
         ];
     }
 
@@ -90,5 +102,21 @@ class ThemeExtension extends AbstractExtension
     public function getAssetPath(string $path): string
     {
         return $this->assetHelper->resolve($path);
+    }
+
+    /**
+     * Returns site name.
+     */
+    public function getSiteName(): string
+    {
+        return $this->site->getName();
+    }
+
+    /**
+     * Returns site slogan.
+     */
+    public function getSiteSlogan(): string
+    {
+        return $this->site->getSlogan();
     }
 }

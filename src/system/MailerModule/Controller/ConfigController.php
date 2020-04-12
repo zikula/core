@@ -21,6 +21,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Form\Type\TestType;
@@ -81,9 +82,10 @@ class ConfigController extends AbstractController
     public function testAction(
         Request $request,
         VariableApiInterface $variableApi,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        SiteDefinitionInterface $site
     ): array {
-        $form = $this->createForm(TestType::class, $this->getDataValues($variableApi));
+        $form = $this->createForm(TestType::class, $this->getDataValues($variableApi, $site));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('test')->isClicked()) {
@@ -119,11 +121,12 @@ class ConfigController extends AbstractController
      * Returns required data from module variables and mailer configuration.
      */
     private function getDataValues(
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        SiteDefinitionInterface $site
     ): array {
         $modVars = $variableApi->getAll('ZikulaMailerModule');
 
-        $modVars['sitename'] = $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en'));
+        $modVars['sitename'] = $site->getName();
         $modVars['adminmail'] = $variableApi->getSystemVar('adminmail');
 
         $modVars['fromName'] = $modVars['sitename'];

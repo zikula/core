@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
@@ -44,6 +45,11 @@ class FrontControllerListener implements EventSubscriberInterface
     private $headerAssetBag;
 
     /**
+     * @var SiteDefinitionInterface
+     */
+    private $site;
+
+    /**
      * @var bool
      */
     private $installed;
@@ -58,6 +64,7 @@ class FrontControllerListener implements EventSubscriberInterface
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         AssetBag $headerAssetBag,
+        SiteDefinitionInterface $site,
         string $installed,
         $isUpgrading = false // cannot cast to bool because set with expression language
     ) {
@@ -65,6 +72,7 @@ class FrontControllerListener implements EventSubscriberInterface
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
         $this->headerAssetBag = $headerAssetBag;
+        $this->site = $site;
         $this->installed = '0.0.0' !== $installed;
         $this->isUpgrading = $isUpgrading;
     }
@@ -100,7 +108,7 @@ class FrontControllerListener implements EventSubscriberInterface
 
         // The current user has the rights to search the page.
         $linkType = 'application/opensearchdescription+xml';
-        $siteName = htmlspecialchars($this->variableApi->getSystemVar('sitename'), ENT_QUOTES);
+        $siteName = htmlspecialchars($this->site->getName(), ENT_QUOTES);
         $searchUrl = htmlentities($this->router->generate('zikulasearchmodule_search_opensearch'));
 
         $headerCode = '<link rel="search" type="' . $linkType . '" title="' . $siteName . '" href="' . $searchUrl . '" />';

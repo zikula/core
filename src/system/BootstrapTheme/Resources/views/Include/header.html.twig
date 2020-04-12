@@ -3,8 +3,8 @@
 <head>
     <title>{{ pagevars.title }}</title>
     <meta charset="{{ pagevars.meta.charset }}" />
-    <meta name="description" content="{{ pagevars.meta.description|default(getSystemVar('slogan', '')) }}" />
-    <meta name="author" content="{{ getSystemVar('sitename', '') }}" />
+    <meta name="description" content="{{ pagevars.meta.description|default(siteSlogan()) }}" />
+    <meta name="author" content="{{ siteName() }}" />
     <meta name="generator" content="Zikula Application Framework" />
     <meta name="robots" content="index,follow,noodp" />
     <meta name="rating" content="General" />

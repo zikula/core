@@ -1,8 +1,8 @@
 {% trans_default_domain 'mail' %}
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig')|nl2br }}
-<p>{% trans with {'%1$s': getModVar('ZConfig', 'sitename'), '%2$s': url('home')} %}Welcome to %1$s (%2$s)!{% endtrans %}</p>
+<p>{% trans with {'%1$s': siteName(), '%2$s': url('home')} %}Welcome to %1$s (%2$s)!{% endtrans %}</p>
 
-<p>{% trans with {'%1$s': user.email, '%2$s': getModVar('ZConfig', 'sitename')} %}Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.{% endtrans %}</p>
+<p>{% trans with {'%1$s': user.email, '%2$s': siteName()} %}Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.{% endtrans %}</p>
 
 <p>{% trans %}Your account details are as follows:{% endtrans %}</p>
 
