@@ -106,6 +106,6 @@ class SiteDefinition implements SiteDefinitionInterface
 
     public function getIconPath(): ?string
     {
-        return '@CoreBundle:images/logo.gif';
+        return '@CoreBundle:images/icon.png';
     }
 }

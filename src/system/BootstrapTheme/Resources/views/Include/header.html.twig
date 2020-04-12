@@ -10,16 +10,7 @@
     <meta name="rating" content="General" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!--[if IE]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
-
-    <link rel="icon" href="{{ zasset('@ZikulaBootstrapTheme:images/icon.png') }}" />
-    <link rel="shortcut icon" href="{{ zasset('@ZikulaBootstrapTheme:images/favicon.ico') }}" />
-
-    {# force fullscreen mode to look like an app #}
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    {# adapt status line: default, black or black-translucent #}
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    {# viewport initialisation #}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {{ siteBranding() }}
 </head>
 <body{% if admin|default %} class="admin-page"{% elseif home|default %} class="home"{% endif %}>
     <div id="themeMainContainer">
