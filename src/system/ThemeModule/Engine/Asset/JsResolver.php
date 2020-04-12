@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine\Asset;
 
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 /**
@@ -39,19 +38,19 @@ class JsResolver implements ResolverInterface
     private $combine;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
+        string $env,
         AssetBag $bag,
         MergerInterface $merger,
         bool $combine = false
     ) {
-        $this->kernel = $kernel;
         $this->bag = $bag;
         $this->merger = $merger;
-        $this->combine = 'prod' === $this->kernel->getEnvironment() && $combine;
+        $this->combine = ('prod' === $env) && $combine;
     }
 
     public function compile(): string
     {
+        $this->validateBag();
         $assets = $this->bag->allWithWeight();
         if ($this->combine) {
             $assets = $this->merger->merge($assets);
@@ -67,5 +66,18 @@ class JsResolver implements ResolverInterface
     public function getBag(): AssetBag
     {
         return $this->bag;
+    }
+
+    private function validateBag(): void
+    {
+        foreach ($this->getBag()->all() as $source) {
+            // if already there, add jquery-ui again to force weight setting is correct
+            // jQueryUI must be loaded before Bootstrap, refs #3912
+            if ('jquery-ui.min.js' === mb_substr($source, -16)
+                || 'jquery-ui.js' === mb_substr($source, -12)
+            ) {
+                $this->bag->add([$source => AssetBag::WEIGHT_JQUERY_UI]);
+            }
+        }
     }
 }

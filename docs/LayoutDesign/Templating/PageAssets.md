@@ -49,13 +49,13 @@ $this->get('zikula_core.common.theme.assets_js')->add([
 Weights utilized by core assets are listed below.
 
 ```php
-public const WEIGHT_JQUERY = 19;
-public const WEIGHT_JQUERY_UI = 20;
-public const WEIGHT_BOOTSTRAP_JS = 21;
-public const WEIGHT_BOOTSTRAP_ZIKULA = 22;
-public const WEIGHT_ROUTER_JS = 24;
-public const WEIGHT_ROUTES_JS = 25;
-public const WEIGHT_JS_TRANSLATOR = 26;
+public const WEIGHT_JQUERY = 20;
+public const WEIGHT_JQUERY_UI = 25;
+public const WEIGHT_BOOTSTRAP_JS = 30;
+public const WEIGHT_BOOTSTRAP_ZIKULA = 31;
+public const WEIGHT_ROUTER_JS = 40;
+public const WEIGHT_ROUTES_JS = 41;
+public const WEIGHT_JS_TRANSLATOR = 50;
 public const WEIGHT_DEFAULT = 100;
 public const WEIGHT_JS_TRANSLATIONS = 110;
 public const WEIGHT_THEME_STYLESHEET = 120;
