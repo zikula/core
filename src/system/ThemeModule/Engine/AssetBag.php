@@ -72,13 +72,6 @@ class AssetBag implements IteratorAggregate, Countable
         }
 
         foreach ($asset as $source => $weight) {
-            // jQueryUI must be loaded before Bootstrap, refs #3912
-            if ('jquery-ui.min.js' === mb_substr($source, -16)
-                || 'jquery-ui.js' === mb_substr($source, -12)
-            ) {
-                $weight = self::WEIGHT_JQUERY_UI;
-            }
-
             if (!isset($this->assets[$source]) || (isset($this->assets[$source]) && $this->assets[$source] > $weight)) {
                 // keep original weight if lighter. set if not set already.
                 $this->assets[$source] = $weight;

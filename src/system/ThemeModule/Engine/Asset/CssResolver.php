@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine\Asset;
 
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 /**
@@ -39,15 +38,14 @@ class CssResolver implements ResolverInterface
     private $combine;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
+        string $env,
         AssetBag $bag,
         MergerInterface $merger,
         bool $combine = false
     ) {
-        $this->kernel = $kernel;
         $this->bag = $bag;
         $this->merger = $merger;
-        $this->combine = 'prod' === $this->kernel->getEnvironment() && $combine;
+        $this->combine = ('prod' === $env) && $combine;
     }
 
     public function compile(): string

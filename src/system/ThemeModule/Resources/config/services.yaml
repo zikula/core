@@ -69,13 +69,13 @@ services:
 
     Zikula\ThemeModule\Engine\Asset\JsResolver:
         arguments:
-          $kernel: '@kernel'
+          $env: '%env(APP_ENV)%'
           $bag: '@zikula_core.common.theme.assets_js'
           $combine: '%zikula_asset_manager.combine%'
 
     Zikula\ThemeModule\Engine\Asset\CssResolver:
         arguments:
-          $kernel: '@kernel'
+          $env: '%env(APP_ENV)%'
           $bag: '@zikula_core.common.theme.assets_css'
           $combine: '%zikula_asset_manager.combine%'
 

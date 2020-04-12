@@ -1,5 +1,5 @@
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
-{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.AdminTabs.js')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/style.css')) }}
 

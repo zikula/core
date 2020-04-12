@@ -76,17 +76,17 @@ class AssetBagTest extends TestCase
 
     /**
      * @covers AssetBag::add()
-     * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.sort-order
+     * Order of array elements doesn't matter when using assert(Not)Equals
+     * reflects https://www.php.net/manual/en/language.operators.array.php
+     * equality, not identity. use assert(Not)Same for identity.
      */
     public function testAddSameWeighted(): void
     {
-        $this->markTestSkipped('Currently skipped due to indeterminate behaviour in PHP 7.');
-
         $bag = new AssetBag();
         $bag->add(['B' => 3]);
         $bag->add(['A' => 3]);
         $bag->add(['C' => 3]);
-        $this->assertNotEquals(['A', 'B', 'C'], $bag->all()); // order cannot be assumed with same weight
+        $this->assertNotSame(['A', 'B', 'C'], $bag->all()); // order cannot be assured with same weight
     }
 
     /**
@@ -125,6 +125,7 @@ class AssetBagTest extends TestCase
 
     /**
      * @covers AssetBag::add()
+     * see note in testAddSameWeighted re: array equality vs. identity
      */
     public function testKeepLowestWeightedSubmission(): void
     {
@@ -137,6 +138,12 @@ class AssetBagTest extends TestCase
         $bag->add(['C' => 2]);
         $bag->add(['A' => 5]);
         $bag->add(['A' => 7]);
-        $this->assertEquals('A', $bag->all()[2]); // asset listed at lowest weight submitted
+        $this->assertEquals(3, $bag->allWithWeight()['A']);  // asset listed at lowest weight submitted
+        $expected = [
+            'B' => 1,
+            'C' => 2,
+            'A' => 3,
+        ];
+        $this->assertEquals($expected, $bag->allWithWeight());
     }
 }
