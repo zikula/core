@@ -18,7 +18,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -41,11 +40,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
      * @var string
      */
     private $installed;
-
-    /**
-     * @var ParameterBagInterface
-     */
-    private $params;
 
     /**
      * @var ControllerHelper
@@ -92,7 +86,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         StageHelper $stageHelper,
         AjaxUpgraderStage $ajaxUpgraderStage,
         TranslatorInterface $translator,
-        ParameterBagInterface $params,
         string $installed
     ) {
         $this->controllerHelper = $controllerHelper;
@@ -100,7 +93,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
         $this->ajaxUpgraderStage = $ajaxUpgraderStage;
-        $this->params = $params;
         $this->installed = $installed;
         parent::__construct($kernel, $translator);
     }
