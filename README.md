@@ -22,7 +22,8 @@ For more information visit https://ziku.la/
 Requirements
 ------------
 
- - Zikula Core requires PHP >= 5.5.9
+ - Zikula Core requires PHP >= 5.5.9 and may not work properly with php 7.2.x+
+ - Core-2.0.x is not compatible with MySQL v8, please use v5
  - Additional server considerations can be found on
    [the Symfony site](http://symfony.com/doc/current/reference/requirements.html)
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
