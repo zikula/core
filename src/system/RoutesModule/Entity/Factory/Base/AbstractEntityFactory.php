@@ -97,22 +97,8 @@ abstract class AbstractEntityFactory
         return $this->entityManager;
     }
     
-    public function setEntityManager(EntityManagerInterface $entityManager = null): void
-    {
-        if ($this->entityManager !== $entityManager) {
-            $this->entityManager = $entityManager;
-        }
-    }
-    
     public function getEntityInitialiser(): ?EntityInitialiser
     {
         return $this->entityInitialiser;
-    }
-    
-    public function setEntityInitialiser(EntityInitialiser $entityInitialiser = null): void
-    {
-        if ($this->entityInitialiser !== $entityInitialiser) {
-            $this->entityInitialiser = $entityInitialiser;
-        }
     }
 }
