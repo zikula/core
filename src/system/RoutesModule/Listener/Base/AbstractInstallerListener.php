@@ -68,9 +68,9 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
     }
     
     /**
-    * Listener for the `ExtensionPostEnabledEvent`.
-    *
-    * Occurs when an extension has been enabled after it was previously disabled.
+     * Listener for the `ExtensionPostEnabledEvent`.
+     *
+     * Occurs when an extension has been enabled after it was previously disabled.
      */
     public function extensionEnabled(ExtensionPostEnabledEvent $event): void
     {
