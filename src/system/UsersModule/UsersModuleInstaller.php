@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\UsersModule;
 
 use DateTime;
-use Exception;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -28,19 +27,19 @@ use Zikula\ZAuthModule\ZAuthConstant;
  */
 class UsersModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var array
+     */
+    private $entities = [
+        UserEntity::class,
+        UserAttributeEntity::class,
+        UserSessionEntity::class
+    ];
+
     public function install(): bool
     {
         // create the tables
-        $classes = [
-            UserEntity::class,
-            UserAttributeEntity::class,
-            UserSessionEntity::class
-        ];
-        try {
-            $this->schemaTool->create($classes);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
 
         // Set default values and modvars for module
         $this->createDefaultData();

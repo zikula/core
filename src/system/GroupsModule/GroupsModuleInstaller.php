@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule;
 
-use Exception;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
@@ -26,16 +25,17 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class GroupsModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var array
+     */
+    private $entities = [
+        GroupEntity::class,
+        GroupApplicationEntity::class
+    ];
+
     public function install(): bool
     {
-        try {
-            $this->schemaTool->create([
-                GroupEntity::class,
-                GroupApplicationEntity::class
-            ]);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
 
         // set all our module vars
         $this->setVar('itemsperpage', 25);

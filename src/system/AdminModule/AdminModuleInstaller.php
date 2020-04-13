@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule;
 
-use Exception;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
@@ -23,16 +22,17 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
  */
 class AdminModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var array
+     */
+    private $entities = [
+        AdminCategoryEntity::class,
+        AdminModuleEntity::class
+    ];
+
     public function install(): bool
     {
-        try {
-            $this->schemaTool->create([
-                AdminCategoryEntity::class,
-                AdminModuleEntity::class
-            ]);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
 
         $this->setVar('modulesperrow', 3);
         $this->setVar('itemsperpage', 15);

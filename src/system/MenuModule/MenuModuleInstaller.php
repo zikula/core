@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule;
 
-use Exception;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 
@@ -31,11 +30,8 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
 
     public function install(): bool
     {
-        try {
-            $this->schemaTool->create($this->entities);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
+
         $this->createMainMenu();
 
         return true;

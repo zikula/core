@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
-use Exception;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
@@ -26,19 +25,18 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
  */
 class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {
+    /**
+     * @var array
+     */
+    private $entities = [
+        ExtensionEntity::class,
+        ExtensionDependencyEntity::class,
+        ExtensionVarEntity::class,
+    ];
+
     public function install(): bool
     {
-        $entities = [
-            ExtensionEntity::class,
-            ExtensionDependencyEntity::class,
-            ExtensionVarEntity::class,
-        ];
-
-        try {
-            $this->schemaTool->create($entities);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
 
         // populate default data
         $this->createDefaultData();

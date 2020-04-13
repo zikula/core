@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\SearchModule;
 
-use Exception;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\Entity\SearchStatEntity;
@@ -34,11 +33,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
     public function install(): bool
     {
         // create schema
-        try {
-            $this->schemaTool->create($this->entities);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
 
         // create module vars
         $this->setVar('itemsperpage', 10);
@@ -59,36 +54,22 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                 $this->setVar('opensearch_adult_content', false);
 
                 // update schema
-                try {
-                    $this->schemaTool->update([
-                        SearchResultEntity::class
-                    ]);
-                } catch (Exception $exception) {
-                    $this->addFlash('error', $exception->getMessage());
-
-                    return false;
-                }
+                $this->schemaTool->update([
+                    SearchResultEntity::class
+                ]);
             case '1.5.3':
                 // update schema
-                try {
-                    $this->schemaTool->update([SearchResultEntity::class]);
-                } catch (Exception $exception) {
-                    $this->addFlash('error', $exception->getMessage());
-
-                    return false;
-                }
+                $this->schemaTool->update([
+                    SearchResultEntity::class
+                ]);
             case '1.5.4':
                 // nothing
             case '1.6.0':
                 // update schema since extra field has been changed from text to array
                 $this->entityManager->getRepository('ZikulaSearchModule:SearchResultEntity')->truncateTable();
-                try {
-                    $this->schemaTool->update([SearchResultEntity::class]);
-                } catch (Exception $exception) {
-                    $this->addFlash('error', $exception->getMessage());
-
-                    return false;
-                }
+                $this->schemaTool->update([
+                    SearchResultEntity::class
+                ]);
             case '1.6.1':
                 // future upgrade routines
         }
@@ -99,11 +80,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
 
     public function uninstall(): bool
     {
-        try {
-            $this->schemaTool->drop($this->entities);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->drop($this->entities);
 
         // Delete any module variables
         $this->delVars();

@@ -16,7 +16,6 @@ namespace Zikula\CategoriesModule;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
@@ -42,6 +41,15 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     private $localeApi;
 
+    /**
+     * @var array
+     */
+    private $entities = [
+        CategoryEntity::class,
+        CategoryAttributeEntity::class,
+        CategoryRegistryEntity::class
+    ];
+
     public function __construct(
         LocaleApiInterface $localeApi,
         AbstractExtension $extension,
@@ -57,17 +65,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
 
     public function install(): bool
     {
-        $entities = [
-            CategoryEntity::class,
-            CategoryAttributeEntity::class,
-            CategoryRegistryEntity::class
-        ];
-
-        try {
-            $this->schemaTool->create($entities);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
 
         /**
          * explicitly set admin as user to be set as `updatedBy` and `createdBy` fields. Normally this would be taken care of
@@ -104,10 +102,10 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.1':
             case '1.2':
             case '1.2.1':
-                try {
-                    $this->schemaTool->create([CategoryAttributeEntity::class]);
-                } catch (Exception $exception) {
-                }
+                $this->schemaTool->create([
+                    CategoryAttributeEntity::class
+                ]);
+
                 // rename old tablename column for Core 1.4.0
                 $sql = 'ALTER TABLE categories_registry CHANGE `tablename` `entityname` varchar (60) NOT NULL DEFAULT \'\'';
                 $connection->executeQuery($sql);

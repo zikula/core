@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule;
 
-use Exception;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
@@ -25,13 +24,9 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
     public function install(): bool
     {
         // create the table
-        try {
-            $this->schemaTool->create([
-                PermissionEntity::class
-            ]);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create([
+            PermissionEntity::class
+        ]);
 
         $this->createDefaultData();
 

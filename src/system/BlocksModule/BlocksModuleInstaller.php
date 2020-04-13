@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Block\HtmlBlock;
@@ -65,11 +64,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
     public function install(): bool
     {
-        try {
-            $this->schemaTool->create($this->entities);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create($this->entities);
 
         // Set a default value for a module variable
         $this->setVar('collapseable', false);

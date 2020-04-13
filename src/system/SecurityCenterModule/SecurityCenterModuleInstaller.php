@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
@@ -76,13 +75,9 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
     public function install(): bool
     {
         // create the table
-        try {
-            $this->schemaTool->create([
-                IntrusionEntity::class
-            ]);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create([
+            IntrusionEntity::class
+        ]);
 
         // Set up an initial value for a module variable.
         $this->setVar('itemsperpage', 10);
