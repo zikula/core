@@ -18,7 +18,7 @@ interface ReEntrantAuthenticationMethodInterface extends AuthenticationMethodInt
     /**
      * Return the ID of the user sent by the provider.
      */
-    public function getId(): int;
+    public function getId();
 
     /**
      * After authentication, this method is used to update the user entity.
