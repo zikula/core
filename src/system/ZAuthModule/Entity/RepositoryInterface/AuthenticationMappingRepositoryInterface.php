@@ -24,7 +24,7 @@ interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Sel
 
     public function removeByZikulaId(int $userId): void;
 
-    public function getByZikulaId(int $userId): AuthenticationMappingEntity;
+    public function getByZikulaId(int $userId): ?AuthenticationMappingEntity;
 
     public function setEmailVerification(int $userId, bool $value = true): void;
 

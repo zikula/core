@@ -46,7 +46,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         }
     }
 
-    public function getByZikulaId(int $userId): AuthenticationMappingEntity
+    public function getByZikulaId(int $userId): ?AuthenticationMappingEntity
     {
         return $this->findOneBy(['uid' => $userId]);
     }
