@@ -108,23 +108,32 @@ class ExtensionMenu implements ExtensionMenuInterface
 
     private function getAccount(): ?ItemInterface
     {
-        if (!$this->currentUser->isLoggedIn()) {
-            return null;
-        }
         $menu = $this->factory->createItem('usersAccountMenu');
-
-        if ($this->variableApi->getSystemVar('multilingual')) {
-            $locales = $this->localeApi->getSupportedLocales();
-            if (count($locales) > 1) {
-                $menu->addChild('Language switcher', [
-                    'route' => 'zikulausersmodule_account_changelanguage',
-                ])->setAttribute('icon', 'fas fa-language');
+        if (!$this->currentUser->isLoggedIn()) {
+            $menu->addChild('Login', [
+                'label' => 'I would like to login',
+                'route' => 'zikulausersmodule_access_login',
+            ])->setAttribute('icon', 'fas fa-sign-in-alt');
+            if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
+                $menu->addChild('New account', [
+                    'label' => 'I would like to create a new account',
+                    'route' => 'zikulausersmodule_registration_register',
+                ])->setAttribute('icon', 'fas fa-plus');
             }
+        } else {
+            if ($this->variableApi->getSystemVar('multilingual')) {
+                $locales = $this->localeApi->getSupportedLocales();
+                if (count($locales) > 1) {
+                    $menu->addChild('Language switcher', [
+                        'route' => 'zikulausersmodule_account_changelanguage',
+                    ])->setAttribute('icon', 'fas fa-language');
+                }
+            }
+            $menu->addChild('Log out', [
+                'route' => 'zikulausersmodule_access_logout',
+            ])->setAttribute('icon', 'fas fa-power-off')
+                ->setLinkAttribute('class', 'text-danger');
         }
-        $menu->addChild('Log out', [
-            'route' => 'zikulausersmodule_access_logout',
-        ])->setAttribute('icon', 'fas fa-power-off')
-        ->setLinkAttribute('class', 'text-danger');
 
         return 0 === $menu->count() ? null : $menu;
     }
@@ -132,18 +141,20 @@ class ExtensionMenu implements ExtensionMenuInterface
     private function getUser(): ?ItemInterface
     {
         $menu = $this->factory->createItem('usersUserMenu');
-        $menu->addChild('Account menu', [
-            'route' => 'zikulausersmodule_account_menu',
-        ])->setAttribute('icon', 'fas fa-user-circle');
+
         if (!$this->currentUser->isLoggedIn()) {
-            $menu->addChild('Log in', [
-                'route' => 'zikulausersmodule_access_login',
-            ])->setAttribute('icon', 'fas fa-sign-in-alt');
+            $menu->addChild('Help', [
+                'route' => 'zikulausersmodule_account_menu',
+            ])->setAttribute('icon', 'text-danger fas fa-ambulance');
             if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
                 $menu->addChild('New account', [
                     'route' => 'zikulausersmodule_registration_register',
                 ])->setAttribute('icon', 'fas fa-plus');
             }
+        } else {
+            $menu->addChild('Account menu', [
+                'route' => 'zikulausersmodule_account_menu',
+            ])->setAttribute('icon', 'fas fa-user-circle');
         }
 
         return 0 === $menu->count() ? null : $menu;

@@ -44,29 +44,21 @@ class AccountController extends AbstractController
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     public function menuAction(
-        CurrentUserApiInterface $currentUserApi,
         ExtensionMenuCollector $extensionMenuCollector,
         VariableApiInterface $variableApi
     ): array {
-        if (!$currentUserApi->isLoggedIn()) {
-            throw new AccessDeniedException();
-        }
+        $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
+        $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
+        $displayIcon = $variableApi->get('ZikulaUsersModule', Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS);
 
-        $accountMenus = [];
-        if ($currentUserApi->isLoggedIn()) {
-            $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
-            $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
-            $displayIcon = $variableApi->get('ZikulaUsersModule', Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS);
-
-            foreach ($accountMenus as $accountMenu) {
-                /** @var \Knp\Menu\ItemInterface $accountMenu */
-                $accountMenu->setChildrenAttribute('class', 'list-group');
-                foreach ($accountMenu->getChildren() as $child) {
-                    $child->setAttribute('class', 'list-group-item');
-                    $icon = $child->getAttribute('icon');
-                    $icon = $displayIcon ? $icon . ' fa-fw fa-2x' : null;
-                    $child->setAttribute('icon', $icon);
-                }
+        foreach ($accountMenus as $accountMenu) {
+            /** @var \Knp\Menu\ItemInterface $accountMenu */
+            $accountMenu->setChildrenAttribute('class', 'list-group');
+            foreach ($accountMenu->getChildren() as $child) {
+                $child->setAttribute('class', 'list-group-item');
+                $icon = $child->getAttribute('icon');
+                $icon = $displayIcon ? $icon . ' fa-fw fa-2x' : null;
+                $child->setAttribute('icon', $icon);
             }
         }
 
