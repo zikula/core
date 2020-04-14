@@ -71,9 +71,6 @@ class ExtensionMenu implements ExtensionMenuInterface
         if (self::TYPE_ACCOUNT === $type) {
             return $this->getAccount();
         }
-        if (self::TYPE_USER === $type) {
-            return $this->getUser();
-        }
 
         return null;
     }
@@ -117,45 +114,28 @@ class ExtensionMenu implements ExtensionMenuInterface
 
     private function getAccount(): ?ItemInterface
     {
-        if (!$this->currentUser->isLoggedIn()) {
-            return null;
-        }
         $menu = $this->factory->createItem('zauthAccountMenu');
-        $userMapping = $this->mappingRepository->findOneBy(['uid' => $this->currentUser->get('uid')]);
-        if (isset($userMapping)) {
-            $menu->addChild('Change password', [
-                'route' => 'zikulazauthmodule_account_changepassword',
-            ])->setAttribute('icon', 'fas fa-key')
-            ->setLinkAttribute('class', 'text-success');
-            $menu->addChild('Change e-mail address', [
-                'route' => 'zikulazauthmodule_account_changeemail',
-            ])->setAttribute('icon', 'fas fa-at');
+        if (!$this->currentUser->isLoggedIn()) {
+            $menu->addChild('UserName', [
+                'label' => 'I have forgotten my account information (for example, my user name)',
+                'route' => 'zikulazauthmodule_account_lostusername',
+            ])->setAttribute('icon', 'fas fa-user');
+            $menu->addChild('Password', [
+                'label' => 'I have forgotten my password',
+                'route' => 'zikulazauthmodule_account_lostpassword',
+            ])->setAttribute('icon', 'fas fa-key');
+        } else {
+            $userMapping = $this->mappingRepository->findOneBy(['uid' => $this->currentUser->get('uid')]);
+            if (isset($userMapping)) {
+                $menu->addChild('Change password', [
+                    'route' => 'zikulazauthmodule_account_changepassword',
+                ])->setAttribute('icon', 'fas fa-key')
+                    ->setLinkAttribute('class', 'text-success');
+                $menu->addChild('Change e-mail address', [
+                    'route' => 'zikulazauthmodule_account_changeemail',
+                ])->setAttribute('icon', 'fas fa-at');
+            }
         }
-
-        return 0 === $menu->count() ? null : $menu;
-    }
-
-    private function getUser(): ?ItemInterface
-    {
-        $menu = $this->factory->createItem('zauthUserMenu');
-        $menu->addChild('Account menu', [
-            'route' => 'zikulausersmodule_account_menu',
-        ])->setAttribute('icon', 'fas fa-user-circle');
-
-        $acctMenu = $this->getAccount();
-        foreach ($acctMenu as $item) {
-            $menu->addChild($item);
-        }
-
-        $menu->addChild('Recover account information or password', [
-            'route' => 'zikulausersmodule_account_menu',
-        ])->setAttribute('icon', 'fas fa-key');
-        $menu['Recover account information or password']->addChild('Recover Lost User Name', [
-            'route' => 'zikulazauthmodule_account_lostusername',
-        ]);
-        $menu['Recover account information or password']->addChild('Recover Lost Password', [
-            'route' => 'zikulazauthmodule_account_lostpassword',
-        ]);
 
         return 0 === $menu->count() ? null : $menu;
     }

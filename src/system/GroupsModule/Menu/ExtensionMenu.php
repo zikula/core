@@ -19,6 +19,7 @@ use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface
 {
@@ -42,16 +43,23 @@ class ExtensionMenu implements ExtensionMenuInterface
      */
     private $groupApplicationRepository;
 
+    /**
+     * @var CurrentUserApiInterface
+     */
+    private $currentUser;
+
     public function __construct(
         FactoryInterface $factory,
         PermissionApiInterface $permissionApi,
         GroupRepositoryInterface $groupRepository,
-        GroupApplicationRepository $groupApplicationRepository
+        GroupApplicationRepository $groupApplicationRepository,
+        CurrentUserApiInterface $currentUserApi
     ) {
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
         $this->groupRepository = $groupRepository;
         $this->groupApplicationRepository = $groupApplicationRepository;
+        $this->currentUser = $currentUserApi;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
@@ -118,6 +126,10 @@ class ExtensionMenu implements ExtensionMenuInterface
 
     private function getAccount(): ?ItemInterface
     {
+        if (!$this->currentUser->isLoggedIn()) {
+            return null;
+        }
+
         // Check if there is at least one group to show
         $groups = $this->groupRepository->findAll();
         if (count($groups) > 0) {
