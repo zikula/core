@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Event;
 
-use Zikula\RoutesModule\Event\Base\AbstractConfigureViewActionsMenuEvent;
+use Zikula\RoutesModule\Event\Base\AbstractViewActionsMenuPreConfigurationEvent;
 
 /**
  * Event implementation class for extending view actions menu.
  */
-class ConfigureViewActionsMenuEvent extends AbstractConfigureViewActionsMenuEvent
+class ViewActionsMenuPreConfigurationEvent extends AbstractViewActionsMenuPreConfigurationEvent
 {
     // feel free to extend the event class here
 }

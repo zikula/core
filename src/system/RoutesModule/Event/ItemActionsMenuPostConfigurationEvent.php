@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Event;
 
-use Zikula\RoutesModule\Event\Base\AbstractConfigureItemActionsMenuEvent;
+use Zikula\RoutesModule\Event\Base\AbstractItemActionsMenuPostConfigurationEvent;
 
 /**
  * Event implementation class for extending item actions menu.
  */
-class ConfigureItemActionsMenuEvent extends AbstractConfigureItemActionsMenuEvent
+class ItemActionsMenuPostConfigurationEvent extends AbstractItemActionsMenuPostConfigurationEvent
 {
     // feel free to extend the event class here
 }

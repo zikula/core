@@ -20,7 +20,7 @@ use Knp\Menu\ItemInterface;
 /**
  * Event base class for extending item actions menu.
  */
-class AbstractConfigureItemActionsMenuEvent
+abstract class AbstractItemActionsMenuPostConfigurationEvent
 {
     /**
      * @var FactoryInterface.

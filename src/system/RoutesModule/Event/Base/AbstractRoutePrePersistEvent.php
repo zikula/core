@@ -19,7 +19,7 @@ use Zikula\RoutesModule\Entity\RouteEntity;
 /**
  * Event base class for filtering route processing.
  */
-class AbstractFilterRouteEvent
+class AbstractRoutePrePersistEvent
 {
     /**
      * @var RouteEntity Reference to treated entity instance.

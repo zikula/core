@@ -19,7 +19,7 @@ use Zikula\RoutesModule\Event\Base\AbstractFilterRouteEvent;
 /**
  * Event implementation class for filtering route processing.
  */
-class FilterRouteEvent extends AbstractFilterRouteEvent
+class RoutePostPersistEvent extends AbstractRoutePostPersistEvent
 {
     // feel free to extend the event class here
 }

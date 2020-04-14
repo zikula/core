@@ -12,14 +12,14 @@
 
 declare(strict_types=1);
 
-namespace Zikula\RoutesModule;
+namespace Zikula\RoutesModule\Event;
 
-use Zikula\RoutesModule\Base\AbstractRoutesEvents;
+use Zikula\RoutesModule\Event\Base\AbstractFilterRouteEvent;
 
 /**
- * Events definition implementation class.
+ * Event implementation class for filtering route processing.
  */
-class RoutesEvents extends AbstractRoutesEvents
+class RoutePostRemoveEvent extends AbstractRoutePostRemoveEvent
 {
-    // feel free to extend the events definition here
+    // feel free to extend the event class here
 }

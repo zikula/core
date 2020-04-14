@@ -23,8 +23,10 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\RoutesEvents;
-use Zikula\RoutesModule\Event\ConfigureItemActionsMenuEvent;
-use Zikula\RoutesModule\Event\ConfigureViewActionsMenuEvent;
+use Zikula\RoutesModule\Event\ItemActionsMenuPostConfigurationEvent;
+use Zikula\RoutesModule\Event\ItemActionsMenuPreConfigurationEvent;
+use Zikula\RoutesModule\Event\ViewActionsMenuPostConfigurationEvent;
+use Zikula\RoutesModule\Event\ViewActionsMenuPreConfigurationEvent;
 use Zikula\RoutesModule\Helper\EntityDisplayHelper;
 use Zikula\RoutesModule\Helper\ModelHelper;
 use Zikula\RoutesModule\Helper\PermissionHelper;
@@ -110,8 +112,7 @@ class AbstractMenuBuilder
         $menu->setChildrenAttribute('class', 'nav item-actions');
     
         $this->eventDispatcher->dispatch(
-            new ConfigureItemActionsMenuEvent($this->factory, $menu, $options),
-            RoutesEvents::MENU_ITEMACTIONS_PRE_CONFIGURE
+            new ItemActionsMenuPreConfigurationEvent($this->factory, $menu, $options)
         );
     
         if ($entity instanceof RouteEntity) {
@@ -177,8 +178,7 @@ class AbstractMenuBuilder
         }
     
         $this->eventDispatcher->dispatch(
-            new ConfigureItemActionsMenuEvent($this->factory, $menu, $options),
-            RoutesEvents::MENU_ITEMACTIONS_POST_CONFIGURE
+            new ItemActionsMenuPostConfigurationEvent($this->factory, $menu, $options)
         );
     
         return $menu;
@@ -199,8 +199,7 @@ class AbstractMenuBuilder
         $menu->setChildrenAttribute('class', 'nav view-actions');
     
         $this->eventDispatcher->dispatch(
-            new ConfigureViewActionsMenuEvent($this->factory, $menu, $options),
-            RoutesEvents::MENU_VIEWACTIONS_PRE_CONFIGURE
+            new ViewActionsMenuPreConfigurationEvent($this->factory, $menu, $options)
         );
     
         $query = $this->requestStack->getMasterRequest()->query;
@@ -265,8 +264,7 @@ class AbstractMenuBuilder
         }
     
         $this->eventDispatcher->dispatch(
-            new ConfigureViewActionsMenuEvent($this->factory, $menu, $options),
-            RoutesEvents::MENU_VIEWACTIONS_POST_CONFIGURE
+            new ViewActionsMenuPostConfigurationEvent($this->factory, $menu, $options)
         );
     
         return $menu;
