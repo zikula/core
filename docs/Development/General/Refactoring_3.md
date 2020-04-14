@@ -155,7 +155,7 @@ Several events have been changed which requires updates in corresponding listene
 
 - Core bundles
   - `Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
-    - Also, listeners should respond to the form _class_, the static property `NAME` is removed.
+    - Also, listeners should respond to the event _class_, the static property `NAME` is removed.
   - `Zikula\Bundle\HookBundle\Hook\Hook` (and all its subclasses) no longer extends `Symfony\Contracts\EventDispatcher\Event`.
 - Blocks module
   - `get.pending_content` which was formerly in CoreBundle is removed in favor of `Zikula\BlocksModule\Event\PendingContentEvent`
@@ -184,6 +184,7 @@ Several events have been changed which requires updates in corresponding listene
   - `Zikula\GroupsModule\GroupEvents::GROUP_GROUP_NEW_APPLICATIONCREATE` is removed in favor of `Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent`
 - Menu module
   - `Zikula\MenuModule\Event\ConfigureMenuEvent` no longer extends `Symfony\Contracts\EventDispatcher\Event`.
+    - Also, listeners should respond to the event _class_, the static property `POST_CONFIGURE` is removed.
 - Routes module
   - `new.routes.avail` event is replaced by `Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent`
 - SecurityCenter module
