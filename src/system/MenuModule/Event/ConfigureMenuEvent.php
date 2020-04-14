@@ -21,8 +21,6 @@ use Knp\Menu\ItemInterface;
  */
 class ConfigureMenuEvent
 {
-    public const POST_CONFIGURE = 'zikulamenumodule.menu_post_configure';
-
     /**
      * @var FactoryInterface
      */

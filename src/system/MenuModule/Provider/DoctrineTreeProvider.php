@@ -68,7 +68,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
         }
         $menu = $this->nodeLoader->load($node);
 
-        $this->eventDispatcher->dispatch(new ConfigureMenuEvent($this->factory, $menu, $options), ConfigureMenuEvent::POST_CONFIGURE);
+        $this->eventDispatcher->dispatch(new ConfigureMenuEvent($this->factory, $menu, $options));
 
         return $menu;
     }
