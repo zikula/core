@@ -246,6 +246,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PreUpdate');
+        $event->setEntityChangeSet($args->getEntityChangeSet());
         $this->eventDispatcher->dispatch($event);
     }
 

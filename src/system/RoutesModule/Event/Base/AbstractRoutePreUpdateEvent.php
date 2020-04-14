@@ -52,4 +52,12 @@ class AbstractRoutePreUpdateEvent
     {
         return $this->entityChangeSet;
     }
+
+    /**
+     * @param array $changeSet Entity change set
+     */
+    public function setEntityChangeSet(array $changeSet = []): void
+    {
+        $this->entityChangeSet = $changeSet;
+    }
 }

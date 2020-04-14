@@ -26,15 +26,9 @@ class AbstractRoutePostPersistEvent
      */
     protected $route;
 
-    /**
-     * @var array Entity change set for preUpdate events.
-     */
-    protected $entityChangeSet = [];
-
-    public function __construct(RouteEntity $route, array $entityChangeSet = [])
+    public function __construct(RouteEntity $route)
     {
         $this->route = $route;
-        $this->entityChangeSet = $entityChangeSet;
     }
 
     /**
@@ -43,13 +37,5 @@ class AbstractRoutePostPersistEvent
     public function getRoute(): RouteEntity
     {
         return $this->route;
-    }
-
-    /**
-     * @return array Entity change set
-     */
-    public function getEntityChangeSet(): array
-    {
-        return $this->entityChangeSet;
     }
 }
