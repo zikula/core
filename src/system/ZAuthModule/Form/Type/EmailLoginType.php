@@ -43,6 +43,7 @@ class EmailLoginType extends AbstractType
             ->add('pass', PasswordType::class, [
                 'label' => 'Password',
                 'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostpassword') . '">I forgot my password</a>',
+                'help_html' => true,
                 'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [

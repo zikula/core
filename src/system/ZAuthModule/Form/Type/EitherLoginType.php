@@ -39,11 +39,13 @@ class EitherLoginType extends AbstractType
             ->add('either', TextType::class, [
                 'label' => 'User name or email',
                 'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostusername') . '">I forgot my username</a>',
+                'help_html' => true,
                 'input_group' => ['left' => '<i class="fas fa-fw fa-sign-in-alt"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => 'Password',
                 'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostpassword') . '">I forgot my password</a>',
+                'help_html' => true,
                 'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
