@@ -23,7 +23,7 @@ use Knp\Menu\ItemInterface;
 abstract class AbstractViewActionsMenuPreConfigurationEvent
 {
     /**
-     * @var FactoryInterface.
+     * @var FactoryInterface
      */
     protected $factory;
 

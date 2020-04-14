@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Event;
 
-use Zikula\RoutesModule\Event\Base\AbstractFilterRouteEvent;
+use Zikula\RoutesModule\Event\Base\AbstractRoutePostLoadEvent;
 
 /**
  * Event implementation class for filtering route processing.
