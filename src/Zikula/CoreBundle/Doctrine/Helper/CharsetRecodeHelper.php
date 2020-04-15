@@ -90,7 +90,7 @@ class CharsetRecodeHelper
         return $commands;
     }
 
-    private function retrieveCommands(string $sql, string $dbName): array
+    private function retrieveCommands(string $sql): array
     {
         $result = [];
         $stmt = $this->conn->executeQuery(
