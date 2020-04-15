@@ -27,7 +27,7 @@
   - doctrine/reflection installed in 1.2.1
   - egulias/email-validator installed in 2.1.17
   - erusev/parsedown installed in 1.7.4
-  - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
+  - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.4
   - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.39
   - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
   - imagine/imagine updated from 0.7.1 to 1.3.3
