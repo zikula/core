@@ -15,11 +15,23 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\ColumnExistsTrait;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\CharsetRecodeHelper;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 
 class Core3UpgradeListener implements EventSubscriberInterface
 {
     use ColumnExistsTrait;
+
+    /**
+     * @var CharsetRecodeHelper
+     */
+    private $charsetRecodeHelper;
+
+    public function __construct(
+        CharsetRecodeHelper $charsetRecodeHelper
+    ) {
+        $this->charsetRecodeHelper = $charsetRecodeHelper;
+    }
 
     public static function getSubscribedEvents()
     {
@@ -38,6 +50,7 @@ class Core3UpgradeListener implements EventSubscriberInterface
         }
         $commands = [];
         $commands[] = 'ALTER TABLE `bundles` DROP COLUMN `bundlestate`';
+        $commands = array_merge($commands, $this->charsetRecodeHelper->getCommands());
         foreach ($commands as $sql) {
             $this->conn->executeQuery($sql);
         }

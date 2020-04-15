@@ -17,9 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 
-/**
- * Class SchemaHelper
- */
 class SchemaHelper
 {
     /**
