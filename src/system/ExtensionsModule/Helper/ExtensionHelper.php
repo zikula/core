@@ -126,9 +126,6 @@ class ExtensionHelper
             throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getName()]));
         }
 
-        // clear cache to detect "new" installer class
-        $this->cacheClearer->clear('symfony.config');
-
         /** @var AbstractExtension $extensionBundle */
         $extensionBundle = $this->kernel->getBundle($extension->getName());
 

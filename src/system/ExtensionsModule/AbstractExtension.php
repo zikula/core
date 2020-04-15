@@ -70,28 +70,20 @@ abstract class AbstractExtension extends Bundle
         return 'Bundle';
     }
 
-    protected function getBaseName()
-    {
-        return preg_replace('/' . $this->getNameType() . '$/', '', $this->getName());
-    }
-
-    protected function getContainerExtensionClass()
-    {
-        return $this->getNamespace() . '\\DependencyInjection\\' . $this->getBaseName() . 'Extension';
-    }
-
     public function getContainerExtension()
     {
         if (null === $this->extension) {
-            $extension = $this->createContainerExtension();
+            $type = $this->getNameType();
+            $typeLower = mb_strtolower($type);
+            $basename = preg_replace('/' . $type . '/', '', $this->getName());
 
-            if (null !== $extension) {
+            $class = $this->getNamespace() . '\\DependencyInjection\\' . $basename . 'Extension';
+            if (class_exists($class)) {
+                $extension = new $class();
+
                 // check naming convention
-                $basename = $this->getBaseName();
                 $expectedAlias = Container::underscore($basename);
-
                 if ($expectedAlias !== $extension->getAlias()) {
-                    $typeLower = mb_strtolower($this->getNameType());
                     throw new LogicException(sprintf('The extension alias for the default extension of a %s must be the underscored version of the %s name ("%s" instead of "%s")', $typeLower, $typeLower, $expectedAlias, $extension->getAlias()));
                 }
 
