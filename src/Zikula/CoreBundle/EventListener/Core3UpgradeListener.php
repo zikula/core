@@ -22,17 +22,6 @@ class Core3UpgradeListener implements EventSubscriberInterface
 {
     use ColumnExistsTrait;
 
-    /**
-     * @var CharsetRecodeHelper
-     */
-    private $charsetRecodeHelper;
-
-    public function __construct(
-        CharsetRecodeHelper $charsetRecodeHelper
-    ) {
-        $this->charsetRecodeHelper = $charsetRecodeHelper;
-    }
-
     public static function getSubscribedEvents()
     {
         return [
@@ -50,7 +39,7 @@ class Core3UpgradeListener implements EventSubscriberInterface
         }
         $commands = [];
         $commands[] = 'ALTER TABLE `bundles` DROP COLUMN `bundlestate`';
-        $commands = array_merge($commands, $this->charsetRecodeHelper->getCommands());
+        $commands = array_merge($commands, (new CharsetRecodeHelper($this->conn))->getCommands());
         foreach ($commands as $sql) {
             $this->conn->executeQuery($sql);
         }
