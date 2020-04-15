@@ -23,8 +23,7 @@ class DbCredsHelper
             . '/' . $data['database_name']
         ;
 
-        $databaseUrl .= '?charset=UTF8';
-        $databaseUrl .= '&serverVersion=5.7'; // any value will work (bypasses DBALException)
+        $databaseUrl .= '?serverVersion=5.7'; // any value will work (bypasses DBALException)
 
         return $databaseUrl;
     }
