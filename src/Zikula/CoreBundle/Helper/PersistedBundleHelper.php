@@ -85,7 +85,7 @@ class PersistedBundleHelper
     private function getConnection(): Connection
     {
         $connectionParams = [
-            'url' => $this->databaseUrl ?? ''
+            'url' => $this->databaseUrl
         ];
 
         return DriverManager::getConnection($connectionParams, new Configuration());
