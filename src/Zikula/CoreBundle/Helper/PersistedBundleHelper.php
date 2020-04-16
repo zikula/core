@@ -30,6 +30,16 @@ class PersistedBundleHelper
      */
     private $extensionStateMap = [];
 
+    /**
+     * @var string
+     */
+    private $databaseUrl;
+
+    public function __construct(string $databaseUrl = '')
+    {
+        $this->databaseUrl = $databaseUrl;
+    }
+
     public function getPersistedBundles(ZikulaHttpKernelInterface $kernel, array &$bundles): void
     {
         try {
@@ -75,7 +85,7 @@ class PersistedBundleHelper
     private function getConnection(): Connection
     {
         $connectionParams = [
-            'url' => $_ENV['DATABASE_URL'] ?? ''
+            'url' => $this->databaseUrl ?? ''
         ];
 
         return DriverManager::getConnection($connectionParams, new Configuration());

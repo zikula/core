@@ -18,19 +18,32 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class RequirementChecker
 {
-    private static $parameters;
+    /**
+     * @var array
+     */
+    private $parameters;
+
+    /**
+     * @var string
+     */
+    private $installedVersion;
+
+    public function __construct(string $installed)
+    {
+        $this->installedVersion = $installed;
+    }
 
     /**
      * If not installed, or if currentVersion != installedVersion run
      * requirement checks. Die on failure.
      */
-    public static function verify(): void
+    public function verify(): void
     {
         // on install or upgrade, check if system requirements are met.
-        if (version_compare($_ENV['ZIKULA_INSTALLED'], ZikulaKernel::VERSION, '<')) {
-            self::loadParametersFromFile();
+        if (version_compare($this->installedVersion, ZikulaKernel::VERSION, '<')) {
+            $this->loadParametersFromFile();
             $versionChecker = new ZikulaRequirements();
-            $versionChecker->runSymfonyChecks(self::$parameters);
+            $versionChecker->runSymfonyChecks($this->parameters);
             if (empty($versionChecker->requirementsErrors)) {
                 return;
             }
@@ -51,16 +64,16 @@ class RequirementChecker
         }
     }
 
-    public static function getParameter($name)
+    public function getParameter($name)
     {
-        self::loadParametersFromFile();
+        $this->loadParametersFromFile();
 
-        return self::$parameters[$name];
+        return $this->parameters[$name];
     }
 
-    private static function loadParametersFromFile(): void
+    private function loadParametersFromFile(): void
     {
-        if (is_array(self::$parameters)) {
+        if (is_array($this->parameters)) {
             return;
         }
         $projectDir = dirname(__DIR__, 4); // should work when Bundle in vendor too
@@ -71,6 +84,6 @@ class RequirementChecker
         $parameters = $kernelConfig['parameters'];
         $parameters['kernel.project_dir'] = $projectDir;
 
-        self::$parameters = $parameters;
+        $this->parameters = $parameters;
     }
 }

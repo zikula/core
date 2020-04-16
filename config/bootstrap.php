@@ -39,7 +39,7 @@ $_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? 'prod' !=
 $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = (int) $_SERVER['APP_DEBUG'] || filter_var($_SERVER['APP_DEBUG'], FILTER_VALIDATE_BOOLEAN) ? '1' : '0';
 
 // on install or upgrade, check if system requirements are met.
-RequirementChecker::verify();
+(new RequirementChecker($_ENV['ZIKULA_INSTALLED']))->verify();
 
 // globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
 AnnotationReader::addGlobalIgnoredName('type');

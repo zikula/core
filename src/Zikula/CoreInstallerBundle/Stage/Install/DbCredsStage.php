@@ -38,10 +38,16 @@ class DbCredsStage implements StageInterface, FormHandlerInterface
      */
     private $projectDir;
 
-    public function __construct(string $projectDir)
+    /**
+     * @var string
+     */
+    private $databaseUrl;
+
+    public function __construct(string $projectDir, string $databaseUrl = '')
     {
         $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
         $this->projectDir = $projectDir;
+        $this->databaseUrl = $databaseUrl;
     }
 
     public function getName(): string
@@ -67,7 +73,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface
     public function isNecessary(): bool
     {
         $params = $this->yamlManager->getParameters();
-        $databaseUrl = $_ENV['DATABASE_URL'] ?? '';
+        $databaseUrl = $this->databaseUrl;
         if (empty($databaseUrl) || 'nothing' === $databaseUrl) {
             // check if credentials are temporarily stored as parameter during installation
             $databaseUrl = $params['database_url'] ?? '';

@@ -26,9 +26,15 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface
      */
     private $projectDir;
 
-    public function __construct(string $projectDir)
+    /**
+     * @var string
+     */
+    private $mailerDsn;
+
+    public function __construct(string $projectDir, string $mailerDsn = '')
     {
         $this->projectDir = $projectDir;
+        $this->mailerDsn = $mailerDsn;
     }
 
     public function getName(): string
@@ -53,7 +59,7 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface
 
     public function isNecessary(): bool
     {
-        $mailerDsn = $_ENV['MAILER_DSN'] ?? '';
+        $mailerDsn = $this->mailerDsn;
         if (!empty($mailerDsn) && 'smtp://localhost' !== $mailerDsn) {
             return false;
         }
