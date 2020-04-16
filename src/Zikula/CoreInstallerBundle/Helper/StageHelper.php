@@ -158,8 +158,6 @@ class StageHelper
                 return $this->parameterHelper->finalizeParameters();
             case 'installassets':
                 return $this->extensionHelper->installAssets();
-            case 'protect':
-                return $this->parameterHelper->protectFiles();
             case 'reinitparams':
                 return $this->parameterHelper->reInitParameters();
             case 'upgrade_event':

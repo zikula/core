@@ -206,20 +206,13 @@ class AjaxInstallerStage implements AjaxStageInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error finalizing the parameters')
             ],
             24 => [
-                AjaxStageInterface::NAME => 'protect',
-                AjaxStageInterface::PRE => $this->trans('Protect configuration files'),
-                AjaxStageInterface::DURING => $this->trans('Protecting configuration files'),
-                AjaxStageInterface::SUCCESS => $this->trans('Configuration files protected'),
-                AjaxStageInterface::FAIL => $this->trans('There was an error protecting configuration files')
-            ],
-            25 => [
                 AjaxStageInterface::NAME => 'installassets',
                 AjaxStageInterface::PRE => $this->trans('Install assets'),
                 AjaxStageInterface::DURING => $this->trans('Installing assets to /public'),
                 AjaxStageInterface::SUCCESS => $this->trans('Assets installed'),
                 AjaxStageInterface::FAIL => $this->trans('Failed to install assets')
             ],
-            26 => [
+            25 => [
                 AjaxStageInterface::NAME => 'finish',
                 AjaxStageInterface::PRE => $this->trans('Finish'),
                 AjaxStageInterface::DURING => $this->trans('Finish'),
