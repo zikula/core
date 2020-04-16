@@ -1682,10 +1682,6 @@ https: null
 'Creating admin account': null
 'Admin account created': null
 'There was an error creating admin account': null
-'Protect configuration files': null
-'Protecting configuration files': null
-'Configuration files protected': null
-'There was an error protecting configuration files': null
 'Install assets': null
 'Installing assets to /public': null
 'Assets installed': null

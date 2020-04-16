@@ -184,34 +184,6 @@ class ParameterHelper
         $helper->writeLocalEnvVars($vars);
     }
 
-    public function protectFiles(): bool
-    {
-        // protect services_custom.yaml files
-        $files = array_diff(scandir($this->configDir), ['.', '..']);
-        foreach ($files as $file) {
-            $this->protectFile($this->configDir . '/' . $file);
-        }
-
-        $this->protectFile($this->projectDir . '/.env.local');
-
-        // clear the cache
-        $this->cacheClearer->clear('symfony.config');
-
-        return true;
-    }
-
-    private function protectFile(string $filePath): void
-    {
-        return; // see #4099
-        //@chmod($filePath, 0400);
-        //if (!is_readable($filePath)) {
-        @chmod($filePath, 0440);
-        if (!is_readable($filePath)) {
-            @chmod($filePath, 0444);
-        }
-        //}
-    }
-
     /**
      * Remove base64 encoding for admin parameters.
      */
