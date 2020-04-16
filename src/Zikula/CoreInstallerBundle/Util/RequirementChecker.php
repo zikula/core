@@ -64,14 +64,14 @@ class RequirementChecker
         }
     }
 
-    public static function getParameter($name)
+    public function getParameter($name)
     {
         $this->loadParametersFromFile();
 
         return $this->parameters[$name];
     }
 
-    private static function loadParametersFromFile(): void
+    private function loadParametersFromFile(): void
     {
         if (is_array($this->parameters)) {
             return;
