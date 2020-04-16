@@ -6941,12 +6941,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "23afd2a6b8f9793adaf15d579cb988206bd7db80"
+                "reference": "a65a8c3194d6fb11b7339d7170b3eab5a1b87ab3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/23afd2a6b8f9793adaf15d579cb988206bd7db80",
-                "reference": "23afd2a6b8f9793adaf15d579cb988206bd7db80",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a65a8c3194d6fb11b7339d7170b3eab5a1b87ab3",
+                "reference": "a65a8c3194d6fb11b7339d7170b3eab5a1b87ab3",
                 "shasum": ""
             },
             "require": {
@@ -7002,7 +7002,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-04-10T11:07:36+00:00"
+            "time": "2020-04-15T12:06:12+00:00"
         },
         {
             "name": "zikula/sortable-columns",
