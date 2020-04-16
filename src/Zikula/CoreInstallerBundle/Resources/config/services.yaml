@@ -6,6 +6,8 @@ services:
             $installed: '%env(ZIKULA_INSTALLED)%'
             $projectDir: '%kernel.project_dir%'
             $locale: '%locale%'
+            $databaseUrl: '%env(DATABASE_URL)%'
+            $mailerDsn: '%env(MAILER_DSN)%'
 
     _instanceof:
         Zikula\Component\Wizard\StageInterface:

@@ -6,6 +6,7 @@ services:
         bind:
             $installed: '%env(ZIKULA_INSTALLED)%'
             $projectDir: '%kernel.project_dir%'
+            $databaseUrl: '%env(DATABASE_URL)%'
 
     # alias interface to doctrine service
     Doctrine\Persistence\ManagerRegistry: '@doctrine'
