@@ -4,16 +4,16 @@
     {% trans with {'%uname': form.vars.value.uname} %}Edit user account of %uname{% endtrans %}
     {{ pageSetVar('title', 'Edit user account'|trans) }}
 </h3>
-<div class="alert alert-warning">{% trans %}The items that are marked with an asterisk (\'*\') are required entries.{% endtrans %}</div>
+<p class="alert alert-warning">{% trans %}The items that are marked with an asterisk (\'*\') are required entries.{% endtrans %}</p>
 {% if form.vars.value.uid == currentUser.uid %}
-    <div class="alert alert-danger">{% trans %}WARNING: You appear to be editing your OWN account. You will not be able to modify active status, some group memberships or delete yourself.{% endtrans %}</div>
+    <p class="alert alert-danger">{% trans %}WARNING: You appear to be editing your OWN account. You will not be able to modify active status, some group memberships or delete yourself.{% endtrans %}</p>
 {% endif %}
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
     <legend>{% trans %}Account information{% endtrans %}</legend>
     {{ form_row(form.activated) }}
-    <div class="alert alert-info col-md-9 offset-md-3">{% trans %}Setting a user theme is no longer available.{% endtrans %}</div>
+    <p class="alert alert-info col-md-9 offset-md-3">{% trans %}Setting a user theme is no longer available.{% endtrans %}</p>
 </fieldset>
 <fieldset>
     <legend>{% trans %}Group membership{% endtrans %}</legend>

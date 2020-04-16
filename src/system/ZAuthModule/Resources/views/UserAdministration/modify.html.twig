@@ -5,9 +5,9 @@
     {{ pageSetVar('title', 'Edit user account'|trans) }}
 </h3>
 
-<div class="alert alert-warning">{% trans %}The items that are marked with an asterisk (\'*\') are required entries.{% endtrans %}</div>
+<p class="alert alert-warning">{% trans %}The items that are marked with an asterisk (\'*\') are required entries.{% endtrans %}</p>
 {% if form.vars.value.uid == currentUser.uid %}
-    <div class="alert alert-danger">{% trans %}WARNING: You appear to be editing your OWN account.{% endtrans %}</div>
+    <p class="alert alert-danger">{% trans %}WARNING: You appear to be editing your OWN account.{% endtrans %}</p>
 {% endif %}
 {{ form_start(form) }}
 {{ form_errors(form) }}
