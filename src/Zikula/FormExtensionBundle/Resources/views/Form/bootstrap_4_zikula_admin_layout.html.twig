@@ -23,28 +23,28 @@ col-md-9
 {% block input_group_start %}
     {% if input_group|default %}<div class="input-group">{% endif %}
     {% if input_group|default and input_group.left|default %}
-        <div class="input-group-prepend">
+        <div class="input-group-prepend">{#--#}
             <span class="input-group-text">
                 {%- if translation_domain|default -%}
-                    {{ input_group.left|trans({}, translation_domain)|raw }}
+                    {{- input_group.left|trans({}, translation_domain)|raw -}}
                 {%- else -%}
-                    {{ input_group.left|trans()|raw }}
+                    {{- input_group.left|trans()|raw -}}
                 {%- endif -%}
-            </span>
+            </span>{#--#}
         </div>
     {% endif %}
 {% endblock %}
 {# input group end block #}
 {% block input_group_end %}
     {% if input_group|default and input_group.right|default %}
-        <div class="input-group-append">
+        <div class="input-group-append">{#--#}
             <span class="input-group-text">
                 {%- if translation_domain|default -%}
-                    {{ input_group.right|trans({}, translation_domain)|raw }}
+                    {{- input_group.right|trans({}, translation_domain)|raw -}}
                 {%- else -%}
-                    {{ input_group.right|trans()|raw }}
+                    {{- input_group.right|trans()|raw -}}
                 {%- endif -%}
-            </span>
+            </span>{#--#}
         </div>
     {% endif %}
     {% if input_group|default %}</div>{% endif %}
@@ -70,9 +70,9 @@ col-md-9
         {% for alertText, type in param %}
             <div class="alert alert-{{ type }}" role="alert">
                 {%- if domain|default -%}
-                    {{ alertText|trans({}, domain) }}
+                    {{- alertText|trans({}, domain) -}}
                 {%- else -%}
-                    {{ alertText|trans() }}
+                    {{- alertText|trans() -}}
                 {%- endif -%}
             </div>
         {% endfor %}
@@ -86,12 +86,12 @@ col-md-9
         {% if help is iterable %}
             {% for helpText in help %}
                 <small id="{{ id }}_help_{{ loop.index }}"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
-                    {{ _self.singleHelpText(helpText, help_html, help_translation_parameters, translation_domain) }}
+                    {{- _self.singleHelpText(helpText, help_html, help_translation_parameters, translation_domain) -}}
                 </small>
             {% endfor %}
         {% else %}
             <small id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
-                {{ _self.singleHelpText(help, help_html, help_translation_parameters, translation_domain) }}
+                {{- _self.singleHelpText(help, help_html, help_translation_parameters, translation_domain) -}}
             </small>
         {% endif %}
     {%- endif -%}
@@ -113,6 +113,33 @@ col-md-9
     {{- parent() -}}
 {%- endblock file_widget %}
 
+{# move label to left side also for checkbox switches with "switch-custom" class #}
+{% block checkbox_row -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group row')|trim})} %}{{ block('attributes') }}{% endwith %}>{#--#}
+        {{- block('form_label') -}}
+        <div class="{{ block('form_group_class') }}">
+            {{- form_widget(form) -}}
+            {{- form_help(form) -}}
+        </div>{#--#}
+    </div>
+{%- endblock checkbox_row %}
+{%- block checkbox_widget_base -%}{# from form_div_layout.html.twig #}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{%- endblock checkbox_widget_base -%}
+{% block checkbox_widget -%}
+    {%- set parent_label_class = parent_label_class|default(label_attr.class|default('')) -%}
+    {%- if 'checkbox-custom' in parent_label_class -%}
+        {{- parent() -}}
+    {%- elseif 'switch-custom' in parent_label_class -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-control-input')|trim}) -%}
+        <div class="custom-control custom-switch{{ 'switch-inline' in parent_label_class ? ' custom-control-inline' }}">
+            {{- form_label(form, null, { widget: block('checkbox_widget_base'), label: ' ' }) -}}
+        </div>
+    {%- else -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock checkbox_widget %}
+
 {# default to btn-secondary instead of btn-primary #}
 {% block submit_widget -%}
     {%- set attr = attr|merge({class: (attr.class|default('btn-secondary'))|trim}) -%}
@@ -125,12 +152,12 @@ col-md-9
 
 {# font awesome icon picker #}
 {% block zikula_icon_widget %}
-    <div class="input-group">
+    <div class="input-group">{#--#}
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' zikula-icon-picker')|trim}) -%}
-        {{ block('form_widget_simple') }}
-        <div class="input-group-append">
-            <span class="input-group-text">{{ input_group.right|default|raw }}</span>
-        </div>
+        {{- block('form_widget_simple') -}}
+        <div class="input-group-append">{#--#}
+            <span class="input-group-text">{{ input_group.right|default|raw }}</span>{#--#}
+        </div>{#--#}
     </div>
     {{ include('@ZikulaFormExtension/Form/icon_picker.html.twig') }}
 {% endblock %}
