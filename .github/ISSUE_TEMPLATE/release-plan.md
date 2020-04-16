@@ -11,6 +11,7 @@ assignees: 'Guite, craigh'
 
 - [ ] Check if there are no open issues labeled as `blocker`
 - [ ] Check if there are no open issues which are not labeled as `blocker` but seem critical
+- [ ] Ensure all VA modules and own components have been released to ensure all changes are correctly pulled.
 - [ ] Ensure all dependencies and `composer.lock` are up to date (execute `composer update`)
 - [ ] Ensure all translation templates are up to date (execute `php -dmemory_limit=2G bin/console translation:extract zikula en`)
 - [ ] Review whether there are changes required for install and/or upgrade docs
