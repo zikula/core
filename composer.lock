@@ -1967,11 +1967,11 @@
         },
         {
             "name": "frdh/mmenu.js",
-            "version": "8.5.3",
+            "version": "8.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/mmenu-js",
-                "reference": "ea3b330bfa50b22064b39442db47d2bcde29171e"
+                "reference": "f316ed7541c875cd09d50722ee1cffdd5eb11055"
             },
             "type": "library",
             "license": [
@@ -2001,7 +2001,7 @@
                 "panels",
                 "submenu"
             ],
-            "time": "2020-03-21T22:37:19+00:00"
+            "time": "2020-04-16T21:28:30+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -6768,12 +6768,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "1eb4c8a8339338929da88ffbdc3ed93200376841"
+                "reference": "e72fd2c78a93a1cfcefd35840b445ecd145c7e8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/1eb4c8a8339338929da88ffbdc3ed93200376841",
-                "reference": "1eb4c8a8339338929da88ffbdc3ed93200376841",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/e72fd2c78a93a1cfcefd35840b445ecd145c7e8f",
+                "reference": "e72fd2c78a93a1cfcefd35840b445ecd145c7e8f",
                 "shasum": ""
             },
             "require": {
@@ -6826,7 +6826,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-04-16T21:10:59+00:00"
+            "time": "2020-04-16T21:26:56+00:00"
         },
         {
             "name": "zikula/oauth-module",
