@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Zikula\Bundle\HookBundle\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
