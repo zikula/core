@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-/**
- * StorageInterface interface.
- */
 interface StorageInterface
 {
     public function bindSubscriber(string $subscriberArea, string $providerArea): void;

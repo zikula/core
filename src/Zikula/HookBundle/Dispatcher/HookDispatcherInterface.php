@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
+use Zikula\Bundle\HookBundle\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
@@ -61,7 +61,7 @@ interface HookDispatcherInterface
     /**
      * Bind subscriber and provider area together.
      *
-     * @throws LogicException
+     * @throws \Zikula\Bundle\HookBundle\Exception\LogicException
      */
     public function bindSubscriber(string $subscriberArea, string $providerArea): void;
 

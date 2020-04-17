@@ -18,9 +18,6 @@ use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstalla
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 use Zikula\Bundle\HookBundle\HookBundleInstaller;
 
-/**
- * Class CoreInstallerListener
- */
 class CoreInstallerListener implements EventSubscriberInterface
 {
     private $hookBundleInstaller;

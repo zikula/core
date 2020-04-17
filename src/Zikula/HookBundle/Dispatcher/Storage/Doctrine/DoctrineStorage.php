@@ -17,15 +17,13 @@ use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
+use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
+use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
+use Zikula\Bundle\HookBundle\Exception\InvalidArgumentException;
+use Zikula\Bundle\HookBundle\RepositoryInterface\HookBindingRepositoryInterface;
+use Zikula\Bundle\HookBundle\RepositoryInterface\HookRuntimeRepositoryInterface;
 
-/**
- * Doctrine class.
- */
 class DoctrineStorage implements StorageInterface
 {
     /**
@@ -97,7 +95,7 @@ class DoctrineStorage implements StorageInterface
             if (isset($types[$hookType])) {
                 $methods = is_array($types[$hookType]) ? $types[$hookType] : [$types[$hookType]];
                 foreach ($methods as $method) {
-                    $hookRuntimeEntity = new Entity\HookRuntimeEntity();
+                    $hookRuntimeEntity = new HookRuntimeEntity();
                     $hookRuntimeEntity->setSowner($subscriberAreaObject->getOwner());
                     $hookRuntimeEntity->setPowner($providerAreaObject->getOwner());
                     $hookRuntimeEntity->setSareaid($subscriberArea);
@@ -126,7 +124,7 @@ class DoctrineStorage implements StorageInterface
             throw new InvalidArgumentException('Invalid provider.');
         }
 
-        $binding = new Entity\HookBindingEntity();
+        $binding = new HookBindingEntity();
         $binding->setSowner($subscriberAreaObject->getOwner());
         $binding->setPowner($providerAreaObject->getOwner());
         $binding->setSareaid($subscriberArea);

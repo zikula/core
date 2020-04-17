@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Dispatcher\Exception;
+namespace Zikula\Bundle\HookBundle\Exception;
 
 /**
- * RuntimeException.
+ * InvalidArgumentException.
  */
-class RuntimeException extends \RuntimeException
+class InvalidArgumentException extends \InvalidArgumentException
 {
 }

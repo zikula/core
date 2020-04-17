@@ -20,9 +20,6 @@ use Zikula\MenuModule\ExtensionMenu\ExtensionMenuEvent;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-/**
- * Class HooksListener
- */
 class HooksListener implements EventSubscriberInterface
 {
     /**
