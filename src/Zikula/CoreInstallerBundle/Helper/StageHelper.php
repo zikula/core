@@ -43,11 +43,6 @@ class StageHelper
     private $kernel;
 
     /**
-     * @var PersistedBundleHelper
-     */
-    private $persistedBundleHelper;
-
-    /**
      * @var BundlesSchemaHelper
      */
     private $bundlesSchemaHelper;
@@ -84,7 +79,6 @@ class StageHelper
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        PersistedBundleHelper $persistedBundleHelper,
         BundlesSchemaHelper $bundlesSchemaHelper,
         ExtensionHelper $extensionHelper,
         EventDispatcherInterface $eventDispatcher,
@@ -96,7 +90,6 @@ class StageHelper
         string $installed
     ) {
         $this->kernel = $kernel;
-        $this->persistedBundleHelper = $persistedBundleHelper;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->extensionHelper = $extensionHelper;
         $this->eventDispatcher = $eventDispatcher;
@@ -201,8 +194,9 @@ class StageHelper
     private function createBundles(): bool
     {
         $this->bundlesSchemaHelper->load();
+        $bundleHelper = new PersistedBundleHelper();
         $bundles = [];
-        $this->persistedBundleHelper->getPersistedBundles($this->kernel, $bundles); // adds autoloaders
+        $bundleHelper->getPersistedBundles($this->kernel, $bundles); // adds autoloaders
 
         return true;
     }

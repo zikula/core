@@ -1,10 +1,8 @@
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-wrench"></span>
     {% trans %}Settings{% endtrans %}
     {{ pageSetVar('title', 'Block settings'|trans) }}
 </h3>
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
 {{ form_row(form.collapseable) }}
@@ -15,4 +13,3 @@
     </div>
 </div>
 {{ form_end(form) }}
-{{ adminFooter() }}

@@ -1,8 +1,6 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/Zikula.Menu.Node.Edit.js')) }}
-{{ adminHeader() }}
 {{ pageSetVar('title', 'Create or Edit Root Node'|trans) }}
 <h3>
     <span class="fas fa-plus"> {% trans %}Create or edit root node{% endtrans %}</span>
 </h3>
 {{ include('@ZikulaMenuModule/Menu/edit.html.twig') }}
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/Zikula.Menu.Node.Edit.js')) }}

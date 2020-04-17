@@ -1,6 +1,3 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Common.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.View.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>
     {% trans %}Blocks list{% endtrans %}
@@ -122,8 +119,6 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
 </div>
 <p class="alert alert-warning"><i class="fas fa-exclamation-triangle text-danger"></i> {% trans %}Marked positions are not available in the current default theme.{% endtrans %}</p>
 
-{{ adminFooter() }}
-
 {# block preview modal #}
 <div class="modal fade" id="zikulablocksmodule-block-view-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
@@ -141,3 +136,6 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
         </div>
     </div>
 </div>
+
+{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Common.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.View.js')) }}

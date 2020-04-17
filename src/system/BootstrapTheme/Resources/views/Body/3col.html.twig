@@ -4,8 +4,10 @@
             {{ showblockposition('left') }}
         </div>
         <div id="themeMainContent" class="col-md-4">
+            {{ admin|default ? adminHeader() : '' }}
             {{ showflashes() }}
             {{ maincontent|raw }}
+            {{ admin|default ? adminFooter() : '' }}
         </div>
         <div id="themeRightColumn" class="col-md-4">
             {{ showblockposition('right') }}

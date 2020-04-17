@@ -1,8 +1,4 @@
 {% from '@ZikulaUsersModule/UserAdministration/userlist.html.twig' import userStatus as userStatus %}
-{% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
-{% endif %}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>
     {% trans %}Search results{% endtrans %}
@@ -112,4 +108,6 @@
     </div>
     {{ form_end(mailForm) }}
 </div>
-{{ adminFooter() }}
+{% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
+{% endif %}

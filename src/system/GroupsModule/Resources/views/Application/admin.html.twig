@@ -1,5 +1,4 @@
 {% set templateTitle = 'Administrate membership application'|trans %}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-{% if action == 'accept' %}user-plus{% else %}user-times{% endif %}"></span>
     {{ templateTitle }}
@@ -24,4 +23,3 @@
     </div>
 </div>
 {{ form_end(form) }}
-{{ adminFooter() }}
