@@ -1,17 +1,6 @@
 {# purpose of this template: admin area base layout #}
 {% extends '@ZikulaRoutesModule/base.html.twig' %}
-{% block header %}
-    {% if not app.request.query.getBoolean('raw', false) %}
-        {{ adminHeader() }}
-    {% endif %}
-    {{ parent() }}
-{% endblock %}
 {% block appTitle %}{# empty on purpose #}{% endblock %}
 {% block titleArea %}
     <h3><i class="fas fa-{% block admin_page_icon %}{% endblock %}"></i> {% block title %}{% endblock %}</h3>
-{% endblock %}
-{% block footer %}
-    {% if not app.request.query.getBoolean('raw', false) %}
-        {{ adminFooter() }}
-    {% endif %}
 {% endblock %}

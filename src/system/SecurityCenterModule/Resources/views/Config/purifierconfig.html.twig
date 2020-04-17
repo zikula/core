@@ -1,6 +1,4 @@
 {% trans_default_domain 'security' %}
-{{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/ZikulaSecurityCenterModule.Admin.PurifierConfig.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-wrench"></span>
     {% trans %}HTMLPurifier settings{% endtrans %}
@@ -92,4 +90,4 @@
         </div>
     </div>
 </form>
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/ZikulaSecurityCenterModule.Admin.PurifierConfig.js')) }}

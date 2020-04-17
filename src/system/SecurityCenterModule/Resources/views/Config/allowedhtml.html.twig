@@ -1,6 +1,4 @@
 {% trans_default_domain 'security' %}
-{{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/ZikulaSecurityCenterModule.Admin.AllowedHtml.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>
     {% trans %}Allowed HTML settings{% endtrans %}
@@ -94,4 +92,4 @@
         </div>
     </div>
 </form>
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/ZikulaSecurityCenterModule.Admin.AllowedHtml.js')) }}

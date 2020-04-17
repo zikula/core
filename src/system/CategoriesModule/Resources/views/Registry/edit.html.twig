@@ -1,11 +1,8 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Registry.Edit.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-archive"></span>
     {% trans %}Edit category registry{% endtrans %}
     {{ pageSetVar('title', 'Edit category registry'|trans) }}
 </h3>
-
 {{ form_start(form) }}
 <div>
     <table class="table table-bordered table-striped">
@@ -69,4 +66,4 @@
     </div>
 </div>
 {{ form_end(form) }}
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Registry.Edit.js')) }}

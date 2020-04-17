@@ -1,5 +1,3 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaSettingsModule:js/ZikulaSettingsModule.Admin.Phpinfo.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-info-circle"></span>
     {% trans %}PHP configuration{% endtrans %}
@@ -8,4 +6,4 @@
 <div id="phpinfo">
     {{ phpinfo|raw }}
 </div>
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaSettingsModule:js/ZikulaSettingsModule.Admin.Phpinfo.js')) }}

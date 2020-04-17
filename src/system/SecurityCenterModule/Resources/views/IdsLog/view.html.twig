@@ -1,5 +1,4 @@
 {% trans_default_domain 'security' %}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-archive"></span>
     {% trans %}View IDS log{% endtrans %}
@@ -114,5 +113,4 @@
 {% else %}
     <p class="alert alert-info text-center">{% trans %}No logged intrusions found.{% endtrans %}</p>
 {% endif %}
-{{ adminFooter() }}
 {{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/ZikulaSecurityCenterModule.IdsLogFilter.js')) }}

@@ -1,7 +1,3 @@
-{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
-{{ pageAddAsset('javascript', asset('bundles/zikulahook/js/hookui.js')) }}
-{{ pageAddAsset('stylesheet', asset('bundles/zikulahook/css/hooks.css')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-paperclip"></span>
     {% trans %}Hooks{% endtrans %}
@@ -53,4 +49,7 @@
 {% if isSubscriber %}
     <div id="areaDefinitions" data-areas='[{% if isSubscriber and subscriberAreas is not empty %}{% for sarea in subscriberAreas %}{% set sarea_md5 = sarea|php('md5') %}"sarea_{{ sarea_md5 }}"{% if not loop.last %},{% endif %}{% endfor %}{% endif %}]'></div>
 {% endif %}
-{{ adminFooter() }}
+
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
+{{ pageAddAsset('javascript', asset('bundles/zikulahook/js/hookui.js')) }}
+{{ pageAddAsset('stylesheet', asset('bundles/zikulahook/css/hooks.css')) }}

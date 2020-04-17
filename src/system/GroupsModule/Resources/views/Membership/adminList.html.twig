@@ -1,5 +1,3 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Admin.View.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-users"></span>
     {% trans %}Group membership{% endtrans %} ({{ group.name }})
@@ -70,4 +68,4 @@
     <tbody>
     </tbody>
 </table>
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Admin.View.js')) }}

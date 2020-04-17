@@ -1,5 +1,3 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Edit.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-edit"></span>
     {% if form.vars.value.bid %}
@@ -58,4 +56,4 @@
 </div>
 {{ form_end(form) }}
 <div id="filterDefinitions" data-count="{{ form.filters|length }}"></div>
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Edit.js')) }}
