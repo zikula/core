@@ -194,3 +194,4 @@
   - Introduced a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` for dynamic site attributes (#3972).
   - Extended site definition and added means for site-wide branding (#3972).
   - Using `utf8mb4` charset on MySQL platforms for real utf8 support (#3784).
+  - Moved calling `adminHeader()` and `adminFooter()` into theme level (#4255).
