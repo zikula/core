@@ -1,6 +1,3 @@
-{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaExtensionsModule:js/Zikula.Extensions.Extension.List.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>
     {% trans %}Extensions list{% endtrans %}
@@ -58,7 +55,6 @@
     </tbody>
 </table>
 {{ include(paginator.template) }}
-{{ adminFooter() }}
 
 {% macro adminRoute(extension) %}
     {# currently disabled because it may happen that routes for a newly activated module are not usable yet
@@ -85,3 +81,5 @@
         </span>
     {% endif %}
 {% endmacro %}
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaExtensionsModule:js/Zikula.Extensions.Extension.List.js')) }}

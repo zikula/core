@@ -1,5 +1,3 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.New.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-plus-square"></span>
     {% trans %}Create block{% endtrans %}
@@ -19,4 +17,4 @@
     </div>
 </div>
 {{ form_end(form) }}
-{{ adminFooter() }}
+{{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.New.js')) }}

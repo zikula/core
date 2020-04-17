@@ -2,7 +2,7 @@
  * Admin area (introduced in Core 1.3)
  ******************************************************************************/
 
-#z-maincontent div.z-admin-content {
+body div.z-admin-content {
     background: #fff;
     color: #333;
     width: auto;
@@ -11,7 +11,7 @@
     padding: 5px 1%;
 }
 
-#z-maincontent div.z-admin-content .navbar {
+body div.z-admin-content .navbar {
     margin: 0.5em 0;
 }
 
@@ -19,8 +19,8 @@
 * Styling for all general headers in the entire admin box.
 ******************************************************************************/
 
-#z-maincontent div.z-admin-content h2,
-#z-maincontent div.z-admin-content h3 {
+body div.z-admin-content h2,
+body div.z-admin-content h3 {
     background: none;
     color: #333;
     text-align: left;
@@ -32,12 +32,12 @@
 * Module- and pageheaders (iconheader)
 ******************************************************************************/
 
-#z-maincontent div.z-admin-content-modtitle {
+body div.z-admin-content-modtitle {
     padding: 5px 0;
 }
 
-#z-maincontent div.z-admin-content-modtitle:after,
-#z-maincontent div.z-admin-content-pagetitle:after {
+body div.z-admin-content-modtitle:after,
+body div.z-admin-content-pagetitle:after {
     /* clearfix */
     content: ".";
     display: block;
@@ -46,17 +46,17 @@
     visibility: hidden;
 }
 
-#z-maincontent div.z-admin-content-modtitle img {
+body div.z-admin-content-modtitle img {
     float: left;
     margin-right: 10px;
 }
 
-#z-maincontent div.z-admin-content-pagetitle img {
+body div.z-admin-content-pagetitle img {
     float: left;
     margin-right: 5px;
 }
 
-#z-maincontent div.z-admin-content-modtitle h2 {
+body div.z-admin-content-modtitle h2 {
     background: none;
     border: none;
     color: #333;
@@ -68,11 +68,11 @@
     text-align: left;
 }
 
-#z-maincontent div.z-admin-content-pagetitle {
+body div.z-admin-content-pagetitle {
     padding: 10px 0;
 }
 
-#z-maincontent div.z-admin-content-pagetitle h3 {
+body div.z-admin-content-pagetitle h3 {
     background: none;
     color: #333;
     font-size: 18px;

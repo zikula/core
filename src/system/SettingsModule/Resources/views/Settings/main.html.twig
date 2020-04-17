@@ -1,10 +1,8 @@
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-wrench"></span>
     {% trans %}Main settings{% endtrans %}
     {{ pageSetVar('title', 'Main settings'|trans) }}
 </h3>
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
 {% set currentLocale = app.request.locale|default('en') %}
@@ -114,4 +112,3 @@
     </div>
 </div>
 {{ form_end(form) }}
-{{ adminFooter() }}

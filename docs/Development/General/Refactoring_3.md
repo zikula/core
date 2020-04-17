@@ -246,7 +246,7 @@ and so on…
 
 ### Template paths
 
-- change all template names from e.g. `Bundle:Controller:Action.html.twig` to `@Bundle/Controller/Action.html.twig`
+- Change all template names from e.g. `Bundle:Controller:Action.html.twig` to `@Bundle/Controller/Action.html.twig`.
 - Modules and themes retain the `Module` or `Theme` suffix but bundles do not.
 
 ### Templates
@@ -271,3 +271,8 @@ and so on…
 | Language name | `{{ myLanguage\|languagename }}` | `{{ myLanguage\|language_name }}` | [language_name](https://twig.symfony.com/language_name) reference |
 | Locale name | unavailable | `{{ myLocale\|locale_name }}` | [locale_name](https://twig.symfony.com/locale_name) reference |
 | Timezone name | unavailable | `{{ myTimezone\|timezone_name }}` | [timezone_name](https://twig.symfony.com/timezone_name) reference |
+
+### Admin panel integration
+
+- Remove all calls of `adminHeader()` and `adminFooter()` from extension templates.
+- Ensure that your admin theme calls them instead at a central place where appropriate.

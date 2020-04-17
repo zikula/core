@@ -1,9 +1,3 @@
-{{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
-{{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
-{{ pageAddAsset('stylesheet', zasset('@ZikulaThemeModule:css/jstree.Common.css')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.List.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
-{{ adminHeader() }}
 <h3>
     <span class="fas fa-list"></span>
     {% trans %}Categories list{% endtrans %}
@@ -75,5 +69,9 @@
         </div>
     </div>
 </div>
-{{ adminFooter() }}
 {{ include('@ZikulaFormExtension/Form/icon_picker.html.twig') }}{# need to preload for editing inside modal #}
+{{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
+{{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaThemeModule:css/jstree.Common.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.List.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
