@@ -17,6 +17,10 @@
     margin: 0 !important;
 }
 
+.ui-accordion .panel-content.ui-accordion-content {
+    overflow: visible;
+}
+
 #hookSubscriber .sub {
     display: block;
 }
@@ -74,7 +78,7 @@
 #hookSubscriber .sarea_wrapper ol li.attachedarea_detach,
 #hookSubscriber .sarea_wrapper ol li.attachedarea_detach span {
     background-color: #F7CBCA;
-    color: #880000;
+    color: #800;
 }
 
 /* droppable active*/
@@ -106,7 +110,7 @@
 }
 
 #hookSubscriber .pareas_category ol li {
-    border: 1px solid #DDD;
+    border: 1px solid #ddd;
     line-height: 1.4em;
 }
 
