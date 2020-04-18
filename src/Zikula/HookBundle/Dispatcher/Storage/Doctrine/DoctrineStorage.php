@@ -21,8 +21,8 @@ use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
 use Zikula\Bundle\HookBundle\Exception\InvalidArgumentException;
-use Zikula\Bundle\HookBundle\RepositoryInterface\HookBindingRepositoryInterface;
-use Zikula\Bundle\HookBundle\RepositoryInterface\HookRuntimeRepositoryInterface;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface;
 
 class DoctrineStorage implements StorageInterface
 {
@@ -37,7 +37,7 @@ class DoctrineStorage implements StorageInterface
     private $objectManager;
 
     /**
-     * @var HookBindingRepositoryInterface
+     * @var \Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface
      */
     private $hookBindingRepository;
 

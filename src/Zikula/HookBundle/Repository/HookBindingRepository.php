@@ -17,7 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
-use Zikula\Bundle\HookBundle\RepositoryInterface\HookBindingRepositoryInterface;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface;
 
 class HookBindingRepository extends ServiceEntityRepository implements HookBindingRepositoryInterface
 {

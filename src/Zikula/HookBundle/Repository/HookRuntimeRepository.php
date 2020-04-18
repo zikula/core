@@ -16,7 +16,7 @@ namespace Zikula\Bundle\HookBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
-use Zikula\Bundle\HookBundle\RepositoryInterface\HookRuntimeRepositoryInterface;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface;
 
 class HookRuntimeRepository extends ServiceEntityRepository implements HookRuntimeRepositoryInterface
 {
