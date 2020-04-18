@@ -19,12 +19,6 @@ doctrine:
                 #query_cache_driver: array
                 #result_cache_driver: array
                 mappings:
-#                    ZikulaHookBundle:
-#                        type: annotation
-#                        prefix: Zikula\Bundle\HookBundle\Entity
-#                        dir: 'Entity'
-#                        alias: ZikulaHookStorage # this one is optional and will default to the name set for the mapping
-#                        is_bundle: true
                     gedmo_translatable:
                         type: annotation
                         prefix: Gedmo\Translatable\Entity
