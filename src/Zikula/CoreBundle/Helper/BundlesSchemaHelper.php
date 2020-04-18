@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Helper;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Schema\Table;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -161,6 +162,8 @@ class BundlesSchemaHelper
         $table->addColumn('bundletype', 'string', ['length' => 2]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['bundlename']);
+        $charset = $this->conn->getDriver() instanceof AbstractMySQLDriver ? 'utf8mb4' : 'utf8';
+        $table->addOption('charset', $charset);
         $schema->createTable($table);
     }
 }
