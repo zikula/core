@@ -30,9 +30,9 @@ class InstallerCollector
         }
     }
 
-    public function add(ExtensionInstallerInterface $block): void
+    public function add(ExtensionInstallerInterface $installer): void
     {
-        $this->installers[get_class($block)] = $block;
+        $this->installers[get_class($installer)] = $installer;
     }
 
     public function has(string $id): ?bool
