@@ -23,7 +23,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException;
+use Zikula\Bundle\HookBundle\Exception\RuntimeException;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;

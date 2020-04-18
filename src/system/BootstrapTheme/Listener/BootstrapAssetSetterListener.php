@@ -59,7 +59,7 @@ class BootstrapAssetSetterListener implements EventSubscriberInterface
     public function setBootstrap(ResponseEvent $event): void
     {
         $themeStyle = $event->getRequest()->hasSession() ? $event->getRequest()->getSession()->get('currentBootstrapStyle', '') : '';
-        $themeStyle = $themeStyle ? $themeStyle : $this->variableApi->get('ZikulaBootstrapTheme', 'theme_style', 'united');
+        $themeStyle = $themeStyle ? $themeStyle : $this->variableApi->get('ZikulaBootstrapTheme', 'theme_style', 'cerulean');
         if ('default' === $themeStyle) {
             return;
         }

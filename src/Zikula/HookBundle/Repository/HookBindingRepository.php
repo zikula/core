@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository;
+namespace Zikula\Bundle\HookBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
+use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface;
 
 class HookBindingRepository extends ServiceEntityRepository implements HookBindingRepositoryInterface
 {

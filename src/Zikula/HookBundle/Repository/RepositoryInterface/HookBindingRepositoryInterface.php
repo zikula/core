@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface;
+namespace Zikula\Bundle\HookBundle\Repository\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;

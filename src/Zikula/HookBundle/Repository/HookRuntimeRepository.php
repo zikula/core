@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository;
+namespace Zikula\Bundle\HookBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
+use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface;
 
 class HookRuntimeRepository extends ServiceEntityRepository implements HookRuntimeRepositoryInterface
 {

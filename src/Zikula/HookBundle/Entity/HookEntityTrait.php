@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Traits;
+namespace Zikula\Bundle\HookBundle\Entity;
 
 /**
  * Hook entity trait.

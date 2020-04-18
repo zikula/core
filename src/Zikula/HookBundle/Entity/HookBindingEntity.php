@@ -11,18 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
+namespace Zikula\Bundle\HookBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Traits\HookEntityTrait;
 
 /**
  * HookBinding
  *
  * @ORM\Table(name="hook_binding")
- * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookBindingRepository")
+ * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Repository\HookBindingRepository")
  */
 class HookBindingEntity extends EntityAccess
 {

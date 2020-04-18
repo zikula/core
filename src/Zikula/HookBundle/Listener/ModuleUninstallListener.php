@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface;
+use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface;
 use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
 
 class ModuleUninstallListener implements EventSubscriberInterface
 {
     /**
-     * @var HookBindingRepositoryInterface
+     * @var \Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface
      */
     private $hookBindingRepository;
 
     /**
-     * @var HookRuntimeRepositoryInterface
+     * @var \Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface
      */
     private $hookRuntimeRepository;
 
