@@ -173,7 +173,7 @@ class HookUiHelper
             }
 
             // get the areas of the provider
-            $providerAreas = $collector->getProviderAreasByOwner($hookProvider->getName());
+            $providerAreas = $this->collector->getProviderAreasByOwner($hookProvider->getName());
             $hookProviders[$i]['areas'] = $providerAreas;
             $amountOfAvailableProviderAreas += count($providerAreas);
 
