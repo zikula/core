@@ -23,7 +23,7 @@
                                         <i class="fas fa-arrows"></i>
                                         <span>
                                             {{ areasSortingTitles[parea] }} <span class="small">({{ parea }})</span>
-                                            <a class="detachlink" title="{% trans %}Detach{% endtrans %} {{ areasSortingTitles[parea] }}" href="#" data-sareaid="{{ sarea_md5|e('html_attr') }}" data-sarea="{{ sarea|e('html_attr') }}" data-pareaid="{{ parea_md5|e('html_attr') }}" data-parea="{{ parea|e('html_attr') }}"><i class="fas fa-remove"></i></a>
+                                            <a class="detachlink" title="{% trans %}Detach{% endtrans %} {{ areasSortingTitles[parea] }}" href="#" data-sareaid="{{ sarea_md5|e('html_attr') }}" data-sarea="{{ sarea|e('html_attr') }}" data-pareaid="{{ parea_md5|e('html_attr') }}" data-parea="{{ parea|e('html_attr') }}"><i class="fas fa-times"></i></a>
                                         </span>
                                         <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_a" value="{{ parea|e('html_attr') }}" />
                                         <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_c" value="{{ category|e('html_attr') }}" />
@@ -31,7 +31,7 @@
                                     </li>
                                 {% endfor %}
                             {% endif %}
-                            <li id="sarea_empty_{{ sarea_md5 }}"{% if areasSorting[category][sarea] is defined %} class="hide"{% endif %}>
+                            <li id="sarea_empty_{{ sarea_md5 }}"{% if areasSorting[category][sarea] is defined %} class="d-none"{% endif %}>
                                 <span>{% trans %}There aren't any areas attached here.{% endtrans %}<br />{% trans %}Drag an area from the right and drop it here to attach it.{% endtrans %}</span>
                             </li>
                         </ol>

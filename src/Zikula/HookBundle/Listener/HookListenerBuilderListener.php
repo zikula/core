@@ -76,7 +76,7 @@ class HookListenerBuilderListener implements EventSubscriberInterface
             }
 
             $callSubject = $this->container->has($handler['classname']) ? $handler['classname'] : $handler['serviceid'];
-            $this->container->get('event_dispatcher')->addListenerService($handler['eventname'], [$callSubject, $handler['method']]);
+            $this->container->get('event_dispatcher')->addListener($handler['eventname'], [$callSubject, $handler['method']]);
         }
     }
 }

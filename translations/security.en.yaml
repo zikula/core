@@ -1,5 +1,5 @@
 'Allowed HTML settings': null
-'Filtering of allowed HTML occurs when a template string or variable is modified with the \''safeHtml\'' filter, or when a module asks for similar processing from within its functions.': null
+'Filtering of allowed HTML occurs when a template string or variable is modified with the ''safeHtml'' filter, or when a module asks for similar processing from within its functions.': null
 'HTML entities': null
 'Translate embedded HTML entities into real characters': null
 'Yes': null
@@ -18,7 +18,7 @@ About: null
 Save: null
 Cancel: null
 'HTMLPurifier settings': null
-'HTMLPurifier filtering occurs when a template string or variable is modified with the \''safehtml\'' modifier, or when a module asks for similar processing from within its functions.': null
+'HTMLPurifier filtering occurs when a template string or variable is modified with the ''safehtml'' modifier, or when a module asks for similar processing from within its functions.': null
 Warning: null
 'Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.': null
 'will be applied after HTMLPurifier processing is completed.': null

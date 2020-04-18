@@ -61,7 +61,7 @@ class HookDispatcher implements HookDispatcherInterface
         $this->storage->setBindOrder($subscriberAreaName, $providerAreas);
     }
 
-    public function getBindingBetweenAreas(string $subscriberArea, string $providerArea): array
+    public function getBindingBetweenAreas(string $subscriberArea, string $providerArea): ?object
     {
         return $this->storage->getBindingBetweenAreas($subscriberArea, $providerArea);
     }
