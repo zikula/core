@@ -36,7 +36,6 @@ Login: null
 'The users will not be emailed.': null
 'No records found.': null
 'Create new user': null
-'The items that are marked with an asterisk (\''*\'') are required entries.': null
 'Login method': null
 'Account information': null
 'Log-in information': null
@@ -1701,7 +1700,7 @@ Detach: null
 'Connect %sub% to other modules': null
 '%sub% module provides the following area:': null
 'To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.': null
-'%module1% module can\''t connect to %module2% module. No connections are supported': null
+'%module1% module can''t connect to %module2% module. No connections are supported': null
 Hooks: null
 'Drag items from the right column to the left column to connect the hooks. Only areas with the same category can be connected.': null
 Subscription: null

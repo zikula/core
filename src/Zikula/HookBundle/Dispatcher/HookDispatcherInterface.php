@@ -46,7 +46,7 @@ interface HookDispatcherInterface
     /**
      * Get binding between areas.
      */
-    public function getBindingBetweenAreas(string $subscriberArea, string $providerArea): array;
+    public function getBindingBetweenAreas(string $subscriberArea, string $providerArea): ?object;
 
     /**
      * Check if areas may be bound together.
