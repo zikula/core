@@ -21,12 +21,12 @@ use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
 class ModuleUninstallListener implements EventSubscriberInterface
 {
     /**
-     * @var \Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface
+     * @var HookBindingRepositoryInterface
      */
     private $hookBindingRepository;
 
     /**
-     * @var \Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface
+     * @var HookRuntimeRepositoryInterface
      */
     private $hookRuntimeRepository;
 

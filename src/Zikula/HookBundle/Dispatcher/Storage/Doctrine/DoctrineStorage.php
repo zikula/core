@@ -37,7 +37,7 @@ class DoctrineStorage implements StorageInterface
     private $objectManager;
 
     /**
-     * @var \Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface
+     * @var HookBindingRepositoryInterface
      */
     private $hookBindingRepository;
 
