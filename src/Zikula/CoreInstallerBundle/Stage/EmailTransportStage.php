@@ -16,11 +16,17 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\StageInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Helper\MailTransportHelper;
 
 class EmailTransportStage implements StageInterface, FormHandlerInterface
 {
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
     /**
      * @var string
      */
@@ -31,8 +37,12 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface
      */
     private $mailerDsn;
 
-    public function __construct(string $projectDir, string $mailerDsn = '')
-    {
+    public function __construct(
+        VariableApiInterface $variableApi,
+        string $projectDir,
+        string $mailerDsn = ''
+    ) {
+        $this->variableApi = $variableApi;
         $this->projectDir = $projectDir;
         $this->mailerDsn = $mailerDsn;
     }
@@ -74,6 +84,11 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface
 
     public function handleFormResult(FormInterface $form): bool
     {
-        return (new MailTransportHelper($this->projectDir))->handleFormData($form->getData());
+        $formData = $form->getData();
+        $this->variableApi->set('ZikulaMailerModule', 'enableLogging', $formData['enableLogging']);
+        $this->variableApi->set('ZikulaMailerModule', 'transport', $formData['transport']);
+        $this->variableApi->set('ZikulaMailerModule', 'mailer_id', $formData['mailer_id']);
+
+        return (new MailTransportHelper($this->projectDir))->handleFormData($formData);
     }
 }

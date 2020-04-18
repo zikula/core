@@ -31,6 +31,7 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Helper\MailTransportHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -59,19 +60,26 @@ class StartCommand extends AbstractCoreInstallerCommand
      */
     private $parameterHelper;
 
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         string $installed,
         ControllerHelper $controllerHelper,
         LocaleApiInterface $localeApi,
         ParameterHelper $parameterHelper,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
     ) {
         $this->kernel = $kernel;
         $this->installed = '0.0.0' !== $installed;
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
+        $this->variableApi = $variableApi;
         parent::__construct($kernel, $translator);
     }
 
@@ -206,6 +214,9 @@ class StartCommand extends AbstractCoreInstallerCommand
         $io->section($this->translator->trans('Mailer transport'));
         $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
         $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
+        $this->variableApi->set('ZikulaMailerModule', 'enableLogging', $data['enableLogging']);
+        $this->variableApi->set('ZikulaMailerModule', 'transport', $data['transport']);
+        $this->variableApi->set('ZikulaMailerModule', 'mailer_id', $data['mailer_id']);
 
         return (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
     }
