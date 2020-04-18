@@ -21,7 +21,7 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
  * Extension var registry.
  *
  * @ORM\Entity(repositoryClass="Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository")
- * @ORM\Table(name="vars")
+ * @ORM\Table(name="module_vars")
  */
 class ExtensionVarEntity extends EntityAccess
 {

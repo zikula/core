@@ -46,9 +46,6 @@ class Core3UpgradeListener implements EventSubscriberInterface
         if ($sm->tablesExist(['module_deps'])) {
             $sqls[] = 'ALTER TABLE `module_deps` RENAME TO `extension_deps`';
         }
-        if ($sm->tablesExist(['module_vars'])) {
-            $sqls[] = 'ALTER TABLE `module_vars` RENAME TO `vars`';
-        }
         foreach ($sqls as $sql) {
             $this->conn->executeQuery($sql);
         }
