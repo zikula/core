@@ -30,10 +30,11 @@ class ExtensionDependencyRepository extends ServiceEntityRepository
         $connection = $this->_em->getConnection();
         $platform = $connection->getDatabasePlatform();
         $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
-        $connection->executeUpdate($platform->getTruncateTableSQL('module_deps'));
+        $connection->executeUpdate($platform->getTruncateTableSQL('extension_deps'));
         $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1;');
 
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
+            /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $extension */
             $extension = $this->_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $name]);
             if (!isset($extensionFromFile['dependencies']) || empty($extensionFromFile['dependencies'])) {
                 continue;
