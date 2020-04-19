@@ -15,7 +15,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Component\Wizard\AbortStageException;
 
@@ -78,38 +77,6 @@ class ControllerHelper
         }
 
         return $warnings;
-    }
-
-    /**
-     * @return array|bool
-     */
-    public function requirementsMet()
-    {
-        // several other requirements are checked before Symfony is loaded.
-        // @see /var/SymfonyRequirements.php
-        // @see \Zikula\Bundle\CoreInstallerBundle\Util\ZikulaRequirements::runSymfonyChecks
-        $results = [];
-
-        $x = explode('.', str_replace('-', '.', PHP_VERSION));
-        $phpVersion = "{$x[0]}.{$x[1]}.{$x[2]}";
-        $results['phpsatisfied'] = version_compare($phpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, '>=');
-        $results['pdo'] = extension_loaded('pdo');
-        $supportsUnicode = preg_match('/^\p{L}+$/u', 'TheseAreLetters');
-        $results['pcreUnicodePropertiesEnabled'] = (isset($supportsUnicode) && (bool)$supportsUnicode);
-        $requirementsMet = true;
-        foreach ($results as $check) {
-            if (!$check) {
-                $requirementsMet = false;
-                break;
-            }
-        }
-        if ($requirementsMet) {
-            return true;
-        }
-        $results['phpversion'] = PHP_VERSION;
-        $results['phpcoreminversion'] = ZikulaKernel::PHP_MINIMUM_VERSION;
-
-        return $results;
     }
 
     /**

@@ -6,24 +6,21 @@ stages:
     locale:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\LocaleStage
         order: 2
-    requirements:
-        class: Zikula\Bundle\CoreInstallerBundle\Stage\RequirementsStage
-        order: 3
     dbcreds:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\DbCredsStage
-        order: 4
+        order: 3
     emailtransport:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\EmailTransportStage
-        order: 5
+        order: 4
     createadmin:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\CreateAdminStage
-        order: 6
+        order: 5
     ajaxinstaller:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage
-        order: 7
+        order: 6
     complete:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Install\CompleteStage
-        order: 8
+        order: 7
     installed:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\AlreadyInstalledStage
-        order: 9
+        order: 8

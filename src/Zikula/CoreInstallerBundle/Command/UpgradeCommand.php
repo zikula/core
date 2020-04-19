@@ -135,12 +135,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
             return 2;
         }
-        $checks = $this->controllerHelper->requirementsMet();
-        if (true !== $checks) {
-            $this->printRequirementsWarnings($output, $checks);
-
-            return 2;
-        }
 
         $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config', 'services_custom.yaml');
         // tell the core that we are upgrading
