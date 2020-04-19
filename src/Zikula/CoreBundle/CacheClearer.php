@@ -15,11 +15,17 @@ namespace Zikula\Bundle\CoreBundle;
 
 use FilesystemIterator;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CacheClearer
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     /**
      * @var ContainerInterface
      */
@@ -61,12 +67,14 @@ class CacheClearer
     private $fileSystem;
 
     public function __construct(
+        LoggerInterface $zikulaLogger,
         ContainerInterface $container,
         string $cacheDir,
         string $kernelContainerClass,
         string $installed,
         array $routingLocales = []
     ) {
+        $this->logger = $zikulaLogger;
         $this->container = $container;
         $this->cacheDir = $cacheDir;
         $refClass = new \ReflectionClass($container);
@@ -100,6 +108,7 @@ class CacheClearer
         if (in_array($type, ['symfony', 'symfony.config'])) {
             $this->fileSystem->remove($this->containerDirectory);
         }
+        $this->logger->notice(sprintf('%s: %s', self::class, $type), ['containerDir' => $this->containerDirectory]);
     }
 
     private function initialiseCacheTypeMap()

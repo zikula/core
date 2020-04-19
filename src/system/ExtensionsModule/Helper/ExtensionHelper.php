@@ -16,6 +16,7 @@ namespace Zikula\ExtensionsModule\Helper;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -90,6 +91,11 @@ class ExtensionHelper
      */
     private $doctrine;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         $installed,
         InstallerCollector $installerCollector,
@@ -100,7 +106,8 @@ class ExtensionHelper
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $stateHelper,
         CacheClearer $cacheClearer,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $zikulaLogger
     ) {
         $this->installed = $installed;
         $this->installerCollector = $installerCollector;
@@ -112,6 +119,7 @@ class ExtensionHelper
         $this->stateHelper = $stateHelper;
         $this->cacheClearer = $cacheClearer;
         $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $zikulaLogger;
     }
 
     /**
@@ -119,6 +127,7 @@ class ExtensionHelper
      */
     public function install(ExtensionEntity $extension): bool
     {
+        $this->logger->notice(sprintf('Extension installation begun'), ['name' => $extension->getName()]);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             throw new RuntimeException($this->translator->trans('Error! Not allowed to install %extension%.', ['%extension%' => $extension->getName()]));
         }
@@ -141,6 +150,7 @@ class ExtensionHelper
         $this->cacheClearer->clear('symfony.config');
 
         $this->eventDispatcher->dispatch(new ExtensionPostInstallEvent($extensionBundle, $extension));
+        $this->logger->notice(sprintf('Extension installation complete'), ['name' => $extension->getName()]);
 
         return true;
     }
@@ -150,6 +160,7 @@ class ExtensionHelper
      */
     public function upgrade(ExtensionEntity $extension): bool
     {
+        $this->logger->notice(sprintf('Extension upgrade begun'), ['name' => $extension->getName()]);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             throw new RuntimeException($this->translator->trans('Error! Not allowed to upgrade %extension%.', ['%extension%' => $extension->getDisplayname()]));
         }
@@ -191,6 +202,7 @@ class ExtensionHelper
             // Upgrade succeeded, issue event.
             $this->eventDispatcher->dispatch(new ExtensionPostUpgradeEvent($extensionBundle, $extension));
         }
+        $this->logger->notice(sprintf('Extension upgrade complete'), ['name' => $extension->getName()]);
 
         return true;
     }
@@ -200,6 +212,7 @@ class ExtensionHelper
      */
     public function uninstall(ExtensionEntity $extension): bool
     {
+        $this->logger->notice(sprintf('Extension uninstallation begun'), ['name' => $extension->getName()]);
         if (Constant::STATE_NOTALLOWED === $extension->getState()
             || ZikulaKernel::isCoreExtension($extension->getName())) {
             throw new RuntimeException($this->translator->trans('Error! No permission to uninstall %extension%.', ['%extension%' => $extension->getDisplayname()]));
@@ -235,6 +248,7 @@ class ExtensionHelper
         $this->cacheClearer->clear('symfony.config');
 
         $this->eventDispatcher->dispatch(new ExtensionPostRemoveEvent($extensionBundle, $extension));
+        $this->logger->notice(sprintf('Extension uninstallation complete'), ['name' => $extension->getName()]);
 
         return true;
     }
