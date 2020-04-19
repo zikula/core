@@ -108,7 +108,8 @@ class CacheClearer
         if (in_array($type, ['symfony', 'symfony.config'])) {
             $this->fileSystem->remove($this->containerDirectory);
         }
-        $this->logger->notice(sprintf('%s: %s', self::class, $type), ['containerDir' => $this->containerDirectory]);
+        $pos = mb_strrpos($this->containerDirectory, '/');
+        $this->logger->notice(sprintf('%s: %s', self::class, $type), ['containerDir' => mb_substr($this->containerDirectory, $pos)]);
     }
 
     private function initialiseCacheTypeMap()
