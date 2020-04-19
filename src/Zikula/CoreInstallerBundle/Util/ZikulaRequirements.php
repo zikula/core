@@ -65,9 +65,12 @@ class ZikulaRequirements
         $symfonyRequirements->addRequirement(
             version_compare($installedPhpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, '>='),
             sprintf('PHP version must be at least %s (%s installed)', ZikulaKernel::PHP_MINIMUM_VERSION, $installedPhpVersion),
-            sprintf('You are running PHP version "<strong>%s</strong>", but Zikula needs at least PHP "<strong>%s</strong>" to run.
+            sprintf(
+                'You are running PHP version "<strong>%s</strong>", but Zikula needs at least PHP "<strong>%s</strong>" to run.
             Before using Zikula, upgrade your PHP installation, preferably to the latest version.',
-                $installedPhpVersion, ZikulaKernel::PHP_MINIMUM_VERSION),
+                $installedPhpVersion,
+                ZikulaKernel::PHP_MINIMUM_VERSION
+            ),
             sprintf('Install PHP %s or newer (installed version is %s)', ZikulaKernel::PHP_MINIMUM_VERSION, $installedPhpVersion)
         );
         $symfonyRequirements->addRequirement(
