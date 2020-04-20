@@ -9,18 +9,15 @@ stages:
     locale:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\LocaleStage
         order: 3
-    requirements:
-        class: Zikula\Bundle\CoreInstallerBundle\Stage\RequirementsStage
-        order: 4
     login:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\LoginStage
-        order: 5
+        order: 4
     ajaxupgrader:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage
-        order: 6
+        order: 5
     complete:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\CompleteStage
-        order: 7
+        order: 6
     installed:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\AlreadyInstalledStage
-        order: 8
+        order: 7

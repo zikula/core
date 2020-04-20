@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
 use Symfony\Requirements\Requirement;
 use Symfony\Requirements\SymfonyRequirements;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 /**
  * Portions of this class copied from or inspired by the Symfony Installer (@see https://github.com/symfony/symfony-installer)
@@ -34,6 +35,7 @@ class ZikulaRequirements
     {
         try {
             $symfonyRequirements = new SymfonyRequirements($parameters['kernel.project_dir'], '5.0.0');
+            $this->addZikulaSystemRequirements($symfonyRequirements);
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
 
             foreach ($symfonyRequirements->getRequirements() as $req) {
@@ -55,6 +57,34 @@ class ZikulaRequirements
         $errorMessage .= '   > ' . wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL . '   > ') . PHP_EOL;
 
         return $errorMessage;
+    }
+
+    private function addZikulaSystemRequirements(SymfonyRequirements $symfonyRequirements)
+    {
+        $installedPhpVersion = phpversion();
+        $symfonyRequirements->addRequirement(
+            version_compare($installedPhpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, '>='),
+            sprintf('PHP version must be at least %s (%s installed)', ZikulaKernel::PHP_MINIMUM_VERSION, $installedPhpVersion),
+            sprintf(
+                'You are running PHP version "<strong>%s</strong>", but Zikula needs at least PHP "<strong>%s</strong>" to run.
+            Before using Zikula, upgrade your PHP installation, preferably to the latest version.',
+                $installedPhpVersion,
+                ZikulaKernel::PHP_MINIMUM_VERSION
+            ),
+            sprintf('Install PHP %s or newer (installed version is %s)', ZikulaKernel::PHP_MINIMUM_VERSION, $installedPhpVersion)
+        );
+        $symfonyRequirements->addRequirement(
+            // pdo has been included with php since 5.1
+            extension_loaded('pdo'),
+            'The pdo extension must be loaded.',
+            'Please install the pdo extension and enable it in the php config.'
+        );
+        $supportsUnicode = preg_match('/^\p{L}+$/u', 'TheseAreLetters');
+        $symfonyRequirements->addRequirement(
+            (isset($supportsUnicode) && false !== $supportsUnicode),
+            'PHP\'s PCRE library does not have Unicode property support enabled.',
+            'The PCRE library used with PHP must be compiled with the \'--enable-unicode-properties\' option.'
+        );
     }
 
     private function addZikulaPathRequirements(SymfonyRequirements $symfonyRequirements, array $parameters = []): void

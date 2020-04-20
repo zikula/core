@@ -107,12 +107,6 @@ class StartCommand extends AbstractCoreInstallerCommand
 
             return 2;
         }
-        $checks = $this->controllerHelper->requirementsMet();
-        if (true !== $checks) {
-            $this->printRequirementsWarnings($output, $checks);
-
-            return 2;
-        }
 
         if ($input->isInteractive()) {
             $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
