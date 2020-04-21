@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
+use Zikula\ThemeModule\Engine\Engine;
 
 class BootstrapAssetSetterListener implements EventSubscriberInterface
 {
@@ -37,14 +38,18 @@ class BootstrapAssetSetterListener implements EventSubscriberInterface
      */
     private $variableApi;
 
+    private $themeEngine;
+
     public function __construct(
         AssetBag $cssAssetBag,
         Asset $assetHelper,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        Engine $themeEngine
     ) {
         $this->cssAssetBag = $cssAssetBag;
         $this->assetHelper = $assetHelper;
         $this->variableApi = $variableApi;
+        $this->themeEngine = $themeEngine;
     }
 
     public static function getSubscribedEvents()
@@ -58,6 +63,12 @@ class BootstrapAssetSetterListener implements EventSubscriberInterface
 
     public function setBootstrap(ResponseEvent $event): void
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        if ('ZikulaBootstrapTheme' !== $this->themeEngine->getTheme()->getName()) {
+            return;
+        }
         $themeStyle = $event->getRequest()->hasSession() ? $event->getRequest()->getSession()->get('currentBootstrapStyle', '') : '';
         $themeStyle = $themeStyle ? $themeStyle : $this->variableApi->get('ZikulaBootstrapTheme', 'theme_style', 'cerulean');
         if ('default' === $themeStyle) {
