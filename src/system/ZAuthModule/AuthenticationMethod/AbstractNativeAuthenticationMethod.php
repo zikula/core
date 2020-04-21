@@ -98,29 +98,24 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
 
         $mapping = $this->getMapping($field, $data[$field]);
-        if (!$mapping->getPass()) {
+        if (!isset($mapping) || !$mapping->getPass()) {
             return null;
         }
         $passwordEncoder = $this->encoderFactory->getEncoder($mapping);
 
-        if ($mapping && $this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
+        if ($this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
             // old way - remove in Core-4.0.0
             // convert old encoding to new
             $this->updatePassword($mapping, $data['pass']);
 
             return $mapping->getUid();
-        } elseif ($mapping && $passwordEncoder->isPasswordValid($mapping->getPass(), $data['pass'], null)) {
+        } elseif ($passwordEncoder->isPasswordValid($mapping->getPass(), $data['pass'], null)) {
             // new way
             if ($passwordEncoder->needsRehash($mapping->getPass())) { // check to update hash to newer algo
                 $this->updatePassword($mapping, $data['pass']);
             }
 
             return $mapping->getUid();
-        }
-
-        $request = $this->requestStack->getCurrentRequest();
-        if ($request->hasSession() && ($session = $request->getSession())) {
-            $session->getFlashBag()->add('error', 'Login failed.');
         }
 
         return null;
