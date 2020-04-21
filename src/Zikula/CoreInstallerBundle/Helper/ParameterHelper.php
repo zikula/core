@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use RandomLib\Factory;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
@@ -22,6 +23,7 @@ use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Component\Wizard\AbortStageException;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
@@ -182,6 +184,25 @@ class ParameterHelper
         ];
         $helper = new LocalDotEnvHelper($this->projectDir);
         $helper->writeLocalEnvVars($vars);
+    }
+
+    /**
+     * Write params to file as encoded values.
+     *
+     * @throws AbortStageException
+     */
+    public function writeEncodedParameters(array $data): void
+    {
+        $yamlHelper = $this->getYamlHelper();
+        foreach ($data as $k => $v) {
+            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+        }
+        $params = array_merge($yamlHelper->getParameters(), $data);
+        try {
+            $yamlHelper->setParameters($params);
+        } catch (IOException $exception) {
+            throw new AbortStageException($this->translator->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'services_custom.yaml']));
+        }
     }
 
     /**

@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Symfony\Component\Form\FormInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -24,19 +23,13 @@ use Zikula\Component\Wizard\StageInterface;
 class LoginStage implements StageInterface, FormHandlerInterface
 {
     /**
-     * @var ControllerHelper
+     * @var ParameterHelper
      */
-    private $controllerHelper;
+    private $parameterHelper;
 
-    /**
-     * @var YamlDumper
-     */
-    private $yamlManager;
-
-    public function __construct(ControllerHelper $controllerHelper, string $projectDir)
+    public function __construct(ParameterHelper $parameterHelper)
     {
-        $this->controllerHelper = $controllerHelper;
-        $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
+        $this->parameterHelper = $parameterHelper;
     }
 
     public function getName(): string
@@ -72,7 +65,7 @@ class LoginStage implements StageInterface, FormHandlerInterface
     public function handleFormResult(FormInterface $form): bool
     {
         try {
-            $this->controllerHelper->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+            $this->parameterHelper->writeEncodedParameters($form->getData());
         } catch (AbortStageException $exception) {
             return false;
         }

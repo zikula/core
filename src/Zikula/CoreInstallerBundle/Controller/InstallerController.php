@@ -15,7 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\PhpHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\WizardHelper;
 
 class InstallerController
@@ -26,9 +26,9 @@ class InstallerController
     private $wizardHelper;
 
     /**
-     * @var ControllerHelper
+     * @var PhpHelper
      */
-    private $controllerHelper;
+    private $phpHelper;
 
     /**
      * @var string
@@ -42,12 +42,12 @@ class InstallerController
 
     public function __construct(
         WizardHelper $wizardHelper,
-        ControllerHelper $controllerHelper,
+        PhpHelper $phpHelper,
         string $locale,
         string $installed
     ) {
         $this->wizardHelper = $wizardHelper;
-        $this->controllerHelper = $controllerHelper;
+        $this->phpHelper = $phpHelper;
         $this->locale = $locale;
         $this->installed = '0.0.0' !== $installed;
     }
@@ -66,7 +66,7 @@ class InstallerController
 
         $request->setLocale($this->locale);
         $session = $request->hasSession() ? $request->getSession() : null;
-        $iniWarnings = $this->controllerHelper->initPhp();
+        $iniWarnings = $this->phpHelper->setUp();
         if (null !== $session && 0 < count($iniWarnings)) {
             $session->getFlashBag()->add('warning', implode('<hr />', $iniWarnings));
         }

@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\PhpHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\WizardHelper;
 
 class UpgraderController
@@ -37,9 +37,9 @@ class UpgraderController
     private $wizardHelper;
 
     /**
-     * @var ControllerHelper
+     * @var PhpHelper
      */
-    private $controllerHelper;
+    private $phpHelper;
 
     /**
      * @var string
@@ -59,14 +59,14 @@ class UpgraderController
     public function __construct(
         RouterInterface $router,
         WizardHelper $wizardHelper,
-        ControllerHelper $controllerHelper,
+        PhpHelper $phpHelper,
         string $installed,
         string $projectDir,
         string $locale
     ) {
         $this->router = $router;
         $this->wizardHelper = $wizardHelper;
-        $this->controllerHelper = $controllerHelper;
+        $this->phpHelper = $phpHelper;
         $this->installed = $installed;
         $this->projectDir = $projectDir;
         $this->locale = $locale;
@@ -86,7 +86,7 @@ class UpgraderController
         $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->locale);
         $session = $request->hasSession() ? $request->getSession() : null;
-        $iniWarnings = $this->controllerHelper->initPhp();
+        $iniWarnings = $this->phpHelper->setUp();
         if (null !== $session && 0 < count($iniWarnings)) {
             $session->getFlashBag()->add('warning', implode('<hr />', $iniWarnings));
         }
