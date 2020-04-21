@@ -271,7 +271,8 @@ class ExtensionHelper
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $input = new ArrayInput([
-            'command' => 'assets:install'
+            'command' => 'assets:install',
+            'target' => $kernel->getProjectDir() . '/public'
         ]);
         $output = new NullOutput();
         $application->run($input, $output);

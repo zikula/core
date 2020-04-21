@@ -80,7 +80,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface
 
     public function getResponse(Request $request): Response
     {
-        if ($this->sendEmailToAdmin($request) > 0) {
+        if ($this->sendEmailToAdmin($request)) {
             if ($request->hasSession() && ($session = $request->getSession())) {
                 $session->getFlashBag()->add('success', 'Congratulations! Zikula has been successfully installed.');
                 $session->getFlashBag()->add('info', $this->trans(
@@ -92,13 +92,13 @@ class CompleteStage implements StageInterface, WizardCompleteInterface
             return new RedirectResponse($this->router->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
         }
         if ($request->hasSession() && ($session = $request->getSession())) {
-            $session->getFlashBag()->add('warning', $this->trans('Email settings are not yet configured. Please configure them below.'));
+            $session->getFlashBag()->add('warning', $this->trans('Email settings are not yet configured or incorrectly configured. Please configure them below.'));
         }
 
         return new RedirectResponse($this->router->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
     }
 
-    private function sendEmailToAdmin(Request $request): int
+    private function sendEmailToAdmin(Request $request): bool
     {
         $adminUser = $this->userRepository->find(UserConstant::USER_ID_ADMIN);
         $uName = $adminUser->getUname();
@@ -126,9 +126,9 @@ EOF;
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            return 0;
+            return false;
         }
 
-        return 1;
+        return true;
     }
 }
