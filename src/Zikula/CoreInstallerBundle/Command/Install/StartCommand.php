@@ -222,7 +222,7 @@ class StartCommand extends AbstractCoreInstallerCommand
     private function encodeArrayValues(array $data): array
     {
         foreach ($data as $k => $v) {
-            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+            $data[$k] = is_string($v) ? base64_encode($v) : $v; // encode so values are 'safe' for json
         }
 
         return $data;
