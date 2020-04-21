@@ -17,6 +17,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\AccessHelper;
@@ -84,6 +85,7 @@ class SuperUserHelper
         $userEntity->setActivated(1);
         $userEntity->setRegistrationDate(new DateTime());
         $userEntity->setLastLogin(new DateTime());
+        $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
         $this->entityManager->persist($userEntity);
 
         $mapping = new AuthenticationMappingEntity();
