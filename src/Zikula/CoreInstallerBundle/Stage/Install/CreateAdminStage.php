@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
 use Symfony\Component\Form\FormInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -24,19 +23,13 @@ use Zikula\Component\Wizard\StageInterface;
 class CreateAdminStage implements StageInterface, FormHandlerInterface
 {
     /**
-     * @var ControllerHelper
+     * @var ParameterHelper
      */
-    private $controllerHelper;
+    private $parameterHelper;
 
-    /**
-     * @var YamlDumper
-     */
-    private $yamlManager;
-
-    public function __construct(ControllerHelper $controllerHelper, string $projectDir)
+    public function __construct(ParameterHelper $parameterHelper, string $projectDir)
     {
-        $this->controllerHelper = $controllerHelper;
-        $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
+        $this->parameterHelper = $parameterHelper;
     }
 
     public function getName(): string
@@ -61,7 +54,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface
 
     public function isNecessary(): bool
     {
-        $params = $this->yamlManager->getParameters();
+        $params = $this->parameterHelper->getYamlHelper()->getParameters();
 
         return !(!empty($params['username']) && !empty($params['password']) && !empty($params['email']));
     }
@@ -74,7 +67,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface
     public function handleFormResult(FormInterface $form): bool
     {
         try {
-            $this->controllerHelper->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+            $this->parameterHelper->writeEncodedParameters($form->getData());
         } catch (AbortStageException $exception) {
             return false;
         }

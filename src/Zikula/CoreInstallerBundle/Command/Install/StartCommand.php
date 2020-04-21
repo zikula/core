@@ -28,9 +28,9 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\PhpHelper;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Helper\MailTransportHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -45,9 +45,9 @@ class StartCommand extends AbstractCoreInstallerCommand
     private $installed;
 
     /**
-     * @var ControllerHelper
+     * @var PhpHelper
      */
-    private $controllerHelper;
+    private $phpHelper;
 
     /**
      * @var LocaleApiInterface
@@ -62,14 +62,14 @@ class StartCommand extends AbstractCoreInstallerCommand
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         string $installed,
-        ControllerHelper $controllerHelper,
+        PhpHelper $phpHelper,
         LocaleApiInterface $localeApi,
         ParameterHelper $parameterHelper,
         TranslatorInterface $translator
     ) {
         $this->kernel = $kernel;
         $this->installed = '0.0.0' !== $installed;
-        $this->controllerHelper = $controllerHelper;
+        $this->phpHelper = $phpHelper;
         $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
         parent::__construct($kernel, $translator);
@@ -101,9 +101,9 @@ class StartCommand extends AbstractCoreInstallerCommand
             return 1;
         }
 
-        $warnings = $this->controllerHelper->initPhp();
-        if (!empty($warnings)) {
-            $this->printWarnings($output, $warnings);
+        $iniWarnings = $this->phpHelper->setUp();
+        if (!empty($iniWarnings)) {
+            $this->printWarnings($output, $iniWarnings);
 
             return 2;
         }

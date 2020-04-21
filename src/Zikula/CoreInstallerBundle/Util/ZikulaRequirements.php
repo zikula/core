@@ -79,6 +79,11 @@ class ZikulaRequirements
             'The pdo extension must be loaded.',
             'Please install the pdo extension and enable it in the php config.'
         );
+        $symfonyRequirements->addRequirement(
+            extension_loaded('mbstring'),
+            'The mbstring extension must be loaded.',
+            'Please install the mbstring extension and enable it (--enable-mbstring) in the php config.'
+        );
         $supportsUnicode = preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $symfonyRequirements->addRequirement(
             (isset($supportsUnicode) && false !== $supportsUnicode),

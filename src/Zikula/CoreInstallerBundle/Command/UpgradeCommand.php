@@ -26,8 +26,8 @@ use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\PhpHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -42,9 +42,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     private $installed;
 
     /**
-     * @var ControllerHelper
+     * @var PhpHelper
      */
-    private $controllerHelper;
+    private $phpHelper;
 
     /**
      * @var MigrationHelper
@@ -80,7 +80,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        ControllerHelper $controllerHelper,
+        PhpHelper $phpHelper,
         MigrationHelper $migrationHelper,
         LocaleApiInterface $localeApi,
         StageHelper $stageHelper,
@@ -88,7 +88,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         TranslatorInterface $translator,
         string $installed
     ) {
-        $this->controllerHelper = $controllerHelper;
+        $this->phpHelper = $phpHelper;
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
@@ -129,9 +129,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io->section($this->translator->trans('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
         $io->text($this->translator->trans('Upgrading Zikula in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
 
-        $warnings = $this->controllerHelper->initPhp();
-        if (!empty($warnings)) {
-            $this->printWarnings($output, $warnings);
+        $iniWarnings = $this->phpHelper->setUp();
+        if (!empty($iniWarnings)) {
+            $this->printWarnings($output, $iniWarnings);
 
             return 2;
         }

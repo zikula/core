@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Component\Wizard\AbortStageException;
 
-class ControllerHelper
+class PhpHelper
 {
     /**
      * @var TranslatorInterface
@@ -33,7 +30,7 @@ class ControllerHelper
     /**
      * Set up PHP for Zikula installation.
      */
-    public function initPhp(): array
+    public function setUp(): array
     {
         $warnings = [];
         if (false === ini_set('default_charset', 'UTF-8')) {
@@ -77,23 +74,5 @@ class ControllerHelper
         }
 
         return $warnings;
-    }
-
-    /**
-     * Write admin credentials to param file as encoded values.
-     *
-     * @throws AbortStageException
-     */
-    public function writeEncodedAdminCredentials(YamlDumper $yamlManager, array $data = []): void
-    {
-        foreach ($data as $k => $v) {
-            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
-        }
-        $params = array_merge($yamlManager->getParameters(), $data);
-        try {
-            $yamlManager->setParameters($params);
-        } catch (IOException $exception) {
-            throw new AbortStageException($this->translator->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'services_custom.yaml']));
-        }
     }
 }
