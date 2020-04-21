@@ -54,11 +54,10 @@ class ConfigController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-                $this->setVar('enableLogging', $formData['enableLogging']);
-                $this->setVar('transport', $formData['transport']);
-                $this->setVar('mailer_id', $formData['mailer_id']);
                 if (true === $mailTransportHelper->handleFormData($formData)) {
                     $this->addFlash('status', 'Done! Configuration updated.');
+                    unset($formData['mailer_key'], $formData['save'], $formData['cancel']);
+                    $this->setVars($formData);
                 } else {
                     $this->addFlash('error', $this->trans('Cannot write to %file%.', ['%file%' => '\.env.local']));
                 }

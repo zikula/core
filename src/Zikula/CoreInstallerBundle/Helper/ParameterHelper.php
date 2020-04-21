@@ -59,6 +59,19 @@ class ParameterHelper
      */
     private $kernel;
 
+    private $encodedParameterNames = [
+        'password',
+        'username',
+        'email',
+        'transport',
+        'mailer_id',
+        'mailer_key',
+        'host',
+        'port',
+        'customParameters',
+        'enableLogging'
+    ];
+
     /**
      * ParameterHelper constructor.
      */
@@ -124,10 +137,10 @@ class ParameterHelper
             }
             // add admin email as site email
             $this->variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
+            $this->setMailerData($params);
         }
 
-        // add remaining parameters and remove unneeded ones
-        unset($params['username'], $params['password'], $params['email']);
+        $params = array_diff_key($params, array_flip($this->encodedParameterNames)); // remove all encoded params
         $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'public/uploads';
 
         if ($configureRequestContext) {
@@ -155,16 +168,12 @@ class ParameterHelper
             if (!$this->kernel->isBundle($defaultTheme) && $this->kernel->isBundle('ZikulaBootstrapTheme')) {
                 $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
             }
+        } else {
+            $this->writeEnvVars();
         }
 
         // write parameters into config/services_custom.yaml
         $yamlHelper->setParameters($params);
-
-        if (isset($params['upgrading'])) {
-            unset($params['upgrading']);
-        } else {
-            $this->writeEnvVars();
-        }
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
@@ -195,31 +204,35 @@ class ParameterHelper
     {
         $yamlHelper = $this->getYamlHelper();
         foreach ($data as $k => $v) {
-            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+            $data[$k] = is_string($v) ? base64_encode($v) : $v; // encode so values are 'safe' for json
         }
         $params = array_merge($yamlHelper->getParameters(), $data);
         try {
             $yamlHelper->setParameters($params);
         } catch (IOException $exception) {
-            throw new AbortStageException($this->translator->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'services_custom.yaml']));
+            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', 'services_custom.yaml'));
         }
     }
 
     /**
-     * Remove base64 encoding for admin parameters.
+     * Remove base64 encoding for parameters.
      */
     public function decodeParameters(array $params = []): array
     {
-        if (!empty($params['password'])) {
-            $params['password'] = base64_decode($params['password']);
-        }
-        if (!empty($params['username'])) {
-            $params['username'] = base64_decode($params['username']);
-        }
-        if (!empty($params['email'])) {
-            $params['email'] = base64_decode($params['email']);
+        foreach ($this->encodedParameterNames as $parameterName) {
+            if (!empty($params[$parameterName])) {
+                $params[$parameterName] = is_string($params[$parameterName]) ? base64_decode($params[$parameterName]) : $params[$parameterName];
+            }
         }
 
         return $params;
+    }
+
+    private function setMailerData(array $params): void
+    {
+        // params have already been decoded
+        $mailerParams = array_intersect_key($params, array_flip($this->encodedParameterNames));
+        unset($mailerParams['mailer_key'], $mailerParams['password'], $mailerParams['username'], $mailerParams['email']);
+        $this->variableApi->setAll('ZikulaMailerModule', $mailerParams);
     }
 }

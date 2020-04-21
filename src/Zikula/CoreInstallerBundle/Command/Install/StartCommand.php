@@ -119,8 +119,10 @@ class StartCommand extends AbstractCoreInstallerCommand
         if (!$this->doDBCreds($input, $output, $io)) {
             $io->error($this->translator->trans('Cannot write database DSN to %file% file.', ['%file%' => '/.env.local']));
         }
-        if (!$this->doMailer($input, $output, $io)) {
+        if (false === $mailSettings = $this->doMailer($input, $output, $io)) {
             $io->error($this->translator->trans('Cannot write mailer DSN to %file% file.', ['%file%' => '/.env.local']));
+        } else {
+            $settings = array_merge($settings, $mailSettings);
         }
         $settings = array_merge($settings, $this->doAdmin($input, $output, $io));
 
@@ -194,14 +196,18 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
     }
 
-    private function doMailer(InputInterface $input, OutputInterface $output, StyleInterface $io): bool
+    private function doMailer(InputInterface $input, OutputInterface $output, StyleInterface $io) // bool|array
     {
         $io->newLine();
         $io->section($this->translator->trans('Mailer transport'));
         $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
         $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
+        $mailDsnWrite = (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
+        if ($mailDsnWrite) {
+            return $this->encodeArrayValues($data);
+        }
 
-        return (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
+        return false;
     }
 
     private function doAdmin(InputInterface $input, OutputInterface $output, StyleInterface $io): array
@@ -209,8 +215,14 @@ class StartCommand extends AbstractCoreInstallerCommand
         $io->newLine();
         $io->section($this->translator->trans('Create admin account'));
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
+
+        return $this->encodeArrayValues($data);
+    }
+
+    private function encodeArrayValues(array $data): array
+    {
         foreach ($data as $k => $v) {
-            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+            $data[$k] = is_string($v) ? base64_encode($v) : $v; // encode so values are 'safe' for json
         }
 
         return $data;

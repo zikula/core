@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
 use Symfony\Component\Form\FormInterface;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
+use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
@@ -21,6 +23,11 @@ use Zikula\MailerModule\Helper\MailTransportHelper;
 
 class EmailTransportStage implements StageInterface, FormHandlerInterface
 {
+    /**
+     * @var ParameterHelper
+     */
+    private $parameterHelper;
+
     /**
      * @var string
      */
@@ -31,8 +38,12 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface
      */
     private $mailerDsn;
 
-    public function __construct(string $projectDir, string $mailerDsn = '')
-    {
+    public function __construct(
+        ParameterHelper $parameterHelper,
+        string $projectDir,
+        string $mailerDsn = ''
+    ) {
+        $this->parameterHelper = $parameterHelper;
         $this->projectDir = $projectDir;
         $this->mailerDsn = $mailerDsn;
     }
@@ -74,6 +85,12 @@ class EmailTransportStage implements StageInterface, FormHandlerInterface
 
     public function handleFormResult(FormInterface $form): bool
     {
+        try {
+            $this->parameterHelper->writeEncodedParameters($form->getData());
+        } catch (AbortStageException $exception) {
+            return false;
+        }
+
         return (new MailTransportHelper($this->projectDir))->handleFormData($form->getData());
     }
 }
