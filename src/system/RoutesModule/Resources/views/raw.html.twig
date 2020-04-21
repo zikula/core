@@ -1,0 +1,18 @@
+{# purpose of this template: display pages without the theme #}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ app.request.locale }}" lang="{{ app.request.locale }}">
+<head>
+    <title>{{ block('pageTitle')|default(block('title')) }}</title>
+</head>
+<body>
+    <h2>{{ block('title') }}</h2>
+    {% block content %}{% endblock %}
+    {% block footer %}
+        {{ pageAddAsset('stylesheet', zasset('@ZikulaRoutesModule:css/custom.css'), 120) }}
+        {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+        {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
+        {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.js')) }}
+        {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.RawPage.js')) }}
+    {% endblock %}
+</body>
+</html>

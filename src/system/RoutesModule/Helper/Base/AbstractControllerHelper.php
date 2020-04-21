@@ -220,6 +220,7 @@ abstract class AbstractControllerHelper
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = $request->query->getInt('page', 1);
+            $templateParameters['currentPage'] = $currentPage;
     
             // retrieve item list with pagination
             $paginator = $repository->selectWherePaginated(
