@@ -173,7 +173,7 @@ class RegistrationController extends AbstractController
                             $session->remove('authenticationMethod');
                         }
                         $route = 'zikulausersmodule_registration_register';
-                        if (in_array(ValidUserFieldsValidator::DUP_EMAIL_ALT_AUTH, $codes)) {
+                        if (in_array(ValidUserFieldsValidator::DUP_EMAIL_ALT_AUTH, $codes, true)) {
                             $route = 'zikulausersmodule_access_login';
                         }
 

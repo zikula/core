@@ -118,4 +118,12 @@ class MockUserRepository implements UserRepositoryInterface
     public function searchActiveUser(array $unameFilter = [], int $limit = 50)
     {
     }
+
+    public function countDuplicateUnames(string $uname, ?int $uid = NULL): int
+    {
+    }
+
+    public function getByEmailAndAuthMethod(string $email, string $authMethod): array
+    {
+    }
 }
