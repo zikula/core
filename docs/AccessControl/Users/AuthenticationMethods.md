@@ -16,17 +16,17 @@ Zikula comes standard with the ZikulaZAuthModule which provides three methods:
 
 This method requires that the `uname` (user name) selected by the registering user be **unique**. However, the `email`
 address input by the registering user is **NOT** required to be unique when compared to other users registering with
-ZAuth's NATIVE_UNAME. When logging in, users are presented with a form requiring their **uname** and password.
+ZAuth. When logging in, users are presented with a form requiring their **uname** and password.
 
 ### NATIVE_EMAIL
 
 This method requires that **both** the `uname` and `email` values be unique when compared to other users registering with
-ZAuth's NATIVE_EMAIL. When logging in, users are presented with a form requiring their **email** and password.
+ZAuth. When logging in, users are presented with a form requiring their **email** and password.
 
-### NATIVE_EMAIL
+### NATIVE_EITHER
 
 This method requires that both the `uname` and `email` values be unique when compared to other users registering with
-ZAuth's NATIVE_EMAIL. When logging in, users are presented with a form requiring either their **uname** or **email**
+ZAuth. When logging in, users are presented with a form requiring either their **uname** or **email**
 and password. The login form detects the type of value in the first field and authenticates as needed from that info.
 
 #### Password security note
