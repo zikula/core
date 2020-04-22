@@ -17,11 +17,15 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class ValidUserFieldsValidator extends ConstraintValidator
 {
+    public const DUP_EMAIL_ALT_AUTH = 'DuplicateEmailOfAlternativeAuthMethod';
+
     /**
      * @var TranslatorInterface
      */
@@ -46,19 +50,31 @@ class ValidUserFieldsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ValidUserFields::class);
         }
         // ensure unique uname
-        $qb = $this->userRepository->createQueryBuilder('u');
-        $qb->select('count(u.uid)')
-            ->where($qb->expr()->eq('LOWER(u.uname)', ':uname'))
-            ->setParameter('uname', $data['uname']);
-        // when updating an existing User, the existing Uid must be excluded.
-        if (isset($data['uid']) && is_numeric($data['uid'])) {
-            $qb->andWhere('u.uid != :excludedUid')
-                ->setParameter('excludedUid', $data['uid']);
-        }
+        $this->validateUniqueUname($data['uname'], $data['uid'] ?? null);
 
-        if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $data['uname']], 'validators'))
+        // users registering duplicate email with different authentication method are invalid
+        if ($data instanceof UserEntity && $data->hasAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
+            $this->validateEmailWithAuth($data);
+        }
+    }
+
+    private function validateUniqueUname(string $uname, ?int $uid = null): void
+    {
+        if ($this->userRepository->countDuplicateUnames($uname, $uid) > 0) {
+            $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $uname], 'validators'))
                 ->atPath('uname')
+                ->addViolation();
+        }
+    }
+
+    private function validateEmailWithAuth(UserEntity $data): void
+    {
+        $authMethod = $data->getAttributeValue(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY);
+        $existing = $this->userRepository->getByEmailAndAuthMethod($data['email'], $authMethod);
+        if (count($existing) > 0) {
+            $this->context->buildViolation($this->translator->trans('This email is in use by another authentication method. Please login with that method instead.', [], 'validators'))
+                ->atPath('email')
+                ->setCode(self::DUP_EMAIL_ALT_AUTH)
                 ->addViolation();
         }
     }
