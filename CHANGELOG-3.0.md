@@ -138,6 +138,7 @@
   - Fixed problem where hooks tables are not updated when upgrading from Core-1.x.x (#3977).
   - Fixed orphaned users on attempt to delete stale pending registrations (#4218).
   - Fixed non-default languages being available when multilingual is disabled (#3938).
+  - Fixed duplicate emails allowed when registering with different authentication methods (#3720).
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
