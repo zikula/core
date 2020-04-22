@@ -119,7 +119,7 @@ class MockUserRepository implements UserRepositoryInterface
     {
     }
 
-    public function countDuplicateUnames(string $uname, ?int $uid = NULL): int
+    public function countDuplicateUnames(string $uname, ?int $uid = null): int
     {
     }
 

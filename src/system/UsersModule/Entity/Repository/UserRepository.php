@@ -223,7 +223,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $qb = $this->createQueryBuilder('u');
         $qb->select('count(u.uid)')
             ->where($qb->expr()->eq('LOWER(u.uname)', ':uname'))
-            ->setParameter('uname', strtolower($uname));
+            ->setParameter('uname', mb_strtolower($uname));
         // when updating an existing User, the existing Uid must be excluded.
         if (isset($uid)) {
             $qb->andWhere('u.uid != :excludedUid')
