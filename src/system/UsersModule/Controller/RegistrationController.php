@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
@@ -43,6 +44,7 @@ use Zikula\UsersModule\Form\Type\RegistrationType\DefaultRegistrationType;
 use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\RegistrationUiHooksSubscriber;
+use Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator;
 
 /**
  * Class RegistrationController
@@ -161,11 +163,21 @@ class RegistrationController extends AbstractController
                     $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
                     $validationErrors = $validator->validate($userEntity);
                     if (count($validationErrors) > 0) {
+                        $codes = [];
+                        /** @var ConstraintViolationInterface $validationError */
                         foreach ($validationErrors as $validationError) {
                             $this->addFlash('error', $validationError->getMessage());
+                            $codes[] = $validationError->getCode();
+                        }
+                        if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
+                            $session->remove('authenticationMethod');
+                        }
+                        $route = 'zikulausersmodule_registration_register';
+                        if (in_array(ValidUserFieldsValidator::DUP_EMAIL_ALT_AUTH, $codes)) {
+                            $route = 'zikulausersmodule_access_login';
                         }
 
-                        return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
+                        return $this->redirectToRoute($route); // try again.
                     }
 
                     $registrationHelper->registerNewUser($userEntity);

@@ -217,4 +217,35 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         return $this->query($filter, ['uname' => 'asc']);
     }
+
+    public function countDuplicateUnames(string $uname, ?int $uid = null): int
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('count(u.uid)')
+            ->where($qb->expr()->eq('LOWER(u.uname)', ':uname'))
+            ->setParameter('uname', $uname);
+        // when updating an existing User, the existing Uid must be excluded.
+        if (isset($uid)) {
+            $qb->andWhere('u.uid != :excludedUid')
+                ->setParameter('excludedUid', $uid);
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    public function getByEmailAndAuthMethod(string $email, string $authMethod): array
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->join('u.attributes', 'a')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->andWhere($qb->expr()->andX(
+                $qb->expr()->eq('a.name', ':attributeName'),
+                $qb->expr()->neq('a.value', ':authMethod')
+            ))
+            ->setParameter('attributeName', UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)
+            ->setParameter('authMethod', $authMethod);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

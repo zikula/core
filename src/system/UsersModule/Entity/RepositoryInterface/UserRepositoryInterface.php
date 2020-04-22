@@ -80,4 +80,8 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
      * @return UserEntity[]
      */
     public function searchActiveUser(array $unameFilter = []);
+
+    public function countDuplicateUnames(string $uname, ?int $uid = null): int;
+
+    public function getByEmailAndAuthMethod(string $email, string $authMethod): array;
 }
