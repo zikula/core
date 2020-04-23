@@ -130,10 +130,12 @@ class ExtensionMenu implements ExtensionMenuInterface
                 }
             }
             if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_ALLOW_USER_SELF_DELETE, UsersConstant::DEFAULT_ALLOW_USER_SELF_DELETE)) {
-                $menu->addChild('Delete my account', [
-                    'route' => 'zikulausersmodule_account_deletemyaccount',
-                ])->setAttribute('icon', 'fas fa-trash-alt')
-                    ->setLinkAttribute('class', 'text-danger');
+                if (UsersConstant::USER_ID_ADMIN !== $this->currentUser->get('uid')) {
+                    $menu->addChild('Delete my account', [
+                        'route' => 'zikulausersmodule_account_deletemyaccount',
+                    ])->setAttribute('icon', 'fas fa-trash-alt')
+                        ->setLinkAttribute('class', 'text-danger');
+                }
             }
             $menu->addChild('Log out', [
                 'route' => 'zikulausersmodule_access_logout',
