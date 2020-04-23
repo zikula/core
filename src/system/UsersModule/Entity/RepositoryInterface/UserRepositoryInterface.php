@@ -34,7 +34,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void;
 
     /**
-     * @return PaginatorInterface|UserEntity[]
+     * @return UserEntity[]
      */
     public function queryBySearchForm(array $formData = []);
 
