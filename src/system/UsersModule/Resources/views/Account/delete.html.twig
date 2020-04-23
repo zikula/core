@@ -1,0 +1,27 @@
+<h3>
+    <span class="fas fa-trash-alt"></span>
+    {% trans %}Delete confirmation{% endtrans %}
+    {{ pageSetVar('title', 'Delete confirmation'|trans) }}
+</h3>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+{% for template in additionalTemplates %}
+    {{ include(template.view, template.params, ignore_missing = true) }}
+{% endfor %}
+{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::DELETE_FORM')) }}
+<div class="mt-4 alert alert-danger">
+    <h4 class="text-danger">{% trans %}Deleting your Account is not recommended.{% endtrans %}</h4>
+    {% trans %}If you choose to proceed, your personal data will be removed from the site.{% endtrans %}
+    {% trans %}This includes your username, email, profile data and so forth.{% endtrans %}
+    {% trans %}Third party modules are responsible to remove their own data tied to your account.{% endtrans %}
+    {% trans %}However, your user ID will remain valid and be associated to a 'ghost' username where required.{% endtrans %}
+    {% trans %}This is needed to maintain data-integrity on the site.{% endtrans %}<br /><br />
+    {% trans %}If you require more action than this, please contact the site administrator.{% endtrans %}
+</div>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.delete, {attr: {class: 'btn-outline-danger'}}) }}
+        {{ form_widget(form.cancel, {attr: {class: 'btn-success'}}) }}
+    </div>
+</div>
+{{ form_end(form) }}

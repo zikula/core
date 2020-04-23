@@ -196,3 +196,4 @@
   - Extended site definition and added means for site-wide branding (#3972).
   - Using `utf8mb4` charset on MySQL platforms for real utf8 support (#3784).
   - Moved calling `adminHeader()` and `adminFooter()` into theme layer (#4255).
+  - Allow users to delete themselves (with admin setting) (#1322).

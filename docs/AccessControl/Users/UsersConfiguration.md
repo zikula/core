@@ -42,6 +42,15 @@ The user account page can consist of a series of icons with text linking to
 user-specific functions, or of a series of text-only links to those functions.
 This setting controls which of those options is in effect.
 
+### Allow users to delete themselves
+
+Default: no
+
+Shall users be allowed to delete themselves? If so, users that choose to do so
+will be converted to 'ghost' users. This means that private data will be deleted
+(uname, email, etc), but the user record remains valid thus maintaining data-integrity.
+Third-party extensions are expected to respect this private data-removal requirement.
+
 ## Registration settings
 
 These options control how a new user requests a new user account on the site.

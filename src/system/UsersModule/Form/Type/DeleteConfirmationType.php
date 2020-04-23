@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +25,16 @@ class DeleteConfirmationType extends AbstractType
     {
         $builder
             ->add('users', HiddenType::class)
+            ->add('force', ChoiceType::class, [
+                'label' => 'Deletion type',
+                'choices' => [
+                    'Ghost (soft delete, recommended)' => false,
+                    'Full delete' => true
+                ],
+                'data' => false,
+                'expanded' => true,
+                'multiple' => false
+            ])
             ->add('delete', SubmitType::class, [
                 'label' => 'Confirm deletion',
                 'icon' => 'fa-trash-alt',

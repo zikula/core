@@ -18,8 +18,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\UserPostLoginSuccessEvent;
 use Zikula\UsersModule\Event\UserPostLogoutSuccessEvent;
 
@@ -36,6 +38,11 @@ class UserEventListener implements EventSubscriberInterface
     private $router;
 
     /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
      * @var string
      */
     private $environment;
@@ -43,10 +50,12 @@ class UserEventListener implements EventSubscriberInterface
     public function __construct(
         RequestStack $requestStack,
         RouterInterface $router,
+        VariableApiInterface $variableApi,
         string $environment
     ) {
         $this->requestStack = $requestStack;
         $this->router = $router;
+        $this->variableApi = $variableApi;
         $this->environment = $environment;
     }
 
@@ -55,7 +64,8 @@ class UserEventListener implements EventSubscriberInterface
         return [
             UserPostLogoutSuccessEvent::class => ['clearUsersNamespace'],
             UserPostLoginSuccessEvent::class => ['setLocale'],
-            KernelEvents::EXCEPTION => ['clearUsersNamespace']
+            KernelEvents::EXCEPTION => ['clearUsersNamespace'],
+            ActiveUserPostDeletedEvent::class => ['updateIllegalNames']
         ];
     }
 
@@ -121,5 +131,15 @@ class UserEventListener implements EventSubscriberInterface
         if (('prod' === $this->environment) && $doClear && $request->hasSession() && ($session = $request->getSession())) {
             $session->clear();
         }
+    }
+
+    /**
+     * When a user is deleted (or ghosted) the username should be banned from future use to prevent impersonation.
+     */
+    public function updateIllegalNames(ActiveUserPostDeletedEvent $event): void
+    {
+        $illegalUserNames = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
+        $illegalUserNames .= ', ' . $event->getUser()->getUname();
+        $this->variableApi->set('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, $illegalUserNames);
     }
 }

@@ -63,6 +63,11 @@ class ConfigType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
+            ->add(UsersConstant::MODVAR_ALLOW_USER_SELF_DELETE, CheckboxType::class, [
+                'label' => 'Allow users to delete themselves (convert to ghost)',
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
+            ])
             /**
              * Registration Settings
              */

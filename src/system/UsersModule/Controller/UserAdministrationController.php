@@ -58,6 +58,7 @@ use Zikula\UsersModule\Form\Type\MailType;
 use Zikula\UsersModule\Form\Type\RegistrationType\ApproveRegistrationConfirmationType;
 use Zikula\UsersModule\Form\Type\SearchUserType;
 use Zikula\UsersModule\Helper\AdministrationActionsHelper;
+use Zikula\UsersModule\Helper\DeleteHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
@@ -288,6 +289,7 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         HookDispatcherInterface $hookDispatcher,
         EventDispatcherInterface $eventDispatcher,
+        DeleteHelper $deleteHelper,
         UserEntity $user = null
     ) {
         $uids = [];
@@ -338,17 +340,11 @@ class UserAdministrationController extends AbstractController
                 }
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
-                // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
+                $force = $deleteConfirmationForm->get('force')->getData();
                 foreach ($deletedUsers as $deletedUser) {
-                    if (UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated()) {
-                        $eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($deletedUser));
-                    } else {
-                        $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
-                    }
+                    $deleteHelper->deleteUser($deletedUser, $force);
                     $eventDispatcher->dispatch(new DeleteUserFormPostValidatedEvent($deleteConfirmationForm, $deletedUser));
-                    $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
-                    $userRepository->removeAndFlush($deletedUser);
                 }
                 $this->addFlash(
                     'success',

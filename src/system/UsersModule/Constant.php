@@ -97,6 +97,17 @@ namespace Zikula\UsersModule
         public const DEFAULT_ACCOUNT_DISPLAY_GRAPHICS = true;
 
         /**
+         * Module variable key for the flag controlling whether a user is allowed to delete themselves.
+         * Users can only convert themselves to 'ghost', not fully delete.
+         */
+        public const MODVAR_ALLOW_USER_SELF_DELETE = 'usersallowedtoghost';
+
+        /**
+         * Default value for the flag controlling whether a user is allowed to delete themselves.
+         */
+        public const DEFAULT_ALLOW_USER_SELF_DELETE = false;
+
+        /**
          * Module variable key for the guest account (anonymous account) display name.
          */
         public const MODVAR_ANONYMOUS_DISPLAY_NAME = 'anonymous';
