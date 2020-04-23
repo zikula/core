@@ -117,9 +117,16 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      *
      * The user:
      *     `echo 'UID: ' . $event->getUser()->getUid();`
+     *
+     * Check if user is really deleted or "ghosted":
+     *     `if ($event->isFullDeletion())`
      */
     public function delete(ActiveUserPostDeletedEvent $event): void
     {
+        if (!$event->isFullDeletion()) {
+            return;
+        }
+    
         $userId = $event->getUser()->getUid();
         
         $repo = $this->entityFactory->getRepository('route');
