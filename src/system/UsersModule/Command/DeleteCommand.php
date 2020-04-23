@@ -39,6 +39,7 @@ class DeleteCommand extends Command
     protected function configure()
     {
         $this
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'force full delete (vs. convert to ghost)')
             ->addOption('uid', 'u', InputOption::VALUE_REQUIRED, 'User ID (int)')
             ->addOption('gid', 'g', InputOption::VALUE_REQUIRED, 'Group ID (int)')
             ->addOption('status', 's', InputOption::VALUE_REQUIRED, 'User activated status (A|I|P|M)')
@@ -50,7 +51,7 @@ The <info>%command.name%</info> command deletes one or more users.
 This command dispatches all events and hooks like a standard user deletion.
 Do not use uid, gid or status simultaneously. Use only one
 
-<info>php %command.full_name% -u 478</info>
+<info>php %command.full_name% -u478 -f</info>
 
 This will delete user with uid 478.
 
@@ -106,13 +107,14 @@ EOT
         $io->title('Zikula user deletion');
         $count = count($users);
         $io->progressStart($count);
+        $force = $input->getOption('force');
         foreach ($users as $user) {
-            $this->deleteHelper->deleteUser($user);
+            $this->deleteHelper->deleteUser($user, $force);
             $io->progressAdvance();
         }
         $io->progressFinish();
 
-        $io->success(sprintf('Success! %d users deleted.', $count));
+        $io->success(sprintf('Success! %d users %s.', $count, $force ? 'deleted' : 'converted to ghost'));
 
         return 0;
     }

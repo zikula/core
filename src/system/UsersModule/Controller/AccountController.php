@@ -15,21 +15,30 @@ namespace Zikula\UsersModule\Controller;
 
 use Locale;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
+use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent;
+use Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersModule\Form\Type\ChangeLanguageType;
+use Zikula\UsersModule\Helper\DeleteHelper;
+use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 
 /**
  * @Route("/account")
@@ -109,6 +118,71 @@ class AccountController extends AbstractController
 
         return [
             'form' => $form->createView()
+        ];
+    }
+
+    /**
+     * @Route("/delete")
+     * @Template("@ZikulaUsersModule/Account/delete.html.twig")
+     *
+     * @return array|RedirectResponse
+     *
+     * @throws AccessDeniedException Thrown if the user isn't logged in
+     */
+    public function deleteMyAccountAction(
+        Request $request,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        EventDispatcherInterface $eventDispatcher,
+        HookDispatcherInterface $hookDispatcher,
+        DeleteHelper $deleteHelper
+    ) {
+        if (!$currentUserApi->isLoggedIn()) {
+            throw new AccessDeniedException();
+        }
+        if (!$this->getVar(UsersConstant::MODVAR_ALLOW_USER_SELF_DELETE, UsersConstant::DEFAULT_ALLOW_USER_SELF_DELETE)) {
+            $this->addFlash('error', 'Self deletion is disabled by the site administrator.');
+
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+        if (UsersConstant::USER_ID_ADMIN === $currentUserApi->get('uid')) {
+            $this->addFlash('error', 'Self deletion is not possible for main administrator.');
+
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+        $form = $this->createForm(DeletionType::class);
+        $deleteUserFormPostCreatedEvent = new DeleteUserFormPostCreatedEvent($form);
+        $eventDispatcher->dispatch($deleteUserFormPostCreatedEvent);
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
+
+                return $this->redirectToRoute('zikulausersmodule_account_menu');
+            }
+            if ($form->get('delete')->isClicked()) {
+                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook = new ValidationHook());
+                $validHooks = true;
+                if ($hook->getValidators()->hasErrors()) {
+                    $message = implode('<br>', $hook->getValidators()->getErrors());
+                    $this->addFlash('error', $message);
+                    $validHooks = false;
+                }
+                if ($validHooks && $form->isValid()) {
+                    $deletedUser = $userRepository->find($currentUserApi->get('uid'));
+                    $deleteHelper->deleteUser($deletedUser);
+                    $eventDispatcher->dispatch(new DeleteUserFormPostValidatedEvent($form, $deletedUser));
+                    $request->getSession()->invalidate(); // logout
+                    $this->addFlash('success', 'Success. Account deleted!');
+
+                    return $this->redirectToRoute('home');
+                }
+            }
+        }
+
+        return [
+            'form' => $form->createView(),
+            'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : []
         ];
     }
 }

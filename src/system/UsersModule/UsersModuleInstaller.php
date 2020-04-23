@@ -154,6 +154,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $this->delVar('accountitemsperpage');
                 $this->delVar('accountitemsperrow');
                 $this->delVar('userimg');
+                $this->setVar(UsersConstant::MODVAR_ALLOW_USER_SELF_DELETE, UsersConstant::DEFAULT_ALLOW_USER_SELF_DELETE);
             case '3.0.6':
                 // current version
         }
@@ -189,6 +190,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->trans(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
+            UsersConstant::MODVAR_ALLOW_USER_SELF_DELETE                => UsersConstant::DEFAULT_ALLOW_USER_SELF_DELETE,
         ];
     }
 

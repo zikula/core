@@ -110,14 +110,30 @@ class DeleteHelper
         return $users;
     }
 
-    public function deleteUser(UserEntity $user): void
+    public function deleteUser(UserEntity $user, bool $fullDeletion = false): void
     {
         if (UsersConstant::ACTIVATED_ACTIVE === $user->getActivated()) {
-            $this->eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($user));
+            $this->eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($user, $fullDeletion));
         } else {
             $this->eventDispatcher->dispatch(new RegistrationPostDeletedEvent($user));
         }
         $this->hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($user->getUid()));
-        $this->userRepository->removeAndFlush($user);
+        if ($fullDeletion) {
+            $this->userRepository->removeAndFlush($user);
+        } else {
+            $this->convertUserToGhost($user);
+        }
+    }
+
+    private function convertUserToGhost(UserEntity $userEntity): void
+    {
+        $userEntity->setUname('ghost');
+        $userEntity->setEmail('nobody@mailinator.com');
+        $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_DELETE);
+        $userEntity->removeGroups();
+        foreach ($userEntity->getAttributes() as $attribute) {
+            $userEntity->delAttribute($attribute->getName());
+        }
+        $this->userRepository->persistAndFlush($userEntity);
     }
 }

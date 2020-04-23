@@ -43,13 +43,11 @@ use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostValidatedEvent;
-use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostUpdatedEvent;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
 use Zikula\UsersModule\Form\Type\DeleteConfirmationType;
@@ -58,6 +56,7 @@ use Zikula\UsersModule\Form\Type\MailType;
 use Zikula\UsersModule\Form\Type\RegistrationType\ApproveRegistrationConfirmationType;
 use Zikula\UsersModule\Form\Type\SearchUserType;
 use Zikula\UsersModule\Helper\AdministrationActionsHelper;
+use Zikula\UsersModule\Helper\DeleteHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
@@ -288,6 +287,7 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         HookDispatcherInterface $hookDispatcher,
         EventDispatcherInterface $eventDispatcher,
+        DeleteHelper $deleteHelper,
         UserEntity $user = null
     ) {
         $uids = [];
@@ -338,17 +338,11 @@ class UserAdministrationController extends AbstractController
                 }
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
-                // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
+                $force = $deleteConfirmationForm->get('force')->getData();
                 foreach ($deletedUsers as $deletedUser) {
-                    if (UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated()) {
-                        $eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($deletedUser));
-                    } else {
-                        $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($deletedUser));
-                    }
+                    $deleteHelper->deleteUser($deletedUser, $force);
                     $eventDispatcher->dispatch(new DeleteUserFormPostValidatedEvent($deleteConfirmationForm, $deletedUser));
-                    $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
-                    $userRepository->removeAndFlush($deletedUser);
                 }
                 $this->addFlash(
                     'success',

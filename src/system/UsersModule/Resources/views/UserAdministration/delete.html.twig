@@ -4,7 +4,9 @@
     {{ pageSetVar('title', 'Delete confirmation'|trans) }}
 </h3>
 {% for user in users %}
-    <p class="alert alert-danger">{% trans with {'%un': user.uname} %}Are you sure you want to delete the user (%un)?{% endtrans %}</p>
+    <div class="alert alert-danger">
+        {% trans with {'%un': user.uname} %}Are you sure you want to delete the user (%un)?{% endtrans %}
+    </div>
 {% endfor %}
 {{ form_start(form) }}
 {{ form_errors(form) }}
@@ -12,9 +14,18 @@
     {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::DELETE_FORM')) }}
+<div class="alert alert-warning">
+    {% trans %}Fully deleting a user can have unintended side effects and <em>is not recommended</em>.{% endtrans %}<br /><br />
+    {% trans %}Deleting could 'orphan' data in the system and cause display errors or other unknown problems.{% endtrans %}
+    {% trans %}Instead, users can be 'ghosted'. In this case, the private user data is removed, but the internal user ID remains valid.{% endtrans %}
+    {% trans %}This makes the possibility of orphaned data much less likely and is therefore the recommended option.{% endtrans %}<br />
+    <strong>{% trans %}In either case, the username will then be forbidden from future use and the user <em>cannot be reinstated</em>.{% endtrans %}</strong>
+</div>
+{{ form_row(form.force) }}
 <div class="form-group row">
     <div class="col-md-9 offset-md-3">
         {{ form_widget(form.delete) }}
         {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
