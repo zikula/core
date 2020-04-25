@@ -76,8 +76,6 @@ functions, filters, tags, tests and global variables.
 ### System Specific
 
 - adminPanelMenu()
-- extensionActions(extension)
-- stateLabel(extensionEntity, upgradedExtensions = null)
 - getPreviewImagePath(themeName, size = "medium")
 
 #### Blocks

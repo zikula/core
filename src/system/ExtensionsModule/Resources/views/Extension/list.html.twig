@@ -44,7 +44,7 @@
             <td headers="hDescription" style="width: 40%" class="d-none d-lg-table-cell">{{ extension.description }}</td>
             <td headers="hVersion" class="d-none d-lg-table-cell">{{ extension.version }}</td>
             <td class="nowrap">
-                {{ stateLabel(extension, upgradedExtensions) }}
+                {{ _self.stateLabel(extension, upgradedExtensions) }}
             </td>
             <td headers="hActions" class="actions">
                 {% set rowActions = knp_menu_get('zikulaExtensionsAdminMenu', [], {extension: extension}) %}
@@ -65,21 +65,60 @@
 {% endmacro %}
 
 {% macro badge(type) %}
-    {% if type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_MODULE') %}
+    {% switch type %}
+    {% case constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_MODULE') %}
         <i class="fas fa-cubes fa-2x text-primary" data-toggle="tooltip" data-placement="right" title="{% trans %}Third party module{% endtrans %}"></i>
-    {% elseif type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_THEME') %}
+    {% break %}
+    {% case constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_THEME') %}
         <i class="fas fa-palette fa-2x text-info" data-toggle="tooltip" data-placement="right" title="{% trans %}Third party theme{% endtrans %}"></i>
-    {% elseif type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_MODULE') %}
+    {% break %}
+    {% case constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_MODULE') %}
         <span class="fa-stack" data-toggle="tooltip" data-placement="right" title="{% trans %}System module{% endtrans %}">
           <i class="fas fa-circle fa-stack-2x text-primary"></i>
           <i class="fas fa-cubes fa-stack-1x fa-inverse"></i>
         </span>
-    {% elseif type is constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_THEME') %}
+    {% break %}
+    {% case constant('Zikula\\Bundle\\CoreBundle\\Composer\\MetaData::TYPE_SYSTEM_THEME') %}
         <span class="fa-stack" data-toggle="tooltip" data-placement="right" title="{% trans %}System theme{% endtrans %}">
           <i class="fas fa-circle fa-stack-2x text-info"></i>
           <i class="fas fa-palette fa-stack-1x fa-inverse"></i>
         </span>
-    {% endif %}
+    {% break %}
+    {% default %}
+        <i class="fas fa-layer-group fa-2x text-dark" data-toggle="tooltip" data-placement="right" title="{% trans %}Unknown{% endtrans %}"></i>
+    {% endswitch %}
 {% endmacro %}
+
+{% macro stateLabel(extension, upgradedExtensions) %}
+    {% switch extension.state %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_INACTIVE') %}
+        <span class="badge badge-warning">{% trans %}Inactive{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_ACTIVE') %}
+        <span class="badge badge-success">{% trans %}Active{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_MISSING') %}
+        <span class="badge badge-danger">{% trans %}Files missing{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_UPGRADED') %}
+        <span class="badge badge-danger">{% trans %}New version{% endtrans %}</span>
+        &nbsp;<span class="badge badge-warning">{{ upgradedExtensions[extension.name] }}</span>
+    {% break %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_INVALID') %}
+        <span class="badge badge-danger">{% trans %}Invalid structure{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_NOTALLOWED') %}
+        <span class="badge badge-danger">{% trans %}Not allowed{% endtrans %}</span>
+    {% break %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_UNINITIALISED') %}
+    {% default %}
+        {% if extension.state > 10 %}
+        <span class="badge badge-info">{% trans %}Incompatible{% endtrans %}</span>
+        {% else %}
+        <span class="badge badge-primary">{% trans %}Not installed{% endtrans %}</span>
+        {% endif %}
+    {% endswitch %}
+{% endmacro %}
+
 {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaExtensionsModule:js/Zikula.Extensions.Extension.List.js')) }}
