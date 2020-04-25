@@ -31,7 +31,7 @@ class DbCredsHelper
     public function writeDatabaseDsn(array $data = []): bool
     {
         if (!isset($data['database_driver'], $data['database_host'], $data['database_user'], $data['database_password'], $data['database_name'])) {
-            throw new \InvalidArgumentException('Database connection credentials msut be set');
+            throw new \InvalidArgumentException('Database connection credentials must be set');
         }
 
         $vars = [

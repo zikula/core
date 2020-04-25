@@ -152,8 +152,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doLocale(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Locale'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Locale'));
+        }
 
         return $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
             'choices' => $this->localeApi->getSupportedLocaleNames(),
@@ -163,8 +165,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doRequestContext(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Request context'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Request context'));
+        }
         $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
@@ -177,8 +181,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doDBCreds(InputInterface $input, OutputInterface $output, StyleInterface $io): bool
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Database information'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Database information'));
+        }
         $io->note($this->translator->trans('The database port can be left empty.'));
         $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
 
@@ -187,8 +193,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doMailer(InputInterface $input, OutputInterface $output, StyleInterface $io) // bool|array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Mailer transport'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Mailer transport'));
+        }
         $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
         $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
         $mailDsnWrite = (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
@@ -201,8 +209,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doAdmin(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Create admin account'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Create admin account'));
+        }
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
 
         return $this->encodeArrayValues($data);
