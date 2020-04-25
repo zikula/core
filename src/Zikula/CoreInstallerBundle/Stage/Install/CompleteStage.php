@@ -145,6 +145,8 @@ EOF;
             $this->logger->error($exception->getMessage(), [
                 'in' => __METHOD__,
             ]);
+
+            return false;
         }
         if ($this->loggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', $adminUser->getEmail()), [
