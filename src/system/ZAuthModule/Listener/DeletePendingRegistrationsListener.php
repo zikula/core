@@ -109,7 +109,7 @@ Your registration at %site% associated with this email (%email%) has been delete
 This could have happened because you have delayed too long in confirming your email address, or because the administrator manually deleted your registration.
 If you have any questions, please contact the site administrator or re-register.
 EOT
-        , ['%site' => $siteName, '%email%' => $event->getUser()->getEmail()]));
+        , ['%site%' => $siteName, '%email%' => $event->getUser()->getEmail()]));
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
