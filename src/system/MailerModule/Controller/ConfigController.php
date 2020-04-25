@@ -64,7 +64,7 @@ class ConfigController extends AbstractController
                     unset($formData['mailer_key'], $formData['save'], $formData['cancel']);
                     $this->setVars($formData);
                 }
-                $this->setVar('enableLogging' , $formData['enableLogging']);
+                $this->setVar('enableLogging', $formData['enableLogging']);
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
             }
