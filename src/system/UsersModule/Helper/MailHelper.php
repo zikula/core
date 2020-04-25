@@ -56,7 +56,7 @@ class MailHelper
     /**
      * @var bool
      */
-    private $loggingEnabled;
+    private $mailLoggingEnabled;
 
     /**
      * @var MailerInterface
@@ -102,7 +102,7 @@ class MailHelper
         $this->site = $site;
         $this->registrationNotifyEmail = $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
         $this->adminEmail = $variableApi->getSystemVar('adminmail');
-        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     /**
@@ -257,7 +257,7 @@ class MailHelper
 
             return false;
         }
-        if ($this->loggingEnabled) {
+        if ($this->mailLoggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', 'multiple users'), [
                 'in' => __METHOD__,
                 'users' => array_reduce($users, function (UserEntity $user) { return $user->getEmail() . ','; }, 'emails: ')
@@ -324,7 +324,7 @@ class MailHelper
 
             return false;
         }
-        if ($this->loggingEnabled) {
+        if ($this->mailLoggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', $toAddress), [
                 'in' => __METHOD__,
                 'type' => $notificationType

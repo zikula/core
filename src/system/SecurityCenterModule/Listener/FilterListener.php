@@ -73,7 +73,7 @@ class FilterListener implements EventSubscriberInterface
     /**
      * @var bool
      */
-    private $loggingEnabled;
+    private $mailLoggingEnabled;
 
     /**
      * @var TranslatorInterface
@@ -122,7 +122,7 @@ class FilterListener implements EventSubscriberInterface
         $this->cacheDirHelper = $cacheDirHelper;
         $this->installed = '0.0.0' !== $installed;
         $this->isUpgrading = $isUpgrading;
-        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -413,7 +413,7 @@ class FilterListener implements EventSubscriberInterface
                     'in' => __METHOD__,
                 ]);
             }
-            if ($this->loggingEnabled) {
+            if ($this->mailLoggingEnabled) {
                 $this->logger->info(sprintf('Email sent to %s', $adminMail), [
                     'in' => __METHOD__,
                 ]);

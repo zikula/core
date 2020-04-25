@@ -59,7 +59,7 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
     /**
      * @var bool
      */
-    private $loggingEnabled;
+    private $mailLoggingEnabled;
 
     /**
      * @var TranslatorInterface
@@ -87,7 +87,7 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
         $this->logger = $mailLogger;
         $this->translator = $translator;
         $this->site = $site;
-        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -131,7 +131,7 @@ EOT
                 'in' => __METHOD__,
             ]);
         }
-        if ($this->loggingEnabled) {
+        if ($this->mailLoggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', $event->getUser()->getEmail()), [
                 'in' => __METHOD__,
             ]);

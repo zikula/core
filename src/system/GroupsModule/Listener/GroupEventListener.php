@@ -51,7 +51,7 @@ class GroupEventListener implements EventSubscriberInterface
     /**
      * @var bool
      */
-    private $loggingEnabled;
+    private $mailLoggingEnabled;
 
     /**
      * @var RouterInterface
@@ -77,7 +77,7 @@ class GroupEventListener implements EventSubscriberInterface
         $this->logger = $mailLogger;
         $this->router = $router;
         $this->site = $site;
-        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -117,7 +117,7 @@ class GroupEventListener implements EventSubscriberInterface
                 'in' => __METHOD__,
             ]);
         }
-        if ($this->loggingEnabled) {
+        if ($this->mailLoggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', $user->getEmail()), [
                 'in' => __METHOD__,
             ]);
@@ -157,7 +157,7 @@ class GroupEventListener implements EventSubscriberInterface
                 'in' => __METHOD__,
             ]);
         }
-        if ($this->loggingEnabled) {
+        if ($this->mailLoggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', $adminMail), [
                 'in' => __METHOD__,
             ]);

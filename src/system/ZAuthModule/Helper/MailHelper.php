@@ -54,7 +54,7 @@ class MailHelper
     /**
      * @var bool
      */
-    private $loggingEnabled;
+    private $mailLoggingEnabled;
 
     /**
      * @var SiteDefinitionInterface
@@ -75,7 +75,7 @@ class MailHelper
         $this->mailer = $mailer;
         $this->logger = $mailLogger;
         $this->site = $site;
-        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     /**
@@ -128,7 +128,7 @@ class MailHelper
 
             return false;
         }
-        if ($this->loggingEnabled) {
+        if ($this->mailLoggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', $toAddress), [
                 'in' => __METHOD__,
             ]);

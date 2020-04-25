@@ -56,7 +56,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface
     /**
      * @var bool
      */
-    private $loggingEnabled;
+    private $mailLoggingEnabled;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -71,7 +71,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface
         $this->userRepository = $userRepository;
         $this->mailer = $mailer;
         $this->logger = $mailLogger;
-        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public function getName(): string
@@ -148,7 +148,7 @@ EOF;
 
             return false;
         }
-        if ($this->loggingEnabled) {
+        if ($this->mailLoggingEnabled) {
             $this->logger->info(sprintf('Email sent to %s', $adminUser->getEmail()), [
                 'in' => __METHOD__,
             ]);
