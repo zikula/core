@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\WizardCompleteInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UserConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
@@ -46,16 +48,30 @@ class CompleteStage implements StageInterface, WizardCompleteInterface
      */
     private $mailer;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var bool
+     */
+    private $loggingEnabled;
+
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
         UserRepositoryInterface $userRepository,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        VariableApiInterface $variableApi,
+        LoggerInterface $mailLogger // $mailLogger var name auto-injects the mail channel handler
     ) {
         $this->setTranslator($translator);
         $this->router = $router;
         $this->userRepository = $userRepository;
         $this->mailer = $mailer;
+        $this->logger = $mailLogger;
+        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public function getName(): string
@@ -126,7 +142,14 @@ EOF;
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            return false;
+            $this->logger->error($exception->getMessage(), [
+                'in' => __METHOD__,
+            ]);
+        }
+        if ($this->loggingEnabled) {
+            $this->logger->info(sprintf('Email sent to %', $adminUser->getEmail()), [
+                'in' => __METHOD__,
+            ]);
         }
 
         return true;

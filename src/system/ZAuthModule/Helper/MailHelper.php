@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Helper;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -46,6 +47,16 @@ class MailHelper
     private $mailer;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var bool
+     */
+    private $loggingEnabled;
+
+    /**
      * @var SiteDefinitionInterface
      */
     private $site;
@@ -55,13 +66,16 @@ class MailHelper
         Environment $twig,
         VariableApiInterface $variableApi,
         MailerInterface $mailer,
+        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         SiteDefinitionInterface $site
     ) {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
         $this->mailer = $mailer;
+        $this->logger = $mailLogger;
         $this->site = $site;
+        $this->loggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     /**
@@ -74,7 +88,6 @@ class MailHelper
         string $subject = ''
     ): bool {
         //Set translation domain to avoid problems when calling sendNotification from external modules
-        $templateArgs['domain'] = 'zikula';
         $templateName = '@ZikulaZAuthModule/Email/' . $notificationType . '.html.twig';
         try {
             $html = true;
@@ -109,7 +122,15 @@ class MailHelper
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
+            $this->logger->error($exception->getMessage(), [
+                'in' => __METHOD__,
+            ]);
             return false;
+        }
+        if ($this->loggingEnabled) {
+            $this->logger->info(sprintf('Email sent to %', $toAddress), [
+                'in' => __METHOD__,
+            ]);
         }
 
         return true;

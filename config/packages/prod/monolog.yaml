@@ -1,15 +1,23 @@
 monolog:
+    channels: ['mail']
     handlers:
+        mail:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.mail.log"
+            level: debug
+            channels: ["mail"]
         main:
             type: fingers_crossed
             action_level: error
             handler: nested
             excluded_http_codes: [404, 405]
             buffer_size: 50 # How many messages should be saved? Prevent memory leaks
+            channels: ["!mail"]
         nested:
-            type: stream
+            type: rotating_file
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+            max_files: 10
         console:
             type: console
             process_psr_3_messages: false

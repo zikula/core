@@ -88,11 +88,10 @@ class RegistrationHelper
         if (($adminApprovalRequired && !$userEntity->isApproved()) || $createActiveUser->isPropagationStopped()) {
             // We need a registration record
             $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
-            $this->userRepository->persistAndFlush($userEntity);
 
-            // ATTENTION: Do NOT issue an item-create hook at this point! The record is a pending
+            // ATTENTION: Do NOT dispatch ActiveUserPostCreatedEvent at this point! The record is a pending
             // registration, not a user, so a user account record has really not yet been "created".
-            // The item-create hook will be fired when the registration becomes a "real" user
+            // The ActiveUserPostCreatedEvent will be dispatched when the registration becomes a "real" user
             // account record. This is so that modules that do default actions on the creation
             // of a user account do not perform those actions on a pending registration, which
             // may be deleted at any point.
@@ -108,14 +107,14 @@ class RegistrationHelper
                 $defaultGroupEntity = $this->groupRepository->find($defaultGroupId);
                 $userEntity->addGroup($defaultGroupEntity);
             }
-            $this->userRepository->persistAndFlush($userEntity);
 
-            // ATTENTION: This is the proper place for the item-create hook, not when a pending
+            // ATTENTION: This is the proper place for the ActiveUserPostCreatedEvent, not when a pending
             // registration is created. It is not a "real" record until now, so it wasn't really
-            // "created" until now. It is way down here so that the activated state can be properly
-            // saved before the hook is fired.
+            // "created" until now. It is here so that the activated state can be properly
+            // saved before the ActiveUserPostCreatedEvent is dispatched.
             $event = new ActiveUserPostCreatedEvent($userEntity);
         }
+        $this->userRepository->persistAndFlush($userEntity);
         if (!$adminApprovalRequired) {
             $approvedBy = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : $userEntity->getUid();
             $this->userRepository->setApproved($userEntity, new DateTime(), $approvedBy); // flushes EM
