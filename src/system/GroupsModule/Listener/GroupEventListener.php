@@ -118,7 +118,7 @@ class GroupEventListener implements EventSubscriberInterface
             ]);
         }
         if ($this->loggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %', $user->getEmail()), [
+            $this->logger->info(sprintf('Email sent to %s', $user->getEmail()), [
                 'in' => __METHOD__,
             ]);
         }
@@ -158,7 +158,7 @@ class GroupEventListener implements EventSubscriberInterface
             ]);
         }
         if ($this->loggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %', $adminMail), [
+            $this->logger->info(sprintf('Email sent to %s', $adminMail), [
                 'in' => __METHOD__,
             ]);
         }

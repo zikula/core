@@ -129,7 +129,7 @@ class MailHelper
             return false;
         }
         if ($this->loggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %', $toAddress), [
+            $this->logger->info(sprintf('Email sent to %s', $toAddress), [
                 'in' => __METHOD__,
             ]);
         }

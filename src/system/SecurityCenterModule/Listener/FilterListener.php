@@ -414,7 +414,7 @@ class FilterListener implements EventSubscriberInterface
                 ]);
             }
             if ($this->loggingEnabled) {
-                $this->logger->info(sprintf('Email sent to %', $adminMail), [
+                $this->logger->info(sprintf('Email sent to %s', $adminMail), [
                     'in' => __METHOD__,
                 ]);
             }

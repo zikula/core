@@ -119,7 +119,7 @@ class ConfigController extends AbstractController
                     }
                     $mailer->send($email);
                     if ($variableApi->get('ZikulaMailerModule', 'enableLogging', false)) {
-                        $mailLogger->info(sprintf('Email sent to %', $formData['toAddress']), [
+                        $mailLogger->info(sprintf('Email sent to %s', $formData['toAddress']), [
                             'in' => __METHOD__,
                         ]);
                     }

@@ -147,7 +147,7 @@ EOF;
             ]);
         }
         if ($this->loggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %', $adminUser->getEmail()), [
+            $this->logger->info(sprintf('Email sent to %s', $adminUser->getEmail()), [
                 'in' => __METHOD__,
             ]);
         }

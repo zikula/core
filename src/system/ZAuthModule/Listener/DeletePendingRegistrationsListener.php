@@ -132,7 +132,7 @@ EOT
             ]);
         }
         if ($this->loggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %', $event->getUser()->getEmail()), [
+            $this->logger->info(sprintf('Email sent to %s', $event->getUser()->getEmail()), [
                 'in' => __METHOD__,
             ]);
         }

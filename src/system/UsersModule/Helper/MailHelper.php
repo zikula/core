@@ -258,7 +258,7 @@ class MailHelper
             return false;
         }
         if ($this->loggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %', 'multiple users'), [
+            $this->logger->info(sprintf('Email sent to %s', 'multiple users'), [
                 'in' => __METHOD__,
                 'users' => array_reduce($users, function (UserEntity $user) { return $user->getEmail() . ','; }, 'emails: ')
             ]);
@@ -325,7 +325,7 @@ class MailHelper
             return false;
         }
         if ($this->loggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %', $toAddress), [
+            $this->logger->info(sprintf('Email sent to %s', $toAddress), [
                 'in' => __METHOD__,
                 'type' => $notificationType
             ]);
