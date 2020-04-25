@@ -98,15 +98,8 @@ class DbCredsStage implements StageInterface, FormHandlerInterface
 
     public function handleFormResult(FormInterface $form): bool
     {
-        $dbCredsHelper = new DbCredsHelper();
-        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($form->getData());
-
-        try {
-            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
-            $helper = new LocalDotEnvHelper($this->projectDir);
-            $helper->writeLocalEnvVars($vars);
-        } catch (IOExceptionInterface $exception) {
-            throw new AbortStageException(sprintf('Cannot write to %s file.', $this->projectDir . '\.env.local') . ' ' . $exception->getMessage());
+        if (!(new DbCredsHelper($this->projectDir))->writeDatabaseDsn($form->getData())) {
+            throw new AbortStageException(sprintf('Cannot write to %s file.', $this->projectDir . '\.env.local'));
         }
 
         return true;

@@ -60,6 +60,18 @@ class LocalDotEnvHelperTest extends TestCase
         $helper->writeLocalEnvVars(['BAR' => 'bar2', 'BOO' => 'boo']); // overwriting a value should place it at the end of the list
         $expected = "FOO=foo\nFEE=fee\nBEE=bee\nBAR=bar2\nBOO=boo";
         $this->assertEquals($expected, $this->getFileContents());
+
+        $data = ['database_driver' => 'mysql', 'database_host' => 'localhost', 'database_name' => 'foo'];
+        $vars = [
+            'DATABASE_URL' => '!' . $data['database_driver']
+                . '://$DATABASE_USER:$DATABASE_PWD'
+                . '@' . $data['database_host'] . (!empty($data['database_port']) ? ':' . $data['database_port'] : '')
+                . '/' . $data['database_name']
+                . '?serverVersion=5.7' // any value will work (bypasses DBALException)
+        ];
+        $helper->writeLocalEnvVars($vars, true);
+        $expected = 'DATABASE_URL=mysql://$DATABASE_USER:$DATABASE_PWD@localhost/foo?serverVersion=5.7';
+        $this->assertEquals($expected, $this->getFileContents());
     }
 
     private function getFileContents(): string

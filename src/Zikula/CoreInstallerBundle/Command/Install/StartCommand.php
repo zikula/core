@@ -183,17 +183,8 @@ class StartCommand extends AbstractCoreInstallerCommand
         $io->section($this->translator->trans('Database information'));
         $io->note($this->translator->trans('The database port can be left empty.'));
         $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
-        $dbCredsHelper = new DbCredsHelper();
-        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
-        try {
-            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
-            $helper = new LocalDotEnvHelper($this->kernel->getProjectDir());
-            $helper->writeLocalEnvVars($vars);
 
-            return true;
-        } catch (IOExceptionInterface $exception) {
-            return false;
-        }
+        return (new DbCredsHelper($this->kernel->getProjectDir()))->writeDatabaseDsn($data);
     }
 
     private function doMailer(InputInterface $input, OutputInterface $output, StyleInterface $io) // bool|array

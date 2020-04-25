@@ -59,7 +59,13 @@ class LocalDotEnvHelper
     {
         $lines = [];
         foreach ($vars as $key => $value) {
-            $value = '!' === mb_substr((string) $value, 0, 1) ? mb_substr((string) $value, 1) : str_replace(['#', '@', '(', ')'], ['%23', '%40', '%28', '%29'], (string) $value);
+            if ('!' === mb_substr((string) $value, 0, 1)) {
+                $value = mb_substr((string) $value, 1);
+            } else {
+                $quote = in_array(mb_substr((string) $value, 0, 1), ['\'', '"']) ? '\'' : '';
+                $value = !empty($quote) ? trim((string) $value, '\'"') : (string) $value;
+                $value =  $quote . urlencode($value) . $quote;
+            }
             $lines[] = $key . '=' . $value;
         }
 
