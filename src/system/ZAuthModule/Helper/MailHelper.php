@@ -125,6 +125,7 @@ class MailHelper
             $this->logger->error($exception->getMessage(), [
                 'in' => __METHOD__,
             ]);
+
             return false;
         }
         if ($this->loggingEnabled) {
