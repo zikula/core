@@ -129,10 +129,9 @@ class StartCommand extends AbstractCoreInstallerCommand
             $io->comment($this->translator->trans('(Admin credentials have been encoded to make them json-safe.)'));
         }
 
-        $this->printSettings($settings, $io);
-        $io->newLine();
-
         if ($input->isInteractive()) {
+            $this->printSettings($settings, $io);
+            $io->newLine();
             $confirmation = $io->confirm($this->translator->trans('Start installation?'), true);
 
             if (!$confirmation) {
@@ -184,8 +183,8 @@ class StartCommand extends AbstractCoreInstallerCommand
         if ($input->isInteractive()) {
             $io->newLine();
             $io->section($this->translator->trans('Database information'));
+            $io->note($this->translator->trans('The database port can be left empty.'));
         }
-        $io->note($this->translator->trans('The database port can be left empty.'));
         $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
 
         return (new DbCredsHelper($this->kernel->getProjectDir()))->writeDatabaseDsn($data);
@@ -196,8 +195,8 @@ class StartCommand extends AbstractCoreInstallerCommand
         if ($input->isInteractive()) {
             $io->newLine();
             $io->section($this->translator->trans('Mailer transport'));
+            $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
         }
-        $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
         $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
         $mailDsnWrite = (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
         if ($mailDsnWrite) {
