@@ -139,6 +139,7 @@
   - Fixed orphaned users on attempt to delete stale pending registrations (#4218).
   - Fixed non-default languages being available when multilingual is disabled (#3938).
   - Fixed duplicate emails allowed when registering with different authentication methods (#3720).
+  - Mail module setting to Enable Logging of sent mail actually logs sent mail.
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).

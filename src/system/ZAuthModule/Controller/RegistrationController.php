@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
@@ -60,7 +59,6 @@ class RegistrationController extends AbstractController
      */
     public function verifyAction(
         Request $request,
-        EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,

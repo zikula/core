@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule\Listener;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -42,6 +44,16 @@ class GroupEventListener implements EventSubscriberInterface
     protected $mailer;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var bool
+     */
+    private $mailLoggingEnabled;
+
+    /**
      * @var RouterInterface
      */
     protected $router;
@@ -55,14 +67,17 @@ class GroupEventListener implements EventSubscriberInterface
         VariableApiInterface $variableApi,
         TranslatorInterface $translator,
         MailerInterface $mailer,
+        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         RouterInterface $router,
         SiteDefinitionInterface $site
     ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->mailer = $mailer;
+        $this->logger = $mailLogger;
         $this->router = $router;
         $this->site = $site;
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -95,7 +110,18 @@ class GroupEventListener implements EventSubscriberInterface
             ->subject($title)
             ->html($title . '\n\n' . $event->getMessage())
         ;
-        $this->mailer->send($email);
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $exception) {
+            $this->logger->error($exception->getMessage(), [
+                'in' => __METHOD__,
+            ]);
+        }
+        if ($this->mailLoggingEnabled) {
+            $this->logger->info(sprintf('Email sent to %s', $user->getEmail()), [
+                'in' => __METHOD__,
+            ]);
+        }
     }
 
     /**
@@ -124,6 +150,17 @@ class GroupEventListener implements EventSubscriberInterface
             ->subject($this->translator->trans('New group application'))
             ->html($body)
         ;
-        $this->mailer->send($email);
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $exception) {
+            $this->logger->error($exception->getMessage(), [
+                'in' => __METHOD__,
+            ]);
+        }
+        if ($this->mailLoggingEnabled) {
+            $this->logger->info(sprintf('Email sent to %s', $adminMail), [
+                'in' => __METHOD__,
+            ]);
+        }
     }
 }

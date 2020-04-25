@@ -20,11 +20,13 @@ use IDS\Event;
 use IDS\Init as IdsInit;
 use IDS\Monitor as IdsMonitor;
 use IDS\Report as IdsReport;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -64,6 +66,16 @@ class FilterListener implements EventSubscriberInterface
     private $mailer;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var bool
+     */
+    private $mailLoggingEnabled;
+
+    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -93,6 +105,7 @@ class FilterListener implements EventSubscriberInterface
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
         MailerInterface $mailer,
+        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         TranslatorInterface $translator,
         string $cacheDir,
         CacheDirHelper $cacheDirHelper,
@@ -103,11 +116,13 @@ class FilterListener implements EventSubscriberInterface
         $this->variableApi = $variableApi;
         $this->em = $em;
         $this->mailer = $mailer;
+        $this->logger = $mailLogger;
         $this->translator = $translator;
         $this->cacheDir = $cacheDir;
         $this->cacheDirHelper = $cacheDirHelper;
         $this->installed = '0.0.0' !== $installed;
         $this->isUpgrading = $isUpgrading;
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -391,7 +406,18 @@ class FilterListener implements EventSubscriberInterface
                 ->subject($this->translator->trans('Intrusion attempt detected by PHPIDS'))
                 ->html($mailBody)
             ;
-            $this->mailer->send($email);
+            try {
+                $this->mailer->send($email);
+            } catch (TransportExceptionInterface $exception) {
+                $this->logger->error($exception->getMessage(), [
+                    'in' => __METHOD__,
+                ]);
+            }
+            if ($this->mailLoggingEnabled) {
+                $this->logger->info(sprintf('Email sent to %s', $adminMail), [
+                    'in' => __METHOD__,
+                ]);
+            }
         }
 
         if ($usedImpact > $impactThresholdThree) {

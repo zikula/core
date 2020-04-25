@@ -4,17 +4,17 @@
 
 {% trans %}Hello!{% endtrans %}
 
-{% trans with {'%email': reginfo.email, '%site': siteName(), '%url': url('home')} %}This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
+{% trans with {'%email': user.email, '%site': siteName(), '%url': url('home')} %}This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
 {% trans %}The information that was registered is as follows:{% endtrans %}
 
-{% trans %}User name{% endtrans %}: {{ reginfo.uname }}
+{% trans %}User name{% endtrans %}: {{ user.uname }}
 {% if createdpassword is not empty %}
 {% trans %}Password{% endtrans %}: {{ createdpassword }}
 {% endif %}
 
 {% if createdpassword is not empty %}{% trans %}(This is the only time you will receive your password. Please keep it in a safe place.){% endtrans %}{% endif %}
 
-{% if not reginfo.approved %}
+{% if not user.approved %}
 {% trans %}Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.{% endtrans %}
 {% elseif not createdByAdmin %}
 {% trans %}Your account application has been approved. Thank you for your patience during the new account application review process.{% endtrans %}
@@ -22,7 +22,7 @@
 {% trans %}The web site administrator has created this new account for you.{% endtrans %}
 {% endif %}
 
-{% if reginfo.approved %}
+{% if user.approved %}
 {% trans %}You may now log into the web site.{% endtrans %}
 {% endif %}
 {{ include('@ZikulaUsersModule/Email/footer.txt.twig') }}

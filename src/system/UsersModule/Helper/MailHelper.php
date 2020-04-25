@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Helper;
 
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -43,14 +44,29 @@ class MailHelper
     private $twig;
 
     /**
-     * @var VariableApiInterface
+     * @var string
      */
-    private $variableApi;
+    private $registrationNotifyEmail;
+
+    /**
+     * @var string
+     */
+    private $adminEmail;
+
+    /**
+     * @var bool
+     */
+    private $mailLoggingEnabled;
 
     /**
      * @var MailerInterface
      */
     private $mailer;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @var PermissionApiInterface
@@ -72,17 +88,21 @@ class MailHelper
         Environment $twig,
         VariableApiInterface $variableApi,
         MailerInterface $mailer,
+        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         PermissionApiInterface $permissionApi,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         SiteDefinitionInterface $site
     ) {
         $this->translator = $translator;
         $this->twig = $twig;
-        $this->variableApi = $variableApi;
         $this->mailer = $mailer;
+        $this->logger = $mailLogger;
         $this->permissionApi = $permissionApi;
         $this->authenticationMappingRepository = $authenticationMappingRepository;
         $this->site = $site;
+        $this->registrationNotifyEmail = $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
+        $this->adminEmail = $variableApi->getSystemVar('adminmail');
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     /**
@@ -110,7 +130,7 @@ class MailHelper
     ): array {
         $mailErrors = [];
         $rendererArgs = [];
-        $rendererArgs['reginfo'] = $userEntity;
+        $rendererArgs['user'] = $userEntity;
         $rendererArgs['createdpassword'] = $passwordCreatedForUser;
         $rendererArgs['createdByAdmin'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
 
@@ -122,12 +142,11 @@ class MailHelper
         }
         if ($adminNotification) {
             // mail notify email to inform admin about registration
-            $notificationEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
-            if (!empty($notificationEmail)) {
+            if (!empty($this->registrationNotifyEmail)) {
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
                 $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
 
-                $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs);
+                $mailSent = $this->sendNotification($this->registrationNotifyEmail, 'regadminnotify', $rendererArgs);
                 if (!$mailSent) {
                     $mailErrors[] = $this->translator->trans('Warning! The notification email for the new registration could not be sent.', [], 'mail');
                 }
@@ -164,7 +183,7 @@ class MailHelper
     ): array {
         $mailErrors = [];
         $rendererArgs = [];
-        $rendererArgs['reginfo'] = $userEntity;
+        $rendererArgs['user'] = $userEntity;
         $rendererArgs['createdpassword'] = $passwordCreatedForUser;
         $rendererArgs['createdByAdmin'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
 
@@ -176,13 +195,12 @@ class MailHelper
         }
         if ($adminNotification) {
             // mail notify email to inform admin about registration
-            $notificationEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
-            if (!empty($notificationEmail)) {
+            if (!empty($this->registrationNotifyEmail)) {
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
                 $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
 
                 $subject = $this->translator->trans('New registration: %userName%', ['%userName%' => $userEntity->getUname()]);
-                $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs, $subject);
+                $mailSent = $this->sendNotification($this->registrationNotifyEmail, 'regadminnotify', $rendererArgs, $subject);
                 if (!$mailSent) {
                     $mailErrors[] = $this->translator->trans('Warning! The notification email for the newly created user could not be sent.', [], 'mail');
                 }
@@ -233,7 +251,17 @@ class MailHelper
             }
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
+            $this->logger->error($exception->getMessage(), [
+                'in' => __METHOD__
+            ]);
+
             return false;
+        }
+        if ($this->mailLoggingEnabled) {
+            $this->logger->info(sprintf('Email sent to %s', 'multiple users'), [
+                'in' => __METHOD__,
+                'users' => array_reduce($users, function (UserEntity $user) { return $user->getEmail() . ','; }, 'emails: ')
+            ]);
         }
 
         return true;
@@ -278,7 +306,7 @@ class MailHelper
         $siteName = $this->site->getName();
 
         $email = (new Email())
-            ->from(new Address($this->variableApi->getSystemVar('adminmail'), $siteName))
+            ->from(new Address($this->adminEmail, $siteName))
             ->to($toAddress)
             ->subject($subject)
             ->text($textBody)
@@ -289,7 +317,18 @@ class MailHelper
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
+            $this->logger->error($exception->getMessage(), [
+                'in' => __METHOD__,
+                'type' => $notificationType
+            ]);
+
             return false;
+        }
+        if ($this->mailLoggingEnabled) {
+            $this->logger->info(sprintf('Email sent to %s', $toAddress), [
+                'in' => __METHOD__,
+                'type' => $notificationType
+            ]);
         }
 
         return true;
@@ -300,20 +339,20 @@ class MailHelper
         $siteName = $this->site->getName();
         switch ($notificationType) {
             case 'regadminnotify':
-                if (!$templateArgs['reginfo']->isApproved()) {
-                    return $this->translator->trans('New registration pending approval: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], 'mail');
+                if (!$templateArgs['user']->isApproved()) {
+                    return $this->translator->trans('New registration pending approval: %userName%', ['%userName%' => $templateArgs['user']['uname']], 'mail');
                 }
                 if (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
-                    return $this->translator->trans('New registration pending email verification: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], 'mail');
+                    return $this->translator->trans('New registration pending email verification: %userName%', ['%userName%' => $templateArgs['user']['uname']], 'mail');
                 }
 
-                return $this->translator->trans('New user activated: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], 'mail');
+                return $this->translator->trans('New user activated: %userName%', ['%userName%' => $templateArgs['user']['uname']], 'mail');
 
             case 'regdeny':
                 return $this->translator->trans('Your recent request at %siteName%.', ['%siteName%' => $siteName], 'mail');
 
             case 'welcome':
-                return $this->translator->trans('Welcome to %siteName%, %userName%!', ['%siteName%' => $siteName, '%userName%' => $templateArgs['reginfo']['uname']], 'mail');
+                return $this->translator->trans('Welcome to %siteName%, %userName%!', ['%siteName%' => $siteName, '%userName%' => $templateArgs['user']['uname']], 'mail');
 
             default:
                 return $this->translator->trans('A message from %siteName%.', ['%siteName%' => $siteName], 'mail');

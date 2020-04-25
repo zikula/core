@@ -46,7 +46,7 @@ class RegistrationEventsListener implements EventSubscriberInterface
     public function sendRegistrationEmail(RegistrationPostSuccessEvent $event): void
     {
         $userEntity = $event->getUser();
-        $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
+        $notificationErrors = $this->mailHelper->createAndSendRegistrationMail($userEntity);
         if (empty($notificationErrors)) {
             return;
         }

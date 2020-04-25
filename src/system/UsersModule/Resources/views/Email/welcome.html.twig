@@ -4,11 +4,11 @@
 
 <p>
     {% trans %}Hello!{% endtrans %}
-    {% trans with {'%email': reginfo.email, '%site': siteName(), '%url': url('home')} %}This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
+    {% trans with {'%email': user.email, '%site': siteName(), '%url': url('home')} %}This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
     {% trans %}The information that was registered is as follows:{% endtrans %}
 </p>
 
-<p>{% trans %}User name{% endtrans %}: {{ reginfo.uname }}<br />
+<p>{% trans %}User name{% endtrans %}: {{ user.uname }}<br />
 {% if createdpassword is not empty %}
     {% trans %}Password{% endtrans %}: {{ createdpassword }}
 {% endif %}
@@ -16,15 +16,17 @@
 
 {% if createdpassword is not empty %}<p>{% trans %}(This is the only time you will receive your password. Please keep it in a safe place.){% endtrans %}</p>{% endif %}
 
-{% if not reginfo.approved %}
+{% if not user.approved %}
     <p>{% trans %}Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.{% endtrans %}</p>
-{% elseif not createdByAdmin %}
-    <p>{% trans %}Your account application has been approved. Thank you for your patience during the new account application review process.{% endtrans %}</p>
+{% elseif not createdByAdmin and user.activated <= 0 %}
+    <p>{% trans %}Your account application is pending for some reason. Expect additional email(s) with information on finalizing your registration.{% endtrans %}</p>
+{% elseif not createdByAdmin and user.activated > 0 %}
+    <p>{% trans %}Your account application has been approved by the site administrator. Thank you for your patience during the new account application review process.{% endtrans %}</p>
 {% elseif createdByAdmin %}
     <p>{% trans %}The web site administrator has created this new account for you.{% endtrans %}</p>
 {% endif %}
 
-{% if reginfo.approved %}
+{% if user.approved and user.activated > 0 %}
     <p>{% trans %}You may now log into the web site.{% endtrans %}</p>
 {% endif %}
 {{ include('@ZikulaUsersModule/Email/footer.txt.twig')|nl2br }}

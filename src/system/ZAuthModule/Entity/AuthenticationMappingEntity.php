@@ -72,7 +72,7 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
 
     /**
      * Password: User's password for logging in.
-     * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
+     * This value is salted and hashed.
      *
      * @ORM\Column(type="string")
      * @Assert\Length(min="0", max="255", allowEmptyString="false")

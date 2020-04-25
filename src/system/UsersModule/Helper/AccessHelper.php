@@ -78,7 +78,7 @@ class AccessHelper
                 return false;
             case UsersConstant::ACTIVATED_PENDING_REG:
                 if (null !== $session) {
-                    $session->getFlashBag()->add('error', 'Login denied: Your request to register with this site is pending or awaiting verification.');
+                    $session->getFlashBag()->add('info', 'Cannot login yet. Your request to register with this site is pending or awaiting verification.');
                 }
 
                 return false;

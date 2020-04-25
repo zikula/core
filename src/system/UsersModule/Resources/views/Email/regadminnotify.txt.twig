@@ -1,6 +1,6 @@
 {% trans_default_domain 'mail' %}
 {{ include('@ZikulaUsersModule/Email/header.txt.twig') }}
-{% if not reginfo.isApproved %}
+{% if not user.isApproved %}
     {% set heading = 'New registration pending approval'|trans %}
 {% elseif not isVerified %}
     {% set heading = 'New registration pending e-mail verification'|trans %}
@@ -9,7 +9,7 @@
 {% endif %}
 {{ heading }}
 
-{% if not reginfo.isApproved %}
+{% if not user.isApproved %}
 {% trans with {'%s': siteName()} %}A new user account has been created but not yet activated on %s.{% endtrans %}
 {% else %}
 {% trans with {'%s': siteName()} %}A new user account has been activated on %s.{% endtrans %}
@@ -17,5 +17,5 @@
 {% if createdByAdmin %}{% trans %}It was created by an administrator or sub-administrator.{% endtrans %}{% endif %}
 {% trans %}The account details are as follows:{% endtrans %}
 
-{% trans %}User name{% endtrans %}: '{{ reginfo.uname }}'
+{% trans %}User name{% endtrans %}: '{{ user.uname }}'
 {{ include('@ZikulaUsersModule/Email/footer.txt.twig') }}

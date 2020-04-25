@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Listener;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -51,6 +52,16 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
     private $mailer;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var bool
+     */
+    private $mailLoggingEnabled;
+
+    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -65,6 +76,7 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
         UserVerificationRepositoryInterface $userVerificationRepository,
         EventDispatcherInterface $eventDispatcher,
         MailerInterface $mailer,
+        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         TranslatorInterface $translator,
         SiteDefinitionInterface $site
     ) {
@@ -72,8 +84,10 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
         $this->userVerificationRepository = $userVerificationRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
+        $this->logger = $mailLogger;
         $this->translator = $translator;
         $this->site = $site;
+        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -113,7 +127,14 @@ EOT
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            // do nothing
+            $this->logger->error($exception->getMessage(), [
+                'in' => __METHOD__,
+            ]);
+        }
+        if ($this->mailLoggingEnabled) {
+            $this->logger->info(sprintf('Email sent to %s', $event->getUser()->getEmail()), [
+                'in' => __METHOD__,
+            ]);
         }
     }
 }
