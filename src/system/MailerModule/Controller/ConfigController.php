@@ -55,13 +55,16 @@ class ConfigController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-                if (true === $mailTransportHelper->handleFormData($formData)) {
-                    $this->addFlash('status', 'Done! Configuration updated.');
+                if ($this->transportConfigChanged($formData)) {
+                    if (true === $mailTransportHelper->handleFormData($formData)) {
+                        $this->addFlash('status', 'Done! Mailer Transport Config updated.');
+                    } else {
+                        $this->addFlash('error', $this->trans('Cannot write to %file%.', ['%file%' => '\.env.local']));
+                    }
                     unset($formData['mailer_key'], $formData['save'], $formData['cancel']);
                     $this->setVars($formData);
-                } else {
-                    $this->addFlash('error', $this->trans('Cannot write to %file%.', ['%file%' => '\.env.local']));
                 }
+                $this->setVar('enableLogging' , $formData['enableLogging']);
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
             }
@@ -70,6 +73,18 @@ class ConfigController extends AbstractController
         return [
             'form' => $form->createView()
         ];
+    }
+
+    private function transportConfigChanged(array $formData): bool
+    {
+        $transportVars = ['transport', 'mailer_id', 'host', 'port', 'customParameters'];
+        foreach ($transportVars as $transportVar) {
+            if ($formData[$transportVar] !== $this->getVar($transportVar)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
