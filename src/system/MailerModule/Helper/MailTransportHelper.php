@@ -28,8 +28,11 @@ class MailTransportHelper
         $this->projectDir = $projectDir;
     }
 
-    public function handleFormData($formData): bool
+    public function handleFormData(array $formData): bool
     {
+        if (!isset($formData['transport'])) {
+            throw new \InvalidArgumentException('Transport must be set.');
+        }
         $transportStrings = [
             'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@',
             'sendmail' => 'sendmail+smtp://default',

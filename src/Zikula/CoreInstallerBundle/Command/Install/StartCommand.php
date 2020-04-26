@@ -18,9 +18,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
@@ -131,10 +129,9 @@ class StartCommand extends AbstractCoreInstallerCommand
             $io->comment($this->translator->trans('(Admin credentials have been encoded to make them json-safe.)'));
         }
 
-        $this->printSettings($settings, $io);
-        $io->newLine();
-
         if ($input->isInteractive()) {
+            $this->printSettings($settings, $io);
+            $io->newLine();
             $confirmation = $io->confirm($this->translator->trans('Start installation?'), true);
 
             if (!$confirmation) {
@@ -154,8 +151,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doLocale(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Locale'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Locale'));
+        }
 
         return $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
             'choices' => $this->localeApi->getSupportedLocaleNames(),
@@ -165,8 +164,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doRequestContext(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Request context'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Request context'));
+        }
         $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
@@ -179,28 +180,23 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doDBCreds(InputInterface $input, OutputInterface $output, StyleInterface $io): bool
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Database information'));
-        $io->note($this->translator->trans('The database port can be left empty.'));
-        $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
-        $dbCredsHelper = new DbCredsHelper();
-        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($data);
-        try {
-            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
-            $helper = new LocalDotEnvHelper($this->kernel->getProjectDir());
-            $helper->writeLocalEnvVars($vars);
-
-            return true;
-        } catch (IOExceptionInterface $exception) {
-            return false;
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Database information'));
+            $io->note($this->translator->trans('The database port can be left empty.'));
         }
+        $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
+
+        return (new DbCredsHelper($this->kernel->getProjectDir()))->writeDatabaseDsn($data);
     }
 
     private function doMailer(InputInterface $input, OutputInterface $output, StyleInterface $io) // bool|array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Mailer transport'));
-        $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Mailer transport'));
+            $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
+        }
         $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
         $mailDsnWrite = (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
         if ($mailDsnWrite) {
@@ -212,8 +208,10 @@ class StartCommand extends AbstractCoreInstallerCommand
 
     private function doAdmin(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $io->newLine();
-        $io->section($this->translator->trans('Create admin account'));
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Create admin account'));
+        }
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
 
         return $this->encodeArrayValues($data);

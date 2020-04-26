@@ -16,9 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Form\FormInterface;
-use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
@@ -98,15 +96,8 @@ class DbCredsStage implements StageInterface, FormHandlerInterface
 
     public function handleFormResult(FormInterface $form): bool
     {
-        $dbCredsHelper = new DbCredsHelper();
-        $databaseUrl = $dbCredsHelper->buildDatabaseUrl($form->getData());
-
-        try {
-            $vars = ['DATABASE_URL' => '!\'' . $databaseUrl . '\''];
-            $helper = new LocalDotEnvHelper($this->projectDir);
-            $helper->writeLocalEnvVars($vars);
-        } catch (IOExceptionInterface $exception) {
-            throw new AbortStageException(sprintf('Cannot write to %s file.', $this->projectDir . '\.env.local') . ' ' . $exception->getMessage());
+        if (!(new DbCredsHelper($this->projectDir))->writeDatabaseDsn($form->getData())) {
+            throw new AbortStageException(sprintf('Cannot write to %s file.', $this->projectDir . '\.env.local'));
         }
 
         return true;
