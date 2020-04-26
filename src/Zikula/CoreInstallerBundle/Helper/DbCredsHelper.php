@@ -37,8 +37,8 @@ class DbCredsHelper
         $vars = [
             'DATABASE_USER' => $data['database_user'],
             'DATABASE_PWD' => $data['database_password'],
-            'DATABASE_NAME' => $data['database_password'],
-            'DATABASE_URL' => '!' . $data['database_name']
+            'DATABASE_NAME' => $data['database_name'],
+            'DATABASE_URL' => '!' . $data['database_driver']
                 . '://$DATABASE_USER:$DATABASE_PWD'
                 . '@' . $data['database_host'] . (!empty($data['database_port']) ? ':' . $data['database_port'] : '')
                 . '/$DATABASE_NAME?serverVersion=5.7' // any value for serverVersion will work (bypasses DBALException)
