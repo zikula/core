@@ -12,7 +12,7 @@ Zikula.Config = {
     "ajaxtimeout": "5000",
     "lang": "en",
     "sessionName": "_zsid",
-    "uid": "2"
+    "uid": "1"
 };
 
 // site-specific override
