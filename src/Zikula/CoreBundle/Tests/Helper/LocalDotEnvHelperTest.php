@@ -61,7 +61,11 @@ class LocalDotEnvHelperTest extends TestCase
         $expected = "FOO=foo\nFEE=fee\nBEE=bee\nBAR=bar2\nBOO=boo";
         $this->assertEquals($expected, $this->getFileContents());
 
-        $data = ['database_driver' => 'mysql', 'database_host' => 'localhost', 'database_name' => 'foo'];
+        $data = [
+            'database_driver' => 'mysql',
+            'database_host' => 'localhost',
+            'database_name' => 'foo'
+        ];
         $vars = [
             'DATABASE_URL' => '!' . $data['database_driver']
                 . '://$DATABASE_USER:$DATABASE_PWD'

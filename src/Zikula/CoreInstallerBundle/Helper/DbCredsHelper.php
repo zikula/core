@@ -30,18 +30,18 @@ class DbCredsHelper
 
     public function writeDatabaseDsn(array $data = []): bool
     {
-        if (!isset($data['database_driver'], $data['database_host'], $data['database_user'], $data['database_password'], $data['database_name'])) {
+        if (!isset($data['database_driver'], $data['database_host'], $data['database_user'], $data['database_name'])) {
             throw new \InvalidArgumentException('Database connection credentials must be set');
         }
 
         $vars = [
             'DATABASE_USER' => $data['database_user'],
             'DATABASE_PWD' => $data['database_password'],
-            'DATABASE_URL' => '!' . $data['database_driver']
+            'DATABASE_NAME' => $data['database_password'],
+            'DATABASE_URL' => '!' . $data['database_name']
                 . '://$DATABASE_USER:$DATABASE_PWD'
                 . '@' . $data['database_host'] . (!empty($data['database_port']) ? ':' . $data['database_port'] : '')
-                . '/' . $data['database_name']
-                . '?serverVersion=5.7' // any value will work (bypasses DBALException)
+                . '/$DATABASE_NAME?serverVersion=5.7' // any value for serverVersion will work (bypasses DBALException)
         ];
 
         try {
