@@ -38,10 +38,8 @@ class ZikulaRequirements
             $this->addZikulaSystemRequirements($symfonyRequirements);
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
 
-            foreach ($symfonyRequirements->getRequirements() as $req) {
-                if ($helpText = $this->getErrorMessage($req)) {
-                    $this->requirementsErrors[] = $helpText;
-                }
+            foreach ($symfonyRequirements->getFailedRequirements() as $req) {
+                $this->requirementsErrors[] = $this->getErrorMessage($req);
             }
         } catch (MethodArgumentValueNotImplementedException $e) {
             // workaround https://github.com/symfony/symfony-installer/issues/163
@@ -50,9 +48,6 @@ class ZikulaRequirements
 
     protected function getErrorMessage(Requirement $requirement, $lineSize = 70): string
     {
-        if ($requirement->isFulfilled()) {
-            return '';
-        }
         $errorMessage = wordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL . '   ') . PHP_EOL;
         $errorMessage .= '   > ' . wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL . '   > ') . PHP_EOL;
 
