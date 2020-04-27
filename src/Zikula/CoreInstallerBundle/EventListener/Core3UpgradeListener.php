@@ -41,7 +41,8 @@ class Core3UpgradeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreUpgradePreExtensionUpgrade::class => 'resetExtensionVersions'
+            // after \Zikula\ExtensionsModule\Listener\Core3UpgradeListener::upgrade = priority 0
+            CoreUpgradePreExtensionUpgrade::class => ['resetExtensionVersions' => -10]
         ];
     }
 
