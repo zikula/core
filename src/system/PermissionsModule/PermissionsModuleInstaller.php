@@ -16,21 +16,16 @@ namespace Zikula\PermissionsModule;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
-/**
- * Installation and upgrade routines for the permissions module.
- */
 class PermissionsModuleInstaller extends AbstractExtensionInstaller
 {
     public function install(): bool
     {
-        // create the table
         $this->schemaTool->create([
             PermissionEntity::class
         ]);
 
         $this->createDefaultData();
 
-        // Initialisation successful
         return true;
     }
 
@@ -38,17 +33,11 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '1.1.1':
-            case '1.1.2':
-            case '1.2.0': // shipped with Core-2.0.15
-            case '1.2.1':
+            case '1.2.0': // shipped with Core-1.4.3 through Core-2.0.15
                 $this->delVar('rowview');
                 $this->delVar('rowedit');
-            case '1.2.2':
-            // future upgrade routines
         }
 
-        // Update successful
         return true;
     }
 

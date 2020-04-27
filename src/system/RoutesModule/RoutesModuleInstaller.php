@@ -15,27 +15,12 @@ namespace Zikula\RoutesModule;
 
 use Zikula\RoutesModule\Base\AbstractRoutesModuleInstaller;
 
-/**
- * Installer implementation class.
- */
 class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
 {
     public function upgrade(string $oldVersion): bool
     {
         switch ($oldVersion) {
-            case '1.0.0':
-                // routes of system modules are not stored in database anymore
-                $sql = '
-                    DELETE FROM `zikula_routes_route`
-                    WHERE `userRoute` = 0
-                ';
-                $this->entityManager->getConnection()->exec($sql);
-
-                // update table to meet entity structure
-                $this->schemaTool->update(['Zikula\RoutesModule\Entity\Historical\v110\RouteEntity']);
-            case '1.0.1':
-                // nothing
-            case '1.1.0':
+            case '1.1.0': // shipped with Core-1.4.3
                 // rename createdUserId field to createdBy_id
                 $sql = '
                     ALTER TABLE `zikula_routes_route`
@@ -73,8 +58,6 @@ class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
                 $this->entityManager->getConnection()->exec($sql);
             case '1.1.2': // shipped with Core-2.0.15
                 // nothing
-            case '1.2.0':
-                // future updates
         }
 
         return true;

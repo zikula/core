@@ -17,9 +17,6 @@ use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
-/**
- * Installation and upgrade routines for the admin module.
- */
 class AdminModuleInstaller extends AbstractExtensionInstaller
 {
     /**
@@ -47,7 +44,6 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
 
         $this->createDefaultData();
 
-        // Initialisation successful
         return true;
     }
 
@@ -55,26 +51,11 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '1.9.1':
-                // ensure there is a proper sortorder for modulecategories
-                // has the sort order already been set?
-                $categories = $this->entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')
-                    ->findBy(['sortorder' => 0]);
-                if (count($categories) > 1) {
-                    // sort categories by id
-                    $dql = "
-                        UPDATE Zikula\\AdminModule\\Entity\\AdminCategoryEntity ac
-                        SET ac.sortorder = ac.cid - 1
-                    ";
-                    $query = $this->entityManager->createQuery($dql);
-                    $query->execute();
-                }
-            case '1.9.2':
-                // 2.0.0 shipped with Core-2.0.15
-            // future upgrade routines
+            // 2.0.0 shipped with Core-1.4.3 through Core-2.0.15
+            case '2.9.9':
+                // do nothing
         }
 
-        // Update successful
         return true;
     }
 

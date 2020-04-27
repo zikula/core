@@ -22,13 +22,9 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
-/**
- * Installation and upgrade routines for the Settings module.
- */
 class SettingsModuleInstaller extends AbstractExtensionInstaller
 {
     /**
@@ -96,50 +92,10 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        $request = $this->requestStack->getMasterRequest();
-        // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '2.9.7':
-            case '2.9.8':
-                $permasearch = $this->getSystemVar('permasearch');
-                if (empty($permasearch)) {
-                    $this->setSystemVar('permasearch', $this->getDefaultValue('permasearch'));
-                }
-                $permareplace = $this->getSystemVar('permareplace');
-                if (empty($permareplace)) {
-                    $this->setSystemVar('permareplace', $this->getDefaultValue('permareplace'));
-                }
-                $locale = $this->getSystemVar('locale');
-                if (empty($locale)) {
-                    $this->setSystemVar('locale', $request->getLocale());
-                }
-
-            case '2.9.9':
-                // update certain System vars to multilingual. provide default values for all locales using current value.
-                // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values
-                $varsToChange = [
-                    'sitename',
-                    'slogan',
-                    'defaultpagetitle',
-                    'defaultmetadescription'
-                ];
-                $systemVars = $this->managerRegistry->getRepository(ExtensionVarEntity::class)->findBy(['modname' => VariableApi::CONFIG]);
-                /** @var ExtensionVarEntity $modVar */
-                foreach ($systemVars as $modVar) {
-                    if (in_array($modVar->getName(), $varsToChange, true)) {
-                        foreach ($this->localeApi->getSupportedLocales() as $langcode) {
-                            $newModVar = clone $modVar;
-                            $newModVar->setName($modVar->getName() . '_' . $langcode);
-                            $this->entityManager->persist($newModVar);
-                        }
-                        $this->entityManager->remove($modVar);
-                    }
-                }
-                $this->entityManager->flush();
-            case '2.9.10':
-            case '2.9.11':
+            case '2.9.11': // shipped with Core-1.4.3
                 $this->setSystemVar('UseCompression', (bool)$this->getSystemVar('UseCompression'));
-            case '2.9.12': // ship with Core-1.4.4
+            case '2.9.12': // shipped with Core-1.4.4
                 // reconfigure TZ settings
                 $this->setGuestTimeZone();
             case '2.9.13':
@@ -168,11 +124,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 foreach ($this->localeApi->getSupportedLocales() as $lang) {
                     $this->setSystemVar('startController_' . $lang, $this->getDefaultValue('startController'));
                 }
-            case '2.9.16': // ship with Core-3.0.0
-                // current version
         }
 
-        // Update successful
         return true;
     }
 

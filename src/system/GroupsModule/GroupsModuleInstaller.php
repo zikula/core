@@ -20,9 +20,6 @@ use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 
-/**
- * Installation and upgrade routines for the groups module.
- */
 class GroupsModuleInstaller extends AbstractExtensionInstaller
 {
     /**
@@ -53,10 +50,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '2.3.2':
-            case '2.4.0':
+            case '2.4.0': // shipped with Core-1.4.3
                 $this->setVar('mailwarning', (bool)$this->getVar('mailwarning'));
                 $this->setVar('hideclosed', (bool)$this->getVar('hideclosed'));
                 $this->setVar('hidePrivate', false);
@@ -68,10 +63,9 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->flush();
                 $this->addFlash('info', 'NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.');
             case '2.4.2': // shipped with Core-2.0.15
-            // future upgrade routines
+                // do nothing
         }
 
-        // Update successful
         return true;
     }
 

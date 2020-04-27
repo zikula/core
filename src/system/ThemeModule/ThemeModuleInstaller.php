@@ -15,9 +15,6 @@ namespace Zikula\ThemeModule;
 
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
-/**
- * Installation and upgrade routines for the theme module.
- */
 class ThemeModuleInstaller extends AbstractExtensionInstaller
 {
     public function install(): bool
@@ -51,16 +48,14 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
+        // 3.4.3 shipped with Core-1.4.3
+        // 3.4.4 shipped with Core-2.0.15
+        // version number reset to 3.0.0 at Core 3.0.0
         switch ($oldVersion) {
-            case '3.4.2':
-                $this->delVar('enable_mobile_theme');
-            case '3.4.3':
-                // remove old method to update table that has since been removed.
-            case '3.4.4': // shipped with Core-2.0.15
-                // future upgrade
+            case '2.9.9':
+                // nothing to do
         }
 
-        // Update successful
         return true;
     }
 
