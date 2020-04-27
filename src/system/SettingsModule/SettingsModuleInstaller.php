@@ -147,7 +147,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturls');
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
-            case '2.9.14': // ship with Core-1.5.0 + Core-2.x
+            case '2.9.14': // shipped with Core-1.5.x + Core-2.0.15
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'Version_Sub');
                 $this->setSystemVar('startController'); // reset to blank because of new format FQCN::method
             case '2.9.15':

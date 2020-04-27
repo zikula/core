@@ -49,7 +49,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
                     }
                 }
                 $this->entityManager->flush();
-            case '1.0.1':
+            case '1.0.1': // shipped with Core-2.0.15
                 // current version
         }
 

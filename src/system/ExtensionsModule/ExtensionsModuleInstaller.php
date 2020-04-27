@@ -70,7 +70,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
             case '3.7.13':
             case '3.7.14':
                 $this->schemaTool->update([ExtensionEntity::class]);
-            case '3.7.15':
+            case '3.7.15': // shipped with Core-2.0.15
                 // altering the 'modules' table to rename the core_min to coreCompatibility
                 // is done \Zikula\ExtensionsModule\Listener\Core3UpgradeListener::upgrade
                 // in the core upgrade process so that it happens before any access to the table

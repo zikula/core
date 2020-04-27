@@ -64,7 +64,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                 ]);
             case '1.5.4':
                 // nothing
-            case '1.6.0':
+            case '1.6.0': // shipped with Core-2.0.15
                 // update schema since extra field has been changed from text to array
                 $this->entityManager->getRepository('ZikulaSearchModule:SearchResultEntity')->truncateTable();
                 $this->schemaTool->update([

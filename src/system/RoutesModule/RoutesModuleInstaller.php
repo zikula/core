@@ -71,7 +71,7 @@ class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
                     SET `options` = \'a:0:{}\';
                 ';
                 $this->entityManager->getConnection()->exec($sql);
-            case '1.1.2':
+            case '1.1.2': // shipped with Core-2.0.15
                 // nothing
             case '1.2.0':
                 // future updates

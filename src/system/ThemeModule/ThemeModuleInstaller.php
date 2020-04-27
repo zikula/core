@@ -56,7 +56,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
                 $this->delVar('enable_mobile_theme');
             case '3.4.3':
                 // remove old method to update table that has since been removed.
-            case '3.4.4':
+            case '3.4.4': // shipped with Core-2.0.15
                 // future upgrade
         }
 

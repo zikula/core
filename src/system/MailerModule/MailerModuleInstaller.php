@@ -66,7 +66,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
             case '1.4.2':
             case '1.4.3':
             case '1.5.0':
-            case '1.5.1':
+            case '1.5.1': // shipped with Core-2.0.15
                 // all swiftmailer config changes and module-vars removed from previous version upgrades above
                 $this->configDumper->delConfiguration('swiftmailer');
                 $enableLogging = $this->getVar('enableLogging');

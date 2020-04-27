@@ -70,6 +70,7 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
                     $query->execute();
                 }
             case '1.9.2':
+                // 2.0.0 shipped with Core-2.0.15
             // future upgrade routines
         }
 

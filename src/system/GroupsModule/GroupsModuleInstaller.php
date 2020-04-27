@@ -67,7 +67,7 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $anonymousUser->getGroups()->removeElement($usersGroup);
                 $this->entityManager->flush();
                 $this->addFlash('info', 'NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.');
-            case '2.4.2':
+            case '2.4.2': // shipped with Core-2.0.15
             // future upgrade routines
         }
 

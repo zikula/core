@@ -150,7 +150,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '3.0.3':
             case '3.0.4':
                 $this->schemaTool->update([UserEntity::class]);
-            case '3.0.5':
+            case '3.0.5': // shipped with Core-2.0.15
                 $this->delVar('accountitemsperpage');
                 $this->delVar('accountitemsperrow');
                 $this->delVar('userimg');

@@ -193,7 +193,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':
-            case '3.9.8':
+            case '3.9.8': // shipped with Core-2.0.15
                 $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
                 $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($blocks as $block) {

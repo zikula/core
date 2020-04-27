@@ -40,7 +40,7 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         switch ($oldVersion) {
             case '1.1.1':
             case '1.1.2':
-            case '1.2.0':
+            case '1.2.0': // shipped with Core-2.0.15
             case '1.2.1':
                 $this->delVar('rowview');
                 $this->delVar('rowedit');

@@ -165,7 +165,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $sessionSavePath = $this->getVariableApi()->getSystemVar('sessionsavepath', '');
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $this->configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
-            case '1.5.2':
+            case '1.5.2': // shipped with Core-2.0.15
                 $varsToRemove = [
                     'secure_domain',
                     'signcookies',
