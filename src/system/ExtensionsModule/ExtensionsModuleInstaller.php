@@ -20,14 +20,8 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
-/**
- * Installation and upgrade routines for the extensions module.
- */
 class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         ExtensionEntity::class,
         ExtensionDependencyEntity::class,
@@ -43,42 +37,19 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('itemsperpage', 40);
         $this->setVar('helpUiMode', 'modal');
 
-        // Initialisation successful
         return true;
     }
 
     public function upgrade(string $oldVersion): bool
     {
-        // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '3.7.10':
-                // Load DB connection
-                $connection = $this->entityManager->getConnection();
-
-                // increase length of some hook table fields from 20 to 60
-                $commands = [];
-                $commands[] = 'ALTER TABLE `hook_provider` CHANGE `method` `method` VARCHAR(60) NOT NULL';
-                $commands[] = 'ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL';
-
-                foreach ($commands as $sql) {
-                    $connection->executeQuery($sql);
-                }
-            case '3.7.11':
+            // 3.7.13 shipped with Core-1.4.3
+            // 3.7.15 shipped with Core-2.0.15
+            // version number reset to 3.0.0 at Core 3.0.0
+            case '2.9.9':
                 $this->schemaTool->update([ExtensionEntity::class]);
-            case '3.7.12':
-                $this->setVar('itemsperpage', 40);
-            case '3.7.13':
-            case '3.7.14':
-                $this->schemaTool->update([ExtensionEntity::class]);
-            case '3.7.15': // shipped with Core-2.0.15
-                // altering the 'modules' table to rename the core_min to coreCompatibility
-                // is done \Zikula\ExtensionsModule\Listener\Core3UpgradeListener::upgrade
-                // in the core upgrade process so that it happens before any access to the table
-            case '3.7.16':
-                // future upgrade routines
         }
 
-        // Update successful
         return true;
     }
 

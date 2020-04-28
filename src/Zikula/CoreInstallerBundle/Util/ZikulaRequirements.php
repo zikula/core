@@ -69,6 +69,11 @@ class ZikulaRequirements
             sprintf('Install PHP %s or newer (installed version is %s)', ZikulaKernel::PHP_MINIMUM_VERSION, $installedPhpVersion)
         );
         $symfonyRequirements->addRequirement(
+            extension_loaded('json'),
+            'The json extension must be loaded.',
+            'Please install the json extension and enable it in the php config.'
+        );
+        $symfonyRequirements->addRequirement(
             // pdo has been included with php since 5.1
             extension_loaded('pdo'),
             'The pdo extension must be loaded.',

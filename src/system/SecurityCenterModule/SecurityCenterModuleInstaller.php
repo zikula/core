@@ -28,9 +28,6 @@ use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\HtmlTagsHelper;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
-/**
- * Installation routines for the security center module.
- */
 class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
     /**
@@ -74,7 +71,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 
     public function install(): bool
     {
-        // create the table
         $this->schemaTool->create([
             IntrusionEntity::class
         ]);
@@ -138,19 +134,14 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('htmlentities', 1);
         $this->setSystemVar('AllowableHTML', $this->htmlTagsHelper->getDefaultValues());
 
-        // Initialisation successful
         return true;
     }
 
     public function upgrade(string $oldVersion): bool
     {
         switch ($oldVersion) {
-            case '1.5.0':
-                // avoid storing absolute pathes in module vars
-
-                // delete obsolete variable
+            case '1.5.0': // shipped with Core-1.4.3
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'htmlpurifierlocation');
-
                 // only update this value if it has not been customised
                 if (false !== mb_strpos($this->getVariableApi()->get(VariableApi::CONFIG, 'idsrulepath'), 'phpids_zikula_default')) {
                     $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
@@ -195,11 +186,8 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 ';
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
-            case '1.5.3':
-                // current version
         }
 
-        // Update successful
         return true;
     }
 

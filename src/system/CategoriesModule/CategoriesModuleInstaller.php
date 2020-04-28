@@ -31,9 +31,6 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
-/**
- * Installation and upgrade routines for the categories module.
- */
 class CategoriesModuleInstaller extends AbstractExtensionInstaller
 {
     /**
@@ -41,9 +38,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     private $localeApi;
 
-    /**
-     * @var array
-     */
     private $entities = [
         CategoryEntity::class,
         CategoryAttributeEntity::class,
@@ -87,7 +81,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $this->entityManager->remove($cat);
         $this->entityManager->flush();
 
-        // Initialisation successful
         return true;
     }
 
@@ -99,30 +92,14 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         ]);
 
         switch ($oldVersion) {
-            case '1.1':
-            case '1.2':
-            case '1.2.1':
-                $this->schemaTool->create([
-                    CategoryAttributeEntity::class
-                ]);
-
-                // rename old tablename column for Core 1.4.0
-                $sql = 'ALTER TABLE categories_registry CHANGE `tablename` `entityname` varchar (60) NOT NULL DEFAULT \'\'';
-                $connection->executeQuery($sql);
-
-                $this->migrateAttributesFromObjectData();
-            case '1.2.2':
-            case '1.2.3':
-            case '1.3.0':
+            case '1.3.0': // shipped with Core-1.4.3
                 $this->delVars();
                 /** @var CategoryRepositoryInterface $categoryRepository */
                 $categoryRepository = $this->entityManager->getRepository(CategoryEntity::class);
                 $helper = new TreeMapHelper($this->managerRegistry, $categoryRepository);
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
-
             case '1.3.1':// shipped with Core-2.0.15
-                // future
         }
 
         return true;
@@ -472,24 +449,5 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         }
 
         return $values;
-    }
-
-    /**
-     * Migrates all attributes belonging to categories to the new `categories_attributes` table
-     * regardless of the module they are attached to.
-     *
-     * It does _not_ remove the data from the `objectdata_attributes` table.
-     */
-    private function migrateAttributesFromObjectData(): void
-    {
-        $attributes = $this->entityManager->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
-        foreach ($attributes as $attribute) {
-            $category = $this->entityManager->getRepository(CategoryEntity::class)
-                ->findOneBy(['id' => $attribute['object_id']]);
-            if (isset($category) && is_object($category)) {
-                $category->setAttribute($attribute['attribute_name'], $attribute['value']);
-            }
-        }
-        $this->entityManager->flush();
     }
 }

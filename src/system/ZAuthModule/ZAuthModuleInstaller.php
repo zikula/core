@@ -18,14 +18,8 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 
-/**
- * Installation and upgrade routines for the zauth module.
- */
 class ZAuthModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         AuthenticationMappingEntity::class,
         UserVerificationEntity::class
@@ -53,7 +47,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     public function upgrade(string $oldVersion): bool
     {
         switch ($oldVersion) {
-            case '1.0.0':
+            case '1.0.0': // shipped with Core-1.4.3
                 // remove password reminder
                 $this->schemaTool->update([
                     AuthenticationMappingEntity::class
@@ -65,7 +59,6 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
                 $this->setVar(ZAuthConstant::MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD, ZAuthConstant::DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD);
             case '1.0.2':
                 $this->setVar(ZAuthConstant::MODVAR_ITEMS_PER_PAGE, ZAuthConstant::DEFAULT_ITEMS_PER_PAGE);
-                // current version
         }
 
         return true;
@@ -73,9 +66,8 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
 
     public function uninstall(): bool
     {
-        $this->schemaTool->drop($this->entities);
-
-        return true;
+        // cannot uninstall this extension
+        return false;
     }
 
     /**

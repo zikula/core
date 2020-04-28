@@ -13,174 +13,38 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Block\HtmlBlock;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
-use Zikula\BlocksModule\Helper\InstallerHelper;
-use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsModule\AbstractExtension;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Block\SearchBlock;
 use Zikula\UsersModule\Block\LoginBlock;
 
-/**
- * Installation and upgrade routines for the blocks module.
- */
 class BlocksModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         BlockEntity::class,
         BlockPositionEntity::class,
         BlockPlacementEntity::class
     ];
 
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        AbstractExtension $extension,
-        ManagerRegistry $managerRegistry,
-        SchemaHelper $schemaTool,
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
-        VariableApiInterface $variableApi
-    ) {
-        $this->kernel = $kernel;
-        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
-    }
-
     public function install(): bool
     {
         $this->schemaTool->create($this->entities);
-
-        // Set a default value for a module variable
         $this->setVar('collapseable', false);
 
-        // Initialisation successful
         return true;
     }
 
     public function upgrade(string $oldVersion): bool
     {
-        $blockRepository = $this->entityManager->getRepository(BlockEntity::class);
-        // Upgrade dependent on old version number
         switch ($oldVersion) {
-            case '3.8.1':
-            case '3.8.2':
-            case '3.9.0':
-                $sql = 'SELECT * FROM blocks';
-                $blocks = $this->entityManager->getConnection()->fetchAll($sql);
-                foreach ($blocks as $block) {
-                    $content = $block['content'];
-                    if ($this->isSerialized($content)) {
-                        $content = unserialize($content);
-                        foreach ($content as $k => $item) {
-                            if (is_string($item)) {
-                                if (false !== mb_strpos($item, 'blocks_block_extmenu_topnav.tpl')) {
-                                    $content[$k] = str_replace('blocks_block_extmenu_topnav.tpl', 'Block/Extmenu/topnav.tpl', $item);
-                                } elseif (false !== mb_strpos($item, 'blocks_block_extmenu.tpl')) {
-                                    $content[$k] = str_replace('blocks_block_extmenu.tpl', 'Block/Extmenu/extmenu.tpl', $item);
-                                } elseif (false !== mb_strpos($item, 'menutree/blocks_block_menutree_')) {
-                                    $content[$k] = str_replace('menutree/blocks_block_menutree_', 'Block/Menutree/', $item);
-                                }
-                            }
-                        }
-                        $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET content=? WHERE bid=?', [serialize($content), $block['bid']]);
-                    }
-                }
-
-                // check if request is available (#2073)
-                $templateWarning = $this->trans('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
-                $request = $this->requestStack->getMasterRequest();
-                if (
-                    is_object($request)
-                    && method_exists($request, 'getSession')
-                    && is_object($request->getSession())
-                ) {
-                    $this->addFlash('warning', $templateWarning);
-                }
-            case '3.9.1':
-                // make all content fields of blocks serialized.
-                $sql = 'SELECT * FROM blocks';
-                $blocks = $this->entityManager->getConnection()->fetchAll($sql);
-                $oldContent = [];
-                foreach ($blocks as $block) {
-                    $block['content'] = !empty($block['content']) ? $block['content'] : '';
-                    $oldContent[$block['bid']] = $this->isSerialized($block['content']) ? unserialize($block['content']) : ['content' => $block['content']];
-                }
-                $this->schemaTool->update($this->entities);
-                $this->entityManager->getConnection()->executeQuery("UPDATE blocks SET properties='a:0:{}'");
-
-                $blocks = $blockRepository->findAll();
-                $installerHelper = new InstallerHelper();
-                /** @var ZikulaHttpKernelInterface $kernel */
-                /** @var BlockEntity $block */
-                foreach ($blocks as $block) {
-                    $block->setProperties($oldContent[$block->getBid()]);
-                    $block->setFilters($installerHelper->upgradeFilterArray($block->getFilters()));
-                    $block->setBlocktype(preg_match('/Block$/', $block->getBkey()) ? mb_substr($block->getBkey(), 0, -5) : $block->getBkey());
-                    $block->setBkey($installerHelper->upgradeBkeyToFqClassname($this->kernel, $block));
-                }
-                $this->entityManager->flush();
-
-                $collapseable = $this->getVar('collapseable');
-                $this->setVar('collapseable', (bool)$collapseable);
-
-            case '3.9.2':
-                // convert Text and Html block types so properties is proper array
-                $blocks = $blockRepository->findBy(['blocktype' => ['Html', 'Text']]);
-                foreach ($blocks as $block) {
-                    $properties = $block->getProperties();
-                    if (!is_array($properties)) {
-                        $block->setProperties(['content' => $properties]);
-                    }
-                }
-                $this->entityManager->flush();
-            case '3.9.3':
-                $this->schemaTool->drop([
-                    'Zikula\BlocksModule\Entity\UserBlockEntity'
-                ]);
-            case '3.9.4':
-                // convert integer values to boolean for search block settings
-                $searchBlocks = $blockRepository->findBy(['blocktype' => 'Search']);
-                foreach ($searchBlocks as $searchBlock) {
-                    $properties = $searchBlock->getProperties();
-                    $properties['displaySearchBtn'] = (bool)$properties['displaySearchBtn'];
-                    if (isset($properties['active'])) {
-                        foreach ($properties['active'] as $module => $active) {
-                            $properties['active'][$module] = (bool)$active;
-                        }
-                    }
-                    $searchBlock->setProperties($properties);
-                }
-                $this->entityManager->flush();
-            case '3.9.5':
-                $loginBlocks = $blockRepository->findBy(['blocktype' => 'Login']);
-                foreach ($loginBlocks as $loginBlock) {
-                    $filters = $loginBlock->getFilters();
-                    $filters[] = [
-                        'attribute' => '_route',
-                        'queryParameter' => null,
-                        'comparator' => '!=',
-                        'value' => 'zikulausersmodule_access_login'
-                    ];
-                    $loginBlock->setFilters($filters);
-                }
-                $this->entityManager->flush();
-            case '3.9.6':
+            // 3.9.6 shipped with Core-1.4.3
+            // 3.9.8 shipped with Core-2.0.15
+            // version number reset to 3.0.0 at Core 3.0.0
+            case '2.9.9':
                 $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks WHERE blocktype = 'Lang'");
                 $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
                 if (count($blocks) > 0) {
@@ -192,8 +56,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                     $this->addFlash('success', 'All instances of LangBlock have been converted to LocaleBlock.');
                 }
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
-            case '3.9.7':
-            case '3.9.8': // shipped with Core-2.0.15
                 $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
                 $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($blocks as $block) {
@@ -203,11 +65,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                     }
                     $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET bKey=? WHERE bid=?', [trim($bKey, '\\'), $block['bid']]);
                 }
-            case '3.9.9':
-            // future upgrade routines
         }
 
-        // Update successful
         return true;
     }
 
@@ -305,17 +164,5 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             $this->entityManager->persist($placement);
         }
         $this->entityManager->flush();
-    }
-
-    private function isSerialized($string): bool
-    {
-        // temporarily suppress E_NOTICE to avoid using @unserialize
-        $errorReporting = error_reporting(error_reporting() ^ E_NOTICE);
-
-        $result = 'b:0;' === $string || false !== unserialize($string);
-
-        error_reporting($errorReporting);
-
-        return $result;
     }
 }

@@ -10,10 +10,6 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    Zikula\BlocksModule\Helper\:
-        resource: '../../Helper/*'
-        lazy: true
-
     Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface: '@Zikula\BlocksModule\Api\BlockApi'
     Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface: '@Zikula\BlocksModule\Api\BlockFactoryApi'
     Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface: '@Zikula\BlocksModule\Api\BlockFilterApi'
