@@ -31,9 +31,6 @@ use Zikula\UsersModule\Block\LoginBlock;
 
 class BlocksModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         BlockEntity::class,
         BlockPositionEntity::class,

@@ -134,7 +134,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('htmlentities', 1);
         $this->setSystemVar('AllowableHTML', $this->htmlTagsHelper->getDefaultValues());
 
-        // Initialisation successful
         return true;
     }
 

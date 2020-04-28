@@ -22,9 +22,6 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class GroupsModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         GroupEntity::class,
         GroupApplicationEntity::class
@@ -34,7 +31,6 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
     {
         $this->schemaTool->create($this->entities);
 
-        // set all our module vars
         $this->setVar('itemsperpage', 25);
         $this->setVar('defaultgroup', 1);
         $this->setVar('mailwarning', false);
@@ -44,7 +40,6 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         // create the default data
         $this->createDefaultData();
 
-        // Initialisation successful
         return true;
     }
 

@@ -16,14 +16,8 @@ namespace Zikula\MenuModule;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 
-/**
- * Installation and upgrade routines for the menu module.
- */
 class MenuModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         MenuItemEntity::class
     ];

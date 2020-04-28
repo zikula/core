@@ -86,7 +86,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
         $this->setSystemVar('locale', $this->locale);
 
-        // Initialisation successful
         return true;
     }
 

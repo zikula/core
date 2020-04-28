@@ -20,9 +20,6 @@ use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 
 class ZAuthModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         AuthenticationMappingEntity::class,
         UserVerificationEntity::class

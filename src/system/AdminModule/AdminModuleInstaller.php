@@ -19,9 +19,6 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 class AdminModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         AdminCategoryEntity::class,
         AdminModuleEntity::class
@@ -49,7 +46,6 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        // Upgrade dependent on old version number
         switch ($oldVersion) {
             // 2.0.0 shipped with Core-1.4.3 through Core-2.0.15
             case '2.9.9':

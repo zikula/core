@@ -38,9 +38,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
      */
     private $localeApi;
 
-    /**
-     * @var array
-     */
     private $entities = [
         CategoryEntity::class,
         CategoryAttributeEntity::class,

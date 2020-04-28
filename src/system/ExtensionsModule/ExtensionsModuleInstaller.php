@@ -22,9 +22,6 @@ use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var array
-     */
     private $entities = [
         ExtensionEntity::class,
         ExtensionDependencyEntity::class,
