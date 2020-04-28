@@ -42,6 +42,11 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     private $translator;
 
     /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    /**
      * @var string
      */
     private $translationDomain;
@@ -69,6 +74,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     public function __construct(
         string $strategy,
         TranslatorInterface $translator,
+        ZikulaHttpKernelInterface $kernel,
         array $locales,
         string $cacheDir,
         string $translationDomain = 'routes',
@@ -76,6 +82,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     ) {
         $this->strategy = $strategy;
         $this->translator = $translator;
+        $this->kernel = $kernel;
         $this->translationDomain = $translationDomain;
         $this->locales = $locales;
         $this->cacheDir = $cacheDir;
@@ -158,9 +165,7 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     private function getUrlString(string $extensionName): string
     {
         if (!isset($this->urlMap[$extensionName])) {
-            /** @var ZikulaHttpKernelInterface $kernel */
-            $kernel = $GLOBALS['kernel'];
-            $extension = $kernel->getBundle($extensionName);
+            $extension = $this->kernel->getBundle($extensionName);
             // get untranslated url from metaData.
             $this->urlMap[$extensionName] = $extension->getMetaData()->getUrl(false);
         }
