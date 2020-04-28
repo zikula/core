@@ -66,7 +66,10 @@ class SetNamespaceMaker extends AbstractMaker
             ],
             true
         );
-        $io->success(sprintf('The `config/generated_dev.yaml` file has been updated to set `maker:root_namespace` value to %s.', $namespace));
+        $io->success(sprintf('The `config/dynamic/generated_dev.yaml` file has been updated to set `maker:root_namespace` value to %s.', $namespace));
+        $io->newLine();
+        $io->warning("In order to use other make:foo commands, you must first run `php bin/console cache:clear`");
+        $io->newLine();
 
         return 0;
     }
