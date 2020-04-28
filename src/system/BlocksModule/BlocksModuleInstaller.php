@@ -36,17 +36,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         BlockPlacementEntity::class
     ];
 
-    public function __construct(
-        AbstractExtension $extension,
-        ManagerRegistry $managerRegistry,
-        SchemaHelper $schemaTool,
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
-        VariableApiInterface $variableApi
-    ) {
-        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
-    }
-
     public function install(): bool
     {
         $this->schemaTool->create($this->entities);
