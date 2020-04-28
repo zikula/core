@@ -21,7 +21,6 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -37,13 +36,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         BlockPlacementEntity::class
     ];
 
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
         AbstractExtension $extension,
         ManagerRegistry $managerRegistry,
         SchemaHelper $schemaTool,
@@ -51,7 +44,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
     ) {
-        $this->kernel = $kernel;
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
     }
 
