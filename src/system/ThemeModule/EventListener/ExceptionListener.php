@@ -58,8 +58,16 @@ class ExceptionListener implements EventSubscriberInterface
         }
         $exception = $event->getThrowable();
         $code = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() : -1;
-        $event->getRequest()->getSession()->getFlashBag()->add('danger', sprintf('Error Code: %d', $code));
-        $event->getRequest()->getSession()->getFlashBag()->add('danger', $exception->getMessage());
+        if ($event->getRequest()->hasSession()) {
+            $event->getRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('danger', sprintf('Error Code: %d', $code));
+            $event->getRequest()
+                ->getSession()
+                ->getFlashBag()
+                ->add('danger', $exception->getMessage());
+        }
 
         $parameters = [
             'status_code' => $code,
