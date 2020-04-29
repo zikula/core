@@ -131,7 +131,7 @@ class RegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'minimumPasswordLength' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH] ?? ZAuthConstant::PASSWORD_MINIMUM_LENGTH,
-            'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]
+            'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION] ?? ''
         ]);
     }
 }
