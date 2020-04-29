@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine;
 
+use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
