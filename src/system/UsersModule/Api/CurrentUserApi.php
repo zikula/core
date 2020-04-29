@@ -98,9 +98,7 @@ class CurrentUserApi implements CurrentUserApiInterface
         if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
             $session->start();
             $userId = $session->get('uid', Constant::USER_ID_ANONYMOUS);
-        } else {
-            $userId = Constant::USER_ID_ANONYMOUS;
+            $this->user = $this->repository->find($userId);
         }
-        $this->user = $this->repository->find($userId);
     }
 }
