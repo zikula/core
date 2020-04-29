@@ -64,12 +64,6 @@ class ZikulaSessionStorage extends NativeSessionStorage
      */
     private $cookieLifeTime = 604800;
 
-    /**
-     * @var string|null
-     * remove again when https://github.com/symfony/symfony/issues/35460 is solved
-     */
-    private $emulateSameSite;
-
     public function __construct(
         VariableApiInterface $variableApi,
         array $options = [],
@@ -115,67 +109,6 @@ class ZikulaSessionStorage extends NativeSessionStorage
             }
         }
 
-        // remove again when https://github.com/symfony/symfony/issues/35460 is solved
-        if (null !== $this->emulateSameSite) {
-            $originalCookie = SessionUtils::popSessionCookie(session_name(), session_id());
-            if (null !== $originalCookie) {
-                header(sprintf('%s; SameSite=%s', $originalCookie, $this->emulateSameSite), false);
-            }
-        }
-
         return $result;
-    }
-
-    public function regenerate($destroy = false, $lifetime = null)
-    {
-        // Cannot regenerate the session ID for non-active sessions.
-        if (\PHP_SESSION_ACTIVE !== session_status()) {
-            return false;
-        }
-
-        if (headers_sent()) {
-            return false;
-        }
-
-        if (null !== $lifetime) {
-            // added due to https://github.com/symfony/symfony/issues/28577
-            $this->save();
-
-            ini_set('session.cookie_lifetime', (string) $lifetime);
-
-            // added due to https://github.com/symfony/symfony/issues/28577
-            $this->start();
-        }
-
-        if ($destroy) {
-            $this->metadataBag->stampNew();
-        }
-
-        $isRegenerated = session_regenerate_id($destroy);
-
-        // The reference to $_SESSION in session bags is lost in PHP7 and we need to re-create it.
-        // @see https://bugs.php.net/70013
-        $this->loadSession();
-
-        if (null !== $this->emulateSameSite) {
-            $originalCookie = SessionUtils::popSessionCookie(session_name(), session_id());
-            if (null !== $originalCookie) {
-                header(sprintf('%s; SameSite=%s', $originalCookie, $this->emulateSameSite), false);
-            }
-        }
-
-        return $isRegenerated;
-    }
-
-    // remove again when https://github.com/symfony/symfony/issues/35460 is solved
-    public function setOptions(array $options)
-    {
-        parent::setOptions($options);
-
-        if (isset($options['cookie_samesite']) && \PHP_VERSION_ID < 70300) {
-            // PHP < 7.3 does not support same_site cookies. We will emulate it in
-            // the start() method instead.
-            $this->emulateSameSite = $options['cookie_samesite'];
-        }
     }
 }
