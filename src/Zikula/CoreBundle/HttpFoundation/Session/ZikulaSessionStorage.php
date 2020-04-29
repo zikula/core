@@ -15,7 +15,6 @@ namespace Zikula\Bundle\CoreBundle\HttpFoundation\Session;
 
 use SessionHandlerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionUtils;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
