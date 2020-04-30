@@ -202,20 +202,6 @@ class AdminController extends AbstractController
         ExtensionMenuCollector $extensionMenuCollector,
         int $acid = null
     ) {
-        if (!$this->getVar('ignoreinstallercheck') && 'dev' === $kernel->getEnvironment()) {
-            // check if the Zikula Recovery Console exists
-            $zrcExists = file_exists('zrc.php');
-            // check if upgrade scripts exist
-            if (true === $zrcExists) {
-                return $this->render('@ZikulaAdminModule/Admin/warning.html.twig', [
-                    'zrcExists' => $zrcExists
-                ]);
-            }
-        }
-
-        // Now prepare the display of the admin panel by getting the relevant info.
-
-        // cid isn't set, so go to the default category
         if (empty($acid)) {
             $acid = $this->getVar('startcategory');
         }

@@ -92,15 +92,6 @@ body div.z-admin-content-pagetitle h3 {
 * Styling for status security analyzer, update checker and more
 ******************************************************************************/
 
-/* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
-#z-maincontent div#z-adminwarning {
-    background: url('../images/error.png') #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url('../images/error.png') 99% 0.35em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
-    background: url('../images/error.png') 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url('../images/error.png') 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
-    border: 2px solid #990000;
-}
-
 div#z-developernotices strong:hover,
 div#z-developernotices span:hover,
 div#z-securityanalyzer strong:hover,
@@ -110,7 +101,6 @@ div#z-updatechecker strong:hover {
 }
 
 div#z-developernotices a,
-div#z-adminwarning a,
 div#z-updatechecker a,
 div#z-securityanalyzer a {
     color: #444;
@@ -119,7 +109,6 @@ div#z-securityanalyzer a {
 }
 
 div#z-developernotices a:hover,
-div#z-adminwarning a:hover,
 div#z-updatechecker a:hover,
 div#z-securityanalyzer a:hover {
     color: #000;
@@ -127,7 +116,6 @@ div#z-securityanalyzer a:hover {
 }
 
 div#z-developernotices ul,
-div#z-adminwarning ul,
 div#z-updatechecker ul,
 div#z-securityanalyzer ul {
     list-style-position: outside;
