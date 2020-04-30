@@ -126,9 +126,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJquery(): void
     {
-        $jquery = 'dev' !== $this->kernel->getEnvironment() ? 'jquery.min.js' : 'jquery.js';
         $this->jsAssetBag->add([
-            $this->assetHelper->resolve("jquery/${jquery}") => AssetBag::WEIGHT_JQUERY,
+            $this->assetHelper->resolve("jquery/jquery.min.js") => AssetBag::WEIGHT_JQUERY,
             $this->assetHelper->resolve('modules/zikulatheme/js/ZikulaThemeModule.JSConfig.js') => AssetBag::WEIGHT_JQUERY + 1,
             $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 2
         ]);
@@ -137,7 +136,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addFosJsRouting(string $locale): void
     {
         // reenable after https://github.com/FriendsOfSymfony/FOSJsRoutingBundle/issues/221 OR https://github.com/zikula/core/issues/4027 is solved
-        //if ('dev' !== $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.' . $locale . '.js')) {
+        //if ('prod' === $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.' . $locale . '.js')) {
         //    $routeScript = $this->assetHelper->resolve('js/fos_js_routes.' . $locale . '.js');
         //} else {
         $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
