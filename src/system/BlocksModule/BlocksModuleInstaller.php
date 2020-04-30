@@ -45,29 +45,58 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             // 3.9.8 shipped with Core-2.0.15
             // version number reset to 3.0.0 at Core 3.0.0
             case '2.9.9':
-                $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks WHERE blocktype = 'Lang'");
-                $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
-                if (count($blocks) > 0) {
-                    $this->entityManager->getConnection()->executeQuery("UPDATE blocks set bkey=?, blocktype=?, properties=? WHERE blocktype = 'Lang'", [
-                        'ZikulaSettingsModule:Zikula\SettingsModule\Block\LocaleBlock',
-                        'Locale',
-                        'a:0:{}'
-                    ]);
-                    $this->addFlash('success', 'All instances of LangBlock have been converted to LocaleBlock.');
-                }
-                $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
-                $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
-                $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
-                foreach ($blocks as $block) {
-                    $bKey = $block['bkey'];
-                    if (mb_strpos($bKey, ':')) {
-                        [/*$moduleName*/, $bKey] = explode(':', $bKey);
-                    }
-                    $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET bKey=? WHERE bid=?', [trim($bKey, '\\'), $block['bid']]);
-                }
+                $this->updateLangToLocaleBlock();
+                $this->removeSlashFromBKey();
+                $this->convertTemplatePaths();
         }
 
         return true;
+    }
+
+    private function updateLangToLocaleBlock(): void
+    {
+        // for Core-1.4.4
+        $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks WHERE blocktype = 'Lang'");
+        $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        if (count($blocks) > 0) {
+            $this->entityManager->getConnection()->executeQuery("UPDATE blocks set bkey=?, blocktype=?, properties=? WHERE blocktype = 'Lang'", [
+                'ZikulaSettingsModule:Zikula\SettingsModule\Block\LocaleBlock',
+                'Locale',
+                'a:0:{}'
+            ]);
+            $this->addFlash('success', 'All instances of LangBlock have been converted to LocaleBlock.');
+        }
+        $this->entityManager->getConnection()->executeQuery(
+            "UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'"
+        );
+    }
+
+    private function removeSlashFromBKey(): void
+    {
+        // for Core-3.0.0
+        $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
+        $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($blocks as $block) {
+            $bKey = $block['bkey'];
+            if (mb_strpos($bKey, ':')) {
+                [/*$moduleName*/, $bKey] = explode(':', $bKey);
+            }
+            $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET bKey=? WHERE bid=?', [trim($bKey, '\\'), $block['bid']]);
+        }
+    }
+
+    private function convertTemplatePaths(): void
+    {
+        // for Core-3.0.0
+        $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks WHERE blocktype = 'Menu'");
+        $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($blocks as $block) {
+            $properties = unserialize($block['properties']);
+            if (isset($properties['template'])) {
+                $properties['template'] = '@' . str_replace(':', '/', $properties['template']);
+                $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET properties=? WHERE bid=?', [serialize($properties), $block['bid']]);
+            }
+        }
     }
 
     public function uninstall(): bool
