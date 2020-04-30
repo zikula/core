@@ -68,11 +68,10 @@ class BlockType extends AbstractType
                 'required' => false,
             ])
             ->add('filters', CollectionType::class, [
-                'label' => 'Filters',
+                'label' => 'Custom filters',
                 'entry_type' => BlockFilterType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Custom filters',
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
