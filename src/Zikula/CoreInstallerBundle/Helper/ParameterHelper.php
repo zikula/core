@@ -183,7 +183,7 @@ class ParameterHelper
         $vars = [
             'APP_ENV' => $params['env'] ?? 'prod',
             'APP_DEBUG' => isset($params['debug']) ? (int) ($params['debug']) : 1,
-            'APP_SECRET' => '!\'' . $params['secret'] ?? $generator->generateString(50) . '\'',
+            'APP_SECRET' => '!\'' . isset($params['secret']) ? $params['secret'] : $generator->generateString(50) . '\'',
             'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
         ];
         (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars($vars);
