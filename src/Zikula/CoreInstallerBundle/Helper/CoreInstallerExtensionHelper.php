@@ -287,14 +287,18 @@ class CoreInstallerExtensionHelper
                 }
                 $this->managerRegistry->getManager()->flush();
             case '2.0.15':
-                $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
-                $this->variableApi->set('ZikulaAdminModule', 'admintheme', '');
+                // nothing
             case '3.0.0':
                 // current version - cannot perform anything yet
         }
 
         // always do this
         $this->reSyncAndActivate();
+        // set default themes to ZikulaBootstrapTheme
+        $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
+        $this->variableApi->set('ZikulaAdminModule', 'admintheme', '');
+        // unset start page information to avoid missing module errors
+        $this->variableApi->set(VariableApi::CONFIG, 'startController_en', '');
 
         return true;
     }

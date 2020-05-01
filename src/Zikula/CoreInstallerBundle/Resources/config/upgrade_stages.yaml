@@ -12,12 +12,15 @@ stages:
     login:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\LoginStage
         order: 4
+    emailtransport:
+        class: Zikula\Bundle\CoreInstallerBundle\Stage\EmailTransportStage
+        order: 5
     ajaxupgrader:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage
-        order: 5
+        order: 6
     complete:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\CompleteStage
-        order: 6
+        order: 7
     installed:
         class: Zikula\Bundle\CoreInstallerBundle\Stage\AlreadyInstalledStage
-        order: 7
+        order: 8

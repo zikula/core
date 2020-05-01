@@ -1,0 +1,37 @@
+parameters:
+#    upgrade instruction include remove the `installed` and `core_installed_version` key/value pairs
+    script_position: foot
+    datadir: web/uploads
+    locale: en
+    assets_version: null
+    zikula_asset_manager.combine: true
+    zikula_asset_manager.lifetime: '1 day'
+    zikula_asset_manager.compress: true
+    zikula_asset_manager.minify: true
+    security.x_frame_options: SAMEORIGIN
+    zikula.javascript.bootstrap.min.path: /bootstrap/js/bootstrap.bundle.min.js
+    zikula.stylesheet.bootstrap.min.path: /bootstrap/css/bootstrap.min.css
+    zikula.stylesheet.fontawesome.min.path: /font-awesome/css/all.min.css
+    router.request_context.host: localhost
+    router.request_context.scheme: http
+    router.request_context.base_url: /core.git/public
+#    temp values to test config upgrade
+    env: prod
+    debug: false
+    system.chmod_dir: 511
+    secret: 7IYFCbh8twxwh6R5YK0T2W8Jaq4sC2MG8MSRhIER9hYCrexmFK
+    url_secret: 0mRn9HS8Em
+    umask: null
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: 'zk_test'
+    database_user: root
+    database_password: null
+    database_path: null
+    database_socket: null
+    database_server_version: 5.7.26
+
+services:
+    _defaults: { autowire: true, autoconfigure: true }
+    zikula.site_definition: '@Zikula\Bundle\CoreBundle\Site\SiteDefinition'

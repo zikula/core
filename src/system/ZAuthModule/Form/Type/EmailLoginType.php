@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 
 class EmailLoginType extends AbstractType
 {
@@ -35,6 +37,7 @@ class EmailLoginType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $forgotPassword = /** @Translate */'I forgot my password';
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'Email address',
@@ -42,7 +45,8 @@ class EmailLoginType extends AbstractType
             ])
             ->add('pass', PasswordType::class, [
                 'label' => 'Password',
-                'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostpassword') . '">I forgot my password</a>',
+                /** @Ignore */
+                'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostpassword') . '">' . $forgotPassword . '</a>',
                 'help_html' => true,
                 'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>']
             ])

@@ -129,7 +129,7 @@ class ParameterHelper
         $params = $this->decodeParameters($yamlHelper->getParameters());
 
         $this->variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
-        if (!isset($params['upgrading'])) {
+        if (!isset($params['upgrading']) || !$params['upgrading']) {
             $this->variableApi->set(VariableApi::CONFIG, 'locale', $params['locale']);
             // Set the System Identifier as a unique string.
             if (!$this->variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
@@ -157,19 +157,12 @@ class ParameterHelper
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
-        if (isset($params['upgrading'])) {
-            $params['zikula_asset_manager.combine'] = false;
+        $this->writeEnvVars($params);
 
-            // unset start page information to avoid missing module errors
-            $this->variableApi->set(VariableApi::CONFIG, 'startController_en', '');
-
-            // on upgrade, if a user doesn't add their custom theme back to the /theme dir, it should be reset to a core theme, if available.
-            $defaultTheme = (string) $this->variableApi->getSystemVar('Default_Theme');
-            if (!$this->kernel->isBundle($defaultTheme) && $this->kernel->isBundle('ZikulaBootstrapTheme')) {
-                $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
-            }
-        } else {
-            $this->writeEnvVars();
+        if (isset($params['upgrading']) && $params['upgrading']) {
+            $params['database_driver'] = mb_substr($params['database_driver'], 4); // remove pdo_ prefix
+            (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
+            $this->resetLegacyParams($params);
         }
 
         // write parameters into config/services_custom.yaml
@@ -181,18 +174,45 @@ class ParameterHelper
         return true;
     }
 
-    private function writeEnvVars()
+    /**
+     * @param array $params values from upgrade
+     */
+    private function writeEnvVars(array $params)
     {
         $randomLibFactory = new Factory();
         $generator = $randomLibFactory->getMediumStrengthGenerator();
         $vars = [
-            'APP_ENV' => 'prod',
-            'APP_DEBUG' => 1,
-            'APP_SECRET' => '\'' . $generator->generateString(50) . '\'',
+            'APP_ENV' => $params['env'] ?? 'prod',
+            'APP_DEBUG' => isset($params['debug']) ? (int) ($params['debug']) : 1,
+            'APP_SECRET' => '!\'' . ($params['secret'] ?? $generator->generateString(50)) . '\'',
             'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
         ];
-        $helper = new LocalDotEnvHelper($this->projectDir);
-        $helper->writeLocalEnvVars($vars);
+        (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars($vars);
+    }
+
+    private function resetLegacyParams(array &$params): void
+    {
+        unset(
+            $params['temp_dir'],
+            $params['system.chmod_dir'],
+            $params['url_secret'],
+            $params['umask'],
+            $params['env'],
+            $params['debug'],
+            $params['secret'],
+            $params['database_driver'],
+            $params['database_host'],
+            $params['database_port'],
+            $params['database_name'],
+            $params['database_user'],
+            $params['database_password'],
+            $params['database_path'],
+            $params['database_socket'],
+            $params['database_server_version']
+        );
+
+        $params['installed'] = '%env(ZIKULA_INSTALLED)%';
+        $params['zikula_asset_manager.combine'] = false;
     }
 
     /**

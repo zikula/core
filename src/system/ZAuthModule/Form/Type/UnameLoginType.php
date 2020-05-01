@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 
 class UnameLoginType extends AbstractType
 {
@@ -35,16 +37,20 @@ class UnameLoginType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $forgotUsername = /** @Translate */'I forgot my username';
+        $forgotPassword = /** @Translate */'I forgot my password';
         $builder
             ->add('uname', TextType::class, [
                 'label' => 'User name',
-                'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostusername') . '">I forgot my username</a>',
+                /** @Ignore */
+                'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostusername') . '">' . $forgotUsername . '</a>',
                 'help_html' => true,
                 'input_group' => ['left' => '<i class="fas fa-fw fa-user"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => 'Password',
-                'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostpassword') . '">I forgot my password</a>',
+                /** @Ignore */
+                'help' => '<a href="' . $this->router->generate('zikulazauthmodule_account_lostpassword') . '">' . $forgotPassword . '</a>',
                 'help_html' => true,
                 'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>']
             ])
