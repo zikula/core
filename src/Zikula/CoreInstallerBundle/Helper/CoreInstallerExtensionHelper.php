@@ -286,8 +286,9 @@ class CoreInstallerExtensionHelper
                     $this->managerRegistry->getManager()->remove($block);
                 }
                 $this->managerRegistry->getManager()->flush();
-            case '2.0.0':
-                // nothing needed
+            case '2.0.15':
+                $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
+                $this->variableApi->set('ZikulaAdminModule', 'admintheme', '');
             case '3.0.0':
                 // current version - cannot perform anything yet
         }
