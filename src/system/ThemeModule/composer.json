@@ -51,9 +51,6 @@
                 "admin": {
                     "route": "zikulathememodule_config_config"
                 }
-            },
-            "securityschema": {
-                "ZikulaThemeModule::": "ThemeName::"
             }
         }
     }

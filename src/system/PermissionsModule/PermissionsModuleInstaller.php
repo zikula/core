@@ -36,9 +36,18 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
             case '1.2.0': // shipped with Core-1.4.3 through Core-2.0.15
                 $this->delVar('rowview');
                 $this->delVar('rowedit');
+                $this->removeThemeModuleSchemas();
         }
 
         return true;
+    }
+
+    private function removeThemeModuleSchemas(): void
+    {
+        // for Core-3.0.0
+        $this->entityManager->getConnection()->executeQuery(
+            "DELETE group_perms WHERE component LIKE 'ZikulaThemeModule%'"
+        );
     }
 
     public function uninstall(): bool
