@@ -209,6 +209,11 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         unset($this->options[$name]);
     }
 
+    public function hasOption(string $name): bool
+    {
+        return isset($this->options[$name]);
+    }
+
     public function hasOptions(): bool
     {
         return !empty($this->options);
