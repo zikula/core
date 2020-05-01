@@ -46,7 +46,7 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
     {
         // for Core-3.0.0
         $this->entityManager->getConnection()->executeQuery(
-            "DELETE group_perms WHERE component LIKE 'ZikulaThemeModule%'"
+            "DELETE FROM group_perms WHERE component LIKE 'ZikulaThemeModule%'"
         );
     }
 
