@@ -182,7 +182,7 @@ class ParameterHelper
         $generator = $randomLibFactory->getMediumStrengthGenerator();
         $vars = [
             'APP_ENV' => $params['env'] ?? 'prod',
-            'APP_DEBUG' => isset($params['debug']) ? intval($params['debug']) : 1,
+            'APP_DEBUG' => isset($params['debug']) ? (int) ($params['debug']) : 1,
             'APP_SECRET' => '!\'' . $params['secret'] ?? $generator->generateString(50) . '\'',
             'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
         ];
@@ -191,10 +191,25 @@ class ParameterHelper
 
     private function resetLegacyParams(array &$params): void
     {
-        unset($params['temp_dir'], $params['system.chmod_dir'], $params['url_secret'], $params['umask']);
-        unset($params['env'], $params['debug'], $params['secret']);
-        unset($params['database_driver'], $params['database_host'], $params['database_port'], $params['database_name']);
-        unset($params['database_user'], $params['database_password'], $params['database_path'], $params['database_socket'], $params['database_server_version']);
+        unset(
+            $params['temp_dir'],
+            $params['system.chmod_dir'],
+            $params['url_secret'],
+            $params['umask'],
+            $params['env'],
+            $params['debug'],
+            $params['secret'],
+            $params['database_driver'],
+            $params['database_host'],
+            $params['database_port'],
+            $params['database_name'],
+            $params['database_user'],
+            $params['database_password'],
+            $params['database_path'],
+            $params['database_socket'],
+            $params['database_server_version']
+        );
+
         $params['installed'] = '%env(ZIKULA_INSTALLED)%';
         $params['zikula_asset_manager.combine'] = false;
     }
