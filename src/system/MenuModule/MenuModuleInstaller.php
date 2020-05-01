@@ -33,7 +33,6 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.0.0':
                 $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
@@ -44,7 +43,14 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->flush();
             case '1.0.1': // shipped with Core-2.0.15
-                // current version
+                $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
+                foreach ($menuItems as $menuItem) {
+                    if ($menuItem->hasOption('icon')) {
+                        $iconClass = (string) $menuItem->getOption('icon');
+                        $menuItem->setOption('icon', 'fas' . mb_substr($iconClass, 3));
+                    }
+                }
+                $this->entityManager->flush();
         }
 
         return true;
