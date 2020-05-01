@@ -158,9 +158,9 @@ class ParameterHelper
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
         $this->writeEnvVars($params);
-        (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
 
         if (isset($params['upgrading']) && $params['upgrading']) {
+            (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
             $this->resetLegacyParams($params);
         }
 
