@@ -160,6 +160,7 @@ class ParameterHelper
         $this->writeEnvVars($params);
 
         if (isset($params['upgrading']) && $params['upgrading']) {
+            $params['database_driver'] = mb_substr($params['database_driver'], 4); // remove pdo_ prefix
             (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
             $this->resetLegacyParams($params);
         }
