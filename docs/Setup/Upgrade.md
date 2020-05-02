@@ -30,7 +30,7 @@ The following process should be followed for all upgrades even small point relea
 - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
 - All (1.x.x) blocks using MenuTree, ExtMenu or Menu will be DELETED during the upgrade as these are no longer available.
   You should consider deleting and replacing these with a MenuModule block before upgrading.
-- All Hook connections will be deleted and need to be re-connected post-upgrade.
+- All Pre-Core-2.0.0 Hook connections will be deleted and need to be re-connected post-upgrade.
 - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
 - Upload the new package and unpack the archive.
   - Please read the [INSTALL docs](INSTALL.md#upload) for detailed information on proper uploading.
@@ -48,7 +48,10 @@ The following process should be followed for all upgrades even small point relea
     - **Add** `ZIKULA_INSTALLED='a.b.c'` to the end of the file. Change `a.b.c` to the exact version of your existing install (e.g. `2.0.11`).
 ### Continue
 
+- Please note, the _web root_ **must** now point to the `public/` directory. Adjust your symlinks or directory structure as needed.
+  (see https://symfony.com/doc/current/setup/web_server_configuration.html for more information).
 - Copy your _compatible_ custom theme to your new installation. Themes are now placed in `src/extensions`.
+  - After upgrade, the site will default to the ZikulaBootstrapTheme until you complete testing of your custom theme.
 - Return _compatible_ extensions to the `src/extensions` directory.
   - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
 - Copy your backup contents of `/userdata` into `/public/uploads`
@@ -63,3 +66,9 @@ The following process should be followed for all upgrades even small point relea
 
     - Follow the prompts and complete that step. When you are finished, Open your browser and login!
   - Visit the extensions page and run each module upgrade one at a time.
+
+### Post Upgrade
+
+- MySQL databases will have been recoded from `utf8` to `utf8mb4`.
+  - old copies of `app/config/config.yml` may have contained a reference to `doctrine.dbal.connections.default.charset` but this is removed.
+- Double check fontawesome icons in your menu module options. An attempt has been made to correct them, but manual correction may be required.

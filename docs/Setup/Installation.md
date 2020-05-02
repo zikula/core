@@ -5,7 +5,9 @@ currentMenu: install
 
 First please check [requirements](requirements.md).
 
-This guide assumes you are going to install Zikula on a webserver which is fully operational. If you want to do the setup on a fresh root server there are additional steps to consider though. In this case maybe this guide can help: [Installation of Zikula on Ubuntu Server](InstallingZikulaOnUbuntu.md).
+This guide assumes you are going to install Zikula on a webserver which is fully operational. If you want to do the 
+setup on a fresh root server there are additional steps to consider though. In this case maybe this guide can help: 
+[Installation of Zikula on Ubuntu Server](InstallingZikulaOnUbuntu.md).
 
 ## Overview
 
@@ -20,12 +22,14 @@ This guide assumes you are going to install Zikula on a webserver which is fully
 
 If you obtained Zikula Core from the CI server, then you can upload the entire archive (`.zip` or `.tgz` file)
 to your server and then `unzip` them there. (This is faster and much more reliable than uploading many small
-files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the correct permissions
-(for example: `tar -xpzvf Zikula_Core-2.0.0.build123.tar.gz`) change the filename to match the current download.**
-Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
+files via FTP). **Make sure to include the `-p` flag** if you extract from `.tgz` to keep the correct permissions
+(for example: `tar -xpzvf Zikula_Core-3.0.0.build27.tar.gz`) change the filename to match the current download.
+Copy all the files and directories to your server and point your webroot (typically `public_html` or `httpdocs`)
+to the `public/` directory in the Zikula directory structure. Using symlinks or modifying the `.htaccess` file can
+accomplish this. (see https://symfony.com/doc/current/setup/web_server_configuration.html for more information).
 
-Another option can be to download the tar.gz directly from the ci server: e.g. 
-`wget http://ci.zikula.org/job/Zikula_Core-2.0.0/lastSuccessfulBuild/artifact/build/archive/Zikula_Core-2.0.0.tar.gz`. 
+Another option can be to download the tar.gz directly from the github: e.g. 
+`wget https://github.com/zikula/core/releases/download/3.0.0/3.0.tar.gz`. 
 Again, change the filename/url to match the correct filename from the ci server.
 
 Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
@@ -89,13 +93,13 @@ remove all existing tables from the existing database.
 
 #### Web Installer
 
-To begin the installer, simply visit the root directory with your browser, e.g. `http://www.example.com/`.
+To begin the installer, simply visit the webroot directory with your browser, e.g. `http://www.example.com/`.
 If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.example.com/foo/`. You will be
 automatically redirected to the installer.
 
 #### Command Line Installer
 
-Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
+Via CLI, access your main zikula directory and run this command:
 
 ```Shell
 php bin/console zikula:install:start
