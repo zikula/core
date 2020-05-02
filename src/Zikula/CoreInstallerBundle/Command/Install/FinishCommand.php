@@ -86,9 +86,9 @@ class FinishCommand extends Command
         }
 
         // install!
-        $this->stageHelper->handleAjaxStage($this->ajaxInstallerStage, $io);
+        $this->stageHelper->handleAjaxStage($this->ajaxInstallerStage, $io, $input->isInteractive());
 
-        $io->success($this->translator->trans('INSTALL COMPLETE!'));
+        $io->success($this->translator->trans('Install Successful!'));
 
         return 0;
     }

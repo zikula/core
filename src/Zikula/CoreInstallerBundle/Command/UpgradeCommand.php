@@ -156,9 +156,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $this->stageHelper->handleAjaxStage($this->ajaxUpgraderStage, $io);
+        $this->stageHelper->handleAjaxStage($this->ajaxUpgraderStage, $io, $input->isInteractive());
 
-        $io->success($this->translator->trans('UPGRADE SUCCESSFUL!'));
+        $io->success($this->translator->trans('Upgrade successful!'));
 
         return 0;
     }
