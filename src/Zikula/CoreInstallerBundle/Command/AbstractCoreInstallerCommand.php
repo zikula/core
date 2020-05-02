@@ -14,11 +14,17 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
+use Zikula\MailerModule\Form\Type\MailTransportConfigType;
+use Zikula\MailerModule\Helper\MailTransportHelper;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 abstract class AbstractCoreInstallerCommand extends Command
 {
@@ -31,6 +37,11 @@ abstract class AbstractCoreInstallerCommand extends Command
      * @var ZikulaHttpKernelInterface
      */
     protected $kernel;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    protected $localeApi;
 
     /**
      * @var array
@@ -125,11 +136,13 @@ abstract class AbstractCoreInstallerCommand extends Command
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        LocaleApiInterface $localeApi
     ) {
         parent::__construct();
         $this->kernel = $kernel;
         $this->translator = $translator;
+        $this->localeApi = $localeApi;
     }
 
     protected function printWarnings(OutputInterface $output, $warnings): void
@@ -139,40 +152,58 @@ abstract class AbstractCoreInstallerCommand extends Command
         }
     }
 
-    protected function printRequirementsWarnings(OutputInterface $output, $warnings): void
+    protected function doRequestContext(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $failures = [];
-        foreach ($warnings as $key => $value) {
-            if (true === $value) {
-                continue;
-            }
-            $failures[] = $this->errorCodeToMessage($key);
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Request context'));
         }
-        $this->printWarnings($output, $failures);
+        $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
+        foreach ($data as $k => $v) {
+            $newKey = str_replace(':', '.', $k);
+            $data[$newKey] = $v;
+            unset($data[$k]);
+        }
+
+        return $data;
     }
 
-    private function errorCodeToMessage(string $key): string
+    protected function doLocale(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
-        $messages = [
-            'phpsatisfied' => $this->translator->trans('You have got a problem! Your PHP version is %actual%, which does not satisfy the Zikula system requirement of version %required% or later.', ['%actual%' => PHP_VERSION, '%required%' => ZikulaKernel::PHP_MINIMUM_VERSION]),
-            'datetimezone' => $this->translator->trans('date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.'),
-            'pdo' => $this->translator->trans("Your PHP installation doesn't have the PDO extension loaded."),
-            'phptokens' => $this->translator->trans("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
-            'mbstring' => $this->translator->trans('Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.'),
-            'pcreUnicodePropertiesEnabled' => $this->translator->trans("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
-            'json_encode' => $this->translator->trans('Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.'),
-            'config_personal_config_php' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => 'config/personal_config.php'])/*,
-            'services_custom_yaml' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => 'config/services_custom.yaml']),
-            'env_local' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => '.env.local'),
-            'env_dev_local' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => '.env.dev.local'),
-            'env_prod_local' => $this->translator->trans("'%filePath%' has been found. This is not OK: please rename this file before continuing the installation process.", ['%filePath%' => '.env.prod.local')*/
-        ];
-        if (array_key_exists($key, $messages)) {
-            return $messages[$key];
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Locale'));
         }
 
-        // remaining keys are filenames
-        return $this->translator->trans("You have a problem! The '%fileName%' file is not writeable. Please ensure that the permissions are set correctly for the installation process.", ['%fileName%' => $key]);
+        return $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
+            'choices' => $this->localeApi->getSupportedLocaleNames(),
+            'choice_loader' => null
+        ]);
+    }
+
+    protected function doMailer(InputInterface $input, OutputInterface $output, StyleInterface $io) // bool|array
+    {
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Mailer transport'));
+            $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
+        }
+        $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
+        $mailDsnWrite = (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
+        if ($mailDsnWrite) {
+            return $this->encodeArrayValues($data);
+        }
+
+        return false;
+    }
+
+    protected function encodeArrayValues(array $data): array
+    {
+        foreach ($data as $k => $v) {
+            $data[$k] = is_string($v) ? base64_encode($v) : $v; // encode so values are 'safe' for json
+        }
+
+        return $data;
     }
 
     protected function printSettings($givenSettings, SymfonyStyle $io): void

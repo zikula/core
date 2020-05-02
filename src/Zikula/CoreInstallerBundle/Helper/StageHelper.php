@@ -183,16 +183,18 @@ class StageHelper
     /**
      * This is used only by CLI commands to execute the stages needed for install/upgrade
      */
-    public function handleAjaxStage(StageInterface $ajaxStage, StyleInterface $io)
+    public function handleAjaxStage(StageInterface $ajaxStage, StyleInterface $io, bool $isInteractive = true)
     {
         $stages = $ajaxStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
-            $io->text($stage[AjaxStageInterface::PRE]);
-            $io->text('<fg=blue;options=bold>' . $stage[AjaxStageInterface::DURING] . '</fg=blue;options=bold>');
-            $status = $this->executeStage($stage[AjaxStageInterface::NAME]);
-            if ($status) {
+            if ($isInteractive) {
+                $io->text($stage[AjaxStageInterface::PRE]);
+                $io->text('<fg=blue;options=bold>' . $stage[AjaxStageInterface::DURING] . '</fg=blue;options=bold>');
+            }
+            $isSuccessful = $this->executeStage($stage[AjaxStageInterface::NAME]);
+            if ($isInteractive && $isSuccessful) {
                 $io->success($stage[AjaxStageInterface::SUCCESS]);
-            } else {
+            } elseif ($isInteractive && !$isSuccessful) {
                 $io->error($stage[AjaxStageInterface::FAIL]);
             }
         }

@@ -8,6 +8,7 @@ services:
             $locale: '%locale%'
             $databaseUrl: '%env(DATABASE_URL)%'
             $mailerDsn: '%env(MAILER_DSN)%'
+            $environment: '%env(APP_ENV)%'
 
     _instanceof:
         Zikula\Component\Wizard\StageInterface:

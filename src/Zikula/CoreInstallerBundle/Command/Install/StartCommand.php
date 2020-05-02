@@ -24,13 +24,9 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\PhpHelper;
-use Zikula\MailerModule\Form\Type\MailTransportConfigType;
-use Zikula\MailerModule\Helper\MailTransportHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand
@@ -48,11 +44,6 @@ class StartCommand extends AbstractCoreInstallerCommand
     private $phpHelper;
 
     /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    /**
      * @var ParameterHelper
      */
     private $parameterHelper;
@@ -68,9 +59,8 @@ class StartCommand extends AbstractCoreInstallerCommand
         $this->kernel = $kernel;
         $this->installed = '0.0.0' !== $installed;
         $this->phpHelper = $phpHelper;
-        $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
-        parent::__construct($kernel, $translator);
+        parent::__construct($kernel, $translator, $localeApi);
     }
 
     protected function configure()
@@ -122,7 +112,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         } else {
             $settings = array_merge($settings, $mailSettings);
         }
-        $settings = array_merge($settings, $this->doAdmin($input, $output, $io));
+        $settings = array_merge($settings, $this->doAdminCreate($input, $output, $io));
 
         if ($input->isInteractive()) {
             $io->success($this->translator->trans('Configuration successful. Please verify your parameters below:'));
@@ -149,35 +139,6 @@ class StartCommand extends AbstractCoreInstallerCommand
         return 0;
     }
 
-    private function doLocale(InputInterface $input, OutputInterface $output, StyleInterface $io): array
-    {
-        if ($input->isInteractive()) {
-            $io->newLine();
-            $io->section($this->translator->trans('Locale'));
-        }
-
-        return $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
-            'choices' => $this->localeApi->getSupportedLocaleNames(),
-            'choice_loader' => null
-        ]);
-    }
-
-    private function doRequestContext(InputInterface $input, OutputInterface $output, StyleInterface $io): array
-    {
-        if ($input->isInteractive()) {
-            $io->newLine();
-            $io->section($this->translator->trans('Request context'));
-        }
-        $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
-        foreach ($data as $k => $v) {
-            $newKey = str_replace(':', '.', $k);
-            $data[$newKey] = $v;
-            unset($data[$k]);
-        }
-
-        return $data;
-    }
-
     private function doDBCreds(InputInterface $input, OutputInterface $output, StyleInterface $io): bool
     {
         if ($input->isInteractive()) {
@@ -190,23 +151,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         return (new DbCredsHelper($this->kernel->getProjectDir()))->writeDatabaseDsn($data);
     }
 
-    private function doMailer(InputInterface $input, OutputInterface $output, StyleInterface $io) // bool|array
-    {
-        if ($input->isInteractive()) {
-            $io->newLine();
-            $io->section($this->translator->trans('Mailer transport'));
-            $io->note($this->translator->trans('Empty values are allowed for all except Mailer transport.'));
-        }
-        $data = $this->getHelper('form')->interactUsingForm(MailTransportConfigType::class, $input, $output);
-        $mailDsnWrite = (new MailTransportHelper($this->kernel->getProjectDir()))->handleFormData($data);
-        if ($mailDsnWrite) {
-            return $this->encodeArrayValues($data);
-        }
-
-        return false;
-    }
-
-    private function doAdmin(InputInterface $input, OutputInterface $output, StyleInterface $io): array
+    private function doAdminCreate(InputInterface $input, OutputInterface $output, StyleInterface $io): array
     {
         if ($input->isInteractive()) {
             $io->newLine();
@@ -215,14 +160,5 @@ class StartCommand extends AbstractCoreInstallerCommand
         $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
 
         return $this->encodeArrayValues($data);
-    }
-
-    private function encodeArrayValues(array $data): array
-    {
-        foreach ($data as $k => $v) {
-            $data[$k] = is_string($v) ? base64_encode($v) : $v; // encode so values are 'safe' for json
-        }
-
-        return $data;
     }
 }

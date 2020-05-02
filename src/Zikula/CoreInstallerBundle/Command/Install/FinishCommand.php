@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
-class FinishCommand extends AbstractCoreInstallerCommand
+class FinishCommand extends Command
 {
     protected static $defaultName = 'zikula:install:finish';
 
@@ -41,17 +40,29 @@ class FinishCommand extends AbstractCoreInstallerCommand
      */
     private $ajaxInstallerStage;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var string
+     */
+    private $environment;
+
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
         string $installed,
         StageHelper $stageHelper,
         AjaxInstallerStage $ajaxInstallerStage,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        string $environment
     ) {
+        parent::__construct();
         $this->installed = '0.0.0' !== $installed;
         $this->stageHelper = $stageHelper;
         $this->ajaxInstallerStage = $ajaxInstallerStage;
-        parent::__construct($kernel, $translator);
+        $this->translator = $translator;
+        $this->environment = $environment;
     }
 
     protected function configure()
@@ -69,13 +80,15 @@ class FinishCommand extends AbstractCoreInstallerCommand
             return 1;
         }
 
-        $io->section($this->translator->trans('*** INSTALLING ***'));
-        $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
+        if ($input->isInteractive()) {
+            $io->section($this->translator->trans('*** INSTALLING ***'));
+            $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
+        }
 
         // install!
-        $this->stageHelper->handleAjaxStage($this->ajaxInstallerStage, $io);
+        $this->stageHelper->handleAjaxStage($this->ajaxInstallerStage, $io, $input->isInteractive());
 
-        $io->success($this->translator->trans('INSTALL COMPLETE!'));
+        $io->success($this->translator->trans('Install Successful!'));
 
         return 0;
     }
