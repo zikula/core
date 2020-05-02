@@ -63,13 +63,14 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     /**
      * @var array
      */
-    private $selectedSettings = [
+    private $upgradeSettings = [
         'username',
         'password',
         'locale',
         'router:request_context:host',
         'router:request_context:scheme',
-        'router:request_context:base_url'
+        'router:request_context:base_url',
+        'transport'
     ];
 
     public function __construct(
@@ -95,7 +96,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $this->setDescription('Upgrade Zikula from the command line.');
 
         foreach ($this->settings as $name => $setting) {
-            if (!in_array($name, $this->selectedSettings, true)) {
+            if (!in_array($name, $this->upgradeSettings, true)) {
                 // only use selected settings for upgrade
                 continue;
             }
