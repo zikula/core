@@ -17,15 +17,14 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
-use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\PhpHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
@@ -125,9 +124,11 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
 
         $io = new SymfonyStyle($input, $output);
-        $io->title($this->translator->trans('Zikula Upgrader Script'));
-        $io->section($this->translator->trans('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
-        $io->text($this->translator->trans('Upgrading Zikula in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
+        if ($input->isInteractive()) {
+            $io->title($this->translator->trans('Zikula Upgrader Script'));
+            $io->section($this->translator->trans('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
+            $io->text($this->translator->trans('Upgrading Zikula in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
+        }
 
         $iniWarnings = $this->phpHelper->setUp();
         if (!empty($iniWarnings)) {
@@ -137,67 +138,81 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
 
         $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config', 'services_custom.yaml');
-        // tell the core that we are upgrading
-        $yamlManager->setParameter('upgrading', true);
+        $yamlManager->setParameter('upgrading', true); // tell the core that we are upgrading
 
-        $this->migrateUsers($io, $output);
+        $this->migrateUsers($input, $output, $io);
 
         // get the settings from user input
-        $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
-            'choices' => $this->localeApi->getSupportedLocaleNames(),
-            'choice_loader' => null
-        ]);
-
-        $data = $this->getHelper('form')->interactUsingForm(LoginType::class, $input, $output);
-        foreach ($data as $k => $v) {
-            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+        $settings = $this->doLocale($input, $output, $io);
+        $settings = array_merge($settings, $this->doAdminLogin($input, $output, $io));
+        if (false === $mailSettings = $this->doMailer($input, $output, $io)) {
+            $io->error($this->translator->trans('Cannot write mailer DSN to %file% file.', ['%file%' => '/.env.local']));
+        } else {
+            $settings = array_merge($settings, $mailSettings);
         }
-        $settings = array_merge($settings, $data);
+        $settings = array_merge($settings, $this->doRequestContext($input, $output, $io));
 
-        $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
-        foreach ($data as $k => $v) {
-            $newKey = str_replace(':', '.', $k);
-            $data[$newKey] = $v;
-            unset($data[$k]);
+        if ($input->isInteractive()) {
+            $this->printSettings($settings, $io);
+            $io->newLine();
         }
-        $settings = array_merge($settings, $data);
 
-        $this->printSettings($settings, $io);
-        $io->newLine();
-
-        // write the parameters into config/services_custom.yaml
         $params = array_merge($yamlManager->getParameters(), $settings);
         $yamlManager->setParameters($params);
 
         // upgrade!
         $this->stageHelper->handleAjaxStage($this->ajaxUpgraderStage, $io);
 
-        $io->success($this->translator->trans('UPGRADE COMPLETE!'));
+        $io->success($this->translator->trans('UPGRADE SUCCESSFUL!'));
 
         return 0;
     }
 
-    private function migrateUsers(SymfonyStyle $io, OutputInterface $output): void
+    private function migrateUsers(InputInterface $input, OutputInterface $output, SymfonyStyle $io): void
     {
         if (version_compare($this->installed, '2.0.0', '>=')) {
             return;
         }
         $count = $this->migrationHelper->countUnMigratedUsers();
         if ($count > 0) {
-            $io->text($this->translator->trans('Beginning user migration...'));
+            if ($input->isInteractive()) {
+                $io->text($this->translator->trans('Beginning user migration...'));
+            }
             $userMigrationMaxuid = (int)$this->migrationHelper->getMaxUnMigratedUid();
-            $progressBar = new ProgressBar($output, (int)ceil($count / MigrationHelper::BATCH_LIMIT));
-            $progressBar->start();
+            if ($input->isInteractive()) {
+                $progressBar = new ProgressBar($output, (int) ceil($count / MigrationHelper::BATCH_LIMIT));
+                $progressBar->start();
+            }
             $lastUid = 0;
             do {
                 $result = $this->migrationHelper->migrateUsers($lastUid);
                 $lastUid = $result['lastUid'];
-                $progressBar->advance();
+                if ($input->isInteractive()) {
+                    $progressBar->advance();
+                }
             } while ($lastUid < $userMigrationMaxuid);
-            $progressBar->finish();
-            $io->success($this->translator->trans('User migration complete!'));
+            if ($input->isInteractive()) {
+                $progressBar->finish();
+                $io->success($this->translator->trans('User migration complete!'));
+            }
         } else {
-            $io->text($this->translator->trans('There was no need to migrate any users.'));
+            if ($input->isInteractive()) {
+                $io->text($this->translator->trans('There was no need to migrate any users.'));
+            }
         }
+    }
+
+    private function doAdminLogin(InputInterface $input, OutputInterface $output, StyleInterface $io): array
+    {
+        if ($input->isInteractive()) {
+            $io->newLine();
+            $io->section($this->translator->trans('Admin Login'));
+        }
+        $data = $this->getHelper('form')->interactUsingForm(LoginType::class, $input, $output);
+        foreach ($data as $k => $v) {
+            $data[$k] = base64_encode($v); // encode so values are 'safe' for json
+        }
+
+        return $data;
     }
 }
