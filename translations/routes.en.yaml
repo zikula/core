@@ -134,6 +134,7 @@ zikulausersmodule_access_login: /login
 zikulausersmodule_access_logout: '/logout/{returnUrl}'
 zikulausersmodule_account_menu: /account
 zikulausersmodule_account_changelanguage: /account/change-language
+zikulausersmodule_account_deletemyaccount: /account/delete
 zikulausersmodule_config_config: /admin/config
 zikulausersmodule_config_authenticationmethods: /admin/config/authentication-methods
 zikulausersmodule_fileio_export: /fileIO/export
