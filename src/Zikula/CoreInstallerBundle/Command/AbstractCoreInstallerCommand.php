@@ -24,6 +24,7 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\MailerModule\Form\Type\MailTransportConfigType;
 use Zikula\MailerModule\Helper\MailTransportHelper;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 abstract class AbstractCoreInstallerCommand extends Command
 {
@@ -36,6 +37,11 @@ abstract class AbstractCoreInstallerCommand extends Command
      * @var ZikulaHttpKernelInterface
      */
     protected $kernel;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    protected $localeApi;
 
     /**
      * @var array
@@ -130,11 +136,13 @@ abstract class AbstractCoreInstallerCommand extends Command
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        LocaleApiInterface $localeApi
     ) {
         parent::__construct();
         $this->kernel = $kernel;
         $this->translator = $translator;
+        $this->localeApi = $localeApi;
     }
 
     protected function printWarnings(OutputInterface $output, $warnings): void
