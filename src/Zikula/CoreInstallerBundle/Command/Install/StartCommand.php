@@ -44,11 +44,6 @@ class StartCommand extends AbstractCoreInstallerCommand
     private $phpHelper;
 
     /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    /**
      * @var ParameterHelper
      */
     private $parameterHelper;
@@ -64,9 +59,8 @@ class StartCommand extends AbstractCoreInstallerCommand
         $this->kernel = $kernel;
         $this->installed = '0.0.0' !== $installed;
         $this->phpHelper = $phpHelper;
-        $this->localeApi = $localeApi;
         $this->parameterHelper = $parameterHelper;
-        parent::__construct($kernel, $translator);
+        parent::__construct($kernel, $translator, $localeApi);
     }
 
     protected function configure()

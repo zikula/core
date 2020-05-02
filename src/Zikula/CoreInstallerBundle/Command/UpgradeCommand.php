@@ -51,11 +51,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     private $migrationHelper;
 
     /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    /**
      * @var StageHelper
      */
     private $stageHelper;
@@ -89,11 +84,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     ) {
         $this->phpHelper = $phpHelper;
         $this->migrationHelper = $migrationHelper;
-        $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
         $this->ajaxUpgraderStage = $ajaxUpgraderStage;
         $this->installed = $installed;
-        parent::__construct($kernel, $translator);
+        parent::__construct($kernel, $translator, $localeApi);
     }
 
     protected function configure()
