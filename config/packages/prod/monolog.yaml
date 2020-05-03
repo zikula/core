@@ -1,11 +1,6 @@
 monolog:
     channels: ['mail', 'zikula']
     handlers:
-        mail:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.mail.log"
-            level: debug
-            channels: ["mail"]
         zikula:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.zikula.log"
