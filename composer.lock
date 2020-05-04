@@ -1983,11 +1983,11 @@
         },
         {
             "name": "frdh/mmenu.js",
-            "version": "8.5.5",
+            "version": "8.5.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/mmenu-js",
-                "reference": "8240b5526228da92f2869f3f0817b0a7a14ef9fc"
+                "reference": "8e31143ba580e4527110b1d4fbfcfa07e5e5303e"
             },
             "type": "library",
             "license": [
@@ -2017,7 +2017,7 @@
                 "panels",
                 "submenu"
             ],
-            "time": "2020-04-25T21:50:04+00:00"
+            "time": "2020-05-03T20:10:19+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
