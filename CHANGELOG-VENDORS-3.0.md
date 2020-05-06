@@ -7,6 +7,7 @@
   - behat/transliterator updated from 1.2.0 to 1.3.0
   - components/bootstrap updated from 3.4.1 to 4.4.1
   - components/font-awesome updated from 4.7.0 to 5.12.1
+  - components/jquery updated from 3.4.1 to 3.5.1
   - composer/ca-bundle updated from 1.2.4 to 1.2.7
   - composer/composer installed in 1.10.5
   - composer/installers updated from 1.7.0 to 1.9.0
@@ -60,8 +61,8 @@
   - seld/phar-utils installed in 1.1.0
   - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.4
   - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
-  - symfony/contracts installed in 2.0.1
-  - symfony/maker-bundle installed in 1.15.1
+  - symfony/contracts installed in 2.1.0
+  - symfony/maker-bundle installed in 1.16.0
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.8
   - symfony/polyfill-ctype updated from 1.12.0 to 1.15.0
