@@ -77,6 +77,8 @@ class CoreInstallerExtensionHelper
      */
     private $session;
 
+    private $adminCategoryHelper;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         ManagerRegistry $managerRegistry,
@@ -86,7 +88,8 @@ class CoreInstallerExtensionHelper
         ExtensionHelper $extensionHelper,
         InstallerCollector $installerCollector,
         VariableApiInterface $variableApi,
-        SessionInterface $session
+        SessionInterface $session,
+        AdminCategoryHelper $adminCategoryHelper
     ) {
         $this->kernel = $kernel;
         $this->managerRegistry = $managerRegistry;
@@ -97,6 +100,7 @@ class CoreInstallerExtensionHelper
         $this->installerCollector = $installerCollector;
         $this->variableApi = $variableApi;
         $this->session = $session;
+        $this->adminCategoryHelper = $adminCategoryHelper;
     }
 
     public function install(string $extensionName): bool
@@ -111,60 +115,6 @@ class CoreInstallerExtensionHelper
         }
 
         return false;
-    }
-
-    /**
-     * Set an admin category for an extension or set to default.
-     */
-    private function setCategory(string $moduleName, string $translatedCategoryName): bool
-    {
-        $categoryRepository = $this->managerRegistry->getRepository('ZikulaAdminModule:AdminCategoryEntity');
-        $modulesCategories = $categoryRepository->getIndexedCollection('name');
-        $moduleEntity = $this->managerRegistry->getRepository('ZikulaExtensionsModule:ExtensionEntity')
-            ->findOneBy(['name' => $moduleName]);
-
-        $moduleRepository = $this->managerRegistry->getRepository('ZikulaAdminModule:AdminModuleEntity');
-        if (isset($modulesCategories[$translatedCategoryName])) {
-            $moduleRepository->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
-        } else {
-            $defaultCategoryId = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory', 5);
-            $defaultCategory = $categoryRepository->find($defaultCategoryId);
-            $moduleRepository->setModuleCategory($moduleEntity, $defaultCategory);
-        }
-
-        return true;
-    }
-
-    public function categorize(): bool
-    {
-        reset(ZikulaKernel::$coreExtension);
-        $systemModulesCategories = [
-            'ZikulaExtensionsModule' => $this->translator->trans('System'),
-            'ZikulaPermissionsModule' => $this->translator->trans('Users'),
-            'ZikulaGroupsModule' => $this->translator->trans('Users'),
-            'ZikulaBlocksModule' => $this->translator->trans('Layout'),
-            'ZikulaUsersModule' => $this->translator->trans('Users'),
-            'ZikulaZAuthModule' => $this->translator->trans('Users'),
-            'ZikulaThemeModule' => $this->translator->trans('Layout'),
-            'ZikulaSecurityCenterModule' => $this->translator->trans('Security'),
-            'ZikulaCategoriesModule' => $this->translator->trans('Content'),
-            'ZikulaMailerModule' => $this->translator->trans('System'),
-            'ZikulaSearchModule' => $this->translator->trans('Content'),
-            'ZikulaAdminModule' => $this->translator->trans('System'),
-            'ZikulaSettingsModule' => $this->translator->trans('System'),
-            'ZikulaRoutesModule' => $this->translator->trans('System'),
-            'ZikulaMenuModule' => $this->translator->trans('Content'),
-            'ZikulaAtomTheme' => $this->translator->trans('Layout'),
-            'ZikulaBootstrapTheme' => $this->translator->trans('Layout'),
-            'ZikulaPrinterTheme' => $this->translator->trans('Layout'),
-            'ZikulaRssTheme' => $this->translator->trans('Layout'),
-        ];
-
-        foreach (ZikulaKernel::$coreExtension as $systemModule => $bundleClass) {
-            $this->setCategory($systemModule, $systemModulesCategories[$systemModule]);
-        }
-
-        return true;
     }
 
     /**
@@ -215,7 +165,7 @@ class CoreInstallerExtensionHelper
         ];
         $result = true;
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
-            $extensionEntity = $this->managerRegistry->getRepository('ZikulaExtensionsModule:ExtensionEntity')->get($moduleName);
+            $extensionEntity = $this->managerRegistry->getRepository(ExtensionEntity::class)->get($moduleName);
             if (isset($extensionEntity)) {
                 $result = $result && $this->extensionHelper->upgrade($extensionEntity);
             }
@@ -234,7 +184,7 @@ class CoreInstallerExtensionHelper
             case '1.4.3':
                 $this->install('ZikulaMenuModule');
                 $this->reSyncAndActivate();
-                $this->setCategory('ZikulaMenuModule', $this->translator->trans('Content'));
+                $this->adminCategoryHelper->setCategory('ZikulaMenuModule', $this->translator->trans('Content'));
             case '1.4.4':
                 // nothing
             case '1.4.5':
@@ -243,7 +193,7 @@ class CoreInstallerExtensionHelper
                 if (!$schemaManager->tablesExist(['menu_items'])) {
                     $this->install('ZikulaMenuModule');
                     $this->reSyncAndActivate();
-                    $this->setCategory('ZikulaMenuModule', $this->translator->trans('Content'));
+                    $this->adminCategoryHelper->setCategory('ZikulaMenuModule', $this->translator->trans('Content'));
                 }
             case '1.4.6':
                 // nothing needed

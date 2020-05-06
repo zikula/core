@@ -58,6 +58,11 @@ class StageHelper
     private $coreInstallerExtensionHelper;
 
     /**
+     * @var AdminCategoryHelper
+     */
+    private $adminCategoryHelper;
+
+    /**
      * @var BlockHelper
      */
     private $blockHelper;
@@ -89,6 +94,7 @@ class StageHelper
         ExtensionHelper $extensionHelper,
         EventDispatcherInterface $eventDispatcher,
         CoreInstallerExtensionHelper $coreInstallerExtensionHelper,
+        AdminCategoryHelper $adminCategoryHelper,
         BlockHelper $blockHelper,
         ParameterHelper $parameterHelper,
         SuperUserHelper $superUserHelper,
@@ -101,6 +107,7 @@ class StageHelper
         $this->extensionHelper = $extensionHelper;
         $this->eventDispatcher = $eventDispatcher;
         $this->coreInstallerExtensionHelper = $coreInstallerExtensionHelper;
+        $this->adminCategoryHelper = $adminCategoryHelper;
         $this->blockHelper = $blockHelper;
         $this->parameterHelper = $parameterHelper;
         $this->superUserHelper = $superUserHelper;
@@ -158,7 +165,7 @@ class StageHelper
             case 'activateextensions':
                 return $this->coreInstallerExtensionHelper->reSyncAndActivate();
             case 'categorize':
-                return $this->coreInstallerExtensionHelper->categorize();
+                return $this->adminCategoryHelper->categorize();
             case 'createblocks':
                 return $this->blockHelper->createBlocks();
             case 'finalizeparameters':
