@@ -70,10 +70,6 @@ class AdminCategoryHelper
         $this->variableApi = $variableApi;
         $this->categoryRepository = $this->managerRegistry->getRepository(AdminCategoryEntity::class);
         $this->adminModuleRepository = $this->managerRegistry->getRepository(AdminModuleEntity::class);
-
-        $this->extensionCategories = $this->categoryRepository->getIndexedCollection('name');
-        $defaultCategoryId = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory', 5);
-        $this->defaultCategory = $this->categoryRepository->find($defaultCategoryId);
     }
 
     public function categorize(): bool
@@ -100,6 +96,7 @@ class AdminCategoryHelper
             'ZikulaPrinterTheme' => $this->translator->trans('Layout'),
             'ZikulaRssTheme' => $this->translator->trans('Layout'),
         ];
+        $this->setUp();
 
         foreach (ZikulaKernel::$coreExtension as $systemModule => $bundleClass) {
             $this->setCategory($systemModule, $systemModulesCategories[$systemModule]);
@@ -115,11 +112,22 @@ class AdminCategoryHelper
     {
         $moduleEntity = $this->managerRegistry->getRepository(ExtensionEntity::class)
             ->findOneBy(['name' => $moduleName]);
+        if (empty($this->extensionCategories)) {
+            $this->setUp();
+        }
 
         if (isset($this->extensionCategories[$translatedCategoryName])) {
             $this->adminModuleRepository->setModuleCategory($moduleEntity, $this->extensionCategories[$translatedCategoryName]);
         } else {
             $this->adminModuleRepository->setModuleCategory($moduleEntity, $this->defaultCategory);
         }
+    }
+
+    private function setUp(): void
+    {
+        $this->extensionCategories = $this->categoryRepository->getIndexedCollection('name');
+        $defaultCategoryId = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory', 5);
+        $this->defaultCategory = $this->categoryRepository->find($defaultCategoryId);
+
     }
 }
