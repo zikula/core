@@ -1,4 +1,3 @@
-{{ menu|raw }}
 <div class="z-admin-content">
     <h2>
         <i class="fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i>
@@ -38,4 +37,3 @@
     {% else %}
         <p class="bold text-center">{% trans %}There are currently no modules in this category.{% endtrans %}</p>
     {% endif %}
-    {{ adminFooter() }}

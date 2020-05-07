@@ -206,18 +206,6 @@ class AdminController extends AbstractController
             $acid = $this->getVar('startcategory');
         }
 
-        $templateParameters = [
-            // Add category menu to output
-            'menu' => $this->categorymenuAction(
-                $adminCategoryRepository,
-                $adminModuleRepository,
-                $capabilityApi,
-                $router,
-                $adminLinksHelper,
-                $acid
-            )->getContent()
-        ];
-
         // Check to see if we have access to the requested category.
         if (!$this->hasPermission('ZikulaAdminModule::', "::${acid}", ACCESS_ADMIN)) {
             $acid = -1;
@@ -240,6 +228,8 @@ class AdminController extends AbstractController
 
             $category = $adminCategoryRepository->findOneBy(['cid' => $acid]);
         }
+
+        $templateParameters = [];
 
         // assign the category
         $templateParameters['category'] = $category;
