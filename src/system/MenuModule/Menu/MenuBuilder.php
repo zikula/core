@@ -44,7 +44,7 @@ class MenuBuilder
         $this->capabilityApi = $capabilityApi;
     }
 
-    public function createAdminMenu(array $options): ItemInterface
+    public function createAdminMenu(): ItemInterface
     {
         // @see https://gist.github.com/nateevans/9958390
         $menu = $this->factory->createItem('menuModuleAdminMenu');

@@ -19,16 +19,6 @@ use Twig\TwigFilter;
 
 class ExtensionsExtension extends AbstractExtension
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     public function getFilters()
     {
         return [

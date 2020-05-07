@@ -37,7 +37,7 @@ class MenuBuilder
         $this->permissionApi = $permissionApi;
     }
 
-    public function createAdminMenu(array $options = []): ItemInterface
+    public function createAdminMenu(): ItemInterface
     {
         $menu = $this->factory->createItem('bootstrapThemeAdminMenu');
         $menu->setChildrenAttribute('class', 'navbar-nav');
