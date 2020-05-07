@@ -128,6 +128,5 @@ class AdminCategoryHelper
         $this->extensionCategories = $this->categoryRepository->getIndexedCollection('name');
         $defaultCategoryId = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory', 5);
         $this->defaultCategory = $this->categoryRepository->find($defaultCategoryId);
-
     }
 }
