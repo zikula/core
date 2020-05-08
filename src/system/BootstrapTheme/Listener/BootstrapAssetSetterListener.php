@@ -66,7 +66,8 @@ class BootstrapAssetSetterListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if ('ZikulaBootstrapTheme' !== $this->themeEngine->getTheme()->getName()) {
+        $theme = $this->themeEngine->getTheme();
+        if (empty($theme) || 'ZikulaBootstrapTheme' !== $theme->getName()) {
             return;
         }
         $themeStyle = $event->getRequest()->hasSession() ? $event->getRequest()->getSession()->get('currentBootstrapStyle', '') : '';
