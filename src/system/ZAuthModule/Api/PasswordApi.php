@@ -43,12 +43,6 @@ class PasswordApi implements PasswordApiInterface
     ];
 
     /**
-     * A list of characters not suited to 'human readable' strings
-     * @var array
-     */
-    private $passwordIncompatibleCharacters = ['0', 'o', 'O', 'l', '1', 'i', 'I', 'j', '!', '|'];
-
-    /**
      * A string of characters to use in random string generation
      * @var string
      */

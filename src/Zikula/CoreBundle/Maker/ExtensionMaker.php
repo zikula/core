@@ -145,7 +145,7 @@ class ExtensionMaker extends AbstractMaker
     private function getClassesToGenerate(string $namespace, string $type): iterable
     {
         $bundleClassName = str_replace('\\', '', $namespace);
-        [$vendor, $extensionName] = explode('\\', $namespace, 2);
+        [, $extensionName] = explode('\\', $namespace, 2);
 
         return [
             ['name' => $bundleClassName, 'prefix' => '', 'suffix' => $type, 'template' => 'BundleClass.tpl.php'],
