@@ -115,10 +115,6 @@ class DoctrineSessionHandler extends AbstractSessionHandler
 
     protected function doDestroy(string $sessionId)
     {
-        // expire the cookie
-        if ('cli' !== PHP_SAPI) {
-            setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
-        }
         $this->userSessionRepository->clearUnsavedData();
         $this->userSessionRepository->removeAndFlush($sessionId);
 
@@ -135,7 +131,7 @@ class DoctrineSessionHandler extends AbstractSessionHandler
             $this->gcCalled = false;
 
             $this->userSessionRepository->gc(
-                $this->variableApi->getSystemVar('seclevel', 'Medium'),
+                $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM),
                 $this->variableApi->getSystemVar('secinactivemins', 20),
                 $this->variableApi->getSystemVar('secmeddays', 7)
             );
