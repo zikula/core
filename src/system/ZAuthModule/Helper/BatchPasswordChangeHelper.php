@@ -16,8 +16,8 @@ namespace Zikula\ZAuthModule\Helper;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
-use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class BatchPasswordChangeHelper
