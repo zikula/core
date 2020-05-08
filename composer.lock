@@ -3585,33 +3585,34 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "dev-symfony-5",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Guite/symfony-console-form.git",
-                "reference": "e3238bdd5bbd7a1247746f908f7587a2e822b955"
+                "url": "https://github.com/matthiasnoback/symfony-console-form.git",
+                "reference": "c304e46f0d019ed36f3cd00334aae903b3a142c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/symfony-console-form/zipball/e3238bdd5bbd7a1247746f908f7587a2e822b955",
-                "reference": "e3238bdd5bbd7a1247746f908f7587a2e822b955",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/c304e46f0d019ed36f3cd00334aae903b3a142c0",
+                "reference": "c304e46f0d019ed36f3cd00334aae903b3a142c0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0",
-                "symfony/console": "~3.4|~4.0|~5.0",
-                "symfony/form": "~3.4|~4.0|~5.0",
-                "symfony/translation": "~3.4|~4.0|~5.0"
+                "php": ">=7.2",
+                "symfony/console": "~5.0",
+                "symfony/form": "~5.0",
+                "symfony/translation": "~5.0"
             },
             "require-dev": {
                 "beberlei/assert": "~2.1",
-                "behat/behat": "~3.0",
-                "friendsofphp/php-cs-fixer": "^1.10|^2.2",
-                "symfony/finder": "~3.4|~4.0|~5.0",
-                "symfony/framework-bundle": "~3.4|~4.0|~5.0",
-                "symfony/security": "~3.4|~4.0|~5.0",
-                "symfony/validator": "~3.4|~4.0|~5.0",
-                "symfony/yaml": "~3.4|~4.0|~5.0"
+                "behat/behat": "^3.6",
+                "friendsofphp/php-cs-fixer": "^2.2",
+                "phpunit/phpunit": "^7",
+                "symfony/finder": "~5.0",
+                "symfony/framework-bundle": "~5.0",
+                "symfony/security-csrf": "~5.0",
+                "symfony/validator": "~5.0",
+                "symfony/yaml": "~5.0"
             },
             "type": "library",
             "autoload": {
@@ -3619,11 +3620,7 @@
                     "Matthias\\SymfonyConsoleForm\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Matthias\\SymfonyConsoleForm\\Tests\\": "test/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3637,14 +3634,11 @@
             "description": "Use Symfony forms for Console command input",
             "homepage": "http://github.com/matthiasnoback/symfony-console-form",
             "keywords": [
-                "Symfony",
                 "console",
-                "form"
+                "form",
+                "symfony"
             ],
-            "support": {
-                "source": "https://github.com/Guite/symfony-console-form/tree/symfony-5"
-            },
-            "time": "2020-01-31T08:02:06+00:00"
+            "time": "2020-05-08T10:13:01+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -4887,12 +4881,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "b3b9b70bfacfd204d352e7e7350e02c02c0fff78"
+                "reference": "cf1da70384da0d4e98593760955c4397a22175cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/b3b9b70bfacfd204d352e7e7350e02c02c0fff78",
-                "reference": "b3b9b70bfacfd204d352e7e7350e02c02c0fff78",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/cf1da70384da0d4e98593760955c4397a22175cc",
+                "reference": "cf1da70384da0d4e98593760955c4397a22175cc",
                 "shasum": ""
             },
             "require": {
@@ -5159,20 +5153,6 @@
                 "polyfill",
                 "portable"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-02-27T09:26:54+00:00"
         },
         {
@@ -5233,20 +5213,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-09T19:04:49+00:00"
         },
         {
@@ -5304,20 +5270,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -5380,20 +5332,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-03-09T19:04:49+00:00"
         },
@@ -5458,20 +5396,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-02-27T09:26:54+00:00"
         },
         {
@@ -5535,20 +5459,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-02-27T09:26:54+00:00"
         },
         {
@@ -5608,20 +5518,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-09T19:04:49+00:00"
         },
         {
@@ -5676,20 +5572,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -5748,20 +5630,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -7273,7 +7141,6 @@
         "zikula/bootstrap-theme": 20,
         "zikula/printer-theme": 20,
         "zikula/rss-theme": 20,
-        "matthiasnoback/symfony-console-form": 20,
         "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20

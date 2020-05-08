@@ -16,15 +16,9 @@
         "symfony/console": "5.*",
         "symfony/framework-bundle": "5.*",
         "symfony/requirements-checker": "1.*",
-        "matthiasnoback/symfony-console-form": "dev-symfony-5",
+        "matthiasnoback/symfony-console-form": "4.*",
         "zikula/wizard": "dev-master"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Guite/symfony-console-form"
-        }
-    ],
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreInstallerBundle\\": "" }
     }
