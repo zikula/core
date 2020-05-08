@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\CoreBundle\Tests\Helper;
+namespace Zikula\Bundle\CoreBundle\Tests\Helper;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
