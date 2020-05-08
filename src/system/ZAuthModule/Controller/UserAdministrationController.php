@@ -22,7 +22,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
@@ -33,10 +32,8 @@ use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -57,6 +54,7 @@ use Zikula\ZAuthModule\Form\Type\BatchForcePasswordChangeType;
 use Zikula\ZAuthModule\Form\Type\SendVerificationConfirmationType;
 use Zikula\ZAuthModule\Form\Type\TogglePasswordConfirmationType;
 use Zikula\ZAuthModule\Helper\AdministrationActionsHelper;
+use Zikula\ZAuthModule\Helper\BatchPasswordChangeHelper;
 use Zikula\ZAuthModule\Helper\LostPasswordVerificationHelper;
 use Zikula\ZAuthModule\Helper\MailHelper;
 use Zikula\ZAuthModule\Helper\RegistrationVerificationHelper;
@@ -462,25 +460,15 @@ class UserAdministrationController extends AbstractController
      * @return array|RedirectResponse
      */
     public function batchForcePasswordChangeAction(
-        CurrentUserApiInterface $currentUserApi,
+        BatchPasswordChangeHelper $batchPasswordChangeHelper,
         Request $request
     ) {
         $form = $this->createForm(BatchForcePasswordChangeType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
-                $users = $this->getUsers($form->get('group')->getData(), $currentUserApi->get('uid'));
-                $count = 0;
-                foreach ($users as $user) {
-                    $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);
-                    $count++;
-                    if (0 === $count % 20) {
-                        $this->getDoctrine()->getManager()->flush(); // flush manager every 20 reps
-                    }
-                }
-                $this->getDoctrine()->getManager()->flush(); // flush remaining
-                /** @Desc("{count, plural,\n  one   {# user was processed!}\n  other {# users were processed!}\n}") */
-                $this->addFlash('info', $this->trans('plural_n.users.processed.', ['%count%' => $count]));
+                $count = $batchPasswordChangeHelper->requirePasswordChangeByGroup($form->get('group')->getData());
+                $this->addFlash('success', $this->trans('Operation complete. %count% user(s) changed.', ['%count%' => $count]));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('info', 'Operation cancelled.');
             }
@@ -491,51 +479,5 @@ class UserAdministrationController extends AbstractController
         return [
             'form' => $form->createView(),
         ];
-    }
-
-    private function getUsers($selector, int $currentUser)
-    {
-        if (!in_array($selector, ['all', 'old']) && !is_int($selector)) {
-            return [];
-        }
-        $authenticationMappingRepository = $this->getDoctrine()->getRepository(AuthenticationMappingEntity::class);
-        $toUsersArray = function($mappings) {
-            $uids = [];
-            foreach ($mappings as $mapping) {
-                $uids[] = $mapping->getUid();
-            }
-            $userRepository = $this->getDoctrine()->getRepository(UserEntity::class);
-
-            return $userRepository->findByUids($uids);
-        };
-        switch ($selector) {
-            case 'old':
-                $mappings = $authenticationMappingRepository->getByExpiredPasswords();
-                $users = $toUsersArray($mappings);
-                break;
-            case 'all':
-                $mappings = $authenticationMappingRepository->findAll();
-                $users = $toUsersArray($mappings);
-                break;
-            default: //group id
-                $groupRepository = $this->getDoctrine()->getRepository(GroupEntity::class);
-                $group = $groupRepository->find($selector);
-                if ($group && $group instanceof GroupEntity) {
-                    $users = $group->getUsers();
-                    foreach ($users as $user) {
-                        if (!$authenticationMappingRepository->getByZikulaId($user->getUid())) {
-                            $users->removeElement($user);
-                        }
-                    }
-                    $users = $users->toArray();
-                }
-        }
-
-        if (is_array($users) && isset($users[$currentUser])) {
-            // remove the current user (admin) and guest user if included
-            unset($users[$currentUser], $users[1]);
-        }
-
-        return $users;
     }
 }
