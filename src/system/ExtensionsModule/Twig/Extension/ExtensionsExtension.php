@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
