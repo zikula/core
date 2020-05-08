@@ -50,7 +50,7 @@ install:
     - mysql -e 'create database zk_test;'
     # run the installer
     - php bin/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost --router:request_context:base_url='/' -vvv
-    - php bin/console zikula:install:finish -vvv
+    - php bin/console zikula:install:finish -n -vvv
     # drop the test db
     - mysql -e 'drop database zk_test'
 
@@ -94,24 +94,24 @@ install:
     # drop the test db
     - mysql -e 'drop database zk_test'
 
-  # create an upgrade db for 1.5.9
+    # create an upgrade db for 1.5.9
     - mysql -e 'create database zk_test;'
     - mysql zk_test < tests/test_dbs/core159.sql
-  # run the upgrade from the 1.5.9 db
+    # run the upgrade from the 1.5.9 db
     - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.5.9''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
-  # drop the test db
+    # drop the test db
     - mysql -e 'drop database zk_test'
 
-  # create an upgrade db for 2.0.15
+    # create an upgrade db for 2.0.15
     - mysql -e 'create database zk_test;'
     - mysql zk_test < tests/test_dbs/core2015.sql
-  # run the upgrade from the 2.0.15 db
+    # run the upgrade from the 2.0.15 db
     - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''2.0.15''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
-  # drop the test db
+    # drop the test db
     - mysql -e 'drop database zk_test'
 
 script:
