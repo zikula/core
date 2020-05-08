@@ -16,21 +16,11 @@ namespace Zikula\SecurityCenterModule\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\MenuModule\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-class ExtensionMenu implements ExtensionMenuInterface
+class ExtensionMenu extends AbstractExtensionMenu
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
     /**
      * @var VariableApiInterface
      */
@@ -41,21 +31,11 @@ class ExtensionMenu implements ExtensionMenuInterface
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi
     ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
+        parent::__construct($factory, $permissionApi);
         $this->variableApi = $variableApi;
     }
 
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
-    {
-        if (self::TYPE_ADMIN === $type) {
-            return $this->getAdmin();
-        }
-
-        return null;
-    }
-
-    private function getAdmin(): ?ItemInterface
+    protected function getAdmin(): ?ItemInterface
     {
         $menu = $this->factory->createItem('securityAdminMenu');
         if (!$this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

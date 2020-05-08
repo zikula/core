@@ -13,42 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Menu;
 
-use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\MenuModule\ExtensionMenu\AbstractExtensionMenu;
 
-class ExtensionMenu implements ExtensionMenuInterface
+class ExtensionMenu extends AbstractExtensionMenu
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    public function __construct(
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi
-    ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
-    }
-
-    public function getBundleName(): string
+    protected function getAdmin(): ?ItemInterface
     {
-        return 'ZikulaExtensionsModule';
-    }
-
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
-    {
-        if (self::TYPE_ADMIN !== $type) {
-            return null;
-        }
-
         if (!$this->permissionApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             return null;
         }
@@ -61,5 +32,10 @@ class ExtensionMenu implements ExtensionMenuInterface
         ])->setAttribute('icon', 'fas fa-wrench');
 
         return $menu;
+    }
+
+    public function getBundleName(): string
+    {
+        return 'ZikulaExtensionsModule';
     }
 }
