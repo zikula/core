@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Helper\BundlesSchemaHelper;
-use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallerBundleEvent;
@@ -41,11 +40,6 @@ class StageHelper
      * @var ZikulaHttpKernelInterface
      */
     private $kernel;
-
-    /**
-     * @var PersistedBundleHelper
-     */
-    private $persistedBundleHelper;
 
     /**
      * @var BundlesSchemaHelper
@@ -89,7 +83,6 @@ class StageHelper
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        PersistedBundleHelper $persistedBundleHelper,
         BundlesSchemaHelper $bundlesSchemaHelper,
         ExtensionHelper $extensionHelper,
         EventDispatcherInterface $eventDispatcher,
@@ -102,7 +95,6 @@ class StageHelper
         string $installed
     ) {
         $this->kernel = $kernel;
-        $this->persistedBundleHelper = $persistedBundleHelper;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->extensionHelper = $extensionHelper;
         $this->eventDispatcher = $eventDispatcher;
@@ -211,7 +203,7 @@ class StageHelper
     {
         $this->bundlesSchemaHelper->load();
         $bundles = [];
-        $this->persistedBundleHelper->getPersistedBundles($this->kernel, $bundles); // adds autoloaders
+        $this->kernel->getBundleHelper()->getPersistedBundles($this->kernel, $bundles); // adds autoloaders
 
         return true;
     }
