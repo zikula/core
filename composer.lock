@@ -806,6 +806,12 @@
                 "Xdebug",
                 "performance"
             ],
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                }
+            ],
             "time": "2020-03-01T12:26:26+00:00"
         },
         {
@@ -1223,6 +1229,20 @@
                 "sqlite",
                 "sqlserver",
                 "sqlsrv"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fdbal",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-04-20T17:19:26+00:00"
         },
@@ -1700,6 +1720,20 @@
                 "database",
                 "orm"
             ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine/orm",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-03-19T06:41:02+00:00"
         },
         {
@@ -1782,6 +1816,20 @@
                 "odm",
                 "orm",
                 "persistence"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fpersistence",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-03-21T15:13:52+00:00"
         },
@@ -4922,6 +4970,7 @@
             },
             "replace": {
                 "symfony/cache-contracts": "self.version",
+                "symfony/deprecation-contracts": "self.version",
                 "symfony/event-dispatcher-contracts": "self.version",
                 "symfony/http-client-contracts": "self.version",
                 "symfony/service-contracts": "self.version",
@@ -4940,13 +4989,16 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "2.1-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Symfony\\Contracts\\": ""
                 },
+                "files": [
+                    "Deprecation/function.php"
+                ],
                 "exclude-from-classmap": [
                     "**/Tests/"
                 ]
@@ -4975,7 +5027,21 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2019-11-26T23:25:11+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-03-18T08:01:26+00:00"
         },
         {
             "name": "symfony/maker-bundle",
@@ -6916,12 +6982,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "9dba8da6797bfe397ad7048c348ebd58859ea527"
+                "reference": "591bd7ae583acb8716b876ec7dc06ce35321ac3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/9dba8da6797bfe397ad7048c348ebd58859ea527",
-                "reference": "9dba8da6797bfe397ad7048c348ebd58859ea527",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/591bd7ae583acb8716b876ec7dc06ce35321ac3e",
+                "reference": "591bd7ae583acb8716b876ec7dc06ce35321ac3e",
                 "shasum": ""
             },
             "require": {
@@ -6966,7 +7032,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-04-18T12:06:45+00:00"
+            "time": "2020-05-09T14:24:23+00:00"
         },
         {
             "name": "zikula/pagelock-module",
