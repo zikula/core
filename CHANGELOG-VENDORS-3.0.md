@@ -20,7 +20,7 @@
   - doctrine/dbal updated from 2.5.13 to 2.10.2
   - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.8
   - doctrine/event-manager installed in 1.1.0
-  - doctrine/inflector updated from 1.1.0 to 1.3.1
+  - doctrine/inflector updated from 1.1.0 to 1.4.0
   - doctrine/instantiator updated from 1.0.5 to 1.3.0
   - doctrine/lexer updated from 1.0.2 to 1.2.0
   - doctrine/orm updated from 2.5.14 to 2.7.2
@@ -62,7 +62,7 @@
   - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.5
   - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
   - symfony/contracts installed in 2.1.0
-  - symfony/maker-bundle installed in 1.16.0
+  - symfony/maker-bundle installed in 1.17.0
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.8
   - symfony/polyfill-ctype updated from 1.12.0 to 1.15.0
