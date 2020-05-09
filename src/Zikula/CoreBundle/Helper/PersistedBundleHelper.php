@@ -55,7 +55,10 @@ class PersistedBundleHelper
     {
         $conn = $this->getConnection();
         $conn->connect();
-        $res = $conn->executeQuery('SELECT bundleclass, autoload, bundletype FROM bundles');
+        $res = $conn->executeQuery('
+            SELECT bundleclass, autoload, bundletype
+            FROM bundles
+        ');
         $unavailableExtensions = 0;
         foreach ($res->fetchAll(PDO::FETCH_NUM) as [$class, $autoload, $type]) {
             $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
@@ -76,8 +79,8 @@ class PersistedBundleHelper
             }
         }
         $conn->close();
-        if ($unavailableExtensions > 0) {
-            // clear the cache & start over
+        if (0 < $unavailableExtensions) {
+            // clear the cache and start over
             throw new StaleCacheException('An extension has been removed without uninstalling.');
         }
     }
@@ -102,8 +105,10 @@ class PersistedBundleHelper
             $state = $this->extensionStateMap[$extensionName];
         } else {
             // load all values into class var for lookup
-            $sql = 'SELECT m.name, m.state, m.id FROM extensions as m';
-            $rows = $conn->executeQuery($sql);
+            $rows = $conn->executeQuery('
+                SELECT m.name, m.state, m.id
+                FROM extensions as m
+            ');
             foreach ($rows as $row) {
                 $this->extensionStateMap[$row['name']] = [
                     'state' => (int)$row['state'],
@@ -122,7 +127,13 @@ class PersistedBundleHelper
         $extensionName = $this->extensionNameFromClass($class);
         $id = $this->extensionStateMap[$extensionName]['id'];
 
-        return $conn->executeUpdate('UPDATE extensions set state = ? where id = ?', [Constant::STATE_MISSING, $id]);
+        $sql = '
+            UPDATE extensions
+            SET state = ?
+            WHERE id = ?
+        ';
+
+        return $conn->executeUpdate($sql, [Constant::STATE_MISSING, $id]);
     }
 
     private function extensionNameFromClass(string $class): string

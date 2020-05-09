@@ -26,9 +26,21 @@ class Kernel extends ZikulaKernel
 {
     use MicroKernelTrait;
 
+    /**
+     * @var string
+     */
+    private $databaseUrl;
+
+    public function __construct(string $environment, bool $debug, string $databaseUrl)
+    {
+        parent::__construct($environment, $debug);
+
+        $this->databaseUrl = $databaseUrl;
+    }
+
     public function registerBundles(): iterable
     {
-        $bundleHelper = new PersistedBundleHelper($_ENV['DATABASE_URL'] ?? '');
+        $bundleHelper = new PersistedBundleHelper($this->databaseUrl);
         $bundles = require $this->getProjectDir() . '/config/bundles.php';
         $bundleHelper->getPersistedBundles($this, $bundles);
 
