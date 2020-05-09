@@ -17,7 +17,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
-use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Validator\Constraints\ValidUserFields;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -79,32 +78,10 @@ class AdminCreatedUserType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'alert' => ['If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.' => 'info']
             ])
-            ->add('pass', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => [
-                    'attr' => [
-                        'class' => 'pwstrength',
-                        'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
-                        'minlength' => $options['minimumPasswordLength'],
-                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
-                    ],
-                    'required' => false,
-                    'label' => 'Create new password',
-                    'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
-                    'help' => 'Minimum password length: %amount% characters.',
-                    'help_translation_parameters' => [
-                        '%amount%' => $options['minimumPasswordLength']
-                    ]
-                ],
-                'second_options' => [
-                    'required' => false,
-                    'label' => 'Repeat new password',
-                    'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
-                ],
-                'invalid_message' => 'The passwords must match!',
-                'constraints' => [
-                    new ValidPassword()
-                ]
+            ->add('pass', ZAuthDuplicatePassType::class, [
+                'label' => 'Password',
+                'data_class' => AuthenticationMappingEntity::class,
+                'dataUnameId' => $builder->getName() . '_' . $builder->get('uname')->getName()
             ])
             ->add('sendpass', CheckboxType::class, [
                 'required' => false,
