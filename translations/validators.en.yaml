@@ -1,3 +1,26 @@
+'Invalid username.': 'Invalid username.'
+'The code is invalid for this username.': 'The code is invalid for this username.'
+'Old password is incorrect.': 'Old password is incorrect.'
+'Your new password cannot match your current password.': 'Your new password cannot match your current password.'
+'Could not find user to update.': 'Could not find user to update.'
+'The password cannot be the same as the user name. Please choose a different password.': 'The password cannot be the same as the user name. Please choose a different password.'
+'The user name you entered (%userName%) has already been registered.': 'The user name you entered (%userName%) has already been registered.'
+'The email address you entered (%email%) has already been registered.': 'The email address you entered (%email%) has already been registered.'
+'You did not provide the correct answer for the security question. Try %answer%!': 'You did not provide the correct answer for the security question. Try %answer%!'
+'The emails must match!': null
+'The passwords must match!': null
+'The selected item does not exist': null
+'Could not json_decode the string you entered.': null
+'This email is in use by another authentication method. Please login with that method instead.': 'This email is in use by another authentication method. Please login with that method instead.'
+'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.': 'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.'
+'The user name you entered is reserved. It cannot be used.': 'The user name you entered is reserved. It cannot be used.'
+'Sorry! The domain of the e-mail address you specified is banned.': 'Sorry! The domain of the e-mail address you specified is banned.'
+'The group name you entered (%groupName%) does already exist.': 'The group name you entered (%groupName%) does already exist.'
+'Category "%name%" must be unique under parent': 'Category "%name%" must be unique under parent'
+'The value "%value%" is not allowed for the "%property%" property.': null
+'You must select at least "%limit%" choice.|You must select at least "%limit%" choices.': null
+'You must select at most "%limit%" choice.|You must select at most "%limit%" choices.': null
+'The password fields must match.': null
 'This value should be false.': 'This value should be false.'
 'This value should be true.': 'This value should be true.'
 'This value should be of type {{ type }}.': 'This value should be of type {{ type }}.'
@@ -96,26 +119,3 @@ Error: Error
 'This form should not contain extra fields.': 'This form should not contain extra fields.'
 'The uploaded file was too large. Please try to upload a smaller file.': 'The uploaded file was too large. Please try to upload a smaller file.'
 'The CSRF token is invalid. Please try to resubmit the form.': 'The CSRF token is invalid. Please try to resubmit the form.'
-'The user name you entered (%userName%) has already been registered.': 'The user name you entered (%userName%) has already been registered.'
-'This email is in use by another authentication method. Please login with that method instead.': 'This email is in use by another authentication method. Please login with that method instead.'
-'Sorry! The domain of the e-mail address you specified is banned.': 'Sorry! The domain of the e-mail address you specified is banned.'
-'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.': 'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.'
-'The user name you entered is reserved. It cannot be used.': 'The user name you entered is reserved. It cannot be used.'
-'The emails must match!': null
-'The passwords must match!': null
-'Invalid username.': 'Invalid username.'
-'The code is invalid for this username.': 'The code is invalid for this username.'
-'Old password is incorrect.': 'Old password is incorrect.'
-'Your new password cannot match your current password.': 'Your new password cannot match your current password.'
-'Could not find user to update.': 'Could not find user to update.'
-'The password cannot be the same as the user name. Please choose a different password.': 'The password cannot be the same as the user name. Please choose a different password.'
-'The email address you entered (%email%) has already been registered.': 'The email address you entered (%email%) has already been registered.'
-'You did not provide the correct answer for the security question. Try %answer%!': 'You did not provide the correct answer for the security question. Try %answer%!'
-'Category "%name%" must be unique under parent': 'Category "%name%" must be unique under parent'
-'The group name you entered (%groupName%) does already exist.': 'The group name you entered (%groupName%) does already exist.'
-'The value "%value%" is not allowed for the "%property%" property.': null
-'You must select at least "%limit%" choice.|You must select at least "%limit%" choices.': null
-'You must select at most "%limit%" choice.|You must select at most "%limit%" choices.': null
-'The selected item does not exist': null
-'Could not json_decode the string you entered.': null
-'The password fields must match.': null
