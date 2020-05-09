@@ -34,6 +34,10 @@ if (null !== $env = $getZikulaEnv($input)) {
     putenv('APP_ENV=' . $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
 }
 
+if ($input->hasParameterOption('--no-debug', true)) {
+    putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
+}
+
 foreach ([__DIR__ . '/../../../../config/bootstrap.php', __DIR__ . '/../config/bootstrap.php'] as $file) {
     if (file_exists($file)) {
         require $file;
