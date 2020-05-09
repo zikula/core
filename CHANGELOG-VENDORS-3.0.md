@@ -65,15 +65,15 @@
   - symfony/maker-bundle installed in 1.17.0
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.8
-  - symfony/polyfill-ctype updated from 1.12.0 to 1.15.0
-  - symfony/polyfill-intl-grapheme installed in 1.15.0
-  - symfony/polyfill-intl-icu updated from 1.11.0 to 1.15.0
-  - symfony/polyfill-intl-idn updated from 1.11.0 to 1.15.0
-  - symfony/polyfill-intl-messageformatter installed in 1.15.0
-  - symfony/polyfill-intl-normalizer installed in 1.15.0
-  - symfony/polyfill-mbstring updated from 1.12.0 to 1.15.0
-  - symfony/polyfill-php72 installed in 1.15.0
-  - symfony/polyfill-php73 installed in 1.15.0
+  - symfony/polyfill-ctype updated from 1.12.0 to 1.16.0
+  - symfony/polyfill-intl-grapheme installed in 1.16.0
+  - symfony/polyfill-intl-icu updated from 1.11.0 to 1.16.0
+  - symfony/polyfill-intl-idn updated from 1.11.0 to 1.16.0
+  - symfony/polyfill-intl-messageformatter installed in 1.16.0
+  - symfony/polyfill-intl-normalizer installed in 1.16.0
+  - symfony/polyfill-mbstring updated from 1.12.0 to 1.16.0
+  - symfony/polyfill-php72 installed in 1.16.0
+  - symfony/polyfill-php73 installed in 1.16.0
   - symfony/profiler-pack installed in 1.0.4
   - symfony/symfony updated from 3.4.35 to 5.0.8
   - thomaspark/bootswatch installed in 4.4.1
