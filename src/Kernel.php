@@ -31,7 +31,7 @@ class Kernel extends ZikulaKernel
      */
     private $databaseUrl;
 
-    public function __construct(string $environment, bool $debug, string $databaseUrl)
+    public function __construct(string $environment, bool $debug, string $databaseUrl = '')
     {
         parent::__construct($environment, $debug);
 
