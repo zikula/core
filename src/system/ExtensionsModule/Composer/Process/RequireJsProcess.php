@@ -46,7 +46,6 @@ class RequireJsProcess extends Process
         // Construct the require.js and stick it in the destination.
         $json = $this->requireJson($this->packages);
         $requireConfig = $this->requireJs($json);
-//        $vendorPath = str_replace('build/Composer', 'vendor/robloach/component-installer/src/ComponentInstaller', dirname(__DIR__));
         $vendorPath = $this->config->get('vendor-dir') . '/robloach/component-installer/src/ComponentInstaller';
 
         // Attempt to write the require.config.js file.

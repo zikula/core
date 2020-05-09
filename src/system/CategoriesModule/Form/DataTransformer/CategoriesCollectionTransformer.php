@@ -85,9 +85,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
             $registryKey = 'registry_' . $categoryAssignmentEntity->getCategoryRegistryId();
             $category = $categoryAssignmentEntity->getCategory();
             if (false !== mb_strpos(get_class($category), 'DoctrineProxy')) {
-                //$this->entityManager->detach($category);
                 $category = $this->entityManager->find(CategoryEntity::class, $category->getId());
-                //$this->entityManager->persist($category);
             }
 
             if ($this->multiple) {

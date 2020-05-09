@@ -112,7 +112,6 @@ class BlocksExtension extends AbstractExtension
         try {
             $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
         } catch (RuntimeException $exception) {
-            //return 'Error during block creation: ' . $exception->getMessage();
             return '';
         }
         $blockProperties = $block->getProperties();

@@ -162,10 +162,6 @@ abstract class AbstractTheme extends AbstractExtension
             return $defaultVars;
         }
 
-        /*if (!$this->getContainer()) {
-            return $defaultVars;
-        }*/
-
         $yamlVars = Yaml::parse(file_get_contents($themeVarsPath));
         if (!is_array($yamlVars)) {
             $yamlVars = [];

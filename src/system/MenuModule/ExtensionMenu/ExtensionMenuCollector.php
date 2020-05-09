@@ -49,7 +49,6 @@ class ExtensionMenuCollector
                 $menu = $this->extensionMenus[$bundleName]->get($type);
             } catch (\Exception $exception) {
                 // do nothing
-                //throw $exception;
                 return null;
             }
 
