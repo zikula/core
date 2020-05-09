@@ -148,7 +148,7 @@ class PermissionController extends AbstractController
         $amountOfPermOrderValues = count($permOrder);
         for ($cnt = 0; $cnt < $amountOfPermOrderValues; $cnt++) {
             $permission = $permissionRepository->find($permOrder[$cnt]);
-            $permission['sequence'] = $cnt + 1;
+            $permission->setSequence($cnt + 1);
         }
         $this->getDoctrine()->getManager()->flush();
 
