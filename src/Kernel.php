@@ -40,7 +40,7 @@ class Kernel extends ZikulaKernel
 
     public function registerBundles(): iterable
     {
-        $bundleHelper = new PersistedBundleHelper($this>databaseUrl);
+        $bundleHelper = new PersistedBundleHelper($this->databaseUrl);
         $bundles = require $this->getProjectDir() . '/config/bundles.php';
         $bundleHelper->getPersistedBundles($this, $bundles);
 
