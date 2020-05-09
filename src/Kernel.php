@@ -27,21 +27,22 @@ class Kernel extends ZikulaKernel
     use MicroKernelTrait;
 
     /**
-     * @var PersistedBundleHelper
+     * @var string
      */
-    private $bundleHelper;
+    private $databaseUrl;
 
     public function __construct(string $environment, bool $debug, string $databaseUrl = '')
     {
         parent::__construct($environment, $debug);
 
-        $this->bundleHelper = new PersistedBundleHelper($databaseUrl);
+        $this->databaseUrl = $databaseUrl;
     }
 
     public function registerBundles(): iterable
     {
+        $bundleHelper = new PersistedBundleHelper($this>databaseUrl);
         $bundles = require $this->getProjectDir() . '/config/bundles.php';
-        $this->bundleHelper->getPersistedBundles($this, $bundles);
+        $bundleHelper->getPersistedBundles($this, $bundles);
 
         foreach ($bundles as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
@@ -110,10 +111,5 @@ class Kernel extends ZikulaKernel
         $routes->import($configDir . '{routes}/' . $this->environment . '/*.yaml', '/', 'glob');
         $routes->import($configDir . '{routes}/*.yaml', '/', 'glob');
         $routes->import($configDir . '{routes}.yaml', '/', 'glob');
-    }
-
-    public function getBundleHelper(): PersistedBundleHelper
-    {
-        return $this->bundleHelper;
     }
 }

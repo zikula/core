@@ -34,8 +34,6 @@ if (null !== $env = $getZikulaEnv($input)) {
     putenv('APP_ENV=' . $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
 }
 
-$_SERVER['DATABASE_URL'] = $_ENV['DATABASE_URL'] = getenv('DATABASE_URL');
-
 foreach ([__DIR__ . '/../../../../config/bootstrap.php', __DIR__ . '/../config/bootstrap.php'] as $file) {
     if (file_exists($file)) {
         require $file;
