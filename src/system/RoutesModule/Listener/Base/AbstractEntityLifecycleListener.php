@@ -123,7 +123,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         }
         
         // create the filter event and dispatch it
-        $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PreRemove');
         $this->eventDispatcher->dispatch($event);
     }
@@ -161,7 +160,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         $this->logger->debug('{app}: User {user} removed the {entity} with id {id}.', $logArgs);
         
         // create the filter event and dispatch it
-        $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PostRemove');
         $this->eventDispatcher->dispatch($event);
     }
@@ -188,7 +186,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         }
         
         // create the filter event and dispatch it
-        $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PrePersist');
         $this->eventDispatcher->dispatch($event);
     }
@@ -221,7 +218,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         $this->logger->debug('{app}: User {user} created the {entity} with id {id}.', $logArgs);
         
         // create the filter event and dispatch it
-        $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PostPersist');
         $this->eventDispatcher->dispatch($event);
     }
@@ -244,7 +240,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         }
         
         // create the filter event and dispatch it
-        $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PreUpdate');
         $event->setEntityChangeSet($args->getEntityChangeSet());
         $this->eventDispatcher->dispatch($event);
@@ -277,7 +272,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         $this->logger->debug('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
         
         // create the filter event and dispatch it
-        $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PostUpdate');
         $this->eventDispatcher->dispatch($event);
     }
@@ -305,7 +299,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         }
         
         // create the filter event and dispatch it
-        $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity, 'PostLoad');
         $this->eventDispatcher->dispatch($event);
     }

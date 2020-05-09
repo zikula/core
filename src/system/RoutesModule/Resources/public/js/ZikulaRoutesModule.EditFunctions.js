@@ -47,7 +47,7 @@ function zikulaRoutesInitEditForm(mode, entityId) {
 
     if (jQuery('#moderationFieldsSection').length > 0) {
         jQuery('#moderationFieldsContent').addClass('d-none');
-        jQuery('#moderationFieldsSection legend').addClass('pointer').click(function (event) {
+        jQuery('#moderationFieldsSection legend').css({cursor: 'pointer'}).click(function (event) {
             if (jQuery('#moderationFieldsContent').hasClass('d-none')) {
                 jQuery('#moderationFieldsContent').removeClass('d-none');
                 jQuery(this).find('i').removeClass('fa-expand').addClass('fa-compress');

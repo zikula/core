@@ -290,7 +290,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb = $this->genericBaseQuery('', '', $useJoins, $slimMode);
         $qb = $this->addIdListFilter($idList, $qb);
     
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->applyDefaultFilters('route', $qb);
         }
     
@@ -324,7 +324,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         bool $slimMode = false
     ): QueryBuilder {
         $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
-        if (!$slimMode && null !== $this->collectionFilterHelper) {
+        if (null !== $this->collectionFilterHelper) {
             $qb = $this->collectionFilterHelper->addCommonViewFilters('route', $qb);
         }
     
