@@ -30,17 +30,17 @@ class ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('limitsummary', IntegerType::class, [
+                'label' => 'Number of characters to display in item summaries',
+                'attr' => [
+                    'maxlength' => 5
+                ]
+            ])
             ->add('itemsperpage', IntegerType::class, [
                 'label' => 'Items per page',
                 'attr' => [
                     'maxlength' => 3,
                     'min' => 1
-                ]
-            ])
-            ->add('limitsummary', IntegerType::class, [
-                'label' => 'Number of characters to display in item summaries',
-                'attr' => [
-                    'maxlength' => 5
                 ]
             ])
             ->add('plugins', ChoiceType::class, [
