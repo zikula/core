@@ -15,18 +15,14 @@ namespace Zikula\SearchModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 
-/**
- * Repository class used to implement own convenience methods for performing certain DQL queries.
- *
- * This is the repository class for search statistics.
- */
 class SearchStatRepository extends ServiceEntityRepository implements SearchStatRepositoryInterface
 {
+    use RepositoryGetResultsTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SearchStatEntity::class);
@@ -47,24 +43,7 @@ class SearchStatRepository extends ServiceEntityRepository implements SearchStat
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
 
-        // add clauses for where
-        if (count($filters) > 0) {
-            $i = 1;
-            foreach ($filters as $w_key => $w_value) {
-                $qb->andWhere($qb->expr()->eq('tbl.' . $w_key, '?' . $i))
-                   ->setParameter($i, $w_value);
-                $i++;
-            }
-        }
-
-        // add clause for ordering
-        if (count($sorting) > 0) {
-            foreach ($sorting as $sort => $sortdir) {
-                $qb->addOrderBy('tbl.' . $sort, $sortdir);
-            }
-        }
-
-        return (new Paginator($qb, $pageSize))->paginate($page);
+        return $this->doGetPaginatedResults($qb, $filters, $sorting, $page, $pageSize);
     }
 
     public function persistAndFlush(SearchStatEntity $entity): void

@@ -100,7 +100,7 @@ class SearchController extends AbstractController
             $formData = $form->getData();
             $pageSize = $this->getVar('itemsperpage', 25);
             $formData['numlimit'] = $pageSize;
-            $formData['firstPage'] = $page < 1;
+            $formData['firstPage'] = $page < 2;
             $formData['page'] = 0 < $page ? $page : 1;
             $result = $searchApi->search($formData['q'], 2 > $page, $formData['searchType'], $formData['searchOrder'], $page, $pageSize, $formData['modules']);
             $searchApiErrors = $result['errors'];
