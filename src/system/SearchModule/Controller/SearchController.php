@@ -102,7 +102,7 @@ class SearchController extends AbstractController
             $formData['numlimit'] = $pageSize;
             $formData['firstPage'] = $page < 1;
             $formData['page'] = 0 < $page ? $page : 1;
-            $result = $searchApi->search($formData['q'], 1 > $page, $formData['searchType'], $formData['searchOrder'], $page, $pageSize, $formData['modules']);
+            $result = $searchApi->search($formData['q'], 2 > $page, $formData['searchType'], $formData['searchOrder'], $page, $pageSize, $formData['modules']);
             $searchApiErrors = $result['errors'];
             if (0 < $result['paginator']->getNumResults()) {
                 $result['paginator']->setRoute('zikulasearchmodule_search_execute');
