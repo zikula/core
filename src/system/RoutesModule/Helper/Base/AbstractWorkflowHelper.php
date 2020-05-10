@@ -145,7 +145,7 @@ abstract class AbstractWorkflowHelper
             $actionId = $action->getName();
             $actions[$actionId] = [
                 'id' => $actionId,
-                'title' => $this->getTitleForAction($currentState, $actionId),
+                'title' => $this->getTitleForAction($actionId),
                 'buttonClass' => $this->getButtonClassForAction($actionId)
             ];
         }
@@ -156,7 +156,7 @@ abstract class AbstractWorkflowHelper
     /**
      * Returns a translatable title for a certain action.
      */
-    protected function getTitleForAction(string $currentState, string $actionId): string
+    protected function getTitleForAction(string $actionId): string
     {
         $title = '';
         switch ($actionId) {

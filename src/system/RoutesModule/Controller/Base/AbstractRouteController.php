@@ -130,7 +130,6 @@ abstract class AbstractRouteController extends AbstractController
         
         // filter by permissions
         $templateParameters['items'] = $permissionHelper->filterCollection(
-            $objectType,
             $templateParameters['items'],
             $permLevel
         );

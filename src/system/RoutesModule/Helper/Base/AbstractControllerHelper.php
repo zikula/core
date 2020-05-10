@@ -86,7 +86,7 @@ abstract class AbstractControllerHelper
      *
      * @return string[] List of allowed object types
      */
-    public function getObjectTypes(string $context = '', array $args = []): array
+    public function getObjectTypes(string $context = ''): array
     {
         $allowedContexts = ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'mailz'];
         if (!in_array($context, $allowedContexts, true)) {
@@ -102,7 +102,7 @@ abstract class AbstractControllerHelper
     /**
      * Returns the default object type in ZikulaRoutesModule.
      */
-    public function getDefaultObjectType(string $context = '', array $args = []): string
+    public function getDefaultObjectType(string $context = ''): string
     {
         $allowedContexts = ['controllerAction', 'api', 'helper', 'actionHandler', 'block', 'contentType', 'mailz'];
         if (!in_array($context, $allowedContexts, true)) {
@@ -122,7 +122,7 @@ abstract class AbstractControllerHelper
         array $templateParameters = []
     ): array {
         $contextArgs = ['controller' => $objectType, 'action' => 'view'];
-        if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs), true)) {
+        if (!in_array($objectType, $this->getObjectTypes('controllerAction'), true)) {
             throw new Exception($this->trans('Error! Invalid object type received.'));
         }
     
@@ -292,7 +292,7 @@ abstract class AbstractControllerHelper
         array $templateParameters = []
     ): array {
         $contextArgs = ['controller' => $objectType, 'action' => 'display'];
-        if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs), true)) {
+        if (!in_array($objectType, $this->getObjectTypes('controllerAction'), true)) {
             throw new Exception($this->trans('Error! Invalid object type received.'));
         }
     
@@ -307,7 +307,7 @@ abstract class AbstractControllerHelper
         array $templateParameters = []
     ): array {
         $contextArgs = ['controller' => $objectType, 'action' => 'edit'];
-        if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs), true)) {
+        if (!in_array($objectType, $this->getObjectTypes('controllerAction'), true)) {
             throw new Exception($this->trans('Error! Invalid object type received.'));
         }
     
@@ -337,7 +337,7 @@ abstract class AbstractControllerHelper
             if (in_array($args['action'], ['index', 'view'])) {
                 $parameters = array_merge(
                     $parameters,
-                    $this->collectionFilterHelper->getViewQuickNavParameters($objectType, $context, $args)
+                    $this->collectionFilterHelper->getViewQuickNavParameters($objectType)
                 );
             }
         }

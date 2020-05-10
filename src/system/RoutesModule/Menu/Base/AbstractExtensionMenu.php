@@ -52,8 +52,7 @@ abstract class AbstractExtensionMenu implements ExtensionMenuInterface
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
     {
-        $contextArgs = ['api' => 'extensionMenu', 'action' => 'get'];
-        $allowedObjectTypes = $this->controllerHelper->getObjectTypes('api', $contextArgs);
+        $allowedObjectTypes = $this->controllerHelper->getObjectTypes('api');
 
         $permLevel = self::TYPE_ADMIN === $type ? ACCESS_ADMIN : ACCESS_READ;
 

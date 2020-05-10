@@ -103,9 +103,8 @@ abstract class AbstractPermissionHelper
     /**
      * Filters a given collection of entities based on different permission checks.
      *
-     * @param array|ArrayCollection $entities The given list of entities
      */
-    public function filterCollection($objectType, $entities, int $permissionLevel, int $userId = null): array
+    public function filterCollection($entities, int $permissionLevel, int $userId = null): array
     {
         $filteredEntities = [];
         foreach ($entities as $entity) {

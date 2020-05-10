@@ -61,14 +61,10 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Returns an array of additional template variables for view quick navigation forms.
      */
-    public function getViewQuickNavParameters(string $objectType = '', string $context = '', array $args = []): array
+    public function getViewQuickNavParameters(string $objectType = ''): array
     {
-        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'], true)) {
-            $context = 'controllerAction';
-        }
-    
         if ('route' === $objectType) {
-            return $this->getViewQuickNavParametersForRoute($context, $args);
+            return $this->getViewQuickNavParametersForRoute();
         }
     
         return [];
@@ -101,7 +97,7 @@ abstract class AbstractCollectionFilterHelper
     /**
      * Returns an array of additional template variables for view quick navigation forms.
      */
-    protected function getViewQuickNavParametersForRoute(string $context = '', array $args = []): array
+    protected function getViewQuickNavParametersForRoute(): array
     {
         $parameters = [];
         $request = $this->requestStack->getCurrentRequest();
