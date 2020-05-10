@@ -39,11 +39,13 @@ class ExtensionsInterfaceController extends AbstractController
     ): Response {
         $currentRequest = $requestStack->getCurrentRequest();
         $caller = $requestStack->getMasterRequest()->attributes->all();
-        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
+        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig', [
             'caller' => $caller,
-            'title' => '' !== $currentRequest->attributes->get('title') ? $currentRequest->attributes->get('title') : $caller['info']['displayname'],
+            'title' => '' !== $currentRequest->attributes->get('title')
+                ? $currentRequest->attributes->get('title')
+                : (isset($caller['info']['displayname']) ? $caller['info']['displayname'] : ''),
             'titlelink' => '' !== $currentRequest->attributes->get('titlelink') ? $currentRequest->attributes->get('titlelink') : false,
             'setpagetitle' => true === $currentRequest->attributes->get('setpagetitle') ? $currentRequest->attributes->get('setpagetitle') : false,
             'insertflashes' => true === $currentRequest->attributes->get('insertflashes') ? $currentRequest->attributes->get('insertflashes') : false,
@@ -96,11 +98,13 @@ class ExtensionsInterfaceController extends AbstractController
         /** @var Request $currentRequest */
         $currentRequest = $requestStack->getCurrentRequest();
         $caller = $masterRequest->attributes->all();
-        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
+        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
         // your own links array
         $links = '' !== $currentRequest->attributes->get('links') ? $currentRequest->attributes->get('links') : '';
         // you can pass module name you want to get links for but
-        $moduleName = '' !== $currentRequest->attributes->get('modname') ? $currentRequest->attributes->get('modname') : $caller['_zkModule'];
+        $moduleName = '' !== $currentRequest->attributes->get('modname')
+            ? $currentRequest->attributes->get('modname')
+            : (isset($caller['_zkModule']) ? $caller['_zkModule'] : '');
 
         // no own links array
         if (empty($links)) {

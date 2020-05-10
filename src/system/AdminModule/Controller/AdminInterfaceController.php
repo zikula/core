@@ -60,7 +60,7 @@ class AdminInterfaceController extends AbstractController
         ExtensionRepositoryInterface $extensionRepository
     ): Response {
         $caller = $requestStack->getMasterRequest()->attributes->all();
-        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
+        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
         return $this->render('@ZikulaAdminModule/AdminInterface/footer.html.twig', [
             'caller' => $caller,
@@ -83,7 +83,7 @@ class AdminInterfaceController extends AbstractController
     ): Response {
         $masterRequest = $requestStack->getMasterRequest();
         $caller = $masterRequest->attributes->all();
-        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
+        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
         $requestedCid = $masterRequest->attributes->get('acid');
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
