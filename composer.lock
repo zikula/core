@@ -2119,16 +2119,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.39",
+            "version": "v2.4.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "c549b40bff560380c53812283d25ce42ee0992e4"
+                "reference": "fbc95cd0d22560000e82eb6838011b366425d16c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/c549b40bff560380c53812283d25ce42ee0992e4",
-                "reference": "c549b40bff560380c53812283d25ce42ee0992e4",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/fbc95cd0d22560000e82eb6838011b366425d16c",
+                "reference": "fbc95cd0d22560000e82eb6838011b366425d16c",
                 "shasum": ""
             },
             "require": {
@@ -2197,7 +2197,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2020-01-18T06:26:05+00:00"
+            "time": "2020-04-28T03:03:09+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
