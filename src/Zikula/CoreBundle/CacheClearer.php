@@ -109,7 +109,15 @@ class CacheClearer
             $this->fileSystem->remove($this->containerDirectory);
         }
         $pos = mb_strrpos($this->containerDirectory, '/');
-        $this->logger->notice(sprintf('%s: %s', self::class, $type), ['containerDir' => mb_substr($this->containerDirectory, $pos)]);
+        $trace = debug_backtrace();
+        $list = '';
+        foreach ($trace as $line) {
+            $list .= $line['class'] . '::' . $line['function'] . '> ';
+        }
+        $this->logger->notice(sprintf('%s: %s', self::class, $type), [
+            'containerDir' => mb_substr($this->containerDirectory, $pos),
+            'trace' => $list
+        ]);
     }
 
     private function initialiseCacheTypeMap()

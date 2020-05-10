@@ -147,7 +147,7 @@ class ExtensionHelper
         }
 
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
-        $this->cacheClearer->clear('symfony.config');
+//        $this->cacheClearer->clear('symfony.config');
 
         $this->eventDispatcher->dispatch(new ExtensionPostInstallEvent($extensionBundle, $extension));
         $this->logger->notice(sprintf('Extension installation complete'), ['name' => $extension->getName()]);
@@ -196,7 +196,7 @@ class ExtensionHelper
         $this->doctrine->getManager()->flush();
 
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
-        $this->cacheClearer->clear('symfony');
+//        $this->cacheClearer->clear('symfony');
 
         if ($this->installed) {
             // Upgrade succeeded, issue event.

@@ -92,13 +92,16 @@ class ExtensionStateHelper
                 }
                 break;
         }
+        $requiresCacheClear = $this->requiresCacheClear($extension->getState(), $state);
 
         // change state
         $extension->setState($state);
         $this->extensionRepository->persistAndFlush($extension);
 
         // clear the cache before calling events
-        $this->cacheClearer->clear('symfony');
+        if ($requiresCacheClear) {
+            $this->cacheClearer->clear('symfony');
+        }
 
         if (isset($eventClass) && $this->kernel->isBundle($extension->getName())) {
             $bundle = $this->kernel->getBundle($extension->getName());
@@ -106,5 +109,15 @@ class ExtensionStateHelper
         }
 
         return true;
+    }
+
+    /**
+     * If an extension was previously in an active state and now is inactive or vice versa
+     */
+    private function requiresCacheClear(int $oldState, int $newState): bool
+    {
+        $activeStates = [Constant::STATE_ACTIVE, Constant::STATE_TRANSITIONAL, Constant::STATE_UPGRADED];
+
+        return in_array($oldState, $activeStates) !== in_array($newState, $activeStates);
     }
 }
