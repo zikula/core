@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Controller;
 
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,8 +51,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Engine\Engine;
 
 /**
- * Class ExtensionController
- *
  * @Route("")
  */
 class ExtensionController extends AbstractController
@@ -116,6 +115,7 @@ class ExtensionController extends AbstractController
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
+        LoggerInterface $zikulaLogger,
         CacheClearer $cacheClearer
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('activate-extension', $token)) {
@@ -124,6 +124,7 @@ class ExtensionController extends AbstractController
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
+        $zikulaLogger->notice(sprintf('Extension activating'), ['name' => $extension->getName()]);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             $this->addFlash('error', $this->trans('Error! Activation of %name% not allowed.', ['%name%' => $extension->getName()]));
         } else {
@@ -149,6 +150,7 @@ class ExtensionController extends AbstractController
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
+        LoggerInterface $zikulaLogger,
         CacheClearer $cacheClearer
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('deactivate-extension', $token)) {
@@ -157,6 +159,7 @@ class ExtensionController extends AbstractController
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
+        $zikulaLogger->notice(sprintf('Extension deactivating'), ['name' => $extension->getName()]);
         $defaultTheme = $this->getVariableApi()->get(VariableApi::CONFIG, 'defaulttheme');
         $adminTheme = $this->getVariableApi()->get('ZikulaAdminModule', 'admintheme');
 
@@ -220,7 +223,7 @@ class ExtensionController extends AbstractController
                 $em->persist($extension);
                 $em->flush();
 
-                $cacheClearer->clear('symfony');
+                $cacheClearer->clear('symfony.routing');
                 $this->addFlash('status', 'Done! Extension updated.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -317,7 +320,7 @@ class ExtensionController extends AbstractController
                 if ($extensionHelper->install($extension)) {
                     $this->addFlash('status', $this->trans('Done! Installed "%name%".', ['%name%' => $extension->getName()]));
                     $extensionsInstalled[] = $id;
-                    $cacheClearer->clear('symfony');
+//                    $cacheClearer->clear('symfony');
 
                     return $this->redirectToRoute('zikulaextensionsmodule_extension_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
                 }

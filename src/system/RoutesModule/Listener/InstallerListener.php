@@ -93,7 +93,7 @@ class InstallerListener extends AbstractInstallerListener
             $this->multilingualRoutingHelper->reloadMultilingualRoutingSettings();
         }
 
-        $this->cacheClearer->clear('symfony.routing');
+//        $this->cacheClearer->clear('symfony.routing');
 
         // reload **all** JS routes
         $this->updateJsRoutes();
@@ -108,7 +108,7 @@ class InstallerListener extends AbstractInstallerListener
             return;
         }
 
-        $this->cacheClearer->clear('symfony.routing');
+//        $this->cacheClearer->clear('symfony.routing');
 
         // reload **all** JS routes
         $this->updateJsRoutes();
@@ -129,7 +129,7 @@ class InstallerListener extends AbstractInstallerListener
         // reload **all** JS routes
         $this->updateJsRoutes();
 
-        $this->cacheClearer->clear('symfony.routing');
+//        $this->cacheClearer->clear('symfony.routing');
     }
 
     public function newRoutesAvail(RoutesNewlyAvailableEvent $event): void

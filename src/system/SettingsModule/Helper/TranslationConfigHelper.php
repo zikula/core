@@ -105,6 +105,6 @@ class TranslationConfigHelper
 
         $this->configDumper->setConfiguration($configName, $transConfigNew);
 
-        $this->cacheClearer->clear('symfony');
+//        $this->cacheClearer->clear('symfony');
     }
 }

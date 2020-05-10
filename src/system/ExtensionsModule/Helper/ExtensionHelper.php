@@ -142,6 +142,8 @@ class ExtensionHelper
         if (null !== $installer) {
             $result = $installer->install();
             if (!$result) {
+                $this->logger->error(sprintf('The installer was unable to complete (%s)', get_class($installer)));
+
                 return false;
             }
         }
@@ -301,11 +303,13 @@ class ExtensionHelper
     {
         $className = $extension->getInstallerClass();
         if (!class_exists($className)) {
+            $this->logger->error(sprintf('Installer class not found for %s', $extension->getName()));
             return null;
         }
         if ($this->installerCollector->has($className)) {
             return $this->installerCollector->get($className);
         }
+        $this->logger->error(sprintf('InstallerCollector did not contain %s', $className));
 
         return null;
     }

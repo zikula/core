@@ -18,6 +18,8 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
+use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 class CacheClearer
 {
@@ -66,6 +68,11 @@ class CacheClearer
      */
     private $fileSystem;
 
+    /**
+     * @var CacheWarmerInterface
+     */
+    private $warmer;
+
     public function __construct(
         LoggerInterface $zikulaLogger,
         ContainerInterface $container,
@@ -76,6 +83,7 @@ class CacheClearer
     ) {
         $this->logger = $zikulaLogger;
         $this->container = $container;
+        $this->warmer = $container->get('cache_warmer');
         $this->cacheDir = $cacheDir;
         $refClass = new \ReflectionClass($container);
         $this->containerDirectory = $cacheDir . DIRECTORY_SEPARATOR . $refClass->getNamespaceName();
@@ -108,8 +116,9 @@ class CacheClearer
         if (in_array($type, ['symfony', 'symfony.config'])) {
             $this->fileSystem->remove($this->containerDirectory);
         }
+        $this->warmer->warmUp($this->cacheDir);
         $pos = mb_strrpos($this->containerDirectory, '/');
-        $trace = debug_backtrace();
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $list = '';
         foreach ($trace as $line) {
             $list .= $line['class'] . '::' . $line['function'] . '(' . $line['line'] . ') >>';
