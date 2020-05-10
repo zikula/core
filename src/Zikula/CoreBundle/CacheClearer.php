@@ -112,7 +112,7 @@ class CacheClearer
         $trace = debug_backtrace();
         $list = '';
         foreach ($trace as $line) {
-            $list .= $line['class'] . '::' . $line['function'] . '> ';
+            $list .= $line['class'] . '::' . $line['function'] . '(' . $line['line'] . ') >>';
         }
         $this->logger->notice(sprintf('%s: %s', self::class, $type), [
             'containerDir' => mb_substr($this->containerDirectory, $pos),

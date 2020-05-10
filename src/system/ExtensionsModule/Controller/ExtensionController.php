@@ -129,7 +129,7 @@ class ExtensionController extends AbstractController
         } else {
             // Update state
             $extensionStateHelper->updateState($id, Constant::STATE_ACTIVE);
-            $cacheClearer->clear('symfony');
+//            $cacheClearer->clear('symfony');
             $this->addFlash('status', $this->trans('Done! Activated %name%.', ['%name%' => $extension->getName()]));
         }
 
@@ -168,7 +168,7 @@ class ExtensionController extends AbstractController
             } else {
                 // Update state
                 $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
-                $cacheClearer->clear('symfony');
+//                $cacheClearer->clear('symfony');
                 $this->addFlash('status', $this->trans('Done! Deactivated %name%.', ['%name%' => $extension->getName()]));
             }
         }
@@ -283,7 +283,7 @@ class ExtensionController extends AbstractController
 
         if (!$kernel->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
-            $cacheClearer->clear('symfony');
+//            $cacheClearer->clear('symfony');
 
             return $this->redirectToRoute('zikulaextensionsmodule_extension_install', ['id' => $id, 'token' => $token]);
         }
@@ -446,7 +446,7 @@ class ExtensionController extends AbstractController
         }
         if (!$kernel->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
-            $cacheClearer->clear('symfony');
+//            $cacheClearer->clear('symfony');
         }
         $requiredDependents = $dependencyHelper->getDependentExtensions($extension);
         $blocks = $blockRepository->findBy(['module' => $extension]);
