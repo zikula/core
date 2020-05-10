@@ -45,7 +45,7 @@ class ExtensionsInterfaceController extends AbstractController
             'caller' => $caller,
             'title' => '' !== $currentRequest->attributes->get('title')
                 ? $currentRequest->attributes->get('title')
-                : (isset($caller['info']['displayname']) ? $caller['info']['displayname'] : ''),
+                : ($caller['info']['displayname'] ?? ''),
             'titlelink' => '' !== $currentRequest->attributes->get('titlelink') ? $currentRequest->attributes->get('titlelink') : false,
             'setpagetitle' => true === $currentRequest->attributes->get('setpagetitle') ? $currentRequest->attributes->get('setpagetitle') : false,
             'insertflashes' => true === $currentRequest->attributes->get('insertflashes') ? $currentRequest->attributes->get('insertflashes') : false,
@@ -101,10 +101,10 @@ class ExtensionsInterfaceController extends AbstractController
         $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
         // your own links array
         $links = '' !== $currentRequest->attributes->get('links') ? $currentRequest->attributes->get('links') : '';
-        // you can pass module name you want to get links for but
+        // you can pass module name you want to get links for
         $moduleName = '' !== $currentRequest->attributes->get('modname')
             ? $currentRequest->attributes->get('modname')
-            : (isset($caller['_zkModule']) ? $caller['_zkModule'] : '');
+            : ($caller['_zkModule'] ?? '');
 
         // no own links array
         if (empty($links)) {
