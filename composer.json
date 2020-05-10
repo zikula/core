@@ -25,10 +25,10 @@
         "ext-json": "*",
         "ext-pdo": "*",
         "wikimedia/composer-merge-plugin": "1.*",
-        "zikula/legal-module": "dev-master",
-        "zikula/oauth-module": "dev-master",
-        "zikula/pagelock-module": "dev-master",
-        "zikula/profile-module": "dev-master"
+        "zikula/legal-module": "3.*",
+        "zikula/oauth-module": "1.*",
+        "zikula/pagelock-module": "1.*",
+        "zikula/profile-module": "3.*"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "5.*"
