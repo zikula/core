@@ -138,7 +138,6 @@ abstract class AbstractWorkflowHelper
     {
         $workflow = $this->workflowRegistry->get($entity);
         $wfActions = $workflow->getEnabledTransitions($entity);
-        $currentState = $entity->getWorkflowState();
     
         $actions = [];
         foreach ($wfActions as $action) {
