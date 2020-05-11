@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -48,6 +49,11 @@ class ExtensionStateHelper
     private $translator;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @var ZikulaHttpKernelInterface
      */
     private $kernel;
@@ -57,12 +63,14 @@ class ExtensionStateHelper
         CacheClearer $cacheClearer,
         ExtensionRepository $extensionRepository,
         TranslatorInterface $translator,
+        LoggerInterface $zikulaLogger,
         ZikulaHttpKernelInterface $kernel
     ) {
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
         $this->extensionRepository = $extensionRepository;
         $this->translator = $translator;
+        $this->logger = $zikulaLogger;
         $this->kernel = $kernel;
     }
 
@@ -93,6 +101,7 @@ class ExtensionStateHelper
                 break;
         }
         $requiresCacheClear = $this->requiresCacheClear($extension->getState(), $state);
+        $this->logger->info(sprintf('Changing state of %s from %d to %d', $extension->getName(), $extension->getState(), $state));
 
         // change state
         $extension->setState($state);

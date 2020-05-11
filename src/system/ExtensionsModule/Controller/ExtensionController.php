@@ -482,7 +482,7 @@ class ExtensionController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_postuninstall');
         }
 
         return [
@@ -491,6 +491,19 @@ class ExtensionController extends AbstractController
             'blocks' => $blocks,
             'requiredDependents' => $requiredDependents
         ];
+    }
+
+    /**
+     * @Route("/post-uninstall")
+     * @PermissionCheck("admin")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function postUninstallAction(CacheClearer $cacheClearer)
+    {
+        $cacheClearer->clear('symfony');
+
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
     }
 
     /**

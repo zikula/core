@@ -247,7 +247,7 @@ class ExtensionHelper
         // remove the entry from the extensions table
         $this->extensionRepository->removeAndFlush($extension);
 
-        $this->cacheClearer->clear('symfony.config');
+//        $this->cacheClearer->clear('symfony.config');
 
         $this->eventDispatcher->dispatch(new ExtensionPostRemoveEvent($extensionBundle, $extension));
         $this->logger->notice(sprintf('Extension uninstallation complete'), ['name' => $extension->getName()]);
