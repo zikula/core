@@ -277,6 +277,7 @@ class ExtensionController extends AbstractController
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
         ExtensionDependencyHelper $dependencyHelper,
+        LoggerInterface $zikulaLogger,
         CacheClearer $cacheClearer
     ) {
         $id = $extension->getId();
@@ -285,11 +286,29 @@ class ExtensionController extends AbstractController
         }
 
         if (!$kernel->isBundle($extension->getName())) {
-            $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
-//            $cacheClearer->clear('symfony');
+            // set state to transitional which marks the bundle as active for the kernel
+            if (Constant::STATE_TRANSITIONAL === $extension->getState()) {
+                $zikulaLogger->info('@1 Wait 3');
+                sleep(3);
+            } else {
+                $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
+//                $cacheClearer->clear('symfony');
+            }
 
             return $this->redirectToRoute('zikulaextensionsmodule_extension_install', ['id' => $id, 'token' => $token]);
         }
+
+        // check if installer class is known in container
+        $extensionBundle = $kernel->getBundle($extension->getName());
+        $installerClass = $extensionHelper->getExtensionInstallerInstance($extensionBundle);
+        if (null === $installerClass) {
+            // if not, wait and try again
+            $zikulaLogger->info('@2 Wait 3');
+            sleep(3);
+
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_install', ['id' => $id, 'token' => $token]);
+        }
+
         $unsatisfiedDependencies = $dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
         $form = $this->createForm(ExtensionInstallType::class, [
             'dependencies' => $this->formatDependencyCheckboxArray($extensionRepository, $unsatisfiedDependencies)

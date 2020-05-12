@@ -247,7 +247,7 @@ class ExtensionHelper
         // remove the entry from the extensions table
         $this->extensionRepository->removeAndFlush($extension);
 
-//        $this->cacheClearer->clear('symfony.config');
+        $this->cacheClearer->clear('symfony.config');
 
         $this->eventDispatcher->dispatch(new ExtensionPostRemoveEvent($extensionBundle, $extension));
         $this->logger->notice(sprintf('Extension uninstallation complete'), ['name' => $extension->getName()]);
@@ -299,14 +299,15 @@ class ExtensionHelper
     /**
      * Attempt to get an extension Installer.
      */
-    private function getExtensionInstallerInstance(AbstractExtension $extension): ?ExtensionInstallerInterface
+    public function getExtensionInstallerInstance(AbstractExtension $extension): ?ExtensionInstallerInterface
     {
         $className = $extension->getInstallerClass();
         if (!class_exists($className)) {
-            $this->logger->error(sprintf('Installer class not found for %s', $extension->getName()));
             return null;
         }
         if ($this->installerCollector->has($className)) {
+            $this->logger->error(sprintf('InstallerCollector found %s', $className));
+
             return $this->installerCollector->get($className);
         }
         $this->logger->error(sprintf('InstallerCollector did not contain %s', $className));
