@@ -29,7 +29,7 @@
   - egulias/email-validator installed in 2.1.17
   - erusev/parsedown installed in 1.7.4
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.4
-  - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.41
+  - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.40
   - guzzlehttp/guzzle updated from 6.4.1 to 6.5.3
   - imagine/imagine updated from 0.7.1 to 1.3.3
   - itsjavi/fontawesome-iconpicker installed in 3.2.0
@@ -65,18 +65,18 @@
   - symfony/maker-bundle installed in 1.17.0
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
   - symfony/phpunit-bridge updated from 3.4.14 to 5.0.8
-  - symfony/polyfill-ctype updated from 1.12.0 to 1.16.0
-  - symfony/polyfill-intl-grapheme installed in 1.16.0
-  - symfony/polyfill-intl-icu updated from 1.11.0 to 1.16.0
-  - symfony/polyfill-intl-idn updated from 1.11.0 to 1.16.0
-  - symfony/polyfill-intl-messageformatter installed in 1.16.0
-  - symfony/polyfill-intl-normalizer installed in 1.16.0
-  - symfony/polyfill-mbstring updated from 1.12.0 to 1.16.0
-  - symfony/polyfill-php72 installed in 1.16.0
-  - symfony/polyfill-php73 installed in 1.16.0
+  - symfony/polyfill-ctype updated from 1.12.0 to 1.17.0
+  - symfony/polyfill-intl-grapheme installed in 1.17.0
+  - symfony/polyfill-intl-icu updated from 1.11.0 to 1.17.0
+  - symfony/polyfill-intl-idn updated from 1.11.0 to 1.17.0
+  - symfony/polyfill-intl-messageformatter installed in 1.17.0
+  - symfony/polyfill-intl-normalizer installed in 1.17.0
+  - symfony/polyfill-mbstring updated from 1.12.0 to 1.17.0
+  - symfony/polyfill-php72 installed in 1.17.0
+  - symfony/polyfill-php73 installed in 1.17.0
   - symfony/profiler-pack installed in 1.0.4
   - symfony/symfony updated from 3.4.35 to 5.0.8
-  - thomaspark/bootswatch installed in 4.4.1
+  - thomaspark/bootswatch installed in 4.5.0
   - tijsverkoyen/css-to-inline-styles installed in 2.2.2
   - twig/extra-bundle installed in 3.0.3
   - twig/cssinliner-extra installed in 3.0.3
