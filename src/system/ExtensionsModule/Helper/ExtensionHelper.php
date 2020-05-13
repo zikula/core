@@ -306,7 +306,7 @@ class ExtensionHelper
             return null;
         }
         if ($this->installerCollector->has($className)) {
-            $this->logger->error(sprintf('InstallerCollector found %s', $className));
+            $this->logger->info(sprintf('InstallerCollector found %s', $className));
 
             return $this->installerCollector->get($className);
         }

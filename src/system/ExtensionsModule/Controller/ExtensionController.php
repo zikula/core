@@ -292,7 +292,6 @@ class ExtensionController extends AbstractController
                 sleep(3);
             } else {
                 $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
-//                $cacheClearer->clear('symfony');
             }
 
             return $this->redirectToRoute('zikulaextensionsmodule_extension_install', ['id' => $id, 'token' => $token]);

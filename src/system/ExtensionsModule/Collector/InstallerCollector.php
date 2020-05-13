@@ -35,7 +35,7 @@ class InstallerCollector
         $this->installers[get_class($installer)] = $installer;
     }
 
-    public function has(string $id): ?bool
+    public function has(string $id): bool
     {
         return isset($this->installers[$id]);
     }
