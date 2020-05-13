@@ -37,7 +37,3 @@ services:
     Zikula\ExtensionsModule\Helper\ExtensionHelper:
         arguments:
             $installed: '%env(ZIKULA_INSTALLED)%'
-
-    Zikula\ExtensionsModule\Collector\InstallerCollector:
-        arguments:
-            $installers: !tagged_iterator zikula.extension_installer

@@ -22,12 +22,9 @@ class InstallerCollector
      */
     private $installers;
 
-    public function __construct(iterable $installers = [])
+    public function __construct()
     {
         $this->installers = [];
-        foreach ($installers as $installer) {
-            $this->add($installer);
-        }
     }
 
     public function add(ExtensionInstallerInterface $installer): void
