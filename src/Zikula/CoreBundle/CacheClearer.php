@@ -95,6 +95,12 @@ class CacheClearer
 
     public function clear(string $type): void
     {
+        // %kernel.cache_dir%/%kernel.container_class%.php
+        $this->fileSystem->remove($this->cacheDir . '/' . $this->kernelContainerClass . '.php');
+        $this->fileSystem->remove($this->cacheDir . '/' . $this->kernelContainerClass . '.php.lock');
+        $this->logger->notice(sprintf('removed %s (and .lock)', $this->cacheDir . '/' . $this->kernelContainerClass . '.php'));
+        return;
+
         if (!count($this->cacheTypes)) {
             $this->initialiseCacheTypeMap();
         }
