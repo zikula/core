@@ -71,14 +71,15 @@ class BootstrapAssetSetterListener implements EventSubscriberInterface
             return;
         }
         $themeStyle = $event->getRequest()->hasSession() ? $event->getRequest()->getSession()->get('currentBootstrapStyle', '') : '';
-        $themeStyle = $themeStyle ? $themeStyle : $this->variableApi->get('ZikulaBootstrapTheme', 'theme_style', 'cerulean');
-        if ('default' === $themeStyle) {
-            return;
-        }
+        $themeStyle = $themeStyle ? $themeStyle : $this->variableApi->get('ZikulaBootstrapTheme', 'theme_style', 'default');
         $this->cssAssetBag->remove([
             $this->assetHelper->resolve('bootswatch/dist/cerulean/bootstrap.min.css') => 0 // bootstrapPath set in theme.yaml
         ]);
-        $bootstrapPath = 'bootswatch/dist/' . $themeStyle . '/bootstrap.min.css';
+        if ('default' === $themeStyle) {
+            $bootstrapPath = 'bootstrap/css/bootstrap.min.css';
+        } else {
+            $bootstrapPath = 'bootswatch/dist/' . $themeStyle . '/bootstrap.min.css';
+        }
         $this->cssAssetBag->add([
             $this->assetHelper->resolve($bootstrapPath) => 0
         ]);
