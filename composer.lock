@@ -4089,16 +4089,16 @@
         },
         {
             "name": "php-translation/extractor",
-            "version": "2.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/extractor.git",
-                "reference": "598bbe72bb3a6336c28ed8d75b67de310c2c9743"
+                "reference": "0bf5b83bed283edde108af74dd9c9358fad8346e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/extractor/zipball/598bbe72bb3a6336c28ed8d75b67de310c2c9743",
-                "reference": "598bbe72bb3a6336c28ed8d75b67de310c2c9743",
+                "url": "https://api.github.com/repos/php-translation/extractor/zipball/0bf5b83bed283edde108af74dd9c9358fad8346e",
+                "reference": "0bf5b83bed283edde108af74dd9c9358fad8346e",
                 "shasum": ""
             },
             "require": {
@@ -4109,6 +4109,7 @@
                 "twig/twig": "^2.0 || ^3.0"
             },
             "require-dev": {
+                "knplabs/knp-menu": "^3.1",
                 "phpunit/phpunit": "^8.4",
                 "symfony/phpunit-bridge": "^5.0",
                 "symfony/translation": "^3.4 || ^4.3 || ^5.0",
@@ -4137,7 +4138,7 @@
                 }
             ],
             "description": "Extract translations form the source code",
-            "time": "2020-01-23T09:12:12+00:00"
+            "time": "2020-04-06T07:32:19+00:00"
         },
         {
             "name": "php-translation/symfony-bundle",
@@ -7289,6 +7290,7 @@
         "zikula/bootstrap-theme": 20,
         "zikula/printer-theme": 20,
         "zikula/rss-theme": 20,
+        "php-translation/extractor": 20,
         "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20
