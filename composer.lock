@@ -3946,25 +3946,26 @@
         },
         {
             "name": "oro/twig-inspector",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/twig-inspector.git",
-                "reference": "5a66e476172b89c1f697fee2bf032acec63065a0"
+                "reference": "a6bfa95e3909fba2f7ee411b4a5ac6b373490e2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/twig-inspector/zipball/5a66e476172b89c1f697fee2bf032acec63065a0",
-                "reference": "5a66e476172b89c1f697fee2bf032acec63065a0",
+                "url": "https://api.github.com/repos/oroinc/twig-inspector/zipball/a6bfa95e3909fba2f7ee411b4a5ac6b373490e2f",
+                "reference": "a6bfa95e3909fba2f7ee411b4a5ac6b373490e2f",
                 "shasum": ""
             },
             "require": {
-                "symfony/config": "^4.1.12 | ^5.0",
-                "symfony/dependency-injection": "^4.1.12 | ^5.0",
-                "symfony/http-foundation": "^4.1.12 | ^5.0",
-                "symfony/http-kernel": "^4.1.12 | ^5.0",
-                "symfony/routing": "^4.1.12 | ^5.0",
-                "twig/twig": "^1.34 | ^2.4 | ^3.0"
+                "symfony/config": "^4.4.1 | ^5.0",
+                "symfony/dependency-injection": "^4.4.1 | ^5.0",
+                "symfony/http-foundation": "^4.4.1 | ^5.0",
+                "symfony/http-kernel": "^4.4.1 | ^5.0",
+                "symfony/routing": "^4.4.1 | ^5.0",
+                "symfony/web-profiler-bundle": "^4.4.1 | ^5.0",
+                "twig/twig": "^1.38 | ^2.7 | ^3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -3998,7 +3999,7 @@
                 "toolbar-extension",
                 "twig"
             ],
-            "time": "2020-01-28T10:20:35+00:00"
+            "time": "2020-05-13T09:34:30+00:00"
         },
         {
             "name": "paragonie/random_compat",

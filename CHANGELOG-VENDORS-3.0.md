@@ -48,7 +48,7 @@
   - nikic/php-parser updated from 1.4.1 to 4.4.0
   - nyholm/nsa installed in 1.1.0
   - ocramius/package-versions installed in 1.4.2
-  - oro/twig-inspector installed in 1.0.2
+  - oro/twig-inspector installed in 1.0.3
   - paragonie/random_compat updated from 2.0.18 to 9.99.99
   - php-translation/common installed in 3.0.1
   - php-translation/extractor installed in 2.0.1
