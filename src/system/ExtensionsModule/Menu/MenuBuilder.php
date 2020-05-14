@@ -112,12 +112,10 @@ class MenuBuilder
             case Constant::STATE_UNINITIALISED:
             default:
                 if ($extension->getState() < 10) {
-                    $csrfToken = $this->getCsrfToken('install-extension');
                     $menu->addChild('Install extension', [
-                        'route' => 'zikulaextensionsmodule_extension_install',
+                        'route' => 'zikulaextensionsmodule_extensioninstaller_preinstall',
                         'routeParameters' => [
-                            'id' => $id,
-                            'token' => $csrfToken
+                            'id' => $id
                         ]
                     ])->setAttribute('icon', 'fas fa-cog')
                         ->setLinkAttribute('class', 'text-success');
