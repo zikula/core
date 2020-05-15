@@ -20,7 +20,7 @@ There are some slight differences regarding workflow behaviour in Zikula.
 It seems that usually workflow definitions can only be stored at a central location. We wanted to make this more flexible so we allowed three different levels:
 
 1. Central workflows in the core system are placed in: `/src/Zikula/CoreBundle/Resources/workflows/`
-2. Modules can define their own workflows in: `/src/modules/Acme/MyBundle/Resources/workflows/`
+2. Modules can define their own workflows in: `/src/extensions/Acme/MyBundle/Resources/workflows/`
 3. Also it is possible to define custom workflows (or override existing ones) in: `/config/workflows/`
 
 Each of these directories may contain several YML (`*.yaml`) or XML (`*.xml`) files.
