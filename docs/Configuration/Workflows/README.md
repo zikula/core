@@ -31,7 +31,7 @@ Each of these directories may contain several YML (`*.yaml`) or XML (`*.xml`) fi
 
 Zikula provides a JavaScript-based workflow editor.
 
-![Workflow editor](Workflows/images/workflow_ui.png)
+![Workflow editor](images/workflow_ui.png)
 
 The editor expects the name of a workflow which should be loaded. You can for example include a link to it like this:
 
