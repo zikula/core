@@ -24,6 +24,7 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Collector\InstallerCollector;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -79,7 +80,11 @@ class ExtensionInstallerController extends AbstractController
      * @Template("@ZikulaExtensionsModule/Extension/preinstall.html.twig")
      */
     public function preInstallAction(ExtensionEntity $extension) {
-        $this->extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
+        if (Constant::STATE_TRANSITIONAL !== $extension->getState()) {
+            $this->extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
+
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+        }
         $unsatisfiedDependencies = $this->dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
         $form = $this->createForm(ExtensionInstallType::class, [
             'dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)
@@ -106,9 +111,18 @@ class ExtensionInstallerController extends AbstractController
     public function installAction(
         Request $request,
         ExtensionEntity $extension,
+        ZikulaHttpKernelInterface $kernel,
+        InstallerCollector $installerCollector,
         ExtensionHelper $extensionHelper
     ) {
         $id = $extension->getId();
+
+        $state = $extension->getState();
+        $isBundle = $kernel->isBundle($extension->getName());
+        $extensionBundle = $kernel->getBundle($extension->getName());
+        $className = $extensionBundle->getInstallerClass();
+        $hasInstaller = $installerCollector->has($className);
+        $installer = $installerCollector->get($className);
 
         $unsatisfiedDependencies = $this->dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
         $form = $this->createForm(ExtensionInstallType::class, [

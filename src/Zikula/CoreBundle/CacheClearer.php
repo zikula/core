@@ -97,8 +97,10 @@ class CacheClearer
     {
         // %kernel.cache_dir%/%kernel.container_class%.php
         $this->fileSystem->remove($this->cacheDir . '/' . $this->kernelContainerClass . '.php');
-        $this->fileSystem->remove($this->cacheDir . '/' . $this->kernelContainerClass . '.php.lock');
+//        $this->fileSystem->remove($this->cacheDir . '/' . $this->kernelContainerClass . '.php.lock');
         $this->logger->notice(sprintf('removed %s (and .lock)', $this->cacheDir . '/' . $this->kernelContainerClass . '.php'));
+        $this->warmer->warmUp($this->cacheDir);
+
         return;
 
         if (!count($this->cacheTypes)) {
@@ -122,7 +124,6 @@ class CacheClearer
         if (in_array($type, ['symfony', 'symfony.config'])) {
             $this->fileSystem->remove($this->containerDirectory);
         }
-        $this->warmer->warmUp($this->cacheDir);
         $pos = mb_strrpos($this->containerDirectory, '/');
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $list = '';

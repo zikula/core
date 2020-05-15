@@ -109,6 +109,14 @@ class MenuBuilder
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-trash-alt text-danger');
                 break;
+            case Constant::STATE_TRANSITIONAL:
+                $menu->addChild('Install extension', [
+                    'route' => 'zikulaextensionsmodule_extensioninstaller_preinstall',
+                    'routeParameters' => [
+                        'id' => $id
+                    ]
+                ])->setAttribute('icon', 'text success fas fa-cog')
+                    ->setLinkAttribute('class', 'text-success');
             case Constant::STATE_UNINITIALISED:
             default:
                 if ($extension->getState() < 10) {

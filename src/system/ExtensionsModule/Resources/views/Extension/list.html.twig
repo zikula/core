@@ -94,6 +94,9 @@
     {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_INACTIVE') %}
         <span class="badge badge-warning">{% trans %}Inactive{% endtrans %}</span>
     {% break %}
+    {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_TRANSITIONAL') %}
+        <span class="badge badge-warning">{% trans %}Ready for installation{% endtrans %}</span>
+    {% break %}
     {% case constant('Zikula\\ExtensionsModule\\Constant::STATE_ACTIVE') %}
         <span class="badge badge-success">{% trans %}Active{% endtrans %}</span>
     {% break %}
