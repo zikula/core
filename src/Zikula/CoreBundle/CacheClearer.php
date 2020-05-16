@@ -18,7 +18,6 @@ use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 class CacheClearer
