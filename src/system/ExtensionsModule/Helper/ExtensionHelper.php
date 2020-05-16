@@ -311,6 +311,7 @@ class ExtensionHelper
             return $this->installerCollector->get($className);
         }
         $this->logger->error(sprintf('InstallerCollector did not contain %s', $className));
+        throw new Exception(sprintf('InstallerCollector did not contain %s', $className));
 
         return null;
     }
