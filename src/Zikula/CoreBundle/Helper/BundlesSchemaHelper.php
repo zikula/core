@@ -109,9 +109,6 @@ class BundlesSchemaHelper
                 $this->removeById((int)$row['id']);
             }
         }
-
-        // clear the cache
-//        $this->cacheClearer->clear('symfony.config');
     }
 
     private function removeById(int $id): void

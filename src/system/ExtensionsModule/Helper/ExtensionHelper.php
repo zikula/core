@@ -149,8 +149,6 @@ class ExtensionHelper
         }
 
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
-//        $this->cacheClearer->clear('symfony.config');
-
         $this->eventDispatcher->dispatch(new ExtensionPostInstallEvent($extensionBundle, $extension));
         $this->logger->notice(sprintf('Extension installation complete'), ['name' => $extension->getName()]);
 
@@ -198,7 +196,6 @@ class ExtensionHelper
         $this->doctrine->getManager()->flush();
 
         $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
-//        $this->cacheClearer->clear('symfony');
 
         if ($this->installed) {
             // Upgrade succeeded, issue event.
@@ -300,7 +297,7 @@ class ExtensionHelper
      * Attempt to get an extension Installer.
      * @throws Exception If installerCollector doesn't container the installer
      */
-    public function getExtensionInstallerInstance(AbstractExtension $extension): ?ExtensionInstallerInterface
+    private function getExtensionInstallerInstance(AbstractExtension $extension): ?ExtensionInstallerInterface
     {
         $className = $extension->getInstallerClass();
         if (!class_exists($className)) {

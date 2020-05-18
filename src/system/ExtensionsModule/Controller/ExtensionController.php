@@ -112,8 +112,7 @@ class ExtensionController extends AbstractController
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
-        LoggerInterface $zikulaLogger,
-        CacheClearer $cacheClearer
+        LoggerInterface $zikulaLogger
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('activate-extension', $token)) {
             throw new AccessDeniedException();
@@ -125,9 +124,7 @@ class ExtensionController extends AbstractController
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             $this->addFlash('error', $this->trans('Error! Activation of %name% not allowed.', ['%name%' => $extension->getName()]));
         } else {
-            // Update state
             $extensionStateHelper->updateState($id, Constant::STATE_ACTIVE);
-//            $cacheClearer->clear('symfony');
             $this->addFlash('status', $this->trans('Done! Activated %name%.', ['%name%' => $extension->getName()]));
         }
 
@@ -147,8 +144,7 @@ class ExtensionController extends AbstractController
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
-        LoggerInterface $zikulaLogger,
-        CacheClearer $cacheClearer
+        LoggerInterface $zikulaLogger
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('deactivate-extension', $token)) {
             throw new AccessDeniedException();
@@ -166,9 +162,7 @@ class ExtensionController extends AbstractController
             } elseif (in_array($extension->getName(), [$defaultTheme, $adminTheme])) {
                 $this->addFlash('error', $this->trans('Error! You cannot deactivate the %name%. The theme is in use.', ['%name%' => $extension->getName()]));
             } else {
-                // Update state
                 $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
-//                $cacheClearer->clear('symfony');
                 $this->addFlash('status', $this->trans('Done! Deactivated %name%.', ['%name%' => $extension->getName()]));
             }
         }
@@ -300,8 +294,7 @@ class ExtensionController extends AbstractController
         BlockRepositoryInterface $blockRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
-        ExtensionDependencyHelper $dependencyHelper,
-        CacheClearer $cacheClearer
+        ExtensionDependencyHelper $dependencyHelper
     ) {
         if (!$this->isCsrfTokenValid('uninstall-extension', $token)) {
             throw new AccessDeniedException();
@@ -312,7 +305,6 @@ class ExtensionController extends AbstractController
         }
         if (!$kernel->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
-//            $cacheClearer->clear('symfony');
         }
         $requiredDependents = $dependencyHelper->getDependentExtensions($extension);
         $blocks = $blockRepository->findBy(['module' => $extension]);

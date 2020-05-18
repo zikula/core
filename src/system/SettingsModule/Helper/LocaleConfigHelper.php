@@ -96,6 +96,6 @@ class LocaleConfigHelper
             }
         }
 
-//        $this->cacheClearer->clear('symfony');
+        $this->cacheClearer->clear('symfony');
     }
 }
