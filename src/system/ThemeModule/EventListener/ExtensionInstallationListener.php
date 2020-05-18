@@ -84,7 +84,7 @@ class ExtensionInstallationListener implements EventSubscriberInterface
 
     public function clearCombinedAssetCache(): void
     {
-        if ($this->mergerActive) {
+        if ('prod' === $this->kernel->getEnvironment() && $this->mergerActive) {
             $this->cacheClearer->clear('assets');
         }
     }

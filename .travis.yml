@@ -42,8 +42,9 @@ before_install:
 
     # update translation configurations to update core directories
     - php bin/console zikula:translation:updateconfig
+    - php bin/console cache:clear
     # extract en translations
-    - php bin/console translation:extract zikula en
+    - php bin/console translation:extract zikula en -vvv
 
 install:
     # create test db

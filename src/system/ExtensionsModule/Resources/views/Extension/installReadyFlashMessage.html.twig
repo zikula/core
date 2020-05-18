@@ -1,0 +1,13 @@
+<h3 class="text-success">{% trans with {'%name%': extension.name} %}%name% ready for installation{% endtrans %}</h3>
+<p>
+    <span class="badge badge-warning">{% trans %}Warning{% endtrans %}</span>&nbsp;
+    {% trans %}Leaving an extension in a 'ready' state will cause unusual behavior. Complete one of these options.{% endtrans %}
+</p>
+<div class="clearfix">
+    <a class="btn btn-success float-right" href="{{ path('zikulaextensionsmodule_extensioninstaller_preinstall', {'id': extension.id}) }}">
+        <i class="far fa-play-circle"></i> {% trans %}Continue install{% endtrans %}
+    </a>
+    <a class="btn btn-outline-danger float-right mr-3" href="{{ path('zikulaextensionsmodule_extensioninstaller_cancelinstall', {'id': extension.id}) }}">
+        <i class="fas fa-times"></i> {% trans %}Cancel install{% endtrans %}
+    </a>
+</div>

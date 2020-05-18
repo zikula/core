@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -48,6 +49,11 @@ class ExtensionStateHelper
     private $translator;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @var ZikulaHttpKernelInterface
      */
     private $kernel;
@@ -57,12 +63,14 @@ class ExtensionStateHelper
         CacheClearer $cacheClearer,
         ExtensionRepository $extensionRepository,
         TranslatorInterface $translator,
+        LoggerInterface $zikulaLogger,
         ZikulaHttpKernelInterface $kernel
     ) {
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
         $this->extensionRepository = $extensionRepository;
         $this->translator = $translator;
+        $this->logger = $zikulaLogger;
         $this->kernel = $kernel;
     }
 
@@ -92,13 +100,17 @@ class ExtensionStateHelper
                 }
                 break;
         }
+        $requiresCacheClear = $this->requiresCacheClear($extension->getState(), $state);
+        $this->logger->info(sprintf('Changing state of %s from %d to %d', $extension->getName(), $extension->getState(), $state));
 
         // change state
         $extension->setState($state);
         $this->extensionRepository->persistAndFlush($extension);
 
         // clear the cache before calling events
-        $this->cacheClearer->clear('symfony');
+        if ($requiresCacheClear) {
+            $this->cacheClearer->clear('symfony');
+        }
 
         if (isset($eventClass) && $this->kernel->isBundle($extension->getName())) {
             $bundle = $this->kernel->getBundle($extension->getName());
@@ -106,5 +118,15 @@ class ExtensionStateHelper
         }
 
         return true;
+    }
+
+    /**
+     * If an extension was previously in an active state and now is inactive or vice versa
+     */
+    private function requiresCacheClear(int $oldState, int $newState): bool
+    {
+        $activeStates = [Constant::STATE_ACTIVE, Constant::STATE_TRANSITIONAL, Constant::STATE_UPGRADED];
+
+        return in_array($oldState, $activeStates) !== in_array($newState, $activeStates);
     }
 }

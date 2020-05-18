@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Controller;
 
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,7 +25,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -37,8 +37,6 @@ use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent;
-use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
-use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
 use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper;
@@ -50,8 +48,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Engine\Engine;
 
 /**
- * Class ExtensionController
- *
  * @Route("")
  */
 class ExtensionController extends AbstractController
@@ -116,7 +112,7 @@ class ExtensionController extends AbstractController
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
-        CacheClearer $cacheClearer
+        LoggerInterface $zikulaLogger
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('activate-extension', $token)) {
             throw new AccessDeniedException();
@@ -124,12 +120,11 @@ class ExtensionController extends AbstractController
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
+        $zikulaLogger->notice(sprintf('Extension activating'), ['name' => $extension->getName()]);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             $this->addFlash('error', $this->trans('Error! Activation of %name% not allowed.', ['%name%' => $extension->getName()]));
         } else {
-            // Update state
             $extensionStateHelper->updateState($id, Constant::STATE_ACTIVE);
-            $cacheClearer->clear('symfony');
             $this->addFlash('status', $this->trans('Done! Activated %name%.', ['%name%' => $extension->getName()]));
         }
 
@@ -149,7 +144,7 @@ class ExtensionController extends AbstractController
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
-        CacheClearer $cacheClearer
+        LoggerInterface $zikulaLogger
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('deactivate-extension', $token)) {
             throw new AccessDeniedException();
@@ -157,6 +152,7 @@ class ExtensionController extends AbstractController
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
+        $zikulaLogger->notice(sprintf('Extension deactivating'), ['name' => $extension->getName()]);
         $defaultTheme = $this->getVariableApi()->get(VariableApi::CONFIG, 'defaulttheme');
         $adminTheme = $this->getVariableApi()->get('ZikulaAdminModule', 'admintheme');
 
@@ -166,9 +162,7 @@ class ExtensionController extends AbstractController
             } elseif (in_array($extension->getName(), [$defaultTheme, $adminTheme])) {
                 $this->addFlash('error', $this->trans('Error! You cannot deactivate the %name%. The theme is in use.', ['%name%' => $extension->getName()]));
             } else {
-                // Update state
                 $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
-                $cacheClearer->clear('symfony');
                 $this->addFlash('status', $this->trans('Done! Deactivated %name%.', ['%name%' => $extension->getName()]));
             }
         }
@@ -220,7 +214,7 @@ class ExtensionController extends AbstractController
                 $em->persist($extension);
                 $em->flush();
 
-                $cacheClearer->clear('symfony');
+                $cacheClearer->clear('symfony.routing');
                 $this->addFlash('status', 'Done! Extension updated.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -252,140 +246,6 @@ class ExtensionController extends AbstractController
         return [
             'extension' => $extension
         ];
-    }
-
-    /**
-     * @Route("/install/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
-     * @PermissionCheck("admin")
-     * @Theme("admin")
-     * @Template("@ZikulaExtensionsModule/Extension/install.html.twig")
-     *
-     * Install and initialise an extension.
-     *
-     * @return array|RedirectResponse
-     * @throws AccessDeniedException Thrown if the CSRF token is invalid
-     */
-    public function installAction(
-        Request $request,
-        ExtensionEntity $extension,
-        string $token,
-        ZikulaHttpKernelInterface $kernel,
-        ExtensionRepositoryInterface $extensionRepository,
-        ExtensionHelper $extensionHelper,
-        ExtensionStateHelper $extensionStateHelper,
-        ExtensionDependencyHelper $dependencyHelper,
-        CacheClearer $cacheClearer
-    ) {
-        $id = $extension->getId();
-        if (!$this->isCsrfTokenValid('install-extension', $token)) {
-            throw new AccessDeniedException();
-        }
-
-        if (!$kernel->isBundle($extension->getName())) {
-            $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
-            $cacheClearer->clear('symfony');
-
-            return $this->redirectToRoute('zikulaextensionsmodule_extension_install', ['id' => $id, 'token' => $token]);
-        }
-        $unsatisfiedDependencies = $dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
-        $form = $this->createForm(ExtensionInstallType::class, [
-            'dependencies' => $this->formatDependencyCheckboxArray($extensionRepository, $unsatisfiedDependencies)
-        ]);
-        $hasNoUnsatisfiedDependencies = empty($unsatisfiedDependencies);
-        $form->handleRequest($request);
-        if ($hasNoUnsatisfiedDependencies || ($form->isSubmitted() && $form->isValid())) {
-            if ($hasNoUnsatisfiedDependencies || $form->get('install')->isClicked()) {
-                $extensionsInstalled = [];
-                $data = $form->getData();
-                foreach ($data['dependencies'] as $dependencyId => $installSelected) {
-                    if (!$installSelected && MetaData::DEPENDENCY_REQUIRED !== $unsatisfiedDependencies[$dependencyId]->getStatus()) {
-                        continue;
-                    }
-                    $dependencyExtensionEntity = $extensionRepository->get($unsatisfiedDependencies[$dependencyId]->getModname());
-                    if (isset($dependencyExtensionEntity)) {
-                        if (!$extensionHelper->install($dependencyExtensionEntity)) {
-                            $this->addFlash('error', $this->trans('Failed to install dependency "%name%"!', ['%name%' => $dependencyExtensionEntity->getName()]));
-
-                            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
-                        }
-                        $extensionsInstalled[] = $dependencyExtensionEntity->getId();
-                        $this->addFlash('status', $this->trans('Installed dependency "%name%".', ['%name%' => $dependencyExtensionEntity->getName()]));
-                    } else {
-                        $this->addFlash('warning', $this->trans('Warning: could not install selected dependency "%name%".', ['%name%' => $unsatisfiedDependencies[$dependencyId]->getModname()]));
-                    }
-                }
-                if ($extensionHelper->install($extension)) {
-                    $this->addFlash('status', $this->trans('Done! Installed "%name%".', ['%name%' => $extension->getName()]));
-                    $extensionsInstalled[] = $id;
-                    $cacheClearer->clear('symfony');
-
-                    return $this->redirectToRoute('zikulaextensionsmodule_extension_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
-                }
-                $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
-                $this->addFlash('error', $this->trans('Initialization of "%name%" failed!', ['%name%' => $extension->getName()]));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
-                $this->addFlash('status', 'Operation cancelled.');
-            }
-
-            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
-        }
-
-        return [
-            'dependencies' => $unsatisfiedDependencies,
-            'extension' => $extension,
-            'form' => $form->createView()
-        ];
-    }
-
-    /**
-     * Post-installation action to trigger the MODULE_POSTINSTALL event.
-     * The additional Action is required because this event must occur AFTER the rebuild of the cache which occurs on Request.
-     *
-     * @Route("/postinstall/{extensions}", methods = {"GET"})
-     */
-    public function postInstallAction(
-        ExtensionRepositoryInterface $extensionRepository,
-        ZikulaHttpKernelInterface $kernel,
-        EventDispatcherInterface $eventDispatcher,
-        string $extensions = null
-    ): RedirectResponse {
-        if (!empty($extensions)) {
-            $extensions = json_decode($extensions);
-            foreach ($extensions as $extensionId) {
-                /** @var ExtensionEntity $extensionEntity */
-                $extensionEntity = $extensionRepository->find($extensionId);
-                if (null === $extensionRepository) {
-                    continue;
-                }
-                /** @var AbstractExtension $extensionBundle */
-                $extensionBundle = $kernel->getBundle($extensionEntity->getName());
-                if (null === $extensionBundle) {
-                    continue;
-                }
-                $eventDispatcher->dispatch(new ExtensionPostCacheRebuildEvent($extensionBundle, $extensionEntity));
-            }
-        }
-
-        return $this->redirectToRoute('zikulaextensionsmodule_extension_list', ['justinstalled' => json_encode($extensions)]);
-    }
-
-    /**
-     * Create array suitable for checkbox FormType [[ID => bool][ID => bool]].
-     */
-    private function formatDependencyCheckboxArray(
-        ExtensionRepositoryInterface $extensionRepository,
-        array $dependencies
-    ): array {
-        $return = [];
-        foreach ($dependencies as $dependency) {
-            /** @var ExtensionEntity $dependencyExtension */
-            $dependencyExtension = $extensionRepository->get($dependency->getModname());
-            $return[$dependency->getId()] = null !== $dependencyExtension;
-        }
-
-        return $return;
     }
 
     /**
@@ -434,8 +294,7 @@ class ExtensionController extends AbstractController
         BlockRepositoryInterface $blockRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
-        ExtensionDependencyHelper $dependencyHelper,
-        CacheClearer $cacheClearer
+        ExtensionDependencyHelper $dependencyHelper
     ) {
         if (!$this->isCsrfTokenValid('uninstall-extension', $token)) {
             throw new AccessDeniedException();
@@ -446,7 +305,6 @@ class ExtensionController extends AbstractController
         }
         if (!$kernel->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
-            $cacheClearer->clear('symfony');
         }
         $requiredDependents = $dependencyHelper->getDependentExtensions($extension);
         $blocks = $blockRepository->findBy(['module' => $extension]);
@@ -479,7 +337,7 @@ class ExtensionController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_postuninstall');
         }
 
         return [
@@ -488,6 +346,19 @@ class ExtensionController extends AbstractController
             'blocks' => $blocks,
             'requiredDependents' => $requiredDependents
         ];
+    }
+
+    /**
+     * @Route("/post-uninstall")
+     * @PermissionCheck("admin")
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function postUninstallAction(CacheClearer $cacheClearer)
+    {
+        $cacheClearer->clear('symfony');
+
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
     }
 
     /**

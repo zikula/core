@@ -34,6 +34,8 @@ services:
 
     Zikula\Bundle\CoreBundle\CacheClearer:
         arguments:
+          $warmer: '@cache_warmer'
+          $fosJsRoutesExtractor: '@fos_js_routing.extractor'
           $cacheDir: '%kernel.cache_dir%'
           $kernelContainerClass: '%kernel.container_class%'
           $routingLocales: '%jms_i18n_routing.locales%'

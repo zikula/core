@@ -15,15 +15,21 @@ namespace Zikula\Bundle\CoreBundle;
 
 use FilesystemIterator;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 class CacheClearer
 {
     /**
-     * @var ContainerInterface
+     * @var LoggerInterface
      */
-    private $container;
+    private $logger;
+
+    /**
+     * @var ExposedRoutesExtractorInterface
+     */
+    private $fosJsRoutesExtractor;
 
     /**
      * @var string
@@ -34,11 +40,6 @@ class CacheClearer
      * @var string
      */
     private $kernelContainerClass;
-
-    /**
-     * @var string
-     */
-    private $containerDirectory;
 
     /**
      * @var bool
@@ -60,46 +61,87 @@ class CacheClearer
      */
     private $fileSystem;
 
+    /**
+     * @var CacheWarmerInterface
+     */
+    private $warmer;
+
+    /**
+     * @var array
+     */
+    private $cachesToClear;
+
     public function __construct(
-        ContainerInterface $container,
+        LoggerInterface $zikulaLogger,
+        CacheWarmerInterface $warmer,
+        ExposedRoutesExtractorInterface $fosJsRoutesExtractor,
         string $cacheDir,
         string $kernelContainerClass,
         string $installed,
         array $routingLocales = []
     ) {
-        $this->container = $container;
+        $this->logger = $zikulaLogger;
+        $this->warmer = $warmer;
+        $this->fosJsRoutesExtractor = $fosJsRoutesExtractor;
         $this->cacheDir = $cacheDir;
-        $refClass = new \ReflectionClass($container);
-        $this->containerDirectory = $cacheDir . DIRECTORY_SEPARATOR . $refClass->getNamespaceName();
         $this->kernelContainerClass = $kernelContainerClass;
         $this->installed = '0.0.0' !== $installed;
         $this->routingLocales = $routingLocales;
         $this->fileSystem = new Filesystem();
+        $this->cachesToClear = [];
     }
 
+    /**
+     * The cache is not cleared on demand.
+     * Calling 'clear' will store caches to clear
+     * This ensures no duplication and defers actual clearing
+     * until kernel.terminate event
+     * @see \Zikula\Bundle\CoreBundle\EventListener\CacheClearListener::doClearCache
+     */
     public function clear(string $type): void
     {
+        if (!isset($this->cachesToClear[$type])) {
+            foreach ($this->cachesToClear as $value) {
+                if (0 === mb_strpos($type, $value)) {
+                    return;
+                }
+            }
+            $this->cachesToClear[$type] = $type;
+        }
+    }
+
+    /**
+     * @internal
+     * This is not a public api
+     */
+    public function doClear(): void
+    {
+        if (empty($this->cachesToClear)) {
+            return;
+        }
+
         if (!count($this->cacheTypes)) {
             $this->initialiseCacheTypeMap();
         }
-
-        foreach ($this->cacheTypes as $cacheType => $files) {
-            if (0 !== mb_strpos($cacheType, $type)) {
-                continue;
-            }
-            foreach ($files as $file) {
-                if (is_dir($file)) {
-                    // Do not delete the folder itself, but all files in it.
-                    // Otherwise Symfony somehow can't create the folder anymore.
-                    $file = new FilesystemIterator($file);
+        foreach ($this->cachesToClear as $type) {
+            foreach ($this->cacheTypes as $cacheType => $files) {
+                if (0 !== mb_strpos($cacheType, $type)) {
+                    continue;
                 }
-                // This silently ignores non existing files.
-                $this->fileSystem->remove($file);
+                foreach ($files as $file) {
+                    if (is_dir($file)) {
+                        // Do not delete the folder itself, but all files in it.
+                        // Otherwise Symfony somehow can't create the folder anymore.
+                        $file = new FilesystemIterator($file);
+                    }
+                    // This silently ignores non existing files.
+                    $this->fileSystem->remove($file);
+                }
+                $this->logger->notice(sprintf('Cache cleared: %s', $cacheType));
             }
         }
-        if (in_array($type, ['symfony', 'symfony.config'])) {
-            $this->fileSystem->remove($this->containerDirectory);
-        }
+        // the cache must be warmed after deleting files
+        $this->warmer->warmUp($this->cacheDir);
     }
 
     private function initialiseCacheTypeMap()
@@ -109,20 +151,14 @@ class CacheClearer
             // avoid accessing FOS extractor before/during installation
             // because this requires request context
 
-            /** @var ExposedRoutesExtractorInterface */
-            $fosJsRoutesExtractor = $this->container->get('fos_js_routing.extractor');
             foreach ($this->routingLocales as $locale) {
-                $fosJsRoutingFiles[] = $fosJsRoutesExtractor->getCachePath($locale);
+                $fosJsRoutingFiles[] = $this->fosJsRoutesExtractor->getCachePath($locale);
             }
         }
 
         $cacheFolder = $this->cacheDir . DIRECTORY_SEPARATOR;
 
         $this->cacheTypes = [
-            'symfony.annotations' => [
-                $cacheFolder . 'annotations.map',
-                $cacheFolder . 'annotations.php'
-            ],
             'symfony.routing.generator' => [
                 $cacheFolder . 'url_generating_routes.php',
                 $cacheFolder . 'url_generating_routes.php.meta'
@@ -133,14 +169,10 @@ class CacheClearer
             ],
             'symfony.routing.fosjs' => $fosJsRoutingFiles,
             'symfony.config' => [
+                // clearing the container class will force all other container files
+                // to be rebuilt so there is no need to delete all of them
+                // nor a need to delete the container directory
                 $cacheFolder . $this->kernelContainerClass . '.php',
-                $cacheFolder . $this->kernelContainerClass . '.php.meta',
-                $cacheFolder . $this->kernelContainerClass . '.preload.php',
-                $cacheFolder . $this->kernelContainerClass . '.xml',
-                $cacheFolder . $this->kernelContainerClass . '.xml.meta',
-                $cacheFolder . $this->kernelContainerClass . 'Compiler.log',
-                $cacheFolder . $this->kernelContainerClass . 'Deprecations.log',
-                $cacheFolder . 'classes.map'
             ],
             'symfony.translations' => [
                 $cacheFolder . '/translations'
