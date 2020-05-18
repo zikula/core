@@ -18,7 +18,6 @@ use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Schema\Table;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
 
@@ -28,11 +27,6 @@ class BundlesSchemaHelper
      * @var Connection
      */
     private $conn;
-
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
 
     /**
      * @var string
@@ -47,11 +41,9 @@ class BundlesSchemaHelper
     public function __construct(
         Connection $conn,
         TranslatorInterface $translator,
-        CacheClearer $cacheClearer,
         $projectDir
     ) {
         $this->conn = $conn;
-        $this->cacheClearer = $cacheClearer;
         $this->projectDir = $projectDir;
         $this->scanner = new Scanner();
         $this->scanner->setTranslator($translator);
