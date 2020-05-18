@@ -81,6 +81,7 @@ class ExtensionInstallerController extends AbstractController
     {
         if (Constant::STATE_TRANSITIONAL !== $extension->getState()) {
             $this->extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
+            $this->addFlash('success', $this->renderView('@ZikulaExtensionsModule/Extension/installReadyFlashMessage.html.twig', ['extension' => $extension]));
 
             return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
         }
@@ -188,6 +189,20 @@ class ExtensionInstallerController extends AbstractController
         }
 
         return $this->redirectToRoute('zikulaextensionsmodule_extension_list', ['justinstalled' => json_encode($extensions)]);
+    }
+
+    /**
+     * @Route("/cancel-install/{id}", requirements={"id" = "^[1-9]\d*$"})
+     * @PermissionCheck("admin")
+     *
+     * @return RedirectResponse
+     */
+    public function cancelInstallAction(int $id)
+    {
+        $this->extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
+        $this->addFlash('status', 'Operation cancelled.');
+
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
     }
 
     /**

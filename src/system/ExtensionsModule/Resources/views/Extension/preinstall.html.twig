@@ -6,6 +6,7 @@
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
+{% if dependencies|length > 0 %}
 <table class="table table-bordered table-striped">
     <colgroup>
         <col id="cExtension" />
@@ -39,6 +40,9 @@
         {% endfor %}
     </tbody>
 </table>
+{% else %}
+<div class="alert alert-success"><i class="fas fa-clipboard-check"></i> {% trans %}All the dependencies for this extensions are fulfilled. You can safely install!{% endtrans %}</div>
+{% endif %}
 <div class="form-group row">
     <div class="col-md-9 offset-md-3">
         {{ form_widget(form.install) }}

@@ -298,6 +298,7 @@ class ExtensionHelper
 
     /**
      * Attempt to get an extension Installer.
+     * @throws Exception If installerCollector doesn't container the installer
      */
     public function getExtensionInstallerInstance(AbstractExtension $extension): ?ExtensionInstallerInterface
     {
@@ -312,7 +313,5 @@ class ExtensionHelper
         }
         $this->logger->error(sprintf('InstallerCollector did not contain %s', $className));
         throw new Exception(sprintf('InstallerCollector did not contain %s', $className));
-
-        return null;
     }
 }

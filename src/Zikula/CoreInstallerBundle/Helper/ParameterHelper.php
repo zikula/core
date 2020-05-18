@@ -183,7 +183,7 @@ class ParameterHelper
         $generator = $randomLibFactory->getMediumStrengthGenerator();
         $vars = [
             'APP_ENV' => $params['env'] ?? 'prod',
-            'APP_DEBUG' => isset($params['debug']) ? (int) ($params['debug']) : 1,
+            'APP_DEBUG' => isset($params['debug']) ? (int) ($params['debug']) : 0,
             'APP_SECRET' => '!\'' . ($params['secret'] ?? $generator->generateString(50)) . '\'',
             'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
         ];

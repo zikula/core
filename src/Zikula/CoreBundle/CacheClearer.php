@@ -139,9 +139,9 @@ class CacheClearer
                 }
                 $this->logger->notice(sprintf('Cache cleared: %s', $cacheType));
             }
-            // the cache must be warmed after deleting files
-            $this->warmer->warmUp($this->cacheDir);
         }
+        // the cache must be warmed after deleting files
+        $this->warmer->warmUp($this->cacheDir);
     }
 
     private function initialiseCacheTypeMap()
