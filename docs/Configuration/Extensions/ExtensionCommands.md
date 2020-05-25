@@ -5,14 +5,10 @@ currentMenu: extension-management
 
 ## zikula:extension:install
 
-Quickly installs a zikula extension from the CLI.
+Quickly installs a zikula extension from the CLI. You must run the command twice to complete the installation.
 
 Usage: `bin/console zikula:extension:install AcmeFooModule`
 Shortcut: `bin/console z:e:i AcmeFooModule`
-
-Options:
-
-- `--ignore_deps` Force install the extension ignoring all dependencies
 
 ## zikula:extension:uninstall
 

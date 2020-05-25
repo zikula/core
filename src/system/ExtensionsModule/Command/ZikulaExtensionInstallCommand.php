@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Command;
 
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -32,14 +30,8 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
     protected function configure()
     {
         $this
-            ->setDescription('Install a zikula extension (module or theme).')
+            ->setDescription('Install a zikula extension (module or theme). You must run this command twice.')
             ->addArgument('bundle_name', InputArgument::REQUIRED, 'Bundle class name (e.g. ZikulaUsersModule)')
-            ->addOption(
-                'ignore_deps',
-                null,
-                InputOption::VALUE_NONE,
-                'Force install the extension ignoring all dependencies'
-            )
         ;
     }
 
@@ -47,7 +39,6 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
     {
         $io = new SymfonyStyle($input, $output);
         $bundleName = $input->getArgument('bundle_name');
-        $ignoreDeps = $input->getOption('ignore_deps');
 
         if (false !== $this->isInstalled($bundleName)) {
             if ($input->isInteractive()) {
@@ -57,23 +48,27 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
             return 1;
         }
 
-        /** @var $extension ExtensionEntity */
-        if (false === $extension = $this->load($bundleName)) {
-            if ($input->isInteractive()) {
-                $io->error('Extension could not be found and loaded from the expected directory');
-            }
+        if (!$this->kernel->isBundle($bundleName)) {
+            $this->load($bundleName);
+            $io->note(sprintf('%s is now prepared for installation. Run this command again to complete installation.', $bundleName));
 
-            return 2;
+            return 0;
         }
 
-        if (!$ignoreDeps) {
-            if (false === $this->installDependencies($extension)) {
-                if ($input->isInteractive()) {
-                    $io->error('Required dependencies could not be installed');
-                }
-
-                return 3;
+        /** @var $extension ExtensionEntity */
+        $extension = $this->extensionRepository->findOneBy(['name' => $bundleName]);
+        $unsatisfiedDependencies = $this->dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
+        $dependencyNames = [];
+        foreach ($unsatisfiedDependencies as $dependency) {
+            if (MetaData::DEPENDENCY_REQUIRED !== $dependency->getStatus()) {
+                continue;
             }
+            $dependencyNames[] = $dependency->getModname();
+        }
+        if (!empty($dependencyNames)) {
+            $io->error(sprintf('Cannot install because this extension depends on other extensions. Please install the following extensions first: %s', implode(', ', $dependencyNames)));
+
+            return 2;
         }
 
         if (false === $this->extensionHelper->install($extension)) {
@@ -81,15 +76,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
                 $io->error('Could not install the extension');
             }
 
-            return 4;
-        }
-
-        if (0 !== $this->clearCache()) {
-            if ($input->isInteractive()) {
-                $io->error('Could not clear the cache (--no-warmup)');
-            }
-
-            return 5;
+            return 3;
         }
 
         $this->eventDispatcher->dispatch(new ExtensionPostCacheRebuildEvent($this->kernel->getBundle($extension->getName()), $extension));
@@ -101,41 +88,26 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
         return 0;
     }
 
-    private function clearCache(): int
-    {
-        $command = $this->getApplication()->find('cache:clear');
 
-        return $command->run(new ArrayInput(['--no-warmup' => true]), new NullOutput());
-    }
-
-    private function load(string $bundleName)
+    private function load(string $bundleName): void
     {
         // load the extension into the modules table
         $this->reSync(false);
         if (!($extension = $this->extensionRepository->findOneBy(['name' => $bundleName]))) {
-            return false;
+            throw new \Exception(sprintf('Could not find extension %s in the database', $bundleName));
         }
 
         // force the kernel to load the bundle
         $extension->setState(Constant::STATE_TRANSITIONAL);
         $this->extensionRepository->persistAndFlush($extension);
+
+        // delete the container file
+        $cacheDir = $this->kernel->getContainer()->getParameter('kernel.cache_dir');
+        $containerClass = $this->kernel->getContainer()->getParameter('kernel.container_class');
+        $containerFile = $cacheDir . '/' . $containerClass . '.php';
+        $fs = new Filesystem();
+        $fs->remove($containerFile);
+        $this->kernel->getContainer()->get('cache_warmer')->warmUp($this->kernel->getCacheDir());
         $this->kernel->reboot(null);
-
-        return $extension;
-    }
-
-    private function installDependencies(ExtensionEntity $extension): bool
-    {
-        $unsatisfiedDependencies = $this->dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
-        $return = true;
-        foreach ($unsatisfiedDependencies as $dependency) {
-            if (MetaData::DEPENDENCY_REQUIRED !== $dependency->getStatus()) {
-                continue;
-            }
-            $this->load($dependency->getModname());
-            $return = $return && $this->extensionHelper->install($dependency);
-        }
-
-        return $return;
     }
 }

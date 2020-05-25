@@ -32,6 +32,7 @@ php bin/console cache:clear
 php bin/console zikula:extension:install FabienBlogModule
 ```
 
+You must run the `install` command twice to complete the installation.
 After that is complete, you can take full advantage of the rest of the Symfony/MakerBundle commands to create the
 rest of your extension. For a full list of Makers, execute this command:
 
