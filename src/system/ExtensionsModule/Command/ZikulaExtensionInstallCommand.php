@@ -88,7 +88,6 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
         return 0;
     }
 
-
     private function load(string $bundleName): void
     {
         // load the extension into the modules table
