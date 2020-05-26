@@ -14,23 +14,24 @@
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.3
   - composer/xdebug-handler installed in 1.4.1
-  - doctrine/annotations updated from 1.2.7 to 1.10.2
-  - doctrine/collections updated from 1.3.0 to 1.6.4
-  - doctrine/common updated from 2.6.2 to 2.13.0
+  - doctrine/annotations updated from 1.2.7 to 1.10.3
+  - doctrine/collections updated from 1.3.0 to 1.6.5
+  - doctrine/common updated from 2.6.2 to 2.13.1
   - doctrine/dbal updated from 2.5.13 to 2.10.2
-  - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.8
+  - doctrine/doctrine-bundle updated from 1.6.13 to 2.1.0
   - doctrine/event-manager installed in 1.1.0
-  - doctrine/inflector updated from 1.1.0 to 1.4.1
+  - doctrine/inflector updated from 1.1.0 to 1.4.2
   - doctrine/instantiator updated from 1.0.5 to 1.3.0
-  - doctrine/lexer updated from 1.0.2 to 1.2.0
+  - doctrine/lexer updated from 1.0.2 to 1.2.1
   - doctrine/orm updated from 2.5.14 to 2.7.2
   - doctrine/persistence installed in 1.3.7
   - doctrine/reflection installed in 1.2.1
+  - doctrine/sql-formatter installed in 1.1.1
   - egulias/email-validator installed in 2.1.17
   - erusev/parsedown installed in 1.7.4
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.6.0
   - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.41
-  - guzzlehttp/guzzle updated from 6.4.1 to 6.5.3
+  - guzzlehttp/guzzle updated from 6.4.1 to 6.5.4
   - imagine/imagine updated from 0.7.1 to 1.3.3
   - itsjavi/fontawesome-iconpicker installed in 3.2.0
   - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using lightcoresystems/i18n-routing-bundle dev-master instead)
@@ -101,6 +102,7 @@
   - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
   - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
   - Removed elao/web-profiler-extra-bundle
+  - Removed jdorn/sql-formatter (in favour of doctrine/sql-formatter fork)
   - Removed jms/translation-bundle (in favour of php-translation/*)
   - Removed oyejorge/less.php
   - Removed ramsey/array_column
