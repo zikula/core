@@ -23,7 +23,7 @@
   - doctrine/inflector updated from 1.1.0 to 1.4.2
   - doctrine/instantiator updated from 1.0.5 to 1.3.0
   - doctrine/lexer updated from 1.0.2 to 1.2.1
-  - doctrine/orm updated from 2.5.14 to 2.7.2
+  - doctrine/orm updated from 2.5.14 to 2.7.3
   - doctrine/persistence installed in 1.3.7
   - doctrine/reflection installed in 1.2.1
   - doctrine/sql-formatter installed in 1.1.1
