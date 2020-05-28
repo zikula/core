@@ -5024,20 +5024,20 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "5cad59cd0dbde21bb9da69252cddf9df47a75a51"
+                "reference": "69e01844e38445cb15631cfe49949ecc08605576"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/5cad59cd0dbde21bb9da69252cddf9df47a75a51",
-                "reference": "5cad59cd0dbde21bb9da69252cddf9df47a75a51",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/69e01844e38445cb15631cfe49949ecc08605576",
+                "reference": "69e01844e38445cb15631cfe49949ecc08605576",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.5",
+                "php": ">=7.2.5",
                 "psr/cache": "^1.0",
                 "psr/container": "^1.0",
                 "psr/event-dispatcher": "^1.0"
@@ -5115,7 +5115,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-09T18:37:03+00:00"
+            "time": "2020-05-27T08:34:37+00:00"
         },
         {
             "name": "symfony/maker-bundle",
