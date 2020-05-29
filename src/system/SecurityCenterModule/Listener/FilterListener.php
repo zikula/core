@@ -211,6 +211,7 @@ class FilterListener implements EventSubscriberInterface
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     $session->getFlashBag()->add('error', $exception->getMessage());
                 }
+
                 return;
             }
             // sth went wrong - maybe the filter rules weren't found
