@@ -48,6 +48,7 @@ class Scanner
             ->notPath('Resources')
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
+            ->followLinks()
             ->depth('<' . $depth)
             ->name('composer.json')
         ;
