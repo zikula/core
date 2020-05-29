@@ -18,6 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ThemeModule\Engine\ParameterBag;
 
 class SiteDefinition implements SiteDefinitionInterface
 {
@@ -38,16 +39,23 @@ class SiteDefinition implements SiteDefinitionInterface
      */
     private $extensionRepository;
 
+    /**
+     * @var ParameterBag
+     */
+    private $pageVars;
+
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
         VariableApiInterface $variableApi,
-        ExtensionRepositoryInterface $extensionRepository
+        ExtensionRepositoryInterface $extensionRepository,
+        ParameterBag $pageVars
     ) {
         $this->setTranslator($translator);
         $this->requestStack = $requestStack;
         $this->variableApi = $variableApi;
         $this->extensionRepository = $extensionRepository;
+        $this->pageVars = $pageVars;
     }
 
     public function getName(): string
@@ -62,7 +70,7 @@ class SiteDefinition implements SiteDefinitionInterface
 
     public function getPageTitle(): string
     {
-        $title = $this->variableApi->getSystemVar('defaultpagetitle', '');
+        $title = $this->pageVars->get('title', $this->variableApi->getSystemVar('defaultpagetitle', ''));
         $titleScheme = $this->variableApi->getSystemVar('pagetitle', '');
         if (!empty($titleScheme) && '%pagetitle%' !== $titleScheme) {
             $title = str_replace(

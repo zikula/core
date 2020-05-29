@@ -34,7 +34,7 @@ class Hook
      */
     protected $caller;
 
-    public function getCaller(): string
+    public function getCaller(): ?string
     {
         return $this->caller;
     }

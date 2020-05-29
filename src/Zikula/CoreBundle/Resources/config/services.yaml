@@ -59,6 +59,10 @@ services:
         arguments:
           $loggableListener: '@stof_doctrine_extensions.listener.loggable'
 
+    Zikula\Bundle\CoreBundle\Site\SiteDefinition:
+        arguments:
+          $pageVars: '@zikula_core.common.theme.pagevars'
+
     Symfony\Component\HttpKernel\Fragment\FragmentHandler: '@fragment.handler'
 
     Michelf\:
