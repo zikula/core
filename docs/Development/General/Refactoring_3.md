@@ -14,13 +14,7 @@ Add the following capability for defining the (default) admin icon:
     "extra": {
         "zikula": {
             …
-            "capabilities": {
-                …
-                "admin": {
-                    …
-                    "icon": "fas fa-star"
-                },
-                …
+                "icon": "fas fa-star"
             },
         },
     },
@@ -42,6 +36,8 @@ Further information can be found [in Symfony docs](https://symfony.com/doc/curre
 Module services should be registered by their classname (automatically as above) and not with old-fashioned
 `service.class.dot.notation`.
 
+Change `.yml` suffixes to `.yaml` (e.g. `routing.yaml`) and update `Extension.php` class.
+
 ### Blocks
 
 BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface` as in Core-2.0 but there is no longer
@@ -51,7 +47,7 @@ used as the service name.
 ### Extension menus
 
 `Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
-removed. Extension menus are not implemented using Knp Menu instead. See docs and system modules for further
+removed. Extension menus are now implemented using Knp Menu instead. See docs and system modules for further
 information and examples.
 
 ## Sending mails
@@ -248,6 +244,8 @@ and so on…
 
 - Change all template names from e.g. `Bundle:Controller:Action.html.twig` to `@Bundle/Controller/Action.html.twig`.
 - Modules and themes retain the `Module` or `Theme` suffix but bundles do not.
+- The form theme `@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig`
+  - is changed to `@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig`
 
 ### Templates
 
