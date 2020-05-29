@@ -206,6 +206,13 @@ class FilterListener implements EventSubscriberInterface
                 $this->processIdsResult($result, $request);
             }
         } catch (Exception $exception) {
+            if ($exception instanceof RuntimeException) {
+                // soft block
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    $session->getFlashBag()->add('error', $exception->getMessage());
+                }
+                return;
+            }
             // sth went wrong - maybe the filter rules weren't found
             throw new Exception($this->translator->trans('An error occured during executing PHPIDS: %message%', ['%message%' => $exception->getMessage()]));
         }
