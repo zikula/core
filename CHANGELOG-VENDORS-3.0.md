@@ -17,12 +17,12 @@
   - doctrine/annotations updated from 1.2.7 to 1.10.3
   - doctrine/cache updated from 1.10.0 to 1.10.1
   - doctrine/collections updated from 1.3.0 to 1.6.5
-  - doctrine/common updated from 2.6.2 to 2.13.1
+  - doctrine/common updated from 2.6.2 to 2.13.2
   - doctrine/dbal updated from 2.5.13 to 2.10.2
   - doctrine/doctrine-bundle updated from 1.6.13 to 2.1.0
   - doctrine/event-manager installed in 1.1.0
   - doctrine/inflector updated from 1.1.0 to 1.4.3
-  - doctrine/instantiator updated from 1.0.5 to 1.3.0
+  - doctrine/instantiator updated from 1.0.5 to 1.3.1
   - doctrine/lexer updated from 1.0.2 to 1.2.1
   - doctrine/orm updated from 2.5.14 to 2.7.3
   - doctrine/persistence installed in 1.3.7
