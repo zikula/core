@@ -3,3 +3,8 @@ framework:
 
     # see https://symfony.com/doc/current/reference/configuration/framework.html#ide
     #ide: phpstorm
+
+parameters:
+    # settings for container dumper
+    container.dumper.inline_factories: true
+    container.dumper.inline_class_loader: true

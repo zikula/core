@@ -1,5 +1,4 @@
 framework:
-    secret: '%env(APP_SECRET)%'
     csrf_protection: ~
     #http_method_override: true
 
@@ -22,3 +21,8 @@ framework:
     #fragments: true
     php_errors:
         log: true
+
+parameters:
+    # settings for container dumper
+    container.dumper.inline_factories: true
+    container.dumper.inline_class_loader: false
