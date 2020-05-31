@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +42,7 @@ class ZikulaExtensionUpgradeCommand extends AbstractExtensionCommand
                 $io->error('The extension is not installed and therefore cannot be upgraded.');
             }
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (false !== $extension = $this->isUpgradeable($bundleName)) {
@@ -49,7 +50,7 @@ class ZikulaExtensionUpgradeCommand extends AbstractExtensionCommand
                 $io->error('The extension cannot be upgraded because its version number has not changed.');
             }
 
-            return 2;
+            return Command::FAILURE;
         }
 
         if (!$this->extensionHelper->upgrade($extension)) {
@@ -57,14 +58,14 @@ class ZikulaExtensionUpgradeCommand extends AbstractExtensionCommand
                 $io->error('The extension could not be upgraded.');
             }
 
-            return 3;
+            return Command::FAILURE;
         }
 
         if ($input->isInteractive()) {
             $io->success('The extension has been upgraded.');
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function isUpgradeable(string $bundleName)

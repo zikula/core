@@ -55,14 +55,15 @@ class ZikulaUsersImportCommand extends Command
 
         $file = new File($path);
         $error = $this->ioHelper->importUsersFromFile($file, $delimiter);
-        if (empty($error)) {
-            $createdUsers = $this->ioHelper->getCreatedUsers();
-            $io->success(sprintf('Import successful. %d users imported', count($createdUsers)));
+        if (!empty($error)) {
+            $io->error($error);
 
-            return 0;
+            return Command::FAILURE;
         }
-        $io->error($error);
 
-        return 1;
+        $createdUsers = $this->ioHelper->getCreatedUsers();
+        $io->success(sprintf('Import successful. %d users imported', count($createdUsers)));
+
+        return Command::SUCCESS;
     }
 }

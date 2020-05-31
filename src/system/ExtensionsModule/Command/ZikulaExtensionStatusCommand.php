@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -42,14 +43,14 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
         if (!$input->isInteractive()) {
             $io->error('This command only runs in interactive mode.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $this->reSync();
         if (null === $extension = $this->extensionRepository->findOneBy(['name' => $bundleName])) {
             $io->error('The extension cannot be found, please check the name.');
 
-            return 2;
+            return Command::FAILURE;
         }
 
         $status = $this->translateState($extension->getState());
@@ -57,7 +58,7 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
             if ('status' === $get) {
                 $io->text($status);
 
-                return 0;
+                return Command::SUCCESS;
             }
             $method = 'get' . ucfirst($get);
             try {
@@ -67,7 +68,7 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
                 $io->error(sprintf('There is no property %s', $get));
             }
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $io->title(sprintf('Status of %s', $bundleName));
@@ -82,7 +83,7 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
             ]
         );
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function translateState(int $state): string

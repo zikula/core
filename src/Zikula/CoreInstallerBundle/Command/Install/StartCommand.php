@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -86,14 +87,14 @@ class StartCommand extends AbstractCoreInstallerCommand
         if (true === $this->installed) {
             $io->error($this->translator->trans('Zikula already appears to be installed.'));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $iniWarnings = $this->phpHelper->setUp();
         if (!empty($iniWarnings)) {
             $this->printWarnings($output, $iniWarnings);
 
-            return 2;
+            return Command::FAILURE;
         }
 
         if ($input->isInteractive()) {
@@ -127,7 +128,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             if (!$confirmation) {
                 $io->error($this->translator->trans('Installation aborted'));
 
-                return 3;
+                return Command::FAILURE;
             }
         }
 
@@ -136,7 +137,7 @@ class StartCommand extends AbstractCoreInstallerCommand
 
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function doDBCreds(InputInterface $input, OutputInterface $output, StyleInterface $io): bool

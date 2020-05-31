@@ -77,7 +77,7 @@ class FinishCommand extends Command
         if (true === $this->installed) {
             $io->error($this->translator->trans('Zikula already appears to be installed.'));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if ($input->isInteractive()) {
@@ -90,6 +90,6 @@ class FinishCommand extends Command
 
         $io->success($this->translator->trans('Install Successful!'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

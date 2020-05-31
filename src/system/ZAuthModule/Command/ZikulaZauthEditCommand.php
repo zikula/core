@@ -110,12 +110,12 @@ EOT
         } catch (\Exception $e) {
             $io->error($this->translator->trans('Found more than one user by that criteria. Try a different criteria (uid works best).'));
 
-            return 1;
+            return Command::FAILURE;
         }
         if (empty($mapping)) {
             $io->error($this->translator->trans('Found zero users by that criteria. Try a different criteria (uid works best).'));
 
-            return 1;
+            return Command::FAILURE;
         }
         $choices = [
             $this->translator->trans('password'),
@@ -130,7 +130,7 @@ EOT
         if (0 !== count($errors)) {
             $io->error($this->translator->trans('Invalid %choice%', ['%choice%' => $choice]) . '. ' . $errors[0]->getMessage());
 
-            return 2;
+            return Command::FAILURE;
         }
 
         switch ($choice) {
@@ -149,6 +149,6 @@ EOT
         $this->authenticationMappingRepository->persistAndFlush($mapping);
         $io->success($this->translator->trans('The %choice% has been changed.', ['%choice%' => $choice]));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
