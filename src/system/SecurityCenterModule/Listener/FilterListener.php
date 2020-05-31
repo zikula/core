@@ -32,6 +32,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\CacheDirHelper;
@@ -45,6 +46,11 @@ use Zikula\UsersModule\Constant;
  */
 class FilterListener implements EventSubscriberInterface
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
     /**
      * @var ZikulaSecurityCenterModule
      */
@@ -101,6 +107,7 @@ class FilterListener implements EventSubscriberInterface
     private $isUpgrading;
 
     public function __construct(
+        ZikulaHttpKernelInterface $kernel,
         ZikulaSecurityCenterModule $securityCenterModule,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
@@ -112,6 +119,7 @@ class FilterListener implements EventSubscriberInterface
         string $installed,
         $isUpgrading // cannot cast to bool because set with expression language
     ) {
+        $this->kernel = $kernel;
         $this->securityCenterModule = $securityCenterModule;
         $this->variableApi = $variableApi;
         $this->em = $em;
@@ -224,6 +232,7 @@ class FilterListener implements EventSubscriberInterface
      */
     private function getIdsConfig(): array
     {
+        $vendorDir = $this->kernel->getProjectDir() . '/vendor/';
         $config = [];
 
         // General configuration settings
@@ -234,8 +243,7 @@ class FilterListener implements EventSubscriberInterface
             $config['General']['filter_type'] = 'xml';
         }
 
-        $config['General']['base_path'] = ''; //PHPIDS_PATH_PREFIX;
-        // we don't use the base path because the tmp directory is in zkTemp (see below)
+        $config['General']['base_path'] = $vendorDir . 'phpids/phpids/lib/IDS/';
         $config['General']['use_base_path'] = false;
 
         // path to the filters used
@@ -248,8 +256,7 @@ class FilterListener implements EventSubscriberInterface
 
         // we use a different HTML Purifier source
         // by default PHPIDS does also contain those files
-        // we do this more efficiently in boostrap (drak).
-        $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IdsMonitor will never fill in the HTML_Purifier_Cache property (drak).
+        $config['General']['HTML_Purifier_Path'] = $vendorDir . 'ezyang/htmlpurifier/library/HTMLPurifier.auto.php';
         $config['General']['HTML_Purifier_Cache'] = $this->cacheDir . '/purifier';
         $this->cacheDirHelper->ensureCacheDirectoryExists($config['General']['tmp_path'], true);
 
