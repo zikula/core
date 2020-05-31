@@ -83,6 +83,11 @@ class FilterListener implements EventSubscriberInterface
     /**
      * @var string
      */
+    private $projectDir;
+
+    /**
+     * @var string
+     */
     private $cacheDir;
 
     /**
@@ -107,6 +112,7 @@ class FilterListener implements EventSubscriberInterface
         MailerInterface $mailer,
         LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         TranslatorInterface $translator,
+        string $projectDir,
         string $cacheDir,
         CacheDirHelper $cacheDirHelper,
         string $installed,
@@ -118,6 +124,7 @@ class FilterListener implements EventSubscriberInterface
         $this->mailer = $mailer;
         $this->logger = $mailLogger;
         $this->translator = $translator;
+        $this->projectDir = $projectDir;
         $this->cacheDir = $cacheDir;
         $this->cacheDirHelper = $cacheDirHelper;
         $this->installed = '0.0.0' !== $installed;
@@ -224,6 +231,7 @@ class FilterListener implements EventSubscriberInterface
      */
     private function getIdsConfig(): array
     {
+        $vendorDir = $this->projectDir . '/vendor/';
         $config = [];
 
         // General configuration settings
@@ -234,8 +242,7 @@ class FilterListener implements EventSubscriberInterface
             $config['General']['filter_type'] = 'xml';
         }
 
-        $config['General']['base_path'] = ''; //PHPIDS_PATH_PREFIX;
-        // we don't use the base path because the tmp directory is in zkTemp (see below)
+        $config['General']['base_path'] = $vendorDir . 'phpids/phpids/lib/IDS/';
         $config['General']['use_base_path'] = false;
 
         // path to the filters used
@@ -248,8 +255,7 @@ class FilterListener implements EventSubscriberInterface
 
         // we use a different HTML Purifier source
         // by default PHPIDS does also contain those files
-        // we do this more efficiently in boostrap (drak).
-        $config['General']['HTML_Purifier_Path'] = ''; // this must be set or IdsMonitor will never fill in the HTML_Purifier_Cache property (drak).
+        $config['General']['HTML_Purifier_Path'] = $vendorDir . 'ezyang/htmlpurifier/library/HTMLPurifier.auto.php';
         $config['General']['HTML_Purifier_Cache'] = $this->cacheDir . '/purifier';
         $this->cacheDirHelper->ensureCacheDirectoryExists($config['General']['tmp_path'], true);
 

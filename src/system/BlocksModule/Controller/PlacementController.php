@@ -73,7 +73,10 @@ class PlacementController extends AbstractController
      */
     public function changeBlockOrderAction(Request $request): JsonResponse
     {
-        $blockorder = $request->request->get('blockorder', []); // [7, 1]
+        $blockOrder = $request->request->get('blockorder', null); // [7, 1]
+        if (null === $blockOrder) {
+            $blockOrder = [];
+        }
         $position = $request->request->get('position'); // 1
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -88,7 +91,7 @@ class PlacementController extends AbstractController
         $query->getResult();
 
         // add new block positions
-        foreach ((array)$blockorder as $order => $bid) {
+        foreach ((array)$blockOrder as $order => $bid) {
             $placement = new BlockPlacementEntity();
             $placement->setPosition($em->getReference('ZikulaBlocksModule:BlockPositionEntity', $position));
             $placement->setBlock($em->getReference('ZikulaBlocksModule:BlockEntity', $bid));

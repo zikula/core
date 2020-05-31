@@ -66,7 +66,7 @@
   - symfony/contracts installed in 2.1.2
   - symfony/maker-bundle installed in 1.19.0
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
-  - symfony/phpunit-bridge updated from 3.4.14 to 5.0.8
+  - symfony/phpunit-bridge updated from 3.4.14 to 5.1.0
   - symfony/polyfill-ctype updated from 1.12.0 to 1.17.0
   - symfony/polyfill-intl-grapheme installed in 1.17.0
   - symfony/polyfill-intl-icu updated from 1.11.0 to 1.17.0
@@ -76,8 +76,10 @@
   - symfony/polyfill-mbstring updated from 1.12.0 to 1.17.0
   - symfony/polyfill-php72 installed in 1.17.0
   - symfony/polyfill-php73 installed in 1.17.0
+  - symfony/polyfill-php80 installed in 1.17.0
+  - symfony/polyfill-uuid installed in 1.17.0
   - symfony/profiler-pack installed in 1.0.4
-  - symfony/symfony updated from 3.4.35 to 5.0.8
+  - symfony/symfony updated from 3.4.35 to 5.1.0
   - thomaspark/bootswatch installed in 4.5.0
   - tijsverkoyen/css-to-inline-styles installed in 2.2.2
   - twig/extra-bundle installed in 3.0.3
@@ -91,10 +93,10 @@
   - vakata/jstree updated from 3.3.8 to 3.3.9
   - webmozart/assert updated from 1.5.0 to 1.8.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.1
-  - zikula/legal-module updated from 3.1.2 to dev-master
-  - zikula/oauth-module updated from 1.0.4 to dev-master
-  - zikula/pagelock-module updated from 1.2.3 to dev-master
-  - zikula/profile-module updated from 3.0.6 to dev-master
+  - zikula/legal-module updated from 3.1.2 to 3.2.6
+  - zikula/oauth-module updated from 1.0.4 to 1.2.0
+  - zikula/pagelock-module updated from 1.2.3 to 1.3.7
+  - zikula/profile-module updated from 3.0.6 to 3.1.14
   - zikula/wizard updated from 2.0 to 3.0.3
 
 - Dropped vendors:

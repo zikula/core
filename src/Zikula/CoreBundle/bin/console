@@ -12,7 +12,13 @@ if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
 
 set_time_limit(0);
 
-foreach ([__DIR__ . '/../../../../vendor/autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
+$possibleRootDirectories = [
+    __DIR__ . '/../../../../',
+    __DIR__ . '/../'
+];
+
+foreach ($possibleRootDirectories as $directory) {
+    $file = $directory . 'vendor/autoload.php';
     if (file_exists($file)) {
         require $file;
         break;
@@ -38,7 +44,8 @@ if ($input->hasParameterOption('--no-debug', true)) {
     putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
 }
 
-foreach ([__DIR__ . '/../../../../config/bootstrap.php', __DIR__ . '/../config/bootstrap.php'] as $file) {
+foreach ($possibleRootDirectories as $directory) {
+    $file = $directory . 'config/bootstrap.php';
     if (file_exists($file)) {
         require $file;
         break;
