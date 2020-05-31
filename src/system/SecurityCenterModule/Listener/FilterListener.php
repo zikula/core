@@ -32,7 +32,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\CacheDirHelper;
@@ -46,11 +45,6 @@ use Zikula\UsersModule\Constant;
  */
 class FilterListener implements EventSubscriberInterface
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
     /**
      * @var ZikulaSecurityCenterModule
      */
@@ -89,6 +83,11 @@ class FilterListener implements EventSubscriberInterface
     /**
      * @var string
      */
+    private $projectDir;
+
+    /**
+     * @var string
+     */
     private $cacheDir;
 
     /**
@@ -107,25 +106,25 @@ class FilterListener implements EventSubscriberInterface
     private $isUpgrading;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
         ZikulaSecurityCenterModule $securityCenterModule,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
         MailerInterface $mailer,
         LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         TranslatorInterface $translator,
+        string $projectDir,
         string $cacheDir,
         CacheDirHelper $cacheDirHelper,
         string $installed,
         $isUpgrading // cannot cast to bool because set with expression language
     ) {
-        $this->kernel = $kernel;
         $this->securityCenterModule = $securityCenterModule;
         $this->variableApi = $variableApi;
         $this->em = $em;
         $this->mailer = $mailer;
         $this->logger = $mailLogger;
         $this->translator = $translator;
+        $this->projectDir = $projectDir;
         $this->cacheDir = $cacheDir;
         $this->cacheDirHelper = $cacheDirHelper;
         $this->installed = '0.0.0' !== $installed;
@@ -232,7 +231,7 @@ class FilterListener implements EventSubscriberInterface
      */
     private function getIdsConfig(): array
     {
-        $vendorDir = $this->kernel->getProjectDir() . '/vendor/';
+        $vendorDir = $this->projectDir . '/vendor/';
         $config = [];
 
         // General configuration settings
