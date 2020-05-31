@@ -81,7 +81,7 @@ EOT
         if (count(array_filter($params)) > 1) {
             $io->error('Do not use more than one option or argument.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $users = new ArrayCollection();
@@ -92,7 +92,7 @@ EOT
                 } catch (\InvalidArgumentException $exception) {
                     $io->error($exception->getMessage());
 
-                    return 2;
+                    return Command::FAILURE;
                 }
                 break;
             }
@@ -101,7 +101,7 @@ EOT
         if ($users->isEmpty()) {
             $io->error('No users found!');
 
-            return 3;
+            return Command::FAILURE;
         }
 
         $io->title('Zikula user deletion');
@@ -116,6 +116,6 @@ EOT
 
         $io->success(sprintf('Success! %d users %s.', $count, $force ? 'deleted' : 'converted to ghost'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

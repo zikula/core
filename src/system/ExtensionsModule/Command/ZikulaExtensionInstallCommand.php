@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,7 +46,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
                 $io->error('Extension is already installed but possibly inactive.');
             }
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$this->kernel->isBundle($bundleName)) {
@@ -68,7 +69,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
         if (!empty($dependencyNames)) {
             $io->error(sprintf('Cannot install because this extension depends on other extensions. Please install the following extensions first: %s', implode(', ', $dependencyNames)));
 
-            return 2;
+            return Command::FAILURE;
         }
 
         if (false === $this->extensionHelper->install($extension)) {
@@ -76,7 +77,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
                 $io->error('Could not install the extension');
             }
 
-            return 3;
+            return Command::FAILURE;
         }
 
         $this->eventDispatcher->dispatch(new ExtensionPostCacheRebuildEvent($this->kernel->getBundle($extension->getName()), $extension));
@@ -85,7 +86,7 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
             $io->success('Extension installed');
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function load(string $bundleName): void

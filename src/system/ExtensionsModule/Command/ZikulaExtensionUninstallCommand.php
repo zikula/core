@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,7 +43,7 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
                 $io->error('The extension is not installed and therefore cannot be uninstalled.');
             }
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (Constant::STATE_MISSING === $extension->getState()) {
@@ -50,7 +51,7 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
                 $io->error('The extension cannot be uninstalled because its files are missing.');
             }
 
-            return 2;
+            return Command::FAILURE;
         }
 
         $requiredDependents = $this->dependencyHelper->getDependentExtensions($extension);
@@ -63,7 +64,7 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
                 $io->error(sprintf('The extension is a required dependency of [%s]. Please uninstall these extensions first.', $names));
             }
 
-            return 3;
+            return Command::FAILURE;
         }
 
         $blocks = $this->blockRepository->findBy(['module' => $extension]);
@@ -74,7 +75,7 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
                 $io->error('Could not uninstall the extension');
             }
 
-            return 4;
+            return Command::FAILURE;
         }
 
         $this->reSync();
@@ -83,6 +84,6 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
             $io->success('The extension has been uninstalled.');
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

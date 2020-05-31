@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -115,7 +116,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         if (version_compare($this->installed, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
             $output->writeln($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $this->installed, '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $io = new SymfonyStyle($input, $output);
@@ -129,7 +130,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         if (!empty($iniWarnings)) {
             $this->printWarnings($output, $iniWarnings);
 
-            return 2;
+            return Command::FAILURE;
         }
 
         $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config', 'services_custom.yaml');
@@ -160,7 +161,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $io->success($this->translator->trans('Upgrade successful!'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function migrateUsers(InputInterface $input, OutputInterface $output, SymfonyStyle $io): void

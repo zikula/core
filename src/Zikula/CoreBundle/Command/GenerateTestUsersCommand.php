@@ -152,7 +152,7 @@ EOT
         $io->success('User generation complete!');
         $io->text(sprintf('%d users created (group name: <info>group%s</info>).', $amount, $key));
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function configureActivatedStatus(string $value): int

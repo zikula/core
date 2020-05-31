@@ -71,6 +71,6 @@ class ZikulaExtensionSyncCommand extends Command
 
         $io->success('Complete');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
