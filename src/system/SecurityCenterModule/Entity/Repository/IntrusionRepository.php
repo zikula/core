@@ -124,8 +124,8 @@ class IntrusionRepository extends ServiceEntityRepository
      */
     public function truncateTable(): void
     {
-        $qb = $this->_em->createQueryBuilder('tbl')
-            ->delete(IntrusionEntity::class, 'tbl');
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->delete(IntrusionEntity::class, 'tbl');
         $query = $qb->getQuery();
 
         $query->execute();

@@ -41,11 +41,8 @@ class PathBuilderHelper
             return $route->getPath();
         }
 
-        /**
-         * @var AbstractExtension $extensionBundle
-         */
-        $extensionBundle = null;
         try {
+            /** @var AbstractExtension $extensionBundle */
             $extensionBundle = $this->kernel->getBundle($route->getBundle());
         } catch (Exception $exception) {
             return $route->getPath();

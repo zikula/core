@@ -68,7 +68,6 @@ class CategoryProcessingHelper
         // collect parents
         $isOnTop = false;
         $parentIds = [$category->getId()];
-        $directParent = $category;
         while (false === $isOnTop) {
             $directParent = $category->getParent();
             if (null === $directParent) {
