@@ -53,7 +53,7 @@ class InlineFormDefinitionType extends AbstractType
         foreach ($this->dynamicFieldsContainer->getDynamicFieldsSpecification() as $fieldSpecification) {
             $fieldOptions = $fieldSpecification->getFormOptions();
             $fieldOptions['label'] = $fieldOptions['label'] ?? $fieldSpecification->getLabel($this->translator->getLocale());
-            $this->removeChoiceLoader($fieldSpecification->getFormType(), $fieldOptions);
+            $fieldOptions = $this->removeChoiceLoader($fieldSpecification->getFormType(), $fieldOptions);
 
             $prefix = $fieldSpecification->getPrefix();
             $prefix = null !== $prefix && '' !== $prefix ? $prefix . ':' : '';
@@ -63,9 +63,9 @@ class InlineFormDefinitionType extends AbstractType
     }
 
     /**
-     * Symfony 4 requires the choice_loader be nullified for certain FormTypes
+     * Symfony 4+ requires the choice_loader be nullified for certain form types.
      */
-    private function removeChoiceLoader($type, &$fieldOptions): void
+    private function removeChoiceLoader($type, $fieldOptions): array
     {
         if (in_array($type, [
             CountryType::class,
@@ -76,6 +76,8 @@ class InlineFormDefinitionType extends AbstractType
         ])) {
             $fieldOptions['choice_loader'] = null;
         }
+
+        return $fieldOptions;
     }
 
     public function getBlockPrefix()
