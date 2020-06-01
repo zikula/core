@@ -5,7 +5,7 @@ Disallow: /config
 Disallow: /docs
 Disallow: /src
 Disallow: /templates
-Disallow: /test_dbs
+Disallow: /tests
 Disallow: /translations
 Disallow: /var
 Disallow: /vendor
