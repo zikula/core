@@ -61,6 +61,6 @@ class ModuleHeaderFunction
             'image' => $image
         ]);
 
-        return $this->handler->render($ref);
+        return $this->handler->render($ref) ?? '';
     }
 }

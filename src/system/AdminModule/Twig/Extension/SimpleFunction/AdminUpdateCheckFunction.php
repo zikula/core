@@ -38,6 +38,6 @@ class AdminUpdateCheckFunction
     {
         $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::updatecheckAction');
 
-        return $this->handler->render($ref);
+        return $this->handler->render($ref) ?? '';
     }
 }

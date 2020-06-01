@@ -38,6 +38,6 @@ class AdminSecurityAnalyzerFunction
     {
         $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::securityanalyzerAction');
 
-        return $this->handler->render($ref);
+        return $this->handler->render($ref) ?? '';
     }
 }

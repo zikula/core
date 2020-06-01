@@ -38,6 +38,6 @@ class AdminHeaderFunction
     {
         $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::headerAction');
 
-        return $this->handler->render($ref);
+        return $this->handler->render($ref) ?? '';
     }
 }

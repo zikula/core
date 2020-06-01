@@ -38,6 +38,6 @@ class ModuleFooterFunction
     {
         $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::footerAction');
 
-        return $this->handler->render($ref);
+        return $this->handler->render($ref) ?? '';
     }
 }

@@ -38,6 +38,6 @@ class AdminFooterFunction
     {
         $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::footerAction');
 
-        return $this->handler->render($ref);
+        return $this->handler->render($ref) ?? '';
     }
 }

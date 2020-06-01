@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo as SfSplFileInfo;
 
 class PurgeVendorsCommand extends Command
 {
@@ -57,7 +57,7 @@ class PurgeVendorsCommand extends Command
         $progress->advance();
 
         $paths = [];
-        /** @var SplFileInfo $file */
+        /** @var SfSplFileInfo $file */
         foreach ($finder as $file) {
             $paths[] = $file->getRealPath();
         }

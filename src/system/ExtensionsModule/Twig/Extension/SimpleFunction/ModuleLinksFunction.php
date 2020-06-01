@@ -67,6 +67,6 @@ class ModuleLinksFunction
             'template' => $template
         ]);
 
-        return $this->handler->render($ref);
+        return $this->handler->render($ref) ?? '';
     }
 }
