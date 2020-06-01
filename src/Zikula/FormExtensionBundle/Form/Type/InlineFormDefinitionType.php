@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\LanguageType;
-use Symfony\Component\Form\Extension\Core\Type\LocaleType;
+use Symfony\Component\Form\Extension\Core\Type\LocaleType as SfLocaleType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -71,7 +71,7 @@ class InlineFormDefinitionType extends AbstractType
             CountryType::class,
             CurrencyType::class,
             LanguageType::class,
-            LocaleType::class,
+            SfLocaleType::class,
             TimezoneType::class
         ])) {
             $fieldOptions['choice_loader'] = null;

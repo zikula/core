@@ -58,7 +58,7 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
         if (!empty($requiredDependents)) {
             if ($input->isInteractive()) {
                 $names = implode(', ', array_map(function (ExtensionEntity $dependent) {
-                    return $dependent->getModname();
+                    return $dependent->getName();
                 }, $requiredDependents));
 
                 $io->error(sprintf('The extension is a required dependency of [%s]. Please uninstall these extensions first.', $names));

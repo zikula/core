@@ -51,13 +51,16 @@ class CacheHelper
     {
         // clear cache with zikula's method
         $this->zikulaCacheClearer->clear('symfony');
+
         // use full symfony cache_clearer not zikula's to clear entire cache and set for warmup
         // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.
         $this->symfonyCacheClearer->clear('dev');
         $this->symfonyCacheClearer->clear('prod');
-        if (!in_array($this->kernel->getEnvironment(), ['dev', 'prod'], true)) {
+
+        $env = $this->kernel->getEnvironment();
+        if (!in_array($env, ['dev', 'prod'], true)) {
             // this is just in case anyone ever creates a mode that isn't dev|prod
-            $this->symfonyCacheClearer->clear($this->kernel->getEnvironment());
+            $this->symfonyCacheClearer->clear($env);
         }
 
         return true;

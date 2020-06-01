@@ -36,7 +36,7 @@ trait StandardFieldsTrait
     /**
      * The creation timestamp of this entity
      *
-     * @var DateTime
+     * @var DateTimeInterface
      * @ORM\Column(type="datetime", name="cr_date")
      * @Gedmo\Timestampable(on="create")
      */
@@ -55,7 +55,7 @@ trait StandardFieldsTrait
     /**
      * The last updated timestamp of this entity
      *
-     * @var DateTime
+     * @var DateTimeInterface
      * @ORM\Column(type="datetime", name="lu_date")
      * @Gedmo\Timestampable(on="update")
      */
