@@ -57,7 +57,7 @@ class CacheHelper
         $this->symfonyCacheClearer->clear('prod');
         if (!in_array($this->kernel->getEnvironment(), ['dev', 'prod'], true)) {
             // this is just in case anyone ever creates a mode that isn't dev|prod
-            $this->symfonyCacheClearer->clear($this->env);
+            $this->symfonyCacheClearer->clear($this->kernel->getEnvironment());
         }
 
         return true;
