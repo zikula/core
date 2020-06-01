@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
