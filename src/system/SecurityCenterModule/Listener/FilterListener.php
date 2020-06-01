@@ -184,16 +184,6 @@ class FilterListener implements EventSubscriberInterface
             if ($request->server->has('USER_AGENT')) {
                 $requestArgs['USER_AGENT'] = $request->server->get('USER_AGENT');
             }
-            // while i think that REQUEST_URI is unnecessary,
-            // the REFERER would be important, but results in way too many false positives
-            /*
-            if ($request->server->has('REQUEST_URI')) {
-                $requestArgs['REQUEST_URI'] = $request->server->get('REQUEST_URI');
-            }
-            if ($request->server->has('HTTP_REFERER')) {
-                $requestArgs['REFERER'] = $request->server->get('HTTP_REFERER');
-            }
-            */
 
             // initialise configuration object
             $init = IdsInit::init();
