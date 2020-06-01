@@ -17,7 +17,6 @@ use ReflectionClass;
 use ReflectionException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,21 +47,20 @@ class EditorController extends AbstractController
      */
     public function indexAction(
         Request $request,
-        ContainerInterface $container,
         Registry $workflowRegistry,
         TranslatorInterface $translator
     ): array {
         $workflowType = 'workflow';
         $workflowName = $workflowType . '.' . $request->query->get('workflow', '');
-        if (!$container->has($workflowName)) {
+        if (!$this->container->has($workflowName)) {
             $workflowType = 'state_machine';
             $workflowName = $workflowType . '.' . $request->query->get('workflow', '');
         }
-        if (!$container->has($workflowName)) {
+        if (!$this->container->has($workflowName)) {
             throw new NotFoundHttpException($translator->trans('Workflow "%workflow%" not found.', ['%workflow%' => $workflowName]));
         }
 
-        $workflow = $container->get($workflowName);
+        $workflow = $this->container->get($workflowName);
         $workflowDefinition = $workflow->getDefinition();
 
         $markingStoreType = '';
