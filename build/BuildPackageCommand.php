@@ -58,7 +58,6 @@ class BuildPackageCommand extends Command
         $progress->advance();
 
         PurgeVendorsCommand::cleanVendors("${buildDir}/${name}/vendor", $progress);
-        FixAutoloaderCommand::fix("${buildDir}/${name}/vendor", $progress);
 
         $writableArray = [
             "${buildDir}/${name}/var/cache",
