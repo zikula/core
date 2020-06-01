@@ -55,7 +55,6 @@ class ClickjackProtectionListener implements EventSubscriberInterface
         $response = $event->getResponse();
 
         $response->headers->set('X-Frame-Options', $this->xFrameOptions);
-        //$response->headers->set('X-Content-Security-Policy', "frame-ancestors 'self'");
         $response->headers->set('X-XSS-Protection', '1');
     }
 }
