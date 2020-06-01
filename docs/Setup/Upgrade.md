@@ -46,6 +46,7 @@ The following process should be followed for all upgrades even small point relea
     - Do not change any other values.
   - From the new installation, copy the `.env` file to `.env.local`
     - **Add** `ZIKULA_INSTALLED='a.b.c'` to the end of the file. Change `a.b.c` to the exact version of your existing install (e.g. `2.0.11`).
+
 ### Continue
 
 - Please note, the _web root_ **must** now point to the `public/` directory. Adjust your symlinks or directory structure as needed.
@@ -71,4 +72,4 @@ The following process should be followed for all upgrades even small point relea
 
 - MySQL databases will have been recoded from `utf8` to `utf8mb4`.
   - old copies of `app/config/config.yml` may have contained a reference to `doctrine.dbal.connections.default.charset` but this is removed.
-- Double check fontawesome icons in your menu module options. An attempt has been made to correct them, but manual correction may be required.
+- Double check FontAwesome icons in your menu module options. An attempt has been made to correct them, but manual correction may be required. You can lookup icon name changes between FontAwesome version 4 and 5 [at this page](https://fontawesome.com/how-to-use/on-the-web/setup/upgrading-from-version-4#name-changes).

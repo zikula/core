@@ -101,13 +101,13 @@ automatically redirected to the installer.
 
 Via CLI, access your main zikula directory and run this command:
 
-```Shell
+```shell
 php bin/console zikula:install:start
 ```
 
 Follow the prompts and complete that step. When you are finished, you are directed to run the next command:
 
-```Shell
+```shell
 php bin/console zikula:install:finish
 ```
 

@@ -3,6 +3,8 @@ currentMenu: install
 ---
 # Installation of Zikula on Ubuntu Server
 
+_Note: this tutorial was made for an older version. So while the general proceeding may still be valid, you would need to use updated versions of everything when doing it for the latest Zikula releases._
+
 I found installing Zikula on a Ubuntu Server to be quite the process. This had nothing to do with Zikula, but more with getting all the settings for a new Ubuntu server set up correctly so that Zikula would behave. I therefore decided to write a complete tutorial on how to install Zikula on Ubuntu. This tutorial assumes you have a clean install of an Ubuntu Server and was developed with Ubuntu 16.04 LTS.
 
 This guide borrows heavily from [the guide at Host Presto](https://hostpresto.com/community/tutorials/how-to-install-zikula-on-ubuntu-16-04/), but there were enough little glitches, I thought I would expand on that and make a more bullet-proof guide. I hope this helps folks with their efforts.
