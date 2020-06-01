@@ -50,13 +50,36 @@ jobs:
   copy_config:
     runs-on: ubuntu-latest
     steps:
-      - name: Copy config
+      - name: Copy bootstrap.php
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_path: /config/
-          file_filter: 'bootstrap.php|bundles.php|routes.yaml|services.yaml'
-          dst_path: /config/
+          src_path: /config/bootstrap.php
+          dst_path: /config/bootstrap.php
+          dst_owner: zikula
+          dst_repo_name: distribution
+      - name: Copy bundles.php
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          src_path: /config/bundles.php
+          dst_path: /config/bundles.php
+          dst_owner: zikula
+          dst_repo_name: distribution
+      - name: Copy routes.yaml
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          src_path: /config/routes.yaml
+          dst_path: /config/routes.yaml
+          dst_owner: zikula
+          dst_repo_name: distribution
+      - name: Copy services.yaml
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          src_path: /config/services.yaml
+          dst_path: /config/services.yaml
           dst_owner: zikula
           dst_repo_name: distribution
   copy_dynamic:
