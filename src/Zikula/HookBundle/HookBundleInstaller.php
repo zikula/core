@@ -50,11 +50,7 @@ class HookBundleInstaller implements InstallerInterface
 
     public function install(): bool
     {
-        try {
-            $this->schemaTool->create(self::$entities);
-        } catch (Exception $exception) {
-            return false;
-        }
+        $this->schemaTool->create(self::$entities);
 
         return true;
     }
@@ -70,7 +66,14 @@ class HookBundleInstaller implements InstallerInterface
 
         if (version_compare($currentCoreVersion, '2.0.0', '<')) {
             // remove all old hook-related tables
-            foreach (['hook_area', 'hook_provider', 'hook_subscriber', 'hook_binding', 'hook_runtime'] as $table) {
+            $oldTables = [
+                'hook_area',
+                'hook_provider',
+                'hook_subscriber',
+                'hook_binding',
+                'hook_runtime'
+            ];
+            foreach ($oldTables as $table) {
                 $sql = "DROP TABLE ${table};";
                 $connection = $this->em->getConnection();
                 $stmt = $connection->prepare($sql);
