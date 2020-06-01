@@ -60,27 +60,22 @@ class ZikulaVersionDataCollector extends DataCollector
 
     public function getVersion(): string
     {
-        return $this->data['version'];
+        return $this->data['version'] ?? '';
     }
 
     public function getGhZikulaCoreUrl(): string
     {
-        return $this->data['ghZikulaCoreUrl'];
+        return $this->data['ghZikulaCoreUrl'] ?? '';
     }
 
     public function getGhZikulaDocsUrl(): string
     {
-        return $this->data['ghZikulaDocsUrl'];
-    }
-
-    public function getGhZikulaBootstrapDocsUrl(): string
-    {
-        return $this->data['ghZikulaBootstrapDocsUrl'];
+        return $this->data['ghZikulaDocsUrl'] ?? '';
     }
 
     public function getThemeEngine(): array
     {
-        return $this->data['themeEngine'];
+        return $this->data['themeEngine'] ?? [];
     }
 
     public function getName(): string

@@ -42,5 +42,5 @@ interface GroupRepositoryInterface extends ObjectRepository, Selectable
 
     public function getGroupNamesById(bool $includeAll = true, bool $includeUnregistered = true): array;
 
-    public function getGroupByName(string $name = '', int $excludedGroupId = 0): array;
+    public function getGroupByName(string $name = '', int $excludedGroupId = 0): ?array;
 }

@@ -134,7 +134,7 @@ class PasswordApi implements PasswordApiInterface
         array $hashMethodNameToCode = [],
         string $saltDelimiter = self::SALT_DELIM
     ): string {
-        $saltedHash = false;
+        $saltedHash = '';
         $algoList = hash_algos();
 
         if (in_array($hashMethodName, $algoList, true) && 1 === mb_strlen($saltDelimiter)) {

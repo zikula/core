@@ -126,7 +126,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
         return $groups;
     }
 
-    public function getGroupByName(string $name = '', int $excludedGroupId = 0): array
+    public function getGroupByName(string $name = '', int $excludedGroupId = 0): ?array
     {
         if ('' === $name) {
             return null;
