@@ -6,7 +6,6 @@
 /config/*_custom.yaml
 /config/dynamic/*
 !/config/dynamic/default.yaml
-/config/secrets/prod/prod.decrypt.private.php
 /.env.local
 /.env.local.php
 /.env.*.local
@@ -17,6 +16,12 @@
 /public/*
 !/public/index.php
 !/public/uploads/
+!/public/*.ico
+!/public/*.png
+!/public/*.svg
+!/public/browserconfig.xml
+!/public/robots
+!/public/site.webmanifest
 /src/extensions/*
 !src/extensions/.gitignore
 !/tests/test_dbs/*.sql
