@@ -11,7 +11,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /src/Kernel.php
-          dst_path: /src/Kernel.php
           dst_owner: zikula
           dst_repo_name: distribution
   copy_public:
@@ -22,7 +21,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /public/
-          dst_path: /
           dst_owner: zikula
           dst_repo_name: distribution
   copy_env:
@@ -33,7 +31,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /.env
-          dst_path: /.env
           dst_owner: zikula
           dst_repo_name: distribution
   copy_bootstrap_php:
@@ -44,7 +41,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/bootstrap.php
-          dst_path: /config/bootstrap.php
           dst_owner: zikula
           dst_repo_name: distribution
   copy_bundles_php:
@@ -55,7 +51,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/bundles.php
-          dst_path: /config/bundles.php
           dst_owner: zikula
           dst_repo_name: distribution
   copy_routes_yaml:
@@ -66,7 +61,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/routes.yaml
-          dst_path: /config/routes.yaml
           dst_owner: zikula
           dst_repo_name: distribution
   copy_services_yaml:
@@ -77,7 +71,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/services.yaml
-          dst_path: /config/services.yaml
           dst_owner: zikula
           dst_repo_name: distribution
   copy_dynamic:
@@ -88,7 +81,6 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/dynamic/default.yaml
-          dst_path: /config/dynamic/default.yaml
           dst_owner: zikula
           dst_repo_name: distribution
   copy_packages:
@@ -100,7 +92,6 @@ jobs:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/packages/
           exclude: '*+(/test/|/dev/)*'
-          dst_path: /config/
           dst_owner: zikula
           dst_repo_name: distribution
   copy_routes:
@@ -112,7 +103,6 @@ jobs:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/routes/
           exclude: '*+(/dev/)*'
-          dst_path: /config/
           dst_owner: zikula
           dst_repo_name: distribution
   copy_workflows:
@@ -123,6 +113,5 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/workflows/
-          dst_path: /config/
           dst_owner: zikula
           dst_repo_name: distribution
