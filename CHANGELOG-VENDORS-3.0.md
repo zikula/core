@@ -9,7 +9,7 @@
   - components/font-awesome updated from 4.7.0 to 5.12.1
   - components/jquery updated from 3.4.1 to 3.5.1
   - composer/ca-bundle updated from 1.2.4 to 1.2.7
-  - composer/composer installed in 1.10.6
+  - composer/composer installed in 1.10.7
   - composer/installers updated from 1.7.0 to 1.9.0
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.3
@@ -47,7 +47,7 @@
   - matthiasnoback/symfony-console-form updated from 2.3.0 to 4.1.0
   - michelf/php-markdown updated from 1.7.0 to 1.9.0
   - monolog/monolog updated from 1.25.2 to 2.1.0
-  - nikic/php-parser updated from 1.4.1 to 4.4.0
+  - nikic/php-parser updated from 1.4.1 to 4.5.0
   - nyholm/nsa installed in 1.1.0
   - ocramius/package-versions installed in 1.4.2
   - oro/twig-inspector installed in 1.0.3
