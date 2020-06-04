@@ -13,7 +13,7 @@
   - composer/installers updated from 1.7.0 to 1.9.0
   - composer/semver updated from 1.5.0 to 1.5.1
   - composer/spdx-licenses installed in 1.5.3
-  - composer/xdebug-handler installed in 1.4.1
+  - composer/xdebug-handler installed in 1.4.2
   - doctrine/annotations updated from 1.2.7 to 1.10.3
   - doctrine/cache updated from 1.10.0 to 1.10.1
   - doctrine/collections updated from 1.3.0 to 1.6.5
