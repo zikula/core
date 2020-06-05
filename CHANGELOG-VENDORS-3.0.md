@@ -48,7 +48,7 @@
   - michelf/php-markdown updated from 1.7.0 to 1.9.0
   - monolog/monolog updated from 1.25.2 to 2.1.0
   - nikic/php-parser updated from 1.4.1 to 4.5.0
-  - nyholm/nsa installed in 1.1.0
+  - nyholm/nsa installed in 1.2.0
   - ocramius/package-versions installed in 1.4.2
   - oro/twig-inspector installed in 1.0.3
   - paragonie/random_compat updated from 2.0.18 to 9.99.99
