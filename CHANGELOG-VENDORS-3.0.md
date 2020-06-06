@@ -17,7 +17,7 @@
   - doctrine/annotations updated from 1.2.7 to 1.10.3
   - doctrine/cache updated from 1.10.0 to 1.10.1
   - doctrine/collections updated from 1.3.0 to 1.6.5
-  - doctrine/common updated from 2.6.2 to 2.13.2
+  - doctrine/common updated from 2.6.2 to 2.13.3
   - doctrine/dbal updated from 2.5.13 to 2.10.2
   - doctrine/doctrine-bundle updated from 1.6.13 to 2.1.0
   - doctrine/event-manager installed in 1.1.0
