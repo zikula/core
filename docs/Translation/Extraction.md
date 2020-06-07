@@ -52,6 +52,13 @@ it will cause problems when being used in JavaScript because then `null` appears
 So if you use English translations as translation keys, ensure that you add corresponding values at least for those
 entries that are used in JavaScript files also for the English translation.
 
+You can also use an additional command `zikula:translation:keytovalue` to fix default values:
+
+```shell
+php -dmemory_limit=2G bin/console zikula:translation:keytovalue
+php -dmemory_limit=2G bin/console zikula:translation:keytovalue --bundle AcmeFooModule
+```
+
 ## Translation annotations
 
 To influence the extraction behaviour you can utilise some annotations from the `Translation\Extractor\Annotation` namespace.
