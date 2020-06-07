@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the Zikula package.
+ *
+ * Copyright Zikula - https://ziku.la/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Zikula\Bundle\CoreBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -25,13 +36,13 @@ class TranslationKeyToValueCommand extends Command
         $this->defaultTransPath = $defaultTransPath;
     }
 
-
     protected function configure()
     {
         $this
             ->setDescription('update translation files to remove null values and replace them with the key')
             ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages')
-            ->setHelp(<<<'EOF'
+            ->setHelp(
+                <<<'EOF'
 The <info>%command.name%</info> command transforms translation strings of a given
 bundle or the default translations directory. It sets null messages to the value of the key.
 
