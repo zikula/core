@@ -62,11 +62,14 @@ zikulaextensionsmodule_extension_activate: '/activate/{id}/{token}'
 zikulaextensionsmodule_extension_deactivate: '/deactivate/{id}/{token}'
 zikulaextensionsmodule_extension_modify: '/modify/{id}/{forceDefaults}'
 zikulaextensionsmodule_extension_compatibility: '/compatibility/{id}'
-zikulaextensionsmodule_extension_install: '/install/{id}/{token}'
-zikulaextensionsmodule_extension_postinstall: '/postinstall/{extensions}'
 zikulaextensionsmodule_extension_upgrade: '/upgrade/{id}/{token}'
 zikulaextensionsmodule_extension_uninstall: '/uninstall/{id}/{token}'
+zikulaextensionsmodule_extension_postuninstall: /post-uninstall
 zikulaextensionsmodule_extension_preview: '/theme-preview/{themeName}'
+zikulaextensionsmodule_extensioninstaller_preinstall: '/preinstall/{id}'
+zikulaextensionsmodule_extensioninstaller_install: '/install/{id}'
+zikulaextensionsmodule_extensioninstaller_postinstall: '/postinstall/{extensions}'
+zikulaextensionsmodule_extensioninstaller_cancelinstall: '/cancel-install/{id}'
 zikulaextensionsmodule_extensionsinterface_header: /extensionsinterface/header
 zikulaextensionsmodule_extensionsinterface_footer: /extensionsinterface/footer
 zikulaextensionsmodule_extensionsinterface_breadcrumbs: /extensionsinterface/breadcrumbs
@@ -164,3 +167,5 @@ zikulazauthmodule_useradministration_sendusername: '/admin/send-username/{mappin
 zikulazauthmodule_useradministration_togglepasswordchange: '/admin/toggle-password-change/{user}'
 zikulazauthmodule_useradministration_batchforcepasswordchange: /admin/batch-force-password-change
 zikulabootstraptheme_ajax_changeuserstyle: /ajax/changeUserStyle
+zikulaextensionsmodule_extension_install: '/install/{id}/{token}'
+zikulaextensionsmodule_extension_postinstall: '/postinstall/{extensions}'
