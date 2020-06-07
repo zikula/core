@@ -2131,12 +2131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "ced089434df320de6df9b610854b8fba8bfe1d1e"
+                "reference": "d148edbcf1c477e7df9392bf87c96c49295d3333"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/ced089434df320de6df9b610854b8fba8bfe1d1e",
-                "reference": "ced089434df320de6df9b610854b8fba8bfe1d1e",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d148edbcf1c477e7df9392bf87c96c49295d3333",
+                "reference": "d148edbcf1c477e7df9392bf87c96c49295d3333",
                 "shasum": ""
             },
             "require": {
@@ -2173,7 +2173,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2020-02-22T17:12:02+00:00"
+            "time": "2020-06-06T14:29:01+00:00"
         },
         {
             "name": "frdh/mmenu.js",
