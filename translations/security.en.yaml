@@ -1,137 +1,137 @@
-'Allowed HTML settings': null
-'Filtering of allowed HTML occurs when a template string or variable is modified with the ''safeHtml'' filter, or when a module asks for similar processing from within its functions.': null
-'HTML entities': null
-'Translate embedded HTML entities into real characters': null
-'Yes': null
-'No': null
-'HTML tags': null
-'Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to ''Not allowed'' unless you are sure that you really understand the consequences of enabling them.': null
-'HTML Purifier output filter': null
-'''Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).': null
-Tag: null
-'Check all': null
-'Not allowed': null
-Allowed: null
-'Allowed with attributes': null
-'Tag usage (from %link%)': null
-About: null
-Save: null
-Cancel: null
-'HTMLPurifier settings': null
-'HTMLPurifier filtering occurs when a template string or variable is modified with the ''safehtml'' modifier, or when a module asks for similar processing from within its functions.': null
-Warning: null
-'Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.': null
-'will be applied after HTMLPurifier processing is completed.': null
-'HTMLPurifier %s configuration directives': null
-'Use default value (if checked) or override value': null
-'(Place each value on a separate line.)': null
-'(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)': null
-'(Modification not supported.)': null
-'Value:': null
-'Reset to default values': null
-'Security settings': null
-'Automatic update settings': null
-'Session settings': null
-'Intrusion Detection System': null
-'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.': null
-'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage" target="_blank">PHPIDS homepage</a>.': null
-'Output filter settings': null
-'View IDS log': null
-'Download the entire log to a CSV file': null
-'Export IDS Log': null
-'Delete the entire log.': null
-'Purge IDS Log': null
-Filter: null
-'Clear filter': null
-'Sort by %s': null
-Name: null
-Value: null
-Page: null
-'User Name': null
-IP: null
-Impact: null
-'PHPIDS filters used': null
-Date: null
-Actions: null
-'PHPIDS filter %s': null
-Description: null
-Rule: null
-'No logged intrusions found.': null
-'Purge IDS log': null
-'Confirmation prompt': null
-'Do you really want to delete the entire IDS log?': null
-'Export IDS log': null
-'Export Options': null
-All: null
-'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': null
-'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions''': null
-'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.': null
-'days (if ''Remember me'' is activated)': null
-'minutes of inactivity': null
-seconds: null
-Monthly: null
-Weekly: null
-Daily: null
-'High (user is logged-out after X minutes of inactivity)': null
-'Medium (user is logged-out after X minutes of inactivity, unless ''Remember me'' checkbox is activated during log-in)': null
-'Low (user stays logged-in until he logs-out)': null
-File: null
-'Database (recommended)': null
-'Warn only': null
-Block: null
-XML: null
-JSON: null
-'React on impact per request (uses the values from above)': null
-'React on impact sum per session [loose] (uses the values from above * 10)': null
-'React on impact sum per session [strict] (uses the values from above * 5)': null
-Session: null
-Memcached: null
-None: null
-'Use internal output filter only': null
-'Use ''HTML Purifier'' + internal mechanism as output filter': null
-'More information in <a href=''%url%'' target="_blank">PHP documentation</a>.': null
-'Default: <code>Resources/config/phpids_zikula_default.xml</code>': null
-'Check for updates': null
-'How often': null
-'Security level': null
-'Automatically log user out after': null
-'Expire session after': null
-'Store sessions': null
-'Path for saving session files': null
-'Session cookie name': null
-'Use PHPIDS': null
-'Block action': null
-'Send email on block action': null
-'Select filter rules to use': null
-'IDS rule path': null
-'Minimum impact to log intrusion in the database': null
-'Minimum impact to email the administrator': null
-'Minimum impact to block the request': null
-'Minimum impact to kick the user (destroy the session)': null
-'Select the way the impact thresholds are used in Zikula': null
-'Define which fields contain HTML and need preparation': null
-'Define which fields contain JSON data and should be treated as such': null
-'Define which fields should not be monitored': null
-'Caching method': null
-'Cache expiration time': null
-'Select output filter': null
-'Comma (,)': null
-'Semicolon (;)': null
-'Colon (:)': null
-Tab: null
-'Export title row': null
-'CSV filename': null
-'CSV delimiter': null
-Export: null
-'Security analyser warnings': null
-'Security warnings': null
-'The update check is not enabled, but preferably should be.': null
-'Security center module is not activated, but preferably should be.': null
-'When a site is originally installed, the Security center is installed and activated by default. You will see the above message if the Security center has been deactivated. You are recommended to leave the Security center activated, as it enhances a site''s security.': null
-'PHPIDS with the Security Center is not activated, but preferably should be.': null
-'PHPIDS is a feature of the Security center module that enhances the security of a site, and the Security analyser has detected that it is not enabled. You are recommended to ensure that it is enabled. You will also see this message if the Security center module is not installed or is not activated. For more information about this, please consult the Security center on-line help.': null
-'PHPIDS is activated, but requests are NOT blocked.': null
-'PHPIDS is enabled and you have set the Block action to ''Warn only''. Thus requests are not blocked. This is useful only for debugging the PHPIDS ruleset in order to verify correct operation.': null
+'Security analyser warnings': 'Security analyser warnings'
+'Security warnings': 'Security warnings'
+'The update check is not enabled, but preferably should be.': 'The update check is not enabled, but preferably should be.'
+'Security center module is not activated, but preferably should be.': 'Security center module is not activated, but preferably should be.'
+'When a site is originally installed, the Security center is installed and activated by default. You will see the above message if the Security center has been deactivated. You are recommended to leave the Security center activated, as it enhances a site''s security.': 'When a site is originally installed, the Security center is installed and activated by default. You will see the above message if the Security center has been deactivated. You are recommended to leave the Security center activated, as it enhances a site''s security.'
+'PHPIDS with the Security Center is not activated, but preferably should be.': 'PHPIDS with the Security Center is not activated, but preferably should be.'
+'PHPIDS is a feature of the Security center module that enhances the security of a site, and the Security analyser has detected that it is not enabled. You are recommended to ensure that it is enabled. You will also see this message if the Security center module is not installed or is not activated. For more information about this, please consult the Security center on-line help.': 'PHPIDS is a feature of the Security center module that enhances the security of a site, and the Security analyser has detected that it is not enabled. You are recommended to ensure that it is enabled. You will also see this message if the Security center module is not installed or is not activated. For more information about this, please consult the Security center on-line help.'
+'PHPIDS is activated, but requests are NOT blocked.': 'PHPIDS is activated, but requests are NOT blocked.'
+'PHPIDS is enabled and you have set the Block action to ''Warn only''. Thus requests are not blocked. This is useful only for debugging the PHPIDS ruleset in order to verify correct operation.': 'PHPIDS is enabled and you have set the Block action to ''Warn only''. Thus requests are not blocked. This is useful only for debugging the PHPIDS ruleset in order to verify correct operation.'
+'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': 'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.'
+'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions''': 'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions'''
+'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.': 'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.'
+'days (if ''Remember me'' is activated)': 'days (if ''Remember me'' is activated)'
+'minutes of inactivity': 'minutes of inactivity'
+seconds: seconds
+'Yes': 'Yes'
+'No': 'No'
+Monthly: Monthly
+Weekly: Weekly
+Daily: Daily
+'High (user is logged-out after X minutes of inactivity)': 'High (user is logged-out after X minutes of inactivity)'
+'Medium (user is logged-out after X minutes of inactivity, unless ''Remember me'' checkbox is activated during log-in)': 'Medium (user is logged-out after X minutes of inactivity, unless ''Remember me'' checkbox is activated during log-in)'
+'Low (user stays logged-in until he logs-out)': 'Low (user stays logged-in until he logs-out)'
+File: File
+'Database (recommended)': 'Database (recommended)'
+'Warn only': 'Warn only'
+Block: Block
+XML: XML
+JSON: JSON
+'React on impact per request (uses the values from above)': 'React on impact per request (uses the values from above)'
+'React on impact sum per session [loose] (uses the values from above * 10)': 'React on impact sum per session [loose] (uses the values from above * 10)'
+'React on impact sum per session [strict] (uses the values from above * 5)': 'React on impact sum per session [strict] (uses the values from above * 5)'
+Session: Session
+Memcached: Memcached
+None: None
+'Use internal output filter only': 'Use internal output filter only'
+'Use ''HTML Purifier'' + internal mechanism as output filter': 'Use ''HTML Purifier'' + internal mechanism as output filter'
+'More information in <a href=''%url%'' target="_blank">PHP documentation</a>.': 'More information in <a href=''%url%'' target="_blank">PHP documentation</a>.'
+'Default: <code>Resources/config/phpids_zikula_default.xml</code>': 'Default: <code>Resources/config/phpids_zikula_default.xml</code>'
+'(Place each value on a separate line.)': '(Place each value on a separate line.)'
+'Check for updates': 'Check for updates'
+'How often': 'How often'
+'Security level': 'Security level'
+'Automatically log user out after': 'Automatically log user out after'
+'Expire session after': 'Expire session after'
+'Store sessions': 'Store sessions'
+'Path for saving session files': 'Path for saving session files'
+'Session cookie name': 'Session cookie name'
+'Use PHPIDS': 'Use PHPIDS'
+'Block action': 'Block action'
+'Send email on block action': 'Send email on block action'
+'Select filter rules to use': 'Select filter rules to use'
+'IDS rule path': 'IDS rule path'
+'Minimum impact to log intrusion in the database': 'Minimum impact to log intrusion in the database'
+'Minimum impact to email the administrator': 'Minimum impact to email the administrator'
+'Minimum impact to block the request': 'Minimum impact to block the request'
+'Minimum impact to kick the user (destroy the session)': 'Minimum impact to kick the user (destroy the session)'
+'Select the way the impact thresholds are used in Zikula': 'Select the way the impact thresholds are used in Zikula'
+'Define which fields contain HTML and need preparation': 'Define which fields contain HTML and need preparation'
+'Define which fields contain JSON data and should be treated as such': 'Define which fields contain JSON data and should be treated as such'
+'Define which fields should not be monitored': 'Define which fields should not be monitored'
+'Caching method': 'Caching method'
+'Cache expiration time': 'Cache expiration time'
+'Select output filter': 'Select output filter'
+Save: Save
+Cancel: Cancel
+All: All
+'Comma (,)': 'Comma (,)'
+'Semicolon (;)': 'Semicolon (;)'
+'Colon (:)': 'Colon (:)'
+Tab: Tab
+'Export title row': 'Export title row'
+'CSV filename': 'CSV filename'
+'CSV delimiter': 'CSV delimiter'
+Export: Export
+'Export IDS log': 'Export IDS log'
+'Download the entire log to a CSV file': 'Download the entire log to a CSV file'
+'Export IDS Log': 'Export IDS Log'
+'Delete the entire log.': 'Delete the entire log.'
+'Purge IDS Log': 'Purge IDS Log'
+'Export Options': 'Export Options'
+'Purge IDS log': 'Purge IDS log'
+'Confirmation prompt': 'Confirmation prompt'
+'Do you really want to delete the entire IDS log?': 'Do you really want to delete the entire IDS log?'
+'View IDS log': 'View IDS log'
+Filter: Filter
+'Clear filter': 'Clear filter'
+'Sort by %s': 'Sort by %s'
+Name: Name
+Tag: Tag
+Value: Value
+Page: Page
+'User Name': 'User Name'
+IP: IP
+Impact: Impact
+'PHPIDS filters used': 'PHPIDS filters used'
+Date: Date
+Actions: Actions
+'PHPIDS filter %s': 'PHPIDS filter %s'
+Description: Description
+Rule: Rule
+'No logged intrusions found.': 'No logged intrusions found.'
+'Security settings': 'Security settings'
+'Automatic update settings': 'Automatic update settings'
+'Session settings': 'Session settings'
+'Intrusion Detection System': 'Intrusion Detection System'
+'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.': 'PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.'
+'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage" target="_blank">PHPIDS homepage</a>.': 'Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage" target="_blank">PHPIDS homepage</a>.'
+'Output filter settings': 'Output filter settings'
+'HTMLPurifier settings': 'HTMLPurifier settings'
+'HTMLPurifier filtering occurs when a template string or variable is modified with the ''safehtml'' modifier, or when a module asks for similar processing from within its functions.': 'HTMLPurifier filtering occurs when a template string or variable is modified with the ''safehtml'' modifier, or when a module asks for similar processing from within its functions.'
+Warning: Warning
+'Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.': 'Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.'
+'Allowed HTML settings': 'Allowed HTML settings'
+'will be applied after HTMLPurifier processing is completed.': 'will be applied after HTMLPurifier processing is completed.'
+'HTMLPurifier %s configuration directives': 'HTMLPurifier %s configuration directives'
+'Use default value (if checked) or override value': 'Use default value (if checked) or override value'
+'(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)': '(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)'
+'(Modification not supported.)': '(Modification not supported.)'
+'Value:': 'Value:'
+'Reset to default values': 'Reset to default values'
+'Filtering of allowed HTML occurs when a template string or variable is modified with the ''safeHtml'' filter, or when a module asks for similar processing from within its functions.': 'Filtering of allowed HTML occurs when a template string or variable is modified with the ''safeHtml'' filter, or when a module asks for similar processing from within its functions.'
+'HTML entities': 'HTML entities'
+'Translate embedded HTML entities into real characters': 'Translate embedded HTML entities into real characters'
+'HTML tags': 'HTML tags'
+'Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to ''Not allowed'' unless you are sure that you really understand the consequences of enabling them.': 'Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to ''Not allowed'' unless you are sure that you really understand the consequences of enabling them.'
+'HTML Purifier output filter': 'HTML Purifier output filter'
+'''Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).': '''Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).'
+'Check all': 'Check all'
+'Not allowed': 'Not allowed'
+Allowed: Allowed
+'Allowed with attributes': 'Allowed with attributes'
+'Tag usage (from %link%)': 'Tag usage (from %link%)'
+About: About
 'An authentication exception occurred.': 'An authentication exception occurred.'
 'Authentication credentials could not be found.': 'Authentication credentials could not be found.'
 'Authentication request could not be processed due to a system problem.': 'Authentication request could not be processed due to a system problem.'
