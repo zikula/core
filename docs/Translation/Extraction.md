@@ -40,6 +40,18 @@ php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooModule acm
 You can always check the status of your translation using the `translation:status` command.
 Check the available options using `-h` or `--help` like shown above.
 
+Note there is also a similar `translation:update` command that is from Symfony itself.
+We use `translation:extract` from php-translation though because this allows more sophisticated
+configuration options and processing, like handling multiple bundles, translation annotations etc.
+
+## About default values
+
+Note that new translations are added with `null` as translation value. While this works like a charm in PHP and Twig,
+it will cause problems when being used in JavaScript because then `null` appears as string.
+
+So if you use English translations as translation keys, ensure that you add corresponding values at least for those
+entries that are used in JavaScript files also for the English translation.
+
 ## Translation annotations
 
 To influence the extraction behaviour you can utilise some annotations from the `Translation\Extractor\Annotation` namespace.

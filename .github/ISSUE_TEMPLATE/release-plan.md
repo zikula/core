@@ -13,7 +13,9 @@ assignees: 'Guite, craigh'
 - [ ] Check if there are no open issues which are not labeled as `blocker` but seem critical
 - [ ] Ensure all VA modules and own components have been released to ensure all changes are correctly pulled.
 - [ ] Ensure all dependencies and `composer.lock` are up to date (execute `composer update`)
-- [ ] Ensure all translation templates are up to date (execute `php -dmemory_limit=2G bin/console translation:extract zikula en`)
+- [ ] Ensure all translation templates are up to date
+  - [ ] first execute `php -dmemory_limit=2G bin/console translation:update en --output-format yml`
+  - [ ] second execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
 - [ ] Review whether there are changes required for install and/or upgrade docs
 
 ## Preparation
@@ -30,10 +32,21 @@ assignees: 'Guite, craigh'
 
 - [ ] Start release process in core manager at <https://ziku.la>
   - [ ] Create QA ticket
-  - [ ] Create release
-  - [ ] Copy assets (note: it now downloads assets from the chosen GitHub Actions build, since Jenkins has been removed)
+  - [ ] Create tag for core project
+  - [ ] Create tag for all slave repositories
+- [ ] Wait a bit for packagist to update
+- [ ] Update version number in distribution's `composer.json` and update `composer.lock`
+  - [ ] Build distribution (final artifacts) **TODO: add GitHub action workflow for this**
+- [ ] Continue with release process in core manager
+  - [ ] Create tag for distribution project
+  - [ ] Let core manager download the distribution artifacts
+    - it currently downloads assets from the chosen GitHub Actions build from core project **to be changed**
+  - [ ] Create core release (using the previously created tag)
+    - [ ] Push the distribution build artifacts as assets to the core release
+  - [ ] Create distribution release (using the previously created tag)
+    - [ ] Push the distribution build artifacts as assets to the core release
   - [ ] Update core version (this step is currently unused)
-  - [ ] Close milestone
+  - [ ] Close core milestone
 - [ ] Review the release page at GitHub
 - [ ] Review release assets, try to download and unpack them
 
