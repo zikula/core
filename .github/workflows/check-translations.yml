@@ -26,7 +26,10 @@ jobs:
       run: |
         composer install
 
-    - name: Check translations
+    - name: Update translation config
       run: |
-        php bin/console zikula:translation:updateconfig -vvv
+        php bin/console zikula:translation:updateconfig
+
+    - name: Check missing translations
+      run: |
         php bin/console translation:check-missing en zikula -vvv
