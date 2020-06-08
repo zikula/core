@@ -34,7 +34,7 @@ assignees: 'Guite, craigh'
   - [ ] Create QA ticket
   - [ ] Create tag for core project
   - [ ] Create tag for all slave repositories
-- [ ] Wait a bit for packagist to update
+- [ ] Wait a bit for subtree split to complete and packagist to update (12+ hours?)
 - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
   - [ ] Build distribution (final artifacts) **TODO: add GitHub action workflow for this**
 - [ ] Continue with release process in core manager
