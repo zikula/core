@@ -29,25 +29,27 @@ assignees: 'Guite, craigh'
   - [ ] Test CLI installer randomly
   - [ ] Test web installer randomly
 
+## Create tags
+
+- [ ] Create tag for core project
+  - [ ] Subtree split will push this tag for all slave repositories
+- [ ] Wait a bit for subtree split to complete and packagist to update (12+ hours?)
+- [ ] Update version number in distribution's `composer.json` and update `composer.lock`
+  - [ ] Commit triggers the distribution build (final artifacts) (see [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22))
+
 ## Create the release
 
 - [ ] Start release process in core manager at <https://ziku.la>
-  - [ ] Create QA ticket
-  - [ ] Create tag for core project
-  - [ ] Create tag for all slave repositories
-- [ ] Wait a bit for subtree split to complete and packagist to update (12+ hours?)
-- [ ] Update version number in distribution's `composer.json` and update `composer.lock`
-  - [ ] Build distribution (final artifacts) (see [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22))
-- [ ] Continue with release process in core manager
-  - [ ] Create tag for distribution project
-  - [ ] Let core manager download the distribution artifacts
-    - it currently downloads assets from the chosen GitHub Actions build from core project **to be changed**
-  - [ ] Create core release (using the previously created tag)
-    - [ ] Push the distribution build artifacts as assets to the core release
-  - [ ] Create distribution release (using the previously created tag)
-    - [ ] Push the distribution build artifacts as assets to the core release
-  - [ ] Update core version (this step is currently unused)
-  - [ ] Close core milestone
+- [ ] Core manager will do the following steps:
+  - [ ] Creates tag for distribution project
+  - [ ] Downloads artifacts from last distribution build
+  - [ ] Creates core release (using the previously created tag)
+    - [ ] Pushes the distribution build artifacts as assets to the core release
+  - [ ] Creates distribution release (using the previously created tag)
+    - [ ] Pushes the distribution build artifacts as assets to the core release
+  - [ ] Creates QA ticket at core project
+  - [ ] Updates core version (this step is currently unused)
+  - [ ] Closes core milestone
 - [ ] Review the release page at GitHub
 - [ ] Review release assets, try to download and unpack them
 
