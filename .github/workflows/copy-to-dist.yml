@@ -80,6 +80,17 @@ jobs:
           dst_path: /config/routes.yaml
           dst_owner: zikula
           dst_repo_name: distribution
+  copy_routes_dev_yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy config/routes_dev.yaml
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          src_path: /config/routes_dev.yaml
+          dst_path: /config/routes_dev.yaml
+          dst_owner: zikula
+          dst_repo_name: distribution
   copy_services_yaml:
     runs-on: ubuntu-latest
     steps:
