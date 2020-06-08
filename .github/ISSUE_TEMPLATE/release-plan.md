@@ -21,8 +21,7 @@ assignees: 'Guite, craigh'
 
 ## Preparation
 
-- [ ] Ensure there exists a milestone named like the version to be released (required in a later stage)
-- [ ] Add release date to changelog and commit it
+- [ ] Add release date to changelog (if final version) and commit it
 - [ ] Wait until the [build job](https://github.com/zikula/core/actions?query=workflow%3A%22Build+archives%22) is completed
 - [ ] Ensure the created build artifacts works
   - [ ] Download and unpack the archives
@@ -49,7 +48,7 @@ assignees: 'Guite, craigh'
     - [ ] Pushes the distribution build artifacts as assets to the core release
   - [ ] Creates QA ticket at core project
   - [ ] Updates core version (this step is currently unused)
-  - [ ] Closes core milestone
+  - [ ] Closes core milestone (if exists)
 - [ ] Review the release page at GitHub
 - [ ] Review release assets, try to download and unpack them
 
