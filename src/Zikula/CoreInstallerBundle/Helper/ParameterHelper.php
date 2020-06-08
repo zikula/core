@@ -179,12 +179,16 @@ class ParameterHelper
      */
     private function writeEnvVars(array $params)
     {
+        $secret = $params['secret'] && '%env(APP_SECRET)%' !== $params['secret']
+            ? $params['secret']
+            : $generator->generateString(50)
+        ;
         $randomLibFactory = new Factory();
         $generator = $randomLibFactory->getMediumStrengthGenerator();
         $vars = [
             'APP_ENV' => $params['env'] ?? 'prod',
             'APP_DEBUG' => isset($params['debug']) ? (int) ($params['debug']) : 0,
-            'APP_SECRET' => '!\'' . ($params['secret'] ?? $generator->generateString(50)) . '\'',
+            'APP_SECRET' => '\'' . $secret . '\'',
             'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
         ];
         (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars($vars);
