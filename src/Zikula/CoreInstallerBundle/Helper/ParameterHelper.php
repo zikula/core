@@ -179,12 +179,12 @@ class ParameterHelper
      */
     private function writeEnvVars(array $params)
     {
+        $randomLibFactory = new Factory();
+        $generator = $randomLibFactory->getMediumStrengthGenerator();
         $secret = $params['secret'] && '%env(APP_SECRET)%' !== $params['secret']
             ? $params['secret']
             : $generator->generateString(50)
         ;
-        $randomLibFactory = new Factory();
-        $generator = $randomLibFactory->getMediumStrengthGenerator();
         $vars = [
             'APP_ENV' => $params['env'] ?? 'prod',
             'APP_DEBUG' => isset($params['debug']) ? (int) ($params['debug']) : 0,
