@@ -55,7 +55,7 @@ The following process should be followed for all upgrades even small point relea
   - After upgrade, the site will default to the ZikulaBootstrapTheme until you complete testing of your custom theme.
 - Return _compatible_ extensions to the `src/extensions` directory.
   - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
-- Copy your backup contents of `/userdata` into `/public/uploads`
+- Copy your backup contents of `/userdata` (1.x) or `/web/uploads` (2.x) into `/public/uploads`
 - Then **start the upgrade (do one or the other, CLI is recommended)**
   - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.
   - Via CLI:
