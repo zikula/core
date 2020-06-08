@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 
 class RequestContextType extends AbstractType
 {
@@ -45,12 +46,12 @@ class RequestContextType extends AbstractType
                 ],
                 'data' => 'http'
             ])
-            ->add('router:request_context:base_url', TextType::class, [
+            ->add($builder->create('router:request_context:base_url', TextType::class, [
                 'label' => 'Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ]
-            ])
+            ])->addModelTransformer(new NullToEmptyTransformer()))
         ;
     }
 
