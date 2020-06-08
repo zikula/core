@@ -18,19 +18,16 @@ assignees: 'Guite, craigh'
      - [ ] first execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
      - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
-
-## Preparation
-
 - [ ] Add release date to changelog (if final version) and commit it
-- [ ] Wait until the [build job](https://github.com/zikula/core/actions?query=workflow%3A%22Build+archives%22) is completed
 
-## Create tags
+## Create tags and artifacts
 
 - [ ] Create tag for core project
   - [ ] Subtree split will push this tag for all slave repositories
 - [ ] Wait a bit for subtree split to complete and packagist to update (12+ hours?)
 - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
-  - [ ] Commit triggers the distribution build (final artifacts) (see [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22))
+  - [ ] Commit triggers the distribution build (final artifacts)
+  - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
 - [ ] Ensure the created build artifacts work
   - [ ] Download and unpack the archives
   - [ ] Test CLI installer randomly
