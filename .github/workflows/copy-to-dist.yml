@@ -25,6 +25,17 @@ jobs:
           dst_path: /
           dst_owner: zikula
           dst_repo_name: distribution
+  copy_templates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy templates
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          src_path: /templates/
+          dst_path: /
+          dst_owner: zikula
+          dst_repo_name: distribution
   copy_translations:
     runs-on: ubuntu-latest
     steps:
