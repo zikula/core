@@ -110,7 +110,7 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/packages/
-          exclude: '*+(/test/|/dev/)*'
+          #exclude: '*+(/test/|/dev/)*'
           dst_path: /config/
           dst_owner: zikula
           dst_repo_name: distribution
@@ -122,7 +122,7 @@ jobs:
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_path: /config/routes/
-          exclude: '*+(/dev/)*'
+          #exclude: '*+(/dev/)*'
           dst_path: /config/
           dst_owner: zikula
           dst_repo_name: distribution
