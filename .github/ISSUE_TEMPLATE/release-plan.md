@@ -40,9 +40,9 @@ assignees: 'Guite, craigh'
   - [ ] Creates tag for distribution project
   - [ ] Downloads artifacts from last distribution build
   - [ ] Creates core release (using the previously created tag)
-    - [ ] Pushes the distribution build artifacts as assets to the core release
+    - [ ] Pushes build artifacts as assets to the core release
   - [ ] Creates distribution release (using the previously created tag)
-    - [ ] Pushes the distribution build artifacts as assets to the core release
+    - [ ] Pushes build artifacts as assets to the distribution release
   - [ ] Creates QA ticket at core project
   - [ ] Updates core version (this step is currently unused)
   - [ ] Closes core milestone (if exists)
