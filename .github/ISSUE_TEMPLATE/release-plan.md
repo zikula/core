@@ -23,10 +23,6 @@ assignees: 'Guite, craigh'
 
 - [ ] Add release date to changelog (if final version) and commit it
 - [ ] Wait until the [build job](https://github.com/zikula/core/actions?query=workflow%3A%22Build+archives%22) is completed
-- [ ] Ensure the created build artifacts works
-  - [ ] Download and unpack the archives
-  - [ ] Test CLI installer randomly
-  - [ ] Test web installer randomly
 
 ## Create tags
 
@@ -35,6 +31,10 @@ assignees: 'Guite, craigh'
 - [ ] Wait a bit for subtree split to complete and packagist to update (12+ hours?)
 - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
   - [ ] Commit triggers the distribution build (final artifacts) (see [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22))
+- [ ] Ensure the created build artifacts work
+  - [ ] Download and unpack the archives
+  - [ ] Test CLI installer randomly
+  - [ ] Test web installer randomly
 
 ## Create the release
 
