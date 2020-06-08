@@ -15,19 +15,34 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
+use Zikula\ThemeModule\Engine\AssetFilter;
 
 /**
  * Event handler base class for theme-related events.
  */
 abstract class AbstractThemeListener implements EventSubscriberInterface
 {
+    /**
+     * @var AssetFilter
+     */
+    protected $assetFilter;
+    
+    public function __construct(
+        AssetFilter $assetFilter
+    ) {
+        $this->assetFilter = $assetFilter;
+    }
+    
     public static function getSubscribedEvents()
     {
         return [
             TwigPreRenderEvent::class  => ['preRender', 5],
-            TwigPostRenderEvent::class => ['postRender', 5]
+            TwigPostRenderEvent::class => ['postRender', 5],
+            KernelEvents::RESPONSE => ['injectDefaultAssetsIntoRawPage', 1020] // after DefaultPageAssetSetterListener
         ];
     }
     
@@ -47,5 +62,29 @@ abstract class AbstractThemeListener implements EventSubscriberInterface
      */
     public function postRender(TwigPostRenderEvent $event): void
     {
+    }
+    
+    /**
+     * Adds assets to a raw page which is not processed by the Theme engine.
+     */
+    public function injectDefaultAssetsIntoRawPage(ResponseEvent $event): void
+    {
+        $request = $event->getRequest();
+    
+        $raw = null !== $request ? $request->query->getBoolean('raw') : false;
+        if (true !== $raw) {
+            return;
+        }
+    
+        $routeName = $request->get('_route', '');
+        if (false === strpos($routeName, 'zikularoutesmodule')) {
+            return;
+        }
+    
+        $response = $event->getResponse();
+        $output = $response->getContent();
+        $output = $this->assetFilter->filter($output);
+        $response->setContent($output);
+        $event->setResponse($response);
     }
 }

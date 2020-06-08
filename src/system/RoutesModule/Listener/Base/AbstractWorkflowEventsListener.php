@@ -127,8 +127,8 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         }
         
         if (!$this->permissionHelper->hasEntityPermission($entity, $permissionLevel)) {
-            // no permission for this transition, so disallow it (without a reason)
-            $event->setBlocked(true);
+            // no permission for this transition, so disallow it
+            $event->setBlocked(true, $this->translator->trans('No permission for this action.'));
         
             return;
         }
