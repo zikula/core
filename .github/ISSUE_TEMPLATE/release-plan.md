@@ -18,7 +18,7 @@ assignees: 'Guite, craigh'
      - [ ] first execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
      - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
-- [ ] Add release date to changelog (if final version) and commit it
+- [ ] Add release date to changelog (only for final release) and commit it
 
 ## Create tags and artifacts
 
@@ -37,7 +37,7 @@ assignees: 'Guite, craigh'
 
 - [ ] Start release process in core manager at <https://ziku.la>
 - [ ] Core manager will do the following steps:
-  - [ ] Creates QA ticket at core project (for prereleases)
+  - [ ] Creates QA ticket at core project (only for pre releases)
   - [ ] Creates tag for distribution project
   - [ ] Downloads artifacts from last distribution build
   - [ ] Creates core release (using the previously created tag)
@@ -45,7 +45,7 @@ assignees: 'Guite, craigh'
   - [ ] Creates distribution release (using the previously created tag)
     - [ ] Pushes build artifacts as assets to the distribution release
   - [ ] Updates core version (this step is currently unused)
-  - [ ] Closes core milestone (if exists)
+  - [ ] Closes core milestone (if exists, only for final release)
 - [ ] Review the release page at GitHub
 - [ ] Review release assets, try to download and unpack them
 
