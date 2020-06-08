@@ -44,7 +44,7 @@ assignees: 'Guite, craigh'
     - [ ] Pushes build artifacts as assets to the core release
   - [ ] Creates distribution release (using the previously created tag)
     - [ ] Pushes build artifacts as assets to the distribution release
-  - [ ] Updates core version (this step is currently unused)
+  - [ ] Updates core version (only for final release; this step is currently unused)
   - [ ] Closes core milestone (if exists, only for final release)
 - [ ] Review the release page at GitHub
 - [ ] Review release assets, try to download and unpack them
