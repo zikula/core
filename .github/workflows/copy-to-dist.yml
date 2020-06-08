@@ -32,8 +32,8 @@ jobs:
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_path: /templates/
-          dst_path: /
+          src_path: /templates/bundles/TranslationBundle/WebUI/
+          dst_path: /templates/bundles/TranslationBundle/
           dst_owner: zikula
           dst_repo_name: distribution
   copy_translations:
