@@ -13,7 +13,7 @@ assignees: 'Guite, craigh'
 - [ ] Check if there are no open issues which are not labeled as `blocker` but seem critical
 - [ ] Ensure all VA modules and own components have been released to ensure all changes are correctly pulled.
 - [ ] Ensure all dependencies and `composer.lock` are up to date (execute `composer update`)
-- [ ] Ensure all translation templates are up to date
+- [ ] Ensure all translation templates are up to date (see `Check translations` workflow)
   - [ ] first execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
   - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
@@ -36,7 +36,7 @@ assignees: 'Guite, craigh'
   - [ ] Create tag for all slave repositories
 - [ ] Wait a bit for subtree split to complete and packagist to update (12+ hours?)
 - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
-  - [ ] Build distribution (final artifacts) **TODO: add GitHub action workflow for this**
+  - [ ] Build distribution (final artifacts) **GitHub action workflow for this has been added**
 - [ ] Continue with release process in core manager
   - [ ] Create tag for distribution project
   - [ ] Let core manager download the distribution artifacts
