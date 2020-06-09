@@ -23,8 +23,8 @@ assignees: 'Guite, craigh'
 ## Create tags and artifacts
 
 - [ ] Create tag for core project
-  - [ ] Subtree split will push this tag for all slave repositories
-- [ ] Wait a bit for subtree split to complete and packagist to update (12+ hours?)
+- [ ] Execute `zsplit` to push the tag to all slave repositories
+- [ ] Wait a bit for packagist to update (12+ hours?)
 - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
   - [ ] Commit triggers the distribution build (final artifacts)
   - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
