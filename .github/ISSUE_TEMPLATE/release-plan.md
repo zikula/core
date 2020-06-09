@@ -23,11 +23,12 @@ assignees: 'Guite, craigh'
 ## Create tags and artifacts
 
 - [ ] Create tag for core project
-- [ ] Execute `zsplit` to push the tag to all slave repositories
-- [ ] Wait a bit for packagist to update
-- [ ] Update version number in distribution's `composer.json` and update `composer.lock`
-  - [ ] Commit triggers the distribution build (final artifacts)
-  - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
+- [ ] Only for final release:
+  - [ ] Execute `zsplit` to push the tag to all slave repositories
+  - [ ] Wait a bit for packagist to update
+  - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
+    - [ ] Commit triggers the distribution build (final artifacts)
+    - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
 - [ ] Ensure the created build artifacts work
   - [ ] Download and unpack the archives
   - [ ] Test CLI installer randomly
@@ -38,14 +39,15 @@ assignees: 'Guite, craigh'
 - [ ] Start release process in core manager at <https://ziku.la>
 - [ ] Core manager will do the following steps:
   - [ ] Creates QA ticket at core project (only for pre releases)
-  - [ ] Creates tag for distribution project
-  - [ ] Downloads artifacts from last distribution build
+  - [ ] Creates tag for distribution project (only for final release)
+  - [ ] Downloads artifacts from last build (from core for pre releases; from distribution for final release)
   - [ ] Creates core release (using the previously created tag)
     - [ ] Pushes build artifacts as assets to the core release
-  - [ ] Creates distribution release (using the previously created tag)
-    - [ ] Pushes build artifacts as assets to the distribution release
-  - [ ] Updates core version (only for final release; this step is currently unused)
-  - [ ] Closes core milestone (if exists, only for final release)
+  - [ ] Only for final release:
+    - [ ] Creates distribution release (using the previously created tag)
+       - [ ] Pushes build artifacts as assets to the distribution release
+    - [ ] Updates core version (this step is currently unused)
+    - [ ] Closes core milestone (if exists)
 - [ ] Review the release page at GitHub
 - [ ] Review release assets, try to download and unpack them
 
