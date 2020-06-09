@@ -24,7 +24,7 @@ assignees: 'Guite, craigh'
 
 - [ ] Create tag for core project
 - [ ] Execute `zsplit` to push the tag to all slave repositories
-- [ ] Wait a bit for packagist to update (12+ hours?)
+- [ ] Wait a bit for packagist to update
 - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
   - [ ] Commit triggers the distribution build (final artifacts)
   - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
