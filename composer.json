@@ -24,7 +24,74 @@
         "ext-mbstring": "*",
         "ext-json": "*",
         "ext-pdo": "*",
-        "wikimedia/composer-merge-plugin": "1.*",
+
+        "composer/composer": "1.*",
+        "composer/installers": "1.*",
+        "composer/semver": "1.*",
+
+        "robloach/component-installer": "*",
+        "components/jquery": "3.*",
+        "components/jqueryui": "1.*",
+        "components/bootstrap": "4.*",
+        "components/font-awesome": "5.*",
+
+        "matthiasnoback/symfony-console-form": "4.*",
+
+        "symfony/symfony": "5.*",
+        "symfony/monolog-bundle": "3.*",
+        "symfony/requirements-checker": "1.*",
+        "symfony/maker-bundle": "1.*",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/polyfill-intl-messageformatter": "1.*",
+
+        "sensiolabs/security-checker" : "6.*",
+        "sensio/framework-extra-bundle": "5.*",
+
+        "php-translation/extractor": "dev-master",
+        "php-translation/symfony-bundle": "0.*",
+        "php-translation/symfony-storage": "2.*",
+        "nikic/php-parser": "4.*",
+        "willdurand/js-translation-bundle": "3.*",
+
+        "frdh/mmenu.js": "8.*",
+        "thomaspark/bootswatch": "4.*",
+        "justinrainbow/json-schema": "5.*",
+        "egulias/email-validator": "^2.1.10",
+        "knplabs/knp-menu-bundle": ">=2.2.1",
+        "jms/i18n-routing-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "2.*",
+        "phpids/phpids": "dev-master",
+        "ircmaxell/random-lib": "1.*",
+
+        "twig/twig": "3.*",
+        "twig/cssinliner-extra": "3.*",
+        "twig/html-extra": "3.*",
+        "twig/inky-extra": "3.*",
+        "twig/intl-extra": "3.*",
+        "twig/markdown-extra": "3.*",
+        "twig/string-extra": "3.*",
+        "twig/extra-bundle": "3.*",
+
+        "erusev/parsedown": "^1.7",
+        "league/commonmark": "^1.0",
+        "league/html-to-markdown": "^4.8",
+        "michelf/php-markdown": "^1.9",
+
+        "oro/twig-inspector": "1.*",
+
+        "itsjavi/fontawesome-iconpicker": "3.*",
+        "dimsemenov/magnific-popup": "1.*",
+        "vakata/jstree": "3.*",
+
+        "doctrine/orm": "2.*",
+        "doctrine/doctrine-bundle": "2.*",
+        "antishov/doctrine-extensions-bundle": "1.*",
+        "gedmo/doctrine-extensions": "2.*",
+        "liip/imagine-bundle": "2.*",
+
+        "zikula/sortable-columns": "1.*",
+        "zikula/wizard": "3.*",
+
         "zikula/legal-module": "3.*",
         "zikula/oauth-module": "1.*",
         "zikula/pagelock-module": "1.*",
@@ -75,6 +142,16 @@
             "@zikula-scripts"
         ]
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/FrDH/mmenu-js"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/lightcoresystems/JMSI18nRoutingBundle/"
+        }
+    ],
     "config": {
         "platform": {
             "php": "7.2.5"

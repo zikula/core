@@ -14,7 +14,8 @@
         "psr-4": { "Zikula\\SearchModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5"
+        "php": ">=7.2.5",
+        "zikula/extensions-module": "3.*"
     },
     "extra": {
         "zikula": {
