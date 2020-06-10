@@ -4213,16 +4213,16 @@
         },
         {
             "name": "php-translation/extractor",
-            "version": "dev-master",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/extractor.git",
-                "reference": "0bf5b83bed283edde108af74dd9c9358fad8346e"
+                "reference": "e2703aea3a35361bd9e3130253c8a82c14119f10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/extractor/zipball/0bf5b83bed283edde108af74dd9c9358fad8346e",
-                "reference": "0bf5b83bed283edde108af74dd9c9358fad8346e",
+                "url": "https://api.github.com/repos/php-translation/extractor/zipball/e2703aea3a35361bd9e3130253c8a82c14119f10",
+                "reference": "e2703aea3a35361bd9e3130253c8a82c14119f10",
                 "shasum": ""
             },
             "require": {
@@ -4262,7 +4262,7 @@
                 }
             ],
             "description": "Extract translations form the source code",
-            "time": "2020-04-06T07:32:19+00:00"
+            "time": "2020-06-10T08:44:05+00:00"
         },
         {
             "name": "php-translation/symfony-bundle",
@@ -7588,7 +7588,6 @@
         "zikula/bootstrap-theme": 20,
         "zikula/printer-theme": 20,
         "zikula/rss-theme": 20,
-        "php-translation/extractor": 20,
         "zikula/wizard": 20,
         "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20
