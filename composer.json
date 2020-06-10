@@ -47,7 +47,7 @@
         "sensiolabs/security-checker" : "6.*",
         "sensio/framework-extra-bundle": "5.*",
 
-        "php-translation/extractor": "dev-master",
+        "php-translation/extractor": "2.*",
         "php-translation/symfony-bundle": "0.*",
         "php-translation/symfony-storage": "2.*",
         "nikic/php-parser": "4.*",
@@ -165,21 +165,6 @@
         "symfony-assets-install": "relative",
         "installer-paths": {
             "src/extensions/{$vendor}/{$name}": ["type:zikula-module", "type:zikula-theme"]
-        },
-        "merge-plugin": {
-            "require": [
-                "src/Zikula/*/composer.json",
-                "src/system/*/composer.json"
-            ],
-            "include": [
-                "src/extensions/*/composer.json",
-                "src/extensions/*/*/composer.json"
-            ],
-            "recurse": false,
-            "replace": false,
-            "merge-dev": true,
-            "merge-extra": false,
-            "merge-extra-deep": false
         }
     }
 }

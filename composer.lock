@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d2087b6e1d07eb4e4c6281783f0778b",
+    "content-hash": "823cbce0c9f52fb9d2d1cc88ded0d10b",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -4237,7 +4237,7 @@
         },
         {
             "name": "php-translation/extractor",
-            "version": "dev-master",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/extractor.git",
@@ -7540,7 +7540,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "php-translation/extractor": 20,
         "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20
     },
