@@ -182,7 +182,7 @@
   - Added "Connections" menu to ExtensionsMenu so extensions can add menu children to other connected extension's admin UI.
   - Added `@PermissionCheck` annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
   - Added display of authentication method to user list (#3704).
-  - Added UserCreationApi to assist with the manual creation of ZAuth-method users (#3265).
+  - Added `UserCreationApi` to assist with the manual creation of ZAuth-method users (#3265).
   - Added CLI Command to import users `bin/console zikula:users:import`.
   - Added CLI Command to create any number of users for testing purposes `bin/console zikula:users:generate`.
   - Added CLI Command to delete any number of users `bin/console zikula:users:delete`.
@@ -190,7 +190,7 @@
   - Added email notification to deleted pending registrations (#2915).
   - Added CLI Command to edit password, email, username properties of ZAuth user mappings (a replacement for the old Zikula Recovery Console). 
   - Added new Doctrine Paginator wrapper `Zikula\Bundle\CoreBundle\Doctrine\Paginator` and paginator template. See docs.
-  - Added new AlphaFilter class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
+  - Added new `AlphaFilter` class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
   - Added CLI command to generate an Extension skeleton with instruction on using Symfony MakerBundle to complete development (#4034).
   - Added automatic setting of locale parameter when generating routes in JavaScript (#3453).
   - Introduced a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` for dynamic site attributes (#3972).
