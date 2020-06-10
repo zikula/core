@@ -14,7 +14,8 @@
         "psr-4": { "Zikula\\CategoriesModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5"
+        "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*"
     },
     "extra": {
         "zikula": {

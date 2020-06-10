@@ -14,7 +14,10 @@
         "psr-4": { "Zikula\\UsersModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5"
+        "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*",
+        "zikula/groups-module": "3.*",
+        "zikula/permissions-module": "3.*"
     },
     "extra": {
         "zikula": {

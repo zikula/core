@@ -17,6 +17,7 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*",
         "jms/i18n-routing-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "2.*"
     },

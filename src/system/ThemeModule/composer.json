@@ -15,6 +15,12 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*",
+        "zikula/blocks-module": "3.*",
+        "zikula/bootstrap-theme": "3.*",
+        "zikula/rss-theme": "3.*",
+        "zikula/printer-theme": "3.*",
+        "zikula/atom-theme": "3.*",
 
         "twig/twig": "3.*",
         "twig/cssinliner-extra": "3.*",
