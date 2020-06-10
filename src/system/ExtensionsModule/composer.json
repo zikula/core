@@ -15,6 +15,7 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*",
         "composer/semver": "1.*",
         "justinrainbow/json-schema": "5.*"
     },

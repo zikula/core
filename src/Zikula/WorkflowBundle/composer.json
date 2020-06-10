@@ -12,7 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=7.2.5"
+        "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*",
+        "symfony/workflow": "5.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\WorkflowBundle\\": "" }

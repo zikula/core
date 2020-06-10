@@ -15,8 +15,8 @@
     },
     "require": {
         "php": ">=7.2.5",
-        "zikula/extensions-module": "3.*",
-        "php-translation/extractor": "dev-master",
+        "zikula/core-bundle": "3.*",
+        "php-translation/extractor": "2.*",
         "php-translation/symfony-bundle": "0.*",
         "php-translation/symfony-storage": "2.*",
         "willdurand/js-translation-bundle": "3.*"

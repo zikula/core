@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=7.2.5",
-        "zikula/extensions-module": "3.*",
+        "zikula/core-bundle": "3.*",
         "zikula/theme-module": "3.*",
         "thomaspark/bootswatch": "4.*"
     },

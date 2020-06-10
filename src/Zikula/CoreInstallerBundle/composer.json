@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*",
         "symfony/console": "5.*",
         "symfony/framework-bundle": "5.*",
         "symfony/requirements-checker": "1.*",
