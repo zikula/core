@@ -147,7 +147,7 @@
   - Added all styles from Bootswatch to the Bootstrap theme (#4037).
   - Added option to allow users individually switching between available Bootswatch styles (#4037).
   - Centralised dynamic form field handling from Profile module in FormExtensionBundle (#3945).
-  - Allow zasset syntax for relative assets also for normal bundles.
+  - Allow `zasset` syntax for relative assets also for normal bundles.
   - Added Twig function for creating a `RouteUrl` instance (#3802).
   - Added support for separators in dropdown menus of extensions interface / module links (#3904).
   - Added common header/footer templates for login templates (#3937).
@@ -180,7 +180,7 @@
   - Added ability to force a group of users to change their password on next login (#2842).
   - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
   - Added "Connections" menu to ExtensionsMenu so extensions can add menu children to other connected extension's admin UI.
-  - Added @PermissionCheck annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
+  - Added `@PermissionCheck` annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
   - Added display of authentication method to user list (#3704).
   - Added UserCreationApi to assist with the manual creation of ZAuth-method users (#3265).
   - Added CLI Command to import users `bin/console zikula:users:import`.
