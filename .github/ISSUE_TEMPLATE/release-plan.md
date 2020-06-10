@@ -22,7 +22,7 @@ assignees: 'Guite, craigh'
 
 ## Create tags and artifacts
 
-- [ ] Create tag for core project
+- [ ] Create tag for core project (e.g. `3.0.0-RC2`)
 - [ ] Only for final release:
   - [ ] Execute `zsplit` to push the tag to all slave repositories
   - [ ] Wait a bit for packagist to update
