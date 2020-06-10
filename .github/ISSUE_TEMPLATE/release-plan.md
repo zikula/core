@@ -61,7 +61,7 @@ assignees: 'Guite, craigh'
   - [ ] To Slack (`#general` and `#german` channels)
   - [ ] To Facebook
   - [ ] To Twitter
-- [ ] Add new version to [Wikipedia](https://de.wikipedia.org/wiki/Zikula)
+- [ ] Add new version to [Wikipedia](https://de.wikipedia.org/wiki/Zikula) (only for final release)
 
 ## Start next iteration
 
