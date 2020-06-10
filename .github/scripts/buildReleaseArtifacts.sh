@@ -63,8 +63,8 @@ echo "Creating translation files..."
 if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
     php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract template --output-format=po --output-dir="${PACKAGE_PATH}/app/Resources/translations" --enable-extractor=jms_i18n_routing --dir="${PACKAGE_PATH}/system" --dir="${PACKAGE_PATH}/lib/Zikula/Bundle"
 else # Zikula 3
-    php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract zikula en
-    php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" zikula:translation:keytovalue
+    #php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract zikula en
+    #php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" zikula:translation:keytovalue
 fi
 
 echo "Clearing cache directory..."
