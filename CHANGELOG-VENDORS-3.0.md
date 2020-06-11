@@ -93,16 +93,17 @@
   - vakata/jstree updated from 3.3.8 to 3.3.9
   - webmozart/assert updated from 1.5.0 to 1.8.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.1
-  - zikula/legal-module updated from 3.1.2 to 3.2.6
-  - zikula/oauth-module updated from 1.0.4 to 1.2.0
-  - zikula/pagelock-module updated from 1.2.3 to 1.3.7
-  - zikula/profile-module updated from 3.0.6 to 3.1.14
-  - zikula/wizard updated from 2.0 to 3.0.3
+  - zikula/legal-module updated from 3.1.2 to 3.2.7
+  - zikula/oauth-module updated from 1.0.4 to 1.2.1
+  - zikula/pagelock-module updated from 1.2.3 to 1.3.8
+  - zikula/profile-module updated from 3.0.6 to 3.1.15
+  - zikula/wizard updated from 2.0 to 3.1.0
 
 - Dropped vendors:
   - Removed afarkas/html5shiv
   - Removed afarkas/webshim (#3925)
   - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
+  - Removed composer/composer-merge-plugin
   - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
   - Removed elao/web-profiler-extra-bundle
   - Removed jdorn/sql-formatter (in favour of doctrine/sql-formatter fork)
