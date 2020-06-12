@@ -14,17 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\HookBundle\Event\HookPostChangeEvent;
-use Zikula\ExtensionsModule\Event\ExtensionPostDisabledEvent;
-use Zikula\ExtensionsModule\Event\ExtensionPostEnabledEvent;
-use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
-use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
-use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
-use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 
 /**
  * Clear the combined asset cache when a hook state is changed.

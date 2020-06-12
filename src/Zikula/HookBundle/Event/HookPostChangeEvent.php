@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Event;
 
-use Zikula\ExtensionsModule\AbstractExtension;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-
+/**
+ * Hook post change event to allow reactions on binding changes.
+ */
 class HookPostChangeEvent
 {
     /**
