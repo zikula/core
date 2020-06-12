@@ -7,6 +7,7 @@ services:
             $extension: '@Zikula\ThemeModule\ZikulaThemeModule'
             $installed: '%env(ZIKULA_INSTALLED)%'
             Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface: '@zikula.site_definition'
+            $mergerActive: '%zikula_asset_manager.combine%'
 
     Zikula\ThemeModule\:
         resource: '../../*'
@@ -132,10 +133,6 @@ services:
         arguments:
           $footers: '@zikula_core.common.theme.assets_footer'
           $defaultSessionName: '%zikula.session.name%'
-
-    Zikula\ThemeModule\EventListener\ExtensionInstallationListener:
-        arguments:
-          $mergerActive: '%zikula_asset_manager.combine%'
 
     Zikula\ThemeModule\EventListener\ExceptionListener:
         arguments:

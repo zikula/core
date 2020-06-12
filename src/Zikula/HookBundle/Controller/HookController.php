@@ -22,11 +22,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
+use Zikula\Bundle\HookBundle\Event\HookPostChangeEvent;
 use Zikula\Bundle\HookBundle\Helper\HookUiHelper;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -52,7 +54,7 @@ class HookController extends AbstractController
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
-        HookDispatcherInterface $dispatcher,
+        HookDispatcherInterface $hookDispatcher,
         HookUiHelper $hookUiHelper,
         string $moduleName
     ): array {
@@ -129,7 +131,7 @@ class HookController extends AbstractController
         } else {
             $templateParameters['hookProviders'] = [];
         }
-        $templateParameters['hookDispatcher'] = $dispatcher;
+        $templateParameters['hookDispatcher'] = $hookDispatcher;
         $request = $requestStack->getCurrentRequest();
         $request->attributes->set('_zkModule', $moduleName);
         $request->attributes->set('_zkType', 'admin');
@@ -153,7 +155,8 @@ class HookController extends AbstractController
         TranslatorInterface $translator,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
-        HookDispatcherInterface $dispatcher
+        EventDispatcherInterface $eventDispatcher,
+        HookDispatcherInterface $hookDispatcher
     ): JsonResponse {
         $this->setTranslator($translator);
         if (!$this->isCsrfTokenValid('hook-ui', $request->request->get('token'))) {
@@ -197,17 +200,20 @@ class HookController extends AbstractController
         }
 
         // check if binding between areas exists
-        $binding = $dispatcher->getBindingBetweenAreas($subscriberArea, $providerArea);
+        $binding = $hookDispatcher->getBindingBetweenAreas($subscriberArea, $providerArea);
         if (!$binding) {
-            $dispatcher->bindSubscriber($subscriberArea, $providerArea);
+            $hookDispatcher->bindSubscriber($subscriberArea, $providerArea);
         } else {
-            $dispatcher->unbindSubscriber($subscriberArea, $providerArea);
+            $hookDispatcher->unbindSubscriber($subscriberArea, $providerArea);
         }
+
+        $action = $binding ? 'unbind' : 'bind';
+        $eventDispatcher->dispatch(new HookPostChangeEvent($subscriberArea, $providerArea, $action));
 
         // ajax response
         $response = [
             'result' => true,
-            'action' => $binding ? 'unbind' : 'bind',
+            'action' => $action,
             'subscriberarea' => $subscriberArea,
             'subscriberarea_id' => md5($subscriberArea),
             'providerarea' => $providerArea,
