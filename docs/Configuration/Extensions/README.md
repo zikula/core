@@ -9,6 +9,6 @@ TBD
 
 ## For developers
 
-- [Core installation events](Dev/CoreEvents.md)
+- [Core installation events](Dev/CoreInstallationEvents.md)
 - [Extension events](Dev/ExtensionEvents.md)
 - [Hook events](Dev/HookEvents.md)
