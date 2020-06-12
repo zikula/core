@@ -59,14 +59,20 @@ class Kernel extends ZikulaKernel
 
         $container->import($configDir . '{packages}/*.yaml');
         $container->import($configDir . '{packages}/' . $this->environment . '/*.yaml');
-        $container->import($configDir . '{services}.yaml');
-        $container->import($configDir . '{services}_' . $this->environment . '.yaml');
 
-        if (is_readable($configDir . 'services_custom.yaml')) {
+        if (file_exists($configDir . 'services.yaml')) {
+            $container->import($configDir . '{services}.yaml');
+            $container->import($configDir . '{services}_' . $this->environment . '.yaml');
+        } else {
+            $path = $configDir . 'services.php';
+            (require $path)($container->withPath($path), $this);
+        }
+
+        if (file_exists($configDir . 'services_custom.yaml')) {
             $loader->load($configDir . 'services_custom.yaml');
         }
 
-        if (!is_readable($configDir . DynamicConfigDumper::CONFIG_GENERATED)) {
+        if (!file_exists($configDir . DynamicConfigDumper::CONFIG_GENERATED)) {
             // There is no generated configuration (yet), load default values.
             // This only happens at the very first time Symfony is started.
             $loader->load($configDir . DynamicConfigDumper::CONFIG_DEFAULT);
@@ -84,6 +90,11 @@ class Kernel extends ZikulaKernel
 
         $routes->import($configDir . '{routes}/' . $this->environment . '/*.yaml');
         $routes->import($configDir . '{routes}/*.yaml');
-        $routes->import($configDir . '{routes}.yaml');
+        if (file_exists($configDir . 'routes.yaml')) {
+            $routes->import($configDir . '{routes}.yaml');
+        } else {
+            $path = $configDir . '/config/routes.php';
+            (require $path)($routes->withPath($path), $this);
+        }
     }
 }
