@@ -66,7 +66,7 @@
   - symfony/contracts installed in 2.1.2
   - symfony/maker-bundle installed in 1.19.0
   - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
-  - symfony/phpunit-bridge updated from 3.4.14 to 5.1.0
+  - symfony/phpunit-bridge updated from 3.4.14 to 5.1.1
   - symfony/polyfill-ctype updated from 1.12.0 to 1.17.0
   - symfony/polyfill-intl-grapheme installed in 1.17.0
   - symfony/polyfill-intl-icu updated from 1.11.0 to 1.17.0
@@ -79,7 +79,7 @@
   - symfony/polyfill-php80 installed in 1.17.0
   - symfony/polyfill-uuid installed in 1.17.0
   - symfony/profiler-pack installed in 1.0.4
-  - symfony/symfony updated from 3.4.35 to 5.1.0
+  - symfony/symfony updated from 3.4.35 to 5.1.1
   - thomaspark/bootswatch installed in 4.5.0
   - tijsverkoyen/css-to-inline-styles installed in 2.2.2
   - twig/extra-bundle installed in 3.0.3
