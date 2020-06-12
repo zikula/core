@@ -6155,16 +6155,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "729e21c65356880bd9488588e726aa8735dcb52f"
+                "reference": "c093c648ae0ff1c295998fee40b78315a865cdd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/729e21c65356880bd9488588e726aa8735dcb52f",
-                "reference": "729e21c65356880bd9488588e726aa8735dcb52f",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/c093c648ae0ff1c295998fee40b78315a865cdd0",
+                "reference": "c093c648ae0ff1c295998fee40b78315a865cdd0",
                 "shasum": ""
             },
             "require": {
@@ -6347,7 +6347,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-31T06:14:54+00:00"
+            "time": "2020-06-12T11:26:14+00:00"
         },
         {
             "name": "thomaspark/bootswatch",
@@ -7435,16 +7435,16 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "7a05a59154053d62674def66a5c99896113632f2"
+                "reference": "de5f0fec631a0cbfe98630b053be1fad7b75aece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/7a05a59154053d62674def66a5c99896113632f2",
-                "reference": "7a05a59154053d62674def66a5c99896113632f2",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/de5f0fec631a0cbfe98630b053be1fad7b75aece",
+                "reference": "de5f0fec631a0cbfe98630b053be1fad7b75aece",
                 "shasum": ""
             },
             "require": {
@@ -7510,7 +7510,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-23T13:08:13+00:00"
+            "time": "2020-06-09T09:56:30+00:00"
         }
     ],
     "aliases": [],
