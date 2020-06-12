@@ -140,6 +140,7 @@
   - Fixed non-default languages being available when multilingual is disabled (#3938).
   - Fixed duplicate emails allowed when registering with different authentication methods (#3720).
   - Mail module setting to Enable Logging of sent mail actually logs sent mail.
+  - Introduced `Zikula\Bundle\HookBundle\Event\HookPostChangeEvent` to allow reactions on changed hook bindings.
 
 - Features:
   - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).

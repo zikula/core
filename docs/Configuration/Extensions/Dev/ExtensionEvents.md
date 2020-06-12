@@ -3,64 +3,66 @@ currentMenu: extension-management
 ---
 # Extension events
 
-The `\Zikula\ExtensionsModule\ExtensionEvents` class provides these events:
+The `\Zikula\ExtensionsModule\Event` namespace provides several events:
 
 ```php
 /**
  * Occurs when extension list is viewed and can veto the re-syncing of the extension list.
  * Stop propagation of the event to prevent re-sync.
  */
-public const REGENERATE_VETO = 'extensions_extension.extension_events.regenerate_veto';
+class ExtensionListPreReSyncEvent
 
 /**
  * Occurs when syncing filesystem to database and new extensions are found and attempted to be inserted.
  * Stop propagation of the event to prevent extension insertion.
- * The subject of the event is the ExtensionEntity
  */
-public const INSERT_VETO = 'extensions_extension.extension_events.insert_veto';
+class ExtensionEntityPreInsertEvent
 
 /**
  * Occurs before an extension is removed.
  * Stop propagation of the event to prevent extension removal.
- * The subject of the event is the ExtensionEntity
  */
-public const REMOVE_VETO = 'extensions_extension.extension_events.remove_veto';
+class ExtensionEntityPreRemoveEvent
 
 /**
  * Occurs before updating the state of an extension. The event itself cannot affect the workflow unless
  * an exception is thrown to completely halt. For example, performing a permissions check.
- * The subject of the event is the ExtensionEntity
- * The args of the event are an array with ['state' => <value>], where the state is the 'proposed' new state
  */
-public const UPDATE_STATE = 'extensions_extension.extension_events.update_state';
+class ExtensionPreStateChangeEvent
 
 /**
- * Occurs when an extension has been installed.
+ * Occurs when a module has been successfully installed but before the Cache has been reloaded.
  */
-public const EXTENSION_INSTALL = 'extension.install';
+class ExtensionPostInstallEvent
 
 /**
- * Occurs after an extension has been installed (on reload of the extensions view).
+ * Occurs when a module has been successfully installed
+ * and then the Cache has been reloaded after a second Request.
  */
-public const EXTENSION_POSTINSTALL = 'extension.postinstall';
+class ExtensionPostCacheRebuildEvent
 
 /**
- * Occurs when an extension has been upgraded to a newer version.
+ * Occurs when a module has been upgraded to a newer version.
  */
-public const EXTENSION_UPGRADE = 'extension.upgrade';
+class ExtensionPostUpgradeEvent
 
 /**
- * Occurs when an extension has been enabled after it has been disabled before.
+ * Occurs when a module has been enabled after it was previously disabled.
  */
-public const EXTENSION_ENABLE = 'extension.enable';
+class ExtensionPostEnabledEvent
 
 /**
- * Occurs when an extension has been disabled.
+ * Occurs when a module has been disabled.
  */
-public const EXTENSION_DISABLE = 'extension.disable';
+class ExtensionPostDisabledEvent
 
 /**
- * Occurs when an extension has been removed entirely.
+ * Occurs when a module has been removed entirely.
  */
-public const EXTENSION_REMOVE = 'extension.remove';
+class ExtensionPostRemoveEvent
+
+/**
+ * Occurs when the connections menu for an extension is built.
+ */
+class ConnectionsMenuEvent
 ```

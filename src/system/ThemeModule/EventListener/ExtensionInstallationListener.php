@@ -28,7 +28,7 @@ use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
 
 /**
- * Clear the combined asset cache when a module or theme state is changed
+ * Clear the combined asset cache and published assets when an extension state is changed.
  */
 class ExtensionInstallationListener implements EventSubscriberInterface
 {
