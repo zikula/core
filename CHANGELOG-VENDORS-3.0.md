@@ -93,7 +93,7 @@
   - vakata/jstree updated from 3.3.8 to 3.3.9
   - webmozart/assert updated from 1.5.0 to 1.8.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.1
-  - zikula/legal-module updated from 3.1.2 to 3.2.7
+  - zikula/legal-module updated from 3.1.2 to 3.2.8
   - zikula/oauth-module updated from 1.0.4 to 1.2.2
   - zikula/pagelock-module updated from 1.2.3 to 1.3.8
   - zikula/profile-module updated from 3.0.6 to 3.1.15

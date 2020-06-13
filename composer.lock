@@ -7097,16 +7097,16 @@
         },
         {
             "name": "zikula/legal-module",
-            "version": "3.2.7",
+            "version": "3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "8c9387bf778811127bc652faef7bea4e08a5e452"
+                "reference": "a9e58df2a81b87968d68c291d6f59b08003ffb29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/8c9387bf778811127bc652faef7bea4e08a5e452",
-                "reference": "8c9387bf778811127bc652faef7bea4e08a5e452",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/a9e58df2a81b87968d68c291d6f59b08003ffb29",
+                "reference": "a9e58df2a81b87968d68c291d6f59b08003ffb29",
                 "shasum": ""
             },
             "require": {
@@ -7159,7 +7159,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-06-11T20:41:37+00:00"
+            "time": "2020-06-13T19:24:42+00:00"
         },
         {
             "name": "zikula/oauth-module",
