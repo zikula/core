@@ -7163,16 +7163,16 @@
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "42c6b9e73e3228976101de23fd2580239c2ab58a"
+                "reference": "3c7ff12036651b41b1fb6a0bafcd517c707b92a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/42c6b9e73e3228976101de23fd2580239c2ab58a",
-                "reference": "42c6b9e73e3228976101de23fd2580239c2ab58a",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/3c7ff12036651b41b1fb6a0bafcd517c707b92a7",
+                "reference": "3c7ff12036651b41b1fb6a0bafcd517c707b92a7",
                 "shasum": ""
             },
             "require": {
@@ -7217,7 +7217,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-06-11T20:42:59+00:00"
+            "time": "2020-06-12T12:20:38+00:00"
         },
         {
             "name": "zikula/pagelock-module",
