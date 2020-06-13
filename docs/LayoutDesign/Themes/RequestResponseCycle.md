@@ -13,4 +13,4 @@ Request -> Controller -> CapturedResponse -> Filter -> ThemedResponse
 ```
 
 In this altered Symfony Request/Response cycle, the theme can be altered by the Controller Action through Annotation.
-The annotation only excepts defined values. See [ThemeAnnotation](ThemeAnnotation.md) for more information.
+The annotation only excepts defined values. See [ThemeAnnotation](Dev/ThemeAnnotation.md) for more information.
