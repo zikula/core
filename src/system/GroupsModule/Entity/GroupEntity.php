@@ -41,8 +41,8 @@ class GroupEntity extends EntityAccess
     /**
      * group name
      *
-     * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @ORM\Column(type="string", length=190, unique=true)
+     * @Assert\Length(min="0", max="190", allowEmptyString="false")
      * @var string
      */
     private $name;

@@ -96,7 +96,7 @@
   - zikula/legal-module updated from 3.1.2 to 3.2.8
   - zikula/oauth-module updated from 1.0.4 to 1.2.2
   - zikula/pagelock-module updated from 1.2.3 to 1.3.8
-  - zikula/profile-module updated from 3.0.6 to 3.1.15
+  - zikula/profile-module updated from 3.0.6 to 3.1.16
   - zikula/wizard updated from 2.0 to 3.1.0
 
 - Dropped vendors:
