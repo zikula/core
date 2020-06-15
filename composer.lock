@@ -6156,16 +6156,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v5.1.1",
+            "version": "v5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "c093c648ae0ff1c295998fee40b78315a865cdd0"
+                "reference": "b551cb4c4573ea36fd924c1394ed09c453272470"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/c093c648ae0ff1c295998fee40b78315a865cdd0",
-                "reference": "c093c648ae0ff1c295998fee40b78315a865cdd0",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/b551cb4c4573ea36fd924c1394ed09c453272470",
+                "reference": "b551cb4c4573ea36fd924c1394ed09c453272470",
                 "shasum": ""
             },
             "require": {
@@ -6283,7 +6283,7 @@
                 "ocramius/proxy-manager": "^2.1",
                 "paragonie/sodium_compat": "^1.8",
                 "php-http/httplug": "^1.0|^2.0",
-                "phpdocumentor/reflection-docblock": "^3.0|^4.0",
+                "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
                 "predis/predis": "~1.1",
                 "psr/http-client": "^1.0",
                 "psr/simple-cache": "^1.0",
@@ -6348,7 +6348,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-12T11:26:14+00:00"
+            "time": "2020-06-15T13:51:55+00:00"
         },
         {
             "name": "thomaspark/bootswatch",
@@ -7436,7 +7436,7 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.1.1",
+            "version": "v5.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
