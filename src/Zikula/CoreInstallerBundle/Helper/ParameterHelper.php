@@ -181,7 +181,7 @@ class ParameterHelper
     {
         $randomLibFactory = new Factory();
         $generator = $randomLibFactory->getMediumStrengthGenerator();
-        $secret = $params['secret'] && '%env(APP_SECRET)%' !== $params['secret']
+        $secret = isset($params['secret']) && !empty($params['secret']) && '%env(APP_SECRET)%' !== $params['secret']
             ? $params['secret']
             : $generator->generateString(50)
         ;
