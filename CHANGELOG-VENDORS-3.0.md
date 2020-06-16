@@ -90,8 +90,8 @@
   - twig/markdown-extra installed in 3.0.3
   - twig/string-extra installed in 3.0.3
   - twig/twig updated from 1.42.4 to 3.0.3
-  - vakata/jstree updated from 3.3.8 to 3.3.9
-  - webmozart/assert updated from 1.5.0 to 1.8.0
+  - vakata/jstree updated from 3.3.8 to 3.3.10
+  - webmozart/assert updated from 1.5.0 to 1.9.0
   - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.1
   - zikula/legal-module updated from 3.1.2 to 3.2.8
   - zikula/oauth-module updated from 1.0.4 to 1.2.2
