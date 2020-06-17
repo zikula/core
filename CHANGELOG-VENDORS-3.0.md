@@ -32,7 +32,7 @@
   - erusev/parsedown installed in 1.7.4
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.6.0
   - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.41
-  - guzzlehttp/guzzle updated from 6.4.1 to 6.5.4
+  - guzzlehttp/guzzle updated from 6.4.1 to 6.5.5
   - imagine/imagine updated from 0.7.1 to 1.3.3
   - itsjavi/fontawesome-iconpicker installed in 3.2.0
   - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using lightcoresystems/i18n-routing-bundle dev-master instead)
