@@ -28,6 +28,9 @@ currentMenu: ext-content
 [EZComments](https://github.com/zikula-modules/EZComments)
 : Comments hook
 
+[Ratings](https://github.com/zikula-modules/Ratings)
+: Ratings hook
+
 ## Legacy Modules not yet converted to Zikula 3.x
 
 - [Dizkus](https://github.com/zikula-modules/DizkusModule) (Forums system)
