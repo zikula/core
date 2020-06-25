@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -24,7 +23,7 @@ use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterfa
 /**
  * CategoryRepository.
  */
-class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface, ServiceEntityRepositoryInterface
+class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface
 {
     /**
      * Code from Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository
