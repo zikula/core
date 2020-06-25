@@ -1,6 +1,6 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.0.0 (unreleased)
+## 3.0.0 (2020-06-25)
 
 - BC Breaks:
   - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
