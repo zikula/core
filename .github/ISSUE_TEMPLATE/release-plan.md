@@ -29,6 +29,7 @@ assignees: 'Guite, craigh'
   - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
     - [ ] Commit triggers the distribution build (final artifacts)
     - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
+    - [ ] Create tag for distribution project (same as for the core!)
 - [ ] Ensure the created build artifacts work
   - [ ] Download and unpack the archives (from core for pre releases; from distribution for final release)
   - [ ] Test CLI installer randomly
