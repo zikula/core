@@ -18,15 +18,19 @@ assignees: 'Guite, craigh'
      - [ ] first execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
      - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
-- [ ] Add release date to changelog (only for final release) and commit it
+- [ ] Create final commit
+  - [ ] Update version strings in all core extensions in `src/system` and `Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::VERSION`
+  - [ ] Add release date to changelog (only for final release)
 
 ## Create tags and artifacts
 
 - [ ] Create tag for core project (e.g. `3.0.0-RC2`)
 - [ ] Only for final release:
   - [ ] Execute `zsplit` to push the tag to all slave repositories
+    - `zsplit -P src/Zikula/`
+    - `zsplit -P src/system/`
   - [ ] Wait a bit for packagist to update
-  - [ ] Update version number in distribution's `composer.json` and update `composer.lock`
+  - [ ] Update version number in distribution's `composer.json` and run `symfony composer update` to update `composer.lock`
     - [ ] Commit triggers the distribution build (final artifacts)
     - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
     - [ ] Create tag for distribution project (same as for the core!)
