@@ -1,5 +1,16 @@
 # CHANGELOG - ZIKULA 3.0.x
 
+## 3.1.0 (unreleased)
+
+- BC Breaks:
+  - _there should be none_
+
+- Fixes:
+  - Fix wrong path to possible `routes.php` file in the Kernel class.
+
+- Features:
+  - _there should be none_
+
 ## 3.0.0 (2020-06-25)
 
 - BC Breaks:
