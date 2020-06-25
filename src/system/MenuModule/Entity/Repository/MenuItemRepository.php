@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule\Entity\Repository;
 
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -21,7 +20,7 @@ use LogicException;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 
-class MenuItemRepository extends NestedTreeRepository implements MenuItemRepositoryInterface, ServiceEntityRepositoryInterface
+class MenuItemRepository extends NestedTreeRepository implements MenuItemRepositoryInterface
 {
     /**
      * Code from Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository
