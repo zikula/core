@@ -60,25 +60,24 @@ class Kernel extends ZikulaKernel
         $container->import($configDir . '{packages}/*.yaml');
         $container->import($configDir . '{packages}/' . $this->environment . '/*.yaml');
 
-        if (file_exists($configDir . 'services.yaml')) {
+        if (is_file($configDir . 'services.yaml')) {
             $container->import($configDir . '{services}.yaml');
             $container->import($configDir . '{services}_' . $this->environment . '.yaml');
-        } else {
-            $path = $configDir . 'services.php';
+        } elseif (is_file($path = $configDir . 'services.php')) {
             (require $path)($container->withPath($path), $this);
         }
 
-        if (file_exists($configDir . 'services_custom.yaml')) {
+        if (is_file($configDir . 'services_custom.yaml')) {
             $loader->load($configDir . 'services_custom.yaml');
         }
 
-        if (!file_exists($configDir . DynamicConfigDumper::CONFIG_GENERATED)) {
+        if (!is_file($configDir . DynamicConfigDumper::CONFIG_GENERATED)) {
             // There is no generated configuration (yet), load default values.
             // This only happens at the very first time Symfony is started.
             $loader->load($configDir . DynamicConfigDumper::CONFIG_DEFAULT);
         } else {
             $loader->load($configDir . DynamicConfigDumper::CONFIG_GENERATED);
-            if (file_exists($configDir . 'dynamic/generated_' . $this->environment . '.yaml')) {
+            if (is_file($configDir . 'dynamic/generated_' . $this->environment . '.yaml')) {
                 $loader->load($configDir . 'dynamic/generated_' . $this->environment . '.yaml');
             }
         }
@@ -90,10 +89,9 @@ class Kernel extends ZikulaKernel
 
         $routes->import($configDir . '{routes}/' . $this->environment . '/*.yaml');
         $routes->import($configDir . '{routes}/*.yaml');
-        if (file_exists($configDir . 'routes.yaml')) {
+        if (is_file($configDir . 'routes.yaml')) {
             $routes->import($configDir . '{routes}.yaml');
-        } else {
-            $path = $configDir . '/config/routes.php';
+        } elseif (is_file($path = $configDir . 'routes.php')) {
             (require $path)($routes->withPath($path), $this);
         }
     }
