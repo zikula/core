@@ -1,6 +1,6 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.1.0 (unreleased)
+## 3.0.1 (unreleased)
 
 - BC Breaks:
   - _there should be none_
