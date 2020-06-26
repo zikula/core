@@ -44,6 +44,7 @@ jobs:
         body: This is an auto-generated PR with dependency updates.
         labels: dep-updates
         branch: dep-updates
+        base: '3.0'
 
     - name: Check outputs
       run: |
