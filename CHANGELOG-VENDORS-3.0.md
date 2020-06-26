@@ -1,6 +1,13 @@
 # CHANGELOG-VENDORS - ZIKULA 3.0.x
 
-## 3.0.0 VENDOR CHANGES (unreleased)
+## 3.0.1 VENDOR CHANGES (unreleased)
+
+- Vendor updates:
+  - A
+  - B
+  - C
+
+## 3.0.0 VENDOR CHANGES (2020-06-25)
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
