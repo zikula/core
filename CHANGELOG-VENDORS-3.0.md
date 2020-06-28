@@ -6,7 +6,7 @@
   - components/font-awesome updated from 5.12.1 to 5.13.1
   - composer/composer updated from 1.10.7 to 1.10.8
   - egulias/email-validator updated from 2.1.17 to 2.1.18
-  - league/commonmark updated from 1.4.3 to 1.5.0
+  - league/commonmark updated from 1.4.3 to 1.5.1
   - liip/imagine-bundle updated from 2.3.0 to 2.3.1
   - symfony/polyfill-ctype updated from 1.17.0 to 1.17.1
   - symfony/polyfill-intl-grapheme updated from 1.17.0 to 1.17.1
