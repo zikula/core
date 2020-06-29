@@ -27,7 +27,7 @@ class ThemeType extends AbstractType
             ->add('defaulttheme', ChoiceType::class, [
                 'label' => 'Theme to use for main site',
                 'required' => true,
-                'empty_data' => null,
+                'empty_data' => 'ZikulaBootstrapTheme',
                 'choices' => /** @Ignore */$this->formatThemeSelector($options['themes']),
             ])
             ->add('admintheme', ChoiceType::class, [

@@ -57,7 +57,7 @@ class ConfigController extends AbstractController
             }
         }
         $dataValues = [
-            'Default_Theme' => $variableApi->get(VariableApi::CONFIG, 'defaulttheme'),
+            'defaulttheme' => $variableApi->get(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme'),
             'admintheme' => $variableApi->get('ZikulaAdminModule', 'admintheme')
         ];
         $form = $this->createForm(
@@ -73,7 +73,7 @@ class ConfigController extends AbstractController
                 $formData = $form->getData();
 
                 // save module vars
-                $variableApi->set(VariableApi::CONFIG, 'Default_Theme', $formData['Default_Theme']);
+                $variableApi->set(VariableApi::CONFIG, 'Default_Theme', $formData['defaulttheme']);
                 $variableApi->set('ZikulaAdminModule', 'admintheme', $formData['admintheme']);
                 $cacheClearer->clear('twig');
                 $cacheClearer->clear('symfony.config');

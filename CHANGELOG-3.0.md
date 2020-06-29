@@ -7,6 +7,8 @@
 
 - Fixes:
   - Fix wrong path to possible `routes.php` file in the Kernel class.
+  - Fix wrong modvar name when setting theme.
+  - Fix wrong generated directory name (docs instead of doc) in ExtensionMaker.
 
 - Features:
   - _there should be none_
