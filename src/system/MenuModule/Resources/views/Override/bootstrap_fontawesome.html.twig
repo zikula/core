@@ -13,8 +13,17 @@
     {% do attribute(item, setter, ['class', value ~ ' ' ~ add]) %}
 {% endmacro %}
 
+{% macro attributes(attributes) %}
+    {# override parent attributes() macro to avoid outputting 'icon' in attributes list #}
+    {% for name, value in attributes|filter((value, name) => name != 'icon') %}
+        {%- if value is not none and value is not same as(false) -%}
+            {{- ' %s="%s"'|format(name, value is same as(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
 {% block item %}
-    {% import "knp_menu.html.twig" as macros %}
+    {% import _self as macros %}{# use local attributes macro #}
     {#
     As multiple level is not currently supported by bootstrap 4
     This requires you to install
