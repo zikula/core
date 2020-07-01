@@ -11,7 +11,7 @@
   - Fix wrong generated directory name (docs instead of doc) in ExtensionMaker.
   - Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
   - Fix invalid access to obsolete parameter when upgrading from 3.0 to a newer version.
-  - Fix wrong link to upgrade docs in the upgrader (#4364).
+  - Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
 
 - Features:
   - _there should be none_
