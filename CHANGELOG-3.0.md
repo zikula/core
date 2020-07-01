@@ -10,6 +10,7 @@
   - Fix wrong modvar name when setting theme.
   - Fix wrong generated directory name (docs instead of doc) in ExtensionMaker.
   - Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
+  - Fix invalid access to obsolete parameter when upgrading from 3.0 to a newer version.
 
 - Features:
   - _there should be none_
