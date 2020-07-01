@@ -2,7 +2,7 @@
     <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
     <h2>{% trans %}Upgrader script{% endtrans %}</h2>
     <p class="installguide">
-        {% set doc_link = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://docs.ziku.la/Setup/upgrade.html', '%text%': 'upgrade guide'|trans }) %}
-        <em>{% trans with { '%doc_link%': doclink|raw } %}Please refer to the %doc_link% during the process.{% endtrans %}</em>
+        {% set docLink = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://docs.ziku.la/Setup/upgrade.html', '%text%': 'upgrade guide'|trans }) %}
+        <em>{% trans with {'%doc_link%': docLink|raw} %}Please refer to the %doc_link% during the process.{% endtrans %}</em>
     </p>
 </div>
