@@ -248,7 +248,7 @@ class CoreInstallerExtensionHelper
         $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
         $this->variableApi->set('ZikulaAdminModule', 'admintheme', '');
         // unset start page information to avoid missing module errors
-        $this->variableApi->set(VariableApi::CONFIG, 'startController_en', '');
+        $this->variableApi->set(VariableApi::CONFIG, 'startController_en', []);
 
         return true;
     }
