@@ -73,7 +73,7 @@ class AddThemePathsToLoaderListener implements EventSubscriberInterface
         $directories = $finder->directories()
             ->in($theme->getPath() . '/Resources')
             ->depth('== 0')
-            ->exclude(['config', 'public', 'translations', 'docs', 'views', 'meta', 'workflows'])
+            ->exclude(['config', 'public', 'translations', 'doc', 'docs', 'views', 'meta', 'workflows'])
             ->ignoreUnreadableDirs();
         foreach ($directories as $directory) {
             /** @var \Symfony\Component\Finder\SplFileInfo $directory */

@@ -210,10 +210,10 @@ class ExtensionMaker extends AbstractMaker
     private function generateBlankFiles(): void
     {
         $fs = new Filesystem();
-        $fs->mkdir($this->extensionPath . '/Resources/doc');
-        $fs->touch($this->extensionPath . '/Resources/doc/index.md');
-        $fs->mkdir($this->extensionPath . '/Resources/doc/help/en');
-        $fs->touch($this->extensionPath . '/Resources/doc/help/en/README.md');
+        $fs->mkdir($this->extensionPath . '/Resources/docs');
+        $fs->touch($this->extensionPath . '/Resources/docs/index.md');
+        $fs->mkdir($this->extensionPath . '/Resources/docs/help/en');
+        $fs->touch($this->extensionPath . '/Resources/docs/help/en/README.md');
         $fs->mkdir($this->extensionPath . '/Resources/public/css');
         $fs->touch($this->extensionPath . '/Resources/public/css/style.css');
         $fs->mkdir($this->extensionPath . '/Resources/public/images');
