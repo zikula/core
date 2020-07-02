@@ -13,6 +13,7 @@
   - Fix invalid access to obsolete parameter when upgrading from 3.0 to a newer version.
   - Fix wrong link to upgrade docs in the upgrader (#4364).
   - Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
+  - Fix broken autoloader recognition of additional extensions for distribution-based installations.
 
 - Features:
   - _there should be none_
