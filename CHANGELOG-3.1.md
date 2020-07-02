@@ -9,4 +9,5 @@
   - _first fix_
 
 - Features:
-  - Added template display controller for quick generation and display of static template-based content.
+  - Added template display controller for quick generation and display of static template-based content (#4369).
+  - Added block to display templates (#4369).
