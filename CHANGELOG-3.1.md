@@ -9,4 +9,4 @@
   - _first fix_
 
 - Features:
-  - _first feature_
+  - Added template display controller for quick generation and display of static template-based content.

@@ -18,6 +18,9 @@ services:
     Zikula\Bundle\CoreBundle\Controller\:
         resource: '../../Controller/*Controller.php'
 
+    Zikula\Bundle\CoreBundle\Controller\StaticAction:
+        public: true
+
     Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface: '@kernel'
 
     Zikula\Bundle\CoreBundle\Controller\MainController:

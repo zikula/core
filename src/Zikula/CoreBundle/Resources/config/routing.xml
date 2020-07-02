@@ -6,4 +6,9 @@
         <default key="_controller">Zikula\Bundle\CoreBundle\Controller\MainController::homeAction</default>
         <condition>request == null or request.query.get('module') == ''</condition>
     </route>
+    <route id="static" path="/p/{name}" methods="GET">
+        <default key="_controller">Zikula\Bundle\CoreBundle\Controller\StaticAction</default>
+        <requirement key="name">[^&amp;/?*:;{}\\]+</requirement>
+        <option key="zkNoBundlePrefix">1</option>
+    </route>
 </routes>
