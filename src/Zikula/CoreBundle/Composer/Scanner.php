@@ -72,7 +72,7 @@ class Scanner
     public function decode(string $jsonFilePath)
     {
         $base = str_replace('\\', '/', dirname($jsonFilePath));
-        $srcPath = dirname(__DIR__, 3) . '/'; // should work when Bundle in vendor too
+        $srcPath = dirname(__DIR__, 4) . '/src/';
         $base = mb_substr($base, mb_strlen($srcPath));
 
         $json = json_decode(file_get_contents($jsonFilePath), true);
