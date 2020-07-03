@@ -105,15 +105,15 @@ abstract class AbstractCoreInstallerCommand extends Command
         ],
         /* mailer settings */
         'transport' => [
-            'description' => 'The mailer transport to use.',
+            'description' => 'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider.',
             'default' => 'test'
         ],
         'mailer_id' => [
-            'description' => 'The ACCESS_KEY, USERNAME, ID or apikey for the selected transport.',
+            'description' => 'The user name, access key or API key for the selected transport. Defines which account should be used for sending.',
             'default' => null
         ],
         'mailer_key' => [
-            'description' => 'The SECRET_KEY, PASSWORD, ID or KEY for the selected transport.',
+            'description' => 'The password or secret key for the selected transport. Used for verifying authentication.',
             'default' => null
         ],
         'host' => [
