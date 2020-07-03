@@ -9,6 +9,7 @@
   - league/commonmark updated from 1.4.3 to 1.5.1
   - league/html-to-markdown updated from 4.9.1 to 4.10.0
   - liip/imagine-bundle updated from 2.3.0 to 2.3.1
+  - nikic/php-parser updated from 4.5.0 to 4.6.0
   - symfony/polyfill-ctype updated from 1.17.0 to 1.17.1
   - symfony/polyfill-intl-grapheme updated from 1.17.0 to 1.17.1
   - symfony/polyfill-intl-icu updated from 1.17.0 to 1.17.1
