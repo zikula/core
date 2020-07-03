@@ -14,6 +14,7 @@
   - Fix wrong link to upgrade docs in the upgrader (#4364).
   - Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
   - Fix broken autoloader recognition of additional extensions for distribution-based installations.
+  - Improved help texts for mailer configuration (#4356).
 
 - Features:
   - _there should be none_
