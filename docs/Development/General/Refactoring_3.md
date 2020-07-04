@@ -56,7 +56,9 @@ interfaces, etc. Extensions must update their implementation of any core/system 
 if you are upgrading a Block class, a member function line goes from:
 
 ```public function display($properties) : {```
+
 to
+
 ```public function display(array $properties) :string {```
 
 ### Service registration
