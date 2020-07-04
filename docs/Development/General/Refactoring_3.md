@@ -4,6 +4,11 @@ currentMenu: dev-general
 # Refactoring for 3.0
 
 ## Modules
+### File Structure
+The file structure of Zikula 3.0 is much different than the structure in 2.0. Intead of extensions being kept
+in /modules or /themes, they are placed into /src/extensions. Much of the code that handles rendering pages
+is outside the public folder that the webserver can see. To serve your html pages, you will need to navigate
+to zikula_folder/src/ to serve pages. A virtual host or modrewrite may be needed on your production server. 
 
 ### Composer file
 
@@ -20,13 +25,39 @@ Add the following capability for defining the (default) admin icon:
     },
 
 ```
-
 You can remove the old `admin.png` file afterwards.
+In addtion, it is recommended that you increment your module version one full point (i.e. 3.0.0 -> 4.0.0). Upgrading to core 3.0 
+is not backward compatible with core 2.0. Also, change the php version to >=7.2.5 (or higher if you module requires it) and the 
+core-compatibility to >=3.0.0.
+```{
+  ...
+  "version": "5.0.0",
+  ...
+  "require": {
+    "php": ">7.2.5",
+    "zikula/core-bundle": "3.*"
+  },
+  "extra": {
+    "zikula": {
+      ...
+      "core-compatibility": ">=3.0.0",
+      ...
+      "icon": "fas fa-star",
+      ...
+    }
+  }
+}
+  ```
 
 ### Interfaces
 
 In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said
-interfaces, etc. Extensions must update their implementation of any core/system interface to adhere to the new signature.
+interfaces, etc. Extensions must update their implementation of any core/system interface to adhere to the new signature. For example, 
+if you are upgrading a Block class, a member function line goes from:
+
+```public function display($properties) : {```
+to
+```public function display(array $properties) :string {```
 
 ### Service registration
 
