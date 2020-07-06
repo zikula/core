@@ -2,13 +2,13 @@
 currentMenu: content-blocks
 ---
 # Blocks
-Standard blocks exist in Zikula to create and display basic content.
+Zikula now includes the StaticContentModule as a Value-Added extension in Core-3.1.0.
+With this, standard blocks exist in Zikula to create and display basic content.
  - HTML Block
  - Text Block
  - Xslt Block
  - File Include Block
-
-**New in Core 3.1.0 - Template Block**
+ - **New in Core 3.1.0 - Template Block**
 
 ## HTML Block
 Renders and displays basic HTML content.
