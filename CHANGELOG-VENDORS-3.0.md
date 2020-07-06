@@ -21,6 +21,14 @@
   - symfony/polyfill-php73 updated from 1.17.0 to 1.17.1
   - symfony/polyfill-php80 updated from 1.17.0 to 1.17.1
   - symfony/polyfill-uuid updated from 1.17.0 to 1.17.1
+  - twig/cssinliner-extra updated from 3.0.3 to 3.0.4
+  - twig/extra-bundle updated from 3.0.3 to 3.0.4
+  - twig/html-extra updated from 3.0.3 to 3.0.4
+  - twig/inky-extra updated from 3.0.3 to 3.0.4
+  - twig/intl-extra updated from 3.0.3 to 3.0.4
+  - twig/markdown-extra updated from 3.0.3 to 3.0.4
+  - twig/string-extra updated from 3.0.3 to 3.0.4
+  - twig/twig updated from 3.0.3 to 3.0.4
 
 ## 3.0.0 VENDOR CHANGES (2020-06-25)
 
@@ -104,8 +112,8 @@
   - symfony/symfony updated from 3.4.35 to 5.1.2
   - thomaspark/bootswatch installed in 4.5.0
   - tijsverkoyen/css-to-inline-styles installed in 2.2.2
-  - twig/extra-bundle installed in 3.0.3
   - twig/cssinliner-extra installed in 3.0.3
+  - twig/extra-bundle installed in 3.0.3
   - twig/html-extra installed in 3.0.3
   - twig/inky-extra installed in 3.0.3
   - twig/intl-extra installed in 3.0.3
