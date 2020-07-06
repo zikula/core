@@ -61,6 +61,7 @@ to
 
 ```public function display(array $properties) :string {```
 
+You can let php know to enforce strict type-hinting by putting ```declare(strict_types=1);``` at the top of each php file just after the ```<?php```
 ### Service registration
 
 Please use `autowire` and `autoconfigure` as this will magically solve most issues.
