@@ -95,7 +95,8 @@
         "zikula/legal-module": "3.*",
         "zikula/oauth-module": "1.*",
         "zikula/pagelock-module": "1.*",
-        "zikula/profile-module": "3.*"
+        "zikula/profile-module": "3.*",
+        "zikula/staticcontent-module": "1.*"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "5.*"

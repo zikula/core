@@ -9,5 +9,4 @@
   - _first fix_
 
 - Features:
-  - Added template display controller for quick generation and display of static template-based content (#4369).
-  - Added block to display templates (#4369).
+  - Add StaticContent module to manage all static content (#4369).
