@@ -42,7 +42,7 @@ class Validators
             }
         }
 
-        if (('Zikula\\' === mb_substr($namespace, 0, 7)) && (false === $input->getOption('force'))) {
+        if ('Zikula\\' === mb_substr($namespace, 0, 7) && false === $input->getOption('force')) {
             throw new InvalidArgumentException(sprintf('Use of Zikula as the vendor name is not recommended. If you use it you must also specify the %s option', '--force'));
         }
 
