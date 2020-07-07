@@ -58,7 +58,7 @@
         "justinrainbow/json-schema": "5.*",
         "egulias/email-validator": "^2.1.10",
         "knplabs/knp-menu-bundle": ">=2.2.1",
-        "jms/i18n-routing-bundle": "dev-master",
+        "jms/i18n-routing-bundle": "3.*",
         "friendsofsymfony/jsrouting-bundle": "2.*",
         "phpids/phpids": "dev-master",
         "ircmaxell/random-lib": "1.*",
@@ -146,10 +146,6 @@
         {
             "type": "git",
             "url": "https://github.com/FrDH/mmenu-js"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/lightcoresystems/JMSI18nRoutingBundle/"
         }
     ],
     "config": {

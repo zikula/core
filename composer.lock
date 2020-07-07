@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "823cbce0c9f52fb9d2d1cc88ded0d10b",
+    "content-hash": "b8f9071a750e6363f18755ad3bff9ab1",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -2776,17 +2776,17 @@
         },
         {
             "name": "jms/i18n-routing-bundle",
-            "version": "dev-master",
+            "version": "3.0.4",
             "target-dir": "JMS/I18nRoutingBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/lightcoresystems/JMSI18nRoutingBundle.git",
-                "reference": "031afcdf13913a5d985a240ac5f13738ce064bb2"
+                "url": "https://github.com/schmittjoh/JMSI18nRoutingBundle.git",
+                "reference": "99e02159433a495c696bf9372db14b117f4480de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lightcoresystems/JMSI18nRoutingBundle/zipball/031afcdf13913a5d985a240ac5f13738ce064bb2",
-                "reference": "031afcdf13913a5d985a240ac5f13738ce064bb2",
+                "url": "https://api.github.com/repos/schmittjoh/JMSI18nRoutingBundle/zipball/99e02159433a495c696bf9372db14b117f4480de",
+                "reference": "99e02159433a495c696bf9372db14b117f4480de",
                 "shasum": ""
             },
             "require": {
@@ -2807,6 +2807,7 @@
                     "JMS\\I18nRoutingBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache2"
             ],
@@ -2827,10 +2828,7 @@
                 "routing",
                 "translation"
             ],
-            "support": {
-                "source": "https://github.com/lightcoresystems/JMSI18nRoutingBundle/tree/master"
-            },
-            "time": "2020-03-31T20:29:12+00:00"
+            "time": "2020-07-07T09:30:26+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -7744,7 +7742,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20
     },
     "prefer-stable": true,

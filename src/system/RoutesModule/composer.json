@@ -18,15 +18,9 @@
     "require": {
         "php": ">=7.2.5",
         "zikula/core-bundle": "3.*",
-        "jms/i18n-routing-bundle": "dev-master",
+        "jms/i18n-routing-bundle": "3.*",
         "friendsofsymfony/jsrouting-bundle": "2.*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/lightcoresystems/JMSI18nRoutingBundle/"
-        }
-    ],
     "extra": {
         "zikula": {
             "core-compatibility": ">=3.0.0 <4.0.0",
