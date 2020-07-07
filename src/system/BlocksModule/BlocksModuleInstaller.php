@@ -78,6 +78,9 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 // @todo
                 // remove where title === $this->trans('This site is powered by Zikula!')
                 // change bkey for finclude, xslt, html and text blocks to new namespace
+                // UPDATE `blocks`
+                // SET `bkey` = REPLACE(`bkey`, 'BlocksModule', 'StaticContentModule')
+                // WHERE `blocktype` IN ('Finclude', 'Html', 'Text', 'Xslt');
                 // change core installer to create welcome block from StaticContentModule as TemplateBlock instead
         }
 

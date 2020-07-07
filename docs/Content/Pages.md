@@ -23,3 +23,4 @@ There is no way to add additional variables in these pages.
 To display more advanced pages and non-static content please see
  - [Pages](https://github.com/zikula-modules/Pages)
  - [Content](https://github.com/zikula-modules/Content)
+ - Even more: [Extensions > Content](../Extensions/Content.md)
