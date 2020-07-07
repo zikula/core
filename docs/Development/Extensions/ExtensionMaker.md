@@ -14,6 +14,9 @@ For example, if you are generating a Blog module and your name is Fabien, you co
 part is called the _vendor_ (in this case 'Fabien') and the second part is going to be the name of the extension.
 The full extension name combines these into FabienBlogModule.
 
+Note: use of 'Zikula' as a vendor name is strongly discouraged. If used, you must include the `--force` option when
+using the commands below. When used, your files may get automatically placed in unexpected locations.
+
 Now call the function with your namespace and choose and extension type (Module or Theme). In this case, we are
 generating a _Module_.
 

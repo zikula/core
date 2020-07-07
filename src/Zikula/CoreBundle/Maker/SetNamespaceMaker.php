@@ -21,6 +21,7 @@ use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 
 class SetNamespaceMaker extends AbstractMaker
@@ -46,6 +47,7 @@ class SetNamespaceMaker extends AbstractMaker
         $command
             ->setDescription('Sets the maker namespace config')
             ->addArgument('namespace', InputArgument::OPTIONAL, 'Choose a namespace (e.g. <fg=yellow>Acme\\BlogModule</>)')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Required to use Zikula namespace.', false)
             ->setHelp('Set the maker namespace config <info>php %command.full_name% Acme/BlogModule</info>')
         ;
     }
@@ -53,7 +55,7 @@ class SetNamespaceMaker extends AbstractMaker
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
         try {
-            $namespace = Validators::validateBundleNamespace($input->getArgument('namespace'), true);
+            $namespace = Validators::validateBundleNamespace($input, true);
         } catch (\InvalidArgumentException $exception) {
             $io->error($exception->getMessage());
 
