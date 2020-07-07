@@ -90,7 +90,7 @@ This change greatly simplifies using services, since each service does not have 
     tags:
       - { name: form.type }
       ... 60 more lines...
-      ```
+```
 Instead this is simply taken care of by a much shorter file:
 
 ```services:
@@ -106,7 +106,8 @@ Instead this is simply taken care of by a much shorter file:
 
   Paustian\Book\Helper:
     resource: '../../Helper/*'
-    lazy: true```
+    lazy: true
+```
 
 Change `.yml` suffixes to `.yaml` (e.g. `routing.yaml`) and update `Extension.php` class.
 
