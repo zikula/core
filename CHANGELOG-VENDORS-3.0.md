@@ -5,6 +5,7 @@
 - Vendor updates:
   - components/font-awesome updated from 5.12.1 to 5.13.1
   - composer/composer updated from 1.10.7 to 1.10.8
+  - doctrine/collections updated from 1.6.5 to 1.6.6
   - egulias/email-validator updated from 2.1.17 to 2.1.18
   - jms/i18n-routing-bundle updated from 3.0.3 to 3.0.4
   - league/commonmark updated from 1.4.3 to 1.5.1
