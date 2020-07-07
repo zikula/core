@@ -14,11 +14,13 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Maker;
 
 use InvalidArgumentException;
+use Symfony\Component\Console\Input\InputInterface;
 
 class Validators
 {
-    public static function validateBundleNamespace(string $namespace, $allowSuffix = false): string
+    public static function validateBundleNamespace(InputInterface $input, $allowSuffix = false): string
     {
+        $namespace = $input->getArgument('namespace');
         $namespace = trim(str_replace('/', '\\', $namespace));
         if (!preg_match('/^(?:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\?)+$/', $namespace)) {
             throw new InvalidArgumentException('The namespace contains invalid characters.');
@@ -38,6 +40,10 @@ class Validators
                     throw new InvalidArgumentException(sprintf('The namespace cannot contain "%s".', $word));
                 }
             }
+        }
+
+        if ('Zikula\\' === mb_substr($namespace, 0, 7) && false === $input->getOption('force')) {
+            throw new InvalidArgumentException(sprintf('Use of Zikula as the vendor name is not recommended. If you use it you must also specify the %s option', '--force'));
         }
 
         // validate that the namespace is at least one level deep
