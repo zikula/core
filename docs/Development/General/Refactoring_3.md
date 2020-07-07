@@ -71,6 +71,43 @@ Further information can be found [in Symfony docs](https://symfony.com/doc/curre
 Module services should be registered by their classname (automatically as above) and not with old-fashioned
 `service.class.dot.notation`.
 
+This change greatly simplifies using services, since each service does not have to be registered in your config files located in the Resources/config/ directory. Here is a previous services file from the Book module:
+```services:
+  paustian_book_module.container.link_container:
+    class: Paustian\BookModule\Container\LinkContainer
+    arguments:
+      - "@translator.default"
+      - "@router"
+      - "@zikula_permissions_module.api.permission"
+    tags:
+      - { name: zikula.link_container }
+
+  paustian_book_module.form.article_type:
+    class: Paustian\BookModule\Form\Article
+    arguments:
+      - "@translator.default"
+      - "@zikula_settings_module.locale_api"
+    tags:
+      - { name: form.type }
+      ... 60 more lines...
+      ```
+Instead this is simply taken care of by a much shorter file:
+
+```services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+    bind:
+      $extension: '@Paustian\Book\PaustianBookModule'
+
+  Paustian\Book\:
+    resource: '../../*'
+
+  Paustian\Book\Helper:
+    resource: '../../Helper/*'
+    lazy: true```
+
 Change `.yml` suffixes to `.yaml` (e.g. `routing.yaml`) and update `Extension.php` class.
 
 ### Blocks
