@@ -5,6 +5,7 @@ Any passed option will be used as a default value for the interaction
 optional arguments:
   <comment>namespace</comment>: e.g. Acme\\Blog (do not include suffix. e.g. 'Module')
   <comment>type</comment>: Module or Theme
+  <comment>force</comment>: Required if using 'Zikula' as vendor name (not recommended).
 
 Note that you can use <comment>/</comment> instead of <comment>\\ </comment>for the namespace delimiter if you wish.
 
