@@ -72,7 +72,8 @@ Module services should be registered by their classname (automatically as above)
 `service.class.dot.notation`.
 
 This change greatly simplifies using services, since each service does not have to be registered in your config files located in the Resources/config/ directory. Here is a previous services file from the Book module:
-```services:
+```
+services:
   paustian_book_module.container.link_container:
     class: Paustian\BookModule\Container\LinkContainer
     arguments:
@@ -93,7 +94,8 @@ This change greatly simplifies using services, since each service does not have 
 ```
 Instead this is simply taken care of by a much shorter file:
 
-```services:
+```
+services:
   _defaults:
     autowire: true
     autoconfigure: true
