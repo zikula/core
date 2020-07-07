@@ -23,6 +23,7 @@ use Symfony\Bundle\MakerBundle\Str;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Filesystem\Filesystem;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -75,6 +76,7 @@ class ExtensionMaker extends AbstractMaker
             ->setDescription('Creates a new zikula extension bundle')
             ->addArgument('namespace', InputArgument::OPTIONAL, sprintf('Choose a namespace (e.g. <fg=yellow>Acme\%s</>)', Str::asClassName(Str::getRandomTerm())))
             ->addArgument('type', InputArgument::OPTIONAL, sprintf('Choose a extension type (<fg=yellow>module or theme</>)'))
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Required to use Zikula namespace.', false)
             ->setHelp(file_get_contents(dirname(__DIR__) . '/Resources/help/ExtensionMaker.txt'))
         ;
     }
@@ -82,7 +84,7 @@ class ExtensionMaker extends AbstractMaker
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
     {
         try {
-            $namespace = Validators::validateBundleNamespace($input->getArgument('namespace'));
+            $namespace = Validators::validateBundleNamespace($input);
         } catch (\InvalidArgumentException $exception) {
             $io->error($exception->getMessage());
 
