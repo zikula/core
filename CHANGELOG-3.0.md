@@ -15,7 +15,8 @@
   - Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
   - Fix broken autoloader recognition of additional extensions for distribution-based installations.
   - Improved help texts for mailer configuration (#4356).
-  - Update maker (make:zikula-extension) to discourage use of Zikula as vendor (#4382).
+  - Update maker (`make:zikula-extension`) to discourage use of Zikula as vendor (#4382).
+  - Fix too strict requirement of URL field for theme extensions (#4353).
 
 - Features:
   - _there should be none_
