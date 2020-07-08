@@ -38,7 +38,8 @@ class ExtensionModifyType extends AbstractType
             ->add('url', TextType::class, [
                 'label' => 'URL',
                 'input_group' => ['left' => '/'],
-                'help' => 'WARNING: changing the url affects SEO by breaking existing indexed search results.'
+                'help' => 'WARNING: changing the url affects SEO by breaking existing indexed search results.',
+                'required' => 'theme' !== $options['extensionType']
             ])
             ->add($builder->create('description', TextType::class, [
                 'label' => 'Description',
@@ -73,6 +74,11 @@ class ExtensionModifyType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
+
+        $resolver->setRequired('extensionType');
+        $resolver->setAllowedTypes('extensionType', 'string');
+        $resolver->setAllowedValues('extensionType', ['module', 'theme']);
+
         $resolver->setDefaults([
             'data_class' => ExtensionEntity::class
         ]);

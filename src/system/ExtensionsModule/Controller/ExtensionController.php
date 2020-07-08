@@ -201,7 +201,11 @@ class ExtensionController extends AbstractController
             $extension->setDescription($metaData['description']);
         }
 
-        $form = $this->createForm(ExtensionModifyType::class, $extension);
+        $formOptions = [
+            'extensionType' => mb_strtolower($extensionBundle->getNameType())
+        ];
+
+        $form = $this->createForm(ExtensionModifyType::class, $extension, $formOptions);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('defaults')->isClicked()) {
