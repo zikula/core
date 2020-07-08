@@ -74,7 +74,6 @@ class ExtensionModifyType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
         $resolver->setRequired('extensionType');
         $resolver->setAllowedTypes('extensionType', 'string');
         $resolver->setAllowedValues('extensionType', ['module', 'theme']);
