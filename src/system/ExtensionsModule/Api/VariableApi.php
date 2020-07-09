@@ -73,10 +73,10 @@ class VariableApi implements VariableApiInterface
     /**
      * Loads extension vars for all extensions to reduce sql statements.
      */
-    private function initialize(): void
+    private function initialize(): bool
     {
         if (!$this->installed) {
-            return;
+            return false;
         }
 
         // The empty arrays for handlers and settings are required to prevent messages with E_ALL error reporting
@@ -106,6 +106,8 @@ class VariableApi implements VariableApiInterface
         $this->localizeVariables('en');
 
         $this->isInitialized = true;
+
+        return true;
     }
 
     public function localizeVariables(string $lang): void
@@ -125,8 +127,8 @@ class VariableApi implements VariableApiInterface
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
             throw new InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialized && !$this->initialize()) {
+            return false;
         }
 
         return isset($this->variables[$extensionName]) && array_key_exists($variableName, $this->variables[$extensionName]);
@@ -137,8 +139,8 @@ class VariableApi implements VariableApiInterface
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
             throw new InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialized && !$this->initialize()) {
+            return $default;
         }
 
         if (isset($this->variables[$extensionName]) && array_key_exists($variableName, $this->variables[$extensionName])) {
@@ -158,8 +160,8 @@ class VariableApi implements VariableApiInterface
         if (empty($extensionName) || !is_string($extensionName)) {
             throw new InvalidArgumentException();
         }
-        if (!$this->isInitialized) {
-            $this->initialize();
+        if (!$this->isInitialized && !$this->initialize()) {
+            return [];
         }
 
         return $this->variables[$extensionName] ?? [];
