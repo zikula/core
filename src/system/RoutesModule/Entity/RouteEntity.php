@@ -35,12 +35,14 @@ class RouteEntity extends BaseEntity
      * be added before returning. These will override any values for same keys
      * set in the `options` array.
      */
-    public function getOptions(): array
+    public function getOptions(bool $includeConfiguredOptions = false): array
     {
         $options = $this->options;
-        // zkNoBundlePrefix value is the _opposite_ of prependBundlePrefix value
-        $options['zkNoBundlePrefix'] = !$this->prependBundlePrefix;
-        $options['i18n'] = $this->translatable;
+        if ($includeConfiguredOptions) {
+            // zkNoBundlePrefix value is the _opposite_ of prependBundlePrefix value
+            $options['zkNoBundlePrefix'] = !$this->prependBundlePrefix;
+            $options['i18n'] = $this->translatable;
+        }
 
         return $options;
     }

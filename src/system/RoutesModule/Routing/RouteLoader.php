@@ -235,7 +235,7 @@ class RouteLoader extends Loader
             $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func) . 'Action';
 
             // We have to prepend the extension prefix (see detailed description in docblock of prependExtensionPrefix() method).
-            $options = $dbRoute->getOptions();
+            $options = $dbRoute->getOptions(true);
             $prependExtension = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
             if ($prependExtension) {
                 $path = $this->pathBuilderHelper->getPathWithBundlePrefix($dbRoute);

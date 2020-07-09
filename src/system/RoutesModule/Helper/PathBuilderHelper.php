@@ -35,7 +35,7 @@ class PathBuilderHelper
      */
     public function getPathWithBundlePrefix(RouteEntity $route): string
     {
-        $options = $route->getOptions();
+        $options = $route->getOptions(true);
         if (isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix']) {
             // return path only
             return $route->getPath();
