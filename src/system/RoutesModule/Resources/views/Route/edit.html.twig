@@ -32,9 +32,9 @@
         </fieldset>
         <fieldset>
             <legend>{% trans %}Parameter settings{% endtrans %}</legend>
-            {{ form_row(form.defaults) }}
-            {{ form_row(form.requirements) }}
-            {{ form_row(form.options) }}
+            {{ form_row(form.defaults, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
+            {{ form_row(form.requirements, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
+            {{ form_row(form.options, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
         </fieldset>
         <fieldset>
             <legend>{% trans %}Advanced settings{% endtrans %}</legend>
