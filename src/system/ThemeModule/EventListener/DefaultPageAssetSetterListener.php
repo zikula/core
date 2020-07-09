@@ -118,9 +118,15 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJquery(): void
     {
+        $jsConfigFile = 'js/ZikulaThemeModule.JSConfig.js';
+        $jsConfigPath = $this->assetHelper->resolve('modules/zikulatheme/' . $jsConfigFile);
+        if ($this->params['installed'] && null !== $this->themeEngine->getTheme()) {
+            $jsConfigPath = $this->assetHelper->resolve('@ZikulaThemeModule:' . $jsConfigFile);
+        }
+
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('jquery/jquery.min.js') => AssetBag::WEIGHT_JQUERY,
-            $this->assetHelper->resolve('modules/zikulatheme/js/ZikulaThemeModule.JSConfig.js') => AssetBag::WEIGHT_JQUERY + 1,
+            $jsConfigPath => AssetBag::WEIGHT_JQUERY + 1,
             $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 2
         ]);
     }
