@@ -14,6 +14,7 @@
   - liip/imagine-bundle updated from 2.3.0 to 2.3.1
   - nikic/php-parser updated from 4.5.0 to 4.6.0
   - seld/phar-utils updated from 1.1.0 to 1.1.1
+  - symfony/maker-bundle updated from 1.19.0 to 1.19.1
   - symfony/polyfill-ctype updated from 1.17.0 to 1.17.1
   - symfony/polyfill-intl-grapheme updated from 1.17.0 to 1.17.1
   - symfony/polyfill-intl-icu updated from 1.17.0 to 1.17.1
@@ -33,6 +34,7 @@
   - twig/markdown-extra updated from 3.0.3 to 3.0.4
   - twig/string-extra updated from 3.0.3 to 3.0.4
   - twig/twig updated from 3.0.3 to 3.0.4
+  - webmozart/assert updated from 1.9.0 to 1.9.1
 
 ## 3.0.0 VENDOR CHANGES (2020-06-25)
 
