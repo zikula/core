@@ -18,6 +18,7 @@
   - Update maker (`make:zikula-extension`) to discourage use of Zikula as vendor (#4382).
   - Fix too strict requirement of URL field for theme extensions (#4353).
   - Improve behaviour of `VariableApi` when system is not installed yet (#4360).
+  - Fix behavior of prependBundlePrefix in Routes (#4381).
 
 - Features:
   - _there should be none_
