@@ -20,6 +20,7 @@
   - Improve behaviour of `VariableApi` when system is not installed yet (#4360).
   - Fix behavior of `prependBundlePrefix` in Routes (#4381).
   - Fix broken support for key value pairs for editing custom route parameter settings (defaults, requirements, options).
+  - Improved responsive design of the extensions list.
 
 - Features:
   - _there should be none_
