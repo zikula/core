@@ -15,5 +15,4 @@ namespace Zikula\ThemeModule\Engine\Exception;
 
 class AssetNotFoundException extends \Exception
 {
-
 }
