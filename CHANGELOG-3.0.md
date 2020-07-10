@@ -22,6 +22,7 @@
   - Fix broken support for key value pairs for editing custom route parameter settings (defaults, requirements, options).
   - Improved responsive design of the extensions list.
   - Throw more descriptive exception when non-zasset asset is not found (#4366).
+  - Install extension assets on installation and upgrade (#4367).
 
 - Features:
   - _there should be none_
