@@ -93,6 +93,9 @@ class ExtensionInstallationListener implements EventSubscriberInterface
     {
         $fs = new Filesystem();
         $bundle = $event->getExtensionBundle();
+        if (!$fs->exists($bundle->getPath() . '/Resources/public')) {
+            return;
+        }
         $fs->mirror(
             $bundle->getPath() . '/Resources/public',
             $publicDir = $this->kernel->getProjectDir() . '/public/' . $bundle->getRelativeAssetPath()
