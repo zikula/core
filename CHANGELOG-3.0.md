@@ -21,6 +21,7 @@
   - Fix behavior of `prependBundlePrefix` in Routes (#4381).
   - Fix broken support for key value pairs for editing custom route parameter settings (defaults, requirements, options).
   - Improved responsive design of the extensions list.
+  - Throw more descriptive exception when non-zasset asset is not found (#4366).
 
 - Features:
   - _there should be none_
