@@ -141,9 +141,11 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
         return $this->pass;
     }
 
-    public function setPass(string $pass): void
+    public function setPass(?string $pass): void
     {
-        $this->pass = $pass;
+        if (isset($pass)) {
+            $this->pass = $pass;
+        }
     }
 
     public function getUserEntityData(): array

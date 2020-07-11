@@ -6,8 +6,8 @@
         var setPassEle = $('#' + idElem.data('setpassid'));
         var setPassAlert = setPassEle.parent().find('.alert');
         var setPassWrap = $('#' + idElem.data('setpassid') + '_wrap');
-        var passFirst = $('#' + idElem.data('passid') + '_first');
-        var passSecond = $('#' + idElem.data('passid') + '_second');
+        var passFirst = $('#' + idElem.data('passid') + '_pass_first');
+        var passSecond = $('#' + idElem.data('passid') + '_pass_second');
         var showPasswordsRequired = function() {
             passFirst.prop('required', true);
             passFirst.parents('.form-group').find('label').addClass('required');
