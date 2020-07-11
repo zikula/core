@@ -35,7 +35,7 @@ class ArrayFieldTransformer extends AbstractArrayFieldTransformer
         }
 
         if (!count($values)) {
-            return null;
+            return '';
         }
 
         $values = $this->removeEmptyEntries($values);
