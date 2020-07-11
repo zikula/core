@@ -259,6 +259,8 @@ abstract class AbstractWorkflowHelper
             } else {
                 $this->logger->error('{app}: User {user} tried to update an entity, but failed.', $logArgs);
             }
+            // uncomment to reveal Doctrine/SQL error
+            // die($exception->getMessage());
             throw new RuntimeException($exception->getMessage());
         }
     
