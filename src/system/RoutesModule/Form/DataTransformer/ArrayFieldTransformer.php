@@ -21,5 +21,49 @@ use Zikula\RoutesModule\Form\DataTransformer\Base\AbstractArrayFieldTransformer;
  */
 class ArrayFieldTransformer extends AbstractArrayFieldTransformer
 {
-    // feel free to add your customisation here
+    /** @var string */
+    private $delimiter = ':';
+
+    public function transform($values)
+    {
+        if (null === $values) {
+            return '';
+        }
+
+        if (!is_array($values)) {
+            return $values;
+        }
+
+        if (!count($values)) {
+            return '';
+        }
+
+        $values = $this->removeEmptyEntries($values);
+
+        $value = [];
+        foreach ($values as $k => $v) {
+            $value[] = str_replace($this->delimiter, '', $k) . $this->delimiter . $v;
+        }
+
+        return implode("\n", $value);
+    }
+
+    public function reverseTransform($value)
+    {
+        if (!$value) {
+            return [];
+        }
+
+        $items = parent::reverseTransform($value);
+        $result = [];
+        foreach ($items as $value) {
+            if (false === mb_strpos($value, $this->delimiter)) {
+                continue;
+            }
+            list($k, $v) = explode($this->delimiter, $value);
+            $result[trim($k)] = trim($v);
+        }
+
+        return $result;
+    }
 }

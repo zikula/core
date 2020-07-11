@@ -11,27 +11,27 @@
 </h3>
 <table id="extension-list" class="table table-bordered table-striped">
     <colgroup>
-        <col id="cType" class="d-none d-md-table-cell" />
+        <col id="cType" class="d-none d-lg-table-cell" />
         <col id="cName" />
         <col id="cDescription" class="d-none d-lg-table-cell" />
         <col id="cVersion" class="d-none d-lg-table-cell" />
-        <col id="cState" />
+        <col id="cState" class="d-none d-md-table-cell" />
         <col id="cActions" />
     </colgroup>
     <thead>
         <tr>
-            <th id="hType" scope="col" class="d-none d-md-table-cell">{% trans %}Type{% endtrans %}</th>
+            <th id="hType" scope="col" class="d-none d-lg-table-cell">{% trans %}Type{% endtrans %}</th>
             <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{% trans %}Name{% endtrans %}</a></th>
             <th id="hDescription" scope="col" class="d-none d-lg-table-cell">{% trans %}Description{% endtrans %}</th>
             <th id="hVersion" scope="col" class="d-none d-lg-table-cell">{% trans %}Version{% endtrans %}</th>
-            <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{% trans %}State{% endtrans %}</a></th>
+            <th id="hState" scope="col" class="d-none d-md-table-cell"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{% trans %}State{% endtrans %}</a></th>
             <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
     {% for extension in paginator.results %}
         <tr class="extension-type-{{ extension.type }}">
-            <td headers="hType" class="text-center" class="d-none d-md-table-cell">{{ _self.badge(extension.type) }}</td>
+            <td headers="hType" class="text-center d-none d-lg-table-cell">{{ _self.badge(extension.type) }}</td>
             <td headers="hName">
                 <strong>{{ extension.displayname }}</strong>
                 <a data-toggle="collapse" href="#collapse-{{ extension.name }}"><i class="fas fa-caret-down"></i></a>
@@ -43,7 +43,7 @@
             </td>
             <td headers="hDescription" style="width: 40%" class="d-none d-lg-table-cell">{{ extension.description }}</td>
             <td headers="hVersion" class="d-none d-lg-table-cell">{{ extension.version }}</td>
-            <td class="nowrap">
+            <td headers="hState" class="d-none d-md-table-cell">
                 {{ _self.stateLabel(extension, upgradedExtensions) }}
             </td>
             <td headers="hActions" class="actions">

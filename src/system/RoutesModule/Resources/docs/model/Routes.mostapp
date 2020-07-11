@@ -36,6 +36,8 @@ application "Routes" targets ZK30 {
         CHANGELOG.md,
         Entity/Factory/EntityInitialiser.php,
         Entity/Repository/RouteRepository.php,
+        Entity/RouteEntity.php,
+        Form/DataTransformer/ArrayFieldTransformer.php,
         Form/Handler/Route/EditHandler.php,
         Form/Type/RouteType.php,
         Helper/ViewHelper.php,

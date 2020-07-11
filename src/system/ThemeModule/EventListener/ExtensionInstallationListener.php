@@ -74,8 +74,8 @@ class ExtensionInstallationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionPostInstallEvent::class => ['clearCombinedAssetCache'],
-            ExtensionPostUpgradeEvent::class => ['clearPublishedAssets'],
+            ExtensionPostInstallEvent::class => [['clearCombinedAssetCache'], ['copyAssets']],
+            ExtensionPostUpgradeEvent::class => [['clearCombinedAssetCache'], ['copyAssets']],
             ExtensionPostEnabledEvent::class => ['clearCombinedAssetCache'],
             ExtensionPostDisabledEvent::class => ['clearCombinedAssetCache'],
             ExtensionPostRemoveEvent::class => ['clearPublishedAssets']
@@ -87,6 +87,19 @@ class ExtensionInstallationListener implements EventSubscriberInterface
         if ('prod' === $this->kernel->getEnvironment() && $this->mergerActive) {
             $this->cacheClearer->clear('assets');
         }
+    }
+
+    public function copyAssets(ExtensionStateEvent $event): void
+    {
+        $fs = new Filesystem();
+        $bundle = $event->getExtensionBundle();
+        if (!$fs->exists($bundle->getPath() . '/Resources/public')) {
+            return;
+        }
+        $fs->mirror(
+            $bundle->getPath() . '/Resources/public',
+            $publicDir = $this->kernel->getProjectDir() . '/public/' . $bundle->getRelativeAssetPath()
+        );
     }
 
     public function clearPublishedAssets(ExtensionStateEvent $event): void

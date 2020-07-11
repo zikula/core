@@ -7323,16 +7323,16 @@
         },
         {
             "name": "zikula/legal-module",
-            "version": "3.2.8",
+            "version": "3.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "a9e58df2a81b87968d68c291d6f59b08003ffb29"
+                "reference": "829f7b089dd3fbd89ba301c795a47c729d99eeee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/a9e58df2a81b87968d68c291d6f59b08003ffb29",
-                "reference": "a9e58df2a81b87968d68c291d6f59b08003ffb29",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/829f7b089dd3fbd89ba301c795a47c729d99eeee",
+                "reference": "829f7b089dd3fbd89ba301c795a47c729d99eeee",
                 "shasum": ""
             },
             "require": {
@@ -7385,7 +7385,7 @@
                 }
             ],
             "description": "Provides an interface for managing the site's legal documents.",
-            "time": "2020-06-13T19:24:42+00:00"
+            "time": "2020-07-11T10:44:39+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -7496,16 +7496,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.1.16",
+            "version": "3.1.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "5d3a8f879498bbe4df2e4ac0672c214b6f85373e"
+                "reference": "0aaaa3507414617673a3981465af429398fa0452"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/5d3a8f879498bbe4df2e4ac0672c214b6f85373e",
-                "reference": "5d3a8f879498bbe4df2e4ac0672c214b6f85373e",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/0aaaa3507414617673a3981465af429398fa0452",
+                "reference": "0aaaa3507414617673a3981465af429398fa0452",
                 "shasum": ""
             },
             "require": {
@@ -7561,7 +7561,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-06-15T17:22:41+00:00"
+            "time": "2020-07-01T16:27:07+00:00"
         },
         {
             "name": "zikula/sortable-columns",

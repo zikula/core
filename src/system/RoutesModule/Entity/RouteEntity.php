@@ -30,5 +30,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RouteEntity extends BaseEntity
 {
-    // feel free to add your own methods here
+    /**
+     * When getting options, the `zkNoBundlePrefix` and `i18n` values must
+     * be added before returning. These will override any values for same keys
+     * set in the `options` array.
+     */
+    public function getOptions(bool $includeConfiguredOptions = false): array
+    {
+        $options = $this->options;
+        if ($includeConfiguredOptions) {
+            // zkNoBundlePrefix value is the _opposite_ of prependBundlePrefix value
+            $options['zkNoBundlePrefix'] = !$this->prependBundlePrefix;
+            $options['i18n'] = $this->translatable;
+        }
+
+        return $options;
+    }
 }

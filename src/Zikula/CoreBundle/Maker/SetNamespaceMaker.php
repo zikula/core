@@ -47,7 +47,7 @@ class SetNamespaceMaker extends AbstractMaker
         $command
             ->setDescription('Sets the maker namespace config')
             ->addArgument('namespace', InputArgument::OPTIONAL, 'Choose a namespace (e.g. <fg=yellow>Acme\\BlogModule</>)')
-            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Required to use Zikula namespace.', false)
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Required to use Zikula namespace.')
             ->setHelp('Set the maker namespace config <info>php %command.full_name% Acme/BlogModule</info>')
         ;
     }

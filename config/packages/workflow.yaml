@@ -15,7 +15,7 @@ framework:
                 submit:
                     from: initial
                     to: approved
-                updateapproved:
+                update:
                     from: approved
                     to: approved
                 delete:

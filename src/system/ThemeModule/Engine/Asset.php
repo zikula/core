@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ThemeModule\Engine\Exception\AssetNotFoundException;
 
 /**
  * Class Asset
@@ -96,6 +97,7 @@ class Asset
             if (false !== realpath($httpRootDir . $publicPath)) {
                 return $publicPath;
             }
+            throw new AssetNotFoundException(sprintf('Could not find asset "%s"', $httpRootDir . $publicPath));
         }
 
         [$bundleName, $relativeAssetPath] = explode(':', $path);

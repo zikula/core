@@ -76,7 +76,7 @@ class ExtensionMaker extends AbstractMaker
             ->setDescription('Creates a new zikula extension bundle')
             ->addArgument('namespace', InputArgument::OPTIONAL, sprintf('Choose a namespace (e.g. <fg=yellow>Acme\%s</>)', Str::asClassName(Str::getRandomTerm())))
             ->addArgument('type', InputArgument::OPTIONAL, sprintf('Choose a extension type (<fg=yellow>module or theme</>)'))
-            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Required to use Zikula namespace.', false)
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Required to use Zikula namespace.')
             ->setHelp(file_get_contents(dirname(__DIR__) . '/Resources/help/ExtensionMaker.txt'))
         ;
     }

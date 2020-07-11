@@ -4,7 +4,7 @@
 
 <p>
     {% trans %}Hello!{% endtrans %}
-    {% trans with {'%email': user.email, '%site': siteName(), '%url': url('home')} %}This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
+    {% trans with {'%email%': user.email, '%site%': siteName(), '%url%': url('home')} %}This e-mail address ('%email%') has been used to register an account on '%site%' (%url%).{% endtrans %}
     {% trans %}The information that was registered is as follows:{% endtrans %}
 </p>
 
