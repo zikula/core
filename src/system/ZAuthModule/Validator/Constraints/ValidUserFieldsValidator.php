@@ -67,7 +67,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         }
         // Ensure unique uname.
         $qb = $this->mappingRepository->createQueryBuilder('m');
-        $qb->select('count(m.uid)')
+        $qb->select('COUNT(m.uid)')
             ->where($qb->expr()->eq('LOWER(m.uname)', ':uname'))
             ->setParameter('uname', $userName);
         // when updating an existing User, the existing Uid must be excluded.
@@ -84,7 +84,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
 
         // Ensure unique email from both mapping and verification entities if authenticationMethod = native_email or native_either.
         $qb = $this->mappingRepository->createQueryBuilder('m')
-            ->select('count(m.uid)')
+            ->select('COUNT(m.uid)')
             ->where('m.email = :email')
             ->andWhere('m.method IN (:methods)')
             ->setParameter('email', $emailAddress)
@@ -98,7 +98,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         $uCount = (int)$qb->getQuery()->getSingleScalarResult();
 
         $query = $this->userVerificationRepository->createQueryBuilder('v')
-            ->select('count(v.uid)')
+            ->select('COUNT(v.uid)')
             ->where('v.newemail = :email')
             ->andWhere('v.changetype = :chgtype')
             ->setParameter('email', $emailAddress)
