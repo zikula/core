@@ -87,21 +87,27 @@ class EditHandler extends AbstractEditHandler
     {
         $newPath = $this->pathBuilderHelper->getPathWithBundlePrefix($this->entityRef);
 
+        // when editing an existing route we expect that the path may exist once
+        $amountOfRoutesWithSamePath = 0;
+        $amountOfAllowedRoutesWithSamePath = 'create' === $this->templateParameters['mode'] ? 0 : 1;
+
         /** @var RouteCollection $routeCollection */
         $routeCollection = $this->router->getRouteCollection();
 
         $errors = [];
         foreach ($routeCollection->all() as $route) {
             $path = $route->getPath();
-            if (in_array($path, ['/{url}', '/{path}'])) {
+            if (in_array($path, ['/{url}', '/{path}'], true)) {
                 continue;
             }
 
             if ($path === $newPath) {
-                $errors[] = [
-                    'type' => 'SAME',
-                    'path' => $path
-                ];
+                if (++$amountOfAllowedRoutesWithSamePath > $amountOfAllowedRoutesWithSamePath) {
+                    $errors[] = [
+                        'type' => 'SAME',
+                        'path' => $path
+                    ];
+                }
                 continue;
             }
 
@@ -124,12 +130,14 @@ class EditHandler extends AbstractEditHandler
             if ('SAME' === $error['type']) {
                 $message = $this->trans('It looks like you created or updated a route with a path which already exists. This is an error in most cases.');
                 $hasCriticalErrors = true;
+                $flashType = 'error';
             } else {
                 $message = $this->trans('The path of the route you created or updated looks similar to the following already existing path: %errorPath% Are you sure you haven\'t just introduced a conflict?', ['%errorPath%' => $error['path']]);
+                $flashType = 'warning';
             }
             $request = $this->requestStack->getCurrentRequest();
             if ($request->hasSession() && ($session = $request->getSession())) {
-                $session->getFlashBag()->add('error', $message);
+                $session->getFlashBag()->add($flashType, $message);
             }
         }
 

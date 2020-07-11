@@ -259,7 +259,10 @@ abstract class AbstractWorkflowHelper
             } else {
                 $this->logger->error('{app}: User {user} tried to update an entity, but failed.', $logArgs);
             }
-            throw new RuntimeException($exception->getMessage());
+            // if database errors occur do not throw them
+            // in order to avoid unclear error message "The entity manager is closed."
+            die($exception->getMessage());
+            //throw new RuntimeException($exception->getMessage());
         }
     
         if (false !== $result && !$recursive) {

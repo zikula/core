@@ -18,3 +18,8 @@
     {% endif %}
     <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ iconHtml|raw }}{{ translation_domain is same as(false) ? label : label|trans(label_translation_parameters, translation_domain) }}</button>
 {%- endblock button_widget %}
+
+{# overrides textarea_widget to catch array to string conversion issues when a form returns with errors #}
+{%- block textarea_widget -%}
+    <textarea {{ block('widget_attributes') }}>{{ value is iterable ? value|join("\n") : value }}</textarea>
+{%- endblock textarea_widget -%}

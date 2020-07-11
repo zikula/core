@@ -35,7 +35,7 @@ class ArrayFieldTransformer extends AbstractArrayFieldTransformer
         }
 
         if (!count($values)) {
-            return '';
+            return null;
         }
 
         $values = $this->removeEmptyEntries($values);
@@ -50,6 +50,10 @@ class ArrayFieldTransformer extends AbstractArrayFieldTransformer
 
     public function reverseTransform($value)
     {
+        if (!$value) {
+            return [];
+        }
+
         $items = parent::reverseTransform($value);
         $result = [];
         foreach ($items as $value) {

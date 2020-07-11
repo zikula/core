@@ -588,6 +588,7 @@ abstract class AbstractEditHandler
             }
             if (
                 isset($this->form['moderationSpecificCreationDate'])
+                && null !== $this->form['moderationSpecificCreationDate']->getData()
                 && '' !== $this->form['moderationSpecificCreationDate']->getData()
             ) {
                 $this->entityRef->setCreatedDate($this->form['moderationSpecificCreationDate']->getData());
