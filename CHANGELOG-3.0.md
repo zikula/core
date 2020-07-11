@@ -19,7 +19,7 @@
   - Fix too strict requirement of URL field for theme extensions (#4353).
   - Improve behaviour of `VariableApi` when system is not installed yet (#4360).
   - Fix behavior of `prependBundlePrefix` in Routes (#4381).
-  - Fix santizing logic for routes editing (#4380).
+  - Fix sanitizing logic for routes editing (#4380).
   - Fix exception when editing routes with allowed but unset specific creation date (#4380).
   - Fix broken support for key value pairs for editing custom route parameter settings (defaults, requirements, options).
   - Improved responsive design of the extensions list.
