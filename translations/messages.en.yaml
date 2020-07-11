@@ -1061,6 +1061,7 @@ Translatable: Translatable
 'Basic settings': 'Basic settings'
 'Route scope': 'Route scope'
 'Parameter settings': 'Parameter settings'
+'Enter one entry per line, use <code>key:value</code> syntax.': 'Enter one entry per line, use <code>key:value</code> syntax.'
 'Advanced settings': 'Advanced settings'
 'Quick navigation': 'Quick navigation'
 'Back to default view': 'Back to default view'
