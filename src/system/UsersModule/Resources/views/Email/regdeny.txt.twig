@@ -1,8 +1,8 @@
 {% trans_default_domain 'mail' %}
 {{ include('@ZikulaUsersModule/Email/header.txt.twig') }}
-{% trans with {'%s': siteName()} %}A message from %s...{% endtrans %}
+{% trans with {'%sub%': siteName()} %}A message from %sub%...{% endtrans %}
 
-{% trans with {'%email': user.email, '%site': siteName(), '%url': url('home')} %}Recently, this e-mail address (\'%email\') was used to request an account on \'%site\' (%url).{% endtrans %}
+{% trans with {'%email%': user.email, '%site%': siteName(), '%url%': url('home')} %}Recently, this e-mail address ('%email') was used to request an account on '%site%' (%url%).{% endtrans %}
 {% trans %}The information that was registered is as follows:{% endtrans %}
 
 {% trans %}User name{% endtrans %}: {{ user.uname }}
