@@ -102,7 +102,7 @@ class EditHandler extends AbstractEditHandler
             }
 
             if ($path === $newPath) {
-                if (++$amountOfAllowedRoutesWithSamePath > $amountOfAllowedRoutesWithSamePath) {
+                if (++$amountOfRoutesWithSamePath > $amountOfAllowedRoutesWithSamePath) {
                     $errors[] = [
                         'type' => 'SAME',
                         'path' => $path
