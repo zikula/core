@@ -8,11 +8,11 @@
     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Jump to position... <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu">
+    <div class="dropdown-menu">
         {% for pid, choice in positionChoices %}
-        <li class="ml-0"><a href="{{ path('zikulablocksmodule_placement_edit', {pid: pid}) }}">{{ choice }}</a></li>
+            <a href="{{ path('zikulablocksmodule_placement_edit', {pid: pid}) }}" class="dropdown-item">{{ choice }}</a></li>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 <br /><br />
 <p class="alert alert-info">{% trans %}Notice: Use drag and drop to arrange the blocks in this position into your desired order. The new block order will be saved automatically.{% endtrans %}</p>
@@ -110,3 +110,4 @@
 </table>
 {{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Common.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Modifyposition.js')) }}
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}

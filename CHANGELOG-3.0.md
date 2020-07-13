@@ -26,6 +26,7 @@
   - Throw more descriptive exception when non-zasset asset is not found (#4366).
   - Install extension assets on installation and upgrade (#4367).
   - Allow creating and changing mappings without setting a password  (#4395).
+  - Include jQuery-UI in the block position editing template (#4400).
 
 - Features:
   - _there should be none_

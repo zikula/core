@@ -98,7 +98,7 @@ class ExtensionInstallationListener implements EventSubscriberInterface
         }
         $fs->mirror(
             $bundle->getPath() . '/Resources/public',
-            $publicDir = $this->kernel->getProjectDir() . '/public/' . $bundle->getRelativeAssetPath()
+            $this->kernel->getProjectDir() . '/public/' . $bundle->getRelativeAssetPath()
         );
     }
 

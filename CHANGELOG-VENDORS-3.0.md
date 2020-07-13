@@ -26,6 +26,7 @@
   - symfony/polyfill-php73 updated from 1.17.0 to 1.17.1
   - symfony/polyfill-php80 updated from 1.17.0 to 1.17.1
   - symfony/polyfill-uuid updated from 1.17.0 to 1.17.1
+  - tijsverkoyen/css-to-inline-styles updated from 2.2.2 to 2.2.3
   - twig/cssinliner-extra updated from 3.0.3 to 3.0.4
   - twig/extra-bundle updated from 3.0.3 to 3.0.4
   - twig/html-extra updated from 3.0.3 to 3.0.4
