@@ -171,6 +171,10 @@ class ControllerType extends AbstractType
         }
 
         [$controllerClassName, $method] = explode('::', $controllerName);
+        if (!class_exists($controllerClassName)) {
+            return false;
+        }
+
         $reflectionClass = new ReflectionClass($controllerClassName);
         $reflectionMethod = $reflectionClass->getMethod($method);
         $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, ThemeAnnotation::class);
