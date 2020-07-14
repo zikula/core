@@ -266,7 +266,7 @@ class HookController extends AbstractController
 
         // get providers' areas from POST
         $providerarea = $request->request->get('providerarea', '');
-        if (!is_array($providerarea) || count($providerarea) < 1) {
+        if (!is_array($providerarea) || 1 > count($providerarea)) {
             throw new InvalidArgumentException($this->trans('Providers\' areas order is not an array.'));
         }
 
