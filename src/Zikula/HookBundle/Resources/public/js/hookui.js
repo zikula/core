@@ -264,7 +264,7 @@ var cloneDraggedItem = true;
         // the areas of the providers that are attached to the area of our subscriber
         var providersAreas = '';
         $('#' + listId + ' li.z-sortable').each(function(index) {
-            providersAreas += '&providerarea[]=' + $($(this).attr('id') + '_a').val();
+            providersAreas += '&providerarea[]=' + $('#' + $(this).attr('id') + '_a').val();
         });
 
         var parameters = 'subscriberarea=' + subscriberArea + providersAreas;
