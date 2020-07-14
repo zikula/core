@@ -26,13 +26,13 @@ public const TYPE_DELETE = 'delete';
 
 /**
  * Process the results of the edit form after the main form is processed
- * dispatches \Zikula\UsersModule\Event\FormAwareResponse
+ * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareResponse
  */
 public const TYPE_PROCESS_EDIT = 'process_edit';
 
 /**
  * Process the results of the delete form after the main form is processed
- * dispatches \Zikula\UsersModule\Event\FormAwareResponse
+ * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareResponse
  */
 public const TYPE_PROCESS_DELETE = 'process_delete';
 ```
