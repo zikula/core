@@ -29,9 +29,10 @@ class FormAwareHook extends Hook
      */
     private $templates = [];
 
-    public function __construct(FormInterface $form)
+    public function __construct(FormInterface $form, ?int $subjectId = null)
     {
         $this->form = $form;
+        $this->id = $subjectId;
     }
 
     /**
