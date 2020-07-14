@@ -6,29 +6,29 @@
   - _there should be none_
 
 - Fixes:
-  - Fix wrong path to possible `routes.php` file in the Kernel class.
-  - Fix wrong modvar name when setting theme.
-  - Fix wrong generated directory name (docs instead of doc) in ExtensionMaker.
-  - Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
-  - Fix invalid access to obsolete parameter when upgrading from 3.0 to a newer version.
-  - Fix wrong link to upgrade docs in the upgrader (#4364).
-  - Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
-  - Fix broken autoloader recognition of additional extensions for distribution-based installations.
-  - Improved help texts for mailer configuration (#4356).
-  - Update maker (`make:zikula-extension`) to discourage use of Zikula as vendor (#4382).
-  - Fix too strict requirement of URL field for theme extensions (#4353).
-  - Improve behaviour of `VariableApi` when system is not installed yet (#4360).
-  - Fix behavior of `prependBundlePrefix` in Routes (#4381).
-  - Fix sanitizing logic for routes editing (#4380).
-  - Fix exception when editing routes with allowed but unset specific creation date (#4380).
-  - Fix broken support for key value pairs for editing custom route parameter settings (defaults, requirements, options).
-  - Improved responsive design of the extensions list.
-  - Throw more descriptive exception when non-zasset asset is not found (#4366).
-  - Install extension assets on installation and upgrade (#4367).
-  - Allow creating and changing mappings without setting a password  (#4395).
-  - Include jQuery-UI in the block position editing template (#4400).
-  - Fix wrong translator usage in abstract content type.
-  - Fix reordering assigned hook provider areas for a hook subscriber area.
+  - [CoreBundle] Fix broken autoloader recognition of additional extensions for distribution-based installations.
+  - [CoreBundle] Fix wrong generated directory name (docs instead of doc) in ExtensionMaker.
+  - [CoreBundle] Fix wrong path to possible `routes.php` file in the Kernel class.
+  - [CoreBundle] Update maker (`make:zikula-extension`) to discourage use of Zikula as vendor (#4382).
+  - [CoreInstallerBundle] Fix invalid access to obsolete parameter when upgrading from 3.0 to a newer version.
+  - [CoreInstallerBundle] Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
+  - [CoreInstallerBundle] Fix wrong link to upgrade docs in the upgrader (#4364).
+  - [Blocks] Include jQuery-UI in the block position editing template (#4400).
+  - [Extensions] Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
+  - [Extensions] Fix too strict requirement of URL field for theme extensions (#4353).
+  - [Extensions] Fix wrong translator usage in abstract content type.
+  - [Extensions] Improve behaviour of `VariableApi` when system is not installed yet (#4360).
+  - [Extensions] Improve responsive design of the extensions list.
+  - [HookBundle] Fix reordering assigned hook provider areas for a hook subscriber area.
+  - [Mailer] Improved help texts for mailer configuration (#4356).
+  - [Routes] Fix behavior of `prependBundlePrefix` in Routes (#4381).
+  - [Routes] Fix sanitizing logic for routes editing (#4380).
+  - [Routes] Fix exception when editing routes with allowed but unset specific creation date (#4380).
+  - [Routes] Fix broken support for key value pairs for editing custom route parameter settings (defaults, requirements, options).
+  - [Theme] Fix wrong modvar name when setting theme.
+  - [Theme] Install extension assets on installation and upgrade (#4367).
+  - [Theme] Throw more descriptive exception when non-zasset asset is not found (#4366).
+  - [ZAuth] Allow creating and changing user mappings without setting a password (#4395).
 
 - Features:
   - _there should be none_
@@ -36,83 +36,12 @@
 ## 3.0.0 (2020-06-25)
 
 - BC Breaks:
-  - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
-  - The directory structure is dramatically different (reflecting changes from Symfony).
+  - [General] Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
+  - [General] The directory structure is dramatically different (reflecting changes from Symfony).
     - The `public/` directory is now the *web root*. Set your server/htaccess/etc accordingly.
     - `public/index.php` is the entry point to the site.
     - See <https://symfony.com/doc/current/setup/web_server_configuration.html> for more information.
-  - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
-  - Several namespaces changed their location.
-    - Please see [refactoring docs](https://docs.ziku.la/Development/General/refactoring_3.html) for the details.
-  - Several event changes (requires listener modifications).
-    - Please see [refactoring docs](https://docs.ziku.la/Development/General/refactoring_3.html) for the details.
-  - MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
-  - Interface extensions and amendments
-    - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
-    - `ZikulaHttpKernelInterface` has dropped `getConnectionConfig()` method. Use environment variable `DATABASE_URL` instead.
-    - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
-    - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
-    - `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
-    - `Zikula\BlocksModule\BlockHandlerInterface` requires a new method `getPropertyDefaults()` to be implemented.
-    - `Zikula\Bundle\HookBundle\HookProviderInterface` requires a new method `getAreaName()` to be implemented.
-    - `Zikula\Bundle\HookBundle\HookSubscriberInterface` requires a new method `getAreaName()` to be implemented.
-    - `Zikula\Bundle\HookBundle\HookProviderInterface` has dropped `setServiceId` and `getServiceId` methods.
-    - `Zikula\Bundle\HookBundle\Collector\HookCollectorInterface` has changed signature of `addProvider()` and `addSubscriber()` methods.
-    - `Zikula\Common\Content\ContentTypeInterface` requires a new method `getBundleName()` to be implemented.
-    - `Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface` requires new methods `getAllColours()` and `deleteGroupPermissions()` to be implemented.
-    - `Zikula\SearchModule\SearchableInterface` requires a new method `getBundleName()` to be implemented.
-    - `Zikula\SearchModule\SearchableInterface` has changed signature of `getResults()` method.        
-    - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
-    - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
-  - `Zikula\BlocksModule\AbstractBlockHandler` is not ContainerAware anymore.
-  - `Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller` is not ContainerAware anymore.
-  - Entity changes
-    - `Zikula\BlocksModule\Entity\BlockEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLastUpdate/setLastUpdate`.
-    - `Zikula\CategoriesModule\Entity\CategoryEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
-    - `Zikula\CategoriesModule\Entity\CategoryRegistryEntity` removed some obsolete accessors for PSR-1 compatibility. Please use now `getStatus/setStatus`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
-    - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
-      - The table name has been renamed from `modules` to `extensions`.
-    - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `realm` and `bond` properties.
-    - `Zikula\ThemeModule\Entity\ThemeEntity` is removed along with its Repository and RepositoryInterface classes.
-      - The data is now stored in the `extensions` table and managed by the ExtensionsModule.
-    - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
-    - `Zikula\UsersModule\Entity\UserEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getApprovedDate/setApprovedDate`, `getApprovedBy/setApprovedBy`, `getRegistrationDate/setRegistrationDate`, `getLastLogin/setLastLogin`.
-    - `Zikula\ZAuthModule\Entity\UserVerificationEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getCreatedDate/setCreatedDate`.
-  - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
-  - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
-  - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
-  - The `Zikula\SettingsModule\Validator\ValidController*` classes have been removed.
-  - `CoreBundle/Composer/Metadata` has removed `$basePath` and `$rootPath` properties and their getters.
-  - `$kernel::isCoreModule()` is renamed to `$kernel::isCoreExtension()`.
-    - The corresponding Twig function is similarly renamed.
-  - `Zikula\ExtensionsModule\Event\ModuleStateEvent` is renamed to `Zikula\ExtensionsModule\Event\ExtensionStateEvent`.
-    - Its methods also renamed: `getModule` -> `getExtension` and `getModInfo` -> `getInfo`.
-  - All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName.
-  - `Zikula\ZAuthModule\Api\PasswordApi` & `Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface` are deprecated and will be removed in Core-4.0.0
-    - Use `Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface` or `bin2hex(random_bytes(8))`
-  - Support for ancient Macintosh-type line-endings (\r) on user CSV file import has been dropped.
-  - Old `pager` Twig function has been removed in favour of a new [Pagination utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/pagination.html).
-  - Old `abcpager` Twig function has been removed in favour of a new [AlphaFilter utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/alphafilter.html).
-  - `dispatchEvent` Twig function changed to dispatch _any_ type of event. Old functionality still available in `dispatchGenericEvent`.
-  - Removed `Zikula\Core\Exception\FatalErrorException` in favour of direct usage of `Symfony\Component\ErrorHandler\Error\FatalError`
-  - Removed the `polyfill` Twig tag (#3925).
-  - Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
-  - Removed `ZikulaKernel::VERSION_SUB` constant.
-  - `Bundle\CoreBundle\Helper\PersistedBundleHelper::getConnection` visibility set to private
-  - `Bundle\CoreBundle\Helper\PersistedBundleHelper::addAutoloaders` visibility set to private
-  - `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
-  - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
-  - Removed custom translation system (#4042). Use Symfony's translation system directly.
-    - Default translation domain is now always `messages`. Use specific other domains (e.g. `mail`, `config`, `hooks` etc.) where appropriate.
-  - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
-  - Changes to `composer.json`
-    - Removed use of `admin.png` and replaced by adding icon class >> `extra/zikula/icon: "fas fa-user"`.
-      - Themes now also need to include an icon.
-    - Setting >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
-    - Change how themes define user and admin capabilities.
-      - old: e.g. `capabilities/admin:true`
-      - new: e.g. `capabilities/admin/theme:true`
-  - Changes regarding directory layout
+  - [General] Changes regarding directory layout
     - Non-core themes and modules are now _both_ stored in `src/extensions`.
     - The `src/app/config/` directory has been moved to `config/`.
     - The `src/app/Resources/<BundleName>/views/` directory is now located at `templates/bundles/<BundleName>/`.
@@ -121,7 +50,7 @@
     - The `src/app/Resources/workflows/` directory became `config/workflows/`.
     - The `src/lib/Zikula/Bundle/` directory has been moved to `src/Zikula/`.
     - The `src/web/` directory has been moved to `public/`.
-  - Changes regarding configuration files
+  - [General] Changes regarding configuration files
     - Configuration for specific packages has been moved into `config/packages/*.yaml`.
     - The `parameters.yml` file has been renamed to `services.yaml`.
     - The `custom_parameters.yaml` file has been renamed to `services_custom.yaml`.
@@ -137,98 +66,169 @@
       - `installed` is re-purposed. It now holds the value of `%env(ZIKULA_INSTALLED)%` and is no longer a `bool` but a `string`
         - To determine a bool if needed, compare the value to '0.0.0', e.g. `$isInstalled = '0.0.0' !== $installed;`
       - `core_installed_version` is removed in favor of `installed` or `%env(ZIKULA_INSTALLED)%`
+  - [General] Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository`.
+  - [General] Several namespaces changed their location.
+    - Please see [refactoring docs](https://docs.ziku.la/Development/General/refactoring_3.html) for the details.
+  - [General] Several event changes (requires listener modifications).
+    - Please see [refactoring docs](https://docs.ziku.la/Development/General/refactoring_3.html) for the details.
+  - [General] Interface extensions and amendments
+    - [General] Interfaces and APIs implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
+    - [CoreBundle] Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
+    - [CoreBundle] `ZikulaHttpKernelInterface` has dropped `getConnectionConfig()` method. Use environment variable `DATABASE_URL` instead.
+    - [Blocks] `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
+    - [Blocks] `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
+    - [Blocks] `Zikula\BlocksModule\BlockHandlerInterface` requires a new method `getPropertyDefaults()` to be implemented.
+    - [HookBundle] `Zikula\Bundle\HookBundle\HookProviderInterface` requires a new method `getAreaName()` to be implemented.
+    - [HookBundle] `Zikula\Bundle\HookBundle\HookSubscriberInterface` requires a new method `getAreaName()` to be implemented.
+    - [HookBundle] `Zikula\Bundle\HookBundle\HookProviderInterface` has dropped `setServiceId` and `getServiceId` methods.
+    - [HookBundle] `Zikula\Bundle\HookBundle\Collector\HookCollectorInterface` has changed signature of `addProvider()` and `addSubscriber()` methods.
+    - [Extensions] `Zikula\ExtensionsModule\ModuleInterface\Content\ContentTypeInterface` requires a new method `getBundleName()` to be implemented.
+    - [Permissions] `Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface` requires new methods `getAllColours()` and `deleteGroupPermissions()` to be implemented.
+    - [Search] `Zikula\SearchModule\SearchableInterface` requires a new method `getBundleName()` to be implemented.
+    - [Search] `Zikula\SearchModule\SearchableInterface` has changed signature of `getResults()` method.        
+    - [Users] `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
+    - [Users] `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
+  - [General] Entity changes
+    - [Blocks] `Zikula\BlocksModule\Entity\BlockEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLastUpdate/setLastUpdate`.
+    - [Categories] `Zikula\CategoriesModule\Entity\CategoryEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getLocked/setLocked`, `getLeaf/setLeaf`, `getDisplayName/setDisplayName`, `getDisplayDesc/setDisplayDesc`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
+    - [Categories] `Zikula\CategoriesModule\Entity\CategoryRegistryEntity` removed some obsolete accessors for PSR-1 compatibility. Please use now `getStatus/setStatus`, `getCreatedDate/setCreatedDate`, `getUpdatedDate/setUpdatedDate`, `getCreatedBy/setCreatedBy`, `getUpdatedBy/setUpdatedBy`.
+    - [Extensions] `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
+      - The table name has been renamed from `modules` to `extensions`.
+    - [Permissions] `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `realm` and `bond` properties.
+    - [Search] `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
+    - [Theme] `Zikula\ThemeModule\Entity\ThemeEntity` is removed along with its Repository and RepositoryInterface classes.
+      - The data is now stored in the `extensions` table and managed by the ExtensionsModule.
+    - [Users] `Zikula\UsersModule\Entity\UserEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getApprovedDate/setApprovedDate`, `getApprovedBy/setApprovedBy`, `getRegistrationDate/setRegistrationDate`, `getLastLogin/setLastLogin`.
+    - [ZAuth] `Zikula\ZAuthModule\Entity\UserVerificationEntity` changed some obsolete accessors for PSR-1 compatibility. Please use now `getCreatedDate/setCreatedDate`.
+  - [General] Removed custom translation system (#4042). Use Symfony's translation system directly.
+    - Default translation domain is now always `messages`. Use specific other domains (e.g. `mail`, `config`, `hooks` etc.) where appropriate.
+  - [CoreBundle] Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
+  - [CoreBundle] Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
+  - [CoreBundle] `CoreBundle/Composer/Metadata` has removed `$basePath` and `$rootPath` properties and their getters.
+  - [CoreBundle] `$kernel::isCoreModule()` is renamed to `$kernel::isCoreExtension()`.
+    - The corresponding Twig filter is similarly renamed.
+  - [CoreBundle] Old `pager` Twig function has been removed in favour of a new [Pagination utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/pagination.html).
+  - [CoreBundle] Old `abcpager` Twig function has been removed in favour of a new [AlphaFilter utility](https://docs.ziku.la/LayoutDesign/Templating/Dev/alphafilter.html).
+  - [CoreBundle] `dispatchEvent` Twig function changed to dispatch _any_ type of event. Old functionality still available in `dispatchGenericEvent`.
+  - [CoreBundle] Removed `Zikula\Core\Exception\FatalErrorException` in favour of direct usage of `Symfony\Component\ErrorHandler\Error\FatalError`
+  - [CoreBundle] Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
+  - [CoreBundle] Removed the `polyfill` Twig tag (#3925).
+  - [CoreBundle] Removed `ZikulaKernel::VERSION_SUB` constant.
+  - [CoreBundle] `Bundle\CoreBundle\Helper\PersistedBundleHelper::getConnection` visibility set to private
+  - [CoreBundle] `Bundle\CoreBundle\Helper\PersistedBundleHelper::addAutoloaders` visibility set to private
+  - [CoreBundle] `Bundle\CoreBundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
+  - [HookBundle] The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
+  - [Blocks] `Zikula\BlocksModule\AbstractBlockHandler` is not ContainerAware anymore.
+  - [Mailer] MailerApi and Swift_Mailer is fully removed in favor of the Symfony Mailer Component. Mailer is configurable in MailerModule (#4000).
+  - [Extensions] `Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller` is not ContainerAware anymore.
+  - [Extensions] `Zikula\ExtensionsModule\Event\ModuleStateEvent` is renamed to `Zikula\ExtensionsModule\Event\ExtensionStateEvent`.
+    - Its methods also renamed: `getModule` -> `getExtension` and `getModInfo` -> `getInfo`.
+  - [Extensions] All the Events in `Zikula\ExtensionsModule\ExtensionEvents` are changed - both the name and the ConstantName.
+  - [Extensions] Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
+  - [Extensions] Changes to `composer.json`
+    - Removed use of `admin.png` and replaced by adding icon class >> `extra/zikula/icon: "fas fa-user"`.
+      - Themes now also need to include an icon.
+    - Setting >> `extra/zikula/capabilities/admin/url` is no longer supported. Use `extra/zikula/capabilities/admin/route`.
+    - Change how themes define user and admin capabilities.
+      - old: e.g. `capabilities/admin:true`
+      - new: e.g. `capabilities/admin/theme:true`
+  - [Settings] The `Zikula\SettingsModule\Validator\ValidController*` classes have been removed.
+  - [Users] Support for ancient Macintosh-type line-endings (\r) on user CSV file import has been dropped.
+  - [ZAuth] `Zikula\ZAuthModule\Api\PasswordApi` and `Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface` are deprecated and will be removed in Core-4.0.0
+    - Use `Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface` or `bin2hex(random_bytes(8))`
+  - [Theme] There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
 
 - Fixes:
-  - Check if verification record is already deleted when confirming a changed mail address.
-  - Updated listener priorities in Settings module to fix non-working variable localisation (#3934).
-  - Fixed broken functionality of hiding submit button in search block.
-  - Provide more kernel information in coredata (#3651).
-  - Cosmetical corrections for account link graphics.
-  - Properly consider "user must verify" flag during user creation in ZAuth module (#3964).
-  - Removed workaround for older DBAL versions (#2185).
-  - Properly handle deleted user groups in permissions module (#3963).
-  - Made Blocks module's JavaScript functionality more robust (#3911).
-  - Removed ancient workaround in printer theme (#3653).
-  - Readded missing functionality for configurable page title schemes (#3921).
-  - Readded missing permission checks for specific admin area categories.
-  - Fixed behaviour of recent searches list.
-  - Fixed admin notification email for new registrations which was not done in some cases.
-  - Improved asset merger with regards to negative weights (#3978).
-  - Fixed broken JavaScript in ZAuth user modification form (#3992).
-  - Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
-  - When updating a block, orphan properties are removed (#3892).
-  - Refactored page title handling (#3969).
-  - Fixed creating new ZAuth users as admin without setting a password.
-  - Start page controllers now get properly set the `_route` request argument (#3955).
-  - Default minimum length for passwords is now raised to 8. Absolute minimum length is still 5 (#2842).
-  - Set correct port for Gmail transport type (#4142).
-  - Fixed broken drag n drop of categories and menu items when target position is the top of a subtree.
-  - Fixed logic of `CategoryProcessingHelper#mayCategoryBeDeletedOrMoved` (#3920).
-  - Fixed import of users from a file (#4161).
-  - Fixed problem with deleting user(s) from a very large database (#3953).
-  - Fixed problem where stale pending registrations were not deleted (#4069).
-  - Fixed problem with preview of theme (#3957).
-  - Fixed problem where hooks tables are not updated when upgrading from Core-1.x.x (#3977).
-  - Fixed orphaned users on attempt to delete stale pending registrations (#4218).
-  - Fixed non-default languages being available when multilingual is disabled (#3938).
-  - Fixed duplicate emails allowed when registering with different authentication methods (#3720).
-  - Mail module setting to Enable Logging of sent mail actually logs sent mail.
-  - Introduced `Zikula\Bundle\HookBundle\Event\HookPostChangeEvent` to allow reactions on changed hook bindings.
+  - [CoreBundle] Fixed "remember me" problem caused by faulty session regeneration with custom lifetime in PHP 7.2+ (#3898, #4078).
+  - [HookBundle] Fixed problem where hooks tables are not updated when upgrading from Core-1.x.x (#3977).
+  - [HookBundle] Introduced `Zikula\Bundle\HookBundle\Event\HookPostChangeEvent` to allow reactions on changed hook bindings.
+  - [CoreBundle] Provide more kernel information in coredata (#3651).
+  - [CoreBundle] Removed workaround for older DBAL versions (#2185).
+  - [Admin] Readded missing permission checks for specific admin area categories.
+  - [Blocks] Made JavaScript functionality more robust (#3911).
+  - [Blocks] When updating a block, orphan properties are removed (#3892).
+  - [Categories] Fixed broken drag n drop of categories when target position is the top of a subtree.
+  - [Categories] Fixed logic of `CategoryProcessingHelper#mayCategoryBeDeletedOrMoved` (#3920).
+  - [Mailer] Set correct port for Gmail transport type (#4142).
+  - [Mailer] Setting to enable logging of sent mail actually logs sent mail.
+  - [Menu] Fixed broken drag n drop of menu items when target position is the top of a subtree.
+  - [Permissions] Properly handle deleted user groups (#3963).
+  - [Printer] Removed ancient workaround in printer theme (#3653).
+  - [Search] Fixed behaviour of recent searches list.
+  - [Search] Fixed broken functionality of hiding submit button in search block.
+  - [Settings] Fixed non-default languages being available when multilingual is disabled (#3938).
+  - [Settings] Start page controllers now get properly set the `_route` request argument (#3955).
+  - [Settings] Updated listener priorities to fix non-working variable localisation (#3934).
+  - [Theme] Fixed problem with preview of theme (#3957).
+  - [Theme] Improved asset merger with regards to negative weights (#3978).
+  - [Theme] Readded missing functionality for configurable page title schemes (#3921).
+  - [Theme] Refactored page title handling (#3969).
+  - [Users] Fixed admin notification email for new registrations which was not done in some cases.
+  - [Users] Fixed duplicate emails allowed when registering with different authentication methods (#3720).
+  - [Users] Fixed import of users from a file (#4161).
+  - [Users] Fixed orphaned users on attempt to delete stale pending registrations (#4218).
+  - [Users] Fixed problem where stale pending registrations were not deleted (#4069).
+  - [Users] Fixed problem with deleting user(s) from a very large database (#3953).
+  - [Users] Cosmetical corrections for account link graphics.
+  - [ZAuth] Check if verification record is already deleted when confirming a changed mail address.
+  - [ZAuth] Default minimum length for passwords is now raised to 8. Absolute minimum length is still 5 (#2842).
+  - [ZAuth] Fixed broken JavaScript in user modification form (#3992).
+  - [ZAuth] Properly consider "user must verify" flag during user creation (#3964).
 
 - Features:
-  - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
-  - Migrated all templates to Bootstrap 4 and Font Awesome 5 (#3530, #4037).
-  - Added all styles from Bootswatch to the Bootstrap theme (#4037).
-  - Added option to allow users individually switching between available Bootswatch styles (#4037).
-  - Centralised dynamic form field handling from Profile module in FormExtensionBundle (#3945).
-  - Allow `zasset` syntax for relative assets also for normal bundles.
-  - Added Twig function for creating a `RouteUrl` instance (#3802).
-  - Added support for separators in dropdown menus of extensions interface / module links (#3904).
-  - Added common header/footer templates for login templates (#3937).
-  - Added common header/footer templates for user registration and login related email templates (#3937).
-  - Reworked `Zikula\Bridge\HttpFoundation\DoctrineSessionHandler` to extend `Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler` (#3870).
-  - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
-  - More user-friendly response messages during account information recovery (#3723).
-  - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
-  - Added CLI Commands to manage extension installation, upgrade and uninstall and sync (#3517).
-  - Added ability to choose a Font Awesome icon for admin categories, categories and extensions (#3598, #4061).
-  - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
-  - `LocaleApi` is now able to work with regions, too (#4012, #2425).
-  - New and removed locales are automatically reflected in the configuration (#4012, #2425).
-  - Added possibility to specify custom database port in installer.
-  - Blocks can now specify default property defaults used for custom form fields (#3676).
-  - Added twig-inspector for easy debugging of Twig templates (#4051).
-  - Added new fields for optional comments and colours to permission rules (#914).
-  - In general, 'module' and 'theme' are now generically referred to as 'extensions' and many methods or properties have been renamed to align.
-  - The location for choosing the default theme and admin theme has been moved to the Theme module settings.
-  - System themes (Bootstrap, Atom, Printer, Rss) are now located in `system/` and are loaded directly into the kernel.
-  - Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
-  - Persist the locale a user used during his registration (#4098).
-  - Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
-  - Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
-  - Start page can now be configured for each available language (#3955).
-  - Passwords in the ZAuth module are now always hashed with the the most up-to-date algorithm available (via Symfony security component) and automatically updated on login (#2842).
-  - Passwords can optionally be validated with Symfony's NonCompromisedPassword validator ([docs](https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html)) (#2842).
-  - A new password strength meter is implemented (see [GitHub repo](https://github.com/ablanco/jquery.pwstrength.bootstrap)) (#2842).
-  - Added a simple password generator in all places where a new password might be needed (#2842).
-  - Added ability to force a group of users to change their password on next login (#2842).
-  - Extensions module automatically contributes admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
-  - Added "Connections" menu to ExtensionsMenu so extensions can add menu children to other connected extension's admin UI.
-  - Added `@PermissionCheck` annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
-  - Added display of authentication method to user list (#3704).
-  - Added `UserCreationApi` to assist with the manual creation of ZAuth-method users (#3265).
-  - Added CLI Command to import users `bin/console zikula:users:import`.
-  - Added CLI Command to create any number of users for testing purposes `bin/console zikula:users:generate`.
-  - Added CLI Command to delete any number of users `bin/console zikula:users:delete`.
-  - Added `Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper` to assist in writing to the `.env.local` file.
-  - Added email notification to deleted pending registrations (#2915).
-  - Added CLI Command to edit password, email, username properties of ZAuth user mappings (a replacement for the old Zikula Recovery Console). 
-  - Added new Doctrine Paginator wrapper `Zikula\Bundle\CoreBundle\Doctrine\Paginator` and paginator template. See docs.
-  - Added new `AlphaFilter` class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
-  - Added CLI command to generate an Extension skeleton with instruction on using Symfony MakerBundle to complete development (#4034).
-  - Added automatic setting of locale parameter when generating routes in JavaScript (#3453).
-  - Introduced a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` for dynamic site attributes (#3972).
-  - Extended site definition and added means for site-wide branding (#3972).
-  - Using `utf8mb4` charset on MySQL platforms for real utf8 support (#3784).
-  - Moved calling `adminHeader()` and `adminFooter()` into theme layer (#4255).
-  - Allow users to delete themselves (with admin setting) (#1322).
+  - [General] Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
+  - [General] Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
+  - [General] Migrated all templates to Bootstrap 4 and Font Awesome 5 (#3530, #4037).
+  - [General] Added twig-inspector for easy debugging of Twig templates (#4051).
+  - [CoreBundle] Added ability to create dynamic site properties (e.g. titles, meta descriptions etc.) by subclassing `Zikula\Bundle\CoreBundle\Site\SiteDefinition` (#519).
+  - [CoreBundle] Added CLI command to generate an Extension skeleton with instruction on using Symfony MakerBundle to complete development (#4034).
+  - [CoreBundle] Added new Doctrine Paginator wrapper `Zikula\Bundle\CoreBundle\Doctrine\Paginator` and paginator template. See docs.
+  - [CoreBundle] Added new `AlphaFilter` class `Zikula\Bundle\CoreBundle\Filter\AlphaFilter` and template. See docs.
+  - [CoreBundle] Added `Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper` to assist in writing to the `.env.local` file.
+  - [CoreBundle] Extended site definition and added means for site-wide branding (#3972).
+  - [CoreBundle] Introduced a new `\Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface` for dynamic site attributes (#3972).
+  - [CoreBundle] Reworked `Zikula\Bridge\HttpFoundation\DoctrineSessionHandler` to extend `Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler` (#3870).
+  - [CoreBundle] Using `utf8mb4` charset on MySQL platforms for real utf8 support (#3784).
+  - [CoreInstallerBundle] Added possibility to specify custom database port in installer.
+  - [FormExtensionBundle] Centralised dynamic form field handling from Profile module in FormExtensionBundle (#3945).
+  - [HookBundle] Added Twig function for creating a `RouteUrl` instance (#3802).
+  - [Blocks] Blocks can now specify default property defaults used for custom form fields (#3676).
+  - [Bootstrap] Added all styles from Bootswatch to the Bootstrap theme (#4037).
+  - [Bootstrap] Added option to allow users individually switching between available Bootswatch styles (#4037).
+  - [Extensions] Added ability to choose a Font Awesome icon for admin categories, categories and extensions (#3598, #4061).
+  - [Extensions] Added CLI commands to manage extension installation, upgrade and uninstall and sync (#3517).
+  - [Extensions] Added "Connections" menu to ExtensionsMenu so extensions can add menu children to other connected extension's admin UI.
+  - [Extensions] Added support for separators in dropdown menus of extensions interface / module links (#3904).
+  - [Extensions] Automatic contribution of admin menu item to display Markdown docs for other extensions. Help UI can be configured to use either a modal window or a fixed sidebar (#3739).
+  - [Extensions] In general, 'module' and 'theme' are now generically referred to as 'extensions' and many methods or properties have been renamed to align.
+  - [Extensions] System themes (Bootstrap, Atom, Printer, Rss) are now located in `system/` and are loaded directly into the kernel.
+  - [Permissions] Added new fields for optional comments and colours to permission rules (#914).
+  - [Permissions] Added `@PermissionCheck` annotation for use in Controllers. See `Zikula\PermissionsModule\Annotation\PermissionCheck` and examples in Core.
+  - [Routes] Added automatic setting of locale parameter when generating routes in JavaScript (#3453).
+  - [Search] Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
+  - [Settings] Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
+  - [Settings] `LocaleApi` is now able to work with regions, too (#4012, #2425).
+  - [Settings] New and removed locales are automatically reflected in the configuration (#4012, #2425).
+  - [Settings] Start page arguments can now be defined more flexible (GET parameters and request attributes) (#3955).
+  - [Settings] Start page can now be configured for each available language (#3955).
+  - [Settings] Start page can now be defined much easier (a dropdown allows to choose a route/controller combination) (#3955).
+  - [Theme] Allow `zasset` syntax for relative assets also for normal bundles.
+  - [Theme] Moved calling `adminHeader()` and `adminFooter()` into theme layer (#4255).
+  - [Theme] The location for choosing the default theme and admin theme has been moved to the Theme module settings.
+  - [Users] Added display of authentication method to user list (#3704).
+  - [Users] Added CLI command to create any number of users for testing purposes `bin/console zikula:users:generate`.
+  - [Users] Added CLI command to delete any number of users `bin/console zikula:users:delete`.
+  - [Users] Added CLI command to import users `bin/console zikula:users:import`.
+  - [Users] Added email notification to deleted pending registrations (#2915).
+  - [Users] Allow users to delete themselves (with admin setting) (#1322).
+  - [Users] Persist the locale a user used during his registration (#4098).
+  - [Users/ZAuth] Added common header/footer templates for login templates (#3937).
+  - [Users/ZAuth] Added common header/footer templates for user registration and login related email templates (#3937).
+  - [ZAuth] A new password strength meter is implemented (see [GitHub repo](https://github.com/ablanco/jquery.pwstrength.bootstrap)) (#2842).
+  - [ZAuth] Added a simple password generator in all places where a new password might be needed (#2842).
+  - [ZAuth] Added ability to force a group of users to change their password on next login (#2842).
+  - [ZAuth] Added CLI Command to edit password, email, username properties of user mappings (a replacement for the old Zikula Recovery Console). 
+  - [ZAuth] Added `UserCreationApi` to assist with the manual creation of ZAuth-method users (#3265).
+  - [ZAuth] More user-friendly response messages during account information recovery (#3723).
+  - [ZAuth] Passwords are now always hashed with the the most up-to-date algorithm available (via Symfony security component) and automatically updated on login (#2842).
+  - [ZAuth] Passwords can optionally be validated with Symfony's NonCompromisedPassword validator ([docs](https://symfony.com/doc/current/reference/constraints/NotCompromisedPassword.html)) (#2842).
