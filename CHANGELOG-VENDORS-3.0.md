@@ -14,7 +14,7 @@
   - liip/imagine-bundle updated from 2.3.0 to 2.3.1
   - nikic/php-parser updated from 4.5.0 to 4.6.0
   - seld/phar-utils updated from 1.1.0 to 1.1.1
-  - symfony/maker-bundle updated from 1.19.0 to 1.19.1
+  - symfony/maker-bundle updated from 1.19.0 to 1.20.0
   - symfony/polyfill-ctype updated from 1.17.0 to 1.17.1
   - symfony/polyfill-intl-grapheme updated from 1.17.0 to 1.17.1
   - symfony/polyfill-intl-icu updated from 1.17.0 to 1.17.1
