@@ -43,7 +43,6 @@ class LocalDotEnvHelper
                 if (empty($line) || '#' === $line[0]) {
                     continue;
                 }
-                echo '::' . $line . '::';
                 [$key, $value] = explode('=', $line, 2);
                 if (isset($newVars[$key])) {
                     unset($vars[$key]); // removing the old $key preserves the order of the $newVars when set

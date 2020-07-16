@@ -52,8 +52,9 @@ class PreUpgradeCommand extends Command
             (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
             (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars(['ZIKULA_INSTALLED' => $params['core_installed_version']]);
             $io->success('Success! .env.local updated with Zikula Core 2.0.x settings. Please run php bin/console zikula:upgrade to continue the upgrade process.');
+        } else {
+            $io->comment('There is no need to run this command unless the currently installed version is lower than 3.0.0');
         }
-        $io->comment('There is no need to run this command unless the currently installed version is lower than 3.0.0');
 
         return Command::SUCCESS;
     }
