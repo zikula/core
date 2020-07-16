@@ -56,6 +56,10 @@ class LocalDotEnvHelperTest extends TestCase
         $expected = 'MY_NEW_VAR=\'f@oo\'';
         $this->assertEquals($expected, $this->getFileContents());
 
+        $helper->writeLocalEnvVars(['MY_EMPTY_VAR' => null], true);
+        $expected = 'MY_EMPTY_VAR=';
+        $this->assertEquals($expected, $this->getFileContents());
+
         $helper->writeLocalEnvVars(['FOO' => 'foo', 'BAR' => 'bar', 'FEE' => 'fee', 'BEE' => 'bee'], true);
         $helper->writeLocalEnvVars(['BAR' => 'bar2', 'BOO' => 'boo']); // overwriting a value should place it at the end of the list
         $expected = "FOO=foo\nFEE=fee\nBEE=bee\nBAR=bar2\nBOO=boo";
