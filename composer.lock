@@ -417,16 +417,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.10.8",
+            "version": "1.10.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "56e0e094478f30935e9128552188355fa9712291"
+                "reference": "83c3250093d5491600a822e176b107a945baf95a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/56e0e094478f30935e9128552188355fa9712291",
-                "reference": "56e0e094478f30935e9128552188355fa9712291",
+                "url": "https://api.github.com/repos/composer/composer/zipball/83c3250093d5491600a822e176b107a945baf95a",
+                "reference": "83c3250093d5491600a822e176b107a945baf95a",
                 "shasum": ""
             },
             "require": {
@@ -507,7 +507,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-24T19:23:30+00:00"
+            "time": "2020-07-16T10:57:00+00:00"
         },
         {
             "name": "composer/installers",
