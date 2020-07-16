@@ -40,7 +40,7 @@ class LocalDotEnvHelper
         if (!$override && $fileSystem->exists($localEnvPath)) {
             $content = explode("\n", file_get_contents($localEnvPath));
             foreach ($content as $line) {
-                if (empty($line)) {
+                if (empty($line) || '#' === $line[0]) {
                     continue;
                 }
                 echo '::' . $line . '::';
