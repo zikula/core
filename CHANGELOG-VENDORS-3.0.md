@@ -5,6 +5,7 @@
 - Vendor updates:
   - components/font-awesome updated from 5.12.1 to 5.13.1
   - composer/composer updated from 1.10.7 to 1.10.8
+  - composer/spdx-licenses updated from 1.5.3 to 1.5.4
   - doctrine/cache updated from 1.10.1 to 1.10.2
   - doctrine/collections updated from 1.6.5 to 1.6.6
   - egulias/email-validator updated from 2.1.17 to 2.1.18
@@ -15,17 +16,18 @@
   - nikic/php-parser updated from 4.5.0 to 4.6.0
   - seld/phar-utils updated from 1.1.0 to 1.1.1
   - symfony/maker-bundle updated from 1.19.0 to 1.20.0
-  - symfony/polyfill-ctype updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-intl-grapheme updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-intl-icu updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-intl-idn updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-intl-messageformatter updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-intl-normalizer updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-mbstring updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-php72 updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-php73 updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-php80 updated from 1.17.0 to 1.17.1
-  - symfony/polyfill-uuid updated from 1.17.0 to 1.17.1
+  - symfony/polyfill-ctype updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-grapheme updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-icu updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-idn updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-messageformatter updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-normalizer updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-mbstring updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-php70 reinstalled in 1.18.0
+  - symfony/polyfill-php72 updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-php73 updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-php80 updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-uuid updated from 1.17.0 to 1.18.0
   - tijsverkoyen/css-to-inline-styles updated from 2.2.2 to 2.2.3
   - twig/cssinliner-extra updated from 3.0.3 to 3.0.4
   - twig/extra-bundle updated from 3.0.3 to 3.0.4
