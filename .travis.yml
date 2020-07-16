@@ -62,7 +62,7 @@ install:
     - cp .env .env.local # start with fresh copy of .env.local
 #    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.3''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
-    - php bin/console zikula:pre-upgrade -vvv
+    - php bin/console zikula:pre-upgrade
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -72,8 +72,9 @@ install:
     - mysql zk_test < tests/test_dbs/core144.sql
     # run the upgrade from the 144 db
     - cp .env .env.local # start with fresh copy of .env.local
-    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.4''/" .env.local'
+#    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.4''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
+    - php bin/console zikula:pre-upgrade
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -83,8 +84,9 @@ install:
     - mysql zk_test < tests/test_dbs/core145.sql
     # run the upgrade from the 145 db
     - cp .env .env.local # start with fresh copy of .env.local
-    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.5''/" .env.local'
+#    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.5''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
+    - php bin/console zikula:pre-upgrade
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -94,8 +96,9 @@ install:
     - mysql zk_test < tests/test_dbs/core146.sql
     # run the upgrade from the 146 db
     - cp .env .env.local # start with fresh copy of .env.local
-    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.6''/" .env.local'
+#    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.6''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
+    - php bin/console zikula:pre-upgrade
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -105,8 +108,9 @@ install:
     - mysql zk_test < tests/test_dbs/core159.sql
     # run the upgrade from the 1.5.9 db
     - cp .env .env.local # start with fresh copy of .env.local
-    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.5.9''/" .env.local'
+#    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.5.9''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
+    - php bin/console zikula:pre-upgrade
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
@@ -116,8 +120,9 @@ install:
     - mysql zk_test < tests/test_dbs/core2015.sql
     # run the upgrade from the 2.0.15 db
     - cp .env .env.local # start with fresh copy of .env.local
-    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''2.0.15''/" .env.local'
+#    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''2.0.15''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
+    - php bin/console zikula:pre-upgrade
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
