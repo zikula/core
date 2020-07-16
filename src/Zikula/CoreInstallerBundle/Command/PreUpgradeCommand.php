@@ -48,6 +48,7 @@ class PreUpgradeCommand extends Command
         $params = $yamlHelper->getParameters();
         $io = new SymfonyStyle($input, $output);
         if (isset($params['core_installed_version']) && version_compare($params['core_installed_version'], '3.0.0', '<')) {
+            $params['database_driver'] = mb_substr($params['database_driver'], 4); // remove pdo_ prefix
             (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
             (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars(['ZIKULA_INSTALLED' => $params['core_installed_version']]);
             $io->success('Success! .env.local updated with Zikula Core 2.0.x settings. Please run php bin/console zikula:upgrade to continue the upgrade process.');

@@ -63,7 +63,6 @@ install:
 #    - 'sed -i -E "s/ZIKULA_INSTALLED=''(.*)''/ZIKULA_INSTALLED=''1.4.3''/" .env.local'
     - cp tests/services_custom.yaml config/services_custom.yaml
     - php bin/console zikula:pre-upgrade -vvv
-    - php bin/console debug:container --env-vars
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
     # drop the test db
     - mysql -e 'drop database zk_test'
