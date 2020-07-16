@@ -29,7 +29,7 @@ class PreUpgradeCommand extends Command
 
     public function __construct(
         string $projectDir,
-        string $name = NULL
+        string $name = null
     ) {
         parent::__construct($name);
         $this->projectDir = $projectDir;
@@ -46,6 +46,7 @@ class PreUpgradeCommand extends Command
     {
         $yamlHelper = new YamlDumper($this->projectDir . '/config', 'services_custom.yaml');
         $params = $yamlHelper->getParameters();
+        dump($params);
         $io = new SymfonyStyle($input, $output);
         if (isset($params['core_installed_version']) && version_compare($params['core_installed_version'], '3.0.0', '<')) {
             (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
