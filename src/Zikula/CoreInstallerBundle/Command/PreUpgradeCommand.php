@@ -17,9 +17,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
-use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Zikula\Bundle\CoreInstallerBundle\Helper\PreCore3UpgradeHelper;
 
 class PreUpgradeCommand extends Command
 {
@@ -44,16 +43,17 @@ class PreUpgradeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $yamlHelper = new YamlDumper($this->projectDir . '/config', 'services_custom.yaml');
-        $params = $yamlHelper->getParameters();
         $io = new SymfonyStyle($input, $output);
-        if (isset($params['core_installed_version']) && version_compare($params['core_installed_version'], '3.0.0', '<')) {
-            $params['database_driver'] = mb_substr($params['database_driver'], 4); // remove pdo_ prefix
-            (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
-            (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars(['ZIKULA_INSTALLED' => $params['core_installed_version']]);
-            unset($params['core_installed_version'], $params['installed']);
-            $params['datadir'] = 'public/uploads';
-            $yamlHelper->setParameters($params);
+        $helper = new PreCore3UpgradeHelper($this->projectDir);
+        try {
+            $result = $helper->preUpgrade();
+        } catch (FileNotFoundException $exception) {
+            $io->error($exception->getMessage());
+            $io->text(sprintf('Copy your previous installation\'s %s to %s and run this command again.', '/app/config/custom_parameters.yml', $this->projectDir . '/config/services_custom.yaml'));
+
+            return Command::FAILURE;
+        }
+        if ($result) {
             $io->success('Success! .env.local updated with Zikula Core 2.0.x settings. Please run php bin/console zikula:upgrade to continue the upgrade process.');
         } else {
             $io->comment('There is no need to run this command unless the currently installed version is lower than 3.0.0');
