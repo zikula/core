@@ -41,11 +41,7 @@ The following process should be followed for all upgrades even small point relea
     check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
     recommended, please use the Web Installer.
 - Copy your previous installation's `/app/config/custom_parameters.yml` to `/config/services_custom.yaml` in your new installation.
-    - **Remove** the key/value pairs for `core_installed_version` and `installed`.
-    - **Change the value of `datadir` to `public/uploads`**
-    - Do not change any other values.
-  - From the new installation, copy the `.env` file to `.env.local`
-    - **Add** `ZIKULA_INSTALLED='a.b.c'` to the end of the file. Change `a.b.c` to the exact version of your existing install (e.g. `2.0.11`).
+  - note the name change and the suffix changed from `.yml` to `.yaml`
 
 ### Continue
 
@@ -59,8 +55,12 @@ The following process should be followed for all upgrades even small point relea
 - Then **start the upgrade (do one or the other, CLI is recommended)**
   - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.
   - Via CLI:
-    - Access your main zikula directory and run this command:
-
+    - Access your main zikula directory then
+      - Run this only when upgrading from Core 1 or 2 _for the first time_
+        ```Shell
+        php bin/console zikula:pre-upgrade
+        ```
+      - In all upgrades run this command:
         ```Shell
         php bin/console zikula:upgrade
         ```

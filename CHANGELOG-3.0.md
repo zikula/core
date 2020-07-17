@@ -13,6 +13,7 @@
   - [CoreInstallerBundle] Fix invalid access to obsolete parameter when upgrading from 3.0 to a newer version.
   - [CoreInstallerBundle] Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
   - [CoreInstallerBundle] Fix wrong link to upgrade docs in the upgrader (#4364).
+  - [CoreInstallerBundle] Fix upgrade procedure (#4406).
   - [HookBundle] Add missing argument for assigning object ID to `FormAwareHook` constructor.
   - [Blocks] Include jQuery-UI in the block position editing template (#4400).
   - [Extensions] Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
