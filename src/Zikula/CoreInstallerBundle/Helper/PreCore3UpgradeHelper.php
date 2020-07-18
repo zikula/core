@@ -42,11 +42,12 @@ class PreCore3UpgradeHelper
             (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars(['ZIKULA_INSTALLED' => $params['core_installed_version']]);
             unset($params['core_installed_version'], $params['installed']);
             $params['datadir'] = 'public/uploads';
+            $params['upgrading'] = true;
             $yamlHelper->setParameters($params);
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 }
