@@ -124,7 +124,7 @@ class VariableApi implements VariableApiInterface
 
     public function has(string $extensionName, string $variableName): bool
     {
-        if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
+        if (empty($extensionName) || empty($variableName)) {
             throw new InvalidArgumentException();
         }
         if (!$this->isInitialized && !$this->initialize()) {
@@ -136,7 +136,7 @@ class VariableApi implements VariableApiInterface
 
     public function get(string $extensionName, string $variableName, $default = false)
     {
-        if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
+        if (empty($extensionName) || empty($variableName)) {
             throw new InvalidArgumentException();
         }
         if (!$this->isInitialized && !$this->initialize()) {
@@ -157,7 +157,7 @@ class VariableApi implements VariableApiInterface
 
     public function getAll(string $extensionName): array
     {
-        if (empty($extensionName) || !is_string($extensionName)) {
+        if (empty($extensionName)) {
             throw new InvalidArgumentException();
         }
         if (!$this->isInitialized && !$this->initialize()) {
@@ -169,7 +169,7 @@ class VariableApi implements VariableApiInterface
 
     public function set(string $extensionName, string $variableName, $value = ''): bool
     {
-        if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
+        if (empty($extensionName) || empty($variableName)) {
             throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
@@ -214,7 +214,7 @@ class VariableApi implements VariableApiInterface
 
     public function del(string $extensionName, string $variableName): bool
     {
-        if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
+        if (empty($extensionName) || empty($variableName)) {
             throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
@@ -233,7 +233,7 @@ class VariableApi implements VariableApiInterface
 
     public function delAll(string $extensionName): bool
     {
-        if (empty($extensionName) || !is_string($extensionName)) {
+        if (empty($extensionName)) {
             throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {

@@ -87,6 +87,7 @@ class ExtensionVarEntity extends EntityAccess
         try {
             $result = unserialize($this->value);
         } catch (\ErrorException $exception) {
+            $result = null;
             // Warning: Class __PHP_Incomplete_Class has no unserializer
             // may happen during CLI upgrades for example
             // see also https://github.com/symfony/symfony/issues/20654

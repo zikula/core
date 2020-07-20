@@ -13,7 +13,11 @@
   - [CoreInstallerBundle] Fix invalid access to obsolete parameter when upgrading from 3.0 to a newer version.
   - [CoreInstallerBundle] Fix invalid reset of start controller settings when upgrading from 3.0 to a newer version.
   - [CoreInstallerBundle] Fix wrong link to upgrade docs in the upgrader (#4364).
+  - [CoreInstallerBundle] Fix upgrade procedure (#4406).
+  - [CoreInstallerBundle] Remove blocks with properties that cannot be unserialized on upgrade.
+  - [CoreInstallerBundle] Remove legacy modvars beginning with 'systemplugin'.
   - [HookBundle] Add missing argument for assigning object ID to `FormAwareHook` constructor.
+  - [Admin] Fix error when extension is not categorized.
   - [Blocks] Include jQuery-UI in the block position editing template (#4400).
   - [Extensions] Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
   - [Extensions] Fix too strict requirement of URL field for theme extensions (#4353).
@@ -26,6 +30,7 @@
   - [Routes] Fix sanitizing logic for routes editing (#4380).
   - [Routes] Fix exception when editing routes with allowed but unset specific creation date (#4380).
   - [Routes] Fix broken support for key value pairs for editing custom route parameter settings (defaults, requirements, options).
+  - [SecurityCenter] Fixed config setup problem defining the cache.
   - [Theme] Fix wrong modvar name when setting theme.
   - [Theme] Install extension assets on installation and upgrade (#4367).
   - [Theme] Throw more descriptive exception when non-zasset asset is not found (#4366).

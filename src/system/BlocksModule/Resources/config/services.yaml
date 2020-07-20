@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $extension: '@Zikula\BlocksModule\ZikulaBlocksModule'
+            $projectDir: '%kernel.project_dir%'
 
     Zikula\BlocksModule\:
         resource: '../../*'

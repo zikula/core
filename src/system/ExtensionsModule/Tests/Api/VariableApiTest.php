@@ -36,7 +36,7 @@ class VariableApiTest extends TestCase
         ;
 
         $kernel
-            ->expects($this->once())
+            ->expects($this->atMost(1))
             ->method('getBundles')
             ->willReturn(['BaseBundle' => new BaseBundle()])
         ;
@@ -91,6 +91,15 @@ class VariableApiTest extends TestCase
     {
         $this->assertTrue($this->api->set('TestSet', 'int', 8));
         $this->assertEquals($this->api->get('TestSet', 'int'), 8);
+    }
+
+    /**
+     * @covers VariableApi::set
+     */
+    public function testSetEmpty(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->api->set('', '', 5);
     }
 
     /**

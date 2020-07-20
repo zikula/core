@@ -160,10 +160,6 @@ class ParameterHelper
         $this->writeEnvVars($params);
 
         if (isset($params['upgrading']) && $params['upgrading']) {
-            if (isset($params['database_driver'])) {
-                $params['database_driver'] = mb_substr($params['database_driver'], 4); // remove pdo_ prefix
-            }
-            (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
             $this->resetLegacyParams($params);
         }
 
@@ -216,9 +212,6 @@ class ParameterHelper
             $params['database_socket'],
             $params['database_server_version']
         );
-
-        $params['installed'] = '%env(ZIKULA_INSTALLED)%';
-        $params['zikula_asset_manager.combine'] = false;
     }
 
     /**

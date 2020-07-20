@@ -61,32 +61,32 @@ class AjaxUpgraderStage implements AjaxStageInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error reinitialize parameters')
             ],
             2 => [
-                AjaxStageInterface::NAME => 'loginadmin',
-                AjaxStageInterface::PRE => $this->trans('Login'),
-                AjaxStageInterface::DURING => $this->trans('Logging in as admin'),
-                AjaxStageInterface::SUCCESS => $this->trans('Logged in as admin'),
-                AjaxStageInterface::FAIL => $this->trans('There was an error logging in as admin')
-            ],
-            3 => [
                 AjaxStageInterface::NAME => 'upgrade_event',
                 AjaxStageInterface::PRE => $this->trans('Fire upgrade event'),
                 AjaxStageInterface::DURING => $this->trans('Firing upgrade event'),
                 AjaxStageInterface::SUCCESS => $this->trans('Fired upgrade event'),
                 AjaxStageInterface::FAIL => $this->trans('There was an error firing the upgrade event')
             ],
-            4 => [
+            3 => [
                 AjaxStageInterface::NAME => 'upgradeextensions',
                 AjaxStageInterface::PRE => $this->trans('Upgrade extensions'),
                 AjaxStageInterface::DURING => $this->trans('Upgrading extensions'),
                 AjaxStageInterface::SUCCESS => $this->trans('Extensions upgraded'),
                 AjaxStageInterface::FAIL => $this->trans('There was an error upgrading the extensions')
             ],
-            5 => [
+            4 => [
                 AjaxStageInterface::NAME => 'versionupgrade',
                 AjaxStageInterface::PRE => $this->trans('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $this->installed, '%newVersion%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::DURING => $this->trans('Upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::SUCCESS => $this->trans('Upgraded to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxStageInterface::FAIL => $this->trans('There was an error upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION])
+            ],
+            5 => [
+                AjaxStageInterface::NAME => 'loginadmin',
+                AjaxStageInterface::PRE => $this->trans('Login'),
+                AjaxStageInterface::DURING => $this->trans('Logging in as admin'),
+                AjaxStageInterface::SUCCESS => $this->trans('Logged in as admin'),
+                AjaxStageInterface::FAIL => $this->trans('There was an error logging in as admin')
             ],
             6 => [
                 AjaxStageInterface::NAME => 'finalizeparameters',
@@ -96,13 +96,6 @@ class AjaxUpgraderStage implements AjaxStageInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error finalizing the parameters')
             ],
             7 => [
-                AjaxStageInterface::NAME => 'clearcaches',
-                AjaxStageInterface::PRE => $this->trans('Clear caches'),
-                AjaxStageInterface::DURING => $this->trans('Clearing caches'),
-                AjaxStageInterface::SUCCESS => $this->trans('Caches cleared'),
-                AjaxStageInterface::FAIL => $this->trans('There was an error clearing caches')
-            ],
-            8 => [
                 AjaxStageInterface::NAME => 'finish',
                 AjaxStageInterface::PRE => $this->trans('Finish'),
                 AjaxStageInterface::DURING => $this->trans('Finish'),
