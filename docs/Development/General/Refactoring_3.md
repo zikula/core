@@ -16,7 +16,7 @@ Add the following capability for defining the (default) admin icon:
 
 ```json
     …
-    "extra": {
+    "extra": {````
         "zikula": {
             …
                 "icon": "fas fa-star"
@@ -25,6 +25,7 @@ Add the following capability for defining the (default) admin icon:
     },
 
 ```
+
 You can remove the old `admin.png` file afterwards.
 In addtion, it is recommended that you increment your module version one full point (i.e. 3.0.0 -> 4.0.0). Upgrading to core 3.0 
 is not backward compatible with core 2.0. Also, change the php version to >=7.2.5 (or higher if you module requires it) and the 
@@ -51,9 +52,7 @@ core-compatibility to >=3.0.0.
 
 ### Interfaces
 
-In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said
-interfaces, etc. Extensions must update their implementation of any core/system interface to adhere to the new signature. For example, 
-if you are upgrading a Block class, a member function line goes from:
+In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc. Extensions must update their implementation of any core/system interface to adhere to the new signature. For example, if you are upgrading a Block class, a member function line goes from:
 
 ```public function display($properties) : {```
 
@@ -63,6 +62,7 @@ to
 
 You can let php know to enforce strict type-hinting by putting ```declare(strict_types=1);``` at the top of each php file just after the ```<?php```
 This is not required of other code, but strongly recommended.
+
 ### Service registration
 
 Please use `autowire` and `autoconfigure` as this will magically solve most issues.
@@ -92,7 +92,7 @@ services:
       - { name: form.type }
       ... 60 more lines...
 ```
-Instead this is simply taken care of by a much shorter file:
+Instead this is simply taken care of by a much shorter file where autowire and autoconfigure are set to true:
 
 ```
 services:
@@ -111,7 +111,29 @@ services:
     lazy: true
 ```
 
-Change `.yml` suffixes to `.yaml` (e.g. `routing.yaml`) and update `Extension.php` class.
+Change `.yml` suffixes to `.yaml` (e.g. `routing.yaml`) and update `Extension.php` class. If you need to use a service
+that is not injected automatically, you just add it to your method. For example:
+
+```
+public function displayarticleAction(Request $request, BookArticlesEntity $article = null, bool $doglossary = true) : Response {
+       public function displayarticleAction(Request $request,
+                                            BookArticlesEntity $article = null,
+                                            bool $doglossary = true,
+                                            CurrentUserApi $currentUserApi) : Response {
+          [other code]
+           $currentUserApi = $this->get('zikula_users_module.current_user');
+           $uid = $currentUserApi->get('uid');
+```
+is updated to:
+```
+public function displayarticleAction(Request $request,
+                                         BookArticlesEntity $article = null,
+                                         bool $doglossary = true,
+                                         CurrentUserApi $currentUserApi) : Response {
+       [other code]
+        $currentUserApi = $this->get('zikula_users_module.current_user');
+        $uid = $currentUserApi->get('uid');
+```
 
 ### Blocks
 
@@ -122,8 +144,55 @@ used as the service name.
 ### Extension menus
 
 `Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
-removed. Extension menus are now implemented using Knp Menu instead. See docs and system modules for further
-information and examples.
+removed. Extension menus are now implemented using Knp Menu instead. See directions in 
+/docs/LayoutDesign/Menus/Dev/ExtentionMenu for further information. Examination of the system menus is also helpful.
+
+What this basically means is getting ride of LinkContainer and instead creating a Menu folder in your root directory.
+Inside this directory is placed a ExtensionMenu.php file with an ExtensionMenu class. Follow the examples in the Zikula 
+core for implementation. Here is an example of the conversion of the BookModule from the old LinkContainer method to the
+new ExtensionMenu method:
+###LinkContainer method
+```$xslt
+$links = [];
+        
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+
+
+            $submenulinks = [];
+            $submenulinks[] = [
+                'url' => $this->router->generate('paustianbookmodule_admin_edit'),
+                'text' => $this->translator->__('Create New Book'),
+                ];
+
+            $submenulinks[] = [
+                'url' => $this->router->generate('paustianbookmodule_admin_modify'),
+                'text' => $this->translator->__('Edit or Delete Book'),
+                 ];
+
+            $links[] = [
+                'url' => $this->router->generate('paustianbookmodule_admin_edit'),
+                'text' => $this->translator->__('Books'),
+                'icon' => 'book',
+                'links' => $submenulinks];
+```
+###ExentionMenu method
+```$xslt
+$menu = $this->factory->createItem('bookAdminMenu');
+
+        //Book functions
+        $menu->addChild('Book', [
+            'uri' => '#',
+        ])->setAttribute('icon', 'fas fa-book')
+          ->setAttribute('dropdown', true);
+
+        $menu['Book']->addChild('Create New Book', [
+            'route' => 'paustianbookmodule_admin_edit',
+        ])->setAttribute('icon', 'fas fa-plus');
+
+        $menu['Book']->addChild('Edit or Delete Book', [
+            'route' => 'paustianbookmodule_admin_modify',
+        ])->setAttribute('icon', 'fas fa-pencil');
+```
 
 ## Sending mails
 
