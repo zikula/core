@@ -35,6 +35,11 @@ class PurifierHelper
      */
     private $cacheDirHelper;
 
+    /**
+     * @var string
+     */
+    private $purifierCacheDir;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
@@ -43,6 +48,7 @@ class PurifierHelper
         $this->kernel = $kernel;
         $this->variableApi = $variableApi;
         $this->cacheDirHelper = $cacheDirHelper;
+        $this->purifierCacheDir = $this->kernel->getCacheDir() . '/purifier';
     }
 
     /**
@@ -76,7 +82,7 @@ class PurifierHelper
         $def = $config->getHTMLDefinition(true);
         $def->addAttribute('iframe', 'allowfullscreen', 'Bool');
 
-        $this->cacheDirHelper->ensureCacheDirectoryExists($config->get('Cache.SerializerPath'), true);
+        $this->cacheDirHelper->ensureCacheDirectoryExists($this->purifierCacheDir, true);
 
         return $config;
     }
@@ -134,9 +140,7 @@ class PurifierHelper
         $config->set('HTML.SafeObject', true);
         $config->set('Output.FlashCompat', true);
         $config->set('HTML.SafeEmbed', true);
-
-        $cacheDirectory = $this->kernel->getCacheDir() . '/purifier';
-        $config->set('Cache.SerializerPath', $cacheDirectory);
+        $config->set('Cache.SerializerPath', $this->purifierCacheDir);
 
         return $config;
     }

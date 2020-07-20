@@ -12,7 +12,7 @@
                 <p>
                     {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://docs.ziku.la/Setup/upgrade.html', '%text%': 'upgrade instructions'|trans }) %}
                     {% set docs = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
-                    {% trans with { '%inst%': inst, '%docs%': docs } %}'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking
+                    {% trans with { '%inst%': inst, '%docs%': docs } %}You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking
                         on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>
                 <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>

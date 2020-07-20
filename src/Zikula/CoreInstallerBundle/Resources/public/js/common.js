@@ -26,8 +26,8 @@ jQuery(document).ready(function ($) {
                 data: {},
                 url: $('#pathHolder').data('migrate-route'),
                 success: function(data, textStatus, jqXHR) {
-                    $('.progress-bar').css('width', data.data.percentcomplete + '%');
-                    if (data.data.percentcomplete === 100) {
+                    $('.progress-bar').css('width', data.percentcomplete + '%');
+                    if (data.percentcomplete === 100) {
                         $('.progress-bar').removeClass('progress-bar-striped active');
                         var redirect = setTimeout(function() {
                             window.location = $('#pathHolder').data('redirect-route');

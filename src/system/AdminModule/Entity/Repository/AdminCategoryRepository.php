@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\AdminModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
@@ -45,8 +46,9 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
             ->setParameter('mid', $moduleId)
             ->getQuery();
 
-        $categoryId = (int)$query->getSingleScalarResult();
-        if (!$categoryId) {
+        try {
+            $categoryId = (int) $query->getSingleScalarResult();
+        } catch (NoResultException $exception) {
             return null;
         }
 

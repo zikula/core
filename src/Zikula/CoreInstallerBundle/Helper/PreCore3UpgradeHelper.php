@@ -40,9 +40,11 @@ class PreCore3UpgradeHelper
             $params['database_driver'] = mb_substr($params['database_driver'], 4); // remove pdo_ prefix
             (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
             (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars(['ZIKULA_INSTALLED' => $params['core_installed_version']]);
-            unset($params['core_installed_version'], $params['installed']);
+            unset($params['core_installed_version']);
             $params['datadir'] = 'public/uploads';
             $params['upgrading'] = true;
+            $params['installed'] = '%env(ZIKULA_INSTALLED)%';
+            $params['zikula_asset_manager.combine'] = false;
             $yamlHelper->setParameters($params);
 
             return true;

@@ -212,9 +212,6 @@ class ParameterHelper
             $params['database_socket'],
             $params['database_server_version']
         );
-
-        $params['installed'] = '%env(ZIKULA_INSTALLED)%';
-        $params['zikula_asset_manager.combine'] = false;
     }
 
     /**

@@ -203,7 +203,7 @@ class AdminController extends AbstractController
         int $acid = null
     ) {
         if (empty($acid)) {
-            $acid = $this->getVar('startcategory');
+            $acid = $this->getVar('startcategory', 1);
         }
 
         // Check to see if we have access to the requested category.

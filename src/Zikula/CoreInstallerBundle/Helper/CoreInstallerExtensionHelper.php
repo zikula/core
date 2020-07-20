@@ -203,14 +203,16 @@ class CoreInstallerExtensionHelper
                 // nothing needed
             case '1.9.99':
                 // upgrades required for 2.0.0
-                foreach (['objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'workflows'] as $table) {
-                    $sql = "DROP TABLE ${table};";
-                    /** @var \Doctrine\DBAL\Driver\PDOConnection $connection */
-                    $connection = $this->managerRegistry->getConnection();
-                    $stmt = $connection->prepare($sql);
-                    $stmt->execute();
-                    $stmt->closeCursor();
+                /** @var \Doctrine\DBAL\Driver\PDOConnection $connection */
+                $connection = $this->managerRegistry->getConnection();
+                foreach (['objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'workflows', 'categories_mapobj'] as $table) {
+                    $sql = "DROP TABLE IF EXISTS ${table};";
+                    $connection->executeQuery($sql);
                 }
+                $connection->executeQuery(
+                    "DELETE FROM module_vars WHERE modname LIKE 'systemplugin%'"
+                );
+
                 $this->variableApi->del(VariableApi::CONFIG, 'metakeywords');
                 $this->variableApi->del(VariableApi::CONFIG, 'startpage');
                 $this->variableApi->del(VariableApi::CONFIG, 'startfunc');

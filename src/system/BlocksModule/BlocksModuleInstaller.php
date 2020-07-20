@@ -13,10 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Block\HtmlBlock;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
+use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
+use Zikula\ExtensionsModule\AbstractExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Block\SearchBlock;
@@ -29,6 +36,24 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         BlockPositionEntity::class,
         BlockPlacementEntity::class
     ];
+
+    /**
+     * @var string
+     */
+    private $projectDir;
+
+    public function __construct(
+        AbstractExtension $extension,
+        ManagerRegistry $managerRegistry,
+        SchemaHelper $schemaTool,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi,
+        string $projectDir
+    ) {
+        parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
+        $this->projectDir = $projectDir;
+    }
 
     public function install(): bool
     {
@@ -48,6 +73,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->updateLangToLocaleBlock();
                 $this->removeSlashFromBKey();
                 $this->convertTemplatePaths();
+                $this->checkSerializedBlockContent();
         }
 
         return true;
@@ -97,6 +123,35 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET properties=? WHERE bid=?', [serialize($properties), $block['bid']]);
             }
         }
+    }
+
+    /**
+     * Block content that cannot be unserialized must be removed because it causes problems later.
+     * In order to not lose the data, the content is dumped to individual files in /var/log
+     */
+    private function checkSerializedBlockContent(): void
+    {
+        $statement = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
+        $blocks = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        // temporarily suppress E_NOTICE to avoid using @unserialize
+        $errorReporting = error_reporting(error_reporting() ^ E_NOTICE);
+        $fs = new Filesystem();
+        foreach ($blocks as $block) {
+            if (false === unserialize($block['properties'])) {
+                // failure to unserialize returns FALSE
+                $this->entityManager->getConnection()->executeQuery(
+                    "DELETE FROM block_placements WHERE bid=?",
+                    [$block['bid']]
+                );
+                $this->entityManager->getConnection()->executeQuery(
+                    "DELETE FROM blocks WHERE bid=?",
+                    [$block['bid']]
+                );
+                $name = '/var/log/removedBlock' . $block['bid'] . '.txt';
+                $fs->dumpFile($this->projectDir . $name, $block['properties']);
+            }
+        }
+        error_reporting($errorReporting);
     }
 
     public function uninstall(): bool
