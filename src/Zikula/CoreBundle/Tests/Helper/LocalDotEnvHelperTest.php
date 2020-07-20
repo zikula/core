@@ -72,13 +72,13 @@ class LocalDotEnvHelperTest extends TestCase
         ];
         $vars = [
             'DATABASE_URL' => '!' . $data['database_driver']
-                . '://$DATABASE_USER:$DATABASE_PWD'
+                . '://${DATABASE_USER}:${DATABASE_PWD}'
                 . '@' . $data['database_host'] . (!empty($data['database_port']) ? ':' . $data['database_port'] : '')
                 . '/' . $data['database_name']
                 . '?serverVersion=5.7' // any value will work (bypasses DBALException)
         ];
         $helper->writeLocalEnvVars($vars, true);
-        $expected = 'DATABASE_URL=mysql://$DATABASE_USER:$DATABASE_PWD@localhost/foo?serverVersion=5.7';
+        $expected = 'DATABASE_URL=mysql://${DATABASE_USER}:${DATABASE_PWD}@localhost/foo?serverVersion=5.7';
         $this->assertEquals($expected, $this->getFileContents());
     }
 
