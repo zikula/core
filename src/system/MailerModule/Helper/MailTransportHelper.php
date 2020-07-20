@@ -34,14 +34,14 @@ class MailTransportHelper
             throw new \InvalidArgumentException('Transport must be set.');
         }
         $transportStrings = [
-            'smtp' => 'smtp://$MAILER_ID:$MAILER_KEY@',
+            'smtp' => 'smtp://${MAILER_ID}:${MAILER_KEY}@',
             'sendmail' => 'sendmail+smtp://default',
-            'amazon' => 'ses://$MAILER_ID:$MAILER_KEY@default',
-            'gmail' => 'gmail://$MAILER_ID:$MAILER_KEY@default',
-            'mailchimp' => 'mandrill://$MAILER_ID:$MAILER_KEY@default',
-            'mailgun' => 'mailgun://$MAILER_ID:$MAILER_KEY@default',
-            'postmark' => 'postmark://$MAILER_ID:$MAILER_KEY@default',
-            'sendgrid' => 'sendgrid://apikey:$MAILER_KEY@default', // unclear if 'apikey' is supposed to be literal, or replaced
+            'amazon' => 'ses://${MAILER_ID}:${MAILER_KEY}@default',
+            'gmail' => 'gmail://${MAILER_ID}:${MAILER_KEY}@default',
+            'mailchimp' => 'mandrill://${MAILER_ID}:${MAILER_KEY}@default',
+            'mailgun' => 'mailgun://${MAILER_ID}:${MAILER_KEY}@default',
+            'postmark' => 'postmark://${MAILER_ID}:${MAILER_KEY}@default',
+            'sendgrid' => 'sendgrid://apikey:${MAILER_KEY}@default', // unclear if 'apikey' is supposed to be literal, or replaced
             'test' => 'null://null',
         ];
         try {
