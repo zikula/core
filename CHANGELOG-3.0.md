@@ -6,7 +6,6 @@
   - _there should be none_
 
 - Fixes:
-  - [Admin] Fix error when extension is not categorized.
   - [CoreBundle] Fix broken autoloader recognition of additional extensions for distribution-based installations.
   - [CoreBundle] Fix wrong generated directory name (docs instead of doc) in ExtensionMaker.
   - [CoreBundle] Fix wrong path to possible `routes.php` file in the Kernel class.
@@ -18,6 +17,7 @@
   - [CoreInstallerBundle] Remove blocks with properties that cannot be unserialized on upgrade.
   - [CoreInstallerBundle] Remove legacy modvars beginning with 'systemplugin'.
   - [HookBundle] Add missing argument for assigning object ID to `FormAwareHook` constructor.
+  - [Admin] Fix error when extension is not categorized.
   - [Blocks] Include jQuery-UI in the block position editing template (#4400).
   - [Extensions] Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
   - [Extensions] Fix too strict requirement of URL field for theme extensions (#4353).
