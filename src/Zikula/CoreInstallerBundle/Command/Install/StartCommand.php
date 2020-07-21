@@ -123,16 +123,9 @@ class StartCommand extends AbstractCoreInstallerCommand
         if ($input->isInteractive()) {
             $this->printSettings($settings, $io);
             $io->newLine();
-            $confirmation = $io->confirm($this->translator->trans('Start installation?'), true);
-
-            if (!$confirmation) {
-                $io->error($this->translator->trans('Installation aborted'));
-
-                return Command::FAILURE;
-            }
         }
 
-        // write parameters into config/services_custom.yaml and env vars into .env.local
+        // write parameters into config/services_custom.yaml
         $this->parameterHelper->initializeParameters($settings);
 
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
