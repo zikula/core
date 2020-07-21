@@ -96,6 +96,13 @@ class AjaxUpgraderStage implements AjaxStageInterface
                 AjaxStageInterface::FAIL => $this->trans('There was an error finalizing the parameters')
             ],
             7 => [
+                AjaxStageInterface::NAME => 'installassets',
+                AjaxStageInterface::PRE => $this->trans('Install assets'),
+                AjaxStageInterface::DURING => $this->trans('Installing assets to /public'),
+                AjaxStageInterface::SUCCESS => $this->trans('Assets installed'),
+                AjaxStageInterface::FAIL => $this->trans('Failed to install assets')
+            ],
+            8 => [
                 AjaxStageInterface::NAME => 'finish',
                 AjaxStageInterface::PRE => $this->trans('Finish'),
                 AjaxStageInterface::DURING => $this->trans('Finish'),
