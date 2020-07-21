@@ -14,12 +14,15 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\EventListener;
 
 use Exception;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreInstallerBundle\Helper\PreCore3UpgradeHelper;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 
 class InstallUpgradeCheckListener implements EventSubscriberInterface
@@ -44,19 +47,36 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
      */
     private $multiLingualRoutingHelper;
 
+    /**
+     * @var ParameterBagInterface
+     */
+    private $parameterBag;
+
+    /**
+     * @var PreCore3UpgradeHelper
+     */
+    private $preCoreUpgradeHelper;
+
     public function __construct(
         string $installed,
         RouterInterface $router,
-        MultilingualRoutingHelper $multiLingualRoutingHelper
+        MultilingualRoutingHelper $multiLingualRoutingHelper,
+        ParameterBagInterface $parameterBag,
+        PreCore3UpgradeHelper $preCore3UpgradeHelper
     ) {
         $this->installed = '0.0.0' !== $installed;
         $this->currentVersion = $installed;
         $this->router = $router;
         $this->multiLingualRoutingHelper = $multiLingualRoutingHelper;
+        $this->parameterBag = $parameterBag;
+        $this->preCoreUpgradeHelper = $preCore3UpgradeHelper;
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
+        if ($this->checkForCore3Upgrade($event)) {
+            return;
+        }
         if (!$event->isMasterRequest()) {
             return;
         }
@@ -104,5 +124,25 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
                 ['onKernelRequest', 2000]
             ],
         ];
+    }
+
+    private function checkForCore3Upgrade(RequestEvent $event): bool
+    {
+        $projectDir = $this->parameterBag->get('kernel.project_dir');
+        if (!file_exists($projectDir . '/config/services_custom.yaml')) {
+            throw new FileNotFoundException(sprintf('Could not find file %s', $projectDir . '/config/services_custom.yaml'));
+        }
+        $coreInstalledVersion = $this->parameterBag->has('core_installed_version') ? $this->parameterBag->get('core_installed_version') : null;
+        if ('0.0.0' === $this->currentVersion && isset($coreInstalledVersion) && version_compare($coreInstalledVersion, '3.0.0', '<')) {
+            if ($this->preCoreUpgradeHelper->preUpgrade()) {
+                $url = $event->getRequest()->getBaseUrl();
+                $event->setResponse(new RedirectResponse($url));
+                $event->stopPropagation();
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

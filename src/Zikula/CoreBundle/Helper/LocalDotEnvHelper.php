@@ -34,13 +34,13 @@ class LocalDotEnvHelper
      */
     public function writeLocalEnvVars(array $newVars, bool $override = false): void
     {
-        $localEnvDir = $this->projectDir . '/.env.local';
+        $localEnvPath = $this->projectDir . '/.env.local';
         $fileSystem = new Filesystem();
         $vars = [];
-        if (!$override && $fileSystem->exists($localEnvDir)) {
-            $content = explode("\n", file_get_contents($localEnvDir));
+        if (!$override && $fileSystem->exists($localEnvPath)) {
+            $content = explode("\n", file_get_contents($localEnvPath));
             foreach ($content as $line) {
-                if (empty($line)) {
+                if (empty($line) || '#' === $line[0]) {
                     continue;
                 }
                 [$key, $value] = explode('=', $line, 2);
@@ -52,7 +52,7 @@ class LocalDotEnvHelper
             }
         }
         $vars = $vars + array_diff_assoc($newVars, $vars);
-        $fileSystem->dumpFile($localEnvDir, $this->varsToString($vars));
+        $fileSystem->dumpFile($localEnvPath, $this->varsToString($vars));
     }
 
     private function varsToString(array $vars): string

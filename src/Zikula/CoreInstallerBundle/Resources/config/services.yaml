@@ -22,10 +22,6 @@ services:
         resource: '../../Controller/*'
         public: true
 
-    Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
-        arguments:
-            $symfonyCacheClearer: '@cache_clearer'
-
     Zikula\Component\Wizard\StageContainerInterface: '@Zikula\Bundle\CoreInstallerBundle\Container\StageContainer'
 
     Zikula\Bundle\CoreInstallerBundle\Container\StageContainer:

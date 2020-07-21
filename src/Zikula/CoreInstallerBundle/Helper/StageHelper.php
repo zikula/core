@@ -78,11 +78,6 @@ class StageHelper
     private $superUserHelper;
 
     /**
-     * @var CacheHelper
-     */
-    private $cacheHelper;
-
-    /**
      * @var string
      */
     private $installed;
@@ -98,7 +93,6 @@ class StageHelper
         BlockHelper $blockHelper,
         ParameterHelper $parameterHelper,
         SuperUserHelper $superUserHelper,
-        CacheHelper $cacheHelper,
         string $installed
     ) {
         $this->kernel = $kernel;
@@ -111,7 +105,6 @@ class StageHelper
         $this->blockHelper = $blockHelper;
         $this->parameterHelper = $parameterHelper;
         $this->superUserHelper = $superUserHelper;
-        $this->cacheHelper = $cacheHelper;
         $this->installed = $installed;
     }
 
@@ -180,8 +173,6 @@ class StageHelper
                 return $this->coreInstallerExtensionHelper->upgrade();
             case 'versionupgrade':
                 return $this->coreInstallerExtensionHelper->executeCoreMetaUpgrade($this->installed);
-            case 'clearcaches':
-                return $this->cacheHelper->clearCaches();
         }
 
         return true;
