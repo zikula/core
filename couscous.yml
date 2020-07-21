@@ -58,7 +58,7 @@ menu:
                     relativeUrl: Setup/upgrade.html
                 upgrade3to3:
                     text: Upgrade 3 to 3
-                    relateiveUrl: Setup/upgrade3to3.html
+                    relativeUrl: Setup/upgrade3to3.html
         configuration:
             name: Configuration
             items:
