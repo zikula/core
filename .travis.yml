@@ -126,6 +126,16 @@ install:
     # drop the test db
     - mysql -e 'drop database zk_test'
 
+    # create an upgrade db for 3.0.0
+    - mysql -e 'create database zk_test;'
+    - mysql zk_test < tests/test_dbs/core300.sql
+    # run the upgrade from the 3.0.0 db
+    # __intentionally__ using config/services_custom.yaml and .env.local from previous upgrade (would be same as 3.0.0 .env.local)
+    - 'sed -i -E "s/ZIKULA_INSTALLED=(.*)/ZIKULA_INSTALLED=''3.0.0''/" .env.local'
+    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
+    # drop the test db
+    - mysql -e 'drop database zk_test'
+
 script:
   # execute Symfony deprecation detector
   - git clone https://github.com/sensiolabs-de/deprecation-detector.git
