@@ -81,6 +81,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 // SET `bkey` = REPLACE(`bkey`, 'BlocksModule', 'StaticContentModule')
                 // WHERE `blocktype` IN ('Finclude', 'Html', 'Text', 'Xslt');
                 // change core installer to create welcome block from StaticContentModule as TemplateBlock instead
+                // @todo - delete existing hook connections with blocks module or change to staticcontent
         }
 
         return true;
