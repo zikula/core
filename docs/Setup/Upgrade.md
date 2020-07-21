@@ -48,6 +48,8 @@ All the dependencies and requirements are included in this package.
         - After upgrade, the site will default to the ZikulaBootstrapTheme until you complete testing of your custom theme.
     - Return _compatible_ modules (extensions) to the `src/extensions` directory.
         - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
+        - Check compatibility in the `/composer.json` file is: `"extra": { "zikula" : { "core-compatibility": ">=3.0.0"`
+          (">=2.0.0" is _not_ compatible with 3.x) or ask in the Zikula slack channel.
     - Copy your backup contents of `/userdata` (1.x) or `/web/uploads` (2.x) into `/public/uploads`
 - Then **start the upgrade (do one or the other, CLI is recommended)**
   - Via Web: launch `http://yoursiteurl/` (you will be redirected to `/upgrade`) and follow any on-screen prompts.
