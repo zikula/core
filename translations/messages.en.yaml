@@ -1449,7 +1449,7 @@ Finish: Finish
 'Zikula Core requires upgrade!': 'Zikula Core requires upgrade!'
 'upgrade instructions': 'upgrade instructions'
 'online documentation': 'online documentation'
-"You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking\n                        on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.": null
+'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.': 'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.'
 'You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.': 'You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.'
 'Upgrade Zikula!': 'Upgrade Zikula!'
 'To version': 'To version'
@@ -1674,7 +1674,7 @@ Provision: Provision
 'Module "%name%" is not a valid provider.': 'Module "%name%" is not a valid provider.'
 'Provider module "%name%" is not available.': 'Provider module "%name%" is not available.'
 'Providers'' areas order is not an array.': 'Providers'' areas order is not an array.'
-"'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking\n                        on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.": "'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking\n                        on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%."
+"You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking\n                        on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.": "You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking\n                        on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%."
 'Start installation?': 'Start installation?'
 'Installation aborted': 'Installation aborted'
 'Clear caches': 'Clear caches'
