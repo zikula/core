@@ -33,7 +33,15 @@
             "securityschema": {
                 "ZikulaBlocksModule::": "Block key:Block title:Block ID",
                 "ZikulaBlocksModule::position": "Position name::Position ID",
-                "PendingContent::": "Block title::"
+                "fincludeblock::": "Block title::",
+                "HTMLblock::": "Block title::",
+                "HTMLblock::bid": "::bid",
+                "PendingContent::": "Block title::",
+                "Textblock::": "Block title::",
+                "Textblock::bid": "::bid",
+                "xsltblock::": "Block title::",
+                "Templateblock::": "Block title::",
+                "Templateblock::bid": "::bid"
             }
         }
     }

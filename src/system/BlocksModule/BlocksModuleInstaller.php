@@ -73,15 +73,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->removeSlashFromBKey();
                 $this->convertTemplatePaths();
                 $this->checkSerializedBlockContent();
-            case '3.0.0':
-                // @todo
-                // remove where title === $this->trans('This site is powered by Zikula!')
-                // change bkey for finclude, xslt, html and text blocks to new namespace
-                // UPDATE `blocks`
-                // SET `bkey` = REPLACE(`bkey`, 'BlocksModule', 'StaticContentModule')
-                // WHERE `blocktype` IN ('Finclude', 'Html', 'Text', 'Xslt');
-                // change core installer to create welcome block from StaticContentModule as TemplateBlock instead
-                // @todo - delete existing hook connections with blocks module or change to staticcontent
         }
 
         return true;
@@ -195,6 +186,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         }
         $this->entityManager->flush();
 
+        $hellomessage = $this->trans('<p><a href="https://ziku.la">Zikula</a> is an Open Source Content Application Framework built on top of Symfony.</p><p>With Zikula you get:</p><ul><li><strong>Power:</strong> You get the all the features of <a href="https://symfony.com">Symfony</a> PLUS: </li><li><strong>User Management:</strong> Built in User and Group management with Rights/Roles control</li><li><strong>Front end control:</strong> You can customise all aspects of the site\'s appearance through themes, with support for <a href="http://jquery.com">jQuery</a>, <a href="http://getbootstrap.com">Bootstrap</a> and many other modern technologies</li><li><strong>Internationalization (i18n):</strong> You can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation of your site</li><li><strong>Extensibility:</strong> you get a standard application-programming interface (API) that lets you easily extend your site\'s functionality through modules</li><li><strong>More:</strong> Admin UI, global categories, site-wide search, content blocks, menu creation, and more!</li><li><strong>Support:</strong> you can get help and support from the Zikula community of webmasters and developers at <a href="https://ziku.la">ziku.la</a>, <a href="https://github.com/zikula/core">Github</a> and <a href="https://zikula.slack.com/">Slack</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
+
         $blocks = [];
         $extensionRepo = $this->entityManager->getRepository(ExtensionEntity::class);
         $blocksModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaBlocksModule']);
@@ -212,6 +205,16 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 'active' => ['ZikulaUsersModule' => 1]
             ],
             'position' => $positions['left']
+        ];
+        $blocks[] = [
+            'bkey' => HtmlBlock::class,
+            'blocktype' => 'Html',
+            'language' => '',
+            'module' => $blocksModuleEntity,
+            'title' => $this->trans('This site is powered by Zikula!'),
+            'description' => $this->trans('HTML block'),
+            'properties' => ['content' => $hellomessage],
+            'position' => $positions['center']
         ];
         $blocks[] = [
             'bkey' => LoginBlock::class,
