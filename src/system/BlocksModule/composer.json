@@ -39,9 +39,7 @@
                 "PendingContent::": "Block title::",
                 "Textblock::": "Block title::",
                 "Textblock::bid": "::bid",
-                "xsltblock::": "Block title::",
-                "Templateblock::": "Block title::",
-                "Templateblock::bid": "::bid"
+                "xsltblock::": "Block title::"
             }
         }
     }
