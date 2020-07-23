@@ -7806,16 +7806,16 @@
         },
         {
             "name": "zikula/staticcontent-module",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/StaticContent.git",
-                "reference": "4e660e0d351b9bf0bd4f604b967f919ec9367599"
+                "reference": "6b4349a3d5fc1c75ee3601dcf1bdc8fdfd4f49cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/StaticContent/zipball/4e660e0d351b9bf0bd4f604b967f919ec9367599",
-                "reference": "4e660e0d351b9bf0bd4f604b967f919ec9367599",
+                "url": "https://api.github.com/repos/zikula-modules/StaticContent/zipball/6b4349a3d5fc1c75ee3601dcf1bdc8fdfd4f49cd",
+                "reference": "6b4349a3d5fc1c75ee3601dcf1bdc8fdfd4f49cd",
                 "shasum": ""
             },
             "require": {
@@ -7859,7 +7859,7 @@
                 }
             ],
             "description": "Display static content simply.",
-            "time": "2020-07-13T18:03:07+00:00"
+            "time": "2020-07-23T14:07:57+00:00"
         },
         {
             "name": "zikula/wizard",
