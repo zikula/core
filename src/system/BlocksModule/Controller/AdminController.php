@@ -118,11 +118,13 @@ class AdminController extends AbstractController
     {
         $blocks = $blockRepository->findBy(['bkey' => HtmlBlock::class]);
         if (isset($count) && $count($blocks) > 0) {
-            $this->addFlash('warning', $this->trans('A block of type %type% is in use. This type is deprecated and will not be available in future versions of Zikula. Please replace it with %replace%',
-            [
+            $this->addFlash('warning', $this->trans(
+                'A block of type %type% is in use. This type is deprecated and will not be available in future versions of Zikula. Please replace it with %replace%',
+                [
                 '%type%' => '<code>' . HtmlBlock::class . '</code>',
                 '%replace%' => '<code>Zikula\StaticContentModule\Block\HtmlBlock</code>'
-            ]));
+            ]
+            ));
         }
     }
 }
