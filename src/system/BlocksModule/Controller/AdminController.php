@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
+use Zikula\BlocksModule\Block\HtmlBlock;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\BlocksModule\Form\Type\AdminViewFilterType;
@@ -102,6 +103,8 @@ class AdminController extends AbstractController
         $filterActive = !empty($filterData['position']) || !empty($filterData['module']) || !empty($filterData['language'])
             || (!empty($filterData['active']) && in_array($filterData['active'], [0, 1], true));
 
+        $this->checkForDeprecatedBlockTypes($blockRepository);
+
         return [
             'blocks' => $blockRepository->getFilteredBlocks($filterData),
             'positions' => $positionRepository->findAll(),
@@ -109,5 +112,17 @@ class AdminController extends AbstractController
             'sort' => $sortableColumns->generateSortableColumns(),
             'filterForm' => $filterForm->createView()
         ];
+    }
+
+    private function checkForDeprecatedBlockTypes(BlockRepositoryInterface $blockRepository): void
+    {
+        $blocks = $blockRepository->findBy(['bkey' => HtmlBlock::class]);
+        if (isset($count) && $count($blocks) > 0) {
+            $this->addFlash('warning', $this->trans('A block of type %type% is in use. This type is deprecated and will not be available in future versions of Zikula. Please replace it with %replace%',
+            [
+                '%type%' => '<code>' . HtmlBlock::class . '</code>',
+                '%replace%' => '<code>Zikula\StaticContentModule\Block\HtmlBlock</code>'
+            ]));
+        }
     }
 }
