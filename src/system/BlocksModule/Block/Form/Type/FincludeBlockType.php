@@ -26,6 +26,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Block\FincludeBlock;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 
+/**
+ * @deprecated remove at Core-4.0.0
+ */
 class FincludeBlockType extends AbstractType
 {
     use TranslatorTrait;

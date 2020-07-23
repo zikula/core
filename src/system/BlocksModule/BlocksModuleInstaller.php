@@ -26,6 +26,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Block\SearchBlock;
+use Zikula\StaticContentModule\Block\HtmlBlock;
 use Zikula\UsersModule\Block\LoginBlock;
 
 class BlocksModuleInstaller extends AbstractExtensionInstaller
@@ -73,6 +74,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->removeSlashFromBKey();
                 $this->convertTemplatePaths();
                 $this->checkSerializedBlockContent();
+            // at core-4.0.0 remove all four content-type blocks
+            // also remove the 'welcome' block from the installer
         }
 
         return true;
@@ -207,6 +210,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'position' => $positions['left']
         ];
         $blocks[] = [
+            // @deprecated at core-4.0.0 remove this block
             'bkey' => HtmlBlock::class,
             'blocktype' => 'Html',
             'language' => '',

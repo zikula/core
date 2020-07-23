@@ -17,6 +17,7 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\FincludeBlockType;
 
 /**
+ * @deprecated remove at Core-4.0.0
  * Block to display the contents of a file given a path.
  */
 class FincludeBlock extends AbstractBlockHandler
