@@ -15,6 +15,7 @@
   - league/html-to-markdown updated from 4.9.1 to 4.10.0
   - league/oauth2-client updated from 2.4.1 to 2.5.0
   - liip/imagine-bundle updated from 2.3.0 to 2.3.1
+  - monolog/monolog updated from 2.1.0 to 2.1.1
   - nikic/php-parser updated from 4.5.0 to 4.6.0
   - psr/http-client installed in 1.0.1
   - seld/phar-utils updated from 1.1.0 to 1.1.1
