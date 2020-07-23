@@ -129,7 +129,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
     private function checkForCore3Upgrade(RequestEvent $event): bool
     {
         $projectDir = $this->parameterBag->get('kernel.project_dir');
-        if (!file_exists($projectDir . '/config/services_custom.yaml')) {
+        if ($this->installed && !file_exists($projectDir . '/config/services_custom.yaml')) {
             throw new FileNotFoundException(sprintf('Could not find file %s', $projectDir . '/config/services_custom.yaml'));
         }
         $coreInstalledVersion = $this->parameterBag->has('core_installed_version') ? $this->parameterBag->get('core_installed_version') : null;
