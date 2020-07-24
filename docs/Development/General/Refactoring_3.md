@@ -5,10 +5,10 @@ currentMenu: dev-general
 
 ## Modules
 ### File Structure
-The file structure of Zikula 3.0 is much different than the structure in 2.0. Intead of extensions being kept
+The file structure of Zikula 3.0 is much different than the structure in 2.0. Instead of extensions being kept
 in /modules or /themes, they are placed into /src/extensions. Much of the code that handles rendering pages
-is outside the public folder that the webserver can see. To serve your html pages, you will need to navigate
-to zikula_folder/src/ to serve pages. A virtual host or modrewrite may be needed on your production server. 
+is outside the public folder that the webserver can see. You will need to navigate to zikula_folder/src/ to
+serve pages. A virtual host or modrewrite may be needed on your production server. 
 
 ### Composer file
 
@@ -26,7 +26,7 @@ Add the following capability for defining the (default) admin icon:
 
 ```
 
-You can remove the old `admin.png` file afterwards. In addtion, it is recommended that you increment your module version
+You can remove the old `admin.png` file afterwards. In addition, it is recommended that you increment your module version
  one full point (i.e. 3.0.0 -> 4.0.0). Upgrading to core 3.0 is not backward compatible with core 2.0. Also, change the
  php version to >=7.2.5 (or higher if you module requires it) and the core-compatibility to >=3.0.0.
 ```{
