@@ -21,6 +21,7 @@
   - [HookBundle] Avoid JS error when editing hook provider which is not a subscriber, too.
   - [Admin] Fix error when extension is not categorized.
   - [Blocks] Include jQuery-UI in the block position editing template (#4400).
+  - [Blocks] Fixed orphan properties removal for blocks that do not use any properties.
   - [Extensions] Fix outputting invalid html in modulelinks navbar (e.g. `<li icon="foo-bar"...`)
   - [Extensions] Fix too strict requirement of URL field for theme extensions (#4353).
   - [Extensions] Fix wrong translator usage in abstract content type.

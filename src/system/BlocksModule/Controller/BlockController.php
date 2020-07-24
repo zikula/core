@@ -111,8 +111,10 @@ class BlockController extends AbstractController
             if ($form->isValid() && $form->get('save')->isClicked()) {
                 // remove orphan properties (#3892)
                 $properties = [];
-                foreach ($form->get('properties')->all() as $child) {
-                    $properties[$child->getName()] = $child->getData();
+                if ($form->has('properties')) {
+                    foreach ($form->get('properties')->all() as $child) {
+                        $properties[$child->getName()] = $child->getData();
+                    }
                 }
                 $blockEntity->setProperties($properties);
 
