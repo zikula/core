@@ -15,13 +15,6 @@ body div.z-admin-content .navbar {
     margin: 0.5em 0;
 }
 
-body div.z-admin-content textarea {
-    width: 100%;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
 /******************************************************************************
 * Styling for all general headers in the entire admin box.
 ******************************************************************************/
