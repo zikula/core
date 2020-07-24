@@ -7,8 +7,7 @@ currentMenu: dev-general
 ### File Structure
 The file structure of Zikula 3.0 is much different than the structure in 2.0. Instead of extensions being kept
 in /modules or /themes, they are placed into /src/extensions. Much of the code that handles rendering pages
-is outside the public folder that the webserver can see. You will need to navigate to zikula_folder/src/ to
-serve pages. A virtual host or modrewrite may be needed on your production server. 
+is outside the public folder that the webserver can see.
 
 ### Composer file
 
