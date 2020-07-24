@@ -6368,21 +6368,21 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v5.1.2",
+            "version": "v5.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "b551cb4c4573ea36fd924c1394ed09c453272470"
+                "reference": "753a0728e99f541bf51d873e91464fd657819f78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/b551cb4c4573ea36fd924c1394ed09c453272470",
-                "reference": "b551cb4c4573ea36fd924c1394ed09c453272470",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/753a0728e99f541bf51d873e91464fd657819f78",
+                "reference": "753a0728e99f541bf51d873e91464fd657819f78",
                 "shasum": ""
             },
             "require": {
                 "doctrine/event-manager": "~1.0",
-                "doctrine/persistence": "^1.3",
+                "doctrine/persistence": "^1.3|^2",
                 "ext-xml": "*",
                 "php": ">=7.2.5",
                 "psr/cache": "~1.0",
@@ -6479,10 +6479,11 @@
                 "async-aws/ses": "^1.0",
                 "async-aws/sqs": "^1.0",
                 "cache/integration-tests": "dev-master",
+                "composer/package-versions-deprecated": "^1.8",
                 "doctrine/annotations": "~1.0",
                 "doctrine/cache": "~1.6",
                 "doctrine/collections": "~1.0",
-                "doctrine/data-fixtures": "1.0.*",
+                "doctrine/data-fixtures": "^1.1",
                 "doctrine/dbal": "~2.4",
                 "doctrine/doctrine-bundle": "^2.0",
                 "doctrine/orm": "~2.4,>=2.4.5",
@@ -6560,7 +6561,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-15T13:51:55+00:00"
+            "time": "2020-07-24T04:23:17+00:00"
         },
         {
             "name": "thomaspark/bootswatch",
@@ -7825,16 +7826,16 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v5.1.2",
+            "version": "v5.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "de5f0fec631a0cbfe98630b053be1fad7b75aece"
+                "reference": "964bd57046dfa48687e1412fe5f8006adfcb9675"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/de5f0fec631a0cbfe98630b053be1fad7b75aece",
-                "reference": "de5f0fec631a0cbfe98630b053be1fad7b75aece",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/964bd57046dfa48687e1412fe5f8006adfcb9675",
+                "reference": "964bd57046dfa48687e1412fe5f8006adfcb9675",
                 "shasum": ""
             },
             "require": {
@@ -7900,7 +7901,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-09T09:56:30+00:00"
+            "time": "2020-07-23T09:26:24+00:00"
         }
     ],
     "aliases": [],
