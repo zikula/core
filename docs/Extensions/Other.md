@@ -20,17 +20,11 @@ currentMenu: ext-other
 [Formicula](https://github.com/zikula-ev/Formicula)
 : Contact form generator
 
-[InterCom](https://github.com/zikula-modules/InterCom)
-: Private messages
+## Legacy Modules not yet converted to Zikula 3.x
 
-[Piwik](https://github.com/Guite/Piwik)
-: Piwik/Matomo integration
-
-[FooHookModule](https://github.com/zikula-modules/FooHookModule)
-: Sample hook extension
-
-## Legacy Modules not yet converted
-
+- [InterCom](https://github.com/zikula-modules/InterCom) (Private messages)
+- [Piwik](https://github.com/Guite/Piwik) (Piwik/Matomo integration)
+- [FooHookModule](https://github.com/zikula-modules/FooHookModule) (Sample hook extension)
 - [Multisites](https://github.com/zikula-modules/Multisites) (Multisites system)
 - [OpenID](https://github.com/zikula-modules/OpenID) (OpenID login)
 - [BadBehavior](https://github.com/zikula-modules/BadBehavior) (Anti-spam hook)

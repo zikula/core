@@ -25,26 +25,19 @@ currentMenu: ext-content
 [MultiHook](https://github.com/zikula-modules/MultiHook)
 : Abbreviations, acronyms, autolinks, censor
 
-[Dizkus](https://github.com/zikula-modules/DizkusModule)
-: Forums system
-
 [EZComments](https://github.com/zikula-modules/EZComments)
 : Comments hook
 
-[KaikMediaCompanies](https://github.com/Kaik/KaikMediaCompanies)
-: Company / business directory
+[Ratings](https://github.com/zikula-modules/Ratings)
+: Ratings hook
 
-[KaikMediaGallery](https://github.com/Kaik/KaikMediaGallery)
-: Gallery module
+## Legacy Modules not yet converted to Zikula 3.x
 
-[KaikMediaPages](https://github.com/Kaik/KaikMediaPages)
-: Another pages handling system
-
-[Eternizer](https://github.com/zikula-modules/Eternizer)
-: Guestbook
-
-## Legacy Modules not yet converted
-
+- [Dizkus](https://github.com/zikula-modules/DizkusModule) (Forums system)
+- [KaikMediaCompanies](https://github.com/Kaik/KaikMediaCompanies) (Company / business directory)
+- [KaikMediaGallery](https://github.com/Kaik/KaikMediaGallery) (Gallery module)
+- [KaikMediaPages](https://github.com/Kaik/KaikMediaPages) (Another pages handling system)
+- [Eternizer](https://github.com/zikula-modules/Eternizer) (Guestbook)
 - [PostCalendar](https://github.com/craigh/PostCalendar) (Calendar and event system)
 - [Tag](https://github.com/craigh/Tag) (Tagging hook)
 - [Reviews](https://github.com/zikula-modules/Reviews) (Reviews system)
