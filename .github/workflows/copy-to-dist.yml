@@ -25,9 +25,9 @@ jobs:
   copy_public:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy public
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -40,9 +40,9 @@ jobs:
   copy_templates:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy templates
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -55,9 +55,9 @@ jobs:
   copy_translations:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy translations
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -70,9 +70,9 @@ jobs:
   copy_env:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy .env
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -85,9 +85,9 @@ jobs:
   copy_bootstrap_php:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/bootstrap.php
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -100,9 +100,9 @@ jobs:
   copy_bundles_php:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/bundles.php
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -115,9 +115,9 @@ jobs:
   copy_routes_yaml:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/routes.yaml
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -130,9 +130,9 @@ jobs:
   copy_routes_dev_yaml:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/routes_dev.yaml
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -145,9 +145,9 @@ jobs:
   copy_services_yaml:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/services.yaml
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -160,9 +160,9 @@ jobs:
   copy_dynamic:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/dynamic/default.yaml
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -175,9 +175,9 @@ jobs:
   copy_packages:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/packages/
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -191,9 +191,9 @@ jobs:
   copy_routes:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/routes
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -207,9 +207,9 @@ jobs:
   copy_workflows:
     runs-on: ubuntu-latest
     steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy config/workflows
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
