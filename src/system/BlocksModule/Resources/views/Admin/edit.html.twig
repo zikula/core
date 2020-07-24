@@ -54,6 +54,7 @@
         {{ form_widget(form.cancel) }}
     </div>
 </div>
+{% do form.filters.setRendered() %}
 {{ form_end(form) }}
 <div id="filterDefinitions" data-count="{{ form.filters|length }}"></div>
 {{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Edit.js')) }}

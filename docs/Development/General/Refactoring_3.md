@@ -4,6 +4,10 @@ currentMenu: dev-general
 # Refactoring for 3.0
 
 ## Modules
+### File Structure
+The file structure of Zikula 3.0 is much different than the structure in 2.0. Instead of extensions being kept
+in /modules or /themes, they are placed into /src/extensions. Much of the code that handles rendering pages
+is outside the public folder that the webserver can see.
 
 ### Composer file
 
@@ -21,12 +25,43 @@ Add the following capability for defining the (default) admin icon:
 
 ```
 
-You can remove the old `admin.png` file afterwards.
+You can remove the old `admin.png` file afterwards. In addition, it is recommended that you increment your module version
+ one full point (i.e. 3.0.0 -> 4.0.0). Upgrading to core 3.0 is not backward compatible with core 2.0. Also, change the
+ php version to >=7.2.5 (or higher if you module requires it) and the core-compatibility to >=3.0.0.
+```{
+  ...
+  "version": "5.0.0",
+  ...
+  "require": {
+    "php": ">7.2.5",
+    "zikula/core-bundle": "3.*"
+  },
+  "extra": {
+    "zikula": {
+      ...
+      "core-compatibility": ">=3.0.0",
+      ...
+      "icon": "fas fa-star",
+      ...
+    }
+  }
+}
+  ```
 
 ### Interfaces
 
-In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said
-interfaces, etc. Extensions must update their implementation of any core/system interface to adhere to the new signature.
+In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of 
+said interfaces, etc. Extensions must update their implementation of any core/system interface to adhere to the new 
+signature. For example, if you are upgrading a Block class, a member function line goes from:
+
+```public function display($properties) : {```
+
+to
+
+```public function display(array $properties) :string {```
+
+You can let php know to enforce strict type-hinting by putting ```declare(strict_types=1);``` at the top of each php 
+file just after the ```<?php``` This is not required of other code, but strongly recommended.
 
 ### Service registration
 
@@ -36,7 +71,68 @@ Further information can be found [in Symfony docs](https://symfony.com/doc/curre
 Module services should be registered by their classname (automatically as above) and not with old-fashioned
 `service.class.dot.notation`.
 
-Change `.yml` suffixes to `.yaml` (e.g. `routing.yaml`) and update `Extension.php` class.
+This change greatly simplifies using services, since each service does not have to be registered in your config files located in the Resources/config/ directory. Here is a previous services file from the Book module:
+```
+services:
+  paustian_book_module.container.link_container:
+    class: Paustian\BookModule\Container\LinkContainer
+    arguments:
+      - "@translator.default"
+      - "@router"
+      - "@zikula_permissions_module.api.permission"
+    tags:
+      - { name: zikula.link_container }
+
+  paustian_book_module.form.article_type:
+    class: Paustian\BookModule\Form\Article
+    arguments:
+      - "@translator.default"
+      - "@zikula_settings_module.locale_api"
+    tags:
+      - { name: form.type }
+      ... 60 more lines...
+```
+Instead this is simply taken care of by a much shorter file where autowire and autoconfigure are set to true:
+
+```
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+    bind:
+      $extension: '@Paustian\Book\PaustianBookModule'
+
+  Paustian\Book\:
+    resource: '../../*'
+
+  Paustian\Book\Helper:
+    resource: '../../Helper/*'
+    lazy: true
+```
+
+Change `.yml` suffixes to `.yaml` (e.g. `routing.yaml`) and update `Extension.php` class. If you need to use a service
+that is not injected automatically, you just add it to your method. For example:
+
+```
+public function displayarticleAction(Request $request, 
+                                BookArticlesEntity $article = null, 
+                                bool $doglossary = true) : Response {
+          [other code]
+           $currentUserApi = $this->get('zikula_users_module.current_user');
+           $uid = $currentUserApi->get('uid');
+```
+is updated to:
+```
+public function displayarticleAction(Request $request,
+                                         BookArticlesEntity $article = null,
+                                         bool $doglossary = true,
+                                         CurrentUserApi $currentUserApi) : Response {
+       [other code]
+        $currentUserApi = $this->get('zikula_users_module.current_user');
+        $uid = $currentUserApi->get('uid');
+```
+Note how the CurrentUserApi was injected for you because of autowiring of the service.
 
 ### Blocks
 
@@ -47,8 +143,47 @@ used as the service name.
 ### Extension menus
 
 `Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
-removed. Extension menus are now implemented using Knp Menu instead. See docs and system modules for further
-information and examples.
+removed. Extension menus are now implemented using Knp Menu instead. See directions in [ExtentionMenu](../../LayoutDesign/Menus/Dev/ExtensionMenu.md) for further 
+information. Examination of the system menus is also helpful.
+
+What this basically means is getting rid of LinkContainer and instead creating a Menu folder in your root directory.
+Inside this directory is placed a ExtensionMenu.php file with an ExtensionMenu class. Follow the examples in the Zikula 
+core for implementation. Here is an example of the conversion of the BookModule from the old LinkContainer method to the
+new ExtensionMenu method:
+###LinkContainer method
+```
+        $links = [];
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+            $submenulinks = [];
+            $submenulinks[] = [
+                'url' => $this->router->generate('paustianbookmodule_admin_edit'),
+                'text' => $this->translator->__('Create New Book'),
+                ];
+            $submenulinks[] = [
+                'url' => $this->router->generate('paustianbookmodule_admin_modify'),
+                'text' => $this->translator->__('Edit or Delete Book'),
+                 ];
+            $links[] = [
+                'url' => $this->router->generate('paustianbookmodule_admin_edit'),
+                'text' => $this->translator->__('Books'),
+                'icon' => 'book',
+                'links' => $submenulinks];
+```
+###ExentionMenu method
+```
+        $menu = $this->factory->createItem('bookAdminMenu');
+        //Book functions
+        $menu->addChild('Book', [
+            'uri' => '#',
+        ])->setAttribute('icon', 'fas fa-book')
+          ->setAttribute('dropdown', true);
+        $menu['Book']->addChild('Create New Book', [
+            'route' => 'paustianbookmodule_admin_edit',
+        ])->setAttribute('icon', 'fas fa-plus');
+        $menu['Book']->addChild('Edit or Delete Book', [
+            'route' => 'paustianbookmodule_admin_modify',
+        ])->setAttribute('icon', 'fas fa-pencil');
+```
 
 ## Sending mails
 
