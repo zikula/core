@@ -4,13 +4,13 @@ on:
     branches:
       - master
       - 3.0
-env:
-  BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
 jobs:
   copy_kernel:
     runs-on: ubuntu-latest
     steps:
       - name: Copy Kernel.php
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy public
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -37,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy templates
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -50,6 +54,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy translations
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -63,6 +69,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy .env
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -76,6 +84,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/bootstrap.php
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -89,6 +99,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/bundles.php
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -102,6 +114,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/routes.yaml
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -115,6 +129,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/routes_dev.yaml
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -128,6 +144,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/services.yaml
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -141,6 +159,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/dynamic/default.yaml
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -154,6 +174,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/packages/
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -168,6 +190,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/routes
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
@@ -182,6 +206,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy config/workflows
+        env:
+          BRANCH_NAME: $(echo $GITHUB_REF | sed -e "s#refs/heads/##g")
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
