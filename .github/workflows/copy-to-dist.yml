@@ -10,9 +10,9 @@ jobs:
     steps:
       - name: Branch name
         run: echo running on branch ${GITHUB_REF##*/}
+      - name: Set env
+          run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
       - name: Copy Kernel.php
-        env:
-          BRANCH_NAME: ${GITHUB_REF##*/}
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
