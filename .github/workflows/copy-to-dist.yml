@@ -8,6 +8,8 @@ jobs:
   copy_kernel:
     runs-on: ubuntu-latest
     steps:
+      - name: Branch name
+        run: echo running on branch ${GITHUB_REF##*/}
       - name: Copy Kernel.php
         uses: andstor/copycat-action@v3
         with:
