@@ -144,8 +144,8 @@ used as the service name.
 ### Extension menus
 
 `Zikula\Core\LinkContainer\LinkContainerCollector` and `Zikula\Core\LinkContainer\LinkContainerInterface` have been
-removed. Extension menus are now implemented using Knp Menu instead. See directions in 
-/docs/LayoutDesign/Menus/Dev/ExtentionMenu for further information. Examination of the system menus is also helpful.
+removed. Extension menus are now implemented using Knp Menu instead. See directions in [ExtentionMenu](../../LayoutDesign/Menus/Dev/ExtensionMenu.md) for further 
+information. Examination of the system menus is also helpful.
 
 What this basically means is getting rid of LinkContainer and instead creating a Menu folder in your root directory.
 Inside this directory is placed a ExtensionMenu.php file with an ExtensionMenu class. Follow the examples in the Zikula 
