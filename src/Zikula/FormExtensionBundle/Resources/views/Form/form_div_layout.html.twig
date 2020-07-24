@@ -21,5 +21,6 @@
 
 {# overrides textarea_widget to catch array to string conversion issues when a form returns with errors #}
 {%- block textarea_widget -%}
+    {% set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) %}
     <textarea {{ block('widget_attributes') }}>{{ value is iterable ? value|join("\n") : value }}</textarea>
 {%- endblock textarea_widget -%}
