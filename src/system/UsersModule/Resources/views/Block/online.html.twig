@@ -1,6 +1,6 @@
 <p>
-    {% set amountOfUsers = 'plural_n.registered.user'|trans({count: usercount})|desc('{count, plural,\n  one   {one registered user}\n  other {# registered users}\n}') %}
-    {% set amountOfGuests = 'plural_n.anonymous.guest'|trans({count: guestcount})|desc('{count, plural,\n  one   {one anonymous guest}\n  other {# anonymous guests}\n}') %}
+    {% set amountOfUsers = '%count% registered user(s)'|trans({'%count%': usercount}) %}
+    {% set amountOfGuests = '%count% anonymous guest(s)'|trans({'%count%': guestcount}) %}
     {% trans with {'%users%': amountOfUsers, '%guests%': amountOfGuests, '%time%': since|date('g:i:s a')} %}%users% and %guests% online since %time%.{% endtrans %}
 </p>
 {% if currentUser.loggedIn %}
