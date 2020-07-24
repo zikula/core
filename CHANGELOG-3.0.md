@@ -16,6 +16,7 @@
   - [CoreInstallerBundle] Fix upgrade procedure (#4406).
   - [CoreInstallerBundle] Remove blocks with properties that cannot be unserialized on upgrade.
   - [CoreInstallerBundle] Remove legacy modvars beginning with 'systemplugin'.
+  - [FormExtensionBundle] Fix textarea width problem (#4421).
   - [HookBundle] Add missing argument for assigning object ID to `FormAwareHook` constructor.
   - [HookBundle] Avoid JS error when editing hook provider which is not a subscriber, too.
   - [Admin] Fix error when extension is not categorized.
