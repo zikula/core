@@ -72,5 +72,7 @@ assignees: 'Guite, craigh'
 
 - [ ] Changes in major version branch (e.g. `2.0`)
   - [ ] Increment version in Kernel class
+  - [ ] Increment version in `/system` extensions
+  - [ ] increment version in VA extensions
   - [ ] Add new section to changelog
 - [ ] Merge to `master` branch
