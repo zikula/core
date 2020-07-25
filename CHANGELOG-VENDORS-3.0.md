@@ -44,6 +44,7 @@
   - twig/twig updated from 3.0.3 to 3.0.4
   - webmozart/assert updated from 1.9.0 to 1.9.1
   - zikula/legal-module updated from 3.2.8 to 3.2.9
+  - zikula/oauth-module updated from 1.2.2 to 1.2.3
   - zikula/profile-module updated from 3.1.16 to 3.1.17
 
 ## 3.0.0 VENDOR CHANGES (2020-06-25)
