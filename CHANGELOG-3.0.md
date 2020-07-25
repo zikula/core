@@ -1,5 +1,16 @@
 # CHANGELOG - ZIKULA 3.0.x
 
+## 3.0.2 (unreleased)
+
+- BC Breaks:
+  - _there should be none_
+
+- Fixes:
+  - _first fix_
+
+- Features:
+  - _there should be none_
+
 ## 3.0.1 (2020-07-25)
 
 - Fixes:
