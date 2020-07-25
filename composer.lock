@@ -3447,16 +3447,16 @@
         },
         {
             "name": "league/oauth2-google",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-google.git",
-                "reference": "cfe9b0ae69eb5dbac64a282f04410b731f6b9c04"
+                "reference": "18d1889897a8b18d85ecadacf74c9274d678d943"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-google/zipball/cfe9b0ae69eb5dbac64a282f04410b731f6b9c04",
-                "reference": "cfe9b0ae69eb5dbac64a282f04410b731f6b9c04",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-google/zipball/18d1889897a8b18d85ecadacf74c9274d678d943",
+                "reference": "18d1889897a8b18d85ecadacf74c9274d678d943",
                 "shasum": ""
             },
             "require": {
@@ -3494,7 +3494,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2019-11-16T14:11:06+00:00"
+            "time": "2020-07-24T15:16:12+00:00"
         },
         {
             "name": "league/oauth2-instagram",
