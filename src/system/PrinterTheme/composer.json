@@ -1,6 +1,6 @@
 {
     "name": "zikula/printer-theme",
-    "version": "3.0.1",
+    "version": "3.0.2-dev",
     "description": "The Printer theme is an auxiliary theme designed specially for outputting pages in a printer-friendly format.",
     "type": "zikula-system-theme",
     "license": "LGPL-3.0-or-later",
