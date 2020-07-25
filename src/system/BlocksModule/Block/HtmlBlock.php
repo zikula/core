@@ -17,6 +17,7 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\HtmlBlockType;
 
 /**
+ * @deprecated remove at Core-4.0.0
  * Block to display html.
  */
 class HtmlBlock extends AbstractBlockHandler

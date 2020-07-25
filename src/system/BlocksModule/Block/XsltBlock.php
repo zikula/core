@@ -19,6 +19,7 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\XsltBlockType;
 
 /**
+ * @deprecated remove at Core-4.0.0
  * Block to display a parsed xml document.
  */
 class XsltBlock extends AbstractBlockHandler

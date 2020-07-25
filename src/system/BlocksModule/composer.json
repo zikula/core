@@ -18,9 +18,6 @@
         "zikula/core-bundle": "3.*",
         "zikula/theme-module": "3.*"
     },
-    "suggest": {
-        "Scribite:>=6.0.2": "To allow WYSIWYG HTML block editing."
-    },
     "extra": {
         "zikula": {
             "class": "Zikula\\BlocksModule\\ZikulaBlocksModule",

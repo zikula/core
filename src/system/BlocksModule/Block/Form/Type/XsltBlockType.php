@@ -24,6 +24,9 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 
+/**
+ * @deprecated remove at Core-4.0.0
+ */
 class XsltBlockType extends AbstractType
 {
     use TranslatorTrait;

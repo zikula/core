@@ -9,4 +9,4 @@
   - _first fix_
 
 - Features:
-  - _first feature_
+  - Add StaticContent module to manage all static content (#4369).
