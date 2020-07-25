@@ -1,9 +1,6 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.0.1 (unreleased)
-
-- BC Breaks:
-  - _there should be none_
+## 3.0.1 (2020-07-25)
 
 - Fixes:
   - [CoreBundle] Fix broken autoloader recognition of additional extensions for distribution-based installations.
@@ -38,9 +35,6 @@
   - [Theme] Install extension assets on installation and upgrade (#4367).
   - [Theme] Throw more descriptive exception when non-zasset asset is not found (#4366).
   - [ZAuth] Allow creating and changing user mappings without setting a password (#4395).
-
-- Features:
-  - _there should be none_
 
 ## 3.0.0 (2020-06-25)
 
