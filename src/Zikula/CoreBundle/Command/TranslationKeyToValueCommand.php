@@ -100,6 +100,7 @@ EOF
                 }
             }
             $io->text(sprintf('<info>Dumping %s</info>', $file->getBasename()));
+            ksort($messages); // sort the messages by key
             $fs->dumpFile($file->getRealPath(), Yaml::dump($messages));
         }
 

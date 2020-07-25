@@ -1292,6 +1292,20 @@
                 "sqlserver",
                 "sqlsrv"
             ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fdbal",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-04-20T17:19:26+00:00"
         },
         {
@@ -1896,6 +1910,20 @@
                 "odm",
                 "orm",
                 "persistence"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fpersistence",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-03-21T15:13:52+00:00"
         },
@@ -7554,16 +7582,16 @@
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/OAuth.git",
-                "reference": "3c7ff12036651b41b1fb6a0bafcd517c707b92a7"
+                "reference": "83428af241daf695403f64058ab62d5006c3eff7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/OAuth/zipball/3c7ff12036651b41b1fb6a0bafcd517c707b92a7",
-                "reference": "3c7ff12036651b41b1fb6a0bafcd517c707b92a7",
+                "url": "https://api.github.com/repos/zikula-modules/OAuth/zipball/83428af241daf695403f64058ab62d5006c3eff7",
+                "reference": "83428af241daf695403f64058ab62d5006c3eff7",
                 "shasum": ""
             },
             "require": {
@@ -7608,7 +7636,7 @@
                 }
             ],
             "description": "Integrates league/oauth2-client and various providers.",
-            "time": "2020-06-12T12:20:38+00:00"
+            "time": "2020-07-25T07:16:40+00:00"
         },
         {
             "name": "zikula/pagelock-module",
