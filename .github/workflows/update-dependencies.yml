@@ -6,10 +6,10 @@ jobs:
   update-deps:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout sources from master branch
+    - name: Checkout sources from 3.0 branch
       uses: actions/checkout@v2
       with:
-        ref: master
+        ref: 3.0
 
     # persist composer's internal cache directory to reduce the workflow execution time
     - name: Get Composer cache directory
