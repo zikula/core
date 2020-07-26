@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8f9071a750e6363f18755ad3bff9ab1",
+    "content-hash": "dc1b7cd2d8d0ac6b0d57ccbe2e508c61",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -1292,6 +1292,20 @@
                 "sqlserver",
                 "sqlsrv"
             ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fdbal",
+                    "type": "tidelift"
+                }
+            ],
             "time": "2020-04-20T17:19:26+00:00"
         },
         {
@@ -1896,6 +1910,20 @@
                 "odm",
                 "orm",
                 "persistence"
+            ],
+            "funding": [
+                {
+                    "url": "https://www.doctrine-project.org/sponsorship.html",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.patreon.com/phpdoctrine",
+                    "type": "patreon"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fpersistence",
+                    "type": "tidelift"
+                }
             ],
             "time": "2020-03-21T15:13:52+00:00"
         },
@@ -7777,6 +7805,63 @@
                 "symfony"
             ],
             "time": "2020-01-21T22:10:27+00:00"
+        },
+        {
+            "name": "zikula/staticcontent-module",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula-modules/StaticContent.git",
+                "reference": "6b4349a3d5fc1c75ee3601dcf1bdc8fdfd4f49cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula-modules/StaticContent/zipball/6b4349a3d5fc1c75ee3601dcf1bdc8fdfd4f49cd",
+                "reference": "6b4349a3d5fc1c75ee3601dcf1bdc8fdfd4f49cd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5"
+            },
+            "type": "zikula-module",
+            "extra": {
+                "zikula": {
+                    "core-compatibility": ">=3.0.0",
+                    "class": "Zikula\\StaticContentModule\\ZikulaStaticContentModule",
+                    "displayname": "Static Content",
+                    "icon": "fas fa-file-alt",
+                    "url": "static",
+                    "securityschema": {
+                        "ZikulaStaticContentModule::": "::",
+                        "ZikulaStaticContentModule::name": "::name",
+                        "fincludeblock::": "Block title::",
+                        "HTMLblock::": "Block title::",
+                        "HTMLblock::bid": "::bid",
+                        "Textblock::": "Block title::",
+                        "Textblock::bid": "::bid",
+                        "xsltblock::": "Block title::",
+                        "Templateblock::": "Block title::",
+                        "Templateblock::bid": "::bid"
+                    },
+                    "capabilities": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\StaticContentModule\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula Team"
+                }
+            ],
+            "description": "Display static content simply.",
+            "time": "2020-07-23T14:07:57+00:00"
         },
         {
             "name": "zikula/wizard",
