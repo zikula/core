@@ -1,6 +1,12 @@
 # CHANGELOG-VENDORS - ZIKULA 3.0.x
 
-## 3.0.1 VENDOR CHANGES (unreleased)
+## 3.0.2 VENDOR CHANGES (unreleased)
+
+- Vendor updates:
+  - league/oauth2-google updated from 2.0.1 to 2.0.2
+  - nikic/php-parser updated from 4.6.0 to 4.7.0
+
+## 3.0.1 VENDOR CHANGES (2020-07-25)
 
 - Vendor updates:
   - components/font-awesome updated from 5.12.1 to 5.14.0
