@@ -91,10 +91,10 @@ menu:
             items:
                 content-pages:
                     text: Static pages
-                    relativeUrl: Content/Pages.html
+                    relativeUrl: Content/pages.html
                 content-blocks:
                     text: Blocks
-                    relativeUrl: Content/Blocks.html
+                    relativeUrl: Content/blocks.html
         access-control:
             name: Access Control
             items:
