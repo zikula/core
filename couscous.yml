@@ -86,6 +86,15 @@ menu:
                 workflows:
                     text: Workflows
                     relativeUrl: Configuration/Workflows/index.html
+        content:
+            name: Content
+            items:
+                content-pages:
+                    text: Static pages
+                    relativeUrl: Content/Pages.html
+                content-blocks:
+                    text: Blocks
+                    relativeUrl: Content/Blocks.html
         access-control:
             name: Access Control
             items:
