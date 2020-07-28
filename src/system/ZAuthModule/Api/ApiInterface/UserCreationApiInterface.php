@@ -62,22 +62,16 @@ interface UserCreationApiInterface
 
     /**
      * Persist all created users and mappings
-     *
-     * @return void
      */
     public function persist(): void;
 
     /**
      * Get the created users. The persisted state is unknown.
-     *
-     * @return array
      */
     public function getCreatedUsers(): array;
 
     /**
      * Get the created mappings. The persisted state is unknown.
-     *
-     * @return array
      */
     public function getCreatedMappings(): array;
 

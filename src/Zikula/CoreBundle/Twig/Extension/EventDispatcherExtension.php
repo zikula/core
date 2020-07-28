@@ -40,7 +40,6 @@ class EventDispatcherExtension extends AbstractExtension
     }
 
     /**
-     * @param string $name
      * @param array $arguments the arguments, MUST be values only and in the correct order
      */
     public function dispatchEvent(string $name, $arguments = [])

@@ -139,7 +139,7 @@ class EntityAccess implements ArrayAccess
             return $setMethod;
         }
 
-        $class = get_class($this);
+        $class = static::class;
         throw new RuntimeException("Entity \"${class}\" does not have a setter for property \"${name}\". Please add ${setMethod}().");
     }
 }

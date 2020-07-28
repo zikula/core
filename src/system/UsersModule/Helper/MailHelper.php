@@ -108,7 +108,6 @@ class MailHelper
     /**
      * Creates a new registration mail.
      *
-     * @param UserEntity $userEntity
      * @param bool   $userNotification       Whether the user should be notified of the new registration or not; however
      *                                       if the user's password was created for him, then he will receive at
      *                                       least that mail without regard to this setting
@@ -159,7 +158,6 @@ class MailHelper
     /**
      * Creates a new users mail.
      *
-     * @param UserEntity $userEntity
      * @param bool  $userNotification        Whether the user should be notified of the new registration or not;
      *                                       however if the user's password was created for him, then he will
      *                                       receive at least that mail without regard to this setting
@@ -222,7 +220,6 @@ class MailHelper
      *      'subject'
      *      'batchsize'
      *      'format'
-     * @return bool
      */
     public function mailUsers(array $users, array $messageData): bool
     {
@@ -275,7 +272,6 @@ class MailHelper
      *                                     in the form users_userapi_{type}mail.tpl and/or .txt
      * @param array $templateArgs One or more arguments to pass to the renderer for use in the template
      * @param string $subject The e-mail subject, overriding the template's subject
-     * @return bool
      */
     public function sendNotification(
         string $toAddress,

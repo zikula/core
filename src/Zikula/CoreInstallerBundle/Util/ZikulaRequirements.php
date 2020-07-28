@@ -56,7 +56,7 @@ class ZikulaRequirements
 
     private function addZikulaSystemRequirements(SymfonyRequirements $symfonyRequirements)
     {
-        $installedPhpVersion = phpversion();
+        $installedPhpVersion = PHP_VERSION;
         $symfonyRequirements->addRequirement(
             version_compare($installedPhpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, '>='),
             sprintf('PHP version must be at least %s (%s installed)', ZikulaKernel::PHP_MINIMUM_VERSION, $installedPhpVersion),

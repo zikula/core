@@ -29,8 +29,8 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 abstract class AbstractController extends BaseController
 {
-    use TranslatorTrait;
     use ExtensionVariablesTrait;
+    use TranslatorTrait;
 
     /**
      * @var string

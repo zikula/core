@@ -12,7 +12,8 @@ declare(strict_types=1);
  */
 
 namespace Zikula\UsersModule
-{
+;
+
     /**
      * Users module-wide constants.
      * Add only constants here. No variables, functions, or other elements.
@@ -235,4 +236,3 @@ namespace Zikula\UsersModule
          */
         public const EMAIL_DOMAIN_VALIDATION_PATTERN = '(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\\\"\\[\\]]\\.?)+\\.[a-z]{2,64}';
     }
-}

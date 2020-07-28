@@ -29,8 +29,8 @@ use Zikula\ExtensionsModule\ExtensionVariablesTrait;
  */
 abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
 {
-    use TranslatorTrait;
     use ExtensionVariablesTrait;
+    use TranslatorTrait;
 
     /**
      * @var string the extension name

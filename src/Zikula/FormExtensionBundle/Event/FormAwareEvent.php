@@ -42,7 +42,6 @@ class FormAwareEvent
     }
 
     /**
-     * @param string|null $prefix
      * @return mixed
      */
     public function getFormData(string $prefix = null)
@@ -56,8 +55,6 @@ class FormAwareEvent
 
     /**
      * @param FormInterface|string|int $child
-     * @param string|null $type
-     * @param array $options
      *
      * @return $this
      */
@@ -69,9 +66,6 @@ class FormAwareEvent
     }
 
     /**
-     * @param string $template
-     * @param array $templateVars
-     *
      * @return $this
      */
     public function addTemplate(string $template, array $templateVars = []): self

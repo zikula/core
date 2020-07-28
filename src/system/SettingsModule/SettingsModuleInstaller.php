@@ -94,17 +94,21 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         switch ($oldVersion) {
             case '2.9.11': // shipped with Core-1.4.3
                 $this->setSystemVar('UseCompression', (bool)$this->getSystemVar('UseCompression'));
+                // no break
             case '2.9.12': // shipped with Core-1.4.4
                 // reconfigure TZ settings
                 $this->setGuestTimeZone();
+                // no break
             case '2.9.13':
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'entrypoint');
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturls');
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
+                // no break
             case '2.9.14': // shipped with Core-1.5.x + Core-2.0.15
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'Version_Sub');
                 $this->setSystemVar('startController'); // reset to blank because of new format FQCN::method
+                // no break
             case '2.9.15':
                 $varsToRemove = [
                     'funtext',

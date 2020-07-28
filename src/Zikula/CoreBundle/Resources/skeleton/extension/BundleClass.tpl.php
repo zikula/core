@@ -16,6 +16,6 @@ namespace <?php echo $namespace; ?>;
 
 use Zikula\ExtensionsModule\Abstract<?php echo $type; ?>;
 
-class <?php echo $name; ?> extends Abstract<?php echo $type."\n"; ?>
+class <?php echo $name; ?> extends Abstract<?php echo $type . "\n"; ?>
 {
 }
