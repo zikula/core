@@ -111,7 +111,6 @@ class StageHelper
     /**
      * Specific stages are assigned in Ajax(Installer|Upgrader)Stage
      *
-     * @return bool
      * @throws \Exception
      */
     public function executeStage(string $stageName): bool

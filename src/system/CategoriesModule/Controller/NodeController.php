@@ -70,6 +70,7 @@ class NodeController extends AbstractController
                 $mode = 'new';
                 $category = $newCategory;
                 // intentionally no break here
+                // no break
             case 'edit':
                 if (!isset($category)) {
                     $category = new CategoryEntity($localeApi->getSupportedLocales());
@@ -135,6 +136,7 @@ class NodeController extends AbstractController
                 }
                 $this->getDoctrine()->getManager()->flush();
                 // intentionally no break here
+                // no break
             case 'delete':
                 $categoryId = $category->getId();
                 $this->removeRecursive($category, $processingHelper);

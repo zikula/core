@@ -21,7 +21,7 @@ if (!class_exists(Dotenv::class)) {
     throw new LogicException('Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.');
 }
 
-(new Dotenv())->bootEnv(dirname(__DIR__).  '/.env');
+(new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
 
 // on install or upgrade, check if system requirements are met.
 (new RequirementChecker($_ENV['ZIKULA_INSTALLED']))->verify();

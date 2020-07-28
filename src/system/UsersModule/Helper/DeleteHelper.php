@@ -63,10 +63,6 @@ class DeleteHelper
 
     /**
      * @param string $param gid|status|uid
-     * @param string $value
-     * @param string|null $date
-     *
-     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUserCollection(string $param, string $value, string $date = null): Collection
     {

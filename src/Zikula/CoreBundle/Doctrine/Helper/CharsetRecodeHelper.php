@@ -52,7 +52,7 @@ class CharsetRecodeHelper
 
         // database level
         $rows = $this->retrieveCommands('
-            SELECT CONCAT("ALTER DATABASE `",table_schema,"` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;") AS _sql 
+            SELECT CONCAT("ALTER DATABASE `",table_schema,"` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;") AS _sql
             FROM `TABLES`
             WHERE table_schema LIKE ?
             GROUP BY table_schema;
@@ -61,7 +61,7 @@ class CharsetRecodeHelper
 
         // table level
         $rows = $this->retrieveCommands('
-            SELECT CONCAT("ALTER TABLE `",table_schema,"`.`",table_name,"` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;") AS _sql  
+            SELECT CONCAT("ALTER TABLE `",table_schema,"`.`",table_name,"` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;") AS _sql
             FROM `TABLES`
             WHERE table_schema LIKE ?
             GROUP BY table_schema, table_name;
@@ -70,7 +70,7 @@ class CharsetRecodeHelper
 
         // column level
         $rows = $this->retrieveCommands('
-            SELECT CONCAT("ALTER TABLE `",table_schema,"`.`",table_name, "` CHANGE `",column_name,"` `",column_name,"` ",data_type,"(",character_maximum_length,") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",IF(is_nullable="YES"," NULL"," NOT NULL"),";") AS _sql 
+            SELECT CONCAT("ALTER TABLE `",table_schema,"`.`",table_name, "` CHANGE `",column_name,"` `",column_name,"` ",data_type,"(",character_maximum_length,") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",IF(is_nullable="YES"," NULL"," NOT NULL"),";") AS _sql
             FROM `COLUMNS`
             WHERE table_schema LIKE ?
             AND data_type IN (\'varchar\', \'char\');
@@ -78,7 +78,7 @@ class CharsetRecodeHelper
         $commands = array_merge($commands, $rows);
 
         $rows = $this->retrieveCommands('
-            SELECT CONCAT("ALTER TABLE `",table_schema,"`.`",table_name, "` CHANGE `",column_name,"` `",column_name,"` ",data_type," CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",IF(is_nullable="YES"," NULL"," NOT NULL"),";") AS _sql 
+            SELECT CONCAT("ALTER TABLE `",table_schema,"`.`",table_name, "` CHANGE `",column_name,"` `",column_name,"` ",data_type," CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci",IF(is_nullable="YES"," NULL"," NOT NULL"),";") AS _sql
             FROM `COLUMNS`
             WHERE table_schema LIKE ?
             AND data_type IN (\'text\', \'tinytext\', \'mediumtext\', \'longtext\');

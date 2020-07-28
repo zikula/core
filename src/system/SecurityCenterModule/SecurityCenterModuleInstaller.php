@@ -147,6 +147,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 if (false !== mb_strpos($idsRulePath, 'phpids_zikula_default')) {
                     $this->setSystemVar('idsrulepath', 'Resources/config/phpids_zikula_default.xml');
                 }
+                // no break
             case '1.5.1':
                 // set the session information in /config/dynamic/generated.yaml
                 $sessionStoreToFile = $this->getVariableApi()->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
@@ -157,6 +158,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $sessionSavePath = $this->getVariableApi()->getSystemVar('sessionsavepath', '');
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $this->configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
+                // no break
             case '1.5.2': // shipped with Core-2.0.15
                 $varsToRemove = [
                     'secure_domain',

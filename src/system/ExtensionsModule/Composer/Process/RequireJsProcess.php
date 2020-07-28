@@ -179,7 +179,7 @@ class RequireJsProcess extends Process
         // Construct the JavaScript output.
         $output = <<<EOT
 var components = ${js};
-components.baseUrl = Zikula.Config.baseURL + "web";                
+components.baseUrl = Zikula.Config.baseURL + "web";
 if (typeof require !== "undefined" && require.config) {
     require.config(components);
 } else {

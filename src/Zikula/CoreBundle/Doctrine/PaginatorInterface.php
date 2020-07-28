@@ -31,7 +31,7 @@ namespace Zikula\Bundle\CoreBundle\Doctrine;
  */
 interface PaginatorInterface
 {
-    public function paginate(int $page = 1): PaginatorInterface;
+    public function paginate(int $page = 1): self;
 
     public function getCurrentPage(): int;
 
@@ -53,11 +53,11 @@ interface PaginatorInterface
 
     public function getResults(): \Traversable;
 
-    public function setRoute(string $route): PaginatorInterface;
+    public function setRoute(string $route): self;
 
     public function getRoute(): string;
 
-    public function setRouteParameters(array $parameters): PaginatorInterface;
+    public function setRouteParameters(array $parameters): self;
 
     public function setRouteParameter(string $name, string $value): void;
 

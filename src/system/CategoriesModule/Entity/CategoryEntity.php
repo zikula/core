@@ -173,7 +173,6 @@ class CategoryEntity extends EntityAccess
 
     /**
      * constructor
-     * @param array $locales
      */
     public function __construct(array $locales = [])
     {
@@ -203,12 +202,12 @@ class CategoryEntity extends EntityAccess
         $this->id = $id;
     }
 
-    public function getParent(): ?CategoryEntity
+    public function getParent(): ?self
     {
         return $this->parent;
     }
 
-    public function setParent(CategoryEntity $parent = null): void
+    public function setParent(self $parent = null): void
     {
         $this->parent = $parent;
     }
@@ -396,7 +395,7 @@ class CategoryEntity extends EntityAccess
         return $this->root;
     }
 
-    public function setRoot(CategoryEntity $root): void
+    public function setRoot(self $root): void
     {
         $this->root = $root;
     }

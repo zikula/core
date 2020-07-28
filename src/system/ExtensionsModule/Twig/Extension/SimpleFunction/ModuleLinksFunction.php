@@ -42,7 +42,6 @@ class ModuleLinksFunction
      * @param string $first Class for the first element (optional)
      * @param string $last Class for the last element (optional)
      * @param string $template Template name to use instead of default (optional)
-     * @return string
      */
     public function display(
         string $type = 'user',

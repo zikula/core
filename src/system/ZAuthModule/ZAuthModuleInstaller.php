@@ -54,9 +54,11 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
                 ]);
                 $this->delVar('password_reminder_enabled');
                 $this->delVar('password_reminder_mandatory');
+                // no break
             case '1.0.1': // shipped with Core-2.0.15
                 $this->delVar('hash_method');
                 $this->setVar(ZAuthConstant::MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD, ZAuthConstant::DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD);
+                // no break
             case '1.0.2':
                 $this->setVar(ZAuthConstant::MODVAR_ITEMS_PER_PAGE, ZAuthConstant::DEFAULT_ITEMS_PER_PAGE);
         }

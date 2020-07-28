@@ -40,7 +40,6 @@ class ModuleHeaderFunction
      * @param bool $insertFlashes If set to true, {{ showflashes() }} is put in front of template
      * @param bool $menuFirst If set to true, menu is first, then title
      * @param bool $image If set to true, module image is also displayed next to title
-     * @return string
      */
     public function display(
         string $type = 'user',

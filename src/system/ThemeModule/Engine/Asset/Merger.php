@@ -150,7 +150,7 @@ class Merger implements MergerInterface
         if (!file_exists($file)) {
             return;
         }
-        $source = fopen($file, 'rb');
+        $source = fopen($file, 'r');
         if (false === $source) {
             return;
         }

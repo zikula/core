@@ -60,7 +60,7 @@ class RequirementChecker
             if ('cli' !== PHP_SAPI) {
                 echo '</pre></body></html>';
             }
-            die();
+            exit();
         }
     }
 

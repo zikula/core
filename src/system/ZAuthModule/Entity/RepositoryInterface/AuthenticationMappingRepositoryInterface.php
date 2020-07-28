@@ -28,9 +28,6 @@ interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Sel
 
     public function setEmailVerification(int $userId, bool $value = true): void;
 
-    /**
-     * @return PaginatorInterface
-     */
     public function query(
         array $filter = [],
         array $sort = [],

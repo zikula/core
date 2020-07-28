@@ -101,7 +101,7 @@ abstract class AbstractContentType implements ContentTypeInterface
     ) {
         $this->translator = $translator;
 
-        $nsParts = explode('\\', get_class($this));
+        $nsParts = explode('\\', static::class);
         list($vendor, $nameAndType) = $nsParts;
 
         $this->bundleName = $vendor . $nameAndType;
