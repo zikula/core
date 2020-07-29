@@ -405,7 +405,6 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/togglePasswordChange.html.twig")
      *
-     * @param Request $request
      * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes
      *
      * @return array|RedirectResponse

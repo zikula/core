@@ -3,6 +3,7 @@
 ## 3.0.2 VENDOR CHANGES (unreleased)
 
 - Vendor updates:
+  - doctrine/collections updated from 1.6.6 to 1.6.7
   - league/oauth2-google updated from 2.0.1 to 2.0.2
   - nikic/php-parser updated from 4.6.0 to 4.7.0
 

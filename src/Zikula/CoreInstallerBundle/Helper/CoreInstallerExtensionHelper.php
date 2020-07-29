@@ -185,6 +185,7 @@ class CoreInstallerExtensionHelper
                 $this->install('ZikulaMenuModule');
                 $this->reSyncAndActivate();
                 $this->adminCategoryHelper->setCategory('ZikulaMenuModule', $this->translator->trans('Content'));
+                // no break
             case '1.4.4':
                 // nothing
             case '1.4.5':
@@ -195,6 +196,7 @@ class CoreInstallerExtensionHelper
                     $this->reSyncAndActivate();
                     $this->adminCategoryHelper->setCategory('ZikulaMenuModule', $this->translator->trans('Content'));
                 }
+                // no break
             case '1.4.6':
                 // nothing needed
             case '1.4.7':
@@ -238,6 +240,7 @@ class CoreInstallerExtensionHelper
                     $this->managerRegistry->getManager()->remove($block);
                 }
                 $this->managerRegistry->getManager()->flush();
+                // no break
             case '2.0.15':
                 // nothing
             case '3.0.0':

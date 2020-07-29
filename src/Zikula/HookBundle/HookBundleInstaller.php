@@ -86,6 +86,7 @@ class HookBundleInstaller implements InstallerInterface
                 $this->schemaTool->update([
                     HookRuntimeEntity::class
                 ]);
+                // no break
             case '2.0.1': //current version
         }
 

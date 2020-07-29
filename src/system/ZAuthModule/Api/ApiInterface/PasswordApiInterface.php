@@ -48,7 +48,6 @@ interface PasswordApiInterface
     /**
      * Create a system-generated password or password-like code, meeting the configured constraints for a password.
      *
-     * @param int $length
      * @return string The generated (unhashed) password-like string
      */
     public function generatePassword(int $length = self::MIN_LENGTH): string;

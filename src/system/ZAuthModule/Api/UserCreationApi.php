@@ -113,8 +113,6 @@ class UserCreationApi implements UserCreationApiInterface
     }
 
     /**
-     * @param array $userArray
-     *
      * @return bool|string
      */
     public function isValidUserData(array $userArray)

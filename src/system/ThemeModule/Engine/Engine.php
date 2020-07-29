@@ -62,7 +62,7 @@ class Engine
 
     /**
      * AnnotationValue is the value of the active method Theme annotation.
-     * @var null|string
+     * @var string|null
      */
     private $annotationValue;
 

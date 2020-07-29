@@ -25,8 +25,8 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 abstract class AbstractBlockHandler implements BlockHandlerInterface
 {
-    use TranslatorTrait;
     use ExtensionVariablesTrait;
+    use TranslatorTrait;
 
     /**
      * @var AbstractExtension
@@ -107,7 +107,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     {
         // default to the ClassName without the `Block` suffix
         // note: This string is intentionally left untranslated.
-        $fqCn = get_class($this);
+        $fqCn = static::class;
         $pos = mb_strrpos($fqCn, '\\');
 
         return mb_substr($fqCn, $pos + 1, -5);

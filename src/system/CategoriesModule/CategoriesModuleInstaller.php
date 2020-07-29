@@ -99,6 +99,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                 $helper = new TreeMapHelper($this->managerRegistry, $categoryRepository);
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
+                // no break
             case '1.3.1':// shipped with Core-2.0.15
         }
 

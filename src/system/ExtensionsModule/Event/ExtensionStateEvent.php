@@ -19,12 +19,12 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 class ExtensionStateEvent
 {
     /**
-     * @var null|AbstractExtension
+     * @var AbstractExtension|null
      */
     private $extensionBundle;
 
     /**
-     * @var null|ExtensionEntity
+     * @var ExtensionEntity|null
      */
     private $extensionEntity;
 
