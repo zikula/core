@@ -163,7 +163,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         $this->root = $root;
     }
 
-    public function getRoot(): self
+    public function getRoot(): ?self
     {
         return $this->root;
     }

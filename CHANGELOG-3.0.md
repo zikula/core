@@ -6,7 +6,7 @@
   - _there should be none_
 
 - Fixes:
-  - _first fix_
+  - [Menu] Fix error during creation of new menus.
 
 - Features:
   - _there should be none_
