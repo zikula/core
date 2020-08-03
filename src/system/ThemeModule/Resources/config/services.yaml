@@ -7,7 +7,6 @@ services:
             $extension: '@Zikula\ThemeModule\ZikulaThemeModule'
             $installed: '%env(ZIKULA_INSTALLED)%'
             Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface: '@zikula.site_definition'
-            $mergerActive: '%zikula_asset_manager.combine%'
 
     Zikula\ThemeModule\:
         resource: '../../*'
@@ -46,7 +45,7 @@ services:
           $footers: '@zikula_core.common.theme.assets_footer'
           $js: '@Zikula\ThemeModule\Engine\Asset\JsResolver'
           $css: '@Zikula\ThemeModule\Engine\Asset\CssResolver'
-          $scriptPosition: '%script_position%'
+          $scriptPosition: 'foot'
 
     zikula_core.common.theme.themevars:
         class: Zikula\ThemeModule\Engine\ParameterBag
@@ -58,9 +57,6 @@ services:
 
     Zikula\ThemeModule\Engine\Asset\Merger:
         arguments:
-          $lifetime: '%zikula_asset_manager.lifetime%'
-          $minify: '%zikula_asset_manager.minify%'
-          $compress: '%zikula_asset_manager.compress%'
           $skipFiles:
             - '/jquery/jquery.min.js'
             - '%zikula.stylesheet.bootstrap.min.path%'
@@ -72,13 +68,13 @@ services:
         arguments:
           $env: '%env(APP_ENV)%'
           $bag: '@zikula_core.common.theme.assets_js'
-          $combine: '%zikula_asset_manager.combine%'
+          $combine: false
 
     Zikula\ThemeModule\Engine\Asset\CssResolver:
         arguments:
           $env: '%env(APP_ENV)%'
           $bag: '@zikula_core.common.theme.assets_css'
-          $combine: '%zikula_asset_manager.combine%'
+          $combine: false
 
     # override TwigBundle's Twig\Environment definition with Zikula's own child class
     # see vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/twig.xml

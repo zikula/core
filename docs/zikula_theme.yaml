@@ -1,0 +1,7 @@
+zikula_theme:
+    script_position: head
+    asset_manager:
+        combine: false
+        lifetime: '1 day'
+        compress: true
+        minify: true
