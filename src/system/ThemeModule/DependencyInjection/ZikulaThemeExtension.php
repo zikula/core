@@ -50,7 +50,7 @@ class ZikulaThemeExtension extends Extension
         $merger = $container->getDefinition(Merger::class);
         $skipFiles = $merger->getArgument('$skipFiles');
         $skipFiles[] = $config['bootstrap']['css_path'];
-        $skipFiles[] = $config['font_awesome'];
+        $skipFiles[] = $config['font_awesome_path'];
         $merger->setArgument('$lifetime', $config['asset_manager']['lifetime'])
             ->setArgument('$minify', $config['asset_manager']['minify'])
             ->setArgument('$compress', $config['asset_manager']['compress'])
