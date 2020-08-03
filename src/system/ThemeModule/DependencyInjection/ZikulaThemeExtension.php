@@ -21,6 +21,7 @@ use Zikula\ThemeModule\Engine\Asset\CssResolver;
 use Zikula\ThemeModule\Engine\Asset\JsResolver;
 use Zikula\ThemeModule\Engine\Asset\Merger;
 use Zikula\ThemeModule\Engine\AssetFilter;
+use Zikula\ThemeModule\EventListener\DefaultPageAssetSetterListener;
 use Zikula\ThemeModule\EventListener\ExtensionInstallationListener;
 use Zikula\ThemeModule\EventListener\HookChangeListener;
 
@@ -46,9 +47,18 @@ class ZikulaThemeExtension extends Extension
         $container->getDefinition(CssResolver::class)
             ->setArgument('$combine', $config['asset_manager']['combine']);
 
-        $container->getDefinition(Merger::class)
-            ->setArgument('$lifetime', $config['asset_manager']['lifetime'])
+        $merger = $container->getDefinition(Merger::class);
+        $skipFiles = $merger->getArgument('$skipFiles');
+        $skipFiles[] = $config['bootstrap']['css_path'];
+        $skipFiles[] = $config['font_awesome'];
+        $merger->setArgument('$lifetime', $config['asset_manager']['lifetime'])
             ->setArgument('$minify', $config['asset_manager']['minify'])
-            ->setArgument('$compress', $config['asset_manager']['compress']);
+            ->setArgument('$compress', $config['asset_manager']['compress'])
+            ->setArgument('$skipFiles', $skipFiles);
+
+        $container->getDefinition(DefaultPageAssetSetterListener::class)
+            ->setArgument('$bootstrapJavascriptPath', $config['bootstrap']['js_path'])
+            ->setArgument('$bootstrapStylesheetPath', $config['bootstrap']['css_path'])
+            ->setArgument('$fontAwesomePath', $config['font_awesome_path']);
     }
 }

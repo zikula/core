@@ -5,27 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     installed: '%env(ZIKULA_INSTALLED)%'
-#    script_position:  foot
-    # script_position defines the location where javascripts will be placed in the page
-    # choices are `head` or `foot`
-    datadir:          public/uploads
+    datadir:          public/uploads # not used by system or Zikula
     locale:           en
-
-    assets_version: ~ #e.g. 'v1'
-#    zikula_asset_manager.combine: true
-#    zikula_asset_manager.lifetime: "1 day"
-#    zikula_asset_manager.compress: true
-#    zikula_asset_manager.minify: true
-
-    # the following parameter is used in the clickjacking protection listener
-    # it accepts any values allowed for X-Frame-Options
-    security.x_frame_options: SAMEORIGIN
-
-    # all paths below are resolved as assets (in /public)
-    # stylesheet and javascript component locations
-    zikula.javascript.bootstrap.min.path: '/bootstrap/js/bootstrap.bundle.min.js'
-    zikula.stylesheet.bootstrap.min.path: '/bootstrap/css/bootstrap.min.css'
-    zikula.stylesheet.fontawesome.min.path: '/font-awesome/css/all.min.css'
+    assets_version: ~ #e.g. 'v1' # sets value in config/packages/framework.yaml
 
 services:
     # default configuration for services in *this* file

@@ -1,5 +1,10 @@
+# These are the default values
 zikula_theme:
-    script_position: head
+    script_position: foot
+    bootstrap:
+        css_path: '/bootstrap/css/bootstrap.min.css'
+        js_path: '/bootstrap/js/bootstrap.bundle.min.js'
+    font_awesome_path: '/font-awesome/css/all.min.css'
     asset_manager:
         combine: false
         lifetime: '1 day'

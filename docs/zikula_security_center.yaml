@@ -1,0 +1,3 @@
+# These are the default values
+zikula_security_center:
+    x_frame_options: SAMEORIGIN

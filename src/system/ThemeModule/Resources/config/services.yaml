@@ -59,8 +59,6 @@ services:
         arguments:
           $skipFiles:
             - '/jquery/jquery.min.js'
-            - '%zikula.stylesheet.bootstrap.min.path%'
-            - '%zikula.stylesheet.fontawesome.min.path%'
             - '/mmenu/css/mmenu.css'
             - '/mmenu/js/mmenu.js'
 
@@ -105,9 +103,9 @@ services:
         arguments:
           $jsAssetBag: '@zikula_core.common.theme.assets_js'
           $cssAssetBag: '@zikula_core.common.theme.assets_css'
-          $bootstrapJavascriptPath: '%zikula.javascript.bootstrap.min.path%'
-          $bootstrapStylesheetPath: "%zikula.stylesheet.bootstrap.min.path%"
-          $fontAwesomePath: '%zikula.stylesheet.fontawesome.min.path%'
+          $bootstrapJavascriptPath: '/bootstrap/js/bootstrap.bundle.min.js'
+          $bootstrapStylesheetPath: '/bootstrap/css/bootstrap.min.css'
+          $fontAwesomePath: '/font-awesome/css/all.min.css'
         tags:
             - { name: monolog.logger, channel: request }
 

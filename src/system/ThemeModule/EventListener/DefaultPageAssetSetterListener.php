@@ -75,9 +75,9 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->themeEngine = $themeEngine;
         $this->params = [
             'installed' => '0.0.0' !== $installed,
-            'zikula.javascript.bootstrap.min.path' => $bootstrapJavascriptPath,
-            'zikula.stylesheet.bootstrap.min.path' => $bootstrapStylesheetPath,
-            'zikula.stylesheet.fontawesome.min.path' => $fontAwesomePath
+            'bootstrap_js_path' => $bootstrapJavascriptPath,
+            'bootstrap_css_path' => $bootstrapStylesheetPath,
+            'font_awesome_path' => $fontAwesomePath
         ];
     }
 
@@ -102,7 +102,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         // add default javascripts to jsAssetBag
         $this->addJquery();
         $this->jsAssetBag->add([
-            $this->assetHelper->resolve($this->params['zikula.javascript.bootstrap.min.path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
+            $this->assetHelper->resolve($this->params['bootstrap_js_path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
             $this->assetHelper->resolve('bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
         ]);
         $this->addFosJsRouting($event->getRequest()->getLocale());
@@ -112,7 +112,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->addBootstrapCss();
         $this->cssAssetBag->add([
             $this->assetHelper->resolve('bundles/core/css/core.css') => 1,
-            $this->assetHelper->resolve($this->params['zikula.stylesheet.fontawesome.min.path']) => 1,
+            $this->assetHelper->resolve($this->params['font_awesome_path']) => 1,
         ]);
     }
 
@@ -150,7 +150,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addBootstrapCss(): void
     {
-        $bootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
+        $bootstrapPath = $this->params['bootstrap_css_path'];
         if ($this->params['installed'] && null !== $this->themeEngine->getTheme()) {
             $theme = $this->themeEngine->getTheme();
             // Check for override of bootstrap css path

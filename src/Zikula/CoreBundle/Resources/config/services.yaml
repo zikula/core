@@ -44,10 +44,6 @@ services:
         arguments:
           $blameableListener: '@stof_doctrine_extensions.listener.blameable'
 
-    Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener:
-        arguments:
-          $xFrameOptions: '%security.x_frame_options%'
-
     Zikula\Bundle\CoreBundle\EventListener\DoctrineListener:
         arguments:
           $driver: '@doctrine.orm.default_annotation_metadata_driver'
