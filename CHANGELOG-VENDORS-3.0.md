@@ -43,18 +43,18 @@
   - psr/http-client installed in 1.0.1
   - seld/phar-utils updated from 1.1.0 to 1.1.1
   - symfony/maker-bundle updated from 1.19.0 to 1.20.0
-  - symfony/polyfill-ctype updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-intl-grapheme updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-intl-icu updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-intl-idn updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-intl-messageformatter updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-intl-normalizer updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-mbstring updated from 1.18.0 to 1.18.1
+  - symfony/polyfill-ctype updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-grapheme updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-icu updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-idn updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-messageformatter updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-intl-normalizer updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-mbstring updated from 1.17.0 to 1.18.0
   - symfony/polyfill-php70 reinstalled in 1.18.0
-  - symfony/polyfill-php72 updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-php73 updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-php80 updated from 1.18.0 to 1.18.1
-  - symfony/polyfill-uuid updated from 1.18.0 to 1.18.1
+  - symfony/polyfill-php72 updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-php73 updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-php80 updated from 1.17.0 to 1.18.0
+  - symfony/polyfill-uuid updated from 1.17.0 to 1.18.0
   - tijsverkoyen/css-to-inline-styles updated from 2.2.2 to 2.2.3
   - twig/cssinliner-extra updated from 3.0.3 to 3.0.4
   - twig/extra-bundle updated from 3.0.3 to 3.0.4
