@@ -48,7 +48,7 @@ class MetaDataTranslatorHelper
      */
     public function translateMetaData(MetaData $metaData): MetaData
     {
-        if ($this->installed) {
+        if ($this->installed && isset($this->translator)) {
             $extensionEntity = $this->extensionRepository->get($metaData->getShortName());
             if (null !== $extensionEntity) {
                 $metaData->setTranslator($this->translator);

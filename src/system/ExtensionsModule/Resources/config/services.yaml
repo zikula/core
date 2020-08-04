@@ -27,7 +27,7 @@ services:
             $multisitesParameters: '%multisites%'
 
     # public because AbstractExtension accesses this using container
-    Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository:
+    Zikula\ExtensionsModule\Helper\MetaDataTranslatorHelper:
         public: true
 
     Zikula\ExtensionsModule\Menu\MenuBuilder:
