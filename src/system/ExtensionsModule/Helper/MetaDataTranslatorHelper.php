@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -40,7 +41,7 @@ class MetaDataTranslatorHelper
     ) {
         $this->setTranslator($translator);
         $this->extensionRepository = $extensionRepository;
-        $this->installed = '0.0.0' !== $installed;
+        $this->installed = ZikulaKernel::VERSION === $installed;
     }
 
     /**
