@@ -5,6 +5,7 @@
 - Vendor updates:
   - composer/composer updated from 1.10.9 to 1.10.10
   - doctrine/collections updated from 1.6.6 to 1.6.7
+  - doctrine/event-manager updated from 1.1.0 to 1.1.1
   - league/oauth2-google updated from 2.0.1 to 2.0.2
   - nikic/php-parser updated from 4.6.0 to 4.7.0
   - symfony/contracts updated from 2.1.2 to 2.1.3
