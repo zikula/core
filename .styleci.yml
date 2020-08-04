@@ -5,6 +5,7 @@ enabled:
   - alpha_ordered_imports
   - combine_consecutive_issets
   - combine_consecutive_unsets
+  - concat_with_spaces
   - declare_strict_types
   - escape_implicit_backslashes
   - explicit_indirect_variable
@@ -23,6 +24,7 @@ enabled:
 
 disabled:
   - cast_spaces
+  - concat_without_spaces
   - function_declaration
   - native_constant_invocation_symfony
   - native_function_invocation_symfony
