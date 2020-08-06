@@ -18,9 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-/**
- * CoreExtension class.
- */
 class CoreExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
@@ -29,6 +26,10 @@ class CoreExtension extends Extension
         $loader->load('session.yaml');
         $loader->load('services.yaml');
         $loader->load('translation.yaml');
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter('datadir', $config['datadir']);
     }
 
     public function getNamespace(): string

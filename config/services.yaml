@@ -4,8 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    datadir:          public/uploads # not used by system or Zikula
-    locale:           en
+    locale:           en # sets value in config/packages/translation.yaml
     assets_version: ~ #e.g. 'v1' # sets value in config/packages/framework.yaml
 
 services:
@@ -13,8 +12,6 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-    zikula.site_definition: '@Zikula\Bundle\CoreBundle\Site\SiteDefinition'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

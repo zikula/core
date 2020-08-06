@@ -6,7 +6,6 @@ services:
         bind:
             $extension: '@Zikula\ThemeModule\ZikulaThemeModule'
             $installed: '%env(ZIKULA_INSTALLED)%'
-            Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface: '@zikula.site_definition'
 
     Zikula\ThemeModule\:
         resource: '../../*'
