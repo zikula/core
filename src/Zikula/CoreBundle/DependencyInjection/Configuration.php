@@ -18,13 +18,15 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    public const DEFAULT_DATADIR = 'public/uploads';
+
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('core');
 
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('datadir')->defaultValue('public/uploads')->end()
+                ->scalarNode('datadir')->defaultValue(self::DEFAULT_DATADIR)->end()
             ->end()
         ;
 
