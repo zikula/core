@@ -126,16 +126,16 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "4.5.0",
+            "version": "4.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "a64e49cf3e338e4b90d9fd1963104a1440232c21"
+                "reference": "41d99b0cd311dd1cec4a7a32f0439f0b7e47317c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/a64e49cf3e338e4b90d9fd1963104a1440232c21",
-                "reference": "a64e49cf3e338e4b90d9fd1963104a1440232c21",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/41d99b0cd311dd1cec4a7a32f0439f0b7e47317c",
+                "reference": "41d99b0cd311dd1cec4a7a32f0439f0b7e47317c",
                 "shasum": ""
             },
             "require": {
@@ -185,7 +185,7 @@
                 "sass",
                 "web"
             ],
-            "time": "2020-05-12T18:49:58+00:00"
+            "time": "2020-08-06T10:14:06+00:00"
         },
         {
             "name": "components/font-awesome",
