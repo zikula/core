@@ -3,6 +3,7 @@
 ## 3.0.2 VENDOR CHANGES (unreleased)
 
 - Vendor updates:
+  - components/bootstrap updated from 4.5.0 to 4.5.1
   - composer/composer updated from 1.10.9 to 1.10.10
   - doctrine/collections updated from 1.6.6 to 1.6.7
   - doctrine/event-manager updated from 1.1.0 to 1.1.1
