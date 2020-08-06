@@ -22,6 +22,14 @@
   - symfony/polyfill-php73 updated from 1.18.0 to 1.18.1
   - symfony/polyfill-php80 updated from 1.18.0 to 1.18.1
   - symfony/polyfill-uuid updated from 1.18.0 to 1.18.1
+  - twig/cssinliner-extra updated from 3.0.4 to 3.0.5
+  - twig/extra-bundle updated from 3.0.4 to 3.0.5
+  - twig/html-extra updated from 3.0.4 to 3.0.5
+  - twig/inky-extra updated from 3.0.4 to 3.0.5
+  - twig/intl-extra updated from 3.0.4 to 3.0.5
+  - twig/markdown-extra updated from 3.0.4 to 3.0.5
+  - twig/string-extra updated from 3.0.4 to 3.0.5
+  - twig/twig updated from 3.0.4 to 3.0.5
 
 ## 3.0.1 VENDOR CHANGES (2020-07-25)
 
