@@ -74,6 +74,13 @@ class RequirementChecker
         if (is_readable($file = $projectDir . '/config/services_custom.yaml')) {
             $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
         }
+        $defaultDatadir = 'public/uploads';
+        if (is_readable($file = $projectDir . '/config/packages/core.yaml')) {
+            $contents = Yaml::parse(file_get_contents($file));
+            $kernelConfig['parameters']['datadir'] = $contents['core']['datadir'] ?? $defaultDatadir;
+        } else {
+            $kernelConfig['parameters']['datadir'] = $defaultDatadir;
+        }
         $parameters = $kernelConfig['parameters'];
         $parameters['kernel.project_dir'] = $projectDir;
 
