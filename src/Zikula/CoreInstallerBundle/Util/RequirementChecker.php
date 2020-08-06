@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
@@ -29,9 +28,8 @@ class RequirementChecker
      */
     private $installedVersion;
 
-    public function __construct(ParameterBagInterface $parameterBag, string $installed)
+    public function __construct(string $installed)
     {
-        $this->parameters = $parameterBag->all();
         $this->installedVersion = $installed;
     }
 
@@ -43,7 +41,7 @@ class RequirementChecker
     {
         // on install or upgrade, check if system requirements are met.
         if (version_compare($this->installedVersion, ZikulaKernel::VERSION, '<')) {
-//            $this->loadParametersFromFile();
+            $this->loadParametersFromFile();
             $versionChecker = new ZikulaRequirements();
             $versionChecker->runSymfonyChecks($this->parameters);
             if (empty($versionChecker->requirementsErrors)) {
