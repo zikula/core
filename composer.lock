@@ -126,16 +126,16 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "4.5.1",
+            "version": "4.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "41d99b0cd311dd1cec4a7a32f0439f0b7e47317c"
+                "reference": "2cec2d3be861a1e644623ee0dd52b4ad4930fc18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/41d99b0cd311dd1cec4a7a32f0439f0b7e47317c",
-                "reference": "41d99b0cd311dd1cec4a7a32f0439f0b7e47317c",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/2cec2d3be861a1e644623ee0dd52b4ad4930fc18",
+                "reference": "2cec2d3be861a1e644623ee0dd52b4ad4930fc18",
                 "shasum": ""
             },
             "require": {
@@ -185,7 +185,7 @@
                 "sass",
                 "web"
             ],
-            "time": "2020-08-06T10:14:06+00:00"
+            "time": "2020-08-06T20:15:43+00:00"
         },
         {
             "name": "components/font-awesome",
@@ -6581,16 +6581,16 @@
         },
         {
             "name": "thomaspark/bootswatch",
-            "version": "v4.5.0",
+            "version": "v4.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thomaspark/bootswatch.git",
-                "reference": "2a3e1c5ff57f200164d123ae0bfeeb32b0045a20"
+                "reference": "72d5823512113516cc9f6d88d4bb0ed7d8bbfb7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/2a3e1c5ff57f200164d123ae0bfeeb32b0045a20",
-                "reference": "2a3e1c5ff57f200164d123ae0bfeeb32b0045a20",
+                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/72d5823512113516cc9f6d88d4bb0ed7d8bbfb7f",
+                "reference": "72d5823512113516cc9f6d88d4bb0ed7d8bbfb7f",
                 "shasum": ""
             },
             "suggest": {
@@ -6618,7 +6618,7 @@
                 }
             ],
             "description": "Themes for Bootstrap",
-            "time": "2020-05-14T01:11:40+00:00"
+            "time": "2020-08-04T21:09:53+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
