@@ -3,7 +3,7 @@
 ## 3.0.2 VENDOR CHANGES (unreleased)
 
 - Vendor updates:
-  - components/bootstrap updated from 4.5.0 to 4.5.1
+  - components/bootstrap updated from 4.5.0 to 4.5.2
   - composer/composer updated from 1.10.9 to 1.10.10
   - doctrine/collections updated from 1.6.6 to 1.6.7
   - doctrine/event-manager updated from 1.1.0 to 1.1.1
@@ -23,6 +23,7 @@
   - symfony/polyfill-php73 updated from 1.18.0 to 1.18.1
   - symfony/polyfill-php80 updated from 1.18.0 to 1.18.1
   - symfony/polyfill-uuid updated from 1.18.0 to 1.18.1
+  - thomaspark/bootswatch updated from 4.5.0 to 4.5.1
   - twig/cssinliner-extra updated from 3.0.4 to 3.0.5
   - twig/extra-bundle updated from 3.0.4 to 3.0.5
   - twig/html-extra updated from 3.0.4 to 3.0.5
