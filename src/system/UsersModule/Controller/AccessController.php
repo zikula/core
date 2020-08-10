@@ -115,7 +115,7 @@ class AccessController extends AbstractController
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             // provide temp value for uid until form gives real value.
-            $uid = 'POST' === $request->getMethod() ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
+            $uid = Request::METHOD_POST === $request->getMethod() ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
             $hasListeners = $eventDispatcher->hasListeners(LoginFormPostCreatedEvent::class);
             $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
