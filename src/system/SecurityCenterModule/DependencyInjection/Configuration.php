@@ -24,7 +24,22 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('x_frame_options')->defaultValue('SAMEORIGIN')->end()
+                ->enumNode('x_frame_options')
+                    ->values(['SAMEORIGIN', 'DENY'])
+                    ->defaultValue('SAMEORIGIN')
+                ->end()
+                ->arrayNode('session')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('name')->defaultValue('_zsid')->end()
+                        ->scalarNode('handler_id')->defaultValue('session.handler.native_file')->end()
+                        ->scalarNode('storage_id')->defaultValue('zikula_core.bridge.http_foundation.zikula_session_storage_file')->end()
+                        ->scalarNode('save_path')->defaultValue('%kernel.cache_dir%/sessions')->end()
+                        ->enumNode('cookie_secure')
+                            ->values([true, false, 'auto'])
+                            ->defaultValue('auto')
+                        ->end()
+                    ->end()
             ->end()
         ;
 

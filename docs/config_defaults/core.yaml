@@ -1,2 +1,3 @@
+# These are the default values
 core:
     datadir: 'public/uploads'
