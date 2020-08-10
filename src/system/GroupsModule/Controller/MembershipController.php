@@ -182,7 +182,7 @@ class MembershipController extends AbstractController
         int $gid = 0,
         int $uid = 0
     ) {
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod(Request::METHOD_POST)) {
             $postVars = $request->request->get('zikulagroupsmodule_removeuser');
             $gid = $postVars['gid'] ?? 0;
             $uid = $postVars['uid'] ?? 0;

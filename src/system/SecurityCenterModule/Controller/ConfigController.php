@@ -268,7 +268,7 @@ class ConfigController extends AbstractController
         CacheClearer $cacheClearer,
         string $reset = null
     ) {
-        if ('POST' === $request->getMethod()) {
+        if (Request::METHOD_POST === $request->getMethod()) {
             // Load HTMLPurifier Classes
             $purifier = $purifierHelper->getPurifier();
 
@@ -475,7 +475,7 @@ class ConfigController extends AbstractController
     ) {
         $htmlTags = $htmlTagsHelper->getTagsWithLinks();
 
-        if ('POST' === $request->getMethod()) {
+        if (Request::METHOD_POST === $request->getMethod()) {
             $htmlEntities = $request->request->getInt('htmlentities', 0);
             $variableApi->set(VariableApi::CONFIG, 'htmlentities', $htmlEntities);
 

@@ -291,7 +291,7 @@ class UserAdministrationController extends AbstractController
         UserEntity $user = null
     ) {
         $uids = [];
-        if (!isset($user) && 'POST' === $request->getMethod() && $request->request->has('zikulausersmodule_delete')) {
+        if (!isset($user) && Request::METHOD_POST === $request->getMethod() && $request->request->has('zikulausersmodule_delete')) {
             $deletionData = $request->request->get('zikulausersmodule_delete');
             if (isset($deletionData['users']) && !empty($deletionData['users'])) {
                 $uids = $deletionData['users'];
