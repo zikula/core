@@ -245,8 +245,8 @@ class MetaData implements ArrayAccess
         } else {
             $dependencies[] = [
                 'modname' => 'zikula/core',
-                'minversion' => '>=1.4.1 <3.0.0',
-                'maxversion' => '>=1.4.1 <3.0.0',
+                'minversion' => '>=1.4.1 <4.0.0',
+                'maxversion' => '>=1.4.1 <4.0.0',
                 'status' => self::DEPENDENCY_REQUIRED
             ];
         }
@@ -299,7 +299,7 @@ class MetaData implements ArrayAccess
         ];
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->{$offset});
     }
