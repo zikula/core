@@ -9,6 +9,7 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+.idea
 .phpunit
 /phpunit.xml
 .phpunit.result.cache
