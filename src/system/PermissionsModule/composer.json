@@ -1,6 +1,6 @@
 {
     "name": "zikula/permissions-module",
-    "version": "3.0.2-dev",
+    "version": "3.0.2-rc1",
     "description": "User permissions manager",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand />
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b9feb9df-a92c-462e-8697-fd713436d92a" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <branch-grouping />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/vendor/willdurand/js-translation-bundle" />
+      <path value="$PROJECT_DIR$/vendor/dimsemenov/magnific-popup" />
+      <path value="$PROJECT_DIR$/vendor/willdurand/jsonp-callback-validator" />
+      <path value="$PROJECT_DIR$/vendor/tijsverkoyen/css-to-inline-styles" />
+      <path value="$PROJECT_DIR$/vendor/symfony/phpunit-bridge" />
+      <path value="$PROJECT_DIR$/vendor/justinrainbow/json-schema" />
+      <path value="$PROJECT_DIR$/vendor/itsjavi/fontawesome-iconpicker" />
+      <path value="$PROJECT_DIR$/vendor/ircmaxell/security-lib" />
+      <path value="$PROJECT_DIR$/vendor/ircmaxell/random-lib" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/psr/link" />
+      <path value="$PROJECT_DIR$/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/vendor/behat/transliterator" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/michelf/php-markdown" />
+      <path value="$PROJECT_DIR$/vendor/zikula/wizard" />
+      <path value="$PROJECT_DIR$/vendor/zikula/sortable-columns" />
+      <path value="$PROJECT_DIR$/vendor/phpids/phpids" />
+      <path value="$PROJECT_DIR$/vendor/antishov/doctrine-extensions-bundle" />
+      <path value="$PROJECT_DIR$/vendor/matthiasnoback/symfony-console-form" />
+      <path value="$PROJECT_DIR$/vendor/lorenzo/pinky" />
+      <path value="$PROJECT_DIR$/vendor/nyholm/nsa" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-menu-bundle" />
+      <path value="$PROJECT_DIR$/vendor/kriswallsmith/assetic" />
+      <path value="$PROJECT_DIR$/vendor/jms/i18n-routing-bundle" />
+      <path value="$PROJECT_DIR$/vendor/oro/twig-inspector" />
+      <path value="$PROJECT_DIR$/vendor/components/font-awesome" />
+      <path value="$PROJECT_DIR$/vendor/components/jquery" />
+      <path value="$PROJECT_DIR$/vendor/components/jqueryui" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/components/bootstrap" />
+      <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-menu" />
+      <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/vendor/robloach/component-installer" />
+      <path value="$PROJECT_DIR$/vendor/gedmo/doctrine-extensions" />
+      <path value="$PROJECT_DIR$/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
+      <path value="$PROJECT_DIR$/vendor/vakata/jstree" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-messageformatter" />
+      <path value="$PROJECT_DIR$/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-iconv" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/jsrouting-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jakeasmith/http_build_url" />
+      <path value="$PROJECT_DIR$/vendor/sensiolabs/security-checker" />
+      <path value="$PROJECT_DIR$/vendor/imagine/imagine" />
+      <path value="$PROJECT_DIR$/vendor/symfony/profiler-pack" />
+      <path value="$PROJECT_DIR$/vendor/symfony/symfony" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
+      <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/swiftmailer-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/monolog-bundle" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-linkedin" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-icu" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-facebook" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/vendor/league/commonmark" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-instagram" />
+      <path value="$PROJECT_DIR$/vendor/symfony/requirements-checker" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/vendor/twig/extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-github" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/vendor/twig/intl-extra" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-google" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/vendor/twig/string-extra" />
+      <path value="$PROJECT_DIR$/vendor/league/html-to-markdown" />
+      <path value="$PROJECT_DIR$/vendor/symfony/contracts" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/vendor/thomaspark/bootswatch" />
+      <path value="$PROJECT_DIR$/vendor/twig/html-extra" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-client" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/vendor/twig/inky-extra" />
+      <path value="$PROJECT_DIR$/vendor/erusev/parsedown" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/persistence" />
+      <path value="$PROJECT_DIR$/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/vendor/twig/markdown-extra" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/twig/cssinliner-extra" />
+      <path value="$PROJECT_DIR$/vendor/php-translation/symfony-storage" />
+      <path value="$PROJECT_DIR$/vendor/php-translation/common" />
+      <path value="$PROJECT_DIR$/vendor/php-translation/extractor" />
+      <path value="$PROJECT_DIR$/vendor/php-translation/symfony-bundle" />
+      <path value="$PROJECT_DIR$/vendor/frdh/mmenu.js" />
+      <path value="$PROJECT_DIR$/vendor/jdorn/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/sensio/framework-extra-bundle" />
+      <path value="$PROJECT_DIR$/vendor/seld/phar-utils" />
+      <path value="$PROJECT_DIR$/vendor/ocramius/package-versions" />
+      <path value="$PROJECT_DIR$/vendor/seld/jsonlint" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/reflection" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/vendor/liip/imagine-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-uuid" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="1ZJRitqnQxgDuMoJhbQviMRstfW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mariadb" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../HF/app-toolbox" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b9feb9df-a92c-462e-8697-fd713436d92a" name="Default Changelist" comment="" />
+      <created>1584555341016</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1584555341016</updated>
+      <workItem from="1584555348809" duration="14000" />
+      <workItem from="1584555586026" duration="122000" />
+      <workItem from="1585312300594" duration="41000" />
+      <workItem from="1585312361323" duration="243000" />
+      <workItem from="1585312620615" duration="15000" />
+      <workItem from="1586713202557" duration="642000" />
+      <workItem from="1586779837440" duration="41000" />
+      <workItem from="1586869619036" duration="21000" />
+      <workItem from="1586869665378" duration="11000" />
+      <workItem from="1588264119268" duration="11000" />
+      <workItem from="1588264158458" duration="18000" />
+      <workItem from="1591218779879" duration="9000" />
+      <workItem from="1591629055496" duration="18000" />
+      <workItem from="1591629494300" duration="109000" />
+      <workItem from="1591629627432" duration="15000" />
+      <workItem from="1591793235245" duration="70000" />
+      <workItem from="1591942880262" duration="1291000" />
+      <workItem from="1592221966571" duration="20000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="555" y="216" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591943820075">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="555" y="216" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591943820075" />
+    <state x="648" y="283" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1585312343474">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="648" y="283" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1585312343474" />
+    <state x="554" y="112" key="CommitChangelistDialog2" timestamp="1591943210714">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="554" y="112" key="CommitChangelistDialog2/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591943210714" />
+    <state x="100" y="130" width="1710" height="849" key="DiffContextDialog" timestamp="1591944125892">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="100" y="130" width="1710" height="849" key="DiffContextDialog/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591944125892" />
+    <state x="743" y="313" key="FileChooserDialogImpl" timestamp="1591943755571">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="743" y="313" key="FileChooserDialogImpl/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1591943755571" />
+    <state x="456" y="190" key="SettingsEditor" timestamp="1586869643331">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="456" y="190" key="SettingsEditor/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1586869643331" />
+    <state x="639" y="382" key="com.intellij.ide.util.TipDialog" timestamp="1585312622299">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="639" y="382" key="com.intellij.ide.util.TipDialog/0.30.1920.1050/1920.0.1920.1080@0.30.1920.1050" timestamp="1585312622299" />
+  </component>
+</project>
