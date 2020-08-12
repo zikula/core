@@ -5,6 +5,7 @@
 - Vendor updates:
   - components/bootstrap updated from 4.5.0 to 4.5.2
   - composer/composer updated from 1.10.9 to 1.10.10
+  - doctrine/annotations updated from 1.10.3 to 1.10.4
   - doctrine/collections updated from 1.6.6 to 1.6.7
   - doctrine/event-manager updated from 1.1.0 to 1.1.1
   - doctrine/persistence updated from 1.3.7 to 1.3.8
