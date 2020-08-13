@@ -3,7 +3,8 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
-
+parameters:
+    # temp needed
 services:
     # default configuration for services in *this* file
     _defaults:
