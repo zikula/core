@@ -12,6 +12,7 @@
   - egulias/email-validator updated from 2.1.18 to 2.19.0
   - league/oauth2-google updated from 2.0.1 to 2.0.2
   - nikic/php-parser updated from 4.6.0 to 4.8.0
+  - seld/jsonlint updated from 1.8.0 to 1.8.1
   - symfony/contracts updated from 2.1.2 to 2.1.3
   - symfony/polyfill-ctype updated from 1.18.0 to 1.18.1
   - symfony/polyfill-intl-grapheme updated from 1.18.0 to 1.18.1
