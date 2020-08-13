@@ -48,10 +48,8 @@ class Configurator
         'core' => 'Zikula\Bundle\CoreBundle\DependencyInjection\Configuration',
         'zikula_security_center' => 'Zikula\SecurityCenterModule\DependencyInjection\Configuration',
         'zikula_theme' => 'Zikula\ThemeModule\DependencyInjection\Configuration',
-        'zikula_routes' => 'Zikula\RoutesModule\DependencyInjection\Configuration'
-//        'bazinga_js_translation' => 'Bazinga\Bundle\JsTranslationBundle\DependencyInjection\Configuration',
-//        'php_translation' => 'Translation\Bundle\DependencyInjection\Configuration',
-//        'translation' => 'Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration',
+        'zikula_routes' => 'Zikula\RoutesModule\DependencyInjection\Configuration',
+        'zikula_settings' => 'Zikula\SettingsModule\DependencyInjection\Configuration'
     ];
 
     public function __construct(string $projectDir)
@@ -93,7 +91,6 @@ class Configurator
         /** @var ConfigurationInterface $configuration */
         return $this->process(
             $configuration = new $this->configurablePackages[$package](),
-            // $package could be wrong key here - maybe need to get configuration root
             [$package => $config]
         );
     }
@@ -128,13 +125,16 @@ class Configurator
     public function writePackage(string $package, bool $min = true, string $env = ''): void
     {
         $config = $min ? $this->arrayDiffAssocRecursive($this->processedConfigurations[$package], $this->getDefaults($package)) : $this->processedConfigurations[$package];
-        $flags = Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE;
-        // $package could be wrong key here - maybe need to get configuration root
-        $input = [$package => $config];
-        $yaml = Yaml::dump($input, 4, 4, $flags);
         $basePath = $this->configDir . '/packages/' . (!empty($env) ? $env . '/' : '');
         $path = $basePath . $package . '.yaml';
-        $this->fs->dumpFile($path, $yaml);
+        if (!empty($config)) {
+            $flags = Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE;
+            $input = [$package => $config];
+            $yaml = Yaml::dump($input, 4, 4, $flags);
+            $this->fs->dumpFile($path, $yaml);
+        } elseif ($this->fs->exists($path)) {
+            $this->fs->remove($path);
+        }
     }
 
     public function set(string $package, string $key, $value): void

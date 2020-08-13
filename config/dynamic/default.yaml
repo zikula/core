@@ -2,14 +2,6 @@
 # generated.yaml
 # It's here to give an initial configuration (until Zikula is installed).
 
-parameters:
-    localisation.locales: [en]
-    # multisites configuration does nothing unless the Multisites module is installed and configured properly.
-    multisites:
-        enabled: false
-        mainsiteurl: ~
-        based_on_domains: ~
-        protected.systemvars: []
 translation:
     configs:
         zikula:

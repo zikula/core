@@ -1,3 +1,8 @@
 # These are the default values
 core:
     datadir: 'public/uploads'
+    multisites:
+        enabled: false
+        mainsiteurl: null
+        based_on_domains: null
+        protected_systemvars: []

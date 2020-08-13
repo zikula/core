@@ -30,6 +30,7 @@ class CoreExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('datadir', $config['datadir']);
+        $container->setParameter('multisites', $config['multisites']);
     }
 
     public function getNamespace(): string

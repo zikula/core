@@ -67,7 +67,7 @@ class VariableApi implements VariableApiInterface
         $this->installed = '0.0.0' !== $installed;
         $this->repository = $repository;
         $this->kernel = $kernel;
-        $this->protectedSystemVars = $multisitesParameters['protected.systemvars'];
+        $this->protectedSystemVars = $multisitesParameters['protected_systemvars'];
     }
 
     /**

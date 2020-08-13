@@ -1,0 +1,5 @@
+# These are the default values
+zikula_settings:
+    locale: en
+    locales:
+        - en
