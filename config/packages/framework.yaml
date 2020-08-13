@@ -7,7 +7,7 @@ framework:
     assets:
         #base_path: '%router.request_context.base_url%'
         base_path: ''
-        version: '%assets_version%'
+        version: ~
 
     #esi: true
     #fragments: true

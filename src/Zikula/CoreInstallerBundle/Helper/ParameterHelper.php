@@ -123,7 +123,7 @@ class ParameterHelper
     /**
      * @throws IOExceptionInterface If .env.local could not be dumped
      */
-    public function finalizeParameters(bool $configureRequestContext = true): bool
+    public function finalizeParameters(): bool
     {
         $yamlHelper = $this->getYamlHelper();
         $params = $this->decodeParameters($yamlHelper->getParameters());
@@ -138,22 +138,11 @@ class ParameterHelper
             // add admin email as site email
             $this->variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
             $this->setMailerData($params);
+            $this->configureRequestContext($params);
         }
 
         $params = array_diff_key($params, array_flip($this->encodedParameterNames)); // remove all encoded params
-        $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'public/uploads';
 
-        if ($configureRequestContext) {
-            // Configure the Request Context
-            // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-            $request = $this->requestStack->getMasterRequest();
-            $hostFromRequest = isset($request) ? $request->getHost() : null;
-            $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
-            $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
-            $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
-            $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
-            $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
-        }
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
@@ -173,9 +162,25 @@ class ParameterHelper
     }
 
     /**
+     * Configure the Request Context
+     * see https://symfony.com/doc/current/routing.html#generating-urls-in-commands
+     * This is needed because emails are sent from CLI requiring routes to be built
+     */
+    private function configureRequestContext(array &$params): void
+    {
+        $request = $this->requestStack->getMasterRequest();
+        $hostFromRequest = isset($request) ? $request->getHost() : 'localhost';
+        $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
+        $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
+        $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
+        $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
+        $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
+    }
+
+    /**
      * @param array $params values from upgrade
      */
-    private function writeEnvVars(array $params)
+    private function writeEnvVars(array &$params): void
     {
         $randomLibFactory = new Factory();
         $generator = $randomLibFactory->getMediumStrengthGenerator();
@@ -189,6 +194,10 @@ class ParameterHelper
             'APP_SECRET' => '!\'' . $secret . '\'',
             'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
         ];
+        if (isset($params['router.request_context.host'])) {
+            $vars['DEFAULT_URI'] = sprintf('!%s://%s%s', $params['router.request_context.scheme'], $params['router.request_context.host'], $params['router.request_context.base_url']);
+            unset($params['router.request_context.scheme'], $params['router.request_context.host'], $params['router.request_context.base_url']);
+        }
         (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars($vars);
     }
 
