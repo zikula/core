@@ -2,9 +2,6 @@
 # generated.yaml
 # It's here to give an initial configuration (until Zikula is installed).
 
-jms_i18n_routing:
-    strategy: prefix_except_default
-# this value must be changed reflecting the intended destination bundle of the maker
 parameters:
     localisation.locales: [en]
     # multisites configuration does nothing unless the Multisites module is installed and configured properly.

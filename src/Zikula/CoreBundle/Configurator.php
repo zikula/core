@@ -48,7 +48,7 @@ class Configurator
         'core' => 'Zikula\Bundle\CoreBundle\DependencyInjection\Configuration',
         'zikula_security_center' => 'Zikula\SecurityCenterModule\DependencyInjection\Configuration',
         'zikula_theme' => 'Zikula\ThemeModule\DependencyInjection\Configuration',
-//        'jms_i18n_routing' => 'JMS\I18nRoutingBundle\DependencyInjection\Configuration',
+        'zikula_routes' => 'Zikula\RoutesModule\DependencyInjection\Configuration'
 //        'bazinga_js_translation' => 'Bazinga\Bundle\JsTranslationBundle\DependencyInjection\Configuration',
 //        'php_translation' => 'Translation\Bundle\DependencyInjection\Configuration',
 //        'translation' => 'Symfony\Bundle\FrameworkBundle\DependencyInjection\Configuration',
