@@ -10,6 +10,7 @@
   - doctrine/event-manager updated from 1.1.0 to 1.1.1
   - doctrine/persistence updated from 1.3.7 to 1.3.8
   - egulias/email-validator updated from 2.1.18 to 2.19.0
+  - knplabs/knp-menu updated from 3.1.1 to 3.1.2
   - league/oauth2-google updated from 2.0.1 to 2.0.2
   - nikic/php-parser updated from 4.6.0 to 4.8.0
   - seld/jsonlint updated from 1.8.0 to 1.8.1
