@@ -2942,20 +2942,20 @@
         },
         {
             "name": "knplabs/knp-menu",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenu.git",
-                "reference": "254fb64d545f087451cc197a7fa5d47e03ffb038"
+                "reference": "9996764bc4bdc4381ecdc4617817de23948f0cdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/254fb64d545f087451cc197a7fa5d47e03ffb038",
-                "reference": "254fb64d545f087451cc197a7fa5d47e03ffb038",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/9996764bc4bdc4381ecdc4617817de23948f0cdb",
+                "reference": "9996764bc4bdc4381ecdc4617817de23948f0cdb",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2"
+                "php": "^7.2 || ^8.0"
             },
             "conflict": {
                 "twig/twig": "<1.40 || >=2,<2.9"
@@ -3006,7 +3006,7 @@
                 "menu",
                 "tree"
             ],
-            "time": "2020-04-22T14:37:23+00:00"
+            "time": "2020-08-15T08:01:46+00:00"
         },
         {
             "name": "knplabs/knp-menu-bundle",
