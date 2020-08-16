@@ -245,6 +245,7 @@ class CoreInstallerExtensionHelper
                 // nothing
             case '3.0.99':
                 $this->migrateParamsAndDynamicConfig();
+                // no break
             case '3.1.0':
                 // current version - cannot perform anything yet
         }
