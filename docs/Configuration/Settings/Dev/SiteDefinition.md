@@ -32,9 +32,9 @@ A default implementation is provided by `\Zikula\Bundle\CoreBundle\Site\SiteDefi
 
 You can subclass this and tell the dependency injection system that it should use your custom subclass whenever the interface is expected.
 
-For this add something like the following to `/config/services_custom.yaml`:
+For this add something like the following to `/config/services.yaml`:
 
 ```yaml
 services:
-    zikula.site_definition: '@Acme\FooTheme\Site\AcmeCustomSiteDefinition'
+    Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface: '@Acme\FooTheme\Site\AcmeCustomSiteDefinition'
 ```

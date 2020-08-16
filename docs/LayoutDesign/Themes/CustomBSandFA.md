@@ -15,12 +15,14 @@ bootstrapPath: '@AcmeFooTheme:css/bootstrap.min.css'
 ## Full site
 
 A **site administrator** can force the core to use a customized assets setting parameter values
-in `/config/services_custom.yaml`:
+Modify these values in the `/config/packages/zikula_theme.yaml` file (create the file if needed):
 
 ```yaml
-zikula.javascript.bootstrap.min.path: '@AcmeFooModule:js/bootstrap.min.js' 
-zikula.stylesheet.bootstrap.min.path: '@AcmeFooModule:css/bootstrap.min.css'
-zikula.stylesheet.fontawesome.min.path: '@AcmeFooModule:css/font-awesome.min.css'
+zikula_theme:
+    bootstrap:
+        css_path: '/bootstrap/css/bootstrap.min.css'
+        js_path: '/bootstrap/js/bootstrap.bundle.min.js'
+    font_awesome_path: '/font-awesome/css/all.min.css'
 ```
 
 Note these resolve to `public/` subfolders (see [Locations of Templates and Assets](../Templating/TemplateAndAssetLocations.md)).
@@ -28,7 +30,9 @@ Note these resolve to `public/` subfolders (see [Locations of Templates and Asse
 Instead of putting it into an extension you can also have it inside `public` directly:
 
 ```yaml
-zikula.stylesheet.bootstrap.min.path: /custom-bootstrap.min.css
+zikula_theme:
+    bootstrap:
+        css_path: /custom-bootstrap.min.css
 ```
 
-**Warning:** setting the value in `/config/services_custom.yaml` will affect *every* theme on the site.
+**Warning:** setting these values will affect *every* theme on the site.
