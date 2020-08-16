@@ -157,21 +157,21 @@ jobs:
           dst_path: /config/services.yaml
           dst_owner: zikula
           dst_repo_name: distribution
-  copy_dynamic:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
-      - name: Copy config/dynamic/default.yaml
-        uses: andstor/copycat-action@v3
-        with:
-          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
-          src_path: /config/dynamic/default.yaml
-          dst_path: /config/dynamic/default.yaml
-          dst_owner: zikula
-          dst_repo_name: distribution
+#  copy_dynamic:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Set env
+#        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+#      - name: Copy config/dynamic/default.yaml
+#        uses: andstor/copycat-action@v3
+#        with:
+#          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+#          src_branch: ${{ env.BRANCH_NAME }}
+#          dst_branch: ${{ env.BRANCH_NAME }}
+#          src_path: /config/dynamic/default.yaml
+#          dst_path: /config/dynamic/default.yaml
+#          dst_owner: zikula
+#          dst_repo_name: distribution
   copy_packages:
     runs-on: ubuntu-latest
     steps:
