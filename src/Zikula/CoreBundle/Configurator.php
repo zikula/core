@@ -139,7 +139,7 @@ class Configurator
 
     public function set(string $package, string $key, $value): void
     {
-        if (!isset($this->processedConfigurations[$package][$key])) {
+        if (!array_key_exists($key, $this->processedConfigurations[$package])) {
             throw new InvalidArgumentException(sprintf('Cannot set %s in the %s package because it is not configurable', $key, $package));
         }
 
