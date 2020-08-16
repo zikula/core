@@ -17,7 +17,6 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Form\FormInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\DbCredsHelper;
 use Zikula\Component\Wizard\AbortStageException;
@@ -26,11 +25,6 @@ use Zikula\Component\Wizard\StageInterface;
 
 class DbCredsStage implements StageInterface, FormHandlerInterface
 {
-    /**
-     * @var YamlDumper
-     */
-    private $yamlManager;
-
     /**
      * @var string
      */
@@ -43,7 +37,6 @@ class DbCredsStage implements StageInterface, FormHandlerInterface
 
     public function __construct(string $projectDir, string $databaseUrl = '')
     {
-        $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml');
         $this->projectDir = $projectDir;
         $this->databaseUrl = $databaseUrl;
     }
@@ -70,12 +63,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface
 
     public function isNecessary(): bool
     {
-        $params = $this->yamlManager->getParameters();
         $databaseUrl = $this->databaseUrl;
-        if (empty($databaseUrl) || 'nothing' === $databaseUrl) {
-            // check if credentials are temporarily stored as parameter during installation
-            $databaseUrl = $params['database_url'] ?? '';
-        }
         if (!empty($databaseUrl) && 'nothing' !== $databaseUrl) {
             // test the connection here.
             $test = $this->testDBConnection($databaseUrl);

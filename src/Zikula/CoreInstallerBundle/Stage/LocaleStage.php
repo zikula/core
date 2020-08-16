@@ -13,24 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
-use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
-use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class LocaleStage implements StageInterface, FormHandlerInterface
 {
-    /**
-     * @var YamlDumper
-     */
-    private $yamlManager;
-
     /**
      * @var LocaleApiInterface
      */
@@ -56,18 +49,23 @@ class LocaleStage implements StageInterface, FormHandlerInterface
      */
     private $matchedLocale;
 
+    /**
+     * @var string
+     */
+    private $projectDir;
+
     public function __construct(
         LocaleApiInterface $localeApi,
         TranslatorInterface $translator,
         CacheClearer $cacheClearer,
         string $projectDir
     ) {
-        $this->yamlManager = new YamlDumper($projectDir . '/config', 'services_custom.yaml', 'services.yaml');
         $this->localeApi = $localeApi;
         $this->translator = $translator;
         $this->cacheClearer = $cacheClearer;
         $this->installedLocales = $localeApi->getSupportedLocales();
         $this->matchedLocale = $localeApi->getBrowserLocale();
+        $this->projectDir = $projectDir;
     }
 
     public function getName(): string
@@ -121,12 +119,10 @@ class LocaleStage implements StageInterface, FormHandlerInterface
 
     private function writeParams($data = []): void
     {
-        $params = array_merge($this->yamlManager->getParameters(), $data);
-        try {
-            $this->yamlManager->setParameters($params);
-        } catch (IOException $e) {
-            throw new AbortStageException($this->translator->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'services_custom.yaml']));
-        }
+        $configurator = new Configurator($this->projectDir);
+        $configurator->loadPackages('zikula_settings');
+        $configurator->set('zikula_settings', 'locale', $data['locale']);
+        $configurator->write();
         $this->cacheClearer->clear('symfony.config');
     }
 }

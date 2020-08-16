@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('datadir')->defaultValue(self::DEFAULT_DATADIR)->end()
+                ->scalarNode('maker_root_namespace')->defaultNull()->end()
                 ->arrayNode('multisites')
                     ->addDefaultsIfNotSet()
                     ->children()

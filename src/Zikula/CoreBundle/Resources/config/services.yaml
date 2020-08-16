@@ -27,11 +27,6 @@ services:
         tags:
             - { name: data_collector, template: '@Core/Collector/ZikulaVersion.html.twig', id: 'zikula_version', priority: 300 }
 
-    Zikula\Bundle\CoreBundle\DynamicConfigDumper:
-        arguments:
-          $configDir: '%kernel.project_dir%/config'
-          $env: '%env(APP_ENV)%'
-
     Zikula\Bundle\CoreBundle\CacheClearer:
         arguments:
           $warmer: '@cache_warmer'

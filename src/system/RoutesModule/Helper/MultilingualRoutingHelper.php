@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Helper;
 
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy;
 
@@ -26,14 +26,14 @@ class MultilingualRoutingHelper
     private $variableApi;
 
     /**
-     * @var DynamicConfigDumper
-     */
-    private $configDumper;
-
-    /**
      * @var CacheClearer
      */
     private $cacheClearer;
+
+    /**
+     * @var string
+     */
+    private $projectDir;
 
     /**
      * @var bool
@@ -42,13 +42,13 @@ class MultilingualRoutingHelper
 
     public function __construct(
         VariableApiInterface $variableApi,
-        DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
+        string $projectDir,
         string $installed
     ) {
         $this->variableApi = $variableApi;
-        $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
+        $this->projectDir = $projectDir;
         $this->installed = '0.0.0' !== $installed;
     }
 
@@ -68,11 +68,11 @@ class MultilingualRoutingHelper
             : ZikulaPatternGenerationStrategy::STRATEGY_PREFIX_EXCEPT_DEFAULT
         ;
 
-        $this->configDumper->setConfiguration('jms_i18n_routing', [
-            'strategy' => $strategy
-        ]);
-
-        $this->cacheClearer->clear('symfony');
+        $configurator = new Configurator($this->projectDir);
+        $configurator->loadPackages('zikula_routes');
+        $configurator->set('zikula_routes', 'jms_i18n_routing_strategy', $strategy);
+        $configurator->write();
+        $this->cacheClearer->clear('symfony.config');
 
         return true;
     }

@@ -5,6 +5,7 @@ services:
         bind:
             $installed: '%env(ZIKULA_INSTALLED)%'
             $projectDir: '%kernel.project_dir%'
+            $cacheDir: '%kernel.cache_dir%'
             $locale: '%locale%'
             $databaseUrl: '%env(DATABASE_URL)%'
             $mailerDsn: '%env(MAILER_DSN)%'

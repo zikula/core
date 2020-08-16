@@ -22,19 +22,18 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\Configurator;
 
 class SetNamespaceMaker extends AbstractMaker
 {
     /**
-     * @var DynamicConfigDumper
+     * @var string
      */
-    private $configDumper;
+    private $projectDir;
 
-    public function __construct(
-        DynamicConfigDumper $configDumper
-    ) {
-        $this->configDumper = $configDumper;
+    public function __construct(string $projectDir)
+    {
+        $this->projectDir = $projectDir;
     }
 
     public static function getCommandName(): string
@@ -61,14 +60,11 @@ class SetNamespaceMaker extends AbstractMaker
 
             return 1;
         }
-        $this->configDumper->setConfiguration(
-            'maker',
-            [
-                'root_namespace' => $namespace,
-            ],
-            true
-        );
-        $io->success(sprintf('The `config/dynamic/generated_dev.yaml` file has been updated to set `maker:root_namespace` value to %s.', $namespace));
+        $configurator = new Configurator($this->projectDir);
+        $configurator->loadPackages('core');
+        $configurator->set('core', 'maker_root_namespace', $namespace);
+        $configurator->write();
+        $io->success(sprintf('The `config/packages/core.yaml` file has been updated to set `maker_root_namespace` value to %s.', $namespace));
         $io->newLine();
         $io->warning("In order to use other make:foo commands, you must first run `php bin/console cache:clear`");
         $io->newLine();
@@ -83,7 +79,7 @@ class SetNamespaceMaker extends AbstractMaker
             'console'
         );
         $dependencies->addClassDependency(
-            DynamicConfigDumper::class,
+            Configurator::class,
             'zikula/core-bundle'
         );
     }

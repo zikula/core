@@ -35,6 +35,11 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
     /**
      * @var string
      */
+    private $databaseUrl;
+
+    /**
+     * @var string
+     */
     private $currentVersion;
 
     /**
@@ -55,21 +60,23 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
     /**
      * @var PreCore3UpgradeHelper
      */
-    private $preCoreUpgradeHelper;
+    private $preCore3UpgradeHelper;
 
     public function __construct(
         string $installed,
+        string $databaseUrl,
         RouterInterface $router,
         MultilingualRoutingHelper $multiLingualRoutingHelper,
         ParameterBagInterface $parameterBag,
         PreCore3UpgradeHelper $preCore3UpgradeHelper
     ) {
         $this->installed = '0.0.0' !== $installed;
+        $this->databaseUrl = $databaseUrl ?? 'nothing';
         $this->currentVersion = $installed;
         $this->router = $router;
         $this->multiLingualRoutingHelper = $multiLingualRoutingHelper;
         $this->parameterBag = $parameterBag;
-        $this->preCoreUpgradeHelper = $preCore3UpgradeHelper;
+        $this->preCore3UpgradeHelper = $preCore3UpgradeHelper;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -128,13 +135,17 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
 
     private function checkForCore3Upgrade(RequestEvent $event): bool
     {
+        if ('nothing' !== $this->databaseUrl) {
+            return false; // no need to migrate the database credentials
+        }
+
         $projectDir = $this->parameterBag->get('kernel.project_dir');
         if ($this->installed && !file_exists($projectDir . '/config/services_custom.yaml')) {
             throw new FileNotFoundException(sprintf('Could not find file %s', $projectDir . '/config/services_custom.yaml'));
         }
         $coreInstalledVersion = $this->parameterBag->has('core_installed_version') ? $this->parameterBag->get('core_installed_version') : null;
         if ('0.0.0' === $this->currentVersion && isset($coreInstalledVersion) && version_compare($coreInstalledVersion, '3.0.0', '<')) {
-            if ($this->preCoreUpgradeHelper->preUpgrade()) {
+            if ($this->preCore3UpgradeHelper->preUpgrade()) {
                 $url = $event->getRequest()->getBaseUrl();
                 $event->setResponse(new RedirectResponse($url));
                 $event->stopPropagation();

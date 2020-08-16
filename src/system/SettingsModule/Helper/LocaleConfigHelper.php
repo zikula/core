@@ -14,28 +14,16 @@ declare(strict_types=1);
 namespace Zikula\SettingsModule\Helper;
 
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class LocaleConfigHelper
 {
     /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
      * @var VariableApiInterface
      */
     private $variableApi;
-
-    /**
-     * @var DynamicConfigDumper
-     */
-    private $configDumper;
 
     /**
      * @var CacheClearer
@@ -52,18 +40,21 @@ class LocaleConfigHelper
      */
     private $installed;
 
+    /**
+     * @var string
+     */
+    private $projectDir;
+
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
-        DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
+        string $projectDir,
         string $defaultLocale = 'en',
         string $installed = '0.0.0'
     ) {
-        $this->kernel = $kernel;
         $this->variableApi = $variableApi;
-        $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
+        $this->projectDir = $projectDir;
         $this->defaultLocale = $defaultLocale;
         $this->installed = '0.0.0' !== $installed;
     }
@@ -80,22 +71,22 @@ class LocaleConfigHelper
             $defaultLocale = array_values($locales)[0];
             $this->variableApi->set(VariableApi::CONFIG, 'locale', $defaultLocale);
         }
+        $configurator = new Configurator($this->projectDir);
+        $configurator->loadPackages(['zikula_settings']);
         if ($defaultLocale !== $this->defaultLocale) {
-            // update locale parameter in config/services_custom.yaml
-            $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config');
-            $yamlManager->setParameter('locale', $defaultLocale);
+            $configurator->set('zikula_settings', 'locale', $defaultLocale);
         }
 
-        $parameterName = 'localisation.locales';
-        $storedLocales = $this->configDumper->getParameter($parameterName);
+        $storedLocales = $configurator->get('zikula_settings', 'locales');
         if (is_array($storedLocales)) {
             $diff1 = array_diff($storedLocales, $locales);
             $diff2 = array_diff($locales, $storedLocales);
             if (0 < count($diff1) || 0 < count($diff2)) {
-                $this->configDumper->setParameter($parameterName, $locales);
+                $configurator->set('zikula_settings', 'locales', $locales);
             }
         }
 
+        $configurator->write();
         $this->cacheClearer->clear('symfony');
     }
 }

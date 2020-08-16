@@ -90,31 +90,16 @@ class ParameterHelper
         $this->kernel = $kernel;
     }
 
-    public function getYamlHelper(bool $initCopy = false): YamlDumper
+    public function getYamlHelper(): YamlDumper
     {
-        $copyFile = $initCopy ? 'services.yaml' : null;
-
-        return new YamlDumper($this->configDir, 'services_custom.yaml', $copyFile);
+        return new YamlDumper($this->configDir, 'temp_params.yaml');
     }
 
     public function initializeParameters(array $paramsToMerge = []): bool
     {
-        $yamlHelper = $this->getYamlHelper(true);
+        $yamlHelper = $this->getYamlHelper();
         $params = array_merge($yamlHelper->getParameters(), $paramsToMerge);
         $yamlHelper->setParameters($params);
-        $this->cacheClearer->clear('symfony.config');
-
-        return true;
-    }
-
-    /**
-     * Load and set new default values from the original services.yaml file into the services_custom.yaml file.
-     */
-    public function reInitParameters(): bool
-    {
-        $originalParameters = Yaml::parse(file_get_contents($this->kernel->getProjectDir() . '/config/services.yaml'));
-        $yamlHelper = $this->getYamlHelper();
-        $yamlHelper->setParameters(array_merge($originalParameters['parameters'], $yamlHelper->getParameters()));
         $this->cacheClearer->clear('symfony.config');
 
         return true;
@@ -148,12 +133,7 @@ class ParameterHelper
 
         $this->writeEnvVars($params);
 
-        if (isset($params['upgrading']) && $params['upgrading']) {
-            $this->resetLegacyParams($params);
-        }
-
-        // write parameters into config/services_custom.yaml
-        $yamlHelper->setParameters($params);
+        $yamlHelper->deleteFile();
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');

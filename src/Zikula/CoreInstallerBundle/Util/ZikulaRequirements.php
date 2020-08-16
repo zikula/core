@@ -98,13 +98,8 @@ class ZikulaRequirements
         $projectDir = $parameters['kernel.project_dir'];
         $symfonyRequirements->addRequirement(
             is_writable($projectDir . '/config'),
-            'config/ directory must be writable',
+            $projectDir . '/config/ directory must be writable',
             'Change the permissions of "<strong>config/</strong>" directory so that the web server can write into it.'
-        );
-        $symfonyRequirements->addRequirement(
-            is_writable($projectDir . '/config/dynamic'),
-            'config/dynamic/ directory must be writable',
-            'Change the permissions of "<strong>config/dynamic/</strong>" directory so that the web server can write into it.'
         );
         $dataDir = $projectDir . '/' . $parameters['datadir'];
         if (!is_dir($dataDir)) {
@@ -112,17 +107,9 @@ class ZikulaRequirements
         }
         $symfonyRequirements->addRequirement(
             is_writable($dataDir),
-            $parameters['datadir'] . '/ directory must be writable',
+            $projectDir . '/' . $parameters['datadir'] . '/ directory must be writable',
             'Change the permissions of "<strong>' . $parameters['datadir'] . '</strong>" directory so that the web server can write into it.'
         );
-        $customParametersPath = $projectDir . '/config/services_custom.yaml';
-        if (file_exists($customParametersPath)) {
-            $symfonyRequirements->addRequirement(
-                is_writable($customParametersPath),
-                'config/services_custom.yaml file must be writable',
-                'Change the permissions of "<strong>config/services_custom.yaml</strong>" so that the web server can write into it.'
-            );
-        }
         $customEnvVarsPath = $projectDir . '/.env.local';
         if (!file_exists($customEnvVarsPath)) {
             // try to create the file
@@ -131,7 +118,7 @@ class ZikulaRequirements
             } catch (IOExceptionInterface $exception) {
                 $symfonyRequirements->addRequirement(
                     false,
-                    '.env.local file must exists',
+                    $projectDir . '/.env.local file must exist',
                     'Create an empty file "<strong>.env.local</strong>" in the root folder.'
                 );
             }
@@ -146,7 +133,7 @@ class ZikulaRequirements
                 } catch (IOExceptionInterface $exception) {
                     $symfonyRequirements->addRequirement(
                         false,
-                        '.env.local file must be writable',
+                        $projectDir . '/.env.local file must be writable',
                         'Change the permissions of "<strong>.env.local</strong>" so that the web server can write into it.'
                     );
                 }

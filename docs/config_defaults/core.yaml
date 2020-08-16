@@ -1,6 +1,7 @@
 # These are the default values
 core:
-    datadir: 'public/uploads'
+    datadir: public/uploads
+    maker_root_namespace: null
     multisites:
         enabled: false
         mainsiteurl: null
