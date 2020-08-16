@@ -5,6 +5,8 @@
 !/bin/console
 /config/*_custom.yaml
 /config/dynamic/*
+/config/packages/core.yaml
+/config/packages/zikula*.yaml
 !/config/dynamic/default.yaml
 /.env.local
 /.env.local.php

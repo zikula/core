@@ -54,9 +54,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface
 
     public function isNecessary(): bool
     {
-        $params = $this->parameterHelper->getYamlHelper()->getParameters();
-
-        return !(!empty($params['username']) && !empty($params['password']) && !empty($params['email']));
+        return true;
     }
 
     public function getTemplateParams(): array

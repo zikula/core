@@ -20,8 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
+use Zikula\ExtensionsModule\Helper\MetaDataHelper;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
@@ -124,18 +123,11 @@ abstract class AbstractExtension extends Bundle
         $jsonPath = $this->getPath() . '/composer.json';
         $jsonContent = $scanner->decode($jsonPath);
         $metaData = new MetaData($jsonContent);
-        if (!empty($this->container)) {
+        if (!empty($this->container) && $this->container->has('translator')) {
             $metaData->setTranslator($this->container->get('translator'));
         }
-        if (!empty($this->container) && ZikulaKernel::VERSION === $this->container->getParameter('installed')) {
-            // overwrite composer.json settings with dynamic values from extension repository
-            $extensionEntity = $this->container->get(ExtensionRepository::class)->get($this->getName());
-            if (null !== $extensionEntity) {
-                $metaData->setUrl($extensionEntity->getUrl());
-                $metaData->setDisplayName($extensionEntity->getDisplayname());
-                $metaData->setDescription($extensionEntity->getDescription());
-                $metaData->setIcon($extensionEntity->getIcon());
-            }
+        if (!empty($this->container) && $this->container->has(MetaDataHelper::class)) {
+            $metaData = $this->container->get(MetaDataHelper::class)->setDynamicMetaData($metaData);
         }
 
         return $metaData;

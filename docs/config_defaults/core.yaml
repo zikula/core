@@ -1,0 +1,9 @@
+# These are the default values
+core:
+    datadir: public/uploads
+    maker_root_namespace: null
+    multisites:
+        enabled: false
+        mainsiteurl: null
+        based_on_domains: null
+        protected_systemvars: []

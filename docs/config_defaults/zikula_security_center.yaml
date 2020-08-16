@@ -1,0 +1,9 @@
+# These are the default values
+zikula_security_center:
+    x_frame_options: SAMEORIGIN
+    session:
+        name: _zsid
+        handler_id: session.handler.native_file
+        storage_id: zikula_core.bridge.http_foundation.zikula_session_storage_file
+        save_path: '%kernel.cache_dir%/sessions'
+        cookie_secure: auto

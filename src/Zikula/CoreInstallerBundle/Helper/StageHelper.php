@@ -164,8 +164,6 @@ class StageHelper
                 return $this->parameterHelper->finalizeParameters();
             case 'installassets':
                 return $this->extensionHelper->installAssets();
-            case 'reinitparams':
-                return $this->parameterHelper->reInitParameters();
             case 'upgrade_event':
                 return $this->dispatchEvent(new CoreUpgradePreExtensionUpgrade($this->installed));
             case 'upgradeextensions':

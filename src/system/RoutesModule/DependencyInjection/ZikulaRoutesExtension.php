@@ -14,12 +14,34 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\DependencyInjection;
 
-use Zikula\RoutesModule\DependencyInjection\Base\AbstractZikulaRoutesExtension;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * DependencyInjection extension implementation class.
  */
-class ZikulaRoutesExtension extends AbstractZikulaRoutesExtension
+class ZikulaRoutesExtension extends Extension implements PrependExtensionInterface
 {
-    // custom enhancements can go here
+    public function prepend(ContainerBuilder $container)
+    {
+        if (!isset($container->getExtensions()['jms_i18n_routing'])) {
+            return;
+        }
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $zikulaRoutesConfig = $this->processConfiguration(new Configuration(), $configs);
+        $container->prependExtensionConfig('jms_i18n_routing', ['strategy' => $zikulaRoutesConfig['jms_i18n_routing_strategy']]);
+    }
+
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
+        $loader->load('services.yaml');
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $zikulaRoutesConfig = $this->processConfiguration(new Configuration(), $configs);
+        $container->setParameter('jms_i18n_routing.strategy', $zikulaRoutesConfig['jms_i18n_routing_strategy']);
+    }
 }

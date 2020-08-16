@@ -133,7 +133,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             return Command::FAILURE;
         }
 
-        $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config', 'services_custom.yaml');
+        $yamlManager = new YamlDumper($this->kernel->getCacheDir(), 'temp_params.yaml');
         $yamlManager->setParameter('upgrading', true); // tell the core that we are upgrading
 
         $this->migrateUsers($input, $output, $io);

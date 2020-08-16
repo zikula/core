@@ -9,6 +9,7 @@ services:
         bind:
             $extension: '@Zikula\RoutesModule\ZikulaRoutesModule'
             $twigLoader: '@twig.loader'
+            $projectDir: '%kernel.project_dir%'
 
     Zikula\RoutesModule\:
         resource: '../../*'

@@ -17,7 +17,6 @@ use RandomLib\Factory;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -90,16 +89,14 @@ class ParameterHelper
         $this->kernel = $kernel;
     }
 
-    public function getYamlHelper(bool $initCopy = false): YamlDumper
+    public function getYamlHelper(): YamlDumper
     {
-        $copyFile = $initCopy ? 'services.yaml' : null;
-
-        return new YamlDumper($this->configDir, 'services_custom.yaml', $copyFile);
+        return new YamlDumper($this->configDir, 'temp_params.yaml');
     }
 
     public function initializeParameters(array $paramsToMerge = []): bool
     {
-        $yamlHelper = $this->getYamlHelper(true);
+        $yamlHelper = $this->getYamlHelper();
         $params = array_merge($yamlHelper->getParameters(), $paramsToMerge);
         $yamlHelper->setParameters($params);
         $this->cacheClearer->clear('symfony.config');
@@ -108,22 +105,9 @@ class ParameterHelper
     }
 
     /**
-     * Load and set new default values from the original services.yaml file into the services_custom.yaml file.
-     */
-    public function reInitParameters(): bool
-    {
-        $originalParameters = Yaml::parse(file_get_contents($this->kernel->getProjectDir() . '/config/services.yaml'));
-        $yamlHelper = $this->getYamlHelper();
-        $yamlHelper->setParameters(array_merge($originalParameters['parameters'], $yamlHelper->getParameters()));
-        $this->cacheClearer->clear('symfony.config');
-
-        return true;
-    }
-
-    /**
      * @throws IOExceptionInterface If .env.local could not be dumped
      */
-    public function finalizeParameters(bool $configureRequestContext = true): bool
+    public function finalizeParameters(): bool
     {
         $yamlHelper = $this->getYamlHelper();
         $params = $this->decodeParameters($yamlHelper->getParameters());
@@ -138,33 +122,17 @@ class ParameterHelper
             // add admin email as site email
             $this->variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
             $this->setMailerData($params);
+            $this->configureRequestContext($params);
         }
 
         $params = array_diff_key($params, array_flip($this->encodedParameterNames)); // remove all encoded params
-        $params['datadir'] = !empty($params['datadir']) ? $params['datadir'] : 'public/uploads';
 
-        if ($configureRequestContext) {
-            // Configure the Request Context
-            // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-            $request = $this->requestStack->getMasterRequest();
-            $hostFromRequest = isset($request) ? $request->getHost() : null;
-            $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
-            $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
-            $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
-            $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
-            $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
-        }
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
         $this->writeEnvVars($params);
 
-        if (isset($params['upgrading']) && $params['upgrading']) {
-            $this->resetLegacyParams($params);
-        }
-
-        // write parameters into config/services_custom.yaml
-        $yamlHelper->setParameters($params);
+        $yamlHelper->deleteFile();
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
@@ -173,9 +141,25 @@ class ParameterHelper
     }
 
     /**
+     * Configure the Request Context
+     * see https://symfony.com/doc/current/routing.html#generating-urls-in-commands
+     * This is needed because emails are sent from CLI requiring routes to be built
+     */
+    private function configureRequestContext(array &$params): void
+    {
+        $request = $this->requestStack->getMasterRequest();
+        $hostFromRequest = isset($request) ? $request->getHost() : 'localhost';
+        $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
+        $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
+        $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
+        $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
+        $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
+    }
+
+    /**
      * @param array $params values from upgrade
      */
-    private function writeEnvVars(array $params)
+    private function writeEnvVars(array &$params): void
     {
         $randomLibFactory = new Factory();
         $generator = $randomLibFactory->getMediumStrengthGenerator();
@@ -189,29 +173,11 @@ class ParameterHelper
             'APP_SECRET' => '!\'' . $secret . '\'',
             'ZIKULA_INSTALLED' => '\'' . ZikulaKernel::VERSION . '\''
         ];
+        if (isset($params['router.request_context.host'])) {
+            $vars['DEFAULT_URI'] = sprintf('!%s://%s%s', $params['router.request_context.scheme'], $params['router.request_context.host'], $params['router.request_context.base_url']);
+            unset($params['router.request_context.scheme'], $params['router.request_context.host'], $params['router.request_context.base_url']);
+        }
         (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars($vars);
-    }
-
-    private function resetLegacyParams(array &$params): void
-    {
-        unset(
-            $params['temp_dir'],
-            $params['system.chmod_dir'],
-            $params['url_secret'],
-            $params['umask'],
-            $params['env'],
-            $params['debug'],
-            $params['secret'],
-            $params['database_driver'],
-            $params['database_host'],
-            $params['database_port'],
-            $params['database_name'],
-            $params['database_user'],
-            $params['database_password'],
-            $params['database_path'],
-            $params['database_socket'],
-            $params['database_server_version']
-        );
     }
 
     /**

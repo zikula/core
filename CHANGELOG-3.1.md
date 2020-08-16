@@ -3,10 +3,18 @@
 ## 3.1.0 (unreleased)
 
 - BC Breaks:
-  - _there should be none_
+  - [CoreBundle] Removed `Zikula\Bundle\CoreBundle\DynamicConfigDumper`.
+  - [config] Removed `config/dynamic/*.yaml` files (use standard package config files).
+  - [config] Removed `config/services_custom.yaml` (use `services.yaml`).
 
 - Fixes:
   - _first fix_
 
 - Features:
-  - Add StaticContent module to manage all static content (#4369).
+  - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
+  - [extensions] Add StaticContent module to manage all static content (#4369).
+  - [config] Added standard Symfony bundle configurations for the following bundles (#4433):
+    - [CoreBundle, ZikulaRoutesModule, ZikulaSecurityCenterModule, ZikulaSettingsModule, ZikulaThemeModule]
+
+- Deprecated:
+  - [CoreBundle] `Zikula/CoreBundle/YamlDumper` (use `Configurator` as needed).

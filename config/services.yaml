@@ -4,36 +4,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    installed: '%env(ZIKULA_INSTALLED)%'
-    script_position:  foot
-    # script_position defines the location where javascripts will be placed in the page
-    # choices are `head` or `foot`
-    datadir:          public/uploads
-    locale:           en
-
-    assets_version: ~ #e.g. 'v1'
-    zikula_asset_manager.combine: true
-    zikula_asset_manager.lifetime: "1 day"
-    zikula_asset_manager.compress: true
-    zikula_asset_manager.minify: true
-
-    # the following parameter is used in the clickjacking protection listener
-    # it accepts any values allowed for X-Frame-Options
-    security.x_frame_options: SAMEORIGIN
-
-    # all paths below are resolved as assets (in /public)
-    # stylesheet and javascript component locations
-    zikula.javascript.bootstrap.min.path: '/bootstrap/js/bootstrap.bundle.min.js'
-    zikula.stylesheet.bootstrap.min.path: '/bootstrap/css/bootstrap.min.css'
-    zikula.stylesheet.fontawesome.min.path: '/font-awesome/css/all.min.css'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-    zikula.site_definition: '@Zikula\Bundle\CoreBundle\Site\SiteDefinition'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

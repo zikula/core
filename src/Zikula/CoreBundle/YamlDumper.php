@@ -18,7 +18,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class YamlDumper.
+ * @deprecated
+ * @internal
  */
 class YamlDumper
 {
@@ -32,14 +33,10 @@ class YamlDumper
      */
     protected $fullPath;
 
-    public function __construct(string $configDir, string $filePath = 'services_custom.yaml', string $initCopy = null)
+    public function __construct(string $configDir, string $filePath = 'services_custom.yaml')
     {
         $this->fullPath = $configDir . DIRECTORY_SEPARATOR . $filePath;
         $this->fs = new Filesystem();
-        if (!empty($initCopy) && !$this->fs->exists($this->fullPath)) {
-            // initialize file from a copy of original
-            $this->fs->copy($configDir . DIRECTORY_SEPARATOR . $initCopy, $this->fullPath);
-        }
     }
 
     /**
@@ -103,79 +100,6 @@ class YamlDumper
     }
 
     /**
-     * Sets a configuration.
-     */
-    public function setConfiguration(string $name, $value): void
-    {
-        $this->validateName($name, false);
-        $configuration = $this->parseFile();
-        $configuration[$name] = $value;
-        $this->dumpFile($configuration);
-    }
-
-    /**
-     * Returns a configuration.
-     *
-     * @return mixed The configuration value
-     */
-    public function getConfiguration(string $name)
-    {
-        $this->validateName($name, true);
-        $configuration = $this->parseFile();
-
-        return $configuration[$name] ?? null;
-    }
-
-    /**
-     * Deletes a configuration.
-     */
-    public function delConfiguration(string $name): void
-    {
-        $this->validateName($name, false);
-        $configuration = $this->parseFile();
-        if (isset($configuration[$name])) {
-            unset($configuration[$name]);
-            $this->dumpFile($configuration);
-        }
-    }
-
-    /**
-     * Returns configuration in html format.
-     */
-    public function getConfigurationForHtml(string $name): string
-    {
-        $config = $this->getConfiguration($name);
-
-        return $this->formatValue($config);
-    }
-
-    /**
-     * Formats a value for html (recursive array safe).
-     *
-     * @param mixed $value
-     */
-    protected function formatValue($value): string
-    {
-        if (null === $value) {
-            return '<em>null</em>';
-        }
-
-        $html = '';
-
-        foreach ($value as $key => $val) {
-            $html .= '<li><strong>' . htmlspecialchars((string)$key, ENT_QUOTES) . ':</strong>';
-            if (is_array($val)) {
-                $html .= $this->formatValue($val) . "</li>\n";
-            } else {
-                $val = !empty($val) ? htmlspecialchars((string)$val, ENT_QUOTES) : '<em>null</em>';
-                $html .= ' ' . $val . "</li>\n";
-            }
-        }
-
-        return "<ul>\n${html}</ul>\n";
-    }
-
-    /**
      * Parses a Yaml file and return a configuration array.
      */
     protected function parseFile(?string $path = null): array
@@ -197,10 +121,15 @@ class YamlDumper
         $this->fs->dumpFile($this->fullPath, $yaml);
     }
 
+    public function deleteFile(): void
+    {
+        $this->fs->remove($this->fullPath);
+    }
+
     /**
-     * Validates that the configuration / parameter name is correct.
+     * Validates that the name is correct.
      *
-     * @throws InvalidArgumentException Thrown if the configuration / parameter is invalid
+     * @throws InvalidArgumentException Thrown if the name is invalid
      */
     protected function validateName(string $name, bool $isParameter): void
     {

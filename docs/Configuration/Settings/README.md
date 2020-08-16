@@ -28,4 +28,3 @@ TBD
 ## For developers
 
 - [Site definition](Dev/SiteDefinition.md)
-- [Dynamic configuration dumper](Dev/DynamicConfigDumper.md)

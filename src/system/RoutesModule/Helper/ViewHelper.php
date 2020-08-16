@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Helper;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\ExtensionsModule\Constant as ExtensionConstant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -27,14 +26,9 @@ use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
 class ViewHelper extends AbstractViewHelper
 {
     /**
-     * @var ContainerInterface
+     * @var ParameterBagInterface
      */
-    private $container;
-
-    /**
-     * @var DynamicConfigDumper
-     */
-    private $configDumper;
+    private $parameterBag;
 
     /**
      * @var ExtensionRepositoryInterface
@@ -51,12 +45,10 @@ class ViewHelper extends AbstractViewHelper
 
         if ('route' === $type) {
             if ('view' === $func) {
-                $configGroup = 'jms_i18n_routing';
-                $dynamicConfig = $this->configDumper->getConfiguration($configGroup);
-                $enrichedTemplateParameters[$configGroup] = [
-                    'strategy' => $dynamicConfig['strategy'],
-                    'default_locale' => $this->container->getParameter($configGroup . '.default_locale'),
-                    'locales' => $this->container->getParameter($configGroup . '.locales')
+                $enrichedTemplateParameters['jms_i18n_routing'] = [
+                    'strategy' => $this->parameterBag->get('jms_i18n_routing.strategy'),
+                    'default_locale' => $this->parameterBag->get('jms_i18n_routing.default_locale'),
+                    'locales' => $this->parameterBag->get('jms_i18n_routing.locales')
                 ];
             } elseif ('edit' === $func) {
                 $urlNames = [];
@@ -76,12 +68,10 @@ class ViewHelper extends AbstractViewHelper
      * @required
      */
     public function setAdditionalDependencies(
-        ContainerInterface $container,
-        DynamicConfigDumper $configDumper,
+        ParameterBagInterface $parameterBag,
         ExtensionRepositoryInterface $extensionRepository
     ): void {
-        $this->container = $container;
-        $this->configDumper = $configDumper;
+        $this->parameterBag = $parameterBag;
         $this->extensionRepository = $extensionRepository;
     }
 }

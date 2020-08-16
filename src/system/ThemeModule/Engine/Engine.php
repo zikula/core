@@ -93,18 +93,25 @@ class Engine
      */
     private $variableApi;
 
+    /**
+     * @var bool
+     */
+    private $installed;
+
     public function __construct(
         RequestStack $requestStack,
         Reader $annotationReader,
         ZikulaHttpKernelInterface $kernel,
         AssetFilter $filter,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        string $installed
     ) {
         $this->requestStack = $requestStack;
         $this->annotationReader = $annotationReader;
         $this->kernel = $kernel;
         $this->filterService = $filter;
         $this->variableApi = $variableApi;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     /**
@@ -147,7 +154,7 @@ class Engine
      */
     public function getTheme(): ?AbstractTheme
     {
-        if (!isset($this->activeThemeBundle) && '0.0.0' !== $this->kernel->getContainer()->getParameter('installed')) {
+        if (!isset($this->activeThemeBundle) && $this->installed) {
             $this->setActiveTheme();
         }
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\DependencyInjection\Configuration;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class RequirementChecker
@@ -73,6 +74,12 @@ class RequirementChecker
         $kernelConfig = Yaml::parse(file_get_contents(realpath($projectDir . '/config/services.yaml')));
         if (is_readable($file = $projectDir . '/config/services_custom.yaml')) {
             $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
+        }
+        if (is_readable($file = $projectDir . '/config/packages/core.yaml')) {
+            $contents = Yaml::parse(file_get_contents($file));
+            $kernelConfig['parameters']['datadir'] = $contents['core']['datadir'] ?? Configuration::DEFAULT_DATADIR;
+        } else {
+            $kernelConfig['parameters']['datadir'] = Configuration::DEFAULT_DATADIR;
         }
         $parameters = $kernelConfig['parameters'];
         $parameters['kernel.project_dir'] = $projectDir;

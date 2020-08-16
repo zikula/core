@@ -49,7 +49,7 @@ class UpgraderController
     /**
      * @var string
      */
-    private $projectDir;
+    private $cacheDir;
 
     /**
      * @var string
@@ -61,14 +61,14 @@ class UpgraderController
         WizardHelper $wizardHelper,
         PhpHelper $phpHelper,
         string $installed,
-        string $projectDir,
+        string $cacheDir,
         string $locale
     ) {
         $this->router = $router;
         $this->wizardHelper = $wizardHelper;
         $this->phpHelper = $phpHelper;
         $this->installed = $installed;
-        $this->projectDir = $projectDir;
+        $this->cacheDir = $cacheDir;
         $this->locale = $locale;
     }
 
@@ -82,7 +82,7 @@ class UpgraderController
             return new RedirectResponse($this->router->generate('install'));
         }
 
-        $yamlDumper = new YamlDumper($this->projectDir . '/config', 'services_custom.yaml');
+        $yamlDumper = new YamlDumper($this->cacheDir, 'temp_params.yaml');
         $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->locale);
         $session = $request->hasSession() ? $request->getSession() : null;

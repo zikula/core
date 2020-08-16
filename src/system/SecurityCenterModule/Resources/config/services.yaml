@@ -22,3 +22,7 @@ services:
     Zikula\SecurityCenterModule\Listener\FilterListener:
         arguments:
           $cacheDir: '%kernel.cache_dir%'
+
+    Zikula\SecurityCenterModule\Listener\ClickjackProtectionListener:
+        arguments:
+            $xFrameOptions: 'SAMEORIGIN'

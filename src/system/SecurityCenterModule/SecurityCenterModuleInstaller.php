@@ -17,8 +17,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -30,11 +30,6 @@ use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var DynamicConfigDumper
-     */
-    private $configDumper;
-
     /**
      * @var CacheClearer
      */
@@ -50,22 +45,27 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
      */
     private $htmlTagsHelper;
 
+    /**
+     * @var string
+     */
+    private $projectDir;
+
     public function __construct(
-        DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
         PurifierHelper $purifierHelper,
+        HtmlTagsHelper $htmlTagsHelper,
+        string $projectDir,
         AbstractExtension $extension,
         ManagerRegistry $managerRegistry,
         SchemaHelper $schemaTool,
         RequestStack $requestStack,
         TranslatorInterface $translator,
-        VariableApiInterface $variableApi,
-        HtmlTagsHelper $htmlTagsHelper
+        VariableApiInterface $variableApi
     ) {
-        $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
         $this->purifierHelper = $purifierHelper;
         $this->htmlTagsHelper = $htmlTagsHelper;
+        $this->projectDir = $projectDir;
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
     }
 
@@ -151,13 +151,16 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
             case '1.5.1':
                 // set the session information in /config/dynamic/generated.yaml
                 $sessionStoreToFile = $this->getVariableApi()->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
-                $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
-                $this->configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
-                $sessionStorageId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
-                $this->configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
                 $sessionSavePath = $this->getVariableApi()->getSystemVar('sessionsavepath', '');
-                $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
-                $this->configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
+                $configurator = new Configurator($this->projectDir);
+                $configurator->loadPackages('zikula_security_center');
+                $sessionConfig = $configurator->get('zikula_security_center', 'session');
+                $sessionConfig['handler_id'] = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
+                $sessionConfig['storage_id'] = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
+                $sessionConfig['save_path'] = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
+                $configurator->set('zikula_security_center', 'session', $sessionConfig);
+                $configurator->write();
+
                 // no break
             case '1.5.2': // shipped with Core-2.0.15
                 $varsToRemove = [

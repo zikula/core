@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -57,9 +57,9 @@ class ConfigController extends AbstractController
         Request $request,
         RouterInterface $router,
         VariableApiInterface $variableApi,
-        DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
-        AccessHelper $accessHelper
+        AccessHelper $accessHelper,
+        string $projectDir
     ) {
         $modVars = $variableApi->getAll(VariableApi::CONFIG);
 
@@ -141,20 +141,15 @@ class ConfigController extends AbstractController
                     $causeLogout = true;
                 }
 
-                // set the session information in /config/dynamic/generated.yaml
-                $configDumper->setParameter('zikula.session.name', $newSessionName);
-                $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile
-                    ? 'session.handler.native_file'
-                    : 'zikula_core.bridge.http_foundation.doctrine_session_handler'
-                ;
-                $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
-                $sessionStorageId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile
-                    ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file'
-                    : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine'
-                ;
-                $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
-                $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
-                $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
+                $configurator = new Configurator($projectDir);
+                $configurator->loadPackages('zikula_security_center');
+                $sessionConfig = $configurator->get('zikula_security_center', 'session');
+                $sessionConfig['name'] = $newSessionName;
+                $sessionConfig['handler_id'] = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
+                $sessionConfig['storage_id'] = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
+                $sessionConfig['save_path'] = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
+                $configurator->set('zikula_security_center', 'session', $sessionConfig);
+                $configurator->write();
 
                 $variableApi->set(VariableApi::CONFIG, 'sessionname', $newSessionName);
                 $variableApi->set(VariableApi::CONFIG, 'sessionstoretofile', $sessionStoreToFile);
@@ -277,7 +272,7 @@ class ConfigController extends AbstractController
             $config = HTMLPurifier_Config::prepareArrayFromForm($config, false, true, true, $purifier->config->def);
 
             $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm(true, $purifier->config->def);
-            foreach ($allowed as list($namespace, $directive)) {
+            foreach ($allowed as [$namespace, $directive]) {
                 $directiveKey = $namespace . '.' . $directive;
                 $def = $purifier->config->def->info[$directiveKey];
 
@@ -329,7 +324,7 @@ class ConfigController extends AbstractController
                             $value = explode(PHP_EOL, $config[$namespace][$directive]);
                             $config[$namespace][$directive] = [];
                             foreach ($value as $val) {
-                                list($i, $v) = explode(':', $val);
+                                [$i, $v] = explode(':', $val);
                                 $i = trim($i);
                                 $v = trim($v);
                                 if (!empty($i) && !empty($v)) {
@@ -403,7 +398,7 @@ class ConfigController extends AbstractController
         ];
 
         $purifierAllowed = [];
-        foreach ($allowed as list($namespace, $directive)) {
+        foreach ($allowed as [$namespace, $directive]) {
             if (in_array($namespace . '_' . $directive, $excluded, true)) {
                 continue;
             }

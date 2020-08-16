@@ -1,5 +1,0 @@
-# for all configuration options look at the reference
-# https://php-translation.readthedocs.io/en/latest/symfony/configuration-reference.html
-translation:
-    locales: '%localisation.locales%'
-    # configs are dynamically written into config/dynamic/generated.yaml

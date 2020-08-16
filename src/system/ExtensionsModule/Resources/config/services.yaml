@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $extension: '@Zikula\ExtensionsModule\ZikulaExtensionsModule'
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\ExtensionsModule\:
         resource: '../../*'
@@ -23,17 +24,12 @@ services:
     Zikula\ExtensionsModule\Api\VariableApi:
         public: true
         arguments:
-            $installed: '%env(ZIKULA_INSTALLED)%'
             $multisitesParameters: '%multisites%'
 
     # public because AbstractExtension accesses this using container
-    Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository:
+    Zikula\ExtensionsModule\Helper\MetaDataHelper:
         public: true
 
     Zikula\ExtensionsModule\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaExtensionsAdminMenu }
-
-    Zikula\ExtensionsModule\Helper\ExtensionHelper:
-        arguments:
-            $installed: '%env(ZIKULA_INSTALLED)%'
