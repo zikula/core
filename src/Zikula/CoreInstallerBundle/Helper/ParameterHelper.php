@@ -180,28 +180,6 @@ class ParameterHelper
         (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars($vars);
     }
 
-    private function resetLegacyParams(array &$params): void
-    {
-        unset(
-            $params['temp_dir'],
-            $params['system.chmod_dir'],
-            $params['url_secret'],
-            $params['umask'],
-            $params['env'],
-            $params['debug'],
-            $params['secret'],
-            $params['database_driver'],
-            $params['database_host'],
-            $params['database_port'],
-            $params['database_name'],
-            $params['database_user'],
-            $params['database_password'],
-            $params['database_path'],
-            $params['database_socket'],
-            $params['database_server_version']
-        );
-    }
-
     /**
      * Write params to file as encoded values.
      *

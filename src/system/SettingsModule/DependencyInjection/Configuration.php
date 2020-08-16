@@ -23,7 +23,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('zikula_settings');
 
         $treeBuilder->getRootNode()
-            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('locale')->defaultValue('en')->end()
                 ->arrayNode('locales')
