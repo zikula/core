@@ -5,14 +5,16 @@
 - Vendor updates:
   - components/bootstrap updated from 4.5.0 to 4.5.2
   - composer/composer updated from 1.10.9 to 1.10.10
+  - composer/xdebug-handler updated from 1.4.2 to 1.4.3
   - doctrine/annotations updated from 1.10.3 to 1.10.4
   - doctrine/collections updated from 1.6.6 to 1.6.7
   - doctrine/event-manager updated from 1.1.0 to 1.1.1
   - doctrine/persistence updated from 1.3.7 to 1.3.8
   - egulias/email-validator updated from 2.1.18 to 2.19.0
   - knplabs/knp-menu updated from 3.1.1 to 3.1.2
+  - league/commonmark updated from 1.5.3 to 1.5.4
   - league/oauth2-google updated from 2.0.1 to 2.0.2
-  - nikic/php-parser updated from 4.6.0 to 4.8.0
+  - nikic/php-parser updated from 4.6.0 to 4.9.0
   - seld/jsonlint updated from 1.8.0 to 1.8.1
   - symfony/contracts updated from 2.1.2 to 2.1.3
   - symfony/polyfill-ctype updated from 1.18.0 to 1.18.1
