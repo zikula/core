@@ -6595,16 +6595,16 @@
         },
         {
             "name": "thomaspark/bootswatch",
-            "version": "v4.5.1",
+            "version": "v4.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thomaspark/bootswatch.git",
-                "reference": "72d5823512113516cc9f6d88d4bb0ed7d8bbfb7f"
+                "reference": "99712ea1efd9fd42fd008ecd36023db5f15c92e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/72d5823512113516cc9f6d88d4bb0ed7d8bbfb7f",
-                "reference": "72d5823512113516cc9f6d88d4bb0ed7d8bbfb7f",
+                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/99712ea1efd9fd42fd008ecd36023db5f15c92e1",
+                "reference": "99712ea1efd9fd42fd008ecd36023db5f15c92e1",
                 "shasum": ""
             },
             "suggest": {
@@ -6632,7 +6632,7 @@
                 }
             ],
             "description": "Themes for Bootstrap",
-            "time": "2020-08-04T21:09:53+00:00"
+            "time": "2020-08-10T18:06:32+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
