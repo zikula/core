@@ -30,7 +30,7 @@
   - symfony/polyfill-php80 updated from 1.18.0 to 1.18.1
   - symfony/polyfill-uuid updated from 1.18.0 to 1.18.1
   - symfony/profiler-pack updated from 1.0.4 to 1.0.5
-  - thomaspark/bootswatch updated from 4.5.0 to 4.5.1
+  - thomaspark/bootswatch updated from 4.5.0 to 4.5.2
   - twig/cssinliner-extra updated from 3.0.4 to 3.0.5
   - twig/extra-bundle updated from 3.0.4 to 3.0.5
   - twig/html-extra updated from 3.0.4 to 3.0.5
