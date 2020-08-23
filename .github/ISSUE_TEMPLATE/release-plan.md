@@ -18,17 +18,19 @@ assignees: 'Guite, craigh'
      - [ ] first execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
      - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
+- [ ] Update version in Kernel class and `/system` extensions: `bin/console rt:up 3.0.2-dev 3.0.2` (creates a pull request)
+- [ ] Create/update vendor changelog
+  - Ensure the `CHANGELOG-VENDORS-<branch>.md` file contains a `###PLACEHOLDER_FOR_VENDOR_UPDATES###` line below the `- Vendor updates:` line
+  - Run `bin/console rt:vendor 3.0.1 3.0` whereby `3.0.1` is the last release tag and `3.0` the desired target branch.
+  - This should create a pull request with the vendor changes between `3.0.1` and `3.0.2`.
 - [ ] Create final commit
-  - [ ] Update version strings in all core extensions in `src/system` and `Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::VERSION`
   - [ ] Add release date to changelog (only for final release)
 
 ## Create tags and artifacts
 
 - [ ] Create tag for core project (e.g. `3.0.0-RC2`)
 - [ ] Only for final release:
-  - [ ] Execute `zsplit` to push the tag to all slave repositories
-    - `zsplit -P src/Zikula/`
-    - `zsplit -P src/system/`
+  - [ ] Split the monorepo using `bin/console rt:split 3.0 --tag=3.0.6` to push the release tag to all component repositories.
   - [ ] Wait a bit for packagist to update
   - [ ] Update version number in distribution's `composer.json` and run `symfony composer update` to update `composer.lock`
     - [ ] Commit triggers the distribution build (final artifacts)
@@ -70,9 +72,8 @@ assignees: 'Guite, craigh'
 
 ## Start next iteration
 
-- [ ] Changes in major version branch (e.g. `2.0`)
-  - [ ] Increment version in Kernel class
-  - [ ] Increment version in `/system` extensions
+- [ ] Changes in major version branch (e.g. `3.0`)
+  - [ ] increment version in Kernel class and `/system` extensions: `bin/console rt:up 3.0.2 3.0.3-dev` (creates a pull request)
   - [ ] increment version in VA extensions
-  - [ ] Add new section to changelog
+  - [ ] Add new section to both changelogs (normal + vendor)
 - [ ] Merge to `master` branch
