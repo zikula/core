@@ -6,6 +6,7 @@
   - _there should be none_
 
 - Fixes:
+  - [Categories] Fix hiding registry label in form (#4452).
   - [CoreBundle] More robust autoloader detection.
   - [Menu] Fix error during creation of new menus.
 

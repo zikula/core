@@ -96,7 +96,7 @@ class CategoriesType extends AbstractType
             if ($options['showRegistryLabels']) {
                 $registryOptions['label'] = $baseCategory['displayName'][$locale] ?? $baseCategory['displayName']['en'];
             } else {
-                $registryOptions['label_attr'] = !$options['expanded'] ? ['class' => 'hidden'] : [];
+                $registryOptions['label_attr'] = !$options['expanded'] ? ['class' => 'd-none'] : [];
             }
 
             $builder->add('registry_' . $registry->getId(), EntityType::class, $registryOptions);
