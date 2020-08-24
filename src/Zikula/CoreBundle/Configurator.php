@@ -89,8 +89,9 @@ class Configurator
     {
         $config = $this->getAll($package);
         /** @var ConfigurationInterface $configuration */
+        $configuration = new $this->configurablePackages[$package]();
         return $this->process(
-            $configuration = new $this->configurablePackages[$package](),
+            $configuration,
             [$package => $config]
         );
     }

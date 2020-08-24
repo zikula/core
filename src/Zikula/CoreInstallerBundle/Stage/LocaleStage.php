@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
 use Symfony\Component\Form\FormInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
@@ -28,11 +27,6 @@ class LocaleStage implements StageInterface, FormHandlerInterface
      * @var LocaleApiInterface
      */
     private $localeApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
 
     /**
      * @var CacheClearer
@@ -56,12 +50,10 @@ class LocaleStage implements StageInterface, FormHandlerInterface
 
     public function __construct(
         LocaleApiInterface $localeApi,
-        TranslatorInterface $translator,
         CacheClearer $cacheClearer,
         string $projectDir
     ) {
         $this->localeApi = $localeApi;
-        $this->translator = $translator;
         $this->cacheClearer = $cacheClearer;
         $this->installedLocales = $localeApi->getSupportedLocales();
         $this->matchedLocale = $localeApi->getBrowserLocale();

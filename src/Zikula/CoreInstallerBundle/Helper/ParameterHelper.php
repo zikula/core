@@ -19,7 +19,6 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Component\Wizard\AbortStageException;
@@ -53,11 +52,6 @@ class ParameterHelper
      */
     private $requestStack;
 
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
     private $encodedParameterNames = [
         'password',
         'username',
@@ -78,15 +72,13 @@ class ParameterHelper
         string $projectDir,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer,
-        RequestStack $requestStack,
-        ZikulaHttpKernelInterface $kernel
+        RequestStack $requestStack
     ) {
         $this->configDir = $projectDir . '/config';
         $this->projectDir = $projectDir;
         $this->variableApi = $variableApi;
         $this->cacheClearer = $cacheClearer;
         $this->requestStack = $requestStack;
-        $this->kernel = $kernel;
     }
 
     public function getYamlHelper(): YamlDumper
