@@ -53,7 +53,7 @@ class Scanner
             ->name('composer.json')
         ;
 
-        /** @var $file SplFileInfo */
+        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $json = $this->decode($file->getRealPath());
             if (false !== $json) {

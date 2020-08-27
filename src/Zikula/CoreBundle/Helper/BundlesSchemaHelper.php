@@ -69,7 +69,7 @@ class BundlesSchemaHelper
     private function sync(array $fileExtensions = []): void
     {
         // add what is in array but missing from db
-        /** @var $metadata MetaData */
+        /** @var MetaData $metadata */
         foreach ($fileExtensions as $name => $metadata) {
             $qb = $this->conn->createQueryBuilder();
             $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype')
