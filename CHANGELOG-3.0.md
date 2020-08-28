@@ -1,17 +1,11 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.0.2 (unreleased)
-
-- BC Breaks:
-  - _there should be none_
+## 3.0.2 (2020-08-28)
 
 - Fixes:
   - [Categories] Fix hiding registry label in form (#4452).
   - [CoreBundle] More robust autoloader detection.
   - [Menu] Fix error during creation of new menus.
-
-- Features:
-  - _there should be none_
 
 ## 3.0.1 (2020-07-25)
 
