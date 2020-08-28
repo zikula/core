@@ -1,5 +1,10 @@
 # CHANGELOG-VENDORS - ZIKULA 3.0.x
 
+## 3.0.3 VENDOR CHANGES (unreleased)
+
+- Vendor updates:
+###PLACEHOLDER_FOR_VENDOR_UPDATES###
+
 ## 3.0.2 VENDOR CHANGES (2020-08-28)
 
 - Vendor updates:

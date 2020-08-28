@@ -28,12 +28,13 @@ assignees: 'Guite, craigh'
 
 ## Create tags and artifacts
 
-- [ ] Create tag for core project (e.g. `3.0.0-RC2`)
 - [ ] Only for final release:
   - [ ] Split the monorepo using `bin/console rt:split 3.0 --tag=3.0.6` to push the release tag to all component repositories.
   - [ ] Wait a bit for packagist to update
-  - [ ] Update version number in distribution's `composer.json` and run `symfony composer update` to update `composer.lock`
-    - [ ] Commit triggers the distribution build (final artifacts)
+  - [ ] Update distribution
+    - [ ] Increment version number in distribution's `composer.json` (only for major versions)
+    - [ ] Run `symfony composer update` to update `composer.lock`
+    - [ ] Commit the changes (this triggers the distribution build for creating the final artifacts)
     - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
     - [ ] Create tag for distribution project (same as for the core!)
 - [ ] Ensure the created build artifacts work
@@ -53,7 +54,6 @@ assignees: 'Guite, craigh'
   - [ ] Only for final release:
     - [ ] Creates distribution release (using the previously created tag)
        - [ ] Pushes build artifacts as assets to the distribution release
-    - [ ] Updates core version (this step is currently unused)
     - [ ] Closes core milestone (if exists)
 - [ ] Review the release page at GitHub
 - [ ] Review release assets, try to download and unpack them
@@ -64,6 +64,7 @@ assignees: 'Guite, craigh'
   - [ ] Let core manager load announcement from GitHub
   - [ ] Publish it
   - [ ] Repair the German news translation (minor core manager bug: the `mainText` field of the German translation is currently filled with the English content); simply correct it manually until this issue is fixed.
+- [ ] Update supported releases in CMM frontend releases list page
 - [ ] Verify the article is automatically forwarded
   - [ ] To Slack (`#general` and `#german` channels)
   - [ ] To Facebook
