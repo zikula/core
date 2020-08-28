@@ -18,7 +18,7 @@ assignees: 'Guite, craigh'
      - [ ] first execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
      - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
-- [ ] Update version in Kernel class and `/system` extensions: `bin/console rt:up 3.0.2-dev 3.0.2` (creates a pull request)
+- [ ] Update version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2-dev 3.0.2` (creates a pull request)
 - [ ] Create/update vendor changelog
   - Ensure the `CHANGELOG-VENDORS-<branch>.md` file contains a `###PLACEHOLDER_FOR_VENDOR_UPDATES###` line below the `- Vendor updates:` line
   - Run `bin/console rt:vendor 3.0.1 3.0` whereby `3.0.1` is the last release tag and `3.0` the desired target branch.
@@ -73,7 +73,7 @@ assignees: 'Guite, craigh'
 ## Start next iteration
 
 - [ ] Changes in major version branch (e.g. `3.0`)
-  - [ ] increment version in Kernel class and `/system` extensions: `bin/console rt:up 3.0.2 3.0.3-dev` (creates a pull request)
+  - [ ] increment version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2 3.0.3-dev` (creates a pull request)
   - [ ] increment version in VA extensions
   - [ ] Add new section to both changelogs (normal + vendor)
 - [ ] Merge to `master` branch
