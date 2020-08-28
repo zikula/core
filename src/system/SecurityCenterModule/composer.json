@@ -1,6 +1,6 @@
 {
     "name": "zikula/securitycenter-module",
-    "version": "3.0.2-dev",
+    "version": "3.0.2",
     "description": "Security administration",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
