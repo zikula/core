@@ -7,7 +7,7 @@
     <p>{% trans with {'%sub%': '<strong>' ~ currentUser.uname ~ '</strong>'|raw} %}You are logged-in as %sub%.{% endtrans %}</p>
 {% else %}
     {% set url = path('zikulausersmodule_registration_register') %}
-    <p>{% trans %}You are an anonymous guest.', 'zikula{% endtrans %}
+    <p>{% trans %}You are an anonymous guest.{% endtrans %}
     {% if registerallowed == 1 %}
         {% set url = '<a href="' ~ url ~ '">' ~ 'register here'|trans ~ '</a>' %}
         {% trans with {'%registerLink%': url} %}You can %registerLink%{% endtrans %}
