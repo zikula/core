@@ -6,7 +6,7 @@
   - _there should be none_
 
 - Fixes:
-  - _none yet_
+  - [Users] Minor correction in user online block template.
 
 - Features:
   - _there should be none_
