@@ -28,8 +28,4 @@ jobs:
 
     - name: Check missing translations
       run: |
-        php bin/console zikula:translation:updateconfig
-        cd var/cache
-        rm -rf dev prod
-        cd ../..
         php bin/console translation:check-missing en zikula

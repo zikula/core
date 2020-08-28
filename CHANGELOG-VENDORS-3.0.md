@@ -1,9 +1,54 @@
 # CHANGELOG-VENDORS - ZIKULA 3.0.x
 
-## 3.0.2 VENDOR CHANGES (unreleased)
+## 3.0.3 VENDOR CHANGES (unreleased)
 
 - Vendor updates:
 ###PLACEHOLDER_FOR_VENDOR_UPDATES###
+
+## 3.0.2 VENDOR CHANGES (2020-08-28)
+
+- Vendor updates:
+  - components/bootstrap updated from 4.5.0 to 4.5.2
+  - composer/ca-bundle updated from 1.2.7 to 1.2.8
+  - composer/composer updated from 1.10.9 to 1.10.10
+  - composer/xdebug-handler updated from 1.4.2 to 1.4.3
+  - doctrine/annotations updated from 1.10.3 to 1.10.4
+  - doctrine/collections updated from 1.6.6 to 1.6.7
+  - doctrine/doctrine-bundle updated from 2.1.0 to 2.1.2
+  - doctrine/event-manager updated from 1.1.0 to 1.1.1
+  - doctrine/persistence updated from 1.3.7 to 1.3.8
+  - egulias/email-validator updated from 2.1.18 to 2.1.19
+  - gedmo/doctrine-extensions updated from v2.4.41 to v2.4.42
+  - knplabs/knp-menu updated from v3.1.1 to v3.1.2
+  - league/commonmark updated from 1.5.3 to 1.5.4
+  - league/oauth2-facebook updated from 2.0.1 to 2.0.2
+  - nikic/php-parser updated from v4.6.0 to v4.9.0
+  - seld/jsonlint updated from 1.8.0 to 1.8.2
+  - sensio/framework-extra-bundle updated from v5.5.6 to v5.6.1
+  - symfony/contracts updated from v2.1.2 to v2.1.3
+  - symfony/maker-bundle updated from v1.20.0 to v1.21.0
+  - symfony/polyfill-ctype updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-intl-grapheme updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-intl-icu updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-intl-idn updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-intl-messageformatter updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-intl-normalizer updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-mbstring updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-php70 updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-php72 updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-php73 updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-php80 updated from v1.18.0 to v1.18.1
+  - symfony/polyfill-uuid updated from v1.18.0 to v1.18.1
+  - symfony/profiler-pack updated from v1.0.4 to v1.0.5
+  - thomaspark/bootswatch updated from v4.5.0 to v4.5.2
+  - twig/cssinliner-extra updated from v3.0.4 to v3.0.5
+  - twig/extra-bundle updated from v3.0.4 to v3.0.5
+  - twig/html-extra updated from v3.0.4 to v3.0.5
+  - twig/inky-extra updated from v3.0.4 to v3.0.5
+  - twig/intl-extra updated from v3.0.4 to v3.0.5
+  - twig/markdown-extra updated from v3.0.4 to v3.0.5
+  - twig/string-extra updated from v3.0.4 to v3.0.5
+  - twig/twig updated from v3.0.4 to v3.0.5
 
 ## 3.0.1 VENDOR CHANGES (2020-07-25)
 
