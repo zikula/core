@@ -1,6 +1,6 @@
 {
     "name": "zikula/routes-module",
-    "version": "3.0.2-dev",
+    "version": "3.0.2",
     "description": "Routes management",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
