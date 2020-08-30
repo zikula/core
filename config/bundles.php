@@ -58,6 +58,7 @@ return [
     // System themes
     Zikula\AtomTheme\ZikulaAtomTheme::class => ['all' => true],
     Zikula\BootstrapTheme\ZikulaBootstrapTheme::class => ['all' => true],
+    Zikula\DefaultTheme\ZikulaDefaultTheme::class => ['all' => true],
     Zikula\PrinterTheme\ZikulaPrinterTheme::class => ['all' => true],
     Zikula\RssTheme\ZikulaRssTheme::class => ['all' => true],
 ];
