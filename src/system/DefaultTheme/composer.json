@@ -1,0 +1,38 @@
+{
+    "name": "zikula/default-theme",
+    "version": "3.1.0-dev",
+    "description": "Bootstrap based theme",
+    "type": "zikula-system-theme",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "https://ziku.la/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\DefaultTheme\\": "" }
+    },
+    "require": {
+        "php": ">=7.2.5",
+        "zikula/core-bundle": "3.*",
+        "zikula/theme-module": "3.*",
+        "thomaspark/bootswatch": "4.*"
+    },
+    "extra": {
+        "zikula" : {
+            "core-compatibility": ">=3.0.0",
+            "class": "Zikula\\DefaultTheme\\ZikulaDefaultTheme",
+            "displayname": "Default Theme",
+            "icon": "fas fa-rocket",
+            "capabilities": {
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": true
+                }
+            }
+        }
+    }
+}

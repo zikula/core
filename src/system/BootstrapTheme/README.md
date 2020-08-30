@@ -2,6 +2,8 @@ BootstrapTheme
 ==============
 
 This is a read-only repository.
+This theme is deprecated at Core-3.1.0 and will be removed from the core at Core-4.0.0
+See ZikulaDefaultTheme as the replacement.
 
 Resources
 ---------

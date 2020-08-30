@@ -1,0 +1,17 @@
+{% extends '@ZikulaDefaultTheme/base.html.twig' %}
+
+{% block themebody %}
+    <div class="container 2col">
+        <div class="row">
+            <div id="themeLeftColumn" class="col-md-3">
+                {{ showblockposition('left') }}
+            </div>
+            <div id="themeMainContent" class="col-md-9">
+                {{ admin|default ? adminHeader() : '' }}
+                {{ showflashes() }}
+                {{ maincontent|raw }}
+                {{ admin|default ? adminFooter() : '' }}
+            </div>
+        </div>
+    </div>
+{% endblock themebody %}

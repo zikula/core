@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 class ThemeType extends AbstractType
 {
@@ -27,7 +28,7 @@ class ThemeType extends AbstractType
             ->add('defaulttheme', ChoiceType::class, [
                 'label' => 'Theme to use for main site',
                 'required' => true,
-                'empty_data' => 'ZikulaBootstrapTheme',
+                'empty_data' => 'ZikulaDefaultTheme',
                 'choices' => /** @Ignore */$this->formatThemeSelector($options['themes']),
             ])
             ->add('admintheme', ChoiceType::class, [

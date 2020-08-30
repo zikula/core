@@ -1,0 +1,29 @@
+##
+# ZikulaDefaultTheme config
+##
+admin:
+  page: "admin.html.twig"
+  block:
+    positions:
+      left: "Block/block.html.twig"
+      right: "Block/block.html.twig"
+      center: "Block/block.html.twig"
+      topnav: "Block/topnavblock.html.twig"
+home:
+  page: "home.html.twig"
+  block:
+    positions:
+      left: "Block/block.html.twig"
+      right: "Block/block.html.twig"
+      center: "Block/block.html.twig"
+      topnav: "Block/topnavblock.html.twig"
+master:
+  page: "master.html.twig"
+  block:
+    positions:
+      left: "Block/block.html.twig"
+      right: "Block/block.html.twig"
+      center: "Block/block.html.twig"
+      topnav: "Block/topnavblock.html.twig"
+bootstrapPath: 'bootswatch/dist/cerulean/bootstrap.min.css'
+#blockWrapping: false

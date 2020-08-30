@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xml:lang="{{ app.request.locale }}" lang="{{ app.request.locale }}" dir="auto">
+    <head>
+        <title>{{ pagevars.title }}</title>
+        <meta charset="{{ pagevars.meta.charset }}" />
+        <meta name="description" content="{{ pagevars.meta.description|default(siteSlogan()) }}" />
+        <meta name="author" content="{{ siteName() }}" />
+        <meta name="generator" content="Zikula Application Framework" />
+        <meta name="robots" content="index,follow,noodp" />
+        <meta name="rating" content="General" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!--[if IE]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+        {{ siteBranding() }}
+    </head>
+    {% block bodydeclaration %}<body{% if admin|default %} class="admin-page"{% elseif home|default %} class="home"{% endif %}>{% endblock %}
+
+        <div id="themeMainContainer">
+
+            {% block topnav %}
+            <div class="navbar fixed-top navbar-expand-md navbar-light bg-light">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="{{ pagevars.homepath }}"><i class="fa fa-rocket fa-lg text-success"></i>&nbsp;&nbsp;{{ siteName() }}</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#themeNavBarCollapse" aria-controls="themeNavBarCollapse" aria-expanded="false" aria-label="{% trans %}Toggle navigation{% endtrans %}">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    <div id="themeNavBarCollapse" class="navbar-collapse collapse">
+                        <ul class="navbar-nav">
+                            <li class="mr-2">{{ adminPanelMenu() }}</li>
+                        </ul>
+                        {% if admin|default %}
+                            {{ knp_menu_render('zikulaDefaultThemeAdminMenu', {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+                        {% else %}
+                            {{ showblockposition('topnav') }}
+                            {% if currentUser.loggedIn %}
+                                <div class="btn-group navbar-btn ml-auto">
+                                    <a href="{{ path('zikulausersmodule_account_menu') }}" class="btn btn-info">
+                                        <i class="fa fa-user"></i>&nbsp;&nbsp;{% trans with {'%username%': currentUser.uname} %}Signed in as %username%{% endtrans %}
+                                    </a>
+                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">{% trans %}Toggle dropdown{% endtrans %}</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="{{ path('zikulausersmodule_access_logout') }}" class="dropdown-item">{% trans %}Log out{% endtrans %}</a>
+                                        <a href="{{ path('zikulausersmodule_account_menu') }}" class="dropdown-item">{% trans %}My Account{% endtrans %}</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endblock topnav %}
+
+            {% block themebody %}
+            {% endblock themebody %}
+
+            {% block footer %}
+            <div class="container">
+                <hr />
+                <footer>
+                    {% block styleswitcher %}
+                    {% if getModVar('ZikulaDefaultTheme', 'allow_style_change', false) == true %}
+                        <div class="clearfix mb-3">
+                            {% set currentStyle = app.request.hasSession ? app.request.session.get('currentBootstrapStyle', '') : '' %}
+                            {% set currentStyle = currentStyle ? currentStyle : getModVar('ZikulaDefaultTheme', 'theme_style', 'cerulean') %}
+                            <form id="themeStyleSwitcher" class="form-inline float-right">
+                                <label for="themeStyle" class="mr-2"><i class="fa fa-palette"></i>&nbsp;{% trans %}Change style{% endtrans %}</label>
+                                <select id="themeStyle" name="themeStyle" class="custom-select">
+                                    {% for styleName, styleCode in getStyleChoices() %}
+                                        <option value="{{ styleCode }}"{{ styleCode == currentStyle ? ' selected="selected"' : '' }}>{{ styleName }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </div>
+                        {{ pageAddAsset('javascript', zasset('@ZikulaDefaultTheme:js/ZikulaDefaultTheme.StyleSwitcher.js')) }}
+                    {% endif %}
+                    {% endblock styleswitcher %}
+                    <p id="poweredBy">{% trans %}Powered by{% endtrans %} <a href="https://ziku.la">Zikula</a></p>
+                </footer>
+            </div>
+            {% endblock footer %}
+        </div>
+    </body>
+</html>

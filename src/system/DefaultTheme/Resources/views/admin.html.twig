@@ -1,0 +1,6 @@
+{% extends '@ZikulaDefaultTheme/' ~themevars.admin_template~ '.html.twig' %}
+{% block themebody %}
+    {% set admin = true %}
+    {{ parent() }}
+{% endblock themebody %}
+

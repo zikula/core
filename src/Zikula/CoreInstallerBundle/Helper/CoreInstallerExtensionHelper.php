@@ -154,7 +154,8 @@ class CoreInstallerExtensionHelper
             'ZikulaMailerModule',
             'ZikulaSearchModule',
             'ZikulaMenuModule',
-            'ZikulaBootstrapTheme',
+            'ZikulaBootstrapTheme', // @deprecated remove at Core-4.0.0
+            'ZikulaDefaultTheme',
             'ZikulaAtomTheme',
             'ZikulaRssTheme',
             'ZikulaPrinterTheme',
@@ -252,8 +253,8 @@ class CoreInstallerExtensionHelper
 
         // always do this
         $this->reSyncAndActivate();
-        // set default themes to ZikulaBootstrapTheme
-        $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
+        // set default themes to ZikulaDefaultTheme
+        $this->variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaDefaultTheme');
         $this->variableApi->set('ZikulaAdminModule', 'admintheme', '');
         // unset start page information to avoid missing module errors
         $this->variableApi->set(VariableApi::CONFIG, 'startController_en', []);
