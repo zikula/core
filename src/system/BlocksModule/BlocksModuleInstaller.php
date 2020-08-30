@@ -26,7 +26,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Block\SearchBlock;
-use Zikula\StaticContentModule\Block\HtmlBlock;
+use Zikula\BlocksModule\Block\HtmlBlock;
 use Zikula\UsersModule\Block\LoginBlock;
 
 class BlocksModuleInstaller extends AbstractExtensionInstaller
