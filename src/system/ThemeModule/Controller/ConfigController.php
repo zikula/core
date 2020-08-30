@@ -57,7 +57,7 @@ class ConfigController extends AbstractController
             }
         }
         $dataValues = [
-            'defaulttheme' => $variableApi->get(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme'),
+            'defaulttheme' => $variableApi->get(VariableApi::CONFIG, 'Default_Theme', 'ZikulaDefaultTheme'),
             'admintheme' => $variableApi->get('ZikulaAdminModule', 'admintheme')
         ];
         $form = $this->createForm(

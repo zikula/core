@@ -312,7 +312,7 @@ class Engine
      */
     public function setActiveTheme(string $newThemeName = null): void
     {
-        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme', 'ZikulaBootstrapTheme');
+        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme', 'ZikulaDefaultTheme');
 
         $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
         $this->activeThemeBundle->loadThemeVars();

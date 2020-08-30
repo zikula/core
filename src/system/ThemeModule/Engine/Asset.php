@@ -109,7 +109,7 @@ class Asset
         $foldersToCheck = [
             // public override path (e.g. public/overrides/zikulacontentmodule)
             'overrides/' . $bundleNameForAssetPath,
-            // public theme path (e.g. public/themes/zikulabootstraptheme/zikulacontentmodule)
+            // public theme path (e.g. public/themes/zikuladefaulttheme/zikulacontentmodule)
             'themes/' . mb_strtolower($themeName) . '/' . $bundleNameForAssetPath,
             // public bundle directory (e.g. public/modules/zikulacontent)
             $bundleAssetPath

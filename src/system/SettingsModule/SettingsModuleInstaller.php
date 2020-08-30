@@ -56,7 +56,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
     {
         $this->setSystemVar('startdate', date('m/Y'));
         $this->setSystemVar('adminmail', 'example@example.com');
-        $this->setSystemVar('Default_Theme', 'ZikulaBootstrapTheme');
+        $this->setSystemVar('Default_Theme', 'ZikulaDefaultTheme');
         $this->setSystemVar('timezone', date_default_timezone_get());
         $this->setSystemVar('Version_Num', ZikulaKernel::VERSION);
         $this->setSystemVar('multilingual', '1');

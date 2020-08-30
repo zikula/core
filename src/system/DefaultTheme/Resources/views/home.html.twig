@@ -1,0 +1,5 @@
+{% extends '@ZikulaDefaultTheme/' ~themevars.home_template~ '.html.twig' %}
+{% block themebody %}
+    {% set home = true %}
+    {{ parent() }}
+{% endblock themebody %}

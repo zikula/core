@@ -11,14 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\BootstrapTheme;
+namespace Zikula\DefaultTheme;
 
 use Zikula\ExtensionsModule\AbstractCoreTheme;
 
-/**
- * @deprecated remove at Core-4.0.0
- * @see \Zikula\DefaultTheme\ZikulaDefaultTheme
- */
-class ZikulaBootstrapTheme extends AbstractCoreTheme
+class ZikulaDefaultTheme extends AbstractCoreTheme
 {
 }

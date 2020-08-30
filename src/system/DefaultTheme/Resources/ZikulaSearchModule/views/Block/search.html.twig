@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<div class="input-group">
+    {{ form_widget(form.q, {attr: {class: 'btn btn-outline-secondary'}}) }}
+    <span class="input-group-append">
+        <button class="btn btn-outline-secondary" name="{{ form.search.vars.full_name }}" type="submit"><i class="fa fa-search"></i></button>
+    </span>
+</div>
+<div class="d-none">
+    {{ form_row(form.searchType) }}
+    {{ form_row(form.searchOrder) }}
+    {{ form_row(form.modules) }}
+    {{ form_row(form.search) }}
+</div>
+{% set moduleVariables = zikulasearchmodule_searchVarToFieldNames() %}
+{% for name, value in moduleVariables %}
+    <input type="hidden" name="{{ name|e('html_attr') }}" value="{{ value|e('html_attr') }}" />
+{% endfor %}
+{{ form_end(form) }}

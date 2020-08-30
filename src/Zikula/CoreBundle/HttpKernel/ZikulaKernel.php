@@ -23,6 +23,7 @@ use Zikula\AtomTheme\ZikulaAtomTheme;
 use Zikula\BlocksModule\ZikulaBlocksModule;
 use Zikula\BootstrapTheme\ZikulaBootstrapTheme;
 use Zikula\CategoriesModule\ZikulaCategoriesModule;
+use Zikula\DefaultTheme\ZikulaDefaultTheme;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\AbstractTheme;
@@ -88,7 +89,8 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaUsersModule' => ZikulaUsersModule::class,
         'ZikulaZAuthModule' => ZikulaZAuthModule::class,
         'ZikulaAtomTheme' => ZikulaAtomTheme::class,
-        'ZikulaBootstrapTheme' => ZikulaBootstrapTheme::class,
+        'ZikulaBootstrapTheme' => ZikulaBootstrapTheme::class, // @deprecated remove at Core-4.0.0
+        'ZikulaDefaultTheme' => ZikulaDefaultTheme::class,
         'ZikulaPrinterTheme' => ZikulaPrinterTheme::class,
         'ZikulaRssTheme' => ZikulaRssTheme::class
     ];
@@ -193,7 +195,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
             foreach ($loaders as $loader) {
                 if ($loader[0] instanceof DebugClassLoader) {
                     $classLoader = $loader[0]->getClassLoader();
-                    if ($classLoader instanceof Closure) {
+                    if ($classLoader instanceof \Closure) {
                         // skip unwanted autoloaders ("Cannot use object of type Closure as array")
                         continue;
                     }
