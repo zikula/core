@@ -31,7 +31,7 @@ assignees: 'Guite, craigh'
   - [ ] Wait a bit for packagist to update
   - [ ] Update distribution
     - [ ] Increment version number in distribution's `composer.json` (only for major versions)
-    - [ ] Run `symfony composer update` to update `composer.lock`
+    - [ ] Run `symfony composer update` to update `composer.lock` (take care for using the correct branch)
     - [ ] Commit the changes (this triggers the distribution build for creating the final artifacts)
     - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
     - [ ] Create tag for distribution project (same as for the core!)
