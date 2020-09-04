@@ -1,6 +1,6 @@
 {
     "name": "zikula/categories-module",
-    "version": "3.0.3-dev",
+    "version": "3.0.3",
     "description": "Categories administration",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
