@@ -1,5 +1,16 @@
 # CHANGELOG - ZIKULA 3.0.x
 
+## 3.0.4 (unreleased)
+
+- BC Breaks:
+  - _there should be none_
+
+- Fixes:
+  - _none yet_
+
+- Features:
+  - _there should be none_
+
 ## 3.0.3 (2020-09-04)
 
 - Security fixes from Symfony:
