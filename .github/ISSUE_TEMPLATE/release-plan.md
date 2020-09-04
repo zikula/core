@@ -14,7 +14,7 @@ assignees: 'Guite, craigh'
 - [ ] Ensure all VA modules and own components have been released to ensure all changes are correctly pulled.
 - [ ] Ensure all dependencies and `composer.lock` are up to date (execute `composer update`)
 - [ ] Ensure all translation templates are up to date (see `Check translations` workflow)
-  - [ ] If not update translation templates
+  - [ ] If not update translation templates:
      - [ ] first execute `php -dmemory_limit=2G bin/console translation:extract zikula en`
      - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
