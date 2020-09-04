@@ -45,7 +45,6 @@ assignees: 'Guite, craigh'
 - [ ] Start release process in core manager at <https://ziku.la>
 - [ ] Core manager will do the following steps:
   - [ ] Creates QA ticket at core project (only for pre releases)
-  - [ ] Creates tag for distribution project (only for final release)
   - [ ] Downloads artifacts from last build (from core for pre releases; from distribution for final release)
   - [ ] Creates core release (using the previously created tag)
     - [ ] Pushes build artifacts as assets to the core release
