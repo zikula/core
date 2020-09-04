@@ -1,15 +1,23 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.0.3 (unreleased)
+## 3.0.4 (unreleased)
 
 - BC Breaks:
   - _there should be none_
 
 - Fixes:
-  - [Users] Minor correction in user online block template.
+  - _none yet_
 
 - Features:
   - _there should be none_
+
+## 3.0.3 (2020-09-04)
+
+- Security fixes from Symfony:
+  - Prevent RCE when calling untrusted remote with CachingHttpClient (CVE-2020-15094).
+
+- Fixes:
+  - [Users] Minor correction in user online block template.
 
 ## 3.0.2 (2020-08-28)
 

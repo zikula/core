@@ -1,9 +1,18 @@
 # CHANGELOG-VENDORS - ZIKULA 3.0.x
 
-## 3.0.3 VENDOR CHANGES (unreleased)
+## 3.0.4 VENDOR CHANGES (unreleased)
 
 - Vendor updates:
 ###PLACEHOLDER_FOR_VENDOR_UPDATES###
+
+## 3.0.3 VENDOR CHANGES (2020-09-04)
+
+- Vendor updates:
+  - doctrine/dbal updated from 2.10.2 to 2.10.3
+  - nikic/php-parser updated from v4.9.0 to v4.9.1
+  - symfony/maker-bundle updated from v1.21.0 to v1.21.1
+  - symfony/phpunit-bridge updated from v5.1.3 to v5.1.5
+  - symfony/symfony updated from v5.1.3 to v5.1.5
 
 ## 3.0.2 VENDOR CHANGES (2020-08-28)
 
