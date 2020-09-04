@@ -20,11 +20,10 @@ assignees: 'Guite, craigh'
 - [ ] Review whether there are changes required for install and/or upgrade docs
 - [ ] Update version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2-dev 3.0.2` (creates a pull request)
 - [ ] Create/update vendor changelog
-  - Ensure the `CHANGELOG-VENDORS-<branch>.md` file contains a `###PLACEHOLDER_FOR_VENDOR_UPDATES###` line below the `- Vendor updates:` line
-  - Run `bin/console rt:vendor 3.0.1 3.0` whereby `3.0.1` is the last release tag and `3.0` the desired target branch.
-  - This should create a pull request with the vendor changes between `3.0.1` and `3.0.2`.
-- [ ] Create final commit
-  - [ ] Add release date to changelog (only for final release)
+  - [ ] Ensure the `CHANGELOG-VENDORS-<branch>.md` file contains a `###PLACEHOLDER_FOR_VENDOR_UPDATES###` line below the `- Vendor updates:` line
+  - [ ] Run `bin/console rt:vendor 3.0.1 3.0` whereby `3.0.1` is the last release tag and `3.0` the desired target branch.
+  - [ ] This should create a pull request with the vendor changes between `3.0.1` and `3.0.2`.
+- [ ] Add release date to changelog (only for final release)
 
 ## Create tags and artifacts
 
