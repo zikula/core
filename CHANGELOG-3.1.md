@@ -8,7 +8,7 @@
   - [config] Removed `config/services_custom.yaml` (use `services.yaml`).
 
 - Fixes:
-  - _first fix_
+  - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
 
 - Features:
   - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
