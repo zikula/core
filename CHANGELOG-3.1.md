@@ -9,7 +9,7 @@
   - [config] `zikula_asset_manager.combine` now defaults to `false` (#4419).
 
 - Fixes:
-  - _first fix_
+  - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
 
 - Features:
   - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
@@ -20,5 +20,6 @@
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
 
 - Deprecated:
-  - [CoreBundle] `Zikula/CoreBundle/YamlDumper` (use `Configurator` as needed).
-  - [ZikulaBootstrapTheme] The entire theme is deprecated. Please see ZikulaDefaultTheme for replacement.
+  - [CoreBundle] `Zikula/CoreBundle/YamlDumper` use `Configurator` as needed.
+  - [BlocksModule] Content-providing blocks (FincludeBlock, HtmlBlock, TextBlock, XsltBlock) use StaticContentModule instead.
+  - [BootstrapTheme] The entire theme is deprecated. Please see DefaultTheme for replacement.
