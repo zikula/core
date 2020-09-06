@@ -6,6 +6,7 @@
   - [CoreBundle] Removed `Zikula\Bundle\CoreBundle\DynamicConfigDumper`.
   - [config] Removed `config/dynamic/*.yaml` files (use standard package config files).
   - [config] Removed `config/services_custom.yaml` (use `services.yaml`).
+  - [config] `zikula_asset_manager.combine` now defaults to `false` (#4419).
 
 - Fixes:
   - _first fix_
