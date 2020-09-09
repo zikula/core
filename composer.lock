@@ -421,16 +421,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.10.10",
+            "version": "1.10.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "32966a3b1d48bc01472a8321fd6472b44fad033a"
+                "reference": "a6cc92b39c796ec3fb9a360f9c0e578afc2fc96d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/32966a3b1d48bc01472a8321fd6472b44fad033a",
-                "reference": "32966a3b1d48bc01472a8321fd6472b44fad033a",
+                "url": "https://api.github.com/repos/composer/composer/zipball/a6cc92b39c796ec3fb9a360f9c0e578afc2fc96d",
+                "reference": "a6cc92b39c796ec3fb9a360f9c0e578afc2fc96d",
                 "shasum": ""
             },
             "require": {
@@ -511,7 +511,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-03T09:35:19+00:00"
+            "time": "2020-09-08T20:58:51+00:00"
         },
         {
             "name": "composer/installers",
@@ -652,16 +652,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "1.5.1",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de"
+                "reference": "9787c20e39dfeea673665abee0679c73ba67105d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
-                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
+                "url": "https://api.github.com/repos/composer/semver/zipball/9787c20e39dfeea673665abee0679c73ba67105d",
+                "reference": "9787c20e39dfeea673665abee0679c73ba67105d",
                 "shasum": ""
             },
             "require": {
@@ -709,7 +709,21 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2020-01-13T12:06:48+00:00"
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-09-08T20:42:08+00:00"
         },
         {
             "name": "composer/spdx-licenses",
