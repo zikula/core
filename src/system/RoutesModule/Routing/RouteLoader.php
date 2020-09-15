@@ -85,8 +85,8 @@ class RouteLoader extends Loader
         ExtractTranslationHelper $extractTranslationHelper,
         PathBuilderHelper $pathBuilderHelper,
         SanitizeHelper $sanitizeHelper,
-        string $locale)
-    {
+        string $locale
+    ) {
         $this->kernel = $kernel;
         $this->translator = $translator;
         $this->entityFactory = $entityFactory;
