@@ -74,7 +74,7 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/UserAdministration/list.html.twig")
      */
-    public function listAction(
+    public function listUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
         RouterInterface $router,
@@ -122,7 +122,7 @@ class UserAdministrationController extends AbstractController
      *
      * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true, "i18n"=false})
      */
-    public function getUsersByFragmentAsTableAction(
+    public function getUsersByFragmentAsTable(
         Request $request,
         UserRepositoryInterface $userRepository,
         AdministrationActionsHelper $actionsHelper
@@ -154,7 +154,7 @@ class UserAdministrationController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the user record
      */
-    public function modifyAction(
+    public function modify(
         Request $request,
         UserEntity $user,
         CurrentUserApiInterface $currentUserApi,
@@ -217,7 +217,7 @@ class UserAdministrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function approveAction(
+    public function approve(
         Request $request,
         UserEntity $user,
         RegistrationHelper $registrationHelper,
@@ -281,7 +281,7 @@ class UserAdministrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function deleteAction(
+    public function delete(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
@@ -373,7 +373,7 @@ class UserAdministrationController extends AbstractController
      *
      * @return array|Response
      */
-    public function searchAction(
+    public function search(
         Request $request,
         UserRepositoryInterface $userRepository,
         VariableApiInterface $variableApi,
@@ -402,7 +402,7 @@ class UserAdministrationController extends AbstractController
      * @Route("/mail")
      * @PermissionCheck({"$_zkModule::MailUsers", "::", "comment"})
      */
-    public function mailUsersAction(
+    public function mailUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
         VariableApiInterface $variableApi,

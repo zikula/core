@@ -32,7 +32,7 @@ class LiveSearchController extends AbstractController
      * @Route("/getUsers", methods = {"GET"}, options={"expose"=true})
      * @PermissionCheck({"$_zkModule::LiveSearch", "::", "edit"})
      */
-    public function getUsersAction(
+    public function getUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
         ProfileModuleCollector $profileModuleCollector

@@ -43,7 +43,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function configAction(
+    public function config(
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,

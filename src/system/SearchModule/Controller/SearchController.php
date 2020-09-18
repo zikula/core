@@ -43,7 +43,7 @@ class SearchController extends AbstractController
      *
      * @return array|Response
      */
-    public function executeAction(
+    public function execute(
         Request $request,
         RouterInterface $router,
         FormFactoryInterface $formFactory,
@@ -134,7 +134,7 @@ class SearchController extends AbstractController
      *
      * Display a list of recent searches.
      */
-    public function recentAction(
+    public function recent(
         Request $request,
         SearchStatRepositoryInterface $searchStatRepository,
         int $page = 1
@@ -153,7 +153,7 @@ class SearchController extends AbstractController
      *
      * Generate xml for opensearch syndication.
      */
-    public function opensearchAction(
+    public function opensearch(
         SiteDefinitionInterface $site,
         VariableApiInterface $variableApi
     ): PlainResponse {

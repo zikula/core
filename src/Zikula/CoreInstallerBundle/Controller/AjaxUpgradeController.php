@@ -37,7 +37,7 @@ class AjaxUpgradeController
         $this->stageHelper = $stageHelper;
     }
 
-    public function ajaxAction(Request $request): JsonResponse
+    public function ajax(Request $request): JsonResponse
     {
         $stage = $request->request->get('stage');
         $this->yamlHelper->setParameter('upgrading', true);

@@ -38,7 +38,7 @@ class UpdateController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function reloadAction(
+    public function reload(
         PermissionHelper $permissionHelper,
         CacheClearer $cacheClearer,
         RouteDumperHelper $routeDumperHelper
@@ -67,7 +67,7 @@ class UpdateController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function renewAction(
+    public function renew(
         PermissionHelper $permissionHelper,
         MultilingualRoutingHelper $multilingualRoutingHelper
     ): Response {
@@ -94,7 +94,7 @@ class UpdateController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function dumpJsRoutesAction(
+    public function dumpJsRoutes(
         PermissionHelper $permissionHelper,
         RouteDumperHelper $routeDumperHelper,
         string $lang = null

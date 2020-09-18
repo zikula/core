@@ -41,7 +41,7 @@ class CategoryController extends AbstractController
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
-    public function listAction(
+    public function listCategories(
         Request $request,
         CategoryEntity $category,
         CategoryRepository $categoryRepository

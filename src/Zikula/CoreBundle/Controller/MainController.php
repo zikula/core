@@ -46,7 +46,7 @@ class MainController
      * This controller action is designed for the "/" route (home).
      * The route definition is set in `CoreBundle/Resources/config/routing.xml`
      */
-    public function homeAction(Request $request): Response
+    public function home(Request $request): Response
     {
         $startPageInfo = $this->variableApi->getSystemVar('startController');
         if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {

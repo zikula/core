@@ -40,7 +40,7 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaUsersModule/Config/config.html.twig")
      */
-    public function configAction(
+    public function config(
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ): array {
@@ -69,7 +69,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function authenticationMethodsAction(
+    public function authenticationMethods(
         Request $request,
         VariableApiInterface $variableApi,
         AuthenticationMethodCollector $authenticationMethodCollector,

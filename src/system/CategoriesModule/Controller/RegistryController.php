@@ -45,7 +45,7 @@ class RegistryController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function editAction(
+    public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
         CapabilityApiInterface $capabilityApi,
@@ -99,7 +99,7 @@ class RegistryController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function deleteAction(
+    public function delete(
         Request $request,
         EntityManagerInterface $entityManager,
         CategoryRegistryEntity $registry

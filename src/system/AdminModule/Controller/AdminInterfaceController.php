@@ -43,7 +43,7 @@ class AdminInterfaceController extends AbstractController
      *
      * Open the admin container
      */
-    public function headerAction(RequestStack $requestStack): Response
+    public function header(RequestStack $requestStack): Response
     {
         return $this->render('@ZikulaAdminModule/AdminInterface/header.html.twig', [
             'caller' => $requestStack->getMasterRequest()->attributes->all()
@@ -55,7 +55,7 @@ class AdminInterfaceController extends AbstractController
      *
      * Close the admin container
      */
-    public function footerAction(
+    public function footer(
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository
     ): Response {
@@ -75,7 +75,7 @@ class AdminInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      */
-    public function breadcrumbsAction(
+    public function breadcrumbs(
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,
@@ -108,7 +108,7 @@ class AdminInterfaceController extends AbstractController
      *
      * Display security analyzer
      */
-    public function securityanalyzerAction(
+    public function securityanalyzer(
         Request $request,
         ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi
@@ -132,7 +132,7 @@ class AdminInterfaceController extends AbstractController
      *
      * Display update check
      */
-    public function updatecheckAction(
+    public function updatecheck(
         RequestStack $requestStack,
         ZikulaHttpKernelInterface $kernel,
         UpdateCheckHelper $updateCheckHelper
@@ -155,7 +155,7 @@ class AdminInterfaceController extends AbstractController
      *
      * Display admin menu
      */
-    public function menuAction(
+    public function menu(
         RequestStack $requestStack,
         RouterInterface $router,
         ExtensionRepositoryInterface $extensionRepository,

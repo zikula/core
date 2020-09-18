@@ -52,7 +52,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function configAction(
+    public function config(
         ZikulaSecurityCenterModule $securityCenterModule,
         Request $request,
         RouterInterface $router,
@@ -257,7 +257,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function purifierconfigAction(
+    public function purifierconfig(
         Request $request,
         PurifierHelper $purifierHelper,
         CacheClearer $cacheClearer,
@@ -461,7 +461,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function allowedhtmlAction(
+    public function allowedhtml(
         Request $request,
         RouterInterface $router,
         VariableApiInterface $variableApi,

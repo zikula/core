@@ -44,7 +44,7 @@ class SettingsController extends AbstractController
      *
      * Settings for entire site.
      */
-    public function mainAction(
+    public function mainSettings(
         Request $request,
         LocaleApiInterface $localeApi,
         VariableApiInterface $variableApi,
@@ -97,7 +97,7 @@ class SettingsController extends AbstractController
      *
      * Locale settings for entire site.
      */
-    public function localeAction(
+    public function localeSettings(
         Request $request,
         LocaleApiInterface $localeApi,
         VariableApiInterface $variableApi
@@ -157,7 +157,7 @@ class SettingsController extends AbstractController
      *
      * Displays the content of {@see phpinfo()}.
      */
-    public function phpinfoAction(): array
+    public function phpinfo(): array
     {
         ob_start();
         phpinfo();
@@ -179,7 +179,7 @@ class SettingsController extends AbstractController
      *
      * Toggles the "Edit in place" translation functionality.
      */
-    public function toggleEditInPlaceAction(
+    public function toggleEditInPlace(
         Request $request,
         EditInPlaceActivator $activator
     ): RedirectResponse {

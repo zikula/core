@@ -36,7 +36,7 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaSearchModule/Config/config.html.twig")
      */
-    public function configAction(
+    public function config(
         Request $request,
         ZikulaHttpKernelInterface $kernel,
         SearchableModuleCollector $collector

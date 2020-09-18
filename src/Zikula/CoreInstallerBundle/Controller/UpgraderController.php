@@ -72,7 +72,7 @@ class UpgraderController
         $this->locale = $locale;
     }
 
-    public function upgradeAction(Request $request, $stage): Response
+    public function upgrade(Request $request, $stage): Response
     {
         if (version_compare($this->installed, ZikulaKernel::VERSION, '=')) {
             $stage = 'complete';

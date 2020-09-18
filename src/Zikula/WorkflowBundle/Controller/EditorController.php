@@ -46,7 +46,7 @@ class EditorController extends AbstractController
      *
      * @throws NotFoundHttpException Thrown if the desired workflow could not be found
      */
-    public function indexAction(
+    public function index(
         Request $request,
         Registry $workflowRegistry,
         TranslatorInterface $translator,

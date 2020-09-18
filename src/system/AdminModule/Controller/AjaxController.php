@@ -39,7 +39,7 @@ class AjaxController extends AbstractController
      *
      * Change the category a module belongs to by ajax.
      */
-    public function changeModuleCategoryAction(
+    public function changeModuleCategory(
         Request $request,
         RouterInterface $router,
         ExtensionRepositoryInterface $extensionRepository,
@@ -91,7 +91,7 @@ class AjaxController extends AbstractController
      *
      * Add a new admin category by ajax.
      */
-    public function addCategoryAction(
+    public function addCategory(
         Request $request,
         RouterInterface $router,
         AdminCategoryRepositoryInterface $adminCategoryRepository
@@ -141,7 +141,7 @@ class AjaxController extends AbstractController
      *
      * Delete an admin category by ajax.
      */
-    public function deleteCategoryAction(
+    public function deleteCategory(
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository
@@ -194,7 +194,7 @@ class AjaxController extends AbstractController
      *
      * Edit an admin category by ajax.
      */
-    public function editCategoryAction(
+    public function editCategory(
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
@@ -264,7 +264,7 @@ class AjaxController extends AbstractController
      *
      * Make a category the initially selected one (by ajax).
      */
-    public function defaultCategoryAction(
+    public function defaultCategory(
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         VariableApiInterface $variableApi
@@ -301,7 +301,7 @@ class AjaxController extends AbstractController
      *
      * Sort the admin categories.
      */
-    public function sortCategoriesAction(
+    public function sortCategories(
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
@@ -328,7 +328,7 @@ class AjaxController extends AbstractController
      *
      * Sort the modules.
      */
-    public function sortModulesAction(
+    public function sortModules(
         Request $request,
         AdminModuleRepositoryInterface $adminModuleRepository
     ): JsonResponse {

@@ -44,7 +44,7 @@ class VarController extends AbstractController
      *
      * @throws InvalidArgumentException if theme type is not twig-based
      */
-    public function varAction(
+    public function variables(
         Request $request,
         VariableApiInterface $variableApi,
         ZikulaHttpKernelInterface $kernel,

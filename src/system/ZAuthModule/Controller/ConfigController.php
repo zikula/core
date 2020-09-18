@@ -33,7 +33,7 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/Config/config.html.twig")
      */
-    public function configAction(Request $request): array
+    public function config(Request $request): array
     {
         $form = $this->createForm(ConfigType::class, $this->getVars());
         $form->handleRequest($request);

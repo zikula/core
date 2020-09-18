@@ -50,7 +50,7 @@ class HookController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function editAction(
+    public function edit(
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
@@ -149,7 +149,7 @@ class HookController extends AbstractController
      * @throws RuntimeException Thrown if either the subscriber or provider module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to either the subscriber or provider modules
      */
-    public function toggleSubscribeAreaStatusAction(
+    public function toggleSubscribeAreaStatus(
         Request $request,
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
@@ -233,7 +233,7 @@ class HookController extends AbstractController
      * @throws RuntimeException Thrown if the subscriber module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the subscriber module
      */
-    public function changeProviderAreaOrderAction(
+    public function changeProviderAreaOrder(
         Request $request,
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,

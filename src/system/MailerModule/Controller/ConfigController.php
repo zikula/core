@@ -43,7 +43,7 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaMailerModule/Config/config.html.twig")
      */
-    public function configAction(
+    public function config(
         Request $request,
         MailTransportHelper $mailTransportHelper
     ): array {
@@ -94,7 +94,7 @@ class ConfigController extends AbstractController
      *
      * This function displays a form to send a test mail.
      */
-    public function testAction(
+    public function test(
         Request $request,
         VariableApiInterface $variableApi,
         MailerInterface $mailer,

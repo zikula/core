@@ -73,7 +73,7 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaZAuthModule/UserAdministration/list.html.twig")
      */
-    public function listAction(
+    public function listMappings(
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         RouterInterface $router,
@@ -119,7 +119,7 @@ class UserAdministrationController extends AbstractController
      *
      * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true, "i18n"=false})
      */
-    public function getUsersByFragmentAsTableAction(
+    public function getUsersByFragmentAsTable(
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         AdministrationActionsHelper $actionsHelper
@@ -147,7 +147,7 @@ class UserAdministrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function createAction(
+    public function create(
         Request $request,
         VariableApiInterface $variableApi,
         AuthenticationMethodCollector $authenticationMethodCollector,
@@ -240,7 +240,7 @@ class UserAdministrationController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the mapping record
      */
-    public function modifyAction(
+    public function modify(
         Request $request,
         AuthenticationMappingEntity $mapping,
         VariableApiInterface $variableApi,
@@ -313,7 +313,7 @@ class UserAdministrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function verifyAction(
+    public function verify(
         Request $request,
         AuthenticationMappingEntity $mapping,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -353,7 +353,7 @@ class UserAdministrationController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the mapping record
      */
-    public function sendConfirmationAction(
+    public function sendConfirmation(
         AuthenticationMappingEntity $mapping,
         LostPasswordVerificationHelper $lostPasswordVerificationHelper,
         MailHelper $mailHelper
@@ -381,7 +381,7 @@ class UserAdministrationController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the mapping record
      */
-    public function sendUserNameAction(
+    public function sendUserName(
         AuthenticationMappingEntity $mapping,
         MailHelper $mailHelper
     ): RedirectResponse {
@@ -410,7 +410,7 @@ class UserAdministrationController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
      */
-    public function togglePasswordChangeAction(Request $request, UserEntity $user)
+    public function togglePasswordChange(Request $request, UserEntity $user)
     {
         if (!$this->hasPermission('ZikulaZAuthModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
@@ -458,7 +458,7 @@ class UserAdministrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function batchForcePasswordChangeAction(
+    public function batchForcePasswordChange(
         BatchPasswordChangeHelper $batchPasswordChangeHelper,
         Request $request
     ) {

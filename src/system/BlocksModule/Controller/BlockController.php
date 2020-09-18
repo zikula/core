@@ -45,7 +45,7 @@ class BlockController extends AbstractController
      *
      * Choose type for creating a new block.
      */
-    public function newAction(Request $request, BlockApiInterface $blockApi): Response
+    public function create(Request $request, BlockApiInterface $blockApi): Response
     {
         $form = $this->createForm(NewBlockType::class);
         $form->handleRequest($request);
@@ -68,7 +68,7 @@ class BlockController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have permissions for creating new blocks or editing a given one
      */
-    public function editAction(
+    public function edit(
         Request $request,
         BlockApiInterface $blockApi,
         ExtensionRepositoryInterface $extensionRepository,
@@ -154,7 +154,7 @@ class BlockController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions for the block
      */
-    public function deleteAction(Request $request, BlockEntity $blockEntity): Response
+    public function delete(Request $request, BlockEntity $blockEntity): Response
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', $blockEntity->getBkey() . ':' . $blockEntity->getTitle() . ':' . $blockEntity->getBid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -189,7 +189,7 @@ class BlockController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
-    public function toggleblockAction(Request $request): JsonResponse
+    public function toggleblock(Request $request): JsonResponse
     {
         $bid = $request->request->getInt('bid', -1);
         if (-1 === $bid) {
@@ -210,7 +210,7 @@ class BlockController extends AbstractController
      *
      * Display a block.
      */
-    public function viewAction(BlockEntity $blockEntity = null): response
+    public function view(BlockEntity $blockEntity = null): response
     {
         return $this->render('@ZikulaBlocksModule/Admin/blockview.html.twig', [
             'block' => $blockEntity,

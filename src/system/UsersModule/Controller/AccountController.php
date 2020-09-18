@@ -52,7 +52,7 @@ class AccountController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
-    public function menuAction(
+    public function menu(
         ExtensionMenuCollector $extensionMenuCollector,
         VariableApiInterface $variableApi
     ): array {
@@ -82,7 +82,7 @@ class AccountController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
-    public function changeLanguageAction(
+    public function changeLanguage(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
@@ -129,7 +129,7 @@ class AccountController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
-    public function deleteMyAccountAction(
+    public function deleteMyAccount(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,

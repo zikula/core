@@ -1,4 +1,4 @@
-<?php
+// <?php
 
 declare(strict_types=1);
 
@@ -54,7 +54,7 @@ class AccountController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function lostUserNameAction(
+    public function lostUserName(
         Request $request,
         RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
@@ -105,7 +105,7 @@ class AccountController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function lostPasswordAction(
+    public function lostPassword(
         Request $request,
         RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
@@ -196,7 +196,7 @@ class AccountController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function lostPasswordResetAction(
+    public function lostPasswordReset(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
@@ -289,7 +289,7 @@ class AccountController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user is not logged in
      */
-    public function changeEmailAction(
+    public function changeEmail(
         Request $request,
         RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
@@ -335,7 +335,7 @@ class AccountController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user is not logged in
      */
-    public function confirmChangedEmailAction(
+    public function confirmChangedEmail(
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -393,7 +393,7 @@ class AccountController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function changePasswordAction(
+    public function changePassword(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,

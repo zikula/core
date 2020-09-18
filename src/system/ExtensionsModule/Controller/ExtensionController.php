@@ -58,7 +58,7 @@ class ExtensionController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaExtensionsModule/Extension/list.html.twig")
      */
-    public function listAction(
+    public function listExtensions(
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         ExtensionRepositoryInterface $extensionRepository,
@@ -107,7 +107,7 @@ class ExtensionController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
-    public function activateAction(
+    public function activate(
         int $id,
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
@@ -139,7 +139,7 @@ class ExtensionController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
-    public function deactivateAction(
+    public function deactivate(
         int $id,
         string $token,
         ExtensionRepositoryInterface $extensionRepository,
@@ -180,7 +180,7 @@ class ExtensionController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for modifying the extension
      */
-    public function modifyAction(
+    public function modify(
         Request $request,
         ZikulaHttpKernelInterface $kernel,
         ExtensionEntity $extension,
@@ -241,7 +241,7 @@ class ExtensionController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the requested module
      */
-    public function compatibilityAction(ExtensionEntity $extension): array
+    public function compatibility(ExtensionEntity $extension): array
     {
         if (!$this->hasPermission('ZikulaExtensionsModule::', $extension->getName() . '::' . $extension->getId(), ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -260,7 +260,7 @@ class ExtensionController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
-    public function upgradeAction(
+    public function upgrade(
         ExtensionEntity $extension,
         $token,
         ExtensionHelper $extensionHelper
@@ -290,7 +290,7 @@ class ExtensionController extends AbstractController
      * @return array|Response|RedirectResponse
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
-    public function uninstallAction(
+    public function uninstall(
         Request $request,
         ExtensionEntity $extension,
         string $token,
@@ -358,7 +358,7 @@ class ExtensionController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function postUninstallAction(CacheClearer $cacheClearer)
+    public function postUninstall(CacheClearer $cacheClearer)
     {
         $cacheClearer->clear('symfony');
 
@@ -369,7 +369,7 @@ class ExtensionController extends AbstractController
      * @Route("/theme-preview/{themeName}")
      * @PermissionCheck("admin")
      */
-    public function previewAction(Engine $engine, string $themeName): Response
+    public function preview(Engine $engine, string $themeName): Response
     {
         $engine->setActiveTheme($themeName);
         $this->addFlash('warning', 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.');

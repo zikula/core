@@ -48,7 +48,7 @@ class AccessController extends AbstractController
      *
      * @throws InvalidAuthenticationMethodLoginFormException
      */
-    public function loginAction(
+    public function login(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
@@ -190,7 +190,7 @@ class AccessController extends AbstractController
     /**
      * @Route("/logout/{returnUrl}", options={"zkNoBundlePrefix"=1})
      */
-    public function logoutAction(
+    public function logout(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
