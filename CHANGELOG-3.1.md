@@ -20,6 +20,7 @@
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
 
 - Deprecated:
+  - [General] Controller methods should not have an `Action` suffix in their names anymore.
   - [CoreBundle] `Zikula/CoreBundle/YamlDumper` use `Configurator` as needed.
   - [BlocksModule] Content-providing blocks (FincludeBlock, HtmlBlock, TextBlock, XsltBlock) use StaticContentModule instead.
   - [BootstrapTheme] The entire theme is deprecated. Please see DefaultTheme for replacement.
