@@ -29,7 +29,7 @@ class MigrationController
         $this->migrationHelper = $migrationHelper;
     }
 
-    public function migrateAction(Request $request): JsonResponse
+    public function migrate(Request $request): JsonResponse
     {
         $percentComplete = 0;
         if ($request->hasSession() && ($session = $request->getSession())) {

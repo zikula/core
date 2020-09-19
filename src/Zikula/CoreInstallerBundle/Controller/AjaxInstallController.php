@@ -29,7 +29,7 @@ class AjaxInstallController
         $this->stageHelper = $stageHelper;
     }
 
-    public function ajaxAction(Request $request): JsonResponse
+    public function ajax(Request $request): JsonResponse
     {
         $stage = $request->request->get('stage');
         $status = $this->stageHelper->executeStage($stage);

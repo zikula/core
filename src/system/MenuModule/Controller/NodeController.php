@@ -37,7 +37,7 @@ class NodeController extends AbstractController
     /**
      * @Route("/contextMenu/{action}/{id}", options={"expose"=true, "i18n"=false})
      */
-    public function contextMenuAction(
+    public function contextMenu(
         Request $request,
         MenuItemRepository $menuItemRepository,
         string $action = 'edit',
@@ -117,7 +117,7 @@ class NodeController extends AbstractController
      * Ajax function for use on drag and drop of nodes.
      * @Route("/move", options={"expose"=true})
      */
-    public function moveAction(
+    public function move(
         Request $request,
         MenuItemRepository $menuItemRepository
     ): JsonResponse {

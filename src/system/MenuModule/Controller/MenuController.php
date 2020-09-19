@@ -46,7 +46,7 @@ class MenuController extends AbstractController
      * @Template("@ZikulaMenuModule/Menu/list.html.twig")
      * @Theme("admin")
      */
-    public function listAction(
+    public function listMenus(
         MenuItemRepository $menuItemRepository
     ): array {
         return [
@@ -63,7 +63,7 @@ class MenuController extends AbstractController
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
      * @throws AccessDeniedException Thrown if the menu item is not a root item
      */
-    public function viewAction(
+    public function view(
         MenuItemRepository $menuItemRepository,
         MenuItemEntity $menuItemEntity
     ): array {
@@ -95,7 +95,7 @@ class MenuController extends AbstractController
      * @Route("/edit/{id}", defaults={"id" = null})
      * @Theme("admin")
      */
-    public function editAction(
+    public function edit(
         Request $request,
         MenuItemRepository $menuItemRepository,
         MenuItemEntity $menuItemEntity = null
@@ -150,7 +150,7 @@ class MenuController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function deleteAction(Request $request, MenuItemEntity $menuItemEntity)
+    public function delete(Request $request, MenuItemEntity $menuItemEntity)
     {
         $form = $this->createForm(DeleteMenuItemType::class, [
             'entity' => $menuItemEntity

@@ -41,7 +41,7 @@ class PlacementController extends AbstractController
      *
      * Create a new placement or edit an existing placement.
      */
-    public function editAction(
+    public function edit(
         BlockPositionEntity $positionEntity,
         BlockRepositoryInterface $blockRepository,
         BlockPositionRepositoryInterface $positionRepository
@@ -71,7 +71,7 @@ class PlacementController extends AbstractController
      *
      * Change the block order.
      */
-    public function changeBlockOrderAction(Request $request): JsonResponse
+    public function changeBlockOrder(Request $request): JsonResponse
     {
         $blockOrder = $request->request->get('blockorder', null); // [7, 1]
         if (null === $blockOrder) {

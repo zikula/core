@@ -48,7 +48,7 @@ class IdsLogController extends AbstractController
      *
      * Function to view ids log events.
      */
-    public function viewAction(
+    public function viewLog(
         Request $request,
         IntrusionRepository $repository,
         RouterInterface $router,
@@ -127,7 +127,7 @@ class IdsLogController extends AbstractController
      *
      * @return array|Response
      */
-    public function exportAction(Request $request, IntrusionRepository $repository)
+    public function export(Request $request, IntrusionRepository $repository)
     {
         $form = $this->createForm(IdsLogExportType::class, []);
         $form->handleRequest($request);
@@ -234,7 +234,7 @@ class IdsLogController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function purgeAction(Request $request, IntrusionRepository $repository)
+    public function purge(Request $request, IntrusionRepository $repository)
     {
         $form = $this->createForm(DeletionType::class);
         $form->handleRequest($request);
@@ -265,7 +265,7 @@ class IdsLogController extends AbstractController
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      * @throws InvalidArgumentException Thrown if the object id is not numeric or if
      */
-    public function deleteentryAction(Request $request, IntrusionRepository $repository): RedirectResponse
+    public function deleteEntry(Request $request, IntrusionRepository $repository): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('delete-idsentry', $request->query->get('token'))) {
             throw new AccessDeniedException();

@@ -47,7 +47,7 @@ class AdminController extends AbstractController
      *
      * The main administration function.
      */
-    public function indexAction(): RedirectResponse
+    public function index(): RedirectResponse
     {
         // Security check will be done in view()
         return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -61,7 +61,7 @@ class AdminController extends AbstractController
      *
      * Views all admin categories.
      */
-    public function viewAction(AdminCategoryRepositoryInterface $repository, int $page = 1): array
+    public function view(AdminCategoryRepositoryInterface $repository, int $page = 1): array
     {
         $pageSize = $this->getVar('itemsperpage');
 
@@ -84,7 +84,7 @@ class AdminController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function newcatAction(Request $request)
+    public function create(Request $request)
     {
         $form = $this->createForm(AdminCategoryType::class, new AdminCategoryEntity());
         $form->handleRequest($request);
@@ -116,7 +116,7 @@ class AdminController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit a category
      */
-    public function modifyAction(Request $request, AdminCategoryEntity $category)
+    public function modify(Request $request, AdminCategoryEntity $category)
     {
         if (!$this->hasPermission('ZikulaAdminModule::Category', $category['name'] . '::' . $category->getCid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -154,7 +154,7 @@ class AdminController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit a category
      */
-    public function deleteAction(Request $request, AdminCategoryEntity $category)
+    public function delete(Request $request, AdminCategoryEntity $category)
     {
         if (!$this->hasPermission('ZikulaAdminModule::Category', $category->getName() . '::' . $category->getCid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -192,7 +192,7 @@ class AdminController extends AbstractController
      * @return array|Response
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
-    public function adminpanelAction(
+    public function adminpanel(
         ZikulaHttpKernelInterface $kernel,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,
@@ -308,7 +308,7 @@ class AdminController extends AbstractController
      *
      * Displays main category menu.
      */
-    public function categorymenuAction(
+    public function categorymenu(
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,
         CapabilityApiInterface $capabilityApi,

@@ -52,7 +52,7 @@ class InstallerController
         $this->installed = '0.0.0' !== $installed;
     }
 
-    public function installAction(Request $request, string $stage): Response
+    public function install(Request $request, string $stage): Response
     {
         // already installed?
         if ('complete' !== $stage && $this->installed) {

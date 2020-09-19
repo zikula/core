@@ -53,7 +53,7 @@ class MembershipController extends AbstractController
      *
      * Display all members of a group to a user.
      */
-    public function listAction(
+    public function listMemberships(
         GroupEntity $group,
         VariableApiInterface $variableApi,
         UserSessionRepositoryInterface $userSessionRepository,
@@ -81,7 +81,7 @@ class MembershipController extends AbstractController
      *
      * Display all members of a group to an admin.
      */
-    public function adminListAction(
+    public function adminList(
         GroupEntity $group,
         string $letter = '*',
         int $page = 1
@@ -99,7 +99,7 @@ class MembershipController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
-    public function addAction(
+    public function add(
         UserEntity $userEntity,
         GroupEntity $group,
         string $token,
@@ -130,7 +130,7 @@ class MembershipController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
-    public function joinAction(
+    public function join(
         GroupEntity $group,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
@@ -174,7 +174,7 @@ class MembershipController extends AbstractController
      *
      * @throws InvalidArgumentException
      */
-    public function removeAction(
+    public function remove(
         Request $request,
         EventDispatcherInterface $eventDispatcher,
         GroupRepositoryInterface $groupRepository,
@@ -232,7 +232,7 @@ class MembershipController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
-    public function leaveAction(
+    public function leave(
         GroupEntity $group,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
@@ -258,8 +258,10 @@ class MembershipController extends AbstractController
      * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
      */
-    public function getUsersByFragmentAsTableAction(Request $request, UserRepositoryInterface $userRepository): Response
-    {
+    public function getUsersByFragmentAsTable(
+        Request $request,
+        UserRepositoryInterface $userRepository
+    ): Response {
         if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_EDIT)) {
             return new PlainResponse('');
         }

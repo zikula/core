@@ -50,7 +50,7 @@ class ApplicationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function adminAction(
+    public function admin(
         Request $request,
         string $action,
         GroupApplicationEntity $groupApplicationEntity,
@@ -105,7 +105,7 @@ class ApplicationController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
-    public function createAction(
+    public function create(
         Request $request,
         GroupEntity $group,
         EventDispatcherInterface $eventDispatcher,

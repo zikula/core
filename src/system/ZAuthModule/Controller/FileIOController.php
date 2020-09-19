@@ -38,7 +38,7 @@ class FileIOController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function importAction(
+    public function import(
         Request $request,
         VariableApiInterface $variableApi,
         GroupRepositoryInterface $groupRepository,

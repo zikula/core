@@ -26,7 +26,7 @@ use Zikula\PermissionsModule\Annotation\PermissionCheck;
  */
 class ConfigController extends AbstractController
 {
-    public function configAction(Request $request): void
+    public function config(Request $request): void
     {
         // do nothing
     }

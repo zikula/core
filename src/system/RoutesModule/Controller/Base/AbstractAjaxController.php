@@ -32,7 +32,7 @@ abstract class AbstractAjaxController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function updateSortPositionsAction(
+    public function updateSortPositions(
         Request $request,
         EntityFactory $entityFactory
     ): JsonResponse {

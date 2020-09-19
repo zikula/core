@@ -31,11 +31,11 @@ class AjaxController extends AbstractAjaxController
     /**
      * @Route("/updateSortPositions", methods = {"POST"}, options={"expose"=true})
      */
-    public function updateSortPositionsAction(
+    public function updateSortPositions(
         Request $request,
         EntityFactory $entityFactory
     ): JsonResponse {
-        return parent::updateSortPositionsAction(
+        return parent::updateSortPositions(
             $request,
             $entityFactory
         );

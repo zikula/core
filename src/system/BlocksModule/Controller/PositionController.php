@@ -42,7 +42,7 @@ class PositionController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions for the position
      */
-    public function editAction(Request $request, BlockPositionEntity $positionEntity = null)
+    public function edit(Request $request, BlockPositionEntity $positionEntity = null)
     {
         $permParam = (null !== $positionEntity) ? $positionEntity->getName() : 'position';
         if (!$this->hasPermission('ZikulaBlocksModule::' . $permParam, '::', ACCESS_EDIT)) {
@@ -84,7 +84,7 @@ class PositionController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions for the position
      */
-    public function deleteAction(Request $request, BlockPositionEntity $positionEntity)
+    public function delete(Request $request, BlockPositionEntity $positionEntity)
     {
         if (!$this->hasPermission('ZikulaBlocksModule::position', $positionEntity->getName() . '::' . $positionEntity->getPid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();

@@ -26,7 +26,7 @@ class CombinedAssetController extends AbstractController
     /**
      * @Route("/combined_asset/{type}/{key}", options={"i18n"=false})
      */
-    public function assetAction(
+    public function asset(
         ZikulaHttpKernelInterface $kernel,
         string $type,
         string $key

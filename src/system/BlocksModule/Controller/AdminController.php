@@ -44,7 +44,7 @@ class AdminController extends AbstractController
      *
      * View all blocks.
      */
-    public function viewAction(
+    public function view(
         Request $request,
         BlockRepositoryInterface $blockRepository,
         BlockPositionRepositoryInterface $positionRepository,

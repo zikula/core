@@ -38,7 +38,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function configAction(Request $request, GroupRepositoryInterface $groupRepository)
+    public function config(Request $request, GroupRepositoryInterface $groupRepository)
     {
         // build a groups array suitable for the form choices
         $groupsList = [];

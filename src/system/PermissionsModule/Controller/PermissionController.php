@@ -44,7 +44,7 @@ class PermissionController extends AbstractController
      *
      * View permissions.
      */
-    public function listAction(
+    public function listPermissions(
         GroupRepositoryInterface $groupsRepository,
         PermissionRepositoryInterface $permissionRepository,
         PermissionApiInterface $permissionApi,
@@ -81,7 +81,7 @@ class PermissionController extends AbstractController
     /**
      * @Route("/edit/{pid}", options={"expose"=true})
      */
-    public function editAction(
+    public function edit(
         Request $request,
         GroupRepositoryInterface $groupsRepository,
         PermissionRepositoryInterface $permissionRepository,
@@ -140,7 +140,7 @@ class PermissionController extends AbstractController
      *
      * Change the order of a permission rule.
      */
-    public function changeOrderAction(
+    public function changeOrder(
         Request $request,
         PermissionRepositoryInterface $permissionRepository
     ): JsonResponse {
@@ -163,7 +163,7 @@ class PermissionController extends AbstractController
      * @throws FatalError Thrown if the requested permission rule is the default admin rule
      *                           or if the permission rule couldn't be deleted
      */
-    public function deleteAction(
+    public function delete(
         PermissionEntity $permissionEntity,
         PermissionRepositoryInterface $permissionRepository
     ): JsonResponse {
@@ -192,7 +192,7 @@ class PermissionController extends AbstractController
      *
      * Test a permission rule for a given username.
      */
-    public function testAction(
+    public function test(
         Request $request,
         PermissionApiInterface $permissionApi,
         UserRepositoryInterface $userRepository

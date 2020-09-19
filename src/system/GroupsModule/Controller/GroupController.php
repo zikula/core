@@ -43,7 +43,7 @@ class GroupController extends AbstractController
      *
      * View a list of all groups (user view).
      */
-    public function listAction(GroupRepositoryInterface $groupRepository, int $page = 1): array
+    public function listGroups(GroupRepositoryInterface $groupRepository, int $page = 1): array
     {
         $pageSize = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
@@ -72,7 +72,7 @@ class GroupController extends AbstractController
      *
      * View a list of all groups (admin view).
      */
-    public function adminListAction(
+    public function adminList(
         GroupRepositoryInterface $groupRepository,
         GroupApplicationRepository $applicationRepository,
         int $page = 1
@@ -100,7 +100,7 @@ class GroupController extends AbstractController
      *
      * Display a form to add a new group.
      */
-    public function createAction(
+    public function create(
         Request $request,
         EventDispatcherInterface $eventDispatcher
     ) {
@@ -133,7 +133,7 @@ class GroupController extends AbstractController
      *
      * Modify a group.
      */
-    public function editAction(
+    public function edit(
         Request $request,
         GroupEntity $groupEntity,
         EventDispatcherInterface $eventDispatcher
@@ -168,7 +168,7 @@ class GroupController extends AbstractController
      *
      * Deletes a group.
      */
-    public function removeAction(
+    public function remove(
         Request $request,
         GroupEntity $groupEntity,
         EventDispatcherInterface $eventDispatcher

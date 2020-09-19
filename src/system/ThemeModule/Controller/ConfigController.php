@@ -41,7 +41,7 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaThemeModule/Config/config.html.twig")
      */
-    public function configAction(
+    public function config(
         Request $request,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer,

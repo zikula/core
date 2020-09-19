@@ -43,7 +43,7 @@ class RouteController extends AbstractRouteController
      * )
      * @Theme("admin")
      */
-    public function adminIndexAction(
+    public function adminIndex(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
@@ -60,7 +60,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      */
-    public function indexAction(
+    public function index(
         Request $request,
         PermissionHelper $permissionHelper
     ): Response {
@@ -80,7 +80,7 @@ class RouteController extends AbstractRouteController
      * )
      * @Theme("admin")
      */
-    public function adminViewAction(
+    public function adminView(
         Request $request,
         RouterInterface $router,
         PermissionHelper $permissionHelper,
@@ -113,7 +113,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      */
-    public function viewAction(
+    public function view(
         Request $request,
         RouterInterface $router,
         PermissionHelper $permissionHelper,
@@ -147,7 +147,7 @@ class RouteController extends AbstractRouteController
      * )
      * @Theme("admin")
      */
-    public function adminDisplayAction(
+    public function adminDisplay(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -176,7 +176,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      */
-    public function displayAction(
+    public function display(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -206,7 +206,7 @@ class RouteController extends AbstractRouteController
      * )
      * @Theme("admin")
      */
-    public function adminEditAction(
+    public function adminEdit(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -231,7 +231,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      */
-    public function editAction(
+    public function edit(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
@@ -256,7 +256,7 @@ class RouteController extends AbstractRouteController
      * )
      * @Theme("admin")
      */
-    public function adminHandleSelectedEntriesAction(
+    public function adminHandleSelectedEntries(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,
@@ -280,7 +280,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"POST"}
      * )
      */
-    public function handleSelectedEntriesAction(
+    public function handleSelectedEntries(
         Request $request,
         LoggerInterface $logger,
         EntityFactory $entityFactory,

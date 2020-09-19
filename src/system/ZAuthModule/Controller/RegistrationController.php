@@ -57,7 +57,7 @@ class RegistrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function verifyAction(
+    public function verify(
         Request $request,
         ValidatorInterface $validator,
         VariableApiInterface $variableApi,

@@ -39,7 +39,7 @@ class FileIOController extends AbstractController
      *
      * @return array|StreamedResponse
      */
-    public function exportAction(Request $request, UserRepositoryInterface $userRepository)
+    public function export(Request $request, UserRepositoryInterface $userRepository)
     {
         $form = $this->createForm(ExportUsersType::class, []);
         $form->handleRequest($request);

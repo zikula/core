@@ -63,7 +63,7 @@ class RegistrationController extends AbstractController
      * @throws InvalidAuthenticationMethodRegistrationFormException
      * @throws Exception
      */
-    public function registerAction(
+    public function register(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,

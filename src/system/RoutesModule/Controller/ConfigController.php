@@ -37,14 +37,14 @@ class ConfigController extends AbstractConfigController
      * )
      * @Theme("admin")
      */
-    public function configAction(
+    public function config(
         Request $request,
         PermissionHelper $permissionHelper,
         AppSettings $appSettings,
         LoggerInterface $logger,
         CurrentUserApiInterface $currentUserApi
     ): Response {
-        return parent::configAction($request, $permissionHelper, $appSettings, $logger, $currentUserApi);
+        return parent::config($request, $permissionHelper, $appSettings, $logger, $currentUserApi);
     }
 
     // feel free to add your own config controller methods here

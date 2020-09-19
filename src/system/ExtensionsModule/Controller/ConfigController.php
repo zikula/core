@@ -39,7 +39,7 @@ class ConfigController extends AbstractController
      *
      * @return array|Response
      */
-    public function configAction(
+    public function config(
         Request $request,
         BundleSyncHelper $bundleSyncHelper,
         CacheClearer $cacheClearer

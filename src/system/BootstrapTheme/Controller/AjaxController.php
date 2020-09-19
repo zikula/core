@@ -31,7 +31,7 @@ class AjaxController extends AbstractController
     /**
      * @Route("/changeUserStyle", methods = {"POST"}, options={"expose"=true})
      */
-    public function changeUserStyleAction(
+    public function changeUserStyle(
         Request $request,
         ZikulaHttpKernelInterface $kernel
     ): JsonResponse {

@@ -38,7 +38,7 @@ class UpdateController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function reloadAction(
+    public function reload(
         PermissionHelper $permissionHelper,
         CacheClearer $cacheClearer,
         RouteDumperHelper $routeDumperHelper
@@ -52,7 +52,7 @@ class UpdateController extends AbstractController
         $this->addFlash('status', 'Done! Routes reloaded.');
 
         // reload **all** JS routes
-        $this->dumpJsRoutes($routeDumperHelper);
+        $this->dumpJsRoutesInternal($routeDumperHelper);
 
         return $this->redirectToRoute('zikularoutesmodule_route_adminview');
     }
@@ -67,7 +67,7 @@ class UpdateController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function renewAction(
+    public function renew(
         PermissionHelper $permissionHelper,
         MultilingualRoutingHelper $multilingualRoutingHelper
     ): Response {
@@ -94,7 +94,7 @@ class UpdateController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function dumpJsRoutesAction(
+    public function dumpJsRoutes(
         PermissionHelper $permissionHelper,
         RouteDumperHelper $routeDumperHelper,
         string $lang = null
@@ -103,7 +103,7 @@ class UpdateController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $this->dumpJsRoutes($routeDumperHelper, $lang);
+        $this->dumpJsRoutesInternal($routeDumperHelper, $lang);
 
         return $this->redirectToRoute('zikularoutesmodule_route_adminview');
     }
@@ -111,7 +111,7 @@ class UpdateController extends AbstractController
     /**
      * Dumps exposed JS routes to '/public/js/fos_js_routes.js'.
      */
-    private function dumpJsRoutes(RouteDumperHelper $routeDumperHelper, string $lang = null): void
+    private function dumpJsRoutesInternal(RouteDumperHelper $routeDumperHelper, string $lang = null): void
     {
         $result = $routeDumperHelper->dumpJsRoutes($lang);
 
