@@ -6,7 +6,7 @@
   - _there should be none_
 
 - Fixes:
-  - _none yet_
+  - Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).
 
 - Features:
   - _there should be none_
