@@ -145,7 +145,7 @@ after_success:
   # dump vendors into doc
   - ./build.php build:generate_vendor_doc --write-to "docs/General/VendorInformation.md"
   # deploy docs
-  - curl -OS http://couscous.io/couscous.phar
+  - curl -OS https://couscous.io/couscous.phar
   - chmod +x couscous.phar
   - ./couscous.phar travis-auto-deploy --php-version=7.4
 

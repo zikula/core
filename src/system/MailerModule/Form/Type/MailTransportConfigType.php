@@ -42,10 +42,9 @@ class MailTransportConfigType extends AbstractType
                     'Sendmail binary' => 'sendmail',
                     'Development/debug mode (Do not send any email)' => 'test'/*'null'*/
                 ],
-                'help' => 'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider. For further information about the mailer transport setup please refer to the Symfony docs %link1% and %link2%.',
+                'help' => 'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider. For further information about the mailer transport setup please refer to the Symfony docs %link%. Please do not install any mailer transport using composer, as they are already included in Zikula.',
                 'help_translation_parameters' => [
-                    '%link1%' => '<a href="https://symfony.com/doc/current/mailer.html#transport-setup" target="_blank">here</a>',
-                    '%link2%' => '<a href="https://symfony.com/doc/current/components/mailer.html#transport" target="_blank">here</a>'
+                    '%link%' => '<a href="https://symfony.com/doc/current/mailer.html#transport-setup" target="_blank">here</a>',
                 ],
                 'help_html' => true
             ])

@@ -85,8 +85,8 @@ class RouteLoader extends Loader
         ExtractTranslationHelper $extractTranslationHelper,
         PathBuilderHelper $pathBuilderHelper,
         SanitizeHelper $sanitizeHelper,
-        string $locale)
-    {
+        string $locale
+    ) {
         $this->kernel = $kernel;
         $this->translator = $translator;
         $this->entityFactory = $entityFactory;
@@ -308,7 +308,7 @@ class RouteLoader extends Loader
         if (!$prependExtension) {
             return;
         }
-        if ((isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix'])) {
+        if (isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix']) {
             return;
         }
 
@@ -363,7 +363,7 @@ class RouteLoader extends Loader
     /**
      * Checks whether this route loader supports a given route type or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function supports($resource, string $type = null)
     {
