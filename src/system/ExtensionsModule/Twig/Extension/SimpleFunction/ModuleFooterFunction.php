@@ -36,7 +36,7 @@ class ModuleFooterFunction
      */
     public function display(): string
     {
-        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::footerAction');
+        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::footer');
 
         return $this->handler->render($ref) ?? '';
     }

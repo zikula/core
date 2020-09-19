@@ -50,7 +50,7 @@ class ModuleHeaderFunction
         bool $menuFirst = false,
         bool $image = false
     ): string {
-        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::headerAction', [
+        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::header', [
             'type' => $type,
             'title' => $title,
             'titlelink' => $titleLink,

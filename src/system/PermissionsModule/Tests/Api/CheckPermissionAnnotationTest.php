@@ -157,12 +157,12 @@ class CheckPermissionAnnotationTest extends AbstractPermissionTestCase
     public function controllerProvider(): array
     {
         return [
-            [new PermissionCheck(['value' => 'admin']), [new FooController(), 'firstAction']],
-            [new PermissionCheck(['value' => ['AcmeFooModule::', '.*', 'overview']]), [new FooController(), 'secondAction']],
-            [new PermissionCheck(['value' => ['$_zkModule', '::$gid', 'ACCESS_EDIT']]), [new FooController(), 'thirdAction']],
-            [new PermissionCheck(['value' => 'admin']), [new FooController(), 'fourthAction']], // duplicates
-            [new PermissionCheck(['value' => 'admin']), [new BarController(), 'firstAction']],
-            [AnnotationException::class, [new FailController(), 'firstAction']],
+            [new PermissionCheck(['value' => 'admin']), [new FooController(), 'first']],
+            [new PermissionCheck(['value' => ['AcmeFooModule::', '.*', 'overview']]), [new FooController(), 'second']],
+            [new PermissionCheck(['value' => ['$_zkModule', '::$gid', 'ACCESS_EDIT']]), [new FooController(), 'third']],
+            [new PermissionCheck(['value' => 'admin']), [new FooController(), 'fourth']], // duplicates
+            [new PermissionCheck(['value' => 'admin']), [new BarController(), 'first']],
+            [AnnotationException::class, [new FailController(), 'first']],
         ];
     }
 }
