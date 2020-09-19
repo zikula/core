@@ -35,7 +35,7 @@ class HelpController extends AbstractController
      *
      * Display a module's help page.
      */
-    public function indexAction(
+    public function index(
         ZikulaHttpKernelInterface $kernel,
         Request $request,
         Filesystem $fileSystem,

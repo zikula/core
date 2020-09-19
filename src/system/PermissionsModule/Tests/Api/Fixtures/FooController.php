@@ -21,7 +21,7 @@ class FooController extends AbstractController
     /**
      * @PermissionCheck("admin")
      */
-    public function firstAction()
+    public function first()
     {
         return true;
     }
@@ -29,7 +29,7 @@ class FooController extends AbstractController
     /**
      * @PermissionCheck({"AcmeFooModule::", ".*", "overview"})
      */
-    public function secondAction()
+    public function second()
     {
         return true;
     }
@@ -37,7 +37,7 @@ class FooController extends AbstractController
     /**
      * @PermissionCheck({"$_zkModule", "::$gid", "ACCESS_EDIT"})
      */
-    public function thirdAction()
+    public function third()
     {
         return true;
     }
@@ -50,7 +50,7 @@ class FooController extends AbstractController
      * @PermissionCheck("comment")
      * @PermissionCheck("overview")
      */
-    public function fourthAction()
+    public function fourth()
     {
         return true;
     }

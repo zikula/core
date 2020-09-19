@@ -32,7 +32,7 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Module header
      */
-    public function headerAction(
+    public function header(
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository,
         Asset $assetHelper
@@ -59,7 +59,7 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Module footer
      */
-    public function footerAction(RequestStack $requestStack): Response
+    public function footer(RequestStack $requestStack): Response
     {
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/footer.html.twig', [
             'caller' => $requestStack->getMasterRequest()->attributes->all()
@@ -71,7 +71,7 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      */
-    public function breadcrumbsAction(
+    public function breadcrumbs(
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository
     ): Response {
@@ -88,7 +88,7 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Open the admin container
      */
-    public function linksAction(
+    public function links(
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionMenuCollector $extensionMenuCollector

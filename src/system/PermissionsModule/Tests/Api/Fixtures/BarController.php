@@ -21,7 +21,7 @@ use Zikula\PermissionsModule\Annotation\PermissionCheck;
  */
 class BarController extends AbstractController
 {
-    public function firstAction()
+    public function first()
     {
         return true;
     }

@@ -24,7 +24,7 @@ class FailController extends AbstractController
     /**
      * @PermissionCheck("admin")
      */
-    public function firstAction()
+    public function first()
     {
         return true;
     }

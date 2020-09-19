@@ -77,7 +77,7 @@ class ExtensionInstallerController extends AbstractController
      * @Theme("admin")
      * @Template("@ZikulaExtensionsModule/Extension/preinstall.html.twig")
      */
-    public function preInstallAction(ExtensionEntity $extension)
+    public function preInstall(ExtensionEntity $extension)
     {
         if (Constant::STATE_TRANSITIONAL !== $extension->getState()) {
             $this->extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
@@ -108,7 +108,7 @@ class ExtensionInstallerController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function installAction(
+    public function install(
         Request $request,
         ExtensionEntity $extension,
         ExtensionHelper $extensionHelper
@@ -169,7 +169,7 @@ class ExtensionInstallerController extends AbstractController
      *
      * @Route("/postinstall/{extensions}", methods = {"GET"})
      */
-    public function postInstallAction(
+    public function postInstall(
         ZikulaHttpKernelInterface $kernel,
         EventDispatcherInterface $eventDispatcher,
         string $extensions = null
@@ -197,7 +197,7 @@ class ExtensionInstallerController extends AbstractController
      *
      * @return RedirectResponse
      */
-    public function cancelInstallAction(int $id)
+    public function cancelInstall(int $id)
     {
         $this->extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
         $this->addFlash('status', 'Operation cancelled.');
