@@ -4054,24 +4054,24 @@
         },
         {
             "name": "nyholm/nsa",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nyholm/NSA.git",
-                "reference": "2606ebf15fb24e15a8ca8d02977ad77082d391ef"
+                "reference": "6d333d96948f94d498285cf01b60f6972f1dd903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nyholm/NSA/zipball/2606ebf15fb24e15a8ca8d02977ad77082d391ef",
-                "reference": "2606ebf15fb24e15a8ca8d02977ad77082d391ef",
+                "url": "https://api.github.com/repos/Nyholm/NSA/zipball/6d333d96948f94d498285cf01b60f6972f1dd903",
+                "reference": "6d333d96948f94d498285cf01b60f6972f1dd903",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1",
+                "php": ">=7.1",
                 "webmozart/assert": "^1.1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0"
+                "symfony/phpunit-bridge": "^4.4 || ^5.1"
             },
             "type": "library",
             "autoload": {
@@ -4103,7 +4103,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-06-05T07:41:45+00:00"
+            "time": "2020-09-19T11:20:47+00:00"
         },
         {
             "name": "ocramius/package-versions",
