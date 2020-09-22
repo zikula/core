@@ -61,7 +61,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
             return [];
         }
         // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
-        $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
+        $staleRecordUTC = new DateTime('now', new DateTimeZone('UTC'));
         $staleRecordUTC->modify("-{$daysOld} days");
 
         $qb = $this->createQueryBuilder('v');
