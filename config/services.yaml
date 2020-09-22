@@ -6,7 +6,7 @@
 parameters:
     assets_version: ~ #e.g. 'v1'
 
-    # TODO remove
+    # to be removed again
     locale: en # still referenced in CoreInstallerBundle
     security.x_frame_options: SAMEORIGIN # still referenced in CoreBundle
 
