@@ -232,7 +232,7 @@ class RouteLoader extends Loader
             [, $func] = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
             $defaults['_zkType'] = $type;
             $defaults['_zkFunc'] = $func;
-            $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func) . 'Action';
+            $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func);
 
             // We have to prepend the extension prefix (see detailed description in docblock of prependExtensionPrefix() method).
             $options = $dbRoute->getOptions(true);
@@ -282,7 +282,7 @@ class RouteLoader extends Loader
         $controller = explode(':', $controller);
         $defaults['_zkType'] = $type = lcfirst($controller[1]);
         $defaults['_zkFunc'] = $func = lcfirst($controller[2]);
-        $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($controller[1]) . 'Controller::' . $func . 'Action';
+        $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($controller[1]) . 'Controller::' . $func;
 
         $route->setDefaults($defaults);
 
