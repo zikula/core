@@ -333,7 +333,7 @@ class RouteLoader extends Loader
      */
     private function sanitizeController(string $extensionName, string $controllerString): string
     {
-        if (0 === preg_match('#^(.*?\\\\Controller\\\\(.+)Controller)::(.+)Action$#', $controllerString, $match)) {
+        if (0 === preg_match('#^(.*?\\\\Controller\\\\(.+)Controller)::(.+)$#', $controllerString, $match)) {
             return $controllerString;
         }
 

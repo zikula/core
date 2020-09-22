@@ -26,7 +26,7 @@
             "icon": "fas fa-key",
             "capabilities": {
                 "admin": {
-                    "route": "zikulapermissionsmodule_permission_list"
+                    "route": "zikulapermissionsmodule_permission_listpermissions"
                 }
             },
             "securityschema": {

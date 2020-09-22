@@ -19,5 +19,5 @@
 </div>
 <div class="alert alert-info">{% trans with {'%f%': count} %}There are %f% users to try to migrate.{% endtrans %}</div>
 <div class="text-center"><i id="spinner" class="fas fa-cog fa-2x fa-spin fa-fw" style="display: none"></i> <button id="migrate" class="btn btn-lg btn-success">{% trans %}Begin Migration{% endtrans %}</button></div>
-<div id="redirectUrlAfterSuccess" data-route="{{ path('zikulausersmodule_useradministration_list') }}"></div>
+<div id="redirectUrlAfterSuccess" data-route="{{ path('zikulausersmodule_useradministration_listusers') }}"></div>
 {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.Admin.Migration.js')) }}

@@ -112,7 +112,7 @@ class ExtensionMenu implements ExtensionMenuInterface
     {
         $menu = $this->factory->createItem('groupsAccountMenu');
         $menu->addChild('Group list', [
-            'route' => 'zikulagroupsmodule_group_list',
+            'route' => 'zikulagroupsmodule_group_listgroups',
         ])->setAttribute('icon', 'fas fa-users');
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
@@ -135,7 +135,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         if (count($groups) > 0) {
             $menu = $this->factory->createItem('groupsAccountMenu');
             $menu->addChild('Groups manager', [
-                'route' => 'zikulagroupsmodule_group_list',
+                'route' => 'zikulagroupsmodule_group_listgroups',
             ])->setAttribute('icon', 'fas fa-users');
         }
 

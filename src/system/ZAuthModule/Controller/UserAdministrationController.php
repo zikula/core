@@ -83,7 +83,7 @@ class UserAdministrationController extends AbstractController
         string $letter = 'all',
         int $page = 1
     ): array {
-        $sortableColumns = new SortableColumns($router, 'zikulazauthmodule_useradministration_list', 'sort', 'sortdir');
+        $sortableColumns = new SortableColumns($router, 'zikulazauthmodule_useradministration_listmappings', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid')]);
         $sortableColumns->setOrderByFromRequest($request);
         $sortableColumns->setAdditionalUrlParameters([
@@ -97,7 +97,7 @@ class UserAdministrationController extends AbstractController
         }
         $pageSize = $this->getVar(ZAuthConstant::MODVAR_ITEMS_PER_PAGE, ZAuthConstant::DEFAULT_ITEMS_PER_PAGE);
         $paginator = $authenticationMappingRepository->query($filter, [$sort => $sortdir], 'and', $page, $pageSize);
-        $paginator->setRoute('zikulazauthmodule_useradministration_list');
+        $paginator->setRoute('zikulazauthmodule_useradministration_listmappings');
         $routeParameters = [
             'sort' => $sort,
             'sortdir' => $sortdir,
@@ -108,7 +108,7 @@ class UserAdministrationController extends AbstractController
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
             'actionsHelper' => $actionsHelper,
-            'alpha' => new AlphaFilter('zikulazauthmodule_useradministration_list', $routeParameters, $letter),
+            'alpha' => new AlphaFilter('zikulazauthmodule_useradministration_listmappings', $routeParameters, $letter),
             'paginator' => $paginator
         ];
     }
@@ -204,7 +204,7 @@ class UserAdministrationController extends AbstractController
                     $userRepository->removeAndFlush($user);
                     $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($user));
 
-                    return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+                    return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
                 }
                 $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
                 $hook = new ProcessHook($user->getUid());
@@ -219,7 +219,7 @@ class UserAdministrationController extends AbstractController
                     $this->addFlash('error', 'Warning! New user information has been saved, however there may have been an issue saving it properly.');
                 }
 
-                return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+                return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -296,7 +296,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+            return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
         }
 
         return [
@@ -339,7 +339,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+            return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
         }
 
         return [
@@ -373,7 +373,7 @@ class UserAdministrationController extends AbstractController
             $this->addFlash('status', $this->trans('Done! The password recovery verification link for %userName% has been sent via e-mail.', ['%userName%' => $mapping->getUname()]));
         }
 
-        return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+        return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
     }
 
     /**
@@ -397,7 +397,7 @@ class UserAdministrationController extends AbstractController
             $this->addFlash('status', $this->trans('Done! The user name for %userName% has been sent via e-mail.', ['%userName%' => $mapping->getUname()]));
         }
 
-        return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+        return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
     }
 
     /**
@@ -440,7 +440,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('info', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+            return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
         }
 
         return [
@@ -472,7 +472,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('info', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+            return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
         }
 
         return [

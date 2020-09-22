@@ -30,7 +30,7 @@
             "icon": "fas fa-tools",
             "capabilities": {
                 "admin": {
-                    "route": "zikulasettingsmodule_settings_main"
+                    "route": "zikulasettingsmodule_settings_mainsettings"
                 }
             },
             "securityschema": {

@@ -30,7 +30,7 @@
                     "route": "zikulagroupsmodule_group_adminlist"
                 },
                 "user": {
-                    "route": "zikulagroupsmodule_group_list"
+                    "route": "zikulagroupsmodule_group_listgroups"
                 }
             },
             "securityschema": {

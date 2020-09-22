@@ -9,7 +9,7 @@
             {% set url = 'https://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration' %}
             {% trans with {'%link%': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw} %}Below you see your current routing configuration (see %link% for reference).{% endtrans %}
             {% set title = 'Localisation settings'|trans %}
-            {% set url = path('zikulasettingsmodule_settings_locale') %}
+            {% set url = path('zikulasettingsmodule_settings_localesettings') %}
             {% trans with {'%link%': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw} %}You can change your routing configuration in the general settings: %link%.{% endtrans %}
             {% set title = 'reload installed languages'|trans %}
             {% set url = path('zikularoutesmodule_update_renew') %}

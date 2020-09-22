@@ -176,7 +176,11 @@ class ControllerType extends AbstractType
         }
 
         $reflectionClass = new ReflectionClass($controllerClassName);
-        $reflectionMethod = $reflectionClass->getMethod($method);
+        try {
+            $reflectionMethod = $reflectionClass->getMethod($method);
+        } catch (\Exception $exception) {
+            return false;
+        }
         $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, ThemeAnnotation::class);
 
         return isset($themeAnnotation) && 'admin' === $themeAnnotation->value;

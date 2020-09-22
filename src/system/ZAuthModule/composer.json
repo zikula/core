@@ -28,7 +28,7 @@
             "icon": "fas fa-user-lock",
             "capabilities": {
                 "admin": {
-                    "route": "zikulazauthmodule_useradministration_list"
+                    "route": "zikulazauthmodule_useradministration_listmappings"
                 }
             },
             "securityschema": {

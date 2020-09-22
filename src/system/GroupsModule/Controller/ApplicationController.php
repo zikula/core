@@ -128,13 +128,13 @@ class ApplicationController extends AbstractController
                 $this->getSpecificGroupMessage($groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember)
             );
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_listgroups');
         }
         $existingApplication = $applicationRepository->findOneBy(['group' => $group, 'user' => $userEntity]);
         if ($existingApplication) {
             $this->addFlash('info', 'You already have a pending application. Please wait until the administrator notifies you.');
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_listgroups');
         }
 
         $groupApplicationEntity = new GroupApplicationEntity();
@@ -153,7 +153,7 @@ class ApplicationController extends AbstractController
                 $this->addFlash('status', 'Application cancelled.');
             }
 
-            return $this->redirectToRoute('zikulagroupsmodule_group_list');
+            return $this->redirectToRoute('zikulagroupsmodule_group_listgroups');
         }
 
         return [

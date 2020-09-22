@@ -25,7 +25,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         }
         $menu = $this->factory->createItem('extensionsAdminMenu');
         $menu->addChild('Extension List', [
-            'route' => 'zikulaextensionsmodule_extension_list',
+            'route' => 'zikulaextensionsmodule_extension_listextensions',
         ])->setAttribute('icon', 'fas fa-list');
         $menu->addChild('Settings', [
             'route' => 'zikulaextensionsmodule_config_config',

@@ -60,7 +60,7 @@ class FileIOController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            $this->redirectToRoute('zikulazauthmodule_useradministration_list');
+            $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
         }
 
         $defaultGroupId = $variableApi->get('ZikulaGroupsModule', 'defaultgroup');

@@ -85,7 +85,7 @@ class UserAdministrationController extends AbstractController
         string $letter = 'all',
         int $page = 1
     ): array {
-        $sortableColumns = new SortableColumns($router, 'zikulausersmodule_useradministration_list', 'sort', 'sortdir');
+        $sortableColumns = new SortableColumns($router, 'zikulausersmodule_useradministration_listusers', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid'), new Column('registrationDate'), new Column('lastLogin'), new Column('activated')]);
         $sortableColumns->setOrderByFromRequest($request);
         $sortableColumns->setAdditionalUrlParameters([
@@ -99,7 +99,7 @@ class UserAdministrationController extends AbstractController
         }
         $pageSize = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
         $paginator = $userRepository->paginatedQuery($filter, [$sort => $sortdir], 'and', $page, $pageSize);
-        $paginator->setRoute('zikulausersmodule_useradministration_list');
+        $paginator->setRoute('zikulausersmodule_useradministration_listusers');
         $routeParameters = [
             'sort' => $sort,
             'sortdir' => $sortdir,
@@ -111,7 +111,7 @@ class UserAdministrationController extends AbstractController
             'sort' => $sortableColumns->generateSortableColumns(),
             'actionsHelper' => $actionsHelper,
             'authMethodCollector' => $authenticationMethodCollector,
-            'alpha' => new AlphaFilter('zikulausersmodule_useradministration_list', $routeParameters, $letter),
+            'alpha' => new AlphaFilter('zikulausersmodule_useradministration_listusers', $routeParameters, $letter),
             'paginator' => $paginator
         ];
     }
@@ -200,7 +200,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+            return $this->redirectToRoute('zikulausersmodule_useradministration_listusers');
         }
 
         return [
@@ -231,7 +231,7 @@ class UserAdministrationController extends AbstractController
         ], [
             'buttonLabel' => $this->trans('Approve')
         ]);
-        $redirectToRoute = 'zikulausersmodule_useradministration_list';
+        $redirectToRoute = 'zikulausersmodule_useradministration_listusers';
 
         if (!$forceVerification) {
             if ($user->isApproved()) {
@@ -302,7 +302,7 @@ class UserAdministrationController extends AbstractController
         if (!count($uids)) {
             $this->addFlash('warning', 'No users selected.');
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+            return $this->redirectToRoute('zikulausersmodule_useradministration_listusers');
         }
         $usersImploded = implode(',', $uids);
 
@@ -315,13 +315,13 @@ class UserAdministrationController extends AbstractController
         if (empty($uids) && !$deleteConfirmationForm->isSubmitted()) {
             $this->addFlash('warning', 'No users selected.');
 
-            return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+            return $this->redirectToRoute('zikulausersmodule_useradministration_listusers');
         }
         if ($deleteConfirmationForm->isSubmitted()) {
             if ($deleteConfirmationForm->get('cancel')->isClicked()) {
                 $this->addFlash('success', 'Operation cancelled.');
 
-                return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+                return $this->redirectToRoute('zikulausersmodule_useradministration_listusers');
             }
             $userIdsImploded = $deleteConfirmationForm->get('users')->getData();
             $userIds = explode(',', $userIdsImploded);
@@ -353,7 +353,7 @@ class UserAdministrationController extends AbstractController
                     )
                 );
 
-                return $this->redirectToRoute('zikulausersmodule_useradministration_list');
+                return $this->redirectToRoute('zikulausersmodule_useradministration_listusers');
             }
         }
         $users = $userRepository->findByUids($uids);

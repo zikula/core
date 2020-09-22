@@ -54,7 +54,7 @@ class GroupController extends AbstractController
         }
 
         $paginator = $groupRepository->getGroups([], ['gtype' => $excludedGroups], [], $page, $pageSize);
-        $paginator->setRoute('zikulagroupsmodule_group_list');
+        $paginator->setRoute('zikulagroupsmodule_group_listgroups');
 
         return [
             'paginator' => $paginator,

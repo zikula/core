@@ -156,7 +156,7 @@ class MenuBuilder
         if (Constant::STATE_ACTIVE === $extension->getState()
             && (in_array($extension->getType(), [MetaData::TYPE_THEME, MetaData::TYPE_SYSTEM_THEME]))) {
             $menu->addChild('Edit theme vars', [
-                'route' => 'zikulathememodule_var_var',
+                'route' => 'zikulathememodule_var_variables',
                 'routeParameters' => ['themeName' => $extension->getName()]
             ])->setAttribute('icon', 'fas fa-pencil-alt')
                 ->setLinkAttribute('class', 'text-info');

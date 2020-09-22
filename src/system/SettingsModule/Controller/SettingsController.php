@@ -80,7 +80,7 @@ class SettingsController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulasettingsmodule_settings_main');
+            return $this->redirectToRoute('zikulasettingsmodule_settings_mainsettings');
         }
 
         return [
@@ -141,7 +141,7 @@ class SettingsController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulasettingsmodule_settings_locale');
+            return $this->redirectToRoute('zikulasettingsmodule_settings_localesettings');
         }
 
         return [
@@ -195,6 +195,6 @@ class SettingsController extends AbstractController
             $this->addFlash('error', 'Could not change the setting due to missing session access.');
         }
 
-        return $this->redirectToRoute('zikulasettingsmodule_settings_locale');
+        return $this->redirectToRoute('zikulasettingsmodule_settings_localesettings');
     }
 }

@@ -23,7 +23,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         $menu = $this->factory->createItem('adminAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $menu->addChild('Category tree', [
-                'route' => 'zikulacategoriesmodule_category_list',
+                'route' => 'zikulacategoriesmodule_category_listcategories',
             ])->setAttribute('icon', 'fas fa-tree');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

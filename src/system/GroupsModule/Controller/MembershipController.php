@@ -159,7 +159,7 @@ class MembershipController extends AbstractController
             $eventDispatcher->dispatch(new GroupPostUserAddedEvent($group, $userEntity));
         }
 
-        return $this->redirectToRoute('zikulagroupsmodule_group_list');
+        return $this->redirectToRoute('zikulagroupsmodule_group_listgroups');
     }
 
     /**
@@ -249,7 +249,7 @@ class MembershipController extends AbstractController
         // Let other modules know that we have updated a group.
         $eventDispatcher->dispatch(new GroupPostUserRemovedEvent($group, $userEntity));
 
-        return $this->redirectToRoute('zikulagroupsmodule_group_list');
+        return $this->redirectToRoute('zikulagroupsmodule_group_listgroups');
     }
 
     /**

@@ -28,7 +28,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $menu->addChild('Create new block', [
-                'route' => 'zikulablocksmodule_block_new',
+                'route' => 'zikulablocksmodule_block_create',
             ])->setAttribute('icon', 'fas fa-plus');
             $menu->addChild('Create new block position', [
                 'route' => 'zikulablocksmodule_position_edit',

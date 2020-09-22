@@ -40,7 +40,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $menu->addChild('Create new module category', [
-                'route' => 'zikulaadminmodule_admin_newcat',
+                'route' => 'zikulaadminmodule_admin_create',
             ])->setAttribute('icon', 'fas fa-plus');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {

@@ -48,7 +48,7 @@ class IdsLogController extends AbstractController
      *
      * Function to view ids log events.
      */
-    public function viewLog(
+    public function view(
         Request $request,
         IntrusionRepository $repository,
         RouterInterface $router,

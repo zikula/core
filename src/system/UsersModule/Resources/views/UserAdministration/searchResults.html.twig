@@ -75,7 +75,7 @@
             {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
                 {{ form_widget(resultsForm.delete) }}
             {% endif %}
-            <a class="btn btn-secondary" href="{{ path('zikulausersmodule_useradministration_list') }}"><i class="fas fa-sync"></i> {% trans %}Return to User Administration{% endtrans %}</a>
+            <a class="btn btn-secondary" href="{{ path('zikulausersmodule_useradministration_listusers') }}"><i class="fas fa-sync"></i> {% trans %}Return to User Administration{% endtrans %}</a>
         </div>
     </div>
     {{ form_end(resultsForm) }}

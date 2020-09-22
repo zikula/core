@@ -80,7 +80,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         $menu = $this->factory->createItem('zauthAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $menu->addChild('Users list', [
-                'route' => 'zikulazauthmodule_useradministration_list',
+                'route' => 'zikulazauthmodule_useradministration_listmappings',
             ])->setAttribute('icon', 'fas fa-list');
         }
         if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED)) {

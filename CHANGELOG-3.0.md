@@ -6,7 +6,8 @@
   - _there should be none_
 
 - Fixes:
-  - Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).
+  - [Theme] Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).
+  - [ZAuth] Fix wrong `DateTime` argument in `UserVerificationRepository`.
 
 - Features:
   - _there should be none_

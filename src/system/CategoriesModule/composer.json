@@ -26,7 +26,7 @@
             "icon": "fas fa-sitemap",
             "capabilities": {
                 "admin": {
-                    "route": "zikulacategoriesmodule_category_list"
+                    "route": "zikulacategoriesmodule_category_listcategories"
                 }
             },
             "securityschema": {

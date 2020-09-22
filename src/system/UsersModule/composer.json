@@ -28,7 +28,7 @@
             "icon": "fas fa-users-cog",
             "capabilities": {
                 "admin": {
-                    "route": "zikulausersmodule_useradministration_list"
+                    "route": "zikulausersmodule_useradministration_listusers"
                 },
                 "user": {
                     "route": "zikulausersmodule_account_menu"

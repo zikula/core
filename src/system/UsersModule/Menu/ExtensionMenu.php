@@ -83,7 +83,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         $menu = $this->factory->createItem('usersAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
             $menu->addChild('Users list', [
-                'route' => 'zikulausersmodule_useradministration_list',
+                'route' => 'zikulausersmodule_useradministration_listusers',
             ])->setAttribute('icon', 'fas fa-list');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

@@ -77,7 +77,7 @@ class PendingContentListener implements EventSubscriberInterface
 
         if (!empty($numPendingApproval)) {
             $collection = new Container(UsersConstant::MODNAME);
-            $collection->add(new PendingContentCollectible('user_registrations', $this->translator->trans('Users pending approval'), $numPendingApproval, 'zikulausersmodule_useradministration_list'));
+            $collection->add(new PendingContentCollectible('user_registrations', $this->translator->trans('Users pending approval'), $numPendingApproval, 'zikulausersmodule_useradministration_listusers'));
             $event->addCollection($collection);
         }
     }

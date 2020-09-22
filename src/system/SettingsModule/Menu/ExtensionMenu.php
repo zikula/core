@@ -80,7 +80,7 @@ class ExtensionMenu implements ExtensionMenuInterface
 
         $menu = $this->factory->createItem('settingsAdminMenu');
         $menu->addChild('Main settings', [
-            'route' => 'zikulasettingsmodule_settings_main',
+            'route' => 'zikulasettingsmodule_settings_mainsettings',
         ])->setAttribute('icon', 'fas fa-wrench');
 
         $menu->addChild('Localisation', [
@@ -91,7 +91,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         ;
 
         $menu['Localisation']->addChild('Localisation settings', [
-            'route' => 'zikulasettingsmodule_settings_locale',
+            'route' => 'zikulasettingsmodule_settings_localesettings',
         ])->setAttribute('icon', 'fas fa-spell-check');
 
         if (true === (bool)$this->variableApi->getSystemVar('multilingual')) {

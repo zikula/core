@@ -80,7 +80,7 @@ class BlockController extends AbstractController
             $isCreation = true;
             $bKey = json_decode($request->query->get('bkey'));
             if (empty($bKey)) {
-                return $this->redirectToRoute('zikulablocksmodule_block_new');
+                return $this->redirectToRoute('zikulablocksmodule_block_create');
             }
             $blockEntity = new BlockEntity(); // sets defaults in constructor
             $blockEntity->setBkey($bKey);

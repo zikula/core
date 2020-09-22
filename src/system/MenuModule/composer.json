@@ -27,7 +27,7 @@
             "icon": "fas fa-compass",
             "capabilities": {
                 "admin": {
-                    "route": "zikulamenumodule_menu_list"
+                    "route": "zikulamenumodule_menu_listmenus"
                 }
             },
             "securityschema": {

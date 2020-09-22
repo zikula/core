@@ -72,7 +72,7 @@ class ExtensionController extends AbstractController
             $eventDispatcher->dispatch(new RoutesNewlyAvailableEvent(json_decode($modulesJustInstalled)));
         }
 
-        $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_extension_list');
+        $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_extension_listextensions');
         $sortableColumns->addColumns([new Column('displayname'), new Column('state')]);
         $sortableColumns->setOrderByFromRequest($request);
 
@@ -90,7 +90,7 @@ class ExtensionController extends AbstractController
         $paginator = $extensionRepository->getPagedCollectionBy([], [
             $sortableColumns->getSortColumn()->getName() => $sortableColumns->getSortDirection()
         ], $page, $pageSize);
-        $paginator->setRoute('zikulaextensionsmodule_extension_list');
+        $paginator->setRoute('zikulaextensionsmodule_extension_listextensions');
 
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
@@ -128,7 +128,7 @@ class ExtensionController extends AbstractController
             $this->addFlash('status', $this->trans('Done! Activated %name%.', ['%name%' => $extension->getName()]));
         }
 
-        return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
     }
 
     /**
@@ -167,7 +167,7 @@ class ExtensionController extends AbstractController
             }
         }
 
-        return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
     }
 
     /**
@@ -224,7 +224,7 @@ class ExtensionController extends AbstractController
                 $this->addFlash('status', 'Operation cancelled.');
             }
 
-            return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+            return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
         }
 
         return [
@@ -276,7 +276,7 @@ class ExtensionController extends AbstractController
             $this->addFlash('error', 'Extension upgrade failed!');
         }
 
-        return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
     }
 
     /**
@@ -326,7 +326,7 @@ class ExtensionController extends AbstractController
                 if (!$extensionHelper->uninstallArray($requiredDependents)) {
                     $this->addFlash('error', 'Error: Could not uninstall dependent extensions.');
 
-                    return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+                    return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
                 }
                 // remove blocks
                 $blockRepository->remove($blocks);
@@ -362,7 +362,7 @@ class ExtensionController extends AbstractController
     {
         $cacheClearer->clear('symfony');
 
-        return $this->redirectToRoute('zikulaextensionsmodule_extension_list');
+        return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
     }
 
     /**

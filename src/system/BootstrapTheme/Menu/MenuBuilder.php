@@ -43,22 +43,22 @@ class MenuBuilder
         $menu->setChildrenAttribute('class', 'navbar-nav');
         $menu->addChild('Home', ['route' => 'home']);
         if ($this->permissionApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Settings', ['route' => 'zikulasettingsmodule_settings_main']);
+            $menu->addChild('Settings', ['route' => 'zikulasettingsmodule_settings_mainsettings']);
         }
         if ($this->permissionApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Extensions', ['route' => 'zikulaextensionsmodule_extension_list']);
+            $menu->addChild('Extensions', ['route' => 'zikulaextensionsmodule_extension_listextensions']);
         }
         if ($this->permissionApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             $menu->addChild('Blocks', ['route' => 'zikulablocksmodule_admin_view']);
         }
         if ($this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
-            $menu->addChild('Users', ['route' => 'zikulausersmodule_useradministration_list']);
+            $menu->addChild('Users', ['route' => 'zikulausersmodule_useradministration_listusers']);
         }
         if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
             $menu->addChild('Groups', ['route' => 'zikulagroupsmodule_group_adminlist']);
         }
         if ($this->permissionApi->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Permissions', ['route' => 'zikulapermissionsmodule_permission_list']);
+            $menu->addChild('Permissions', ['route' => 'zikulapermissionsmodule_permission_listpermissions']);
         }
         if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             $menu->addChild('Themes', ['route' => 'zikulathememodule_config_config']);
