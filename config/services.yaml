@@ -4,6 +4,18 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    assets_version: ~ #e.g. 'v1'
+
+    # TODO remove
+    locale: en # still referenced in CoreInstallerBundle
+    security.x_frame_options: SAMEORIGIN # still referenced in CoreBundle
+
+    # multisites configuration does nothing unless the Multisites module is installed and configured properly.
+    multisites: # still referenced in ExtensionsModule
+        enabled: false
+        mainsiteurl: ~
+        based_on_domains: ~
+        protected.systemvars: []
 
 services:
     # default configuration for services in *this* file
