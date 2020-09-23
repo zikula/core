@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
     <route id="home" path="/">
-        <default key="_controller">Zikula\Bundle\CoreBundle\Controller\MainController::homeAction</default>
+        <default key="_controller">Zikula\Bundle\CoreBundle\Controller\MainController::home</default>
         <condition>request == null or request.query.get('module') == ''</condition>
     </route>
 </routes>
