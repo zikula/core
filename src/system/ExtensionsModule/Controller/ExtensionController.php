@@ -374,6 +374,6 @@ class ExtensionController extends AbstractController
         $engine->setActiveTheme($themeName);
         $this->addFlash('warning', 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.');
 
-        return $this->forward('Zikula\Bundle\CoreBundle\Controller\MainController::homeAction');
+        return $this->forward('Zikula\Bundle\CoreBundle\Controller\MainController::home');
     }
 }
