@@ -6,6 +6,7 @@
   - _there should be none_
 
 - Fixes:
+  - [CoreBundle] More robust autoloader detection.
   - [Theme] Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).
   - [ZAuth] Fix wrong `DateTime` argument in `UserVerificationRepository`.
 

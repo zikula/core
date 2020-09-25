@@ -191,6 +191,10 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         if (null === $this->autoloader) {
             $loaders = spl_autoload_functions();
             foreach ($loaders as $loader) {
+                if ($loader instanceof Closure) {
+                    // skip unwanted autoloaders ("Cannot use object of type Closure as array")
+                    continue;
+                }
                 if ($loader[0] instanceof DebugClassLoader) {
                     $classLoader = $loader[0]->getClassLoader();
                     if ($classLoader instanceof Closure) {
