@@ -111,6 +111,9 @@ col-md-9
     {%- set label_attr = label_attr|merge({'data-browse': 'Choose a file'|trans}) -%}
     {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-file-input')|trim}) -%}
     {{- parent() -}}
+    {# add https://github.com/Johann-S/bs-custom-file-input #}
+    {{ pageAddAsset('javascript', zasset('@ZikulaFormExtensionBundle:js/bs-custom-file-input/bs-custom-file-input.js'), 85) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaFormExtensionBundle:js/ZikulaFormExtensionBundle.FilePicker.js'), 86) }}
 {%- endblock file_widget %}
 
 {# move label to left side also for checkbox switches with "switch-custom" class #}
