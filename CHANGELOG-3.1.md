@@ -12,11 +12,11 @@
   - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
 
 - Features:
+  - [config] Added standard Symfony bundle configurations for the following bundles (#4433):
+    - CoreBundle, ZikulaRoutesModule, ZikulaSecurityCenterModule, ZikulaSettingsModule, ZikulaThemeModule
+  - [extensions] Add StaticContent module to manage all static content (#4369).
   - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
   - [FormExtensionsBundle] Add bsCustomFileInput for direct file selection feedback (#4491).
-  - [Extensions] Add StaticContent module to manage all static content (#4369).
-  - [config] Added standard Symfony bundle configurations for the following bundles (#4433):
-    - [CoreBundle, ZikulaRoutesModule, ZikulaSecurityCenterModule, ZikulaSettingsModule, ZikulaThemeModule]
   - [ZikulaDefaultTheme] Add new default theme (#4462).
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
 
