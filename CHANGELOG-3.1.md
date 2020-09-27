@@ -13,7 +13,8 @@
 
 - Features:
   - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
-  - [extensions] Add StaticContent module to manage all static content (#4369).
+  - [FormExtensionsBundle] Add bsCustomFileInput for direct file selection feedback (#4491).
+  - [Extensions] Add StaticContent module to manage all static content (#4369).
   - [config] Added standard Symfony bundle configurations for the following bundles (#4433):
     - [CoreBundle, ZikulaRoutesModule, ZikulaSecurityCenterModule, ZikulaSettingsModule, ZikulaThemeModule]
   - [ZikulaDefaultTheme] Add new default theme (#4462).
