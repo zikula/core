@@ -24,6 +24,7 @@
 !/public/site.webmanifest
 /src/extensions/*
 !src/extensions/.gitignore
+src/.preload.php
 !/tests/test_dbs/*.sql
 /src/Zikula/CoreBundle/Tests/Functional/cache/
 /templates/
