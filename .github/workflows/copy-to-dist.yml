@@ -112,6 +112,21 @@ jobs:
           dst_path: /config/bundles.php
           dst_owner: zikula
           dst_repo_name: distribution
+  copy_preload_php:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env
+        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+      - name: Copy config/preload.php
+        uses: andstor/copycat-action@v3
+        with:
+          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          src_branch: ${{ env.BRANCH_NAME }}
+          dst_branch: ${{ env.BRANCH_NAME }}
+          src_path: /config/preload.php
+          dst_path: /config/preload.php
+          dst_owner: zikula
+          dst_repo_name: distribution
   copy_routes_yaml:
     runs-on: ubuntu-latest
     steps:
