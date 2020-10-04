@@ -125,7 +125,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             $io->newLine();
         }
 
-        // write parameters into config/services_custom.yaml
+        // write parameters into config/temp_params.yaml
         $this->parameterHelper->initializeParameters($settings);
 
         $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));

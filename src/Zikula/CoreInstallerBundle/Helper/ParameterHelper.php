@@ -187,7 +187,7 @@ class ParameterHelper
         try {
             $yamlHelper->setParameters($params);
         } catch (IOException $exception) {
-            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', 'services_custom.yaml'));
+            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', 'temp_params.yaml'));
         }
     }
 

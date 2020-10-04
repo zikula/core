@@ -72,9 +72,6 @@ class RequirementChecker
         }
         $projectDir = dirname(__DIR__, 4); // should work when Bundle in vendor too
         $kernelConfig = Yaml::parse(file_get_contents(realpath($projectDir . '/config/services.yaml')));
-        if (is_readable($file = $projectDir . '/config/services_custom.yaml')) {
-            $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
-        }
         if (is_readable($file = $projectDir . '/config/packages/core.yaml')) {
             $contents = Yaml::parse(file_get_contents($file));
             $kernelConfig['parameters']['datadir'] = $contents['core']['datadir'] ?? Configuration::DEFAULT_DATADIR;
