@@ -140,6 +140,14 @@ class CacheClearer
                 $this->logger->notice(sprintf('Cache cleared: %s', $cacheType));
             }
         }
+        if (function_exists('opcache_reset') && filter_var(ini_get('opcache.enable'), FILTER_VALIDATE_BOOLEAN)) {
+            // This is a brute force clear of _all_ the cached files
+            // because simply clearing the files in $this->cachesToClear isn't enough.
+            // Perhaps if we could discern exactly which files to invalidate, we could
+            // take a more precise approach with @opcache_invalidate($file, true).
+            @opcache_reset();
+            $this->logger->notice('OPCache cleared!');
+        }
         // the cache must be warmed after deleting files
         $this->warmer->warmUp($this->cacheDir);
     }
