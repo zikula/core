@@ -9,6 +9,7 @@
   - [config] `zikula_asset_manager.combine` now defaults to `false` (#4419).
 
 - Fixes:
+  - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
   - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
 
 - Features:
