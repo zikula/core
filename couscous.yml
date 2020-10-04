@@ -62,6 +62,9 @@ menu:
         configuration:
             name: Configuration
             items:
+                bundle-config:
+                    text: Bundle config
+                    relativeUrl: Configuration/BundleConfig/index.html
                 main-settings:
                     text: Main settings
                     relativeUrl: Configuration/Settings/index.html
