@@ -8,11 +8,11 @@ in standard Symfony config objects. The largest advantage of this approach is th
 set in php and do not need to be stored in yaml files. Therefore only non-default values must be set in the config
 objects. As of 3.1.0, the following bundles/extensions have config objects in use:
 
- - CoreBundle ([default values](Defaults/core.yaml))
- - ZikulaRoutesModule ([default values](Defaults/zikula_routes.yaml))
- - ZikulaSecurityCenterModule ([default values](Defaults/zikula_security_center.yaml))
- - ZikulaSettingsModule ([default values](Defaults/zikula_settings.yaml))
- - ZikulaThemeModule ([default values](Defaults/zikula_theme.yaml))
+ - CoreBundle ([default values](https://raw.githubusercontent.com/zikula/core/master/docs/Configuration/BundleConfig/Defaults/core.yaml))
+ - ZikulaRoutesModule ([default values](https://raw.githubusercontent.com/zikula/core/master/docs/Configuration/BundleConfig/Defaults/zikula_routes.yaml))
+ - ZikulaSecurityCenterModule ([default values](https://raw.githubusercontent.com/zikula/core/master/docs/Configuration/BundleConfig/Defaults/zikula_security_center.yaml))
+ - ZikulaSettingsModule ([default values](https://raw.githubusercontent.com/zikula/core/master/docs/Configuration/BundleConfig/Defaults/zikula_settings.yaml))
+ - ZikulaThemeModule ([default values](https://raw.githubusercontent.com/zikula/core/master/docs/Configuration/BundleConfig/Defaults/zikula_theme.yaml))
 
 These files are stored in the `config/packages` directory. If these files do not exist in your installation, do not be
 alarmed. The file will only exist if **non-default** values have been set previously. If only default values are in use,
