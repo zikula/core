@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
@@ -45,6 +46,12 @@ class MainController
     /**
      * This controller action is designed for the "/" route (home).
      * The route definition is set in `CoreBundle/Resources/config/routing.xml`
+     *
+     * @Route(
+     *     "/",
+     *     name="home",
+     *     condition="request == null or request.query.get('module') == ''"
+     * )
      */
     public function home(Request $request): Response
     {

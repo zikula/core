@@ -1,11 +1,11 @@
 core:
-    resource: "@CoreBundle/Resources/config/routing.xml"
+    resource: "@CoreBundle/Resources/config/routing.yaml"
 
 hook:
     resource: "@ZikulaHookBundle/Resources/config/routing.yaml"
 
 installer:
-    resource: "@ZikulaCoreInstallerBundle/Resources/config/routing/routing.xml"
+    resource: "@ZikulaCoreInstallerBundle/Resources/config/routing.yaml"
 
 workflow_editor:
     resource: "@ZikulaWorkflowBundle/Resources/config/routing.yaml"

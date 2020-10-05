@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 
 class AjaxInstallController
@@ -29,6 +30,9 @@ class AjaxInstallController
         $this->stageHelper = $stageHelper;
     }
 
+    /**
+     * @Route("/ajaxinstall", name="ajaxinstall", options={"expose": true, "i18n": false})
+     */
     public function ajax(Request $request): JsonResponse
     {
         $stage = $request->request->get('stage');
