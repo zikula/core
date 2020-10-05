@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreInstallerBundle\Helper\PhpHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\WizardHelper;
 
@@ -52,6 +53,9 @@ class InstallerController
         $this->installed = '0.0.0' !== $installed;
     }
 
+    /**
+     * @Route("/install/{stage}", name="install", defaults={"stage": ""})
+     */
     public function install(Request $request, string $stage): Response
     {
         // already installed?

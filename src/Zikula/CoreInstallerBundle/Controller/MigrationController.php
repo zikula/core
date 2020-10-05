@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 
 class MigrationController
@@ -29,6 +30,9 @@ class MigrationController
         $this->migrationHelper = $migrationHelper;
     }
 
+    /**
+     * @Route("/zauth_migration", name="zauth_migration", options={"expose": true, "i18n": false})
+     */
     public function migrate(Request $request): JsonResponse
     {
         $percentComplete = 0;

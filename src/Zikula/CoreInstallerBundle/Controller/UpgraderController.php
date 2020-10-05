@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -72,7 +73,10 @@ class UpgraderController
         $this->locale = $locale;
     }
 
-    public function upgrade(Request $request, $stage): Response
+    /**
+     * @Route("/upgrade/{stage}", name="upgrade", defaults={"stage": ""})
+     */
+    public function upgrade(Request $request, string $stage): Response
     {
         if (version_compare($this->installed, ZikulaKernel::VERSION, '=')) {
             $stage = 'complete';
