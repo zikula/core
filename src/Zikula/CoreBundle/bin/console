@@ -20,9 +20,9 @@ $possibleRootDirectories = [
 foreach ($possibleRootDirectories as $directory) {
     $file = $directory . 'vendor/autoload.php';
     if (file_exists($file)) {
-        require $file;
+        require_once $file;
         // remove again after #4352 has been done
-        require $directory . '/vendor/symfony/symfony/src/Symfony/Component/String/Resources/functions.php';
+        require_once $directory . '/vendor/symfony/symfony/src/Symfony/Component/String/Resources/functions.php';
         break;
     }
 }
