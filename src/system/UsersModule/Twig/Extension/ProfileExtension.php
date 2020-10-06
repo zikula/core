@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Twig\Extension;
 
+use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -159,11 +160,11 @@ class ProfileExtension extends AbstractExtension
 
         if (!empty($imagePath)) {
             $show = '<img src="' . htmlspecialchars($imagePath, ENT_QUOTES) . '" alt="' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" />';
-        } elseif ($maxLength > 0) {
+        } elseif (0 < $maxLength) {
             // truncate the user name to $maxLength chars
             $length = mb_strlen($userDisplayName);
             $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-            $show = htmlspecialchars(mb_substr($userDisplayName, 0, $truncEnd), ENT_QUOTES);
+            $show = htmlspecialchars((string)s($userDisplayName)->slice(0, $truncEnd), ENT_QUOTES);
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }

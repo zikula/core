@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Maker;
 
+use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -20,8 +21,7 @@ class Validators
 {
     public static function validateBundleNamespace(InputInterface $input, $allowSuffix = false): string
     {
-        $namespace = $input->getArgument('namespace');
-        $namespace = trim(str_replace('/', '\\', $namespace));
+        $namespace = (string)s($input->getArgument('namespace'))->replace('/', '\\')->trim();
         if (!preg_match('/^(?:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\?)+$/', $namespace)) {
             throw new InvalidArgumentException('The namespace contains invalid characters.');
         }
@@ -29,29 +29,28 @@ class Validators
         // validate reserved keywords
         $reserved = self::getReservedWords();
         foreach (explode('\\', $namespace) as $word) {
-            if (in_array(mb_strtolower($word), $reserved, true)) {
+            if (in_array((string)s($word)->lower(), $reserved, true)) {
                 throw new InvalidArgumentException(sprintf('The namespace cannot contain reserved words ("%s").', $word));
             }
         }
 
         if (!$allowSuffix) {
-            foreach (['module', 'theme', 'bundle'] as $word) {
-                if (false !== mb_strpos(mb_strtolower($namespace), $word)) {
-                    throw new InvalidArgumentException(sprintf('The namespace cannot contain "%s".', $word));
-                }
+            $reserved = ['module', 'theme', 'bundle'];
+            if (s($namespace)->lower()->containsAny($reserved)) {
+                throw new InvalidArgumentException(sprintf('The namespace cannot contain "%s" suffixes.', implode(' | ', $reserved)));
             }
         }
 
-        if ('Zikula\\' === mb_substr($namespace, 0, 7) && false === $input->getOption('force')) {
+        if (s($namespace)->startsWith('Zikula\\') && false === $input->getOption('force')) {
             throw new InvalidArgumentException(sprintf('Use of Zikula as the vendor name is not recommended. If you use it you must also specify the %s option', '--force'));
         }
 
         // validate that the namespace is at least one level deep
-        if (false === mb_strpos($namespace, '\\')) {
+        if (null === s($namespace)->indexOf('\\')) {
             throw new InvalidArgumentException(sprintf('The namespace must contain a vendor namespace (e.g. "VendorName\%s" instead of simply "%s").', $namespace, $namespace));
         }
 
-        if (mb_substr_count($namespace, '\\') > 1) {
+        if (1 < mb_substr_count($namespace, '\\')) {
             throw new InvalidArgumentException(sprintf('The namespace must contain only a vendor and BundleName (e.g. "VendorName\BundleName" instead of "%s").', $namespace));
         }
 

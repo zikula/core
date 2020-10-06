@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\WorkflowBundle\DependencyInjection;
 
+use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -40,7 +41,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
         // modules may define their workflows in: <bundlePath>/Resources/workflows/
         $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
         foreach ($bundleMetaData as $bundleName => $metaData) {
-            if ('Module' !== mb_substr($bundleName, -6)) {
+            if (!s($bundleName)->endsWith('Module')) {
                 continue;
             }
 

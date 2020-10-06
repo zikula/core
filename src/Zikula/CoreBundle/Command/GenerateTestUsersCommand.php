@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreBundle\Command;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
+use function Symfony\Component\String\s;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -132,7 +133,7 @@ EOT
         $this->verified = in_array((int) $input->getOption('verified'), [0, 1, 2]) ? (int) $input->getOption('verified') : 1;
         $regDate = $input->getOption('regdate') ?? $this->nowUTC;
         $this->range = is_string($regDate) && '>' === $regDate[0];
-        $this->regDate = $this->range ? mb_substr($regDate, 1) : $regDate;
+        $this->regDate = $this->range ? (string)s($regDate)->slice(1) : $regDate;
 
         $io->title('User generation utility');
         $io->text('Generating users...');

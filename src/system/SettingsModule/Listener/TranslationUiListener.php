@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule\Listener;
 
+use function Symfony\Component\String\s;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -64,7 +65,10 @@ class TranslationUiListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $routeName = $request->get('_route', '');
-        if ('translation_edit_in_place_update' !== $routeName && 'translation_' !== mb_substr($routeName, 0, 12)) {
+        if (
+            'translation_edit_in_place_update' !== $routeName
+            && !s($routeName)->startsWith('translation_')
+        ) {
             return;
         }
 

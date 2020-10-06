@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Api;
 
+use function Symfony\Component\String\s;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -53,9 +54,7 @@ class BlockFactoryApi implements BlockFactoryApiInterface
             throw new RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
         }
 
-        if (0 === mb_strpos($blockClassName, '\\')) {
-            $blockClassName = mb_substr($blockClassName, 1);
-        }
+        $blockClassName = (string)s($blockClassName)->trimStart('\\');
 
         if (!$this->container->has($blockClassName)) {
             throw new RuntimeException($this->translator->trans('Block class %className% not found in container.', ['%className%' => $blockClassName]));

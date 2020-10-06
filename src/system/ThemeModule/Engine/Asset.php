@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine;
 
+use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Filesystem\Filesystem;
@@ -89,20 +90,19 @@ class Asset
         $httpRootDir = str_replace($basePath, '', $publicDir);
 
         // return immediately for straight asset paths
-        if ('@' !== $path[0]) {
-            if (0 === mb_strpos($path, '/')) {
-                $path = mb_substr($path, 1);
-            }
-            $publicPath = $this->assetPackages->getUrl($path);
+        $path = s($path);
+        if (!$path->startsWith('@')) {
+            $path = $path->trimStart('/');
+            $publicPath = $this->assetPackages->getUrl((string)$path);
             if (false !== realpath($httpRootDir . $publicPath)) {
                 return $publicPath;
             }
             throw new AssetNotFoundException(sprintf('Could not find asset "%s"', $httpRootDir . $publicPath));
         }
 
-        [$bundleName, $relativeAssetPath] = explode(':', $path);
+        [$bundleName, $relativeAssetPath] = explode(':', (string)$path);
 
-        $bundleNameForAssetPath = mb_strtolower(mb_substr($bundleName, 1));
+        $bundleNameForAssetPath = (string)s($bundleName)->trimStart('@')->lower();
         $bundleAssetPath = $this->getBundleAssetPath($bundleName);
         $themeName = $this->themeEngine->getTheme()->getName();
 
@@ -142,7 +142,7 @@ class Asset
         if (!isset($bundleName)) {
             throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle"');
         }
-        $bundle = $this->kernel->getBundle(mb_substr($bundleName, 1));
+        $bundle = $this->kernel->getBundle((string)s($bundleName)->trimStart('@'));
         if (!$bundle instanceof Bundle) {
             throw new InvalidArgumentException('Bundle ' . $bundleName . ' not found.');
         }
@@ -151,6 +151,6 @@ class Asset
             return $bundle->getRelativeAssetPath();
         }
 
-        return 'bundles/' . mb_strtolower(mb_substr($bundle->getName(), 0, -mb_strlen('bundle')));
+        return 'bundles/' . s($bundle->getName())->lower()->trimEnd('bundle');
     }
 }

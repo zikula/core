@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Translation;
 
+use function Symfony\Component\String\s;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -57,9 +58,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
         }
 
         if (null !== $bundle) {
-            if ('@' === $bundle[0]) {
-                $bundle = substr($bundle, 1);
-            }
+            $bundle = (string)s($bundle)->trimStart('@');
 
             $this->extractTranslationHelper->setExtensionName($bundle);
         }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Controller;
 
+use function Symfony\Component\String\s;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,7 @@ class HelpController extends AbstractController
         string $moduleName
     ): Response {
         $page = $request->query->get('page', 'README');
-        if (false !== mb_strpos($page, '..')) {
+        if (s($page)->containsAny('..')) {
             throw new \Exception('Invalid page "' . $page . '".');
         }
 
@@ -76,17 +77,18 @@ class HelpController extends AbstractController
         $content = preg_replace_callback(
             '/\[(.*?)\]\((.*?)\)/',
             function ($match) use ($router, $moduleName, $raw) {
+                $pageName = s($match[2]);
                 if (false === mb_strpos($match[2], '.md')) {
                     return $match[0];
                 }
-                if ('http' === mb_substr($match[2], 0, 4)) {
+                if ($pageName->startsWith('http')) {
                     return $match[0];
                 }
 
                 // local link - rewrite
                 $urlArgs = [
                     'moduleName' => $moduleName,
-                    'page' => trim($match[2], '.md')
+                    'page' => (string)$pageName->trimEnd('.md')
                 ];
                 if (1 === $raw) {
                     $urlArgs['raw'] = 1;

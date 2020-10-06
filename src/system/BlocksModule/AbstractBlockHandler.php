@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule;
 
+use function Symfony\Component\String\s;
 use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -107,10 +108,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     {
         // default to the ClassName without the `Block` suffix
         // note: This string is intentionally left untranslated.
-        $fqCn = static::class;
-        $pos = mb_strrpos($fqCn, '\\');
-
-        return mb_substr($fqCn, $pos + 1, -5);
+        return (string)s(static::class)->afterLast('\\')->trimEnd('Block');
     }
 
     /**

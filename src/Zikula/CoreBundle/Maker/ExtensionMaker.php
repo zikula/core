@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Maker;
 
+use function Symfony\Component\String\s;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\FileManager;
@@ -164,7 +165,7 @@ class ExtensionMaker extends AbstractMaker
                     'namespace' => $namespace . $type,
                     'type' => $type,
                     'name' => $bundleClassNameDetails->getShortName(),
-                    'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
+                    'vendor' => (string)s($namespace)->before('\\'),
                 ]
             );
         }
@@ -191,9 +192,9 @@ class ExtensionMaker extends AbstractMaker
                 [
                     'namespace' => $namespace . $type,
                     'type' => $type,
-                    'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\')),
-                    'name' => mb_substr($namespace, mb_strpos($namespace, '\\') + 1),
-                    'bundleClass' => $bundleClass
+                    'vendor' => (string)s($namespace)->before('\\'),
+                    'name' => (string)s($namespace)->after('\\'),
+                    'bundleClass' => $bundleClass,
                 ]
             );
         }

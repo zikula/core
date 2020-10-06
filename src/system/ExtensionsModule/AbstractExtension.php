@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
+use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use LogicException;
 use Symfony\Component\DependencyInjection\Container;
@@ -29,7 +30,8 @@ abstract class AbstractExtension extends Bundle
     public function getInstallerClass(): string
     {
         $ns = $this->getNamespace();
-        $class = $ns . '\\' . mb_substr($ns, mb_strrpos($ns, '\\') + 1, mb_strlen($ns)) . 'Installer';
+        $installerName = s($ns)->afterLast('\\')->append('Installer');
+        $class = $ns . '\\' . (string)$installerName;
 
         return $class;
     }
@@ -62,7 +64,10 @@ abstract class AbstractExtension extends Bundle
      */
     public function getRelativeAssetPath(): string
     {
-        return mb_strtolower($this->getNameType() . 's/' . mb_substr($this->getName(), 0, -mb_strlen($this->getNameType())));
+        $folder = $this->getNameType() . 's/';
+        $name = s($this->getName())->trimEnd($this->getNameType());
+
+        return (string)s($folder . $name)->lower();
     }
 
     public function getNameType(): string

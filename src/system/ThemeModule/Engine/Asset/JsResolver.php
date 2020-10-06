@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine\Asset;
 
+use function Symfony\Component\String\s;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 /**
@@ -73,8 +74,9 @@ class JsResolver implements ResolverInterface
         foreach ($this->getBag()->all() as $source) {
             // if already there, add jquery-ui again to force weight setting is correct
             // jQueryUI must be loaded before Bootstrap, refs #3912
-            if ('jquery-ui.min.js' === mb_substr($source, -16)
-                || 'jquery-ui.js' === mb_substr($source, -12)
+            if (
+                s($source)->endsWith('jquery-ui.min.js')
+                || s($source)->endsWith('jquery-ui.js')
             ) {
                 $this->bag->add([$source => AssetBag::WEIGHT_JQUERY_UI]);
             }

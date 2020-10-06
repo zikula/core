@@ -17,6 +17,9 @@ use Zikula\Bundle\CoreInstallerBundle\Util\RequirementChecker;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+// remove again after #4352 has been done
+require dirname(__DIR__) . '/vendor/symfony/symfony/src/Symfony/Component/String/Resources/functions.php';
+
 if (!class_exists(Dotenv::class)) {
     throw new LogicException('Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.');
 }

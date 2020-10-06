@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Helper;
 
+use function Symfony\Component\String\s;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -57,7 +58,7 @@ class CacheDirHelper
                     // this uses always a fixed environment (e.g. "prod") that is serialized
                     // in purifier configuration
                     // so ensure the main directory exists even if another environment is currently used
-                    $parentDirectory = mb_substr($cacheDirectory, 0, -9);
+                    $parentDirectory = (string)s($cacheDirectory)->slice(0, -9);
                     if (!$fs->exists($parentDirectory)) {
                         $fs->mkdir($parentDirectory);
                     }
