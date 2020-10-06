@@ -31,7 +31,7 @@ class SanitizeHelper
         $controller = ucfirst((string) s($controllerName)->ensureEnd(self::SUFFIX_CONTROLLER));
         $type = (string) s($controllerName)->trimEnd(self::SUFFIX_CONTROLLER)->lower();
 
-        return [$controllerName, $type];
+        return [$controller, $type];
     }
 
     /**
