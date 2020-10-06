@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
-use function Symfony\Component\String\s;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Configuration;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;

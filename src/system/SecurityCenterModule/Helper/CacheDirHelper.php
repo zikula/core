@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Helper;
 
-use function Symfony\Component\String\s;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CacheDirHelper

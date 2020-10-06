@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Collector;
 
-use function Symfony\Component\String\s;
 use InvalidArgumentException;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSelfAllowedProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;

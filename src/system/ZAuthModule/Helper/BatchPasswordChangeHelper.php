@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Helper;
 
-use function Symfony\Component\String\s;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use function Symfony\Component\String\s;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;

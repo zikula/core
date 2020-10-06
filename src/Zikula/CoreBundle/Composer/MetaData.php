@@ -15,8 +15,8 @@ namespace Zikula\Bundle\CoreBundle\Composer;
 
 use ArrayAccess;
 use Exception;
-use function Symfony\Component\String\s;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
+use function Symfony\Component\String\s;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 

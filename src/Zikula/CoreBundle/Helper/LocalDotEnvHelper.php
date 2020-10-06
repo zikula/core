@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Helper;
 
-use function Symfony\Component\String\s;
 use Symfony\Component\Filesystem\Filesystem;
+use function Symfony\Component\String\s;
 
 class LocalDotEnvHelper
 {

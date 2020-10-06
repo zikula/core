@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\WorkflowBundle\DependencyInjection;
 
-use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,6 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use function Symfony\Component\String\s;
 
 /**
  * Class ZikulaWorkflowExtension

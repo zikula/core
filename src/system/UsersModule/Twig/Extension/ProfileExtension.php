@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Twig\Extension;
 
-use function Symfony\Component\String\s;
 use InvalidArgumentException;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine;
 
-use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Routing\RouterInterface;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ThemeModule\Engine\Exception\AssetNotFoundException;

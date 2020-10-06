@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Api;
 
-use function Symfony\Component\String\s;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\BlockHandlerInterface;

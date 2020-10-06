@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Zikula;
 
-use function Symfony\Component\String\s;
 use PhpParser\Node;
 use PhpParser\NodeVisitor;
+use function Symfony\Component\String\s;
 use Translation\Extractor\Visitor\Php\Symfony\AbstractFormType;
 use Translation\Extractor\Visitor\Php\Symfony\FormTrait;
 

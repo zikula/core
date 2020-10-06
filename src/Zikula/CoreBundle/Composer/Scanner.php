@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Composer;
 
 use const JSON_ERROR_NONE;
-use function Symfony\Component\String\s;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Scanner

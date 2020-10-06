@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Controller;
 
-use function Symfony\Component\String\s;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;

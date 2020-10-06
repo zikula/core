@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule;
 
-use function Symfony\Component\String\s;
 use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;

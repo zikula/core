@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Maker;
 
-use function Symfony\Component\String\s;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\FileManager;
@@ -26,6 +25,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Filesystem\Filesystem;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 

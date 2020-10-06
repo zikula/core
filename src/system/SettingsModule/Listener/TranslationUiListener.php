@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule\Listener;
 
-use function Symfony\Component\String\s;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use function Symfony\Component\String\s;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;

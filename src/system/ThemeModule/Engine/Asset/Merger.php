@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Engine\Asset;
 
 use DateTime;
-use function Symfony\Component\String\s;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Routing\RouterInterface;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 

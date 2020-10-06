@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Site;
 
-use function Symfony\Component\String\s;
 use Symfony\Component\HttpFoundation\RequestStack;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;

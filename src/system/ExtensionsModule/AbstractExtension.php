@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
-use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use LogicException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
 use Zikula\ExtensionsModule\Helper\MetaDataHelper;

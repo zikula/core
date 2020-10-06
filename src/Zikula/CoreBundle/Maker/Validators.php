@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Maker;
 
-use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
+use function Symfony\Component\String\s;
 
 class Validators
 {

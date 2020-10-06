@@ -15,8 +15,8 @@ namespace Zikula\ThemeModule\Engine;
 
 use ArrayIterator;
 use Countable;
-use function Symfony\Component\String\s;
 use IteratorAggregate;
+use function Symfony\Component\String\s;
 
 /**
  * This class provides an abstracted method of collecting, managing and retrieving variables.
