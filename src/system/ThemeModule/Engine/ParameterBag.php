@@ -173,7 +173,7 @@ class ParameterBag implements IteratorAggregate, Countable
     private function &resolvePath(string $key, bool $writeContext = false): array
     {
         $array = &$this->parameters;
-        $key = $this->resolveKey($key);
+        $key = (string)(s($key)->trimStart($this->ns));
 
         // Check if there is anything to do, else return
         if (!$key) {
@@ -214,6 +214,12 @@ class ParameterBag implements IteratorAggregate, Countable
      */
     private function resolveKey(string $key): string
     {
-        return (string)s($key)->trimStart($this->ns);
+        //return (string)s($key)->afterLast($this->ns);
+
+        if (false !== mb_strpos($key, $this->ns)) {
+            $key = mb_substr($key, mb_strrpos($key, $this->ns) + 1, mb_strlen($key));
+        }
+
+        return $key;
     }
 }

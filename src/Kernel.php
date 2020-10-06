@@ -32,6 +32,9 @@ class Kernel extends ZikulaKernel
         parent::__construct($environment, $debug);
 
         $this->databaseUrl = $databaseUrl;
+
+        // remove again after #4352 has been done
+        require_once $this->getProjectDir() . '/vendor/symfony/symfony/src/Symfony/Component/String/Resources/functions.php';
     }
 
     public function registerBundles(): iterable

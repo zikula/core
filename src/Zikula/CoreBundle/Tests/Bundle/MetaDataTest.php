@@ -17,6 +17,9 @@ use PHPUnit\Framework\TestCase;
 use Zikula\AdminModule\ZikulaAdminModule;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 
+// remove again after #4352 has been done
+require_once dirname(__DIR__, 5) . '/vendor/symfony/symfony/src/Symfony/Component/String/Resources/functions.php';
+
 class MetaDataTest extends TestCase
 {
     /**
