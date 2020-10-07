@@ -257,7 +257,7 @@ class BundleSyncHelper
     ): void {
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
             foreach ($extensionsFromDB as $dbname => $extensionFromDB) {
-                if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array)$extensionFromFile['oldnames'], true)) {
+                if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array) $extensionFromFile['oldnames'], true)) {
                     // migrate its modvars
                     $this->extensionVarRepository->updateName($dbname, $name);
                     // rename the extension register

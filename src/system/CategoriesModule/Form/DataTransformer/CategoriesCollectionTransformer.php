@@ -47,7 +47,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
             throw new InvalidConfigurationException("Option 'entityCategoryClass' must extend Zikula\\CategoriesModule\\Entity\\AbstractCategoryAssignment");
         }
         $this->entityCategoryClass = (string) $options['entityCategoryClass'];
-        $this->multiple = (bool)($options['multiple'] ?? false);
+        $this->multiple = (bool) ($options['multiple'] ?? false);
         $this->entityManager = $options['em'];
     }
 
@@ -57,7 +57,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         $class = $this->entityCategoryClass;
 
         foreach ($value as $regId => $categories) {
-            $regId = (int)mb_substr($regId, mb_strpos($regId, '_') + 1);
+            $regId = (int) mb_substr($regId, mb_strpos($regId, '_') + 1);
             $subCollection = new ArrayCollection();
             if (!is_array($categories) && $categories instanceof CategoryEntity) {
                 $categories = [$categories];
