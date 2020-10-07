@@ -3,6 +3,7 @@ risky: true
 
 enabled:
   - alpha_ordered_imports
+  - cast_spaces
   - combine_consecutive_issets
   - combine_consecutive_unsets
   - concat_with_spaces
