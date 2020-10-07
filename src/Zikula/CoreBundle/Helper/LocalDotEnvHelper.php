@@ -60,15 +60,15 @@ class LocalDotEnvHelper
     {
         $lines = [];
         foreach ($vars as $key => $value) {
-            $value = s((string) $value);
+            $value = s($value);
             if ($value->startsWith('!')) {
                 $value = $value->trimStart('!');
             } else {
                 $quote = $value->startsWith('\'') || $value->startsWith('"') ? '\'' : '';
                 $value = !empty($quote) ? $value->trim('\'')->trim('"') : $value;
-                $value = $quote . urlencode((string) $value) . $quote;
+                $value = $quote . urlencode($value) . $quote;
             }
-            $lines[] = $key . '=' . (string) $value;
+            $lines[] = $key . '=' . $value->__toString();
         }
 
         return trim(implode("\n", $lines));

@@ -58,7 +58,7 @@ class CacheDirHelper
                     // this uses always a fixed environment (e.g. "prod") that is serialized
                     // in purifier configuration
                     // so ensure the main directory exists even if another environment is currently used
-                    $parentDirectory = (string)s($cacheDirectory)->slice(0, -9);
+                    $parentDirectory = s($cacheDirectory)->slice(0, -9)->__toString();
                     if (!$fs->exists($parentDirectory)) {
                         $fs->mkdir($parentDirectory);
                     }

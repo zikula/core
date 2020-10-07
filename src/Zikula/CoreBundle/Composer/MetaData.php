@@ -89,7 +89,7 @@ class MetaData implements ArrayAccess
         $this->dependencies = $this->formatDependencies($json);
         $this->shortName = $json['extra']['zikula']['short-name'];
         $this->class = $json['extra']['zikula']['class'];
-        $this->namespace = (string) s($this->class)->beforeLast('\\', true);
+        $this->namespace = s($this->class)->beforeLast('\\', true)->__toString();
         $this->autoload = $json['autoload'];
         $this->displayName = $json['extra']['zikula']['displayname'] ?? '';
         $this->url = $json['extra']['zikula']['url'] ?? '';

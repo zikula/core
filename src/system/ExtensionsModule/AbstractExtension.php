@@ -31,7 +31,7 @@ abstract class AbstractExtension extends Bundle
     {
         $ns = $this->getNamespace();
         $installerName = s($ns)->afterLast('\\')->append('Installer');
-        $class = $ns . '\\' . (string) $installerName;
+        $class = $ns . '\\' . $installerName->__toString();
 
         return $class;
     }
@@ -67,7 +67,7 @@ abstract class AbstractExtension extends Bundle
         $folder = $this->getNameType() . 's/';
         $name = s($this->getName())->trimEnd($this->getNameType());
 
-        return (string) s($folder . $name)->lower();
+        return s($folder . $name)->lower()->__toString();
     }
 
     public function getNameType(): string

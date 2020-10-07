@@ -21,7 +21,7 @@ class Validators
 {
     public static function validateBundleNamespace(InputInterface $input, $allowSuffix = false): string
     {
-        $namespace = (string)s($input->getArgument('namespace'))->replace('/', '\\')->trim();
+        $namespace = s($input->getArgument('namespace'))->replace('/', '\\')->trim()->__toString();
         if (!preg_match('/^(?:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\?)+$/', $namespace)) {
             throw new InvalidArgumentException('The namespace contains invalid characters.');
         }
@@ -29,7 +29,7 @@ class Validators
         // validate reserved keywords
         $reserved = self::getReservedWords();
         foreach (explode('\\', $namespace) as $word) {
-            if (in_array((string)s($word)->lower(), $reserved, true)) {
+            if (in_array(s($word)->lower()->__toString(), $reserved, true)) {
                 throw new InvalidArgumentException(sprintf('The namespace cannot contain reserved words ("%s").', $word));
             }
         }

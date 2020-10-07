@@ -359,7 +359,7 @@ class RouteLoader extends Loader
             }
         }
 
-        return (string)s($extensionName . $separator . $type . $separator . $func)->lower() . $suffix;
+        return s($extensionName . $separator . $type . $separator . $func)->lower()->append($suffix)->__toString();
     }
 
     /**

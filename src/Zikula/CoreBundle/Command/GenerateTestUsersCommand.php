@@ -133,7 +133,7 @@ EOT
         $this->verified = in_array((int) $input->getOption('verified'), [0, 1, 2]) ? (int) $input->getOption('verified') : 1;
         $regDate = $input->getOption('regdate') ?? $this->nowUTC;
         $this->range = is_string($regDate) && '>' === $regDate[0];
-        $this->regDate = $this->range ? (string) s($regDate)->slice(1) : $regDate;
+        $this->regDate = $this->range ? s($regDate)->slice(1)->__toString() : $regDate;
 
         $io->title('User generation utility');
         $io->text('Generating users...');

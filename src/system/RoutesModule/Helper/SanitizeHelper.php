@@ -28,8 +28,8 @@ class SanitizeHelper
      */
     public function sanitizeController(string $controllerName): array
     {
-        $controller = ucfirst((string) s($controllerName)->ensureEnd(self::SUFFIX_CONTROLLER));
-        $type = (string) s($controllerName)->trimEnd(self::SUFFIX_CONTROLLER)->lower();
+        $controller = ucfirst(s($controllerName)->ensureEnd(self::SUFFIX_CONTROLLER)->__toString());
+        $type = s($controllerName)->trimEnd(self::SUFFIX_CONTROLLER)->lower()->__toString();
 
         return [$controller, $type];
     }
@@ -39,8 +39,8 @@ class SanitizeHelper
      */
     public function sanitizeAction(string $methodName): array
     {
-        $methodName = ucfirst((string) s($methodName)->ensureEnd(self::SUFFIX_ACTION));
-        $func = lcfirst((string) s($methodName)->trimEnd(self::SUFFIX_ACTION));
+        $methodName = ucfirst(s($methodName)->ensureEnd(self::SUFFIX_ACTION)->__toString());
+        $func = lcfirst(s($methodName)->trimEnd(self::SUFFIX_ACTION)->__toString());
 
         return [$methodName, $func];
     }

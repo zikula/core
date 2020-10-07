@@ -58,7 +58,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
         }
 
         if (null !== $bundle) {
-            $bundle = (string)s($bundle)->trimStart('@');
+            $bundle = s($bundle)->trimStart('@')->__toString();
 
             $this->extractTranslationHelper->setExtensionName($bundle);
         }
