@@ -137,7 +137,7 @@ class HookCollector implements HookCollectorInterface
         if (self::HOOK_SUBSCRIBE_OWN === $type) {
             return $this->containsSelfAllowedProvider($moduleName);
         }
-        $variable = s($type)->slice(5)->append('sByOwner')->__toString();
+        $variable = s($type)->slice(5)->append('sByOwner')->toString();
         $array = $this->{$variable};
 
         return isset($array[$moduleName]);
@@ -148,7 +148,7 @@ class HookCollector implements HookCollectorInterface
         if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER], true)) {
             throw new InvalidArgumentException('Only hook_provider and hook_subscriber are valid values.');
         }
-        $variable = s($type)->slice(5)->append('sByOwner')->__toString();
+        $variable = s($type)->slice(5)->append('sByOwner')->toString();
         $array = $this->{$variable};
 
         return array_keys($array);

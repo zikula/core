@@ -166,7 +166,7 @@ class Merger implements MergerInterface
         while (!feof($source)) {
             if ('css' === $ext) {
                 $line = fgets($source, 4096);
-                $lineParse = s(false !== $line ? trim($line) : '')->__toString();
+                $lineParse = s(false !== $line ? trim($line) : '')->toString();
                 $lineParseLength = mb_strlen($lineParse, 'UTF-8');
                 $newLine = '';
                 // parse line char by char

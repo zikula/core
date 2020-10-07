@@ -165,7 +165,7 @@ class ExtensionMaker extends AbstractMaker
                     'namespace' => $namespace . $type,
                     'type' => $type,
                     'name' => $bundleClassNameDetails->getShortName(),
-                    'vendor' => s($namespace)->before('\\')->__toString(),
+                    'vendor' => s($namespace)->before('\\')->toString(),
                 ]
             );
         }
@@ -192,8 +192,8 @@ class ExtensionMaker extends AbstractMaker
                 [
                     'namespace' => $namespace . $type,
                     'type' => $type,
-                    'vendor' => s($namespace)->before('\\')->__toString(),
-                    'name' => s($namespace)->after('\\')->__toString(),
+                    'vendor' => s($namespace)->before('\\')->toString(),
+                    'name' => s($namespace)->after('\\')->toString(),
                     'bundleClass' => $bundleClass,
                 ]
             );

@@ -164,7 +164,7 @@ class ProfileExtension extends AbstractExtension
             // truncate the user name to $maxLength chars
             $length = mb_strlen($userDisplayName);
             $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-            $show = htmlspecialchars(s($userDisplayName)->slice(0, $truncEnd)->__toString(), ENT_QUOTES);
+            $show = htmlspecialchars(s($userDisplayName)->slice(0, $truncEnd)->toString(), ENT_QUOTES);
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }

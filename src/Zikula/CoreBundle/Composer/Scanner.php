@@ -80,12 +80,12 @@ class Scanner
         if (JSON_ERROR_NONE === json_last_error()) {
             // calculate PSR-4 autoloading path for this namespace
             $class = $json['extra']['zikula']['class'];
-            $ns = s($class)->beforeLast('\\', true)->__toString();
+            $ns = s($class)->beforeLast('\\', true)->toString();
             if (false === isset($json['autoload']['psr-4'][$ns])) {
                 return false;
             }
             $json['autoload']['psr-4'][$ns] = $base;
-            $json['extra']['zikula']['short-name'] = s($class)->afterLast('\\')->__toString();
+            $json['extra']['zikula']['short-name'] = s($class)->afterLast('\\')->toString();
             $json['extensionType'] = $this->computeExtensionType($json);
 
             return $json;

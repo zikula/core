@@ -93,16 +93,16 @@ class Asset
         $path = s($path);
         if (!$path->startsWith('@')) {
             $path = $path->trimStart('/');
-            $publicPath = $this->assetPackages->getUrl($path->__toString());
+            $publicPath = $this->assetPackages->getUrl($path->toString());
             if (false !== realpath($httpRootDir . $publicPath)) {
                 return $publicPath;
             }
             throw new AssetNotFoundException(sprintf('Could not find asset "%s"', $httpRootDir . $publicPath));
         }
 
-        [$bundleName, $relativeAssetPath] = explode(':', $path->__toString());
+        [$bundleName, $relativeAssetPath] = explode(':', $path->toString());
 
-        $bundleNameForAssetPath = s($bundleName)->trimStart('@')->lower()->__toString();
+        $bundleNameForAssetPath = s($bundleName)->trimStart('@')->lower()->toString();
         $bundleAssetPath = $this->getBundleAssetPath($bundleName);
         $themeName = $this->themeEngine->getTheme()->getName();
 
@@ -142,7 +142,7 @@ class Asset
         if (!isset($bundleName)) {
             throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle"');
         }
-        $bundle = $this->kernel->getBundle(s($bundleName)->trimStart('@')->__toString());
+        $bundle = $this->kernel->getBundle(s($bundleName)->trimStart('@')->toString());
         if (!$bundle instanceof Bundle) {
             throw new InvalidArgumentException('Bundle ' . $bundleName . ' not found.');
         }

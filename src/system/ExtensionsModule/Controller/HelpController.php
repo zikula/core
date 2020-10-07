@@ -88,7 +88,7 @@ class HelpController extends AbstractController
                 // local link - rewrite
                 $urlArgs = [
                     'moduleName' => $moduleName,
-                    'page' => $pageName->trimEnd('.md')->__toString()
+                    'page' => $pageName->trimEnd('.md')->toString()
                 ];
                 if (1 === $raw) {
                     $urlArgs['raw'] = 1;

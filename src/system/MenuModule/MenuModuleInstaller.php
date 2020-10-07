@@ -49,7 +49,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
                 foreach ($menuItems as $menuItem) {
                     if ($menuItem->hasOption('icon')) {
                         $iconClass = (string) $menuItem->getOption('icon');
-                        $menuItem->setOption('icon', 'fas' . s($iconClass)->slice(3)->__toString());
+                        $menuItem->setOption('icon', 'fas' . s($iconClass)->slice(3)->toString());
                     }
                 }
                 $this->entityManager->flush();

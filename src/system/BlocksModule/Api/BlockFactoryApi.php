@@ -54,7 +54,7 @@ class BlockFactoryApi implements BlockFactoryApiInterface
             throw new RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
         }
 
-        $blockClassName = s($blockClassName)->trimStart('\\')->__toString();
+        $blockClassName = s($blockClassName)->trimStart('\\')->toString();
 
         if (!$this->container->has($blockClassName)) {
             throw new RuntimeException($this->translator->trans('Block class %className% not found in container.', ['%className%' => $blockClassName]));
