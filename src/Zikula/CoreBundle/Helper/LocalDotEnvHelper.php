@@ -60,7 +60,7 @@ class LocalDotEnvHelper
     {
         $lines = [];
         foreach ($vars as $key => $value) {
-            $value = s($value);
+            $value = s((string) $value);
             if ($value->startsWith('!')) {
                 $value = $value->trimStart('!')->__toString();
             } else {
