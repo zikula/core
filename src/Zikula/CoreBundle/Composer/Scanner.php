@@ -74,7 +74,7 @@ class Scanner
     {
         $base = str_replace('\\', '/', dirname($jsonFilePath));
         $srcPath = dirname(__DIR__, 4) . '/src/';
-        $base = s($base)->slice(mb_strlen($srcPath));
+        $base = s($base)->slice(mb_strlen($srcPath))->toString();
 
         $json = json_decode(file_get_contents($jsonFilePath), true);
         if (JSON_ERROR_NONE === json_last_error()) {
