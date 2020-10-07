@@ -128,7 +128,7 @@ class RegistrationHelper
      */
     public function approve(UserEntity $user): void
     {
-        $user->setApprovedBy((int)$this->currentUserApi->get('uid'));
+        $user->setApprovedBy((int) $this->currentUserApi->get('uid'));
         $user->setApprovedDate(new DateTime());
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);

@@ -74,7 +74,7 @@ class PermissionController extends AbstractController
             'lockadmin' => $this->getVar('lockadmin', 1) ? 1 : 0,
             'adminId' => $this->getVar('adminid', 1),
             'schema' => $schemaHelper->getAllSchema(),
-            'enableFilter' => (bool)$this->getVar('filter', 1)
+            'enableFilter' => (bool) $this->getVar('filter', 1)
         ];
     }
 

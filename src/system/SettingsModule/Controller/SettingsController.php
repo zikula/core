@@ -58,7 +58,7 @@ class SettingsController extends AbstractController
         $messageModules = $messageModuleCollector->getKeys();
 
         $variables = $variableApi->getAll(VariableApi::CONFIG);
-        $variables['UseCompression'] = (bool)$variables['UseCompression'];
+        $variables['UseCompression'] = (bool) $variables['UseCompression'];
         $form = $this->createForm(
             MainSettingsType::class,
             $variables,
@@ -108,9 +108,9 @@ class SettingsController extends AbstractController
         $form = $this->createForm(
             LocaleSettingsType::class,
             [
-                'multilingual' => (bool)$variableApi->getSystemVar('multilingual'),
+                'multilingual' => (bool) $variableApi->getSystemVar('multilingual'),
                 'languageurl' => $variableApi->getSystemVar('languageurl'),
-                'language_detect' => (bool)$variableApi->getSystemVar('language_detect'),
+                'language_detect' => (bool) $variableApi->getSystemVar('language_detect'),
                 'locale' => $variableApi->getSystemVar('locale'),
                 'timezone' => $variableApi->getSystemVar('timezone'),
             ],

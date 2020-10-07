@@ -83,7 +83,7 @@ class RouteDumperHelper
             // use provided lang if available
             $langs = [$lang];
         } else {
-            $multilingual = (bool)$this->variableApi->getSystemVar('multilingual');
+            $multilingual = (bool) $this->variableApi->getSystemVar('multilingual');
             if ($multilingual) {
                 // get all available locales
                 $langs = $installedLanguages;

@@ -72,7 +72,7 @@ class CoreExtension extends AbstractExtension
             return $string;
         }
 
-        return (bool)$string ? $this->translator->trans('Yes') : $this->translator->trans('No');
+        return (bool) $string ? $this->translator->trans('Yes') : $this->translator->trans('No');
     }
 
     /**

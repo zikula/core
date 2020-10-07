@@ -94,8 +94,8 @@ class ProfileExtension extends AbstractExtension
         int $maxLength = 0,
         string $title = ''
     ): string {
-        if (empty($userId) || $userId < 1) {
-            return (string)$userId;
+        if (empty($userId) || 1 > $userId) {
+            return (string) $userId;
         }
 
         return $this->determineProfileLink($userId, null, $class, $image, $maxLength, $title);
@@ -164,7 +164,7 @@ class ProfileExtension extends AbstractExtension
             // truncate the user name to $maxLength chars
             $length = mb_strlen($userDisplayName);
             $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-            $show = htmlspecialchars((string)s($userDisplayName)->slice(0, $truncEnd), ENT_QUOTES);
+            $show = htmlspecialchars((string) s($userDisplayName)->slice(0, $truncEnd), ENT_QUOTES);
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }

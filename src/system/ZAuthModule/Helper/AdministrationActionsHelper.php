@@ -104,7 +104,7 @@ class AdministrationActionsHelper
         if ($hasEditPermissionToUser) {
             $userEntity = $this->userRepository->find($mapping->getUid());
             if (null !== $userEntity) {
-                if ((bool)$userEntity->getAttributeValue(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)
+                if ((bool) $userEntity->getAttributeValue(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)
                     && $userEntity->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)
                 ) {
                     $title = $this->translator->trans('Cancel required change of password for %sub%', ['%sub%' => $mapping->getUname()]);

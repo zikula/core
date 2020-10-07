@@ -41,7 +41,7 @@ class AdminModuleRepository extends ServiceEntityRepository implements AdminModu
             ->setParameter('cid', $cid)
             ->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function setModuleCategory(ExtensionEntity $moduleEntity, AdminCategoryEntity $adminCategoryEntity): void

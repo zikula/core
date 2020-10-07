@@ -90,7 +90,7 @@ class PermissionApi implements PermissionApiInterface
     public function hasPermission(string $component = null, string $instance = null, int $level = ACCESS_NONE, int $user = null): bool
     {
         if (!isset($user)) {
-            $user = (int)$this->currentUserApi->get('uid');
+            $user = (int) $this->currentUserApi->get('uid');
         }
         $user = !$user ? Constant::USER_ID_ANONYMOUS : $user;
         if (!isset($this->groupPermsByUser[$user]) || false === $this->groupPermsByUser[$user]) {
@@ -132,7 +132,7 @@ class PermissionApi implements PermissionApiInterface
         foreach ($permsByGroup as $perm) {
             $component = $this->normalizeRegexString($perm['component']);
             $instance = $this->normalizeRegexString($perm['instance']);
-            $level = (int)$perm['level']; // this string must be a numeric and not normalized.
+            $level = (int) $perm['level']; // this string must be a numeric and not normalized.
             $groupPerms[] = [
                 'component' => $component,
                 'instance' => $instance,

@@ -174,7 +174,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             if ($input->isInteractive()) {
                 $io->text($this->translator->trans('Beginning user migration...'));
             }
-            $userMigrationMaxuid = (int)$this->migrationHelper->getMaxUnMigratedUid();
+            $userMigrationMaxuid = (int) $this->migrationHelper->getMaxUnMigratedUid();
             if ($input->isInteractive()) {
                 $progressBar = new ProgressBar($output, (int) ceil($count / MigrationHelper::BATCH_LIMIT));
                 $progressBar->start();

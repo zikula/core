@@ -21,13 +21,13 @@ class AdminLinksHelper
     public function sortAdminModsByOrder(array $adminLinks = []): array
     {
         usort($adminLinks, function (array $a, array $b) {
-            if ((int)$a['order'] === (int)$b['order']) {
+            if ((int) $a['order'] === (int) $b['order']) {
                 return strcmp($a['moduleName'], $b['moduleName']);
             }
-            if ((int)$a['order'] > (int)$b['order']) {
+            if ((int) $a['order'] > (int) $b['order']) {
                 return 1;
             }
-            if ((int)$a['order'] < (int)$b['order']) {
+            if ((int) $a['order'] < (int) $b['order']) {
                 return -1;
             }
 

@@ -66,9 +66,9 @@ class LocalDotEnvHelper
             } else {
                 $quote = $value->startsWith('\'') || $value->startsWith('"') ? '\'' : '';
                 $value = !empty($quote) ? $value->trim('\'')->trim('"') : $value;
-                $value = $quote . urlencode((string)$value) . $quote;
+                $value = $quote . urlencode((string) $value) . $quote;
             }
-            $lines[] = $key . '=' . (string)$value;
+            $lines[] = $key . '=' . (string) $value;
         }
 
         return trim(implode("\n", $lines));

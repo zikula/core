@@ -56,7 +56,7 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
             ->setParameter('guestUser', Constant::USER_ID_ANONYMOUS)
             ->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function countGuestsSince(DateTime $dateTime): int
@@ -69,7 +69,7 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
             ->setParameter('guestUser', Constant::USER_ID_ANONYMOUS)
             ->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function clearUnsavedData(): void

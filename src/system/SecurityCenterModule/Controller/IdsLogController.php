@@ -87,7 +87,7 @@ class IdsLogController extends AbstractController
         $hasFilters = 0 < count($where);
 
         // number of items to show
-        $pageSize = (int)$this->getVar('pagesize', 25);
+        $pageSize = (int) $this->getVar('pagesize', 25);
 
         // get data
         $paginator = $repository->getIntrusions($where, $sorting, $page, $pageSize);

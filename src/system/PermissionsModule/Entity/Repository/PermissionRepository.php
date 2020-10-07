@@ -95,7 +95,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         $query = $qb->select($qb->expr()->max('p.sequence'))
             ->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function updateSequencesFrom(int $value, int $amount = 1): void

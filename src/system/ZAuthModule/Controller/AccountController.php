@@ -307,7 +307,7 @@ class AccountController extends AbstractController
             $data = $form->getData();
             $code = bin2hex(random_bytes(8));
             $hashedCode = $encoderFactory->getEncoder(AuthenticationMappingEntity::class)->encodePassword($code, null);
-            $currentUserId = (int)$currentUserApi->get('uid');
+            $currentUserId = (int) $currentUserApi->get('uid');
             $userVerificationRepository->setVerificationCode($currentUserId, ZAuthConstant::VERIFYCHGTYPE_EMAIL, $hashedCode, $data['email']);
             $templateArgs = [
                 'uname'    => $currentUserApi->get('uname'),

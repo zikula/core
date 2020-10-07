@@ -178,7 +178,7 @@ abstract class AbstractPermissionHelper
      */
     public function getUserId(): int
     {
-        return (int)$this->currentUserApi->get('uid');
+        return (int) $this->currentUserApi->get('uid');
     }
     
     /**

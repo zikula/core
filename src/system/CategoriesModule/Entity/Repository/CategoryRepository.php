@@ -62,7 +62,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
 
         $query = $qb->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function getLastByParent(int $parentId = 0): ?CategoryEntity

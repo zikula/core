@@ -93,7 +93,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
     {
         switch ($oldVersion) {
             case '2.9.11': // shipped with Core-1.4.3
-                $this->setSystemVar('UseCompression', (bool)$this->getSystemVar('UseCompression'));
+                $this->setSystemVar('UseCompression', (bool) $this->getSystemVar('UseCompression'));
                 // no break
             case '2.9.12': // shipped with Core-1.4.4
                 // reconfigure TZ settings

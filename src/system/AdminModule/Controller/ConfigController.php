@@ -66,8 +66,8 @@ class ConfigController extends AbstractController
 
         $modVars = $variableApi->getAll('ZikulaAdminModule');
         $dataValues = $modVars;
-        $dataValues['ignoreinstallercheck'] = (bool)$dataValues['ignoreinstallercheck'];
-        $dataValues['admingraphic'] = (bool)$dataValues['admingraphic'];
+        $dataValues['ignoreinstallercheck'] = (bool) $dataValues['ignoreinstallercheck'];
+        $dataValues['admingraphic'] = (bool) $dataValues['admingraphic'];
 
         $modules = [];
         foreach ($adminModules as $adminModule) {

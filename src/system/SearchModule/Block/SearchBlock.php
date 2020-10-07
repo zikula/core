@@ -106,7 +106,7 @@ class SearchBlock extends AbstractBlockHandler
         }
         // remove disabled
         foreach ($searchModules as $displayName => $moduleName) {
-            if ((bool)$this->getVar('disable_' . $moduleName)) {
+            if ((bool) $this->getVar('disable_' . $moduleName)) {
                 unset($searchModules[$displayName]);
             }
         }
