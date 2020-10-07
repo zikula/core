@@ -62,13 +62,13 @@ class LocalDotEnvHelper
         foreach ($vars as $key => $value) {
             $value = s($value);
             if ($value->startsWith('!')) {
-                $value = $value->trimStart('!');
+                $value = $value->trimStart('!')->__toString();
             } else {
                 $quote = $value->startsWith('\'') || $value->startsWith('"') ? '\'' : '';
                 $value = !empty($quote) ? $value->trim('\'')->trim('"') : $value;
                 $value = $quote . urlencode($value->__toString()) . $quote;
             }
-            $lines[] = $key . '=' . $value->__toString();
+            $lines[] = $key . '=' . $value;
         }
 
         return trim(implode("\n", $lines));
