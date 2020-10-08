@@ -15,6 +15,7 @@ namespace Zikula\ZAuthModule\Helper;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use function Symfony\Component\String\s;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
@@ -55,9 +56,9 @@ class BatchPasswordChangeHelper
 
         /** @var \Zikula\UsersModule\Entity\UserEntity $user */
         foreach ($group->getUsers() as $user) {
-            $authMethod = $user->getAttributeValue('authenticationMethod');
+            $authMethod = s($user->getAttributeValue('authenticationMethod'));
             $uid = $user->getUid();
-            if ((Constant::USER_ID_ANONYMOUS === $uid) || ($currentUid === $uid) || ('native_' !== mb_substr($authMethod, 0, 7))) {
+            if (Constant::USER_ID_ANONYMOUS === $uid || $currentUid === $uid || !$authMethod->startsWith('native_')) {
                 continue;
             }
             $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);

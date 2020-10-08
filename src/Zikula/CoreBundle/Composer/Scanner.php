@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreBundle\Composer;
 use const JSON_ERROR_NONE;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Scanner
@@ -73,18 +74,18 @@ class Scanner
     {
         $base = str_replace('\\', '/', dirname($jsonFilePath));
         $srcPath = dirname(__DIR__, 4) . '/src/';
-        $base = mb_substr($base, mb_strlen($srcPath));
+        $base = s($base)->slice(mb_strlen($srcPath))->toString();
 
         $json = json_decode(file_get_contents($jsonFilePath), true);
         if (JSON_ERROR_NONE === json_last_error()) {
             // calculate PSR-4 autoloading path for this namespace
             $class = $json['extra']['zikula']['class'];
-            $ns = mb_substr($class, 0, mb_strrpos($class, '\\') + 1);
+            $ns = s($class)->beforeLast('\\', true)->toString();
             if (false === isset($json['autoload']['psr-4'][$ns])) {
                 return false;
             }
             $json['autoload']['psr-4'][$ns] = $base;
-            $json['extra']['zikula']['short-name'] = mb_substr($class, mb_strrpos($class, '\\') + 1, mb_strlen($class));
+            $json['extra']['zikula']['short-name'] = s($class)->afterLast('\\')->toString();
             $json['extensionType'] = $this->computeExtensionType($json);
 
             return $json;

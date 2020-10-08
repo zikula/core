@@ -73,13 +73,13 @@ class UpdateCheckHelper
     {
         $this->variableApi = $variableApi;
 
-        $this->enabled = (bool)$variableApi->getSystemVar('updatecheck');
+        $this->enabled = (bool) $variableApi->getSystemVar('updatecheck');
         $this->currentVersion = ZikulaKernel::VERSION;
-        $this->lastChecked = (int)$variableApi->getSystemVar('updatelastchecked');
-        $this->checkInterval = (int)$variableApi->getSystemVar('updatefrequency');
+        $this->lastChecked = (int) $variableApi->getSystemVar('updatelastchecked');
+        $this->checkInterval = (int) $variableApi->getSystemVar('updatefrequency');
         $this->updateversion = $variableApi->getSystemVar('updateversion');
 
-        $this->force = (bool)$requestStack->getMasterRequest()->query->get('forceupdatecheck');
+        $this->force = (bool) $requestStack->getMasterRequest()->query->get('forceupdatecheck');
         $this->checked = false;
         $this->releases = false;
 
@@ -147,9 +147,9 @@ class UpdateCheckHelper
         }
 
         if (true === $this->checked && '' !== $this->updateversion) {
-            $this->variableApi->set(VariableApi::CONFIG, 'updatelastchecked', (int)time());
+            $this->variableApi->set(VariableApi::CONFIG, 'updatelastchecked', (int) time());
             $this->variableApi->set(VariableApi::CONFIG, 'updateversion', $this->updateversion);
-            $this->lastChecked = (int)$this->variableApi->getSystemVar('updatelastchecked');
+            $this->lastChecked = (int) $this->variableApi->getSystemVar('updatelastchecked');
         }
     }
 

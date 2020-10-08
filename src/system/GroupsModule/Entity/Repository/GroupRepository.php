@@ -56,7 +56,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
 
         $query = $qb->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function getGroups(

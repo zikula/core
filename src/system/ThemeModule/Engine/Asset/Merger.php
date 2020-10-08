@@ -16,6 +16,7 @@ namespace Zikula\ThemeModule\Engine\Asset;
 use DateTime;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Routing\RouterInterface;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 
@@ -96,13 +97,13 @@ class Merger implements MergerInterface
                 false !== $path
                 && is_file($path)
                 && !in_array($asset, $this->skipFiles)
-                && false === mb_strpos($asset, '/public/bootswatch')
+                && null === s($asset)->indexOf('/public/bootswatch')
                 && !in_array($weight, [AssetBag::WEIGHT_ROUTER_JS, AssetBag::WEIGHT_ROUTES_JS])
             ) {
                 $cachedFiles[] = $path;
-            } elseif ($weight < 0) {
+            } elseif (0 > $weight) {
                 $preCachedFiles[$asset] = $weight;
-            } elseif ($weight > AssetBag::WEIGHT_DEFAULT) {
+            } elseif (AssetBag::WEIGHT_DEFAULT < $weight) {
                 $postCachedFiles[$asset] = $weight;
             } else {
                 $outputFiles[$asset] = $weight;
@@ -113,7 +114,7 @@ class Merger implements MergerInterface
             $this->lifetime,
             $this->kernel->getCacheDir() . '/assets/' . $type
         );
-        $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.combined.' . $type;
+        $key = md5(serialize($assets)) . (int) $this->minify . (int) $this->compress . $this->lifetime . '.combined.' . $type;
         $cacheService->get($key, function() use ($cachedFiles, $type) {
             $data = [];
             foreach ($cachedFiles as $k => $file) {
@@ -165,13 +166,13 @@ class Merger implements MergerInterface
         while (!feof($source)) {
             if ('css' === $ext) {
                 $line = fgets($source, 4096);
-                $lineParse = false !== $line ? trim($line) : '';
-                $lineParse_length = mb_strlen($lineParse, 'UTF-8');
+                $lineParse = s(false !== $line ? trim($line) : '')->toString();
+                $lineParseLength = mb_strlen($lineParse, 'UTF-8');
                 $newLine = '';
                 // parse line char by char
-                for ($i = 0; $i < $lineParse_length; $i++) {
+                for ($i = 0; $i < $lineParseLength; $i++) {
                     $char = $lineParse[$i];
-                    $nextchar = $i < ($lineParse_length - 1) ? $lineParse[$i + 1] : '';
+                    $nextchar = $i < ($lineParseLength - 1) ? $lineParse[$i + 1] : '';
                     if (!$inMultilineComment && '/' === $char && '*' === $nextchar) {
                         // a multiline comment starts here
                         $inMultilineComment = true;
@@ -182,29 +183,27 @@ class Merger implements MergerInterface
                         // a multiline comment stops here
                         $inMultilineComment = false;
                         $newLine .= $char . $nextchar;
-                        if ('/*\*//*/' === mb_substr($lineParse, $i - 3, 8)) {
+                        if ('/*\*//*/' === s($lineParse)->slice($i - 3, 8)) {
                             $wasCommentHack = true;
                             $i += 3; // move to end of hack process hack as it where
                             $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
                         }
                         $i++;
-                    } elseif ($importsAllowed && '@' === $char && '@import' === mb_substr($lineParse, $i, 7)) {
+                    } elseif ($importsAllowed && '@' === $char && '@import' === s($lineParse)->slice($i, 7)) {
                         // an @import starts here
-                        $lineParseRest = trim(mb_substr($lineParse, $i + 7));
-                        if (0 === mb_stripos($lineParseRest, 'url')) {
+                        $lineParseRest = s($lineParse)->slice($i + 7)->trim();
+                        if ($lineParseRest->ignoreCase()->startsWith('url')) {
                             // the @import uses url to specify the path
-                            $posEnd = mb_strpos($lineParse, ';', $i);
-                            $charsEnd = mb_substr($lineParse, $posEnd - 1, 2);
+                            $posEnd = s($lineParse)->indexOf(';', $i);
+                            $charsEnd = s($lineParse)->slice($posEnd - 1, 2);
                             if (');' === $charsEnd) {
                                 // used url() without media
-                                $start = mb_strpos($lineParseRest, '(') + 1;
-                                $end = mb_strpos($lineParseRest, ')');
-                                $url = mb_substr($lineParseRest, $start, $end - $start);
-                                if (0 === mb_strpos($url, '"')) {
-                                    $url = mb_substr($url, 1, -1);
-                                }
+                                $start = $lineParseRest->indexOf('(') + 1;
+                                $end = $lineParseRest->indexOf(')');
+                                $url = $lineParseRest->slice($start, $end - $start);
+                                $url = $url->trimStart('"')->trimStart('"');
                                 // fix url
-                                if ('http' === mb_substr($url, 0, 4)) {
+                                if ($url->startsWith('http')) {
                                     $newLine .= '@import url("' . $url . '");';
                                 } else {
                                     $url = dirname($file) . '/' . $url;
@@ -223,24 +222,22 @@ class Merger implements MergerInterface
                             } else {
                                 // @import contains media type so we can't include its contents.
                                 // We need to fix the url instead.
-                                $start = mb_strpos($lineParseRest, '(') + 1;
-                                $end = mb_strpos($lineParseRest, ')');
-                                $url = mb_substr($lineParseRest, $start, $end - $start);
-                                if (0 === mb_strpos($url, '"') | 0 === mb_strpos($url, "'")) {
-                                    $url = mb_substr($url, 1, -1);
-                                }
+                                $start = $lineParseRest->indexOf('(') + 1;
+                                $end = $lineParseRest->indexOf(')');
+                                $url = $lineParseRest->slice($start, $end - $start);
+                                $url = $url->trimStart('"')->trimStart('"');
                                 // fix url
                                 $url = dirname($file) . '/' . $url;
                                 // readd @import with fixed url
-                                $newLine .= '@import url("' . $url . '")' . mb_substr($lineParseRest, $end + 1, mb_strpos($lineParseRest, ';') - $end - 1) . ';';
+                                $newLine .= '@import url("' . $url . '")' . $lineParseRest->slice($end + 1, $lineParseRest->indexOf(';') - $end - 1) . ';';
                                 // skip @import statement
                                 $i += $posEnd - $i;
                             }
-                        } elseif (0 === mb_strpos($lineParseRest, '"') || 0 === mb_strpos($lineParseRest, '\'')) {
+                        } elseif ($lineParseRest->startsWith('"') || $lineParseRest->startsWith('\'')) {
                             // the @import uses an normal string to specify the path
-                            $posEnd = mb_strpos($lineParseRest, ';');
-                            $url = mb_substr($lineParseRest, 1, $posEnd - 2);
-                            $posEnd = mb_strpos($lineParse, ';', $i);
+                            $posEnd = $lineParseRest->indexOf(';');
+                            $url = $lineParseRest->slice(1, $posEnd - 2);
+                            $posEnd = s($lineParse)->indexOf(';', $i);
                             // fix url
                             $url = dirname($file) . '/' . $url;
                             if (!$wasCommentHack) {

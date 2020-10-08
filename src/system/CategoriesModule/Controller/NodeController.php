@@ -208,9 +208,9 @@ class NodeController extends AbstractController
         }
 
         $oldParent = $request->request->get('old_parent');
-        $oldPosition = (int)$request->request->get('old_position');
+        $oldPosition = (int) $request->request->get('old_position');
         $parent = $request->request->get('parent');
-        $position = (int)$request->request->get('position');
+        $position = (int) $request->request->get('position');
         if ($oldParent === $parent) {
             $diff = $oldPosition - $position; // if $diff is positive, then node moved up
             $methodName = $diff > 0 ? 'moveUp' : 'moveDown';

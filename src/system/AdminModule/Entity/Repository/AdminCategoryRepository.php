@@ -34,7 +34,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
             ->select('COUNT(c.cid)')
             ->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function getModuleCategory(int $moduleId): ?AdminCategoryEntity

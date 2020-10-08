@@ -54,7 +54,7 @@ trait WhereFromFilterTrait
                 } elseif (is_int($value['operand']) || is_array($value['operand']) || $value['operand'] instanceof DateTime) {
                     $dbValue = $value['operand'];
                 } else {
-                    $dbValue = (string)$value['operand'];
+                    $dbValue = (string) $value['operand'];
                 }
                 $methodMap = [
                     '=' => 'eq',

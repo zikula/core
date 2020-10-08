@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule;
 
+use function Symfony\Component\String\s;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 
@@ -48,7 +49,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
                 foreach ($menuItems as $menuItem) {
                     if ($menuItem->hasOption('icon')) {
                         $iconClass = (string) $menuItem->getOption('icon');
-                        $menuItem->setOption('icon', 'fas' . mb_substr($iconClass, 3));
+                        $menuItem->setOption('icon', 'fas' . s($iconClass)->slice(3)->toString());
                     }
                 }
                 $this->entityManager->flush();

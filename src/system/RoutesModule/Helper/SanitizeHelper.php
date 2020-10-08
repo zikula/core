@@ -13,27 +13,25 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Helper;
 
+use function Symfony\Component\String\s;
+
 /**
  * Helper class for sanitizing route properties.
  */
 class SanitizeHelper
 {
+    const SUFFIX_CONTROLLER = 'Controller';
+    const SUFFIX_ACTION = 'Action';
+
     /**
      * Sanitizes the controller / type parameter.
      */
     public function sanitizeController(string $controllerName): array
     {
-        if ('Controller' !== substr($controllerName, -10)) {
-            $type = $controllerName;
-            $controllerName .= 'Controller';
-        } else {
-            $type = substr($controllerName, 0, -10);
-        }
+        $controller = ucfirst(s($controllerName)->ensureEnd(self::SUFFIX_CONTROLLER)->toString());
+        $type = s($controllerName)->trimEnd(self::SUFFIX_CONTROLLER)->lower()->toString();
 
-        $type = strtolower($type);
-        $controllerName = ucfirst($controllerName);
-
-        return [$controllerName, $type];
+        return [$controller, $type];
     }
 
     /**
@@ -41,12 +39,8 @@ class SanitizeHelper
      */
     public function sanitizeAction(string $methodName): array
     {
-        if ('Action' !== substr($methodName, -6)) {
-            $methodName .= 'Action';
-        }
-
-        $methodName = ucfirst($methodName);
-        $func = lcfirst(substr($methodName, 0, -6));
+        $methodName = ucfirst(s($methodName)->ensureEnd(self::SUFFIX_ACTION)->toString());
+        $func = lcfirst(s($methodName)->trimEnd(self::SUFFIX_ACTION)->toString());
 
         return [$methodName, $func];
     }

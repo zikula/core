@@ -10,7 +10,7 @@
             "Zikula\\Bundle\\": ["src/Zikula/"],
             "Zikula\\": ["src/system/"]
         },
-        "files": ["src/Kernel.php"]
+        "files": ["src/Kernel.php", "vendor/symfony/symfony/src/Symfony/Component/String/Resources/functions.php"]
     },
     "authors": [
         {

@@ -35,7 +35,7 @@ class SearchStatRepository extends ServiceEntityRepository implements SearchStat
 
         $query = $qb->getQuery();
 
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     public function getStats(array $filters = [], array $sorting = [], int $page = 1, int $pageSize = 25): PaginatorInterface

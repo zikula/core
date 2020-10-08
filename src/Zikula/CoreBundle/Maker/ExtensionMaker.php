@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Filesystem\Filesystem;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
@@ -164,7 +165,7 @@ class ExtensionMaker extends AbstractMaker
                     'namespace' => $namespace . $type,
                     'type' => $type,
                     'name' => $bundleClassNameDetails->getShortName(),
-                    'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\'))
+                    'vendor' => s($namespace)->before('\\')->toString(),
                 ]
             );
         }
@@ -191,9 +192,9 @@ class ExtensionMaker extends AbstractMaker
                 [
                     'namespace' => $namespace . $type,
                     'type' => $type,
-                    'vendor' => mb_substr($namespace, 0, mb_strpos($namespace, '\\')),
-                    'name' => mb_substr($namespace, mb_strpos($namespace, '\\') + 1),
-                    'bundleClass' => $bundleClass
+                    'vendor' => s($namespace)->before('\\')->toString(),
+                    'name' => s($namespace)->after('\\')->toString(),
+                    'bundleClass' => $bundleClass,
                 ]
             );
         }

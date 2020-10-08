@@ -111,8 +111,8 @@ class PersistedBundleHelper
             ');
             foreach ($rows as $row) {
                 $this->extensionStateMap[$row['name']] = [
-                    'state' => (int)$row['state'],
-                    'id'    => (int)$row['id'],
+                    'state' => (int) $row['state'],
+                    'id' => (int) $row['id'],
                 ];
             }
 

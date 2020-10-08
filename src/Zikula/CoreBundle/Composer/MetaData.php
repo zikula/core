@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreBundle\Composer;
 use ArrayAccess;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
+use function Symfony\Component\String\s;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 
@@ -88,7 +89,7 @@ class MetaData implements ArrayAccess
         $this->dependencies = $this->formatDependencies($json);
         $this->shortName = $json['extra']['zikula']['short-name'];
         $this->class = $json['extra']['zikula']['class'];
-        $this->namespace = mb_substr($this->class, 0, mb_strrpos($this->class, '\\') + 1);
+        $this->namespace = s($this->class)->beforeLast('\\', true)->toString();
         $this->autoload = $json['autoload'];
         $this->displayName = $json['extra']['zikula']['displayname'] ?? '';
         $this->url = $json['extra']['zikula']['url'] ?? '';

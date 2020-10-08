@@ -91,7 +91,7 @@ class PlacementController extends AbstractController
         $query->getResult();
 
         // add new block positions
-        foreach ((array)$blockOrder as $order => $bid) {
+        foreach ((array) $blockOrder as $order => $bid) {
             $placement = new BlockPlacementEntity();
             $placement->setPosition($em->getReference('ZikulaBlocksModule:BlockPositionEntity', $position));
             $placement->setBlock($em->getReference('ZikulaBlocksModule:BlockEntity', $bid));

@@ -234,7 +234,7 @@ class AdminInterfaceController extends AbstractController
                 $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
             }
 
-            $moduleName = (string)$adminModule['name'];
+            $moduleName = (string) $adminModule['name'];
             $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
             if (isset($extensionMenu) && 'modules' === $mode && 'tabs' === $template) {
                 $extensionMenu->setChildrenAttribute('class', 'dropdown-menu');

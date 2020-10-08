@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Site;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -83,8 +84,8 @@ class SiteDefinition implements SiteDefinitionInterface
             $request = $this->requestStack->getCurrentRequest();
             if (null !== $request && null !== $request->attributes->get('_controller')) {
                 $controllerNameParts = explode('\\', $request->attributes->get('_controller'));
-                $extensionName = count($controllerNameParts) > 1 ? $controllerNameParts[0] . $controllerNameParts[1] : '';
-                if ('Module' === mb_substr($extensionName, -6)) {
+                $extensionName = 1 < count($controllerNameParts) ? $controllerNameParts[0] . $controllerNameParts[1] : '';
+                if (s($extensionName)->endsWith('Module')) {
                     $module = $this->extensionRepository->get($extensionName);
                     if (null !== $module) {
                         $moduleDisplayName = $module->getDisplayName();

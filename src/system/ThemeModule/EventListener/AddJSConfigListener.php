@@ -97,10 +97,10 @@ class AddJSConfigListener implements EventSubscriberInterface
             'entrypoint' => ZikulaKernel::FRONT_CONTROLLER,
             'baseURL' => $event->getRequest()->getSchemeAndHttpHost() . '/',
             'baseURI' => $event->getRequest()->getBasePath(),
-            'ajaxtimeout' => (int)$this->variableApi->getSystemVar('ajaxtimeout', 5000),
+            'ajaxtimeout' => (int) $this->variableApi->getSystemVar('ajaxtimeout', 5000),
             'lang' => $event->getRequest()->getLocale(),
             'sessionName' => isset($session) ? $session->getName() : $this->defaultSessionName,
-            'uid' => (int)$this->currentUserApi->get('uid')
+            'uid' => (int) $this->currentUserApi->get('uid')
         ];
 
         $config = array_map('htmlspecialchars', $config);

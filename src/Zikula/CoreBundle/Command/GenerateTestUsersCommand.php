@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function Symfony\Component\String\s;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -132,7 +133,7 @@ EOT
         $this->verified = in_array((int) $input->getOption('verified'), [0, 1, 2]) ? (int) $input->getOption('verified') : 1;
         $regDate = $input->getOption('regdate') ?? $this->nowUTC;
         $this->range = is_string($regDate) && '>' === $regDate[0];
-        $this->regDate = $this->range ? mb_substr($regDate, 1) : $regDate;
+        $this->regDate = $this->range ? s($regDate)->slice(1)->toString() : $regDate;
 
         $io->title('User generation utility');
         $io->text('Generating users...');

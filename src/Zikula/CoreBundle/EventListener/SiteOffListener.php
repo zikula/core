@@ -109,7 +109,7 @@ class SiteOffListener implements EventSubscriberInterface
             return;
         }
 
-        $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
+        $siteOff = (bool) $this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
 
         // Check for site closed

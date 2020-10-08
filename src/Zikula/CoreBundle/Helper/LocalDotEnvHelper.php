@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Helper;
 
 use Symfony\Component\Filesystem\Filesystem;
+use function Symfony\Component\String\s;
 
 class LocalDotEnvHelper
 {
@@ -59,12 +60,13 @@ class LocalDotEnvHelper
     {
         $lines = [];
         foreach ($vars as $key => $value) {
-            if ('!' === mb_substr((string) $value, 0, 1)) {
-                $value = mb_substr((string) $value, 1);
+            $value = s((string) $value);
+            if ($value->startsWith('!')) {
+                $value = $value->trimStart('!')->toString();
             } else {
-                $quote = in_array(mb_substr((string) $value, 0, 1), ['\'', '"']) ? '\'' : '';
-                $value = !empty($quote) ? trim((string) $value, '\'"') : (string) $value;
-                $value =  $quote . urlencode($value) . $quote;
+                $quote = $value->startsWith('\'') || $value->startsWith('"') ? '\'' : '';
+                $value = !empty($quote) ? $value->trim('\'')->trim('"') : $value;
+                $value = $quote . urlencode($value->toString()) . $quote;
             }
             $lines[] = $key . '=' . $value;
         }

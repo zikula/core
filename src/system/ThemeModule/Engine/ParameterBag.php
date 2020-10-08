@@ -16,6 +16,7 @@ namespace Zikula\ThemeModule\Engine;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use function Symfony\Component\String\s;
 
 /**
  * This class provides an abstracted method of collecting, managing and retrieving variables.
@@ -172,7 +173,7 @@ class ParameterBag implements IteratorAggregate, Countable
     private function &resolvePath(string $key, bool $writeContext = false): array
     {
         $array = &$this->parameters;
-        $key = (0 === mb_strpos($key, $this->ns)) ? mb_substr($key, 1) : $key;
+        $key = s($key)->trimStart($this->ns)->toString();
 
         // Check if there is anything to do, else return
         if (!$key) {
@@ -180,7 +181,7 @@ class ParameterBag implements IteratorAggregate, Countable
         }
 
         $parts = explode($this->ns, $key);
-        if (count($parts) < 2) {
+        if (2 > count($parts)) {
             if (!$writeContext) {
                 return $array;
             }
@@ -213,6 +214,8 @@ class ParameterBag implements IteratorAggregate, Countable
      */
     private function resolveKey(string $key): string
     {
+        //return s($key)->afterLast($this->ns)->toString();
+
         if (false !== mb_strpos($key, $this->ns)) {
             $key = mb_substr($key, mb_strrpos($key, $this->ns) + 1, mb_strlen($key));
         }

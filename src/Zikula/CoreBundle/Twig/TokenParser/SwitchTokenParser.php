@@ -55,7 +55,7 @@ class SwitchTokenParser extends AbstractTokenParser
                     $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
                     $body = $this->parser->subparse([$this, 'decideCaseFork']);
 
-                    $cases->setNode((string)$i, new Node([
+                    $cases->setNode((string) $i, new Node([
                         'expression' => $expr,
                         'body' => $body,
                     ]));
@@ -75,8 +75,8 @@ class SwitchTokenParser extends AbstractTokenParser
                     $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
                     $this->parser->subparse([$this, 'decideCaseFork']);
 
-                    if ($cases->hasNode((string)$i)) {
-                        $cases->getNode((string)$i)->setAttribute('break', true);
+                    if ($cases->hasNode((string) $i)) {
+                        $cases->getNode((string) $i)->setAttribute('break', true);
                     }
 
                     break;

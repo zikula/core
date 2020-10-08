@@ -110,7 +110,7 @@ class GenericEvent extends SymfonyGenericEvent implements \ArrayAccess, \Iterato
 
     public function hasException(): bool
     {
-        return (bool)$this->exception;
+        return (bool) $this->exception;
     }
 
     public function getSubject()

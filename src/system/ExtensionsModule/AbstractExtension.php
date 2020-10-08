@@ -18,6 +18,7 @@ use LogicException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
 use Zikula\ExtensionsModule\Helper\MetaDataHelper;
@@ -29,7 +30,8 @@ abstract class AbstractExtension extends Bundle
     public function getInstallerClass(): string
     {
         $ns = $this->getNamespace();
-        $class = $ns . '\\' . mb_substr($ns, mb_strrpos($ns, '\\') + 1, mb_strlen($ns)) . 'Installer';
+        $installerName = s($ns)->afterLast('\\')->append('Installer');
+        $class = $ns . '\\' . $installerName->toString();
 
         return $class;
     }
@@ -62,7 +64,10 @@ abstract class AbstractExtension extends Bundle
      */
     public function getRelativeAssetPath(): string
     {
-        return mb_strtolower($this->getNameType() . 's/' . mb_substr($this->getName(), 0, -mb_strlen($this->getNameType())));
+        $folder = $this->getNameType() . 's/';
+        $name = s($this->getName())->trimEnd($this->getNameType());
+
+        return s($folder . $name)->lower()->toString();
     }
 
     public function getNameType(): string

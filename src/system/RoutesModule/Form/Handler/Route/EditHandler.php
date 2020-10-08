@@ -70,8 +70,8 @@ class EditHandler extends AbstractEditHandler
     {
         $entity = $this->entityRef;
 
-        list($controller,) = $this->sanitizeHelper->sanitizeController((string)$entity['controller']);
-        list($action,) = $this->sanitizeHelper->sanitizeAction((string)$entity['action']);
+        list($controller,) = $this->sanitizeHelper->sanitizeController((string) $entity['controller']);
+        list($action,) = $this->sanitizeHelper->sanitizeAction((string) $entity['action']);
 
         $entity['controller'] = $controller;
         $entity['action'] = $action;

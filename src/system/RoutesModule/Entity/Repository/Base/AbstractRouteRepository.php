@@ -443,7 +443,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $query = $qb->getQuery();
     
-        return (int)$query->getSingleScalarResult();
+        return (int) $query->getSingleScalarResult();
     }
 
     /**
@@ -461,7 +461,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $query = $qb->getQuery();
     
-        $count = (int)$query->getSingleScalarResult();
+        $count = (int) $query->getSingleScalarResult();
     
         return 1 > $count;
     }

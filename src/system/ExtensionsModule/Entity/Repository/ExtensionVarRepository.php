@@ -47,7 +47,7 @@ class ExtensionVarRepository extends ServiceEntityRepository implements Extensio
             ->getQuery();
         $result = $query->execute();
 
-        return (bool)$result;
+        return (bool) $result;
     }
 
     public function deleteByExtension(string $extensionName): bool
@@ -59,7 +59,7 @@ class ExtensionVarRepository extends ServiceEntityRepository implements Extensio
             ->getQuery();
         $result = $query->execute();
 
-        return (bool)$result;
+        return (bool) $result;
     }
 
     public function updateName(string $oldName, string $newName): bool
@@ -73,6 +73,6 @@ class ExtensionVarRepository extends ServiceEntityRepository implements Extensio
             ->getQuery();
         $result = $query->execute();
 
-        return (bool)$result;
+        return (bool) $result;
     }
 }

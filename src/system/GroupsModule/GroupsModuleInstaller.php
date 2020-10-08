@@ -47,8 +47,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
     {
         switch ($oldVersion) {
             case '2.4.0': // shipped with Core-1.4.3
-                $this->setVar('mailwarning', (bool)$this->getVar('mailwarning'));
-                $this->setVar('hideclosed', (bool)$this->getVar('hideclosed'));
+                $this->setVar('mailwarning', (bool) $this->getVar('mailwarning'));
+                $this->setVar('hideclosed', (bool) $this->getVar('hideclosed'));
                 $this->setVar('hidePrivate', false);
                 // no break
             case '2.4.1':

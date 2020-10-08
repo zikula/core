@@ -174,8 +174,8 @@ class PasswordApi implements PasswordApiInterface
         if (1 === mb_strlen($saltDelimiter) && false !== mb_strpos($saltedHash, $saltDelimiter)) {
             [$hashMethod, $saltStr, $correctHash] = explode($saltDelimiter, $saltedHash);
 
-            if (is_numeric($hashMethod) && ((int)$hashMethod === $hashMethod)) {
-                $hashMethod = (int)$hashMethod;
+            if (is_numeric($hashMethod) && ((int) $hashMethod === $hashMethod)) {
+                $hashMethod = (int) $hashMethod;
             }
             $hashMethodName = $hashMethodCodeToName[$hashMethod] ?? $hashMethod;
 

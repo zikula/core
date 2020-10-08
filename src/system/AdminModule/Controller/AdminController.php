@@ -245,7 +245,7 @@ class AdminController extends AbstractController
                 continue;
             }
 
-            $moduleId = (int)$adminModule['id'];
+            $moduleId = (int) $adminModule['id'];
             $moduleCategory = $adminCategoryRepository->getModuleCategory($moduleId);
             $catid = null !== $moduleCategory ? $moduleCategory['cid'] : 0;
 
@@ -278,7 +278,7 @@ class AdminController extends AbstractController
                     $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
                 }
 
-                $moduleName = (string)$adminModule['name'];
+                $moduleName = (string) $adminModule['name'];
                 /** @var \Knp\Menu\ItemInterface $extensionMenu */
                 $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
                 if (isset($extensionMenu)) {
@@ -347,7 +347,7 @@ class AdminController extends AbstractController
                 $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
             }
 
-            $moduleId = (int)$adminModule['id'];
+            $moduleId = (int) $adminModule['id'];
             $moduleCategory = $adminCategoryRepository->getModuleCategory($moduleId);
             $catid = null !== $moduleCategory ? $moduleCategory['cid'] : 0;
 
@@ -410,7 +410,7 @@ class AdminController extends AbstractController
         // empty and we are not admin
         if (false === $permission) {
             // show the first category
-            $acid = !empty($possibleCategoryIds) ? (int)$possibleCategoryIds[0] : null;
+            $acid = !empty($possibleCategoryIds) ? (int) $possibleCategoryIds[0] : null;
         }
 
         return $this->render('@ZikulaAdminModule/Admin/categoryMenu.html.twig', [

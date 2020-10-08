@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use function Symfony\Component\String\s;
 
 /**
  * Class ZikulaWorkflowExtension
@@ -40,7 +41,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
         // modules may define their workflows in: <bundlePath>/Resources/workflows/
         $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
         foreach ($bundleMetaData as $bundleName => $metaData) {
-            if ('Module' !== mb_substr($bundleName, -6)) {
+            if (!s($bundleName)->endsWith('Module')) {
                 continue;
             }
 

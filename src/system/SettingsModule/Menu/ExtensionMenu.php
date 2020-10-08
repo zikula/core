@@ -94,7 +94,7 @@ class ExtensionMenu implements ExtensionMenuInterface
             'route' => 'zikulasettingsmodule_settings_localesettings',
         ])->setAttribute('icon', 'fas fa-spell-check');
 
-        if (true === (bool)$this->variableApi->getSystemVar('multilingual')) {
+        if (true === (bool) $this->variableApi->getSystemVar('multilingual')) {
             if ('dev' === $this->kernel->getEnvironment()) {
                 $request = $this->requestStack->getCurrentRequest();
                 if ($request->hasSession() && ($session = $request->getSession())) {

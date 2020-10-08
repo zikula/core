@@ -81,7 +81,7 @@ abstract class AbstractAppSettings
     
     public function setRouteEntriesPerPage(int $routeEntriesPerPage): void
     {
-        if ((int)$this->routeEntriesPerPage !== $routeEntriesPerPage) {
+        if ((int) $this->routeEntriesPerPage !== $routeEntriesPerPage) {
             $this->routeEntriesPerPage = $routeEntriesPerPage;
         }
     }
@@ -93,7 +93,7 @@ abstract class AbstractAppSettings
     
     public function setShowOnlyOwnEntries(bool $showOnlyOwnEntries): void
     {
-        if ((bool)$this->showOnlyOwnEntries !== $showOnlyOwnEntries) {
+        if ((bool) $this->showOnlyOwnEntries !== $showOnlyOwnEntries) {
             $this->showOnlyOwnEntries = $showOnlyOwnEntries;
         }
     }
@@ -105,7 +105,7 @@ abstract class AbstractAppSettings
     
     public function setAllowModerationSpecificCreatorForRoute(bool $allowModerationSpecificCreatorForRoute): void
     {
-        if ((bool)$this->allowModerationSpecificCreatorForRoute !== $allowModerationSpecificCreatorForRoute) {
+        if ((bool) $this->allowModerationSpecificCreatorForRoute !== $allowModerationSpecificCreatorForRoute) {
             $this->allowModerationSpecificCreatorForRoute = $allowModerationSpecificCreatorForRoute;
         }
     }
@@ -117,7 +117,7 @@ abstract class AbstractAppSettings
     
     public function setAllowModerationSpecificCreationDateForRoute(bool $allowModerationSpecificCreationDateForRoute): void
     {
-        if ((bool)$this->allowModerationSpecificCreationDateForRoute !== $allowModerationSpecificCreationDateForRoute) {
+        if ((bool) $this->allowModerationSpecificCreationDateForRoute !== $allowModerationSpecificCreationDateForRoute) {
             $this->allowModerationSpecificCreationDateForRoute = $allowModerationSpecificCreationDateForRoute;
         }
     }

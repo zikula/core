@@ -221,7 +221,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     public function setId(int $id = null): void
     {
-        if ((int)$this->id !== $id) {
+        if ((int) $this->id !== $id) {
             $this->id = $id;
         }
     }
@@ -329,7 +329,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     public function setPrependBundlePrefix(bool $prependBundlePrefix): void
     {
-        if ((bool)$this->prependBundlePrefix !== $prependBundlePrefix) {
+        if ((bool) $this->prependBundlePrefix !== $prependBundlePrefix) {
             $this->prependBundlePrefix = $prependBundlePrefix;
         }
     }
@@ -341,7 +341,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     public function setTranslatable(bool $translatable): void
     {
-        if ((bool)$this->translatable !== $translatable) {
+        if ((bool) $this->translatable !== $translatable) {
             $this->translatable = $translatable;
         }
     }
@@ -425,7 +425,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     public function setSort(int $sort): void
     {
-        if ((int)$this->sort !== $sort) {
+        if ((int) $this->sort !== $sort) {
             $this->sort = $sort;
         }
     }

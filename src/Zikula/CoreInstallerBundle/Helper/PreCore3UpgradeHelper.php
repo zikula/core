@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreBundle\DependencyInjection\Configuration;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
@@ -47,7 +48,7 @@ class PreCore3UpgradeHelper
         $yamlHelper = new YamlDumper($this->projectDir . '/config', 'services_custom.yaml');
         $params = $yamlHelper->getParameters();
         if (isset($params['core_installed_version']) && version_compare($params['core_installed_version'], '3.0.0', '<')) {
-            $params['database_driver'] = mb_substr($params['database_driver'], 4); // remove pdo_ prefix
+            $params['database_driver'] = s($params['database_driver'])->trimStart('pdo_')->toString();
             (new DbCredsHelper($this->projectDir))->writeDatabaseDsn($params);
             (new LocalDotEnvHelper($this->projectDir))->writeLocalEnvVars(['ZIKULA_INSTALLED' => $params['core_installed_version']]);
             unset($params['core_installed_version']);

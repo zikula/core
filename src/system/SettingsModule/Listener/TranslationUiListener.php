@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use function Symfony\Component\String\s;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -64,7 +65,10 @@ class TranslationUiListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $routeName = $request->get('_route', '');
-        if ('translation_edit_in_place_update' !== $routeName && 'translation_' !== mb_substr($routeName, 0, 12)) {
+        if (
+            'translation_edit_in_place_update' !== $routeName
+            && !s($routeName)->startsWith('translation_')
+        ) {
             return;
         }
 

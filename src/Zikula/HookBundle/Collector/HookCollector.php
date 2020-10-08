@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Collector;
 
 use InvalidArgumentException;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSelfAllowedProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
@@ -136,7 +137,7 @@ class HookCollector implements HookCollectorInterface
         if (self::HOOK_SUBSCRIBE_OWN === $type) {
             return $this->containsSelfAllowedProvider($moduleName);
         }
-        $variable = mb_substr($type, 5) . 'sByOwner';
+        $variable = s($type)->slice(5)->append('sByOwner')->toString();
         $array = $this->{$variable};
 
         return isset($array[$moduleName]);
@@ -147,7 +148,7 @@ class HookCollector implements HookCollectorInterface
         if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER], true)) {
             throw new InvalidArgumentException('Only hook_provider and hook_subscriber are valid values.');
         }
-        $variable = mb_substr($type, 5) . 'sByOwner';
+        $variable = s($type)->slice(5)->append('sByOwner')->toString();
         $array = $this->{$variable};
 
         return array_keys($array);
@@ -158,11 +159,13 @@ class HookCollector implements HookCollectorInterface
      */
     private function containsSelfAllowedProvider(string $moduleName): bool
     {
-        if (isset($this->providersByOwner[$moduleName])) {
-            foreach ($this->providersByOwner[$moduleName] as $provider) {
-                if ($provider instanceof HookSelfAllowedProviderInterface) {
-                    return true;
-                }
+        if (!isset($this->providersByOwner[$moduleName])) {
+            return false;
+        }
+
+        foreach ($this->providersByOwner[$moduleName] as $provider) {
+            if ($provider instanceof HookSelfAllowedProviderInterface) {
+                return true;
             }
         }
 

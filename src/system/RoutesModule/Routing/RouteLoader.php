@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Routing;
 
 use Exception;
+use function Symfony\Component\String\s;
 use InvalidArgumentException;
 use RuntimeException;
 use Symfony\Component\Config\Loader\Loader;
@@ -346,18 +347,19 @@ class RouteLoader extends Loader
      */
     private function getRouteName(string $oldRouteName, string $extensionName, string $type, string $func): string
     {
+        $separator = '_';
         $suffix = '';
-        $lastHit = strrpos($oldRouteName, '_');
-        if (false !== $lastHit) {
-            $lastPart = substr($oldRouteName, $lastHit);
+        $lastHit = s($oldRouteName)->indexOfLast($separator);
+        if (null !== $lastHit) {
+            $lastPart = s($oldRouteName)->afterLast($separator);
             if (is_numeric($lastPart)) {
                 // If the last part of the old route name is numeric, also append it to the new route name.
                 // This allows multiple routes for the same action.
-                $suffix = '_' . $lastPart;
+                $suffix = $separator . $lastPart;
             }
         }
 
-        return strtolower($extensionName . '_' . $type . '_' . $func) . $suffix;
+        return s($extensionName . $separator . $type . $separator . $func)->lower()->append($suffix)->toString();
     }
 
     /**

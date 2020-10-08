@@ -75,6 +75,6 @@ class ValidationResponse
 
     public function hasErrors(): bool
     {
-        return (bool)$this->errors;
+        return (bool) $this->errors;
     }
 }

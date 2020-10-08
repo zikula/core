@@ -15,7 +15,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Dotenv\Dotenv;
 use Zikula\Bundle\CoreInstallerBundle\Util\RequirementChecker;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 if (!class_exists(Dotenv::class)) {
     throw new LogicException('Please run "composer require symfony/dotenv" to load the ".env" files configuring the application.');

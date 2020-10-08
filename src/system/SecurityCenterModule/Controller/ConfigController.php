@@ -126,7 +126,7 @@ class ConfigController extends AbstractController
                     $variableApi->set(VariableApi::CONFIG, 'sessionsavepath', $sessionSavePath);
                 }
 
-                if ((bool)$sessionStoreToFile !== (bool)$variableApi->getSystemVar('sessionstoretofile')) {
+                if ((bool) $sessionStoreToFile !== (bool) $variableApi->getSystemVar('sessionstoretofile')) {
                     // logout if going from one storage to another one
                     $causeLogout = true;
                 }

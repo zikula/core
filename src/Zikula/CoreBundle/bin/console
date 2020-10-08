@@ -20,7 +20,7 @@ $possibleRootDirectories = [
 foreach ($possibleRootDirectories as $directory) {
     $file = $directory . 'vendor/autoload.php';
     if (file_exists($file)) {
-        require $file;
+        require_once $file;
         break;
     }
 }

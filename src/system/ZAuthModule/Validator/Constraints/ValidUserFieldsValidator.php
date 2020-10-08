@@ -76,7 +76,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
                 ->setParameter('excludedUid', $authenticationMappingEntity->getUid());
         }
 
-        if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
+        if (0 < (int) $qb->getQuery()->getSingleScalarResult()) {
             $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $userName], 'validators'))
                 ->atPath('uname')
                 ->addViolation();
@@ -95,7 +95,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
             $qb->andWhere('m.uid != :excludedUid')
                 ->setParameter('excludedUid', $authenticationMappingEntity->getUid());
         }
-        $uCount = (int)$qb->getQuery()->getSingleScalarResult();
+        $uCount = (int) $qb->getQuery()->getSingleScalarResult();
 
         $query = $this->userVerificationRepository->createQueryBuilder('v')
             ->select('COUNT(v.uid)')
@@ -104,9 +104,9 @@ class ValidUserFieldsValidator extends ConstraintValidator
             ->setParameter('email', $emailAddress)
             ->setParameter('chgtype', ZAuthConstant::VERIFYCHGTYPE_EMAIL)
             ->getQuery();
-        $vCount = (int)$query->getSingleScalarResult();
+        $vCount = (int) $query->getSingleScalarResult();
 
-        if ($uCount + $vCount > 0) {
+        if (0 < $uCount + $vCount) {
             $this->context->buildViolation($this->translator->trans('The email address you entered (%email%) has already been registered.', ['%email%' => $emailAddress], 'validators'))
                 ->atPath('email')
                 ->addViolation();

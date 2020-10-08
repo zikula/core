@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Twig\Extension;
 
 use InvalidArgumentException;
+use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -93,8 +94,8 @@ class ProfileExtension extends AbstractExtension
         int $maxLength = 0,
         string $title = ''
     ): string {
-        if (empty($userId) || $userId < 1) {
-            return (string)$userId;
+        if (empty($userId) || 1 > $userId) {
+            return (string) $userId;
         }
 
         return $this->determineProfileLink($userId, null, $class, $image, $maxLength, $title);
@@ -159,11 +160,11 @@ class ProfileExtension extends AbstractExtension
 
         if (!empty($imagePath)) {
             $show = '<img src="' . htmlspecialchars($imagePath, ENT_QUOTES) . '" alt="' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" />';
-        } elseif ($maxLength > 0) {
+        } elseif (0 < $maxLength) {
             // truncate the user name to $maxLength chars
             $length = mb_strlen($userDisplayName);
             $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-            $show = htmlspecialchars(mb_substr($userDisplayName, 0, $truncEnd), ENT_QUOTES);
+            $show = htmlspecialchars(s($userDisplayName)->slice(0, $truncEnd)->toString(), ENT_QUOTES);
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }

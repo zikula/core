@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Zikula;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitor;
+use function Symfony\Component\String\s;
 use Translation\Extractor\Visitor\Php\Symfony\AbstractFormType;
 use Translation\Extractor\Visitor\Php\Symfony\FormTrait;
 
@@ -71,17 +72,17 @@ final class FormTypeInputGroup extends AbstractFormType implements NodeVisitor
                     $this->addError($inputGroupNode, 'Form input group value is not a scalar string');
                     continue;
                 }
-                $value = $inputGroupAddOn->value->value;
-                if ('<i' === mb_substr($value, 0, 2) && '</i>' === mb_substr($value, -4)) {
+                $value = s($inputGroupAddOn->value->value);
+                if ($value->startsWith('<i') && $value->endsWith('</i>')) {
                     // do not add FA icons
                     continue;
                 }
-                if ('<span' === mb_substr($value, 0, 5) && '</span>' === mb_substr($value, -7)) {
+                if ($value->startsWith('<span') && $value->endsWith('</span>')) {
                     // skip
                     continue;
                 }
                 $line = $inputGroupAddOn->value->getAttribute('startLine');
-                if (null !== $location = $this->getLocation($value, $line, $inputGroupAddOn, ['domain' => $domain])) {
+                if (null !== $location = $this->getLocation((string) $value, $line, $inputGroupAddOn, ['domain' => $domain])) {
                     $this->lateCollect($location);
                 }
             }

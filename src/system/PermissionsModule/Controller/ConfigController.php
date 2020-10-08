@@ -45,8 +45,8 @@ class ConfigController extends AbstractController
         PermissionRepositoryInterface $permissionRepository
     ) {
         $modVars = $variableApi->getAll('ZikulaPermissionsModule');
-        $modVars['lockadmin'] = (bool)$modVars['lockadmin'];
-        $modVars['filter'] = (bool)$modVars['filter'];
+        $modVars['lockadmin'] = (bool) $modVars['lockadmin'];
+        $modVars['filter'] = (bool) $modVars['filter'];
 
         $form = $this->createForm(ConfigType::class, $modVars);
         $form->handleRequest($request);
@@ -56,10 +56,10 @@ class ConfigController extends AbstractController
 
                 $error = false;
 
-                $lockadmin = isset($formData['lockadmin']) ? (bool)$formData['lockadmin'] : false;
+                $lockadmin = isset($formData['lockadmin']) ? (bool) $formData['lockadmin'] : false;
                 $variableApi->set('ZikulaPermissionsModule', 'lockadmin', $lockadmin);
 
-                $adminId = isset($formData['adminid']) ? (int)$formData['adminid'] : 1;
+                $adminId = isset($formData['adminid']) ? (int) $formData['adminid'] : 1;
                 if (0 !== $adminId) {
                     $perm = $permissionRepository->find($adminId);
                     if (!$perm) {
@@ -69,7 +69,7 @@ class ConfigController extends AbstractController
                 }
                 $variableApi->set('ZikulaPermissionsModule', 'adminid', $adminId);
 
-                $filter = isset($formData['filter']) ? (bool)$formData['filter'] : false;
+                $filter = isset($formData['filter']) ? (bool) $formData['filter'] : false;
                 $variableApi->set('ZikulaPermissionsModule', 'filter', $filter);
 
                 if (true === $error) {

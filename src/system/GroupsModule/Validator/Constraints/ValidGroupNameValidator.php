@@ -53,7 +53,7 @@ class ValidGroupNameValidator extends ConstraintValidator
                 ->setParameter('excludedGid', $gid);
         }
 
-        if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
+        if (0 < (int) $qb->getQuery()->getSingleScalarResult()) {
             $this->context->buildViolation(
                 $this->translator->trans(
                     'The group name you entered (%groupName%) does already exist.',

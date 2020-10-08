@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
@@ -44,7 +45,7 @@ class HelpController extends AbstractController
         string $moduleName
     ): Response {
         $page = $request->query->get('page', 'README');
-        if (false !== mb_strpos($page, '..')) {
+        if (s($page)->containsAny('..')) {
             throw new \Exception('Invalid page "' . $page . '".');
         }
 
@@ -76,17 +77,18 @@ class HelpController extends AbstractController
         $content = preg_replace_callback(
             '/\[(.*?)\]\((.*?)\)/',
             function ($match) use ($router, $moduleName, $raw) {
+                $pageName = s($match[2]);
                 if (false === mb_strpos($match[2], '.md')) {
                     return $match[0];
                 }
-                if ('http' === mb_substr($match[2], 0, 4)) {
+                if ($pageName->startsWith('http')) {
                     return $match[0];
                 }
 
                 // local link - rewrite
                 $urlArgs = [
                     'moduleName' => $moduleName,
-                    'page' => trim($match[2], '.md')
+                    'page' => $pageName->trimEnd('.md')->toString()
                 ];
                 if (1 === $raw) {
                     $urlArgs['raw'] = 1;

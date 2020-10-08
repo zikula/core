@@ -80,12 +80,12 @@ abstract class AbstractEditHandler extends EditHandler
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
             'has_moderate_permission' => $this->permissionHelper->hasEntityPermission($this->entityRef, ACCESS_ADMIN),
-            'allow_moderation_specific_creator' => (bool)$this->variableApi->get(
+            'allow_moderation_specific_creator' => (bool) $this->variableApi->get(
                 'ZikulaRoutesModule',
                 'allowModerationSpecificCreatorFor' . $this->objectTypeCapital,
                 false
             ),
-            'allow_moderation_specific_creation_date' => (bool)$this->variableApi->get(
+            'allow_moderation_specific_creation_date' => (bool) $this->variableApi->get(
                 'ZikulaRoutesModule',
                 'allowModerationSpecificCreationDateFor' . $this->objectTypeCapital,
                 false
