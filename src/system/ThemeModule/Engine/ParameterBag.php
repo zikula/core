@@ -214,8 +214,6 @@ class ParameterBag implements IteratorAggregate, Countable
      */
     private function resolveKey(string $key): string
     {
-        //return s($key)->afterLast($this->ns)->toString();
-
         if (false !== mb_strpos($key, $this->ns)) {
             $key = mb_substr($key, mb_strrpos($key, $this->ns) + 1, mb_strlen($key));
         }
