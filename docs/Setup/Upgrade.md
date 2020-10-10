@@ -46,7 +46,7 @@ All the dependencies and requirements are included in this package.
         - note the name change and the suffix changed from `.yml` to `.yaml`
         - When the upgrade to 3.1.0 is complete, the file will be deleted because the values are moved to config files.
     - Copy your _compatible_ custom theme to the `src/extensions` directory (There is no `/themes` directory any longer).
-        - After upgrade, the site will default to the ZikulaBootstrapTheme until you complete testing of your custom theme.
+        - After upgrade, the site will default to the ZikulaDefaultTheme until you complete testing of your custom theme.
     - Return _compatible_ modules (extensions) to the `src/extensions` directory.
         - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
         - Check compatibility in the `/composer.json` file is: `"extra": { "zikula" : { "core-compatibility": ">=3.0.0"`
