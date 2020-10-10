@@ -21,7 +21,6 @@ use Zikula\ThemeModule\Engine\Engine;
 
 /**
  * This class intercepts the Response and modifies it to return a themed Response.
- * It is currently fully BC with Core-1.3 in order to return a smarty-based themed response.
  */
 class CreateThemedResponseListener implements EventSubscriberInterface
 {
