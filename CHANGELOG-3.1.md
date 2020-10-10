@@ -18,7 +18,8 @@
   - [extensions] Add StaticContent module to manage all static content (#4369).
   - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
   - [FormExtensionsBundle] Add bsCustomFileInput for direct file selection feedback (#4491).
-  - [ZikulaDefaultTheme] Add new default theme (#4462).
+  - [BlocksModule] Add new block positions automatically on theme installation (#4228). 
+  - [DefaultTheme] Add new default theme (#4462).
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
 
 - Deprecated:
