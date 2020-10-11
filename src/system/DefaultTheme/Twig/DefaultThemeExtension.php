@@ -13,36 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\DefaultTheme\Twig;
 
-use Symfony\Component\Yaml\Yaml;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class DefaultThemeExtension extends AbstractExtension
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    public function __construct(ZikulaHttpKernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
     public function getFunctions()
     {
         return [
-            new TwigFunction('getStyleChoices', [$this, 'getStyleChoices'])
+            new TwigFunction('getStyleChoices', [DefaultThemeRuntime::class, 'getStyleChoices'])
         ];
-    }
-
-    public function getStyleChoices(): array
-    {
-        $themeBundle = $this->kernel->getBundle('ZikulaDefaultTheme');
-        $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
-        $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
-
-        return $variableDefinitions['theme_style']['options']['choices'];
     }
 }
