@@ -13,52 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Twig\Runtime\EventDispatcherRuntime;
 
 class EventDispatcherExtension extends AbstractExtension
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
     public function getFunctions()
     {
         return [
-            new TwigFunction('dispatchEvent', [$this, 'dispatchEvent']),
-            new TwigFunction('dispatchGenericEvent', [$this, 'dispatchGenericEvent'])
+            new TwigFunction('dispatchEvent', [EventDispatcherRuntime::class, 'dispatchEvent']),
+            new TwigFunction('dispatchGenericEvent', [EventDispatcherRuntime::class, 'dispatchGenericEvent'])
         ];
-    }
-
-    /**
-     * @param array $arguments the arguments, MUST be values only and in the correct order
-     */
-    public function dispatchEvent(string $name, $arguments = [])
-    {
-        if (class_exists($name)) {
-            $event = new $name(...$arguments);
-            $this->eventDispatcher->dispatch($event);
-
-            return $event;
-        }
-
-        return null;
-    }
-
-    public function dispatchGenericEvent(string $name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
-    {
-        $event = $providedEvent ?? new GenericEvent($subject, $arguments, $data);
-        $this->eventDispatcher->dispatch($event, $name);
-
-        return $event->getData();
     }
 }

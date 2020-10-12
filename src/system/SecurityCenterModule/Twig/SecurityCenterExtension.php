@@ -11,18 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Twig\Extension;
+namespace Zikula\SecurityCenterModule\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Zikula\UsersModule\Twig\Runtime\OnlineRuntime;
 
-class OnlineExtension extends AbstractExtension
+class SecurityCenterExtension extends AbstractExtension
 {
     public function getFilters()
     {
         return [
-            new TwigFilter('onlineSince', [OnlineRuntime::class, 'onlineSince'])
+            new TwigFilter('safeHtml', [$this, 'safeHtml'], ['is_safe' => ['html']])
         ];
     }
 }

@@ -50,7 +50,7 @@ application "Routes" targets ZK30 {
         Resources/docs/help/en/README.md,
         Resources/workflows/none.yaml,
         RoutesModuleInstaller.php,
-        Twig/TwigExtension.php
+        Twig/SeachExtension.php
     "
     markFiles "
         composer.json,

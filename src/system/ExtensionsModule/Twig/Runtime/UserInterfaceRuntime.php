@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ExtensionsModule\Twig\Extension\SimpleFunction;
+namespace Zikula\ExtensionsModule\Twig\Runtime;
 
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
+use Twig\Extension\RuntimeExtensionInterface;
 
-class ModuleLinksFunction
+class UserInterfaceRuntime implements RuntimeExtensionInterface
 {
     /**
      * @var FragmentHandler
@@ -28,22 +29,36 @@ class ModuleLinksFunction
         $this->handler = $handler;
     }
 
-    /**
-     * Inserts module links.
-     *
-     * Example: {( moduleLinks() }}
-     *
-     * @param string $type Links type admin or user
-     * @param array $links Array with menu links (text, url, title, id, class, disabled) (optional)
-     * @param string $modName Module name to display links for (optional)
-     * @param string $menuId ID for the unordered list (optional)
-     * @param string $menuClass Class for the unordered list (optional)
-     * @param string $itemClass Class for li element of unordered list
-     * @param string $first Class for the first element (optional)
-     * @param string $last Class for the last element (optional)
-     * @param string $template Template name to use instead of default (optional)
-     */
-    public function display(
+    public function moduleFooter(): string
+    {
+        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::footer');
+
+        return $this->handler->render($ref) ?? '';
+    }
+
+    public function moduleHeader(
+        string $type = 'user',
+        string $title = '',
+        string $titleLink = '',
+        bool $setPageTitle = false,
+        bool $insertFlashes = false,
+        bool $menuFirst = false,
+        bool $image = false
+    ): string {
+        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::header', [
+            'type' => $type,
+            'title' => $title,
+            'titlelink' => $titleLink,
+            'setpagetitle' => $setPageTitle,
+            'insertflashes' => $insertFlashes,
+            'menufirst' => $menuFirst,
+            'image' => $image
+        ]);
+
+        return $this->handler->render($ref) ?? '';
+    }
+
+    public function moduleLinks(
         string $type = 'user',
         array $links = [],
         string $modName = '',

@@ -13,63 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
-use InvalidArgumentException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Twig\Runtime\ModVarRuntime;
 
 class ModVarExtension extends AbstractExtension
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    public function __construct(
-        TranslatorInterface $translator,
-        VariableApiInterface $variableApi
-    ) {
-        $this->translator = $translator;
-        $this->variableApi = $variableApi;
-    }
-
     public function getFunctions()
     {
         return [
-            new TwigFunction('getModVar', [$this, 'getModVar']),
-            new TwigFunction('getSystemVar', [$this, 'getSystemVar'])
+            new TwigFunction('getModVar', [ModVarRuntime::class, 'getModVar']),
+            new TwigFunction('getSystemVar', [ModVarRuntime::class, 'getSystemVar'])
         ];
-    }
-
-    /**
-     * @param mixed $default
-     * @return mixed
-     */
-    public function getModVar(string $module, string $name, $default = null)
-    {
-        if (empty($module) || empty($name)) {
-            throw new InvalidArgumentException($this->translator->trans('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        return $this->variableApi->get($module, $name, $default);
-    }
-
-    /**
-     * @param mixed $default
-     * @return mixed
-     */
-    public function getSystemVar(string $name, $default = null)
-    {
-        if (empty($name)) {
-            throw new InvalidArgumentException($this->translator->trans('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
-        }
-
-        return $this->variableApi->getSystemVar($name, $default);
     }
 }

@@ -11,26 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Twig\Extension;
+namespace Zikula\SearchModule\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class HookExtension extends AbstractExtension
+class SearchExtension extends AbstractExtension
 {
     public function getFunctions()
     {
         return [
-            new TwigFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], ['is_safe' => ['html']]),
-            new TwigFunction('routeUrl', [$this, 'createRouteUrl'])
+            new TwigFunction('zikulasearchmodule_searchVarToFieldNames', [SearchRuntime::class, 'searchVarToFieldNames'])
         ];
     }
 
     public function getFilters()
     {
         return [
-            new TwigFilter('notifyFilters', [$this, 'notifyFilters'], ['is_safe' => ['html']])
+            new TwigFilter('zikulasearchmodule_generateUrl', [SearchRuntime::class, 'generateUrl']),
+            new TwigFilter('zikulasearchmodule_highlightWords', [SearchRuntime::class, 'highlightWords'], ['is_safe' => ['html']])
         ];
     }
 }
