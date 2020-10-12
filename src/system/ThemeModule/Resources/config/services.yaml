@@ -13,7 +13,7 @@ services:
 
     Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeModule\Api\PageAssetApi'
 
-    Zikula\ThemeModule\Twig\Extension\PageVarExtension:
+    Zikula\ThemeModule\Twig\Runtime\PageVarRuntime:
         arguments:
             $pageVars: '@zikula_core.common.theme.pagevars'
 
