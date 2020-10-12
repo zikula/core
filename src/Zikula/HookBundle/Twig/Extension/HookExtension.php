@@ -16,21 +16,22 @@ namespace Zikula\Bundle\HookBundle\Twig\Extension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
+use Zikula\Bundle\HookBundle\Twig\Runtime\HookRuntime;
 
 class HookExtension extends AbstractExtension
 {
     public function getFunctions()
     {
         return [
-            new TwigFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], ['is_safe' => ['html']]),
-            new TwigFunction('routeUrl', [$this, 'createRouteUrl'])
+            new TwigFunction('notifyDisplayHooks', [HookRuntime::class, 'notifyDisplayHooks'], ['is_safe' => ['html']]),
+            new TwigFunction('routeUrl', [HookRuntime::class, 'createRouteUrl'])
         ];
     }
 
     public function getFilters()
     {
         return [
-            new TwigFilter('notifyFilters', [$this, 'notifyFilters'], ['is_safe' => ['html']])
+            new TwigFilter('notifyFilters', [HookRuntime::class, 'notifyFilters'], ['is_safe' => ['html']])
         ];
     }
 }
