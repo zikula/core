@@ -16,12 +16,12 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Listener;
 
-use Zikula\RoutesModule\Listener\Base\AbstractUserLogoutListener;
+use Zikula\RoutesModule\Listener\Base\AbstractConnectionsMenuListener;
 
 /**
- * Event handler implementation class for user logout events.
+ * Event handler implementation class for adding connections to extension menus.
  */
-class UserLogoutListener extends AbstractUserLogoutListener
+class ConnectionsMenuListener extends AbstractConnectionsMenuListener
 {
     // feel free to enhance the parent methods
 }

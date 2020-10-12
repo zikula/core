@@ -1,4 +1,4 @@
-application "Routes" targets ZK30 {
+application "Routes" targets ZK3DEV {
     documentation "Routes management"
     vendor "Zikula"
     author "Zikula contributors"
@@ -34,7 +34,6 @@ application "Routes" targets ZK30 {
     generateTechnicalDocumentation false
     skipFiles "
         CHANGELOG.md,
-        DependencyInjection/Configuration.php,
         DependencyInjection/ZikulaRoutesExtension.php,
         Entity/Factory/EntityInitialiser.php,
         Entity/Repository/RouteRepository.php,
@@ -50,7 +49,8 @@ application "Routes" targets ZK30 {
         Resources/docs/help/en/README.md,
         Resources/workflows/none.yaml,
         RoutesModuleInstaller.php,
-        Twig/SeachExtension.php
+        Twig/TwigExtension.php,
+        Twig/TwigRuntime.php
     "
     markFiles "
         composer.json,
