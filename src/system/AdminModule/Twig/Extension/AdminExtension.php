@@ -13,52 +13,22 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Twig\Extension;
 
-use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminBreadcrumbsFunction;
-use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminFooterFunction;
-use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminHeaderFunction;
-use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminMenuFunction;
-use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminSecurityAnalyzerFunction;
-use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminUpdateCheckFunction;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\AdminModule\Twig\Runtime\AdminRuntime;
 
 class AdminExtension extends AbstractExtension
 {
-    /**
-     * @var FragmentHandler
-     */
-    private $handler;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    public function __construct(FragmentHandler $handler, PermissionApiInterface $permissionApi)
-    {
-        $this->handler = $handler;
-        $this->permissionApi = $permissionApi;
-    }
-
     public function getFunctions()
     {
         return [
-            new TwigFunction('adminHeader', [new AdminHeaderFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new TwigFunction('adminBreadcrumbs', [new AdminBreadcrumbsFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new TwigFunction('adminUpdateCheck', [new AdminUpdateCheckFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new TwigFunction('adminSecurityAnalyzer', [new AdminSecurityAnalyzerFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new TwigFunction('adminMenu', [new AdminMenuFunction($this->handler, $this->permissionApi), 'display'], ['is_safe' => ['html']]),
-            new TwigFunction('adminPanelMenu', [$this, 'adminPanelMenu'], ['is_safe' => ['html']]),
-            new TwigFunction('adminFooter', [new AdminFooterFunction($this->handler), 'display'], ['is_safe' => ['html']])
+            new TwigFunction('adminHeader', [AdminRuntime::class, 'adminHeader'], ['is_safe' => ['html']]),
+            new TwigFunction('adminBreadcrumbs', [AdminRuntime::class, 'adminBreadcrumbs'], ['is_safe' => ['html']]),
+            new TwigFunction('adminUpdateCheck', [AdminRuntime::class, 'adminUpdateCheck'], ['is_safe' => ['html']]),
+            new TwigFunction('adminSecurityAnalyzer', [AdminRuntime::class, 'adminSecurityAnalyzer'], ['is_safe' => ['html']]),
+            new TwigFunction('adminMenu', [AdminRuntime::class, 'adminMenu'], ['is_safe' => ['html']]),
+            new TwigFunction('adminPanelMenu', [AdminRuntime::class, 'adminPanelMenu'], ['is_safe' => ['html']]),
+            new TwigFunction('adminFooter', [AdminRuntime::class, 'adminFooter'], ['is_safe' => ['html']])
         ];
-    }
-
-    public function adminPanelMenu(string $mode = 'modules', string $template = 'panel'): string
-    {
-        $adminMenu = new AdminMenuFunction($this->handler, $this->permissionApi);
-
-        return $adminMenu->display($mode, $template);
     }
 }

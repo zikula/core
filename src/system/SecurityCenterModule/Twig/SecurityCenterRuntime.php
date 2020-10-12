@@ -13,14 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Twig;
 
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
-/**
- * Twig extension class.
- */
-class TwigExtension extends AbstractExtension
+class SecurityCenterRuntime implements RuntimeExtensionInterface
 {
     /**
      * @var HtmlFilterApiInterface
@@ -30,13 +26,6 @@ class TwigExtension extends AbstractExtension
     public function __construct(HtmlFilterApiInterface $htmlFilterApi)
     {
         $this->htmlFilterApi = $htmlFilterApi;
-    }
-
-    public function getFilters()
-    {
-        return [
-            new TwigFilter('safeHtml', [$this, 'safeHtml'], ['is_safe' => ['html']])
-        ];
     }
 
     public function safeHtml(string $string): string

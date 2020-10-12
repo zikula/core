@@ -15,16 +15,11 @@ namespace Zikula\SearchModule\Twig;
 
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
-use Twig\TwigFunction;
+use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\Bundle\CoreBundle\RouteUrl;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
-/**
- * Twig extension class.
- */
-class TwigExtension extends AbstractExtension
+class SearchRuntime implements RuntimeExtensionInterface
 {
     /**
      * @var VariableApiInterface
@@ -40,21 +35,6 @@ class TwigExtension extends AbstractExtension
     {
         $this->variableApi = $variableApi;
         $this->router = $router;
-    }
-
-    public function getFunctions()
-    {
-        return [
-            new TwigFunction('zikulasearchmodule_searchVarToFieldNames', [$this, 'searchVarToFieldNames'])
-        ];
-    }
-
-    public function getFilters()
-    {
-        return [
-            new TwigFilter('zikulasearchmodule_generateUrl', [$this, 'generateUrl']),
-            new TwigFilter('zikulasearchmodule_highlightWords', [$this, 'highlightWords'], ['is_safe' => ['html']])
-        ];
     }
 
     /**

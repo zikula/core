@@ -21,6 +21,7 @@
   - [BlocksModule] Add new block positions automatically on theme installation (#4228). 
   - [DefaultTheme] Add new default theme (#4462).
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
+  - [General] Implemented `Twig\Extension\RuntimeExtensionInterface` for all Twig extensions, allowing them to dynamically load (#4522).
 
 - Deprecated:
   - [General] Controller methods should not have an `Action` suffix in their names anymore.
