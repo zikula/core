@@ -37,7 +37,7 @@
 
         "matthiasnoback/symfony-console-form": "4.*",
 
-        "symfony/symfony": "5.*",
+        "symfony/symfony": "5.2.*",
         "symfony/monolog-bundle": "3.*",
         "symfony/requirements-checker": "1.*",
         "symfony/maker-bundle": "1.*",
