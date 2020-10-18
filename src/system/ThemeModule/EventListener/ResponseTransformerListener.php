@@ -25,7 +25,8 @@ class ResponseTransformerListener implements EventSubscriberInterface
      */
     private $trimWhitespace;
 
-    public function __construct(bool $trimWhitespace = false) {
+    public function __construct(bool $trimWhitespace = false)
+    {
         $this->trimWhitespace = $trimWhitespace;
     }
 
