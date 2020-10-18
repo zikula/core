@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                     ->values(['head', 'foot'])
                     ->defaultValue('foot')
                 ->end()
+                ->booleanNode('trimwhitespace')->defaultFalse()->end()
                 ->arrayNode('bootstrap')
                     ->addDefaultsIfNotSet()
                     ->children()

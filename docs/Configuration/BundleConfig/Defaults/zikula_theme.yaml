@@ -1,6 +1,7 @@
 # These are the default values
 zikula_theme:
     script_position: foot
+    trimwhitespace: false
     bootstrap:
         css_path: '/bootstrap/css/bootstrap.min.css'
         js_path: '/bootstrap/js/bootstrap.bundle.min.js'

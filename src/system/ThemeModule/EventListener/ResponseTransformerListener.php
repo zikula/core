@@ -26,9 +26,17 @@ class ResponseTransformerListener implements EventSubscriberInterface
      */
     private $variableApi;
 
-    public function __construct(VariableApiInterface $variableApi)
-    {
+    /**
+     * @var bool
+     */
+    private $trimWhitespace;
+
+    public function __construct(
+        VariableApiInterface $variableApi,
+        bool $trimWhitespace
+    ) {
         $this->variableApi = $variableApi;
+        $this->trimWhitespace = $trimWhitespace;
     }
 
     public static function getSubscribedEvents()
@@ -47,8 +55,7 @@ class ResponseTransformerListener implements EventSubscriberInterface
         }
 
         $response = $event->getResponse();
-        $trimWhitespace = $this->variableApi->get('ZikulaThemeModule', 'trimwhitespace');
-        if ($trimWhitespace) {
+        if ($this->trimWhitespace) {
             $responseTransformer = new ResponseTransformer();
             $responseTransformer->trimWhitespace($response);
         }
