@@ -16,26 +16,16 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\ResponseTransformer;
 
 class ResponseTransformerListener implements EventSubscriberInterface
 {
     /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
      * @var bool
      */
     private $trimWhitespace;
 
-    public function __construct(
-        VariableApiInterface $variableApi,
-        bool $trimWhitespace
-    ) {
-        $this->variableApi = $variableApi;
+    public function __construct(bool $trimWhitespace = false) {
         $this->trimWhitespace = $trimWhitespace;
     }
 
