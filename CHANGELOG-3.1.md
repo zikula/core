@@ -11,6 +11,7 @@
 - Fixes:
   - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
   - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
+  - [ThemeModule] Corrected missing configurable value for `trimwhitespace` option ().
 
 - Features:
   - [config] Added standard Symfony bundle configurations for the following bundles (#4433):
