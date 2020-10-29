@@ -105,18 +105,17 @@ class ExtensionDependencyHelper
             }
             $this->checkForFatalDependency($dependency);
             // get and set reason from bundle metaData temporarily
-            if (false === $dependency->getReason()) {
+            if (null === $dependency->getReason()) {
+                $dependency->setReason('');
                 $bundle = $this->kernel->getModule($dependency->getModname());
                 if (null !== $bundle) {
                     $bundleDependencies = $bundle->getMetaData()->getDependencies();
                     foreach ($bundleDependencies as $bundleDependency) {
                         if ($bundleDependency['modname'] === $dependency->getModname()) {
-                            $reason = $dependency['reason'] ?? '';
-                            $dependency->setReason($reason);
+                            $dependency->setReason($dependency['reason'] ?? '');
                         }
                     }
                 }
-                $dependency->setReason('');
             }
             $unsatisfiedDependencies[$dependency->getId()] = $dependency;
         }

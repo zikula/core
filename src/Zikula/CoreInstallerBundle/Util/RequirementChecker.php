@@ -67,7 +67,7 @@ class RequirementChecker
 
     private function loadParametersFromFile(): void
     {
-        if (is_array($this->parameters)) {
+        if (0 < count($this->parameters)) {
             return;
         }
         $projectDir = dirname(__DIR__, 4); // should work when Bundle in vendor too

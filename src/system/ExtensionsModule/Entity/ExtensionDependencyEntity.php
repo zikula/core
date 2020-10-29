@@ -72,7 +72,7 @@ class ExtensionDependencyEntity extends EntityAccess
      * but loaded from composer.json.
      * @var string
      */
-    private $reason = false;
+    private $reason;
 
     public function getId(): ?int
     {
@@ -139,7 +139,7 @@ class ExtensionDependencyEntity extends EntityAccess
      *
      * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded during sync.
      */
-    public function getReason(): string
+    public function getReason(): ?string
     {
         return $this->reason;
     }

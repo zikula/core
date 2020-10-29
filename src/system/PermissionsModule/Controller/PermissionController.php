@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Controller;
 
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -173,7 +173,7 @@ class PermissionController extends AbstractController
             && '.*' === $permissionEntity->getComponent()
             && '.*' === $permissionEntity->getInstance()
         ) {
-            throw new FatalError($this->trans('Notice: You cannot delete the main administration permission rule.'));
+            throw new RuntimeException($this->trans('Notice: You cannot delete the main administration permission rule.'));
         }
 
         $this->getDoctrine()->getManager()->remove($permissionEntity);

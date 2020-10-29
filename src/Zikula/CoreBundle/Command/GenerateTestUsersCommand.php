@@ -43,7 +43,7 @@ class GenerateTestUsersCommand extends Command
     private $startUTC;
 
     /**
-     * @var \DateTime
+     * @var string
      */
     private $regDate;
 
@@ -173,9 +173,6 @@ EOT
 
     private function configureRegDate(): \DateTime
     {
-        if ($this->regDate instanceof \DateTime) {
-            return $this->regDate;
-        }
         $utcTz = new \DateTimeZone('UTC');
         $regDate = \DateTime::createFromFormat('Ymd', $this->regDate, $utcTz);
         if (!$this->range) {
