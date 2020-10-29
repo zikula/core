@@ -45,12 +45,17 @@ class GenerateTestUsersCommand extends Command
     /**
      * @var string
      */
-    private $regDate;
+    private $regDateValue;
 
     /**
      * @var bool
      */
     private $range = false;
+
+    /**
+     * @var string
+     */
+    private $regDate;
 
     /**
      * @var string
@@ -133,7 +138,7 @@ EOT
         $this->verified = in_array((int) $input->getOption('verified'), [0, 1, 2]) ? (int) $input->getOption('verified') : 1;
         $regDate = $input->getOption('regdate') ?? $this->nowUTC;
         $this->range = is_string($regDate) && '>' === $regDate[0];
-        $this->regDate = $this->range ? s($regDate)->slice(1)->toString() : $regDate;
+        $this->regDateValue = $this->range ? s($regDate)->slice(1)->toString() : $regDate;
 
         $io->title('User generation utility');
         $io->text('Generating users...');
@@ -173,14 +178,20 @@ EOT
 
     private function configureRegDate(): \DateTime
     {
+        if (null !== $this->regDate) {
+            return $this->regDate;
+        }
+
         $utcTz = new \DateTimeZone('UTC');
-        $regDate = \DateTime::createFromFormat('Ymd', $this->regDate, $utcTz);
+        $regDate = \DateTime::createFromFormat('Ymd', $this->regDateValue, $utcTz);
         if (!$this->range) {
-            return $regDate;
+            $this->regDate = $regDate;
+
+            return $this->regDate;
         }
         $randTimeStamp = mt_rand($regDate->getTimestamp(), $this->nowUTC->getTimestamp());
 
-        return \DateTime::createFromFormat("U", "${randTimeStamp}", $utcTz);
+        return \DateTime::createFromFormat('U', "${randTimeStamp}", $utcTz);
     }
 
     private function insertUser(string $uname): void

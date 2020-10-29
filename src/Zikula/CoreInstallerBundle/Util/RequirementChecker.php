@@ -22,7 +22,7 @@ class RequirementChecker
     /**
      * @var array
      */
-    private $parameters;
+    private $parameters = [];
 
     /**
      * @var string
