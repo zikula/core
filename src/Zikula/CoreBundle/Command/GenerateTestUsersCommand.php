@@ -53,7 +53,7 @@ class GenerateTestUsersCommand extends Command
     private $range = false;
 
     /**
-     * @var string
+     * @var \DateTime
      */
     private $regDate;
 
