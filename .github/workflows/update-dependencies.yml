@@ -24,6 +24,9 @@ jobs:
 
     - name: Install dependencies
       run: |
+      # downgrade to composer 1
+      # TODO get rid of this
+        composer self-update --rollback
         composer install
 
     - name: Update dependencies
