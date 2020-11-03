@@ -22,20 +22,29 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
 
+    # use composer 1
+    # TODO get rid of this
     - name: Install dependencies
-      # downgrade to composer 1
-      # TODO get rid of this
       run: |
-        composer self-update --rollback
-        composer install
+        wget https://getcomposer.org/composer-1.phar
+        chmod +x composer-1.phar
+        ./composer-1.phar install
+
+    #- name: Install dependencies
+      #run: |
+        #composer install
 
     - name: Update dependencies
       #run: |
       #  php -dmemory_limit=10G /usr/bin/composer update
       run: |
-        composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-        composer update
-        composer config --global --auth --unset github-oauth.github.com
+        ./composer-1.phar config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+        ./composer-1.phar update
+        ./composer-1.phar config --global --auth --unset github-oauth.github.com
+      #run: |
+        #composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+        #composer update
+        #composer config --global --auth --unset github-oauth.github.com
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
