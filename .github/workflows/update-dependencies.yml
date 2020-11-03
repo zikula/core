@@ -23,9 +23,9 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
 
     - name: Install dependencies
-      run: |
       # downgrade to composer 1
       # TODO get rid of this
+      run: |
         composer self-update --rollback
         composer install
 
