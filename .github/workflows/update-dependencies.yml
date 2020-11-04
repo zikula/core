@@ -41,6 +41,7 @@ jobs:
         ./composer-1.phar config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
         ./composer-1.phar update
         ./composer-1.phar config --global --auth --unset github-oauth.github.com
+        rm ./composer-1.phar
       #run: |
         #composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
         #composer update
