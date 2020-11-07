@@ -51,7 +51,7 @@
         "php-translation/symfony-bundle": "0.*",
         "php-translation/symfony-storage": "2.*",
         "nikic/php-parser": "4.*",
-        "willdurand/js-translation-bundle": "3.*",
+        "willdurand/js-translation-bundle": "dev-master",
 
         "frdh/mmenu.js": "8.*",
         "thomaspark/bootswatch": "4.*",

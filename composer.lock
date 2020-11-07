@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab1d8fd852be465ee619a6c89c3c94c6",
+    "content-hash": "1e998a6c073076dabd064da96824d3a3",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -421,16 +421,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.10.16",
+            "version": "1.10.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "217f0272673c72087862c40cf91ac07eb438d778"
+                "reference": "09d42e18394d8594be24e37923031c4b7442a1cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/217f0272673c72087862c40cf91ac07eb438d778",
-                "reference": "217f0272673c72087862c40cf91ac07eb438d778",
+                "url": "https://api.github.com/repos/composer/composer/zipball/09d42e18394d8594be24e37923031c4b7442a1cb",
+                "reference": "09d42e18394d8594be24e37923031c4b7442a1cb",
                 "shasum": ""
             },
             "require": {
@@ -511,7 +511,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T07:55:59+00:00"
+            "time": "2020-10-30T21:31:58+00:00"
         },
         {
             "name": "composer/installers",
@@ -2080,6 +2080,7 @@
                 "reflection",
                 "static"
             ],
+            "abandoned": "roave/better-reflection",
             "time": "2020-10-27T21:46:55+00:00"
         },
         {
@@ -2141,16 +2142,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.22",
+            "version": "2.1.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "68e418ec08fbfc6f58f6fd2eea70ca8efc8cc7d5"
+                "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/68e418ec08fbfc6f58f6fd2eea70ca8efc8cc7d5",
-                "reference": "68e418ec08fbfc6f58f6fd2eea70ca8efc8cc7d5",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
+                "reference": "5fa792ad1853ae2bc60528dd3e5cbf4542d3c1df",
                 "shasum": ""
             },
             "require": {
@@ -2195,7 +2196,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-09-26T15:48:38+00:00"
+            "time": "2020-10-31T20:37:35+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -2697,24 +2698,24 @@
         },
         {
             "name": "imagine/imagine",
-            "version": "1.2.3",
+            "version": "1.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "cb2361e5bb4410b681462d8e4f912bc5dabf84ab"
+                "reference": "d2e18be6e930ca169e4f921ef73ebfc061bf55d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/cb2361e5bb4410b681462d8e4f912bc5dabf84ab",
-                "reference": "cb2361e5bb4410b681462d8e4f912bc5dabf84ab",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/d2e18be6e930ca169e4f921ef73ebfc061bf55d8",
+                "reference": "d2e18be6e930ca169e4f921ef73ebfc061bf55d8",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "2.2.*",
-                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.4"
+                "friendsofphp/php-cs-fixer": "^2.2",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.4 || ^9.3"
             },
             "suggest": {
                 "ext-gd": "to use the GD implementation",
@@ -2751,7 +2752,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2019-12-04T09:55:33+00:00"
+            "time": "2020-11-03T22:35:03+00:00"
         },
         {
             "name": "ircmaxell/random-lib",
@@ -3219,16 +3220,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.5.6",
+            "version": "1.5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "a56e91e0fa1f6d0049153a9c34f63488f6b7ce61"
+                "reference": "11df9b36fd4f1d2b727a73bf14931d81373b9a54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/a56e91e0fa1f6d0049153a9c34f63488f6b7ce61",
-                "reference": "a56e91e0fa1f6d0049153a9c34f63488f6b7ce61",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/11df9b36fd4f1d2b727a73bf14931d81373b9a54",
+                "reference": "11df9b36fd4f1d2b727a73bf14931d81373b9a54",
                 "shasum": ""
             },
             "require": {
@@ -3310,7 +3311,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-17T21:33:03+00:00"
+            "time": "2020-10-31T13:49:32+00:00"
         },
         {
             "name": "league/html-to-markdown",
@@ -6406,16 +6407,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v5.1.8",
+            "version": "v5.2.0-BETA3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0fc79c4d0e799abdf32eaf9d95db6e921113b523"
+                "reference": "90d2e55815850cb880e798748fd3242d4d9a8dd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0fc79c4d0e799abdf32eaf9d95db6e921113b523",
-                "reference": "0fc79c4d0e799abdf32eaf9d95db6e921113b523",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/90d2e55815850cb880e798748fd3242d4d9a8dd4",
+                "reference": "90d2e55815850cb880e798748fd3242d4d9a8dd4",
                 "shasum": ""
             },
             "require": {
@@ -6441,6 +6442,7 @@
                 "twig/twig": "^2.10|^3.0"
             },
             "conflict": {
+                "doctrine/dbal": "<2.10",
                 "masterminds/html5": "<2.6",
                 "ocramius/proxy-manager": "<2.1",
                 "phpdocumentor/reflection-docblock": "<3.2.2",
@@ -6488,12 +6490,14 @@
                 "symfony/property-access": "self.version",
                 "symfony/property-info": "self.version",
                 "symfony/proxy-manager-bridge": "self.version",
+                "symfony/rate-limiter": "self.version",
                 "symfony/routing": "self.version",
                 "symfony/security-bundle": "self.version",
                 "symfony/security-core": "self.version",
                 "symfony/security-csrf": "self.version",
                 "symfony/security-guard": "self.version",
                 "symfony/security-http": "self.version",
+                "symfony/semaphore": "self.version",
                 "symfony/sendgrid-mailer": "self.version",
                 "symfony/serializer": "self.version",
                 "symfony/stopwatch": "self.version",
@@ -6512,7 +6516,8 @@
                 "symfony/yaml": "self.version"
             },
             "require-dev": {
-                "amphp/http-client": "^4.2",
+                "amphp/amp": "^2.5",
+                "amphp/http-client": "^4.2.1",
                 "amphp/http-tunnel": "^1.0",
                 "async-aws/ses": "^1.0",
                 "async-aws/sqs": "^1.0",
@@ -6522,7 +6527,7 @@
                 "doctrine/cache": "~1.6",
                 "doctrine/collections": "~1.0",
                 "doctrine/data-fixtures": "^1.1",
-                "doctrine/dbal": "~2.4|^3.0",
+                "doctrine/dbal": "^2.10|^3.0",
                 "doctrine/doctrine-bundle": "^2.0",
                 "doctrine/orm": "~2.4,>=2.4.5",
                 "doctrine/reflection": "~1.0",
@@ -6533,6 +6538,7 @@
                 "nyholm/psr7": "^1.0",
                 "ocramius/proxy-manager": "^2.1",
                 "paragonie/sodium_compat": "^1.8",
+                "pda/pheanstalk": "^4.0",
                 "php-http/httplug": "^1.0|^2.0",
                 "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
                 "predis/predis": "~1.1",
@@ -6546,7 +6552,7 @@
             },
             "type": "library",
             "extra": {
-                "branch-version": "5.1"
+                "branch-version": "5.2"
             },
             "autoload": {
                 "psr-4": {
@@ -6597,7 +6603,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-28T05:55:39+00:00"
+            "time": "2020-10-28T06:09:01+00:00"
         },
         {
             "name": "thomaspark/bootswatch",
@@ -7325,37 +7331,38 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "3.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "a64af02e1b2193ba77dfbb08a5df14d2c7d3bae4"
+                "reference": "dacc948ce498d76dac3567ff19f3020043b4a9da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/a64af02e1b2193ba77dfbb08a5df14d2c7d3bae4",
-                "reference": "a64af02e1b2193ba77dfbb08a5df14d2c7d3bae4",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/dacc948ce498d76dac3567ff19f3020043b4a9da",
+                "reference": "dacc948ce498d76dac3567ff19f3020043b4a9da",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1",
-                "symfony/console": "~3.4|~4.0|~5.0",
-                "symfony/finder": "~3.4|~4.0|~5.0",
-                "symfony/framework-bundle": "~3.4|~4.0|~5.0",
-                "symfony/intl": "~3.4|~4.0|~5.0",
-                "symfony/translation": "~3.4|~4.0|~5.0",
-                "symfony/twig-bundle": "~3.4|~4.0|~5.0"
+                "symfony/console": "~4.4|~5.0",
+                "symfony/finder": "~4.4|~5.0",
+                "symfony/framework-bundle": "~4.4|~5.0",
+                "symfony/intl": "~4.4|~5.0",
+                "symfony/translation": "~4.4|~5.0",
+                "symfony/twig-bundle": "~4.4|~5.0"
             },
             "replace": {
                 "willdurand/expose-translation-bundle": "2.5.*"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8|~5.7|~6.5",
-                "symfony/asset": "~3.4|~4.0|~5.0",
-                "symfony/browser-kit": "~3.4|~4.0|~5.0",
+                "symfony/asset": "~4.4|~5.0",
+                "symfony/browser-kit": "~4.4|~5.0",
+                "symfony/filesystem": "~4.4|~5.0",
                 "symfony/phpunit-bridge": "^5.0",
-                "symfony/twig-bundle": "~3.4|~4.0|~5.0",
-                "symfony/yaml": "~3.4|~4.0|~5.0"
+                "symfony/twig-bundle": "~4.4|~5.0",
+                "symfony/yaml": "~4.4|~5.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -7384,7 +7391,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2020-02-17T14:41:11+00:00"
+            "time": "2020-11-07T06:48:45+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -7904,6 +7911,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "willdurand/js-translation-bundle": 20,
         "phpids/phpids": 20,
         "zikula/profile-module": 20
     },
