@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e998a6c073076dabd064da96824d3a3",
+    "content-hash": "c397ea654c30c41e3fa05d6fcb558457",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -1386,16 +1386,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.1.2",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "f5153089993e1230f5d8acbd8e126014d5a63e17"
+                "reference": "c1b1fe95a6cce5e53a1454c46ae3500e53fadae1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/f5153089993e1230f5d8acbd8e126014d5a63e17",
-                "reference": "f5153089993e1230f5d8acbd8e126014d5a63e17",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/c1b1fe95a6cce5e53a1454c46ae3500e53fadae1",
+                "reference": "c1b1fe95a6cce5e53a1454c46ae3500e53fadae1",
                 "shasum": ""
             },
             "require": {
@@ -1416,10 +1416,10 @@
                 "twig/twig": "<1.34|>=2.0,<2.4"
             },
             "require-dev": {
-                "doctrine/coding-standard": "^6.0",
+                "doctrine/coding-standard": "^8.0",
                 "doctrine/orm": "^2.6",
                 "ocramius/proxy-manager": "^2.1",
-                "phpunit/phpunit": "^7.5",
+                "phpunit/phpunit": "^7.5 || ^9.3",
                 "symfony/phpunit-bridge": "^4.2",
                 "symfony/property-info": "^4.3.3|^5.0",
                 "symfony/proxy-manager-bridge": "^3.4|^4.3.3|^5.0",
@@ -1427,7 +1427,7 @@
                 "symfony/validator": "^3.4.30|^4.3.3|^5.0",
                 "symfony/web-profiler-bundle": "^3.4.30|^4.3.3|^5.0",
                 "symfony/yaml": "^3.4.30|^4.3.3|^5.0",
-                "twig/twig": "^1.34|^2.12"
+                "twig/twig": "^1.34|^2.12|^3.0"
             },
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle.",
@@ -1436,7 +1436,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -1488,7 +1488,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-08-25T10:57:15+00:00"
+            "time": "2020-11-07T16:32:32+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -7331,16 +7331,16 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "dev-master",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "dacc948ce498d76dac3567ff19f3020043b4a9da"
+                "reference": "45741f7c6e88a0e5f5e60f5e2c22ddc06b5d1bd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/dacc948ce498d76dac3567ff19f3020043b4a9da",
-                "reference": "dacc948ce498d76dac3567ff19f3020043b4a9da",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/45741f7c6e88a0e5f5e60f5e2c22ddc06b5d1bd3",
+                "reference": "45741f7c6e88a0e5f5e60f5e2c22ddc06b5d1bd3",
                 "shasum": ""
             },
             "require": {
@@ -7391,7 +7391,7 @@
                 "symfony",
                 "translation"
             ],
-            "time": "2020-11-07T06:48:45+00:00"
+            "time": "2020-11-08T14:18:24+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -7911,7 +7911,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "willdurand/js-translation-bundle": 20,
         "phpids/phpids": 20,
         "zikula/profile-module": 20
     },
