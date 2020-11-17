@@ -36,7 +36,7 @@ jobs:
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
-      uses: peter-evans/create-pull-request@v2
+      uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: 'update dependencies :balloon:'
