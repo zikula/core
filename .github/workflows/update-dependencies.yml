@@ -36,6 +36,7 @@ jobs:
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
+      id: cpr
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,4 +49,5 @@ jobs:
 
     - name: Check outputs
       run: |
-        echo "Created pull request number: ${{ env.PULL_REQUEST_NUMBER }}"
+        echo "Pull Request Number: ${{ steps.cpr.outputs.pull-request-number }}"
+        echo "Pull Request URL: ${{ steps.cpr.outputs.pull-request-url }}"
