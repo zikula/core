@@ -11,13 +11,14 @@ jobs:
       - name: Branch name
         run: echo running on branch ${GITHUB_REF##*/}
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy Kernel.php
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /src/Kernel.php
           dst_path: /src/Kernel.php
           dst_owner: zikula
@@ -26,13 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy public
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /public/
           dst_path: /
           dst_owner: zikula
@@ -41,13 +43,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy templates
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /templates/bundles/TranslationBundle/WebUI/
           dst_path: /templates/bundles/TranslationBundle/
           dst_owner: zikula
@@ -56,13 +59,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy translations
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /translations/
           dst_path: /
           dst_owner: zikula
@@ -71,13 +75,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy .env
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /.env
           dst_path: /.env
           dst_owner: zikula
@@ -86,13 +91,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/bootstrap.php
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/bootstrap.php
           dst_path: /config/bootstrap.php
           dst_owner: zikula
@@ -101,13 +107,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/bundles.php
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/bundles.php
           dst_path: /config/bundles.php
           dst_owner: zikula
@@ -116,13 +123,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/preload.php
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/preload.php
           dst_path: /config/preload.php
           dst_owner: zikula
@@ -131,13 +139,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes.yaml
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/routes.yaml
           dst_path: /config/routes.yaml
           dst_owner: zikula
@@ -146,13 +155,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes_dev.yaml
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/routes_dev.yaml
           dst_path: /config/routes_dev.yaml
           dst_owner: zikula
@@ -161,43 +171,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/services.yaml
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/services.yaml
           dst_path: /config/services.yaml
           dst_owner: zikula
           dst_repo_name: distribution
-#  copy_dynamic:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Set env
-#        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
-#      - name: Copy config/dynamic/default.yaml
-#        uses: andstor/copycat-action@v3
-#        with:
-#          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-#          src_branch: ${{ env.BRANCH_NAME }}
-#          dst_branch: ${{ env.BRANCH_NAME }}
-#          src_path: /config/dynamic/default.yaml
-#          dst_path: /config/dynamic/default.yaml
-#          dst_owner: zikula
-#          dst_repo_name: distribution
+  #copy_dynamic:
+    #runs-on: ubuntu-latest
+    #steps:
+      #- name: Set env
+        #id: vars
+        #run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
+      #- name: Copy config/dynamic/default.yaml
+        #uses: andstor/copycat-action@v3
+        #with:
+          #personal_token: ${{ secrets.COPY_DIST_TOKEN }}
+          #src_branch: ${{ steps.vars.outputs.branch_name }}
+          #dst_branch: ${{ steps.vars.outputs.branch_name }}
+          #src_path: /config/dynamic/default.yaml
+          #dst_path: /config/dynamic/default.yaml
+          #dst_owner: zikula
+          #dst_repo_name: distribution
   copy_packages:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/packages/
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/packages/
           #exclude: '*+(/test/|/dev/)*'
           dst_path: /config/
@@ -207,13 +220,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/routes/
           #exclude: '*+(/dev/)*'
           dst_path: /config/
@@ -223,13 +237,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
-        run: echo ::set-env name=BRANCH_NAME::${GITHUB_REF##*/}
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/workflows
         uses: andstor/copycat-action@v3
         with:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ env.BRANCH_NAME }}
-          dst_branch: ${{ env.BRANCH_NAME }}
+          src_branch: ${{ steps.vars.outputs.branch_name }}
+          dst_branch: ${{ steps.vars.outputs.branch_name }}
           src_path: /config/workflows/
           dst_path: /config/
           dst_owner: zikula
