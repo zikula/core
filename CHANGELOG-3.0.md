@@ -7,6 +7,7 @@
 
 - Fixes:
   - [CoreBundle] More robust autoloader detection.
+  - [CoreBundle] Add `flex-wrap` class to pagination for responsive behaviour ([bs#23504](https://github.com/twbs/bootstrap/issues/23504)).
   - [Theme] Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).
   - [ZAuth] Fix wrong `DateTime` argument in `UserVerificationRepository`.
 

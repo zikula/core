@@ -3,7 +3,7 @@
 {% endif %}
 {% if paginator.hasToPaginate %}
     <nav aria-label="{% trans %}Page navigation{% endtrans %}">
-        <ul class="pagination justify-content-center">
+        <ul class="pagination justify-content-center flex-wrap{# flex-wrap class is required for responsive behaviour, see https://github.com/twbs/bootstrap/issues/23504 #}">
             {% do paginator.setRouteParameter('page', 1) %}
             <li class="page-item">
                 <a class="page-link" title="{% trans %}First page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
