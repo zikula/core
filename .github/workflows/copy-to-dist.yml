@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Branch name
         run: echo running on branch ${GITHUB_REF##*/}
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy Kernel.php
@@ -26,7 +26,7 @@ jobs:
   copy_public:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy public
@@ -42,7 +42,7 @@ jobs:
   copy_templates:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy templates
@@ -58,7 +58,7 @@ jobs:
   copy_translations:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy translations
@@ -74,7 +74,7 @@ jobs:
   copy_env:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy .env
@@ -90,7 +90,7 @@ jobs:
   copy_bootstrap_php:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/bootstrap.php
@@ -106,7 +106,7 @@ jobs:
   copy_bundles_php:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/bundles.php
@@ -122,7 +122,7 @@ jobs:
   copy_preload_php:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/preload.php
@@ -138,7 +138,7 @@ jobs:
   copy_routes_yaml:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes.yaml
@@ -154,7 +154,7 @@ jobs:
   copy_routes_dev_yaml:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes_dev.yaml
@@ -170,7 +170,7 @@ jobs:
   copy_services_yaml:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/services.yaml
@@ -186,7 +186,7 @@ jobs:
   copy_dynamic:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/dynamic/default.yaml
@@ -202,7 +202,7 @@ jobs:
   copy_packages:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/packages/
@@ -219,7 +219,7 @@ jobs:
   copy_routes:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes
@@ -236,7 +236,7 @@ jobs:
   copy_workflows:
     runs-on: ubuntu-latest
     steps:
-      - name: Set env
+      - name: Set branch
         id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/workflows
