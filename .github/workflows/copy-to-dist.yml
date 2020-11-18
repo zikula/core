@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy public
         uses: andstor/copycat-action@v3
@@ -42,6 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy templates
         uses: andstor/copycat-action@v3
@@ -57,6 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy translations
         uses: andstor/copycat-action@v3
@@ -72,6 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy .env
         uses: andstor/copycat-action@v3
@@ -87,6 +91,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/bootstrap.php
         uses: andstor/copycat-action@v3
@@ -102,6 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/bundles.php
         uses: andstor/copycat-action@v3
@@ -117,6 +123,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/preload.php
         uses: andstor/copycat-action@v3
@@ -132,6 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes.yaml
         uses: andstor/copycat-action@v3
@@ -147,6 +155,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes_dev.yaml
         uses: andstor/copycat-action@v3
@@ -162,6 +171,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/services.yaml
         uses: andstor/copycat-action@v3
@@ -177,6 +187,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/dynamic/default.yaml
         uses: andstor/copycat-action@v3
@@ -192,6 +203,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/packages/
         uses: andstor/copycat-action@v3
@@ -208,6 +220,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/routes
         uses: andstor/copycat-action@v3
@@ -224,6 +237,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set env
+        id: vars
         run: echo ::set-output name=branch_name::${GITHUB_REF##*/}
       - name: Copy config/workflows
         uses: andstor/copycat-action@v3
