@@ -6408,16 +6408,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v5.2.0-RC1",
+            "version": "v5.2.0-RC2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "8de113edaff8f988c1eb2e9420927bff60fd1450"
+                "reference": "cbce53759e4238fe25202f1012ba76040c729fae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/8de113edaff8f988c1eb2e9420927bff60fd1450",
-                "reference": "8de113edaff8f988c1eb2e9420927bff60fd1450",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/cbce53759e4238fe25202f1012ba76040c729fae",
+                "reference": "cbce53759e4238fe25202f1012ba76040c729fae",
                 "shasum": ""
             },
             "require": {
@@ -6552,7 +6552,7 @@
             },
             "type": "library",
             "extra": {
-                "branch-version": "5.x"
+                "branch-version": "5.2"
             },
             "autoload": {
                 "psr-4": {
@@ -6603,7 +6603,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-10T07:54:54+00:00"
+            "time": "2020-11-21T08:46:11+00:00"
         },
         {
             "name": "thomaspark/bootswatch",
@@ -7612,12 +7612,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "dd6d965533e16bf4033228e07b3c2ac145112b60"
+                "reference": "fee486f5712301cb77839e725da38c50d8c4f461"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/dd6d965533e16bf4033228e07b3c2ac145112b60",
-                "reference": "dd6d965533e16bf4033228e07b3c2ac145112b60",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/fee486f5712301cb77839e725da38c50d8c4f461",
+                "reference": "fee486f5712301cb77839e725da38c50d8c4f461",
                 "shasum": ""
             },
             "require": {
@@ -7673,7 +7673,7 @@
                 }
             ],
             "description": "User profiles and member list",
-            "time": "2020-11-17T07:15:47+00:00"
+            "time": "2020-11-18T17:31:00+00:00"
         },
         {
             "name": "zikula/sortable-columns",
