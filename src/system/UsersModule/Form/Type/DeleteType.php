@@ -27,7 +27,7 @@ class DeleteType extends AbstractType
     {
         $builder
             ->add('users', EntityType::class, [
-                'choice_attr' => static function() {
+                'choice_attr' => static function () {
                     return ['class' => 'user-checkboxes'];
                 },
                 'class' => UserEntity::class,

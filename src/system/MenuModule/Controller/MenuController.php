@@ -76,10 +76,10 @@ class MenuController extends AbstractController
             [
                 'decorate' => true,
                 'html' => true,
-                'childOpen' => function($node) {
+                'childOpen' => function ($node) {
                     return '<li class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
                 },
-                'nodeDecorator' => static function($node) {
+                'nodeDecorator' => static function ($node) {
                     return '<a href="#">' . $node['title'] . ' (' . $node['id'] . ')</a>';
                 }
             ]

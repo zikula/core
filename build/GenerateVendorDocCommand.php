@@ -45,7 +45,7 @@ class GenerateVendorDocCommand extends Command
             'symfony-pack' => 'Symfony Packages'
         ];
         $types = array_keys($typeOrder);
-        usort($packages, function($a, $b) use ($types) {
+        usort($packages, function ($a, $b) use ($types) {
             $typeOrder = array_search($a['type'], $types) - array_search($b['type'], $types);
             if (0 !== $typeOrder) {
                 return $typeOrder;
@@ -97,7 +97,7 @@ currentMenu: vendor-info
             }
             $tmp[] = $author['name'];
         }
-        usort($authors, function($a, $b) {
+        usort($authors, function ($a, $b) {
             return strcmp($a['name'], $b['name']);
         });
         foreach ($authors as $author) {

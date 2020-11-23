@@ -57,15 +57,15 @@ class MainSettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $spaceReplaceCallbackTransformer = new CallbackTransformer(
-            static function($originalDescription) {
+            static function ($originalDescription) {
                 return $originalDescription;
             },
-            static function($submittedDescription) {
+            static function ($submittedDescription) {
                 return mb_ereg_replace(' ', '', $submittedDescription);
             }
         );
         $pageTitleLocalizationTransformer = new CallbackTransformer(
-            function($originalPageTitle) {
+            function ($originalPageTitle) {
                 $originalPageTitle = empty($originalPageTitle) ? '%pagetitle%' : $originalPageTitle;
                 $originalPageTitle = str_replace(
                     ['%pagetitle%', '%sitename%', '%modulename%'],
@@ -75,7 +75,7 @@ class MainSettingsType extends AbstractType
 
                 return $originalPageTitle;
             },
-            function($submittedPageTitle) {
+            function ($submittedPageTitle) {
                 $submittedPageTitle = str_replace(
                     [$this->trans('%pagetitle%'), $this->trans('%sitename%'), $this->trans('%modulename%')],
                     ['%pagetitle%', '%sitename%', '%modulename%'],
@@ -137,7 +137,7 @@ class MainSettingsType extends AbstractType
                 $builder->create('permasearch', TextType::class, [
                     'label' => 'List to search for',
                     'constraints' => new Callback([
-                        'callback' => function($data, ExecutionContextInterface $context) {
+                        'callback' => function ($data, ExecutionContextInterface $context) {
                             if (mb_ereg(',$', $data)) {
                                 $context->addViolation($this->trans('Error! In your permalink settings, strings cannot be terminated with a comma.'));
                             }

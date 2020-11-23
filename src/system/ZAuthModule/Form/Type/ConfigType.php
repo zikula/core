@@ -142,7 +142,7 @@ class ConfigType extends AbstractType
             /**
              * Form Listeners
              */
-            ->addEventListener(FormEvents::POST_SUBMIT, static function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, static function (FormEvent $event) {
                 $data = $event->getData();
                 // clear anti-spam answer if there is no question
                 if (empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION])) {
@@ -163,7 +163,7 @@ class ConfigType extends AbstractType
         $resolver->setDefaults([
             'constraints' => [
                 new Callback([
-                    'callback' => static function($data, ExecutionContextInterface $context) {
+                    'callback' => static function ($data, ExecutionContextInterface $context) {
                         if (!empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]) && empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER])) {
                             $context
                                 ->buildViolation('If a spam protection question is provided, then a spam protection answer must also be provided.')

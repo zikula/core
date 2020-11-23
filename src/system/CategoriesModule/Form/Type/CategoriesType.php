@@ -71,10 +71,10 @@ class CategoriesType extends AbstractType
         /** @var CategoryRegistryEntity[] $registries */
         foreach ($registries as $registry) {
             $baseCategory = $registry->getCategory();
-            $queryBuilderClosure = static function(CategoryRepository $repo) use ($baseCategory, $options) {
+            $queryBuilderClosure = static function (CategoryRepository $repo) use ($baseCategory, $options) {
                 return $repo->getChildrenQueryBuilder($baseCategory, $options['direct']);
             };
-            $choiceLabelClosure = static function(CategoryEntity $category) use ($baseCategory, $locale) {
+            $choiceLabelClosure = static function (CategoryEntity $category) use ($baseCategory, $locale) {
                 $indent = str_repeat('--', $category->getLvl() - $baseCategory->getLvl() - 1);
 
                 $categoryName = $category['displayName'][$locale] ?? $category['displayName']['en'];
@@ -142,7 +142,7 @@ class CategoriesType extends AbstractType
         $resolver->setAllowedTypes('em', [ObjectManager::class, 'null']);
         $resolver->setAllowedTypes('showRegistryLabels', 'bool');
 
-        $resolver->addAllowedValues('entityCategoryClass', static function($value) {
+        $resolver->addAllowedValues('entityCategoryClass', static function ($value) {
             return is_subclass_of($value, AbstractCategoryAssignment::class);
         });
     }
