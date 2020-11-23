@@ -70,7 +70,7 @@ class HtmlFilterApiTest extends TestCase
     {
         $variableApi = $this->getMockBuilder(VariableApiInterface::class)->getMock();
         $variableApi->method('getSystemVar')->willReturnCallback(
-            function($string, $default) use ($htmlEntities, $outputFilter) {
+            function ($string, $default) use ($htmlEntities, $outputFilter) {
                 switch ($string) {
                     case 'outputfilter':
                         return $outputFilter;

@@ -37,7 +37,7 @@ class CombinedAssetController extends AbstractController
             $lifetimeInSeconds,
             $kernel->getCacheDir() . '/assets/' . $type
         );
-        $cachedFile = $cacheService->get($key, function() {
+        $cachedFile = $cacheService->get($key, function () {
             throw new \Exception('Combined Assets not found');
         });
 

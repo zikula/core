@@ -47,7 +47,7 @@ class FileIOController extends AbstractController
             if ($form->get('download')->isClicked()) {
                 $data = $form->getData();
                 $response = new StreamedResponse();
-                $response->setCallback(function() use ($data, $userRepository) {
+                $response->setCallback(function () use ($data, $userRepository) {
                     $fields = ['uid', 'uname', 'activated', 'email', 'registrationDate', 'lastLogin', 'groups'];
                     foreach ($fields as $k => $field) {
                         if (isset($data[$field]) && !$data[$field]) {
