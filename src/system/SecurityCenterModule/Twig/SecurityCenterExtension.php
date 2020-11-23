@@ -21,7 +21,7 @@ class SecurityCenterExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('safeHtml', [$this, 'safeHtml'], ['is_safe' => ['html']])
+            new TwigFilter('safeHtml', [SecurityCenterRuntime::class, 'safeHtml'], ['is_safe' => ['html']])
         ];
     }
 }
