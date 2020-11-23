@@ -3,6 +3,7 @@ risky: true
 
 enabled:
   - alpha_ordered_imports
+  - cast_spaces
   - combine_consecutive_issets
   - combine_consecutive_unsets
   - concat_with_spaces
@@ -23,7 +24,6 @@ enabled:
   - ternary_to_null_coalescing
 
 disabled:
-  - cast_spaces
   - concat_without_spaces
   - function_declaration
   - native_constant_invocation_symfony
