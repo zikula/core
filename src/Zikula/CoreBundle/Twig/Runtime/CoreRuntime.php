@@ -71,7 +71,7 @@ class CoreRuntime implements RuntimeExtensionInterface
     {
         $string = preg_replace_callback(
             '/(.)@(.)/s',
-            static function($m) {
+            static function ($m) {
                 return '&#' . sprintf('%03d', ord($m[1])) . ';&#064;&#' . sprintf('%03d', ord($m[2])) . ';';
             },
             $string

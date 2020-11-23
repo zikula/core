@@ -78,7 +78,7 @@ class ZikulaSettingsExtension extends Extension implements PrependExtensionInter
             // do not set in a distribution package when core components are in "vendor/"
         }
 
-        $bundles = array_filter($container->getParameter('kernel.bundles'), function($bundleClassName, $name) use ($container) {
+        $bundles = array_filter($container->getParameter('kernel.bundles'), function ($bundleClassName, $name) use ($container) {
             if (ZikulaKernel::isCoreExtension($name)) {
                 return false;
             }
