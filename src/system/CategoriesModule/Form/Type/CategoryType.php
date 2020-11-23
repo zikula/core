@@ -155,10 +155,10 @@ class CategoryType extends AbstractType
         $builder->get('name')
             ->addModelTransformer(new CallbackTransformer(
                 // remove slash from name before persistence to prevent issues with path
-                static function($string) {
+                static function ($string) {
                     return $string;
                 },
-                static function($string) {
+                static function ($string) {
                     return str_replace('/', '&#47;', $string);
                 }
             ))
