@@ -65,9 +65,8 @@ abstract class AbstractExtension extends Bundle
     public function getRelativeAssetPath(): string
     {
         $folder = $this->getNameType() . 's/';
-        $name = s($this->getName())->trimEnd($this->getNameType());
 
-        return s($folder . $name)->lower()->toString();
+        return mb_strtolower($folder . mb_substr($this->getName(), 0, -mb_strlen($this->getNameType())));
     }
 
     public function getNameType(): string
