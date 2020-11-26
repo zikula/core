@@ -151,6 +151,6 @@ class Asset
             return $bundle->getRelativeAssetPath();
         }
 
-        return 'bundles/' . mb_strtolower(mb_substr($bundle->getName(), 0, -mb_strlen('bundle')));
+        return 'bundles/' . s($bundle->getName())->lower()->beforeLast('bundle');
     }
 }

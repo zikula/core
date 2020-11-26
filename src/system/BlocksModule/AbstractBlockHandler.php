@@ -108,7 +108,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     {
         // default to the ClassName without the `Block` suffix
         // note: This string is intentionally left untranslated.
-        return s(static::class)->afterLast('\\')->trimEnd('Block')->toString();
+        return s(static::class)->afterLast('\\')->beforeLast('Block')->toString();
     }
 
     /**
