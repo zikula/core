@@ -3118,33 +3118,33 @@
         },
         {
             "name": "knplabs/knp-menu-bundle",
-            "version": "v3.0.0",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "2795e236db1d807040762be9a2813ab8c6ed0569"
+                "reference": "2b4c3bcba1646aef17b5e368f3004b108330c59b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/2795e236db1d807040762be9a2813ab8c6ed0569",
-                "reference": "2795e236db1d807040762be9a2813ab8c6ed0569",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/2b4c3bcba1646aef17b5e368f3004b108330c59b",
+                "reference": "2b4c3bcba1646aef17b5e368f3004b108330c59b",
                 "shasum": ""
             },
             "require": {
-                "knplabs/knp-menu": "^3.0",
-                "php": "^7.2",
-                "symfony/framework-bundle": "^3.4 | ^4.2 | ^5.0"
+                "knplabs/knp-menu": "^3.1",
+                "php": "^7.2 || ^8.0",
+                "symfony/framework-bundle": "^3.4 | ^4.4 | ^5.0"
             },
             "require-dev": {
                 "phpspec/prophecy": "^1.8",
-                "symfony/expression-language": "^3.4 | ^4.2 | ^5.0",
-                "symfony/phpunit-bridge": "^3.4 | ^4.2 | ^5.0",
-                "symfony/templating": "^3.4 | ^4.0 | ^5.0"
+                "symfony/expression-language": "^3.4 | ^4.4 | ^5.0",
+                "symfony/phpunit-bridge": "^3.4 | ^4.4 | ^5.0",
+                "symfony/templating": "^3.4 | ^4.4 | ^5.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1.x-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -3174,7 +3174,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2019-12-01T13:07:41+00:00"
+            "time": "2020-11-29T17:04:51+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
