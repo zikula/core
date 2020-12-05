@@ -29,7 +29,7 @@
         "composer/installers": "1.*",
         "composer/semver": "1.*",
 
-        "robloach/component-installer": "*",
+        "oomphinc/composer-installers-extender": "2.*",
         "components/jquery": "3.*",
         "components/jqueryui": "1.*",
         "components/bootstrap": "4.*",
@@ -131,10 +131,8 @@
         "zikula-scripts": [
             "composer dump-autoload",
             "bin/console cache:clear --env prod",
-            "bin/console cache:clear",
             "bin/console assets:install --relative public",
-            "Zikula\\ExtensionsModule\\Composer\\ManuallyInstallAssets::install",
-            "Zikula\\ExtensionsModule\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
+            "Zikula\\ExtensionsModule\\Composer\\ManuallyInstallAssets::install"
         ],
         "post-install-cmd": [
             "@zikula-scripts"
@@ -154,14 +152,15 @@
             "php": "7.2.5"
         },
         "bin-dir": "bin",
-        "sort-packages": true,
-        "component-dir": "public"
+        "sort-packages": true
     },
     "extra": {
         "tests-dir": "tests",
         "symfony-assets-install": "relative",
+        "installer-types": ["component"],
         "installer-paths": {
-            "src/extensions/{$vendor}/{$name}": ["type:zikula-module", "type:zikula-theme"]
+            "src/extensions/{$vendor}/{$name}": ["type:zikula-module", "type:zikula-theme"],
+            "public/{$name}/": ["type:component"]
         }
     }
 }
