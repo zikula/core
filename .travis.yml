@@ -137,11 +137,11 @@ install:
 
 script:
   # execute Symfony deprecation detector
-  - git clone https://github.com/sensiolabs-de/deprecation-detector.git
-  - cd deprecation-detector
-  - composer install
-  - cd ..
-  - ./deprecation-detector/bin/deprecation-detector check src vendor
+#  - git clone https://github.com/sensiolabs-de/deprecation-detector.git
+#  - cd deprecation-detector
+#  - composer install
+#  - cd ..
+#  - ./deprecation-detector/bin/deprecation-detector check src vendor
 
 after_success:
   # dump vendors into doc
