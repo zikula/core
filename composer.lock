@@ -1386,16 +1386,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "9e07bb1ff35d35d9ec4597b79e5d05502d7d4d43"
+                "reference": "044d33eeffdb236d5013b6b4af99f87519e10751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/9e07bb1ff35d35d9ec4597b79e5d05502d7d4d43",
-                "reference": "9e07bb1ff35d35d9ec4597b79e5d05502d7d4d43",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/044d33eeffdb236d5013b6b4af99f87519e10751",
+                "reference": "044d33eeffdb236d5013b6b4af99f87519e10751",
                 "shasum": ""
             },
             "require": {
@@ -1419,7 +1419,7 @@
                 "doctrine/coding-standard": "^8.0",
                 "doctrine/orm": "^2.6",
                 "ocramius/proxy-manager": "^2.1",
-                "phpunit/phpunit": "^7.5 || ^9.3",
+                "phpunit/phpunit": "^7.5 || ^8.0 || ^9.3",
                 "symfony/phpunit-bridge": "^4.2",
                 "symfony/property-info": "^4.3.3|^5.0",
                 "symfony/proxy-manager-bridge": "^3.4|^4.3.3|^5.0",
@@ -1488,7 +1488,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-10T20:42:15+00:00"
+            "time": "2020-12-05T15:07:10+00:00"
         },
         {
             "name": "doctrine/event-manager",
