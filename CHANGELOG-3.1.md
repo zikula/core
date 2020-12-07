@@ -3,15 +3,18 @@
 ## 3.1.0 (unreleased)
 
 - BC Breaks:
-  - [CoreBundle] Removed `Zikula\Bundle\CoreBundle\DynamicConfigDumper`.
   - [config] Removed `config/dynamic/*.yaml` files (use standard package config files).
   - [config] Removed `config/services_custom.yaml` (use `services.yaml`).
   - [config] `zikula_asset_manager.combine` now defaults to `false` (#4419).
+  - [CoreBundle] Removed `Zikula\Bundle\CoreBundle\DynamicConfigDumper`.
+  - [ThemeModule] Removed Require.js config (#4558).
 
 - Fixes:
+  - [composer] Correct Composer 2 compatibilty.
   - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
   - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
-  - [ThemeModule] Corrected missing configurable value for `trimwhitespace` option ().
+  - [ThemeModule] Corrected missing configurable value for `trimwhitespace` option (#4531).
+  - [ThemeModule] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
 
 - Features:
   - [config] Added standard Symfony bundle configurations for the following bundles (#4433):

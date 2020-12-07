@@ -29,10 +29,6 @@ before_install:
     # Set the COMPOSER_ROOT_VERSION to the right version according to the branch being built
     - if [ "$TRAVIS_BRANCH" = "master" ]; then export COMPOSER_ROOT_VERSION=dev-master; else export COMPOSER_ROOT_VERSION=dev-"$TRAVIS_BRANCH"; fi;
 
-    # downgrade to composer 1
-    # TODO get rid of this
-    - composer self-update --rollback
-
     - composer validate --no-check-all --strict
     - composer install -o --no-scripts
     - composer run-script post-autoload-dump
@@ -141,11 +137,11 @@ install:
 
 script:
   # execute Symfony deprecation detector
-  - git clone https://github.com/sensiolabs-de/deprecation-detector.git
-  - cd deprecation-detector
-  - composer install
-  - cd ..
-  - ./deprecation-detector/bin/deprecation-detector check src vendor
+#  - git clone https://github.com/sensiolabs-de/deprecation-detector.git
+#  - cd deprecation-detector
+#  - composer install
+#  - cd ..
+#  - ./deprecation-detector/bin/deprecation-detector check src vendor
 
 after_success:
   # dump vendors into doc
