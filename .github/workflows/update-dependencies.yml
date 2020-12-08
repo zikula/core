@@ -9,7 +9,7 @@ jobs:
     - name: Checkout sources from 3.0 branch
       uses: actions/checkout@v2
       with:
-        ref: '3.0'
+        ref: master
 
     # persist composer's internal cache directory to reduce the workflow execution time
     - name: Get Composer cache directory
@@ -45,7 +45,7 @@ jobs:
         body: This is an auto-generated PR with dependency updates.
         labels: dep-updates
         branch: dep-updates
-        base: '3.0'
+        base: master
 
     - name: Check outputs
       run: |
