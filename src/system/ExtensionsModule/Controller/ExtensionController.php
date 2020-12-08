@@ -120,7 +120,7 @@ class ExtensionController extends AbstractController
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
-        $zikulaLogger->notice(sprintf('Extension activating'), ['name' => $extension->getName()]);
+        $zikulaLogger->notice('Extension activating', ['name' => $extension->getName()]);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             $this->addFlash('error', $this->trans('Error! Activation of %name% not allowed.', ['%name%' => $extension->getName()]));
         } else {
@@ -152,7 +152,7 @@ class ExtensionController extends AbstractController
 
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
-        $zikulaLogger->notice(sprintf('Extension deactivating'), ['name' => $extension->getName()]);
+        $zikulaLogger->notice('Extension deactivating', ['name' => $extension->getName()]);
         $defaultTheme = $this->getVariableApi()->get(VariableApi::CONFIG, 'defaulttheme');
         $adminTheme = $this->getVariableApi()->get('ZikulaAdminModule', 'admintheme');
 
