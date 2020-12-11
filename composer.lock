@@ -8,29 +8,30 @@
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
-            "version": "v1.4.2",
+            "version": "v1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antishov/StofDoctrineExtensionsBundle.git",
-                "reference": "19c8d45e7ceb6477ef490f21ab4279e549c1e828"
+                "reference": "b036a8d62111c03f237a619b1840c46570f48483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antishov/StofDoctrineExtensionsBundle/zipball/19c8d45e7ceb6477ef490f21ab4279e549c1e828",
-                "reference": "19c8d45e7ceb6477ef490f21ab4279e549c1e828",
+                "url": "https://api.github.com/repos/antishov/StofDoctrineExtensionsBundle/zipball/b036a8d62111c03f237a619b1840c46570f48483",
+                "reference": "b036a8d62111c03f237a619b1840c46570f48483",
                 "shasum": ""
             },
             "require": {
-                "gedmo/doctrine-extensions": "^2.3.4",
-                "php": ">=7.1",
-                "symfony/framework-bundle": "^4.3|^5.0"
+                "gedmo/doctrine-extensions": "^2.3.4 || ^3.0",
+                "php": "^7.2.5 || ^8.0",
+                "symfony/framework-bundle": "^4.4|^5.0",
+                "symfony/mime": "^4.3|^5.0"
             },
-            "conflict": {
-                "stof/doctrine-extensions-bundle": "*"
+            "replace": {
+                "stof/doctrine-extensions-bundle": "self.version"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^4.3|^5.0",
-                "symfony/security-bundle": "^4.3|^5.0"
+                "symfony/phpunit-bridge": "^4.4|^5.0",
+                "symfony/security-bundle": "^4.4|^5.0"
             },
             "suggest": {
                 "doctrine/doctrine-bundle": "to use the ORM extensions",
@@ -39,7 +40,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
@@ -79,9 +80,9 @@
             ],
             "support": {
                 "issues": "https://github.com/antishov/StofDoctrineExtensionsBundle/issues",
-                "source": "https://github.com/antishov/StofDoctrineExtensionsBundle/tree/v1.4.2"
+                "source": "https://github.com/antishov/StofDoctrineExtensionsBundle/tree/v1.4.3"
             },
-            "time": "2019-12-03T19:50:27+00:00"
+            "time": "2020-12-10T20:46:02+00:00"
         },
         {
             "name": "behat/transliterator",
