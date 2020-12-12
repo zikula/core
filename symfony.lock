@@ -324,9 +324,6 @@
     "symfony/cache": {
         "version": "v5.2.0"
     },
-    "symfony/cache-contracts": {
-        "version": "v2.2.0"
-    },
     "symfony/config": {
         "version": "v5.2.0"
     },
@@ -341,6 +338,9 @@
         "files": [
             "bin/console"
         ]
+    },
+    "symfony/contracts": {
+        "version": "v2.3.1"
     },
     "symfony/css-selector": {
         "version": "v5.2.0"
@@ -360,9 +360,6 @@
     "symfony/dependency-injection": {
         "version": "v5.2.0"
     },
-    "symfony/deprecation-contracts": {
-        "version": "v2.2.0"
-    },
     "symfony/doctrine-bridge": {
         "version": "v5.1.9"
     },
@@ -374,9 +371,6 @@
     },
     "symfony/event-dispatcher": {
         "version": "v5.2.0"
-    },
-    "symfony/event-dispatcher-contracts": {
-        "version": "v2.2.0"
     },
     "symfony/expression-language": {
         "version": "v5.2.0"
@@ -424,9 +418,6 @@
     },
     "symfony/http-client": {
         "version": "v5.2.0"
-    },
-    "symfony/http-client-contracts": {
-        "version": "v2.3.1"
     },
     "symfony/http-foundation": {
         "version": "v5.2.0"
@@ -542,6 +533,9 @@
     "symfony/polyfill-php80": {
         "version": "v1.20.0"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.20.0"
+    },
     "symfony/process": {
         "version": "v5.2.0"
     },
@@ -604,9 +598,6 @@
     "symfony/serializer": {
         "version": "v5.2.0"
     },
-    "symfony/service-contracts": {
-        "version": "v2.2.0"
-    },
     "symfony/stopwatch": {
         "version": "v5.2.0"
     },
@@ -628,9 +619,6 @@
             "config/packages/translation.yaml",
             "translations/.gitignore"
         ]
-    },
-    "symfony/translation-contracts": {
-        "version": "v2.3.0"
     },
     "symfony/twig-bridge": {
         "version": "v5.2.0"
