@@ -41,7 +41,9 @@
         "symfony/monolog-bundle": "3.*",
         "symfony/requirements-checker": "1.*",
         "symfony/maker-bundle": "1.*",
-        "symfony/profiler-pack": "^1.0",
+        "symfony/web-profiler-bundle": "^5.2",
+        "symfony/stopwatch": "^5.2",
+        "symfony/twig-bundle": "^5.2",
         "symfony/polyfill-intl-messageformatter": "1.*",
 
         "sensiolabs/security-checker" : "6.*",
@@ -63,7 +65,6 @@
         "phpids/phpids": "dev-master",
         "ircmaxell/random-lib": "1.*",
 
-        "twig/twig": "3.*",
         "twig/cssinliner-extra": "3.*",
         "twig/html-extra": "3.*",
         "twig/inky-extra": "3.*",

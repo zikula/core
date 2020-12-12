@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1148f27ee6fe07aee24599d5a939c2a6",
+    "content-hash": "51526400dae8d4f3a12ccf7b41880a47",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -2390,7 +2390,6 @@
             "require-dev": {
                 "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -2419,10 +2418,6 @@
             "keywords": [
                 "html"
             ],
-            "support": {
-                "issues": "https://github.com/ezyang/htmlpurifier/issues",
-                "source": "https://github.com/ezyang/htmlpurifier/tree/master"
-            },
             "time": "2020-10-01T00:19:10+00:00"
         },
         {
@@ -4805,7 +4800,6 @@
             "require": {
                 "ezyang/htmlpurifier": "dev-master"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -4825,10 +4819,6 @@
             ],
             "description": "PHPIDS (PHP-Intrusion Detection System) is a simple to use, well structured, fast and state-of-the-art security layer for your PHP based web application",
             "homepage": "http://phpids.org",
-            "support": {
-                "issues": "https://github.com/PHPIDS/PHPIDS/issues",
-                "source": "https://github.com/PHPIDS/PHPIDS/tree/master"
-            },
             "time": "2014-09-03T11:39:39+00:00"
         },
         {
@@ -6637,51 +6627,6 @@
             "time": "2020-10-23T14:02:19+00:00"
         },
         {
-            "name": "symfony/profiler-pack",
-            "version": "v1.0.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/profiler-pack.git",
-                "reference": "29ec66471082b4eb068db11eb4f0a48c277653f7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/profiler-pack/zipball/29ec66471082b4eb068db11eb4f0a48c277653f7",
-                "reference": "29ec66471082b4eb068db11eb4f0a48c277653f7",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/stopwatch": "*",
-                "symfony/twig-bundle": "*",
-                "symfony/web-profiler-bundle": "*"
-            },
-            "type": "symfony-pack",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A pack for the Symfony web profiler",
-            "support": {
-                "issues": "https://github.com/symfony/profiler-pack/issues",
-                "source": "https://github.com/symfony/profiler-pack/tree/v1.0.5"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-08-12T06:50:46+00:00"
-        },
-        {
             "name": "symfony/requirements-checker",
             "version": "v1.1.8",
             "source": {
@@ -8030,7 +7975,6 @@
             "require": {
                 "php": ">=7.2.5"
             },
-            "default-branch": true,
             "type": "zikula-module",
             "extra": {
                 "zikula": {
@@ -8081,10 +8025,6 @@
                 }
             ],
             "description": "User profiles and member list",
-            "support": {
-                "issues": "https://github.com/zikula-modules/Profile/issues",
-                "source": "https://github.com/zikula-modules/Profile/tree/master"
-            },
             "time": "2020-11-18T17:31:00+00:00"
         },
         {
@@ -8360,5 +8300,5 @@
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "1.1.0"
 }
