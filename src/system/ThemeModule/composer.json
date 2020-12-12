@@ -22,7 +22,7 @@
         "zikula/printer-theme": "3.*",
         "zikula/atom-theme": "3.*",
 
-        "twig/twig": "3.*",
+        "symfony/twig-bundle": "^5.2",
         "twig/cssinliner-extra": "3.*",
         "twig/html-extra": "3.*",
         "twig/inky-extra": "3.*",

@@ -41,7 +41,9 @@
         "symfony/monolog-bundle": "3.*",
         "sensio/framework-extra-bundle": "5.*",
         "symfony/maker-bundle": "1.*",
-        "symfony/profiler-pack": "^1.0",
+        "symfony/web-profiler-bundle": "^5.2",
+        "symfony/stopwatch": "^5.2",
+        "symfony/twig-bundle": "^5.2",
         "sensiolabs/security-checker" : "6.*",
 
         "symfony/polyfill-intl-messageformatter": "1.*",
