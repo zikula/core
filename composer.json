@@ -7,10 +7,16 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Zikula\\Bundle\\": ["src/Zikula/"],
-            "Zikula\\": ["src/system/"]
+            "Zikula\\Bundle\\": [
+                "src/Zikula/"
+            ],
+            "Zikula\\": [
+                "src/system/"
+            ]
         },
-        "files": ["src/Kernel.php", "vendor/symfony/symfony/src/Symfony/Component/String/Resources/functions.php"]
+        "files": [
+            "src/Kernel.php"
+        ]
     },
     "authors": [
         {
@@ -20,86 +26,96 @@
     ],
     "require": {
         "php": "^7.2.5",
-        "ext-xml": "*",
-        "ext-mbstring": "*",
         "ext-json": "*",
+        "ext-mbstring": "*",
         "ext-pdo": "*",
-
-        "composer/composer": "1.*",
-        "composer/installers": "1.*",
-        "composer/semver": "1.*",
-
-        "oomphinc/composer-installers-extender": "2.*",
-        "components/jquery": "3.*",
-        "components/jqueryui": "1.*",
+        "ext-xml": "*",
+        "antishov/doctrine-extensions-bundle": "1.*",
         "components/bootstrap": "4.*",
         "components/font-awesome": "5.*",
-
+        "components/jquery": "3.*",
+        "components/jqueryui": "1.*",
+        "composer/composer": "1.*",
+        "composer/installers": "1.*",
+        "composer/package-versions-deprecated": "1.11.99.1",
+        "composer/semver": "1.*",
+        "dimsemenov/magnific-popup": "1.*",
+        "doctrine/annotations": "~1.0",
+        "doctrine/doctrine-bundle": "2.*",
+        "doctrine/orm": "2.*",
+        "egulias/email-validator": "^2.1.10",
+        "erusev/parsedown": "^1.7",
+        "frdh/mmenu.js": "8.*",
+        "friendsofsymfony/jsrouting-bundle": "2.*",
+        "gedmo/doctrine-extensions": "2.*",
+        "ircmaxell/random-lib": "1.*",
+        "itsjavi/fontawesome-iconpicker": "3.*",
+        "jms/i18n-routing-bundle": "3.*",
+        "justinrainbow/json-schema": "5.*",
+        "knplabs/knp-menu-bundle": ">=2.2.1",
+        "league/commonmark": "^1.0",
+        "league/html-to-markdown": "^4.8",
+        "liip/imagine-bundle": "2.*",
         "matthiasnoback/symfony-console-form": "4.*",
-
-        "symfony/symfony": "5.2.*",
-        "symfony/monolog-bundle": "3.*",
-        "symfony/requirements-checker": "1.*",
-        "symfony/maker-bundle": "1.*",
-        "symfony/profiler-pack": "^1.0",
-        "symfony/polyfill-intl-messageformatter": "1.*",
-
-        "sensiolabs/security-checker" : "6.*",
-        "sensio/framework-extra-bundle": "5.*",
-
+        "michelf/php-markdown": "^1.9",
+        "nikic/php-parser": "4.*",
+        "oomphinc/composer-installers-extender": "2.*",
+        "oro/twig-inspector": "1.*",
         "php-translation/extractor": "2.*",
         "php-translation/symfony-bundle": "0.*",
         "php-translation/symfony-storage": "2.*",
-        "nikic/php-parser": "4.*",
-        "willdurand/js-translation-bundle": "4.*",
-
-        "frdh/mmenu.js": "8.*",
-        "thomaspark/bootswatch": "4.*",
-        "justinrainbow/json-schema": "5.*",
-        "egulias/email-validator": "^2.1.10",
-        "knplabs/knp-menu-bundle": ">=2.2.1",
-        "jms/i18n-routing-bundle": "3.*",
-        "friendsofsymfony/jsrouting-bundle": "2.*",
         "phpids/phpids": "dev-master",
-        "ircmaxell/random-lib": "1.*",
-
-        "twig/twig": "3.*",
+        "psr/cache": "~1.0",
+        "psr/container": "^1.0",
+        "psr/event-dispatcher": "^1.0",
+        "psr/link": "^1.0",
+        "psr/log": "~1.0",
+        "sensio/framework-extra-bundle": "^5.6",
+        "sensiolabs/security-checker": "6.*",
+        "symfony/asset": "^5.2",
+        "symfony/debug-bundle": "^5.2",
+        "symfony/doctrine-bridge": "^5.2",
+        "symfony/dotenv": "^5.2",
+        "symfony/expression-language": "^5.2",
+        "symfony/flex": "^1.11",
+        "symfony/form": "^5.2",
+        "symfony/mailer": "^5.2",
+        "symfony/maker-bundle": "1.*",
+        "symfony/monolog-bundle": "^3.6",
+        "symfony/notifier": "^5.2",
+        "symfony/polyfill-intl-messageformatter": "1.*",
+        "symfony/requirements-checker": "1.*",
+        "symfony/security-bundle": "^5.2",
+        "symfony/stopwatch": "^5.2",
+        "symfony/translation": "^5.2",
+        "symfony/twig-bundle": "^5.2",
+        "symfony/validator": "^5.2",
+        "symfony/web-profiler-bundle": "^5.2",
+        "symfony/workflow": "^5.2",
+        "thomaspark/bootswatch": "4.*",
         "twig/cssinliner-extra": "3.*",
+        "twig/extra-bundle": "3.*",
         "twig/html-extra": "3.*",
         "twig/inky-extra": "3.*",
         "twig/intl-extra": "3.*",
         "twig/markdown-extra": "3.*",
         "twig/string-extra": "3.*",
-        "twig/extra-bundle": "3.*",
-
-        "erusev/parsedown": "^1.7",
-        "league/commonmark": "^1.0",
-        "league/html-to-markdown": "^4.8",
-        "michelf/php-markdown": "^1.9",
-
-        "oro/twig-inspector": "1.*",
-
-        "itsjavi/fontawesome-iconpicker": "3.*",
-        "dimsemenov/magnific-popup": "1.*",
+        "twig/twig": "3.*",
         "vakata/jstree": "3.*",
-
-        "doctrine/orm": "2.*",
-        "doctrine/doctrine-bundle": "2.*",
-        "antishov/doctrine-extensions-bundle": "1.*",
-        "gedmo/doctrine-extensions": "2.*",
-        "liip/imagine-bundle": "2.*",
-
-        "zikula/sortable-columns": "1.*",
-        "zikula/wizard": "3.*",
-
+        "willdurand/js-translation-bundle": "4.*",
         "zikula/legal-module": "3.*",
         "zikula/oauth-module": "1.*",
         "zikula/pagelock-module": "1.*",
         "zikula/profile-module": "dev-master",
-        "zikula/staticcontent-module": "1.*"
+        "zikula/sortable-columns": "1.*",
+        "zikula/staticcontent-module": "1.*",
+        "zikula/wizard": "3.*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "5.*"
+        "symfony/phpunit-bridge": "^5.2"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
     },
     "replace": {
         "zikula/core-bundle": "self.version",
@@ -128,17 +144,23 @@
         "zikula/rss-theme": "self.version"
     },
     "scripts": {
-        "zikula-scripts": [
-            "composer dump-autoload",
-            "bin/console cache:clear --env prod",
-            "bin/console assets:install --relative public",
-            "Zikula\\ExtensionsModule\\Composer\\ManuallyInstallAssets::install"
-        ],
         "post-install-cmd": [
+            "@auto-scripts",
             "@zikula-scripts"
         ],
         "post-update-cmd": [
+            "@auto-scripts",
             "@zikula-scripts"
+        ],
+        "auto-scripts": {
+            "cache:clear --env prod": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script",
+            "requirements-checker": "script"
+        },
+        "zikula-scripts": [
+            "composer dump-autoload",
+            "Zikula\\ExtensionsModule\\Composer\\ManuallyInstallAssets::install"
         ]
     },
     "repositories": [
@@ -157,10 +179,17 @@
     "extra": {
         "tests-dir": "tests",
         "symfony-assets-install": "relative",
-        "installer-types": ["component"],
+        "installer-types": [
+            "component"
+        ],
         "installer-paths": {
-            "src/extensions/{$vendor}/{$name}": ["type:zikula-module", "type:zikula-theme"],
-            "public/{$name}/": ["type:component"]
+            "src/extensions/{$vendor}/{$name}": [
+                "type:zikula-module",
+                "type:zikula-theme"
+            ],
+            "public/{$name}/": [
+                "type:component"
+            ]
         }
     }
 }

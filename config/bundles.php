@@ -1,16 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
-/*
- * This file is part of the Zikula package.
- *
- * Copyright Zikula - https://ziku.la/
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
@@ -32,14 +21,10 @@ return [
     Translation\Bundle\TranslationBundle::class => ['all' => true],
     Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class => ['all' => true],
     Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle::class => ['all' => true],
-
-    // dev-only bundles
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
     Oro\TwigInspector\Bundle\OroTwigInspectorBundle::class => ['dev' => true],
-
-    // System Extensions - always installed
     Zikula\AdminModule\ZikulaAdminModule::class => ['all' => true],
     Zikula\BlocksModule\ZikulaBlocksModule::class => ['all' => true],
     Zikula\CategoriesModule\ZikulaCategoriesModule::class => ['all' => true],
@@ -55,7 +40,6 @@ return [
     Zikula\ThemeModule\ZikulaThemeModule::class => ['all' => true],
     Zikula\UsersModule\ZikulaUsersModule::class => ['all' => true],
     Zikula\ZAuthModule\ZikulaZAuthModule::class => ['all' => true],
-    // System themes
     Zikula\AtomTheme\ZikulaAtomTheme::class => ['all' => true],
     Zikula\BootstrapTheme\ZikulaBootstrapTheme::class => ['all' => true],
     Zikula\DefaultTheme\ZikulaDefaultTheme::class => ['all' => true],

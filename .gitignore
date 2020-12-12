@@ -8,12 +8,6 @@
 /config/packages/core.yaml
 /config/packages/zikula*.yaml
 !/config/dynamic/default.yaml
-/.env.local
-/.env.local.php
-/.env.*.local
-.phpunit
-/phpunit.xml
-.phpunit.result.cache
 *.phpunit.result.cache
 /public/*
 !/public/index.php
@@ -32,7 +26,25 @@ src/.preload.php
 /templates/
 !/templates/bundles/TranslationBundle/WebUI/base.html.twig
 /translations/*
-/var/
 !/var/cache/.htaccess
-/vendor/
 /.vagrant
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
