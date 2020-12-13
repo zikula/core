@@ -2390,6 +2390,7 @@
             "require-dev": {
                 "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -2418,6 +2419,10 @@
             "keywords": [
                 "html"
             ],
+            "support": {
+                "issues": "https://github.com/ezyang/htmlpurifier/issues",
+                "source": "https://github.com/ezyang/htmlpurifier/tree/master"
+            },
             "time": "2020-10-01T00:19:10+00:00"
         },
         {
@@ -4800,6 +4805,7 @@
             "require": {
                 "ezyang/htmlpurifier": "dev-master"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -4819,6 +4825,10 @@
             ],
             "description": "PHPIDS (PHP-Intrusion Detection System) is a simple to use, well structured, fast and state-of-the-art security layer for your PHP based web application",
             "homepage": "http://phpids.org",
+            "support": {
+                "issues": "https://github.com/PHPIDS/PHPIDS/issues",
+                "source": "https://github.com/PHPIDS/PHPIDS/tree/master"
+            },
             "time": "2014-09-03T11:39:39+00:00"
         },
         {
@@ -7975,6 +7985,7 @@
             "require": {
                 "php": ">=7.2.5"
             },
+            "default-branch": true,
             "type": "zikula-module",
             "extra": {
                 "zikula": {
@@ -8025,6 +8036,10 @@
                 }
             ],
             "description": "User profiles and member list",
+            "support": {
+                "issues": "https://github.com/zikula-modules/Profile/issues",
+                "source": "https://github.com/zikula-modules/Profile/tree/master"
+            },
             "time": "2020-11-18T17:31:00+00:00"
         },
         {
@@ -8300,5 +8315,5 @@
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
