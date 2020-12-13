@@ -90,7 +90,6 @@
         "symfony/notifier": "^5.2",
         "symfony/polyfill-uuid": "1.*",
         "symfony/polyfill-intl-messageformatter": "1.*",
-        "symfony/proxy-manager-bridge": "^5.2",
         "symfony/rate-limiter": "^5.2",
         "symfony/requirements-checker": "1.*",
         "symfony/security-bundle": "^5.2",

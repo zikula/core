@@ -225,9 +225,6 @@
     "nyholm/nsa": {
         "version": "1.2.1"
     },
-    "ocramius/proxy-manager": {
-        "version": "2.2.3"
-    },
     "oomphinc/composer-installers-extender": {
         "version": "2.0.0"
     },
@@ -599,9 +596,6 @@
     "symfony/property-info": {
         "version": "v5.2.0"
     },
-    "symfony/proxy-manager-bridge": {
-        "version": "v5.2.0"
-    },
     "symfony/rate-limiter": {
         "version": "v5.2.0"
     },
@@ -801,12 +795,6 @@
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
-    },
-    "zendframework/zend-code": {
-        "version": "3.4.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     },
     "zikula/legal-module": {
         "version": "3.2.9"

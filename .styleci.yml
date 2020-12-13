@@ -46,3 +46,4 @@ finder:
     - src/system/RoutesModule
   not-name:
     - "*BlockFilterApi.php"
+    - "bundles.php"
