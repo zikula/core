@@ -108,7 +108,6 @@
         "twig/intl-extra": "3.*",
         "twig/markdown-extra": "3.*",
         "twig/string-extra": "3.*",
-        "twig/twig": "3.*",
         "vakata/jstree": "3.*",
         "willdurand/js-translation-bundle": "4.*",
         "zikula/legal-module": "3.*",
