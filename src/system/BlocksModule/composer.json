@@ -15,8 +15,18 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "symfony/contracts": "^5.2",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/form": "^5.2",
+        "symfony/security": "^5.2",
+        "symfony/string": "^5.2",
+        "symfony/validator": "^5.2",
         "zikula/core-bundle": "3.*",
         "zikula/theme-module": "3.*"
+    },
+    "require-dev": {
+        "symfony/dotenv": "^5.2",
+        "symfony/translation": "^5.2"
     },
     "extra": {
         "zikula": {

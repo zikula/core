@@ -15,6 +15,8 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "symfony/form": "^5.2",
+        "symfony/http-foundation": "^5.2",
         "zikula/core-bundle": "3.*",
         "zikula/theme-module": "3.*"
     },

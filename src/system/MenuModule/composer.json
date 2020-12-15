@@ -15,6 +15,18 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "symfony/config": "^5.2",
+        "symfony/contracts": "^5.2",
+        "symfony/dependency-injection": "^5.2",
+        "symfony/doctrine-bridge": "^5.2",
+        "symfony/event-dispatcher": "^5.2",
+        "symfony/http-foundation": "^5.2",
+        "symfony/http-kernel": "^5.2",
+        "symfony/finder": "^5.2",
+        "symfony/form": "^5.2",
+        "symfony/routing": "^5.2",
+        "symfony/string": "^5.2",
+        "symfony/validator": "^5.2",
         "zikula/core-bundle": "3.*",
         "knplabs/knp-menu-bundle": ">=2.2.1"
     },
