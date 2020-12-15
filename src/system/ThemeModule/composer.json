@@ -18,6 +18,7 @@
         "zikula/core-bundle": "3.*",
         "zikula/blocks-module": "3.*",
         "zikula/bootstrap-theme": "3.*",
+        "zikula/default-theme": "3.*",
         "zikula/rss-theme": "3.*",
         "zikula/printer-theme": "3.*",
         "zikula/atom-theme": "3.*",
