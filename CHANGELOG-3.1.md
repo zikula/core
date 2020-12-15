@@ -6,6 +6,8 @@
   - [config] Removed `config/dynamic/*.yaml` files (use standard package config files).
   - [config] Removed `config/services_custom.yaml` (use `services.yaml`).
   - [config] `zikula_asset_manager.combine` now defaults to `false` (#4419).
+  - [dependency] The following symfony components are no longer included:
+    - amazon-mailer, mailchimp-mailer, mailgun-mailer, postmark-mailer, sendgrid-mailer
   - [CoreBundle] Removed `Zikula\Bundle\CoreBundle\DynamicConfigDumper`.
   - [ThemeModule] Removed Require.js config (#4558).
 
@@ -17,6 +19,8 @@
   - [ThemeModule] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
 
 - Features:
+  - [dependency] Changed dependency from `symfony/symfony` to ALL the related `symfony/*` components (#4352, #4563).
+  - [dependency] Added `symfony/flex` dependency and configured as needed for core-development (#4563).
   - [config] Added standard Symfony bundle configurations for the following bundles (#4433):
     - CoreBundle, ZikulaRoutesModule, ZikulaSecurityCenterModule, ZikulaSettingsModule, ZikulaThemeModule
   - [extensions] Add StaticContent module to manage all static content (#4369).

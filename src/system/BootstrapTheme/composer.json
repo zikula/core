@@ -15,6 +15,14 @@
     },
     "require": {
         "php": ">=7.2.5",
+        "symfony/config": "^5.2",
+        "symfony/dependency-injection": "^5.2",
+        "symfony/event-dispatcher": "^5.2",
+        "symfony/form": "^5.2",
+        "symfony/http-foundation": "^5.2",
+        "symfony/http-kernel": "^5.2",
+        "symfony/routing": "^5.2",
+        "symfony/yaml": "^5.2",
         "zikula/core-bundle": "3.*",
         "zikula/theme-module": "3.*",
         "thomaspark/bootswatch": "4.*"

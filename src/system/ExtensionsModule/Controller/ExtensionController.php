@@ -356,7 +356,7 @@ class ExtensionController extends AbstractController
      * @Route("/post-uninstall")
      * @PermissionCheck("admin")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function postUninstall(CacheClearer $cacheClearer)
     {
