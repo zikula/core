@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "13402715357e73053e161799e1e7a658",
+    "content-hash": "b6be9e43aa201638f5d6e15e10cd28eb",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -7935,16 +7935,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.26.0",
+            "version": "v1.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "9dcdb6c7f274e8f1645f5adf32b53d05f124d24e"
+                "reference": "0f1d3ed2584349dc8700d7908e8a92b3742b1c99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/9dcdb6c7f274e8f1645f5adf32b53d05f124d24e",
-                "reference": "9dcdb6c7f274e8f1645f5adf32b53d05f124d24e",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/0f1d3ed2584349dc8700d7908e8a92b3742b1c99",
+                "reference": "0f1d3ed2584349dc8700d7908e8a92b3742b1c99",
                 "shasum": ""
             },
             "require": {
@@ -8003,7 +8003,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.26.0"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.26.1"
             },
             "funding": [
                 {
@@ -8019,7 +8019,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-17T19:59:08+00:00"
+            "time": "2020-12-18T17:08:39+00:00"
         },
         {
             "name": "symfony/messenger",
@@ -12189,16 +12189,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.10",
+            "version": "3.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "6dce2271757dd0bd4cd0e941bd093c6678e98faf"
+                "reference": "4a77e59a3f67b0beb1b576cc211cb7e7a76a9879"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/6dce2271757dd0bd4cd0e941bd093c6678e98faf",
-                "reference": "6dce2271757dd0bd4cd0e941bd093c6678e98faf",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/4a77e59a3f67b0beb1b576cc211cb7e7a76a9879",
+                "reference": "4a77e59a3f67b0beb1b576cc211cb7e7a76a9879",
                 "shasum": ""
             },
             "require": {
@@ -12247,7 +12247,17 @@
                 "issues": "https://github.com/vakata/jstree/issues",
                 "source": "https://github.com/vakata/jstree"
             },
-            "time": "2020-06-16T11:17:46+00:00"
+            "funding": [
+                {
+                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@vakata.com&currency_code=USD&amount=&return=http://jstree.com/donation&item_name=Buy+me+a+coffee+for+jsTree",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/vakata",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-12-18T20:56:30+00:00"
         },
         {
             "name": "webmozart/assert",
