@@ -4,8 +4,6 @@
     "description": "Mailer support",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "authors": [
         {
             "name": "Zikula",

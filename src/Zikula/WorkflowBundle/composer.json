@@ -5,8 +5,6 @@
     "keywords": [ "zikula" ],
     "homepage": "https://ziku.la",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "authors": [
         {
             "name": "Axel Guckelsberger",

@@ -4,8 +4,6 @@
     "description": "Menu management",
     "type": "zikula-system-module",
     "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "authors": [
         {
             "name": "Zikula",

@@ -4,8 +4,6 @@
     "description": "Bootstrap based theme",
     "type": "zikula-system-theme",
     "license": "LGPL-3.0-or-later",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "authors": [
         {
             "name": "Zikula",

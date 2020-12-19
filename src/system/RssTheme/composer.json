@@ -4,8 +4,6 @@
     "description": "The RSS theme is an auxiliary theme designed specially for outputting pages as an RSS feed.",
     "type": "zikula-system-theme",
     "license": "LGPL-3.0-or-later",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "authors": [
         {
             "name": "Zikula",
