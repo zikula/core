@@ -25,7 +25,16 @@
         "symfony/routing": "^5.2",
         "symfony/security": "^5.2",
         "symfony/validator": "^5.2",
-        "zikula/core-bundle": "3.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/blocks-module": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/coreinstaller-bundle": "self.version",
+        "zikula/formextension-bundle": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/theme-module": "self.version",
+
         "frdh/mmenu.js": "8.*"
     },
     "repositories": [

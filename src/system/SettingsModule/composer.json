@@ -15,7 +15,6 @@
     },
     "require": {
         "php": ">=7.2.5",
-        "zikula/core-bundle": "3.*",
         "symfony/config": "^5.2",
         "symfony/contracts": "^5.2",
         "symfony/dependency-injection": "^5.2",
@@ -32,6 +31,16 @@
         "php-translation/extractor": "2.*",
         "php-translation/symfony-bundle": "0.*",
         "php-translation/symfony-storage": "2.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/formextension-bundle": "self.version",
+        "zikula/blocks-module": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/theme-module": "self.version",
+        "zikula/users-module": "self.version",
+
         "willdurand/js-translation-bundle": "3.*"
     },
     "extra": {

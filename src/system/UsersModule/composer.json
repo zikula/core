@@ -31,9 +31,21 @@
         "symfony/security": "^5.2",
         "symfony/string": "^5.2",
         "symfony/validator": "^5.2",
-        "zikula/core-bundle": "3.*",
-        "zikula/groups-module": "3.*",
-        "zikula/permissions-module": "3.*"
+
+        "zikula/core-bundle": "self.version",
+        "zikula/hook-bundle": "self.version",
+        "zikula/formextension-bundle": "self.version",
+        "zikula/blocks-module": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/groups-module": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/search-module": "self.version",
+        "zikula/securitycenter-module": "self.version",
+        "zikula/settings-module": "self.version",
+        "zikula/theme-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/zauth-module": "self.version",
+        "zikula/sortable-columns": "1.*"
     },
     "extra": {
         "zikula": {

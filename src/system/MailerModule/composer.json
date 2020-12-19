@@ -26,7 +26,14 @@
         "symfony/mailer": "^5.2",
         "symfony/routing": "^5.2",
         "symfony/validator": "^5.2",
-        "zikula/core-bundle": "3.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/hook-bundle": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/theme-module": "self.version",
+
         "egulias/email-validator": "^2.1.10"
     },
     "extra": {

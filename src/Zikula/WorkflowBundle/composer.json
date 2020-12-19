@@ -13,12 +13,15 @@
     ],
     "require": {
         "php": ">=7.2.5",
-        "zikula/core-bundle": "3.*",
         "symfony/contracts": "5.*",
         "symfony/finder": "5.*",
         "symfony/framework-bundle": "5.*",
         "symfony/string": "5.*",
-        "symfony/workflow": "5.*"
+        "symfony/workflow": "5.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/theme-module": "self.version"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\WorkflowBundle\\": "" }

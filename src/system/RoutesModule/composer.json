@@ -33,7 +33,19 @@
         "symfony/translation": "^5.2",
         "symfony/validator": "^5.2",
         "symfony/workflow": "^5.2",
-        "zikula/core-bundle": "3.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/formextension-bundle": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/groups-module": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/pagelock-module": "1.*",
+        "zikula/permissions-module": "self.version",
+        "zikula/settings-module": "self.version",
+        "zikula/theme-module": "self.version",
+        "zikula/users-module": "self.version",
+        "zikula/sortable-columns": "1.*",
+
         "jms/i18n-routing-bundle": "3.*",
         "friendsofsymfony/jsrouting-bundle": "2.*"
     },

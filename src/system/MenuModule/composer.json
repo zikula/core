@@ -27,7 +27,13 @@
         "symfony/routing": "^5.2",
         "symfony/string": "^5.2",
         "symfony/validator": "^5.2",
-        "zikula/core-bundle": "3.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/blocks-module": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/theme-module": "self.version",
+
         "knplabs/knp-menu-bundle": ">=2.2.1"
     },
     "extra": {

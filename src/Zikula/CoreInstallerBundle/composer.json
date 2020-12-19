@@ -13,7 +13,6 @@
     ],
     "require": {
         "php": ">=7.2.5",
-        "zikula/core-bundle": "3.*",
         "symfony/contracts": "5.*",
         "symfony/console": "5.*",
         "symfony/form": "5.*",
@@ -25,8 +24,22 @@
         "symfony/string": "1.*",
         "symfony/validator": "1.*",
         "symfony/yaml": "1.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/formextension-bundle": "self.version",
+        "zikula/admin-module": "self.version",
+        "zikula/blocks-module": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/mailer-module": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/routes-module": "self.version",
+        "zikula/settings-module": "self.version",
+        "zikula/users-module": "self.version",
+        "zikula/zauth-module": "self.version",
+        "zikula/wizard": "3.*",
+
         "matthiasnoback/symfony-console-form": "4.*",
-        "zikula/wizard": "3.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreInstallerBundle\\": "" }

@@ -15,14 +15,6 @@
     },
     "require": {
         "php": ">=7.2.5",
-        "zikula/core-bundle": "3.*",
-        "zikula/blocks-module": "3.*",
-        "zikula/bootstrap-theme": "3.*",
-        "zikula/default-theme": "3.*",
-        "zikula/rss-theme": "3.*",
-        "zikula/printer-theme": "3.*",
-        "zikula/atom-theme": "3.*",
-
         "symfony/asset": "^5.2",
         "symfony/config": "^5.2",
         "symfony/contracts": "^5.2",
@@ -45,6 +37,21 @@
         "twig/markdown-extra": "3.*",
         "twig/string-extra": "3.*",
         "twig/extra-bundle": "3.*",
+
+        "zikula/core-bundle": "self.version",
+        "zikula/coreinstaller-bundle": "self.version",
+        "zikula/hook-bundle": "self.version",
+        "zikula/blocks-module": "self.version",
+        "zikula/extensions-module": "self.version",
+        "zikula/menu-module": "self.version",
+        "zikula/permissions-module": "self.version",
+        "zikula/users-module": "self.version",
+
+        "zikula/bootstrap-theme": "self.version",
+        "zikula/default-theme": "self.version",
+        "zikula/rss-theme": "self.version",
+        "zikula/printer-theme": "self.version",
+        "zikula/atom-theme": "self.version",
 
         "erusev/parsedown": "^1.7",
         "league/commonmark": "^1.0",
