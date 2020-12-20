@@ -20,12 +20,12 @@
         "symfony/string": "5.*",
         "symfony/validator": "5.*",
 
-        "zikula/core-bundle": "self.version",
-        "zikula/coreinstaller-bundle": "self.version",
-        "zikula/extensions-module": "self.version",
-        "zikula/menu-module": "self.version",
-        "zikula/permissions-module": "self.version",
-        "zikula/theme-module": "self.version"
+        "zikula/core-bundle": "3.*",
+        "zikula/coreinstaller-bundle": "3.*",
+        "zikula/extensions-module": "3.*",
+        "zikula/menu-module": "3.*",
+        "zikula/permissions-module": "3.*",
+        "zikula/theme-module": "3.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\HookBundle\\": "" }

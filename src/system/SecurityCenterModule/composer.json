@@ -29,13 +29,13 @@
         "symfony/string": "^5.2",
         "symfony/validator": "^5.2",
 
-        "zikula/core-bundle": "self.version",
-        "zikula/formextension-bundle": "self.version",
-        "zikula/extensions-module": "self.version",
-        "zikula/menu-module": "self.version",
-        "zikula/permissions-module": "self.version",
-        "zikula/theme-module": "self.version",
-        "zikula/users-module": "self.version",
+        "zikula/core-bundle": "3.*",
+        "zikula/formextension-bundle": "3.*",
+        "zikula/extensions-module": "3.*",
+        "zikula/menu-module": "3.*",
+        "zikula/permissions-module": "3.*",
+        "zikula/theme-module": "3.*",
+        "zikula/users-module": "3.*",
         "zikula/sortable-columns": "1.*",
 
         "phpids/phpids": "dev-master"

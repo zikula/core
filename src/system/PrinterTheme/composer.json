@@ -17,9 +17,9 @@
         "php": ">=7.2.5",
         "symfony/http-foundation": "^5.2",
 
-        "zikula/core-bundle": "self.version",
-        "zikula/extensions-module": "self.version",
-        "zikula/theme-module": "self.version"
+        "zikula/core-bundle": "3.*",
+        "zikula/extensions-module": "3.*",
+        "zikula/theme-module": "3.*"
     },
     "extra": {
         "zikula" : {
