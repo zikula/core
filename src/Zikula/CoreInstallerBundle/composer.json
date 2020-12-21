@@ -39,7 +39,7 @@
         "zikula/zauth-module": "dev-master",
         "zikula/wizard": "dev-master",
 
-        "matthiasnoback/symfony-console-form": "4.*",
+        "matthiasnoback/symfony-console-form": "4.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreInstallerBundle\\": "" }
