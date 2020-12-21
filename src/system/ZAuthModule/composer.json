@@ -30,14 +30,14 @@
         "symfony/string": "^5.2",
         "symfony/validator": "^5.2",
 
-        "zikula/core-bundle": "3.*",
-        "zikula/hook-bundle": "3.*",
-        "zikula/extensions-module": "3.*",
-        "zikula/groups-module": "3.*",
-        "zikula/menu-module": "3.*",
-        "zikula/permissions-module": "3.*",
-        "zikula/theme-module": "3.*",
-        "zikula/users-module": "3.*",
+        "zikula/core-bundle": "dev-master",
+        "zikula/hook-bundle": "dev-master",
+        "zikula/extensions-module": "dev-master",
+        "zikula/groups-module": "dev-master",
+        "zikula/menu-module": "dev-master",
+        "zikula/permissions-module": "dev-master",
+        "zikula/theme-module": "dev-master",
+        "zikula/users-module": "dev-master",
         "zikula/sortable-columns": "1.*",
 
         "ircmaxell/random-lib": "1.*"

@@ -26,14 +26,14 @@
         "symfony/security": "^5.2",
         "symfony/validator": "^5.2",
 
-        "zikula/core-bundle": "3.*",
-        "zikula/blocks-module": "3.*",
-        "zikula/extensions-module": "3.*",
-        "zikula/coreinstaller-bundle": "3.*",
-        "zikula/formextension-bundle": "3.*",
-        "zikula/menu-module": "3.*",
-        "zikula/permissions-module": "3.*",
-        "zikula/theme-module": "3.*",
+        "zikula/core-bundle": "dev-master",
+        "zikula/blocks-module": "dev-master",
+        "zikula/extensions-module": "dev-master",
+        "zikula/coreinstaller-bundle": "dev-master",
+        "zikula/formextension-bundle": "dev-master",
+        "zikula/menu-module": "dev-master",
+        "zikula/permissions-module": "dev-master",
+        "zikula/theme-module": "dev-master",
 
         "frdh/mmenu.js": "8.*"
     },

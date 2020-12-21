@@ -27,12 +27,12 @@
         "symfony/routing": "^5.2",
         "symfony/validator": "^5.2",
 
-        "zikula/core-bundle": "3.*",
-        "zikula/hook-bundle": "3.*",
-        "zikula/extensions-module": "3.*",
-        "zikula/menu-module": "3.*",
-        "zikula/permissions-module": "3.*",
-        "zikula/theme-module": "3.*",
+        "zikula/core-bundle": "dev-master",
+        "zikula/hook-bundle": "dev-master",
+        "zikula/extensions-module": "dev-master",
+        "zikula/menu-module": "dev-master",
+        "zikula/permissions-module": "dev-master",
+        "zikula/theme-module": "dev-master",
 
         "egulias/email-validator": "^2.1.10"
     },

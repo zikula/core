@@ -19,9 +19,9 @@
         "symfony/string": "5.*",
         "symfony/workflow": "5.*",
 
-        "zikula/core-bundle": "3.*",
-        "zikula/permissions-module": "3.*",
-        "zikula/theme-module": "3.*"
+        "zikula/core-bundle": "dev-master",
+        "zikula/permissions-module": "dev-master",
+        "zikula/theme-module": "dev-master"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\WorkflowBundle\\": "" }

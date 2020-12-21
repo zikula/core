@@ -28,11 +28,11 @@
         "symfony/string": "^5.2",
         "symfony/validator": "^5.2",
 
-        "zikula/core-bundle": "3.*",
-        "zikula/blocks-module": "3.*",
-        "zikula/extensions-module": "3.*",
-        "zikula/permissions-module": "3.*",
-        "zikula/theme-module": "3.*",
+        "zikula/core-bundle": "dev-master",
+        "zikula/blocks-module": "dev-master",
+        "zikula/extensions-module": "dev-master",
+        "zikula/permissions-module": "dev-master",
+        "zikula/theme-module": "dev-master",
 
         "knplabs/knp-menu-bundle": ">=2.2.1"
     },

@@ -18,9 +18,9 @@
         "symfony/form": "^5.2",
         "symfony/http-foundation": "^5.2",
 
-        "zikula/core-bundle": "3.*",
-        "zikula/extensions-module": "3.*",
-        "zikula/theme-module": "3.*"
+        "zikula/core-bundle": "dev-master",
+        "zikula/extensions-module": "dev-master",
+        "zikula/theme-module": "dev-master"
     },
     "extra": {
         "zikula" : {
