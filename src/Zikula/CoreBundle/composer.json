@@ -48,7 +48,7 @@
         "symfony/contracts": "^2.3",
         "symfony/framework-bundle": "^5.2",
         "symfony/maker-bundle": "^5.2",
-        "symfony/security": "^5.2",
+        "symfony/security": "^4.4",
         "symfony/string": "^5.2",
         "symfony/validator": "^5.2",
         "symfony/yaml": "^5.2",
