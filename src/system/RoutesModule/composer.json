@@ -39,7 +39,7 @@
         "zikula/extensions-module": "dev-master",
         "zikula/groups-module": "dev-master",
         "zikula/menu-module": "dev-master",
-        "zikula/pagelock-module": "1.*",
+        "zikula/pagelock-module": "dev-master",
         "zikula/permissions-module": "dev-master",
         "zikula/settings-module": "dev-master",
         "zikula/theme-module": "dev-master",

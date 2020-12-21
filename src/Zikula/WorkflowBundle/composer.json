@@ -13,11 +13,13 @@
     ],
     "require": {
         "php": ">=7.2.5",
-        "symfony/contracts": "5.*",
-        "symfony/finder": "5.*",
-        "symfony/framework-bundle": "5.*",
-        "symfony/string": "5.*",
-        "symfony/workflow": "5.*",
+        "symfony/contracts": "^2.3",
+        "symfony/finder": "^5.2",
+        "symfony/form": "^5.2",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/string": "^5.2",
+        "symfony/validator": "^5.2",
+        "symfony/workflow": "^5.2",
 
         "zikula/core-bundle": "dev-master",
         "zikula/permissions-module": "dev-master",

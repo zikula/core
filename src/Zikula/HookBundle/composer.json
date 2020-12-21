@@ -13,12 +13,12 @@
     ],
     "require": {
         "php": ">=7.2.5",
-        "symfony/contracts": "5.*",
-        "symfony/form": "5.*",
-        "symfony/framework-bundle": "5.*",
-        "symfony/security": "5.*",
-        "symfony/string": "5.*",
-        "symfony/validator": "5.*",
+        "symfony/contracts": "^2.3",
+        "symfony/form": "^5.2",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/security": "^5.2",
+        "symfony/string": "^5.2",
+        "symfony/validator": "^5.2",
 
         "zikula/core-bundle": "dev-master",
         "zikula/coreinstaller-bundle": "dev-master",
