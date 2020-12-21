@@ -16,7 +16,7 @@
     "require": {
         "php": ">=7.2.5",
         "symfony/config": "^5.2",
-        "symfony/contracts": "^5.2",
+        "symfony/contracts": "^2.3",
         "symfony/dependency-injection": "^5.2",
         "symfony/doctrine-bridge": "^5.2",
         "symfony/event-dispatcher": "^5.2",
