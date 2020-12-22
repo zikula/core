@@ -20,7 +20,7 @@
         "symfony/intl": "^5.2",
         "symfony/mailer": "^5.2",
         "symfony/requirements-checker": "1.*",
-        "symfony/security": "^4.4",
+        "symfony/security-bundle": "^5.2",
         "symfony/string": "^5.2",
         "symfony/validator": "^5.2",
         "symfony/yaml": "^5.2",

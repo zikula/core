@@ -23,7 +23,7 @@
         "symfony/http-foundation": "^5.2",
         "symfony/http-kernel": "^5.2",
         "symfony/routing": "^5.2",
-        "symfony/security": "^4.4",
+        "symfony/security-bundle": "^5.2",
         "symfony/validator": "^5.2",
 
         "zikula/core-bundle": "dev-master",

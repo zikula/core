@@ -18,7 +18,7 @@
         "symfony/contracts": "^2.3",
         "symfony/form": "^5.2",
         "symfony/framework-bundle": "^5.2",
-        "symfony/security": "^4.4",
+        "symfony/security-bundle": "^5.2",
         "symfony/validator": "^5.2",
 
         "zikula/core-bundle": "dev-master",
