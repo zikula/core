@@ -60,6 +60,7 @@
 
         "oro/twig-inspector": "1.*",
 
+        "oomphinc/composer-installers-extender": "2.*",
         "components/jquery": "3.*",
         "components/jqueryui": "1.*",
         "components/bootstrap": "4.*",
@@ -79,6 +80,10 @@
                 "admin": {
                     "route": "zikulathememodule_config_config"
                 }
+            },
+            "installer-types": ["component"],
+            "installer-paths": {
+                "public/{$name}/": ["type:component"]
             }
         }
     }
