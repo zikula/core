@@ -41,7 +41,7 @@
         "zikula/theme-module": "dev-master",
         "zikula/users-module": "dev-master",
 
-        "willdurand/js-translation-bundle": "3.*"
+        "willdurand/js-translation-bundle": "4.*"
     },
     "extra": {
         "zikula": {
