@@ -80,10 +80,6 @@
                 "admin": {
                     "route": "zikulathememodule_config_config"
                 }
-            },
-            "installer-types": ["component"],
-            "installer-paths": {
-                "public/{$name}/": ["type:component"]
             }
         }
     }
