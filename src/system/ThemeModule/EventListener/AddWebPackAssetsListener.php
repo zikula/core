@@ -16,13 +16,8 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupCollectionInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
-use Zikula\ThemeModule\Engine\ParameterBag;
 
 class AddWebPackAssetsListener implements EventSubscriberInterface
 {
@@ -89,13 +84,13 @@ class AddWebPackAssetsListener implements EventSubscriberInterface
         $webPackCssFiles = $this->lookupCollection->getEntrypointLookup($this->entryPoint)
             ->getCssFiles($this->entryName);
         $cssFiles = array_flip($webPackCssFiles);
-        array_walk($cssFiles, function(&$weight) { $weight += AssetBag::WEIGHT_WEBPACK_OFFSET; });
+        array_walk($cssFiles, function (&$weight) { $weight += AssetBag::WEIGHT_WEBPACK_OFFSET; });
         $this->cssAssetBag->add($cssFiles);
 
         $webPackJsFiles = $this->lookupCollection->getEntrypointLookup($this->entryPoint)
             ->getJavaScriptFiles($this->entryName);
         $jsFiles = array_flip($webPackJsFiles);
-        array_walk($jsFiles, function(&$weight) { $weight += AssetBag::WEIGHT_WEBPACK_OFFSET; });
+        array_walk($jsFiles, function (&$weight) { $weight += AssetBag::WEIGHT_WEBPACK_OFFSET; });
         $this->jsAssetBag->add($jsFiles);
     }
 }
