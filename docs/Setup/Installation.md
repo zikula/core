@@ -55,6 +55,8 @@ If cloning via GitHub, Composer must be run prior to installation. Run:
 ```
 composer self-update
 composer install
+yarn install
+yarn encore dev
 ```
 
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`

@@ -29,6 +29,7 @@
         "symfony/routing": "^5.2",
         "symfony/string": "^5.2",
         "symfony/twig-bundle": "^5.2",
+        "symfony/webpack-encore-bundle": "^1.8",
         "symfony/yaml": "^5.2",
         "twig/cssinliner-extra": "3.*",
         "twig/html-extra": "3.*",

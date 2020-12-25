@@ -92,6 +92,7 @@
         "symfony/validator": "^5.2",
         "symfony/web-link": "^5.2",
         "symfony/web-profiler-bundle": "^5.2",
+        "symfony/webpack-encore-bundle": "^1.8",
         "symfony/workflow": "^5.2",
         "symfony/yaml": "^5.2",
         "thomaspark/bootswatch": "4.*",
