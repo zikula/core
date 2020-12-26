@@ -124,7 +124,9 @@ class ParameterHelper
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
-        $this->configureWebpackPublicPath($params['router.request_context.base_url']);
+        if (isset($params['router.request_context.base_url'])) {
+            $this->configureWebpackPublicPath($params['router.request_context.base_url']);
+        }
 
         $this->writeEnvVars($params);
 
@@ -154,7 +156,7 @@ class ParameterHelper
 
     public function configureWebpackPublicPath(string $publicPath = ''): void
     {
-        if (empty($publicPath)) {
+        if (empty($publicPath) || '/' === $publicPath) {
             return;
         }
         // replace default `build` with `$publicPath . '/build'`
