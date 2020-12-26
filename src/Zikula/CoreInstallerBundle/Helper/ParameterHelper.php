@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Symfony\Component\HttpFoundation\RequestStack;
+use function Symfony\Component\String\u;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -25,7 +26,6 @@ use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use function Symfony\Component\String\u;
 
 class ParameterHelper
 {
@@ -159,7 +159,7 @@ class ParameterHelper
         }
         // replace default `build` with `$publicPath . '/build'`
         $files = [
-            '/webpack.config.js' => ["/\.setPublicPath\('\/build'\)/", ".setPublicPath('" . $publicPath . "/build')"],
+            '/webpack.config.js' => ['/\.setPublicPath\(\'\/build\'\)/', '.setPublicPath(\'' . $publicPath . '/build\')'],
             '/public/build/manifest.json' => ['/build\//', u($publicPath)->trimStart('/') . '/build/'],
             '/public/build/entrypoints.json' => ['/\/build/', $publicPath . '/build'],
             '/public/build/runtime.js' => ['/__webpack_require__.p = "\/build\/";/', '__webpack_require__.p = "' . $publicPath . '/build/";']
