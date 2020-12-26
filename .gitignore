@@ -3,14 +3,11 @@
 /bin/
 /bin/*
 !/bin/console
-/config/*_custom.yaml
-/config/dynamic/*
 /config/packages/core.yaml
 /config/packages/zikula*.yaml
 !/config/dynamic/default.yaml
 *.phpunit.result.cache
 /public/*
-!/public/build/
 !/public/index.php
 !/public/uploads/
 !/public/*.ico
@@ -52,6 +49,7 @@ src/.preload.php
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
+/public/build/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
