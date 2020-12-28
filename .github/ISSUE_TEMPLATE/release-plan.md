@@ -19,6 +19,7 @@ assignees: 'Guite, craigh'
      - [ ] second execute `php -dmemory_limit=2G bin/console zikula:translation:keytovalue`
 - [ ] Review whether there are changes required for install and/or upgrade docs
 - [ ] Update version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2-dev 3.0.2` (creates a pull request)
+- [ ] update dependency versions for all `/system` and `/Zikula` subpackages to minor version of current release e.g. `dev-master` -> `^3.1`  
 - [ ] Create/update vendor changelog
   - [ ] Ensure the `CHANGELOG-VENDORS-<branch>.md` file contains a `###PLACEHOLDER_FOR_VENDOR_UPDATES###` line below the `- Vendor updates:` line
   - [ ] Run `bin/console rt:vendor 3.0.1 3.0` whereby `3.0.1` is the last release tag and `3.0` the desired target branch (creates a pull request).
@@ -30,7 +31,7 @@ assignees: 'Guite, craigh'
   - [ ] Split the monorepo using `bin/console rt:split 3.0 --tag=3.0.6` to push the release tag to all component repositories.
   - [ ] Wait a bit for packagist to update
   - [ ] Update distribution
-    - [ ] Increment version number in distribution's `composer.json` (only for major versions)
+    - [ ] Update dependency versions in distribution's `composer.json` (e.g. `dev-master` -> `^3.1` or `^3.1` -> `3.2`)
     - [ ] Run `symfony composer update` to update `composer.lock` (take care for using the correct branch)
     - [ ] Commit the changes (this triggers the distribution build for creating the final artifacts)
     - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
