@@ -16,7 +16,9 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 use RandomLib\Factory;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Symfony\Component\HttpFoundation\RequestStack;
+use function Symfony\Component\String\u;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -122,6 +124,10 @@ class ParameterHelper
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $this->variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
 
+        if (isset($params['router.request_context.base_url'])) {
+            $this->configureWebpackPublicPath($params['router.request_context.base_url']);
+        }
+
         $this->writeEnvVars($params);
 
         $yamlHelper->deleteFile();
@@ -146,6 +152,33 @@ class ParameterHelper
         $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
         $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
         $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
+    }
+
+    public function configureWebpackPublicPath(string $publicPath = ''): void
+    {
+        if (empty($publicPath) || '/' === $publicPath) {
+            return;
+        }
+        // replace default `build` with `$publicPath . '/build'`
+        $files = [
+            '/webpack.config.js' => ['/\.setPublicPath\(\'\/build\'\)/', '.setPublicPath(\'' . $publicPath . '/build\')'],
+            '/public/build/manifest.json' => ['/build\//', u($publicPath)->trimStart('/') . '/build/'],
+            '/public/build/entrypoints.json' => ['/\/build/', $publicPath . '/build'],
+            '/public/build/runtime.js' => ['/__webpack_require__.p = "\/build\/";/', '__webpack_require__.p = "' . $publicPath . '/build/";']
+        ];
+        foreach ($files as $path => $search) {
+            $contents = file_get_contents($this->projectDir . $path);
+            if (false === $contents) {
+                continue;
+            }
+            $C = u($contents);
+            if (!$C->containsAny($publicPath)) { // check if replaced previously
+                $success = file_put_contents($this->projectDir . $path, $C->replaceMatches($search[0], $search[1])->toString());
+                if (false === $success) {
+                    throw new CannotWriteFileException(sprintf('Could not write to path %s, please check your file permissions.', $path));
+                }
+            }
+        }
     }
 
     /**

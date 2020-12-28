@@ -45,4 +45,5 @@ return [
     Zikula\DefaultTheme\ZikulaDefaultTheme::class => ['all' => true],
     Zikula\PrinterTheme\ZikulaPrinterTheme::class => ['all' => true],
     Zikula\RssTheme\ZikulaRssTheme::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];

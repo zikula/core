@@ -127,6 +127,12 @@ services:
           $footers: '@zikula_core.common.theme.assets_footer'
           $defaultSessionName: '%zikula.session.name%'
 
+    Zikula\ThemeModule\EventListener\AddWebPackAssetsListener:
+        arguments:
+            $jsAssetBag: '@zikula_core.common.theme.assets_js'
+            $cssAssetBag: '@zikula_core.common.theme.assets_css'
+            $projectDir: '%kernel.project_dir%'
+
     Zikula\ThemeModule\EventListener\ExceptionListener:
         arguments:
             $debug: '%env(APP_DEBUG)%'

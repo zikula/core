@@ -3,8 +3,6 @@
 /bin/
 /bin/*
 !/bin/console
-/config/*_custom.yaml
-/config/dynamic/*
 /config/packages/core.yaml
 /config/packages/zikula*.yaml
 !/config/dynamic/default.yaml
@@ -48,3 +46,10 @@ src/.preload.php
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
