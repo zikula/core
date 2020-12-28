@@ -24,6 +24,7 @@ src/.preload.php
 /templates/
 !/templates/bundles/TranslationBundle/WebUI/base.html.twig
 /translations/*
+/webpack.config.js
 !/var/cache/.htaccess
 /.vagrant
 
