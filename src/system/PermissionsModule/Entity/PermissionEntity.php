@@ -55,7 +55,7 @@ class PermissionEntity extends EntityAccess
      * the component part of the rule
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      * @var string
      */
     private $component;
@@ -64,7 +64,7 @@ class PermissionEntity extends EntityAccess
      * the instance part of the rule
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      * @var string
      */
     private $instance;
@@ -83,7 +83,7 @@ class PermissionEntity extends EntityAccess
      * @ORM\Column(type="string", length=255)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="255")
+     *     @Assert\Length(min="1", max="255")
      * )
      * @var string
      */
@@ -95,7 +95,7 @@ class PermissionEntity extends EntityAccess
      * @ORM\Column(type="string", length=10)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="10")
+     *     @Assert\Length(min="1", max="10")
      * )
      * @var string
      */

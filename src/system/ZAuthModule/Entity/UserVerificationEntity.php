@@ -67,7 +67,7 @@ class UserVerificationEntity extends EntityAccess
      * @ORM\Column(type="string", length=60)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="60")
+     *     @Assert\Length(min="1", max="60")
      * )
      * @var string
      */
@@ -79,7 +79,7 @@ class UserVerificationEntity extends EntityAccess
      * @ORM\Column(type="string", length=138)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="138")
+     *     @Assert\Length(min="1", max="138")
      * )
      * @var string
      */

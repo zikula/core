@@ -39,7 +39,7 @@ class AdminCategoryEntity extends EntityAccess
      * The category name
      *
      * @ORM\Column(type="string", length=32)
-     * @Assert\Length(min="0", max="32")
+     * @Assert\Length(min="1", max="32")
      * @var string
      */
     private $name;
@@ -50,7 +50,7 @@ class AdminCategoryEntity extends EntityAccess
      * @ORM\Column(type="string", length=255)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="255")
+     *     @Assert\Length(min="1", max="255")
      * )
      * @var string
      */
@@ -62,7 +62,7 @@ class AdminCategoryEntity extends EntityAccess
      * @ORM\Column(type="string", length=50)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="50")
+     *     @Assert\Length(min="1", max="50")
      * )
      * @var string
      */

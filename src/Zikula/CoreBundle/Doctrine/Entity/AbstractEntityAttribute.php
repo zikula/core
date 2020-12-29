@@ -34,7 +34,7 @@ abstract class AbstractEntityAttribute extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      * @var string
      */
     protected $name;

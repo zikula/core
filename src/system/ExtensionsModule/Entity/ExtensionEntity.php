@@ -35,7 +35,7 @@ class ExtensionEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64")
+     * @Assert\Length(min="1", max="64")
      * @var string
      */
     private $name;
@@ -48,14 +48,14 @@ class ExtensionEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64")
+     * @Assert\Length(min="1", max="64")
      * @var string
      */
     private $displayname;
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64")
+     * @Assert\Length(min="1", max="64")
      * @var string
      */
     private $url;
@@ -64,7 +64,7 @@ class ExtensionEntity extends EntityAccess
      * @ORM\Column(type="string", length=255)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="255")
+     *     @Assert\Length(min="1", max="255")
      * )
      * @var string
      */
@@ -72,7 +72,7 @@ class ExtensionEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Assert\Length(min="0", max="10")
+     * @Assert\Length(min="1", max="10")
      * @var string
      */
     private $version;
@@ -81,7 +81,7 @@ class ExtensionEntity extends EntityAccess
      * @ORM\Column(type="string", length=50)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="50")
+     *     @Assert\Length(min="1", max="50")
      * )
      * @var string
      */
@@ -107,7 +107,7 @@ class ExtensionEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64")
+     * @Assert\Length(min="1", max="64")
      * @var string
      */
     private $coreCompatibility;

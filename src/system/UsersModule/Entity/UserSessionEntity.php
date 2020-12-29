@@ -36,7 +36,7 @@ class UserSessionEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="string", length=60)
      * @ORM\GeneratedValue(strategy="NONE")
-     * @Assert\Length(min="0", max="60")
+     * @Assert\Length(min="1", max="60")
      * @var string
      */
     private $sessid;
@@ -45,7 +45,7 @@ class UserSessionEntity extends EntityAccess
      * IP Address: The user's IP address for the session.
      *
      * @ORM\Column(type="string", length=40)
-     * @Assert\Length(min="0", max="40")
+     * @Assert\Length(min="1", max="40")
      * @var string
      */
     private $ipaddr;

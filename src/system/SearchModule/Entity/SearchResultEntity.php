@@ -41,7 +41,7 @@ class SearchResultEntity
      * title of the search
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      * @var string
      */
     private $title;
@@ -60,7 +60,7 @@ class SearchResultEntity
      * @ORM\Column(name="module", type="string", length=100, nullable=true)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="100")
+     *     @Assert\Length(min="1", max="100")
      * )
      * @var string
      */
@@ -96,7 +96,7 @@ class SearchResultEntity
      * @ORM\Column(name="sesid", type="string", length=50, nullable=true)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="50")
+     *     @Assert\Length(min="1", max="50")
      * )
      * @var string
      */

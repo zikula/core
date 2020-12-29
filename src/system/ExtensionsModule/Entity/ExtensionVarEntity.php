@@ -35,21 +35,21 @@ class ExtensionVarEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64")
+     * @Assert\Length(min="1", max="64")
      * @var string
      */
     private $modname;
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64")
+     * @Assert\Length(min="1", max="64")
      * @var string
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", length=512)
-     * @Assert\Length(min="0", max="512")
+     * @Assert\Length(min="1", max="512")
      * @var string
      */
     private $value;

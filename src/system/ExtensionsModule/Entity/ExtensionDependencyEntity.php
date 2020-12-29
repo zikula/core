@@ -41,7 +41,7 @@ class ExtensionDependencyEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64")
+     * @Assert\Length(min="1", max="64")
      * @var string
      */
     private $modname;
@@ -50,7 +50,7 @@ class ExtensionDependencyEntity extends EntityAccess
      * @ORM\Column(type="string", length=10)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="10")
+     *     @Assert\Length(min="1", max="10")
      * )
      * @var string
      */
@@ -60,7 +60,7 @@ class ExtensionDependencyEntity extends EntityAccess
      * @ORM\Column(type="string", length=10)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="10")
+     *     @Assert\Length(min="1", max="10")
      * )
      * @var string
      */

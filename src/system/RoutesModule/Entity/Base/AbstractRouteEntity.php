@@ -70,7 +70,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      *
      * @var string
      */
@@ -79,7 +79,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      *
      * @var string
      */
@@ -88,7 +88,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(name="route_action", length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      *
      * @var string
      */
@@ -97,7 +97,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(name="route_path", length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="1", max="255")
      *
      * @var string
      */
@@ -107,7 +107,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @ORM\Column(length=255, nullable=true)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="255")
+     *     @Assert\Length(min="1", max="255")
      * )
      *
      * @var string
@@ -154,7 +154,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @ORM\Column(length=255, nullable=true)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="255")
+     *     @Assert\Length(min="1", max="255")
      * )
      *
      * @var string
@@ -192,7 +192,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @ORM\Column(name="route_condition", length=255, nullable=true)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="255")
+     *     @Assert\Length(min="1", max="255")
      * )
      *
      * @var string
@@ -203,7 +203,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @ORM\Column(length=255, nullable=true)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
-     *     @Assert\Length(min="0", max="255")
+     *     @Assert\Length(min="1", max="255")
      * )
      *
      * @var string

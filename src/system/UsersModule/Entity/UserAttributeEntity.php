@@ -43,7 +43,7 @@ class UserAttributeEntity extends EntityAccess
      *
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
-     * @Assert\Length(min="0", max="80")
+     * @Assert\Length(min="1", max="80")
      * @var string
      */
     private $name;

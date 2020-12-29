@@ -37,49 +37,49 @@ class HookRuntimeEntity extends EntityAccess
 
     /**
      * @ORM\Column(name="sowner", type="string", length=60, nullable=false)
-     * @Assert\Length(min="0", max="60")
+     * @Assert\Length(min="1", max="60")
      * @var string
      */
     private $sowner;
 
     /**
      * @ORM\Column(name="powner", type="string", length=60, nullable=false)
-     * @Assert\Length(min="0", max="60")
+     * @Assert\Length(min="1", max="60")
      * @var string
      */
     private $powner;
 
     /**
      * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
-     * @Assert\Length(min="0", max="512")
+     * @Assert\Length(min="1", max="512")
      * @var string
      */
     private $sareaid;
 
     /**
      * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
-     * @Assert\Length(min="0", max="512")
+     * @Assert\Length(min="1", max="512")
      * @var string
      */
     private $pareaid;
 
     /**
      * @ORM\Column(name="eventname", type="string", length=120, nullable=false)
-     * @Assert\Length(min="0", max="120")
+     * @Assert\Length(min="1", max="120")
      * @var string
      */
     private $eventname;
 
     /**
      * @ORM\Column(name="classname", type="string", length=120, nullable=false)
-     * @Assert\Length(min="0", max="120")
+     * @Assert\Length(min="1", max="120")
      * @var string
      */
     private $classname;
 
     /**
      * @ORM\Column(name="method", type="string", length=60, nullable=false)
-     * @Assert\Length(min="0", max="60")
+     * @Assert\Length(min="1", max="60")
      * @var string
      */
     private $method;

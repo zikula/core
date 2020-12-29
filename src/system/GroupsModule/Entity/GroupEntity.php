@@ -42,7 +42,7 @@ class GroupEntity extends EntityAccess
      * group name
      *
      * @ORM\Column(type="string", length=190, unique=true)
-     * @Assert\Length(min="0", max="190")
+     * @Assert\Length(min="1", max="190")
      * @var string
      */
     private $name;
@@ -59,7 +59,7 @@ class GroupEntity extends EntityAccess
      * group description
      *
      * @ORM\Column(type="string", length=200)
-     * @Assert\Length(min="0", max="200")
+     * @Assert\Length(min="1", max="200")
      * @var string
      */
     private $description;
