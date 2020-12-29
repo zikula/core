@@ -42,7 +42,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The module name owning this entry
      *
      * @ORM\Column(type="string", length=60)
-     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @Assert\Length(min="0", max="60")
      * @var string
      */
     private $modname;
@@ -51,7 +51,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The name of the entity
      *
      * @ORM\Column(type="string", length=60)
-     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @Assert\Length(min="0", max="60")
      * @var string
      */
     private $entityname;
@@ -60,7 +60,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The property of the entity
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @var string
      */
     private $property;
@@ -78,7 +78,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The status of the entity
      *
      * @ORM\Column(type="string", length=1, name="obj_status")
-     * @Assert\Length(min="0", max="1", allowEmptyString="false")
+     * @Assert\Length(min="0", max="1")
      * @var string
      */
     protected $status = 'A';

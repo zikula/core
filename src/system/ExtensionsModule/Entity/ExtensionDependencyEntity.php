@@ -41,21 +41,27 @@ class ExtensionDependencyEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="0", max="64", allowEmptyString="false")
+     * @Assert\Length(min="0", max="64")
      * @var string
      */
     private $modname;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Assert\Length(min="0", max="10", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="10")
+     * )
      * @var string
      */
     private $minversion;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Assert\Length(min="0", max="10", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="10")
+     * )
      * @var string
      */
     private $maxversion;

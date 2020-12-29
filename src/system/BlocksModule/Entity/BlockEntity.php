@@ -45,7 +45,7 @@ class BlockEntity extends EntityAccess
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @var string
      */
     private $bkey;
@@ -53,7 +53,7 @@ class BlockEntity extends EntityAccess
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @var string
      */
     private $blocktype;
@@ -62,7 +62,10 @@ class BlockEntity extends EntityAccess
      * The block title
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="255")
+     * )
      * @var string
      */
     private $title;
@@ -118,7 +121,10 @@ class BlockEntity extends EntityAccess
      * The language of the block
      *
      * @ORM\Column(type="string", length=30)
-     * @Assert\Length(min="0", max="30", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="30")
+     * )
      * @var string
      */
     private $language;

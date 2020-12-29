@@ -37,7 +37,7 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @var string
      */
     private $method;
@@ -50,7 +50,7 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @UsersAssert\ValidUname()
      * @var string
      */
@@ -58,7 +58,7 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @UsersAssert\ValidEmail()
      * @var string
      */
@@ -75,7 +75,7 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
      * This value is salted and hashed.
      *
      * @ORM\Column(type="string")
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @ZAuthAssert\ValidPassword()
      * @var string
      */

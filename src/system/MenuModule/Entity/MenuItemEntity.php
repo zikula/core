@@ -40,7 +40,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
 
     /**
      * @ORM\Column(length=64)
-     * @Assert\Length(min="0", max="64", allowEmptyString="false")
+     * @Assert\Length(min="0", max="64")
      * @var string
      */
     private $title;

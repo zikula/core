@@ -41,7 +41,7 @@ class SearchResultEntity
      * title of the search
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @var string
      */
     private $title;
@@ -58,7 +58,10 @@ class SearchResultEntity
      * the module providing the search hit
      *
      * @ORM\Column(name="module", type="string", length=100, nullable=true)
-     * @Assert\Length(min="0", max="100", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="100")
+     * )
      * @var string
      */
     private $module;
@@ -91,7 +94,10 @@ class SearchResultEntity
      * Session id associated
      *
      * @ORM\Column(name="sesid", type="string", length=50, nullable=true)
-     * @Assert\Length(min="0", max="50", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="50")
+     * )
      * @var string
      */
     private $sesid;

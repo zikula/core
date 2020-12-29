@@ -43,7 +43,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var string The tablename this object maps to
      */
     protected $_objectType = 'route';
-    
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -55,7 +55,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var int
      */
     protected $id = 0;
-    
+
     /**
      * The current workflow state.
      *
@@ -66,51 +66,54 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var string
      */
     protected $workflowState = 'initial';
-    
+
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      *
      * @var string
      */
     protected $bundle = '';
-    
+
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      *
      * @var string
      */
     protected $controller = '';
-    
+
     /**
      * @ORM\Column(name="route_action", length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      *
      * @var string
      */
     protected $action = '';
-    
+
     /**
      * @ORM\Column(name="route_path", length=255)
      * @Assert\NotBlank
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      *
      * @var string
      */
     protected $path = '';
-    
+
     /**
      * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="255")
+     * )
      *
      * @var string
      */
     protected $host = '';
-    
+
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank
@@ -119,7 +122,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var string
      */
     protected $schemes = 'http###https';
-    
+
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank
@@ -128,7 +131,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var string
      */
     protected $methods = 'GET';
-    
+
     /**
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
@@ -137,7 +140,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var bool
      */
     protected $prependBundlePrefix = true;
-    
+
     /**
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
@@ -146,15 +149,18 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var bool
      */
     protected $translatable = true;
-    
+
     /**
      * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="255")
+     * )
      *
      * @var string
      */
     protected $translationPrefix = '';
-    
+
     /**
      * @ORM\Column(name="route_defaults", type="array")
      * @Assert\NotNull
@@ -163,7 +169,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var array
      */
     protected $defaults = [];
-    
+
     /**
      * @ORM\Column(type="array")
      * @Assert\NotNull
@@ -172,7 +178,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var array
      */
     protected $requirements = [];
-    
+
     /**
      * @ORM\Column(type="array")
      * @Assert\NotNull
@@ -181,23 +187,29 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var array
      */
     protected $options = [];
-    
+
     /**
      * @ORM\Column(name="route_condition", length=255, nullable=true)
-     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="255")
+     * )
      *
      * @var string
      */
     protected $condition = '';
-    
+
     /**
      * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="255")
+     * )
      *
      * @var string
      */
     protected $description = '';
-    
+
     /**
      * @Gedmo\SortablePosition
      * @ORM\Column(type="integer")
@@ -208,7 +220,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var int
      */
     protected $sort = 0;
-    
+
     /**
      * RouteEntity constructor.
      *
@@ -219,235 +231,235 @@ abstract class AbstractRouteEntity extends EntityAccess
     public function __construct()
     {
     }
-    
+
     public function get_objectType(): string
     {
         return $this->_objectType;
     }
-    
+
     public function set_objectType(string $_objectType): void
     {
         if ($this->_objectType !== $_objectType) {
             $this->_objectType = $_objectType ?? '';
         }
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
     }
-    
+
     public function setId(?int $id = null): void
     {
         if ((int) $this->id !== $id) {
             $this->id = $id;
         }
     }
-    
+
     public function getWorkflowState(): string
     {
         return $this->workflowState;
     }
-    
+
     public function setWorkflowState(string $workflowState): void
     {
         if ($this->workflowState !== $workflowState) {
             $this->workflowState = $workflowState ?? '';
         }
     }
-    
+
     public function getBundle(): string
     {
         return $this->bundle;
     }
-    
+
     public function setBundle(string $bundle): void
     {
         if ($this->bundle !== $bundle) {
             $this->bundle = $bundle ?? '';
         }
     }
-    
+
     public function getController(): string
     {
         return $this->controller;
     }
-    
+
     public function setController(string $controller): void
     {
         if ($this->controller !== $controller) {
             $this->controller = $controller ?? '';
         }
     }
-    
+
     public function getAction(): string
     {
         return $this->action;
     }
-    
+
     public function setAction(string $action): void
     {
         if ($this->action !== $action) {
             $this->action = $action ?? '';
         }
     }
-    
+
     public function getPath(): string
     {
         return $this->path;
     }
-    
+
     public function setPath(string $path): void
     {
         if ($this->path !== $path) {
             $this->path = $path ?? '';
         }
     }
-    
+
     public function getHost(): ?string
     {
         return $this->host;
     }
-    
+
     public function setHost(?string $host = null): void
     {
         if ($this->host !== $host) {
             $this->host = $host;
         }
     }
-    
+
     public function getSchemes(): string
     {
         return $this->schemes;
     }
-    
+
     public function setSchemes(string $schemes): void
     {
         if ($this->schemes !== $schemes) {
             $this->schemes = $schemes ?? '';
         }
     }
-    
+
     public function getMethods(): string
     {
         return $this->methods;
     }
-    
+
     public function setMethods(string $methods): void
     {
         if ($this->methods !== $methods) {
             $this->methods = $methods ?? '';
         }
     }
-    
+
     public function getPrependBundlePrefix(): bool
     {
         return $this->prependBundlePrefix;
     }
-    
+
     public function setPrependBundlePrefix(bool $prependBundlePrefix): void
     {
         if ((bool) $this->prependBundlePrefix !== $prependBundlePrefix) {
             $this->prependBundlePrefix = $prependBundlePrefix;
         }
     }
-    
+
     public function getTranslatable(): bool
     {
         return $this->translatable;
     }
-    
+
     public function setTranslatable(bool $translatable): void
     {
         if ((bool) $this->translatable !== $translatable) {
             $this->translatable = $translatable;
         }
     }
-    
+
     public function getTranslationPrefix(): ?string
     {
         return $this->translationPrefix;
     }
-    
+
     public function setTranslationPrefix(?string $translationPrefix = null): void
     {
         if ($this->translationPrefix !== $translationPrefix) {
             $this->translationPrefix = $translationPrefix;
         }
     }
-    
+
     public function getDefaults(): array
     {
         return $this->defaults;
     }
-    
+
     public function setDefaults(array $defaults): void
     {
         if ($this->defaults !== $defaults) {
             $this->defaults = $defaults ?? [];
         }
     }
-    
+
     public function getRequirements(): array
     {
         return $this->requirements;
     }
-    
+
     public function setRequirements(array $requirements): void
     {
         if ($this->requirements !== $requirements) {
             $this->requirements = $requirements ?? [];
         }
     }
-    
+
     public function getOptions(): array
     {
         return $this->options;
     }
-    
+
     public function setOptions(array $options): void
     {
         if ($this->options !== $options) {
             $this->options = $options ?? [];
         }
     }
-    
+
     public function getCondition(): ?string
     {
         return $this->condition;
     }
-    
+
     public function setCondition(?string $condition = null): void
     {
         if ($this->condition !== $condition) {
             $this->condition = $condition;
         }
     }
-    
+
     public function getDescription(): ?string
     {
         return $this->description;
     }
-    
+
     public function setDescription(?string $description = null): void
     {
         if ($this->description !== $description) {
             $this->description = $description;
         }
     }
-    
+
     public function getSort(): int
     {
         return $this->sort;
     }
-    
+
     public function setSort(int $sort): void
     {
         if ((int) $this->sort !== $sort) {
             $this->sort = $sort;
         }
     }
-    
+
     /**
      * Creates url arguments array for easy creation of display urls.
      */
@@ -457,7 +469,7 @@ abstract class AbstractRouteEntity extends EntityAccess
             'id' => $this->getId(),
         ];
     }
-    
+
     /**
      * Returns the primary key.
      */
@@ -465,7 +477,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         return $this->getId();
     }
-    
+
     /**
      * Returns an array of all related objects that need to be persisted after clone.
      */
@@ -473,7 +485,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         return [];
     }
-    
+
     /**
      * ToString interceptor implementation.
      * This method is useful for debugging purposes.
@@ -482,7 +494,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         return 'Route ' . $this->getKey() . ': ' . $this->getBundle();
     }
-    
+
     /**
      * Clone interceptor implementation.
      * This method is for example called by the reuse functionality.
@@ -499,15 +511,15 @@ abstract class AbstractRouteEntity extends EntityAccess
         if (!$this->id) {
             return;
         }
-    
+
         // otherwise proceed
-    
+
         // unset identifier
         $this->setId(0);
-    
+
         // reset workflow
         $this->setWorkflowState('initial');
-    
+
         $this->setCreatedBy(null);
         $this->setCreatedDate(null);
         $this->setUpdatedBy(null);

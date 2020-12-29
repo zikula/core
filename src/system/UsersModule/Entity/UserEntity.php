@@ -50,7 +50,7 @@ class UserEntity extends EntityAccess
      * User Name: Primary user display name.
      *
      * @ORM\Column(type="string", length=25)
-     * @Assert\Length(min="0", max="25", allowEmptyString="false")
+     * @Assert\Length(min="0", max="25")
      * @ZikulaAssert\ValidUname()
      * @var string
      */
@@ -60,7 +60,7 @@ class UserEntity extends EntityAccess
      * E-mail Address: For user notifications.
      *
      * @ORM\Column(type="string", length=60)
-     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @Assert\Length(min="0", max="60")
      * @ZikulaAssert\ValidEmail()
      * @var string
      */
@@ -144,7 +144,10 @@ class UserEntity extends EntityAccess
      *
      * @ORM\Column(type="string", length=30)
      * @Assert\Type(type="string")
-     * @Assert\Length(min="0", max="30", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="30")
+     * )
      * @var string
      */
     private $tz;
@@ -155,7 +158,10 @@ class UserEntity extends EntityAccess
      *
      * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=5)
-     * @Assert\Length(min="0", max="5", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="5")
+     * )
      * @var string
      */
     private $locale;

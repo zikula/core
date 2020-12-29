@@ -112,7 +112,7 @@ class CategoryEntity extends EntityAccess
      * The name of the category
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @Assert\Length(min="0", max="255")
      * @var string
      */
     private $name;
@@ -121,7 +121,10 @@ class CategoryEntity extends EntityAccess
      * The value of the category
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="255")
+     * )
      * @var string
      */
     private $value;
@@ -146,7 +149,7 @@ class CategoryEntity extends EntityAccess
      * The status of the category
      *
      * @ORM\Column(type="string", length=1)
-     * @Assert\Length(min="0", max="1", allowEmptyString="false")
+     * @Assert\Length(min="0", max="1")
      * @var string
      */
     private $status;
@@ -155,7 +158,10 @@ class CategoryEntity extends EntityAccess
      * The category icon
      *
      * @ORM\Column(type="string", length=50)
-     * @Assert\Length(min="0", max="50", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="50")
+     * )
      * @var string
      */
     private $icon;

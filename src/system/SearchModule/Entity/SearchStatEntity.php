@@ -41,7 +41,7 @@ class SearchStatEntity extends EntityAccess
      * search terms of the previous search
      *
      * @ORM\Column(name="search", type="string", length=50, nullable=false)
-     * @Assert\Length(min="0", max="50", allowEmptyString="false")
+     * @Assert\Length(min="0", max="50")
      * @var string
      */
     private $search;

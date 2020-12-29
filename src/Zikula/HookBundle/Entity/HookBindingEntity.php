@@ -37,35 +37,35 @@ class HookBindingEntity extends EntityAccess
 
     /**
      * @ORM\Column(name="sowner", type="string", length=40, nullable=false)
-     * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @Assert\Length(min="0", max="40")
      * @var string
      */
     private $sowner;
 
     /**
      * @ORM\Column(name="powner", type="string", length=40, nullable=false)
-     * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @Assert\Length(min="0", max="40")
      * @var string
      */
     private $powner;
 
     /**
      * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
-     * @Assert\Length(min="0", max="512", allowEmptyString="false")
+     * @Assert\Length(min="0", max="512")
      * @var string
      */
     private $sareaid;
 
     /**
      * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
-     * @Assert\Length(min="0", max="512", allowEmptyString="false")
+     * @Assert\Length(min="0", max="512")
      * @var string
      */
     private $pareaid;
 
     /**
      * @ORM\Column(name="category", type="string", length=20, nullable=false)
-     * @Assert\Length(min="0", max="20", allowEmptyString="false")
+     * @Assert\Length(min="0", max="20")
      * @var string
      */
     private $category;

@@ -65,7 +65,10 @@ class UserVerificationEntity extends EntityAccess
      * Only after the verification code is received back from the user (thus, verifying the new e-mail address) is the new e-mail address saved to the user's account record.
      *
      * @ORM\Column(type="string", length=60)
-     * @Assert\Length(min="0", max="60", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="60")
+     * )
      * @var string
      */
     private $newemail;
@@ -74,7 +77,10 @@ class UserVerificationEntity extends EntityAccess
      * Verification Code: The verification code last sent to the user to verify the requested action, as a salted hash of the value sent.
      *
      * @ORM\Column(type="string", length=138)
-     * @Assert\Length(min="0", max="138", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="138")
+     * )
      * @var string
      */
     private $verifycode;

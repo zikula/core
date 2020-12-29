@@ -41,7 +41,7 @@ class IntrusionEntity extends EntityAccess
      * Name of the entity
      *
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
-     * @Assert\Length(min="0", max="128", allowEmptyString="false")
+     * @Assert\Length(min="0", max="128")
      * @var string
      */
     private $name;
@@ -50,7 +50,10 @@ class IntrusionEntity extends EntityAccess
      * Tag
      *
      * @ORM\Column(name="tag", type="string", length=150, nullable=true)
-     * @Assert\Length(min="0", max="150", allowEmptyString="true")
+     * @Assert\AtLeastOneOf(
+     *     @Assert\Blank(),
+     *     @Assert\Length(min="0", max="150")
+     * )
      * @var string
      */
     private $tag;
@@ -85,7 +88,7 @@ class IntrusionEntity extends EntityAccess
      * Ip address of the intrustion
      *
      * @ORM\Column(name="ip", type="string", length=40, nullable=false)
-     * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @Assert\Length(min="0", max="40")
      * @var string
      */
     private $ip;
