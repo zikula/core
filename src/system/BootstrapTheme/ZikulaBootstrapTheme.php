@@ -15,6 +15,8 @@ namespace Zikula\BootstrapTheme;
 
 use Zikula\ExtensionsModule\AbstractCoreTheme;
 
+trigger_deprecation('zikula/bootstrap-theme', '3.1', 'The "%s" class is deprecated. Use "%s" instead.', ZikulaBootstrapTheme::class, 'ZikulaDefaultTheme');
+
 /**
  * @deprecated remove at Core-4.0.0
  * @see \Zikula\DefaultTheme\ZikulaDefaultTheme

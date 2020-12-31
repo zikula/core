@@ -17,6 +17,8 @@ use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
+trigger_deprecation('zikula/core-bundle', '3.1', 'The "%s" class is deprecated. Use "%s" instead.', YamlDumper::class, Configurator::class);
+
 /**
  * @deprecated
  * @internal
