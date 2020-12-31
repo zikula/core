@@ -7,19 +7,16 @@ Zikula manages its releases through a time-based model and follows the [Semantic
 
 ## Current Stable Version
 
-2.0.x (inc. Symfony 3.x)
+3.0.x (inc. Symfony 5.x)
 
 ## Development Version
 
-3.0.0 - Currently being worked on. Not a fixed release date yet.
+3.* - Currently being worked on.
 
 ## Long Term Support versions
 
-1.5.x - LTS (inc. Symfony 2.8.x LTS)
+3.* - exact version undetermined at this time
 
-- Bug Fix support ended **31 August 2018**
-- Security Fix support ended **31 August 2019** (EOL)
-- Technical Support (without commits) ending **31 August 2020**
 - Paid support beyond the posted dates _may_ be available. Please contact the team for information.
 
 ## Our backward compatibility promise
@@ -53,7 +50,7 @@ This section shows the important major steps in the Zikula roadmap.
 
 ### Core 3.0
 
-Expected release: TBD
+Released: 25 June, 2020
 
 Standards:
 
@@ -66,7 +63,7 @@ Standards:
 
 New features:
 
-- _unknown_
+- View the [Changelog](https://github.com/zikula/core/blob/master/CHANGELOG-3.0.md)
 
 ### Core 2.0
 
