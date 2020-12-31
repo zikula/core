@@ -30,6 +30,7 @@
   - [DefaultTheme] Add new default theme (#4462).
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
   - [General] Implemented `Twig\Extension\RuntimeExtensionInterface` for all Twig extensions, allowing them to dynamically load (#4522).
+  - [General] Added `addAnnotatedClassesToCompile` method to needed core classes to improve performance when activated.
   - [ThemeModule] Add `Symfony\WebpackEncoreBundle` (#4571).
     - Automatically adds webpack assets via a listener.
 

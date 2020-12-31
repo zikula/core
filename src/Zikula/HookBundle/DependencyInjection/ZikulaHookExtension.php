@@ -17,6 +17,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Zikula\Bundle\HookBundle\Controller\HookController;
+use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
+use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
 
@@ -36,5 +39,11 @@ class ZikulaHookExtension extends Extension
         $container->registerForAutoconfiguration(HookSubscriberInterface::class)
             ->addTag('zikula.hook_subscriber')
         ;
+
+        $this->addAnnotatedClassesToCompile([
+            HookController::class,
+            HookBindingEntity::class,
+            HookRuntimeEntity::class
+        ]);
     }
 }
