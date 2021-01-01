@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function Symfony\Component\String\s;
+use Zikula\Bundle\WorkflowBundle\Controller\EditorController;
 
 /**
  * Class ZikulaWorkflowExtension
@@ -34,6 +35,10 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+
+        $this->addAnnotatedClassesToCompile([
+            EditorController::class
+        ]);
     }
 
     public function prepend(ContainerBuilder $container)

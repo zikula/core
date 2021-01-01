@@ -27,5 +27,9 @@ class ZikulaCoreInstallerExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+
+        $this->addAnnotatedClassesToCompile([
+            'Zikula\\Bundle\\CoreInstallerBundle\\Controller\\',
+        ]);
     }
 }

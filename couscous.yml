@@ -59,6 +59,9 @@ menu:
                 upgrade3to3:
                     text: Upgrade 3 to 3
                     relativeUrl: Setup/upgradefrom3to3.x.x.html
+                production:
+                    text: Deployment
+                    relativeUrl: Setup/production.html
         configuration:
             name: Configuration
             items:
