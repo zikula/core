@@ -18,7 +18,7 @@ use XSLTProcessor;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\XsltBlockType;
 
-trigger_deprecation('zikula/blocks-module', '3.1', 'The "%s" class is deprecated. Use "%s" instead.', XsltBlock::class, 'StaticConcentModule');
+trigger_deprecation('zikula/blocks-module', '3.1', 'The "%s" class is deprecated. Use "%s" instead.', XsltBlock::class, 'StaticContentModule');
 
 /**
  * @deprecated remove at Core-4.0.0

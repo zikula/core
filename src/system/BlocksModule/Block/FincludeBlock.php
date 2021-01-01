@@ -16,7 +16,7 @@ namespace Zikula\BlocksModule\Block;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\FincludeBlockType;
 
-trigger_deprecation('zikula/blocks-module', '3.1', 'The "%s" class is deprecated. Use "%s" instead.', FincludeBlock::class, 'StaticConcentModule');
+trigger_deprecation('zikula/blocks-module', '3.1', 'The "%s" class is deprecated. Use "%s" instead.', FincludeBlock::class, 'StaticContentModule');
 
 /**
  * @deprecated remove at Core-4.0.0
