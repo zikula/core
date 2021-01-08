@@ -32,7 +32,7 @@ class ApproveRegistrationConfirmationType extends AbstractType
                 /** @Ignore */
                 'label' => !empty($options['buttonLabel'])
                     ? $options['buttonLabel']
-                    : /** @Translate */'Confirm',
+                    : /** @Translate */ 'Confirm',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn-success'

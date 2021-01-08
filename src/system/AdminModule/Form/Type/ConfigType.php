@@ -66,12 +66,12 @@ class ConfigType extends AbstractType
             ->add('startcategory', ChoiceType::class, [
                 'label' => 'Initially selected category',
                 'empty_data' => null,
-                'choices' => /** @Ignore */$options['categories']
+                'choices' => /** @Ignore */ $options['categories']
             ])
             ->add('defaultcategory', ChoiceType::class, [
                 'label' => 'Default category for newly-added modules',
                 'empty_data' => null,
-                'choices' => /** @Ignore */$options['categories']
+                'choices' => /** @Ignore */ $options['categories']
             ])
         ;
 
@@ -80,7 +80,7 @@ class ConfigType extends AbstractType
                 /** @Ignore */
                 'label' => $module['displayname'],
                 'empty_data' => null,
-                'choices' => /** @Ignore */$options['categories']
+                'choices' => /** @Ignore */ $options['categories']
             ]);
         }
 

@@ -31,7 +31,7 @@ class AdminViewFilterType extends AbstractType
             ->add('sort-direction', HiddenType::class)
             ->add('position', ChoiceType::class, [
                 'label' => 'Position',
-                'choices' => /** @Ignore */$options['positionChoices'],
+                'choices' => /** @Ignore */ $options['positionChoices'],
                 'required' => false,
                 'placeholder' => 'All',
                 'attr' => [
@@ -40,7 +40,7 @@ class AdminViewFilterType extends AbstractType
             ])
             ->add('module', ChoiceType::class, [
                 'label' => 'Module',
-                'choices' => /** @Ignore */$options['moduleChoices'],
+                'choices' => /** @Ignore */ $options['moduleChoices'],
                 'required' => false,
                 'placeholder' => 'All',
                 'attr' => [
@@ -49,7 +49,7 @@ class AdminViewFilterType extends AbstractType
             ])
             ->add('language', ChoiceType::class, [
                 'label' => 'Language',
-                'choices' => /** @Ignore */$options['localeChoices'],
+                'choices' => /** @Ignore */ $options['localeChoices'],
                 'required' => false,
                 'placeholder' => 'All',
                 'attr' => [

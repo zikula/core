@@ -53,7 +53,7 @@ class CategoryRegistryType extends AbstractType
         $builder
             ->add('modname', ChoiceType::class, [
                 'label' => 'Module',
-                'choices' => /** @Ignore */$options['categorizableModules'],
+                'choices' => /** @Ignore */ $options['categorizableModules'],
                 'placeholder' => 'Select module'
             ])
             ->add('property', TextType::class, [
@@ -84,7 +84,7 @@ class CategoryRegistryType extends AbstractType
             $form->add('entityname', ChoiceType::class, [
                 /** @Ignore */
                 'label' => $translator->trans('Entity'),
-                'choices' => /** @Ignore */$entities
+                'choices' => /** @Ignore */ $entities
             ]);
         };
 

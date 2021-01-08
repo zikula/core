@@ -39,7 +39,7 @@ class LocaleType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(),
+            'choices' => /** @Ignore */ $this->localeApi->getSupportedLocaleNames(),
             'label' => 'Locale',
             'required' => false,
             'placeholder' => 'All',

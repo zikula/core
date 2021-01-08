@@ -25,7 +25,7 @@ trait TranslatorTrait
 
     public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
-        return $this->getTranslator()->trans(/** @Ignore */$id, $parameters, $domain, $locale);
+        return $this->getTranslator()->trans(/** @Ignore */ $id, $parameters, $domain, $locale);
     }
 
     public function getTranslator(): TranslatorInterface

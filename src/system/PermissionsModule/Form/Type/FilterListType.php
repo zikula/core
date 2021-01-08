@@ -27,21 +27,21 @@ class FilterListType extends AbstractType
         $builder
             ->add('filterGroup', ChoiceType::class, [
                 'label' => 'Filter group',
-                'choices' => /** @Ignore */array_flip($options['groupChoices']),
+                'choices' => /** @Ignore */ array_flip($options['groupChoices']),
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('filterComponent', ChoiceType::class, [
                 'label' => 'Filter component',
-                'choices' => /** @Ignore */$options['componentChoices'],
+                'choices' => /** @Ignore */ $options['componentChoices'],
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('filterColour', ChoiceType::class, [
                 'label' => 'Filter colour',
-                'choices' => /** @Ignore */$options['colourChoices'],
+                'choices' => /** @Ignore */ $options['colourChoices'],
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]

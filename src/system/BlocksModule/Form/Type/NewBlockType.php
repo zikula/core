@@ -38,7 +38,7 @@ class NewBlockType extends AbstractType
             ->add('bkey', ChoiceType::class, [
                 'label' => 'Block type',
                 'placeholder' => 'Choose a block type',
-                'choices' => /** @Ignore */array_flip($this->blockApi->getAvailableBlockTypes())
+                'choices' => /** @Ignore */ array_flip($this->blockApi->getAvailableBlockTypes())
             ])
             ->add('choose', SubmitType::class, [
                 'label' => 'Choose',

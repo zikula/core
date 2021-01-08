@@ -74,7 +74,7 @@ class IdsLogFilterType extends AbstractType
             ],
             'required' => false,
             'placeholder' => 'All',
-            'choices' => /** @Ignore */$choices,
+            'choices' => /** @Ignore */ $choices,
             'multiple' => false,
             'expanded' => false
         ]);

@@ -40,7 +40,7 @@ class PermissionCheckType extends AbstractType
             ])
             ->add('level', ChoiceType::class, [
                 'label' => 'Permission level',
-                'choices' => /** @Ignore */array_flip($options['permissionLevels']),
+                'choices' => /** @Ignore */ array_flip($options['permissionLevels']),
                 'data' => ACCESS_READ
             ])
             ->add('check', ButtonType::class, [

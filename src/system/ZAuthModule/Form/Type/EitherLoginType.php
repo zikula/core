@@ -37,8 +37,8 @@ class EitherLoginType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $forgotUsername = /** @Translate */'I forgot my username';
-        $forgotPassword = /** @Translate */'I forgot my password';
+        $forgotUsername = /** @Translate */ 'I forgot my username';
+        $forgotPassword = /** @Translate */ 'I forgot my password';
         $builder
             ->add('either', TextType::class, [
                 'label' => 'User name or email',

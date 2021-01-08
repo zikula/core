@@ -107,7 +107,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         foreach ($blocks as $block) {
             $bKey = $block['bkey'];
             if (mb_strpos($bKey, ':')) {
-                [/*$moduleName*/, $bKey] = explode(':', $bKey);
+                [/*$moduleName*/ , $bKey] = explode(':', $bKey);
             }
             $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET bKey=? WHERE bid=?', [trim($bKey, '\\'), $block['bid']]);
         }
