@@ -122,7 +122,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->trans(/** @Ignore */$name, [], 'zikula', $code);
+                        $displayName[$code] = $translator->trans(/** @Ignore */ $name, [], 'zikula', $code);
                     }
                     if (!isset($displayDesc[$code])) {
                         $displayDesc[$code] = '';
@@ -144,7 +144,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->trans(/** @Ignore */$name, [], 'zikula', $code);
+                        $displayName[$code] = $translator->trans(/** @Ignore */ $name, [], 'zikula', $code);
                     }
                 }
                 $category->setDisplayName($displayName);

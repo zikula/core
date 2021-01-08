@@ -46,7 +46,7 @@ class ConfigType extends AbstractType
             ->add('plugins', ChoiceType::class, [
                 'label' => 'Disabled plugins',
                 'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => /** @Ignore */$options['plugins'],
+                'choices' => /** @Ignore */ $options['plugins'],
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false

@@ -150,7 +150,7 @@ class MetaData implements ArrayAccess
     {
         $this->confirmTranslator();
 
-        $description = $this->trans(/** @Ignore */$this->description);
+        $description = $this->trans(/** @Ignore */ $this->description);
 
         return empty($description) ? $this->description : $description;
     }
@@ -169,7 +169,7 @@ class MetaData implements ArrayAccess
     {
         $this->confirmTranslator();
 
-        $displayName = $this->trans(/** @Ignore */$this->displayName);
+        $displayName = $this->trans(/** @Ignore */ $this->displayName);
 
         return empty($displayName) ? $this->displayName : $displayName;
     }
@@ -183,7 +183,7 @@ class MetaData implements ArrayAccess
     {
         if ($translated) {
             $this->confirmTranslator();
-            $url = $this->trans(/** @Ignore */$this->url);
+            $url = $this->trans(/** @Ignore */ $this->url);
 
             return empty($url) ? $this->url : $url;
         }

@@ -446,7 +446,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     {
         $values = [];
         foreach ($this->localeApi->getSupportedLocales() as $code) {
-            $values[$code] = $this->trans(/** @Ignore */$value, [], 'zikula', $code);
+            $values[$code] = $this->trans(/** @Ignore */ $value, [], 'zikula', $code);
         }
 
         return $values;

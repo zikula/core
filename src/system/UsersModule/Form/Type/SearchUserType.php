@@ -63,9 +63,9 @@ class SearchUserType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 /** @Ignore */
                 'placeholder' => [
-                    'year' => /** @Translate */'Year',
-                    'month' => /** @Translate */'Month',
-                    'day' => /** @Translate */'Day'
+                    'year' => /** @Translate */ 'Year',
+                    'month' => /** @Translate */ 'Month',
+                    'day' => /** @Translate */ 'Day'
                 ]
             ])
             ->add('registered_before', DateType::class, [
@@ -74,9 +74,9 @@ class SearchUserType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 /** @Ignore */
                 'placeholder' => [
-                    'year' => /** @Translate */'Year',
-                    'month' => /** @Translate */'Month',
-                    'day' => /** @Translate */'Day'
+                    'year' => /** @Translate */ 'Year',
+                    'month' => /** @Translate */ 'Month',
+                    'day' => /** @Translate */ 'Day'
                 ]
             ])
             ->add('search', SubmitType::class, [

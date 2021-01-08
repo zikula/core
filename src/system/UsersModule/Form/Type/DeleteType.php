@@ -31,7 +31,7 @@ class DeleteType extends AbstractType
                     return ['class' => 'user-checkboxes'];
                 },
                 'class' => UserEntity::class,
-                'choices' => /** @Ignore */$options['choices'],
+                'choices' => /** @Ignore */ $options['choices'],
                 'expanded' => true,
                 'multiple' => true,
                 'choice_label' => 'uname'

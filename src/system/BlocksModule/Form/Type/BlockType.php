@@ -56,7 +56,7 @@ class BlockType extends AbstractType
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('language', ChoiceType::class, [
                 'label' => 'Language',
-                'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(null, $options['locale']),
+                'choices' => /** @Ignore */ $this->localeApi->getSupportedLocaleNames(null, $options['locale']),
                 'required' => false,
                 'placeholder' => 'All'
             ])->addModelTransformer(new NullToEmptyTransformer()))
