@@ -6,7 +6,7 @@ jobs:
   update-deps:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout sources from 3.0 branch
+    - name: Checkout sources from master branch
       uses: actions/checkout@v2
       with:
         ref: master
@@ -24,14 +24,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        composer install
+        php7.4 composer install
 
     - name: Update dependencies
-      #run: |
-      #  php -dmemory_limit=10G /usr/bin/composer update
       run: |
         composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-        composer update
+        php7.4 composer update
         composer config --global --auth --unset github-oauth.github.com
 
     # see https://github.com/peter-evans/create-pull-request
