@@ -449,9 +449,6 @@
     "symfony/intl": {
         "version": "v5.2.0"
     },
-    "symfony/ldap": {
-        "version": "v5.2.0"
-    },
     "symfony/lock": {
         "version": "5.2",
         "recipe": {
