@@ -58,7 +58,6 @@
         "symfony/browser-kit": "^5.2",
         "symfony/debug-bundle": "^5.2",
         "symfony/expression-language": "^5.2",
-        "symfony/ldap": "^5.2",
         "symfony/messenger": "^5.2",
         "symfony/monolog-bundle": "^3.6",
         "symfony/notifier": "^5.2",
