@@ -24,12 +24,12 @@ jobs:
 
     - name: Install dependencies
       run: |
-        php7.4 composer install
+        php7.4 /usr/bin/composer install
 
     - name: Update dependencies
       run: |
         composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-        php7.4 composer update
+        php7.4 /usr/bin/composer update
         composer config --global --auth --unset github-oauth.github.com
 
     # see https://github.com/peter-evans/create-pull-request
