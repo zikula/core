@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36fdfcbacd09ee16c327219b8b7d75fb",
+    "content-hash": "6a585303babbc36e3c9a7944c0bbfd40",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -7696,81 +7696,6 @@
                 }
             ],
             "time": "2020-12-14T10:10:03+00:00"
-        },
-        {
-            "name": "symfony/ldap",
-            "version": "v5.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/ldap.git",
-                "reference": "f9b2c074ffeab6046ae72cac965de9ac6dda9cff"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ldap/zipball/f9b2c074ffeab6046ae72cac965de9ac6dda9cff",
-                "reference": "f9b2c074ffeab6046ae72cac965de9ac6dda9cff",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ldap": "*",
-                "php": ">=7.2.5",
-                "symfony/options-resolver": "^4.4|^5.0",
-                "symfony/polyfill-php80": "^1.15"
-            },
-            "conflict": {
-                "symfony/options-resolver": "<4.4",
-                "symfony/security-core": "<5"
-            },
-            "require-dev": {
-                "symfony/security-core": "^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Ldap\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Charles Sarrazin",
-                    "email": "charles@sarraz.in"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "An abstraction in front of PHP's LDAP functions, compatible with PHP 5.3.9 onwards.",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "active directory",
-                "ldap"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/ldap/tree/v5.2.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-12-18T07:32:35+00:00"
         },
         {
             "name": "symfony/lock",

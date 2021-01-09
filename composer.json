@@ -75,7 +75,6 @@
         "symfony/flex": "^1.11",
         "symfony/form": "^5.2",
         "symfony/google-mailer": "^5.2",
-        "symfony/ldap": "^5.2",
         "symfony/mailer": "^5.2",
         "symfony/maker-bundle": "1.*",
         "symfony/messenger": "^5.2",
