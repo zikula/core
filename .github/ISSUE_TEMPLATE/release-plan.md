@@ -12,6 +12,7 @@ assignees: 'Guite, craigh'
 - [ ] Check if there are no open issues labeled as `blocker`
 - [ ] Check if there are no open issues which are not labeled as `blocker` but seem critical
 - [ ] Ensure all VA modules and own components have been released to ensure all changes are correctly pulled.
+     - [ ] ensure core and distribution composer.json files are set to appropriate version strings for VA (not dev-master)
 - [ ] Ensure all dependencies and `composer.lock` are up to date (execute `composer update`)
 - [ ] Ensure all translation templates are up to date (see `Check translations` workflow)
   - [ ] If not update translation templates:
@@ -76,4 +77,6 @@ assignees: 'Guite, craigh'
   - [ ] increment version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2 3.0.3-dev` (creates a pull request)
   - [ ] increment version in VA extensions
   - [ ] Add new section to both changelogs (normal + vendor)
+  - [ ] Reset zikula dependencies to dev-master
+    - `bin/console rt:set-deps master 3.1.0 dev-master` (`3.1.0` is current value, `dev-master` is desired value)
 - [ ] Merge to `master` branch
