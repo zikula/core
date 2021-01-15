@@ -5484,6 +5484,7 @@
                 "issues": "https://github.com/sensiolabs/security-checker/issues",
                 "source": "https://github.com/sensiolabs/security-checker/tree/master"
             },
+            "abandoned": "https://github.com/fabpot/local-php-security-checker",
             "time": "2019-11-01T13:20:14+00:00"
         },
         {
