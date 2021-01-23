@@ -104,7 +104,7 @@ class CategoryPermissionApiTest extends TestCase
         $api = $this->getMockBuilder(PermissionApiInterface::class)
             ->getMock();
         $api->method('hasPermission')->willReturnCallback(static function ($component = null, $instance = null, $level = ACCESS_NONE, $user = null) {
-            list(/*$regId*/, $catId) = explode('::', $instance);
+            list(/*$regId*/ , $catId) = explode('::', $instance);
 
             return 0 === $catId % 2;
         });

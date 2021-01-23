@@ -28,13 +28,13 @@ class ThemeType extends AbstractType
                 'label' => 'Theme to use for main site',
                 'required' => true,
                 'empty_data' => 'ZikulaBootstrapTheme',
-                'choices' => /** @Ignore */$this->formatThemeSelector($options['themes']),
+                'choices' => /** @Ignore */ $this->formatThemeSelector($options['themes']),
             ])
             ->add('admintheme', ChoiceType::class, [
                 'label' => 'Theme to use for admin controllers',
                 'required' => false,
                 'empty_data' => null,
-                'choices' => /** @Ignore */$this->formatThemeSelector($options['themes']),
+                'choices' => /** @Ignore */ $this->formatThemeSelector($options['themes']),
                 'placeholder' => 'Use site\'s theme'
             ])
             ->add('save', SubmitType::class, [

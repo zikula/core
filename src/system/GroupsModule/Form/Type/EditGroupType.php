@@ -61,13 +61,13 @@ class EditGroupType extends AbstractType
             ])
             ->add('gtype', ChoiceType::class, [
                 'label' => 'Type',
-                'choices' => /** @Ignore */$typeChoices,
+                'choices' => /** @Ignore */ $typeChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('state', ChoiceType::class, [
                 'label' => 'State',
-                'choices' => /** @Ignore */$stateChoices,
+                'choices' => /** @Ignore */ $stateChoices,
                 'expanded' => false,
                 'multiple' => false
             ])

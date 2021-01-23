@@ -29,7 +29,7 @@ class LocaleType extends AbstractType
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
-                'choices' => /** @Ignore */$options['choices'],
+                'choices' => /** @Ignore */ $options['choices'],
                 'choice_loader' => null,
                 'data' => $options['choice']
             ])

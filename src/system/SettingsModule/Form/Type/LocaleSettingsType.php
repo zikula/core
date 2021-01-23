@@ -52,7 +52,7 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('locale', ChoiceType::class, [
                 'label' => 'Default language to use for this site',
-                'choices' => /** @Ignore */$options['languages']
+                'choices' => /** @Ignore */ $options['languages']
             ])
             ->add('timezone', TimezoneType::class, [
                 'label' => 'Time zone for anonymous guests',

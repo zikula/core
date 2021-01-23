@@ -60,7 +60,7 @@ class ControllerType extends AbstractType
 
         $builder->add('controller', ChoiceType::class, [
             'label' => 'Controller',
-            'choices' => /** @Ignore */$this->getControllerChoices($supportPostRequests),
+            'choices' => /** @Ignore */ $this->getControllerChoices($supportPostRequests),
             'required' => $options['required'] ?? false,
             'attr' => [
                 'style' => 'font-family: monospace; font-size: 10px'
