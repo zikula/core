@@ -30,7 +30,15 @@ src/.preload.php
 /templates/
 !/templates/bundles/TranslationBundle/WebUI/base.html.twig
 /translations/*
+/webpack.config.js
 /var/
 !/var/cache/.htaccess
 /vendor/
 /.vagrant
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
