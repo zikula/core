@@ -182,6 +182,7 @@ class AccessController extends AbstractController
         }
         $userPostFailLoginEvent = new UserPostLoginFailureEvent($user, $authenticationMethod->getAlias());
         $userPostFailLoginEvent->setRedirectUrl($returnUrl);
+        $eventDispatcher->dispatch($userPostFailLoginEvent);
         $returnUrl = $userPostFailLoginEvent->getRedirectUrl();
 
         return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
