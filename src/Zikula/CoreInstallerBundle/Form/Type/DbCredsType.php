@@ -37,7 +37,7 @@ class DbCredsType extends AbstractType
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
-                'choices' => /** @Ignore */$this->getDbTypes(),
+                'choices' => /** @Ignore */ $this->getDbTypes(),
                 'data' => 'mysql'
             ])
             ->add('database_host', TextType::class, [

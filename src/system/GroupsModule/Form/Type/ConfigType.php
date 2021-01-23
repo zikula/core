@@ -39,7 +39,7 @@ class ConfigType extends AbstractType
             ])
             ->add('defaultgroup', ChoiceType::class, [
                 'label' => 'Initial user group',
-                'choices' => /** @Ignore */$options['groups'],
+                'choices' => /** @Ignore */ $options['groups'],
             ])
             ->add('hideclosed', CheckboxType::class, [
                 'label' => 'Hide closed groups',

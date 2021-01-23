@@ -76,7 +76,7 @@ class SessionExtension extends AbstractExtension
 
             $translatedMessages = [];
             foreach ($messages as $message) {
-                $translatedMessages[] = $this->translator->trans(/** @Ignore */$message);
+                $translatedMessages[] = $this->translator->trans(/** @Ignore */ $message);
             }
 
             // set class for the messages

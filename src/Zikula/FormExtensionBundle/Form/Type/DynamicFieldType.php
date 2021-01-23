@@ -96,7 +96,7 @@ class DynamicFieldType extends AbstractType
     {
         $builder->add('formType', ChoiceType::class, [
             'label' => 'Field type',
-            'choices' => /** @Ignore */$this->getChoices(),
+            'choices' => /** @Ignore */ $this->getChoices(),
             'placeholder' => 'Select'
         ]);
 

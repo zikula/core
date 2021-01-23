@@ -131,7 +131,7 @@ abstract class AbstractContentType implements ContentTypeInterface
      *
      * @param \Zikula\ContentModule\Entity\ContentItemEntity $entity
      */
-    public function setEntity(/*ContentItemEntity */$entity): void
+    public function setEntity(/*ContentItemEntity */ $entity): void
     {
         $this->entity = $entity;
 

@@ -31,7 +31,7 @@ class PermissionType extends AbstractType
             ->add('pid', HiddenType::class)
             ->add('gid', ChoiceType::class, [
                 'label' => 'Group',
-                'choices' => /** @Ignore */array_flip($options['groups'])
+                'choices' => /** @Ignore */ array_flip($options['groups'])
             ])
             ->add('sequence', HiddenType::class)
             ->add('component', TextType::class, [
@@ -42,7 +42,7 @@ class PermissionType extends AbstractType
             ])
             ->add('level', ChoiceType::class, [
                 'label' => 'Level',
-                'choices' => /** @Ignore */array_flip($options['permissionLevels'])
+                'choices' => /** @Ignore */ array_flip($options['permissionLevels'])
             ])
             ->add($builder->create('comment', TextType::class, [
                 'label' => 'Comment',

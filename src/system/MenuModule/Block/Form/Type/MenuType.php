@@ -44,7 +44,7 @@ class MenuType extends AbstractType
             ->add('options', TextType::class, [
                 'required' => false,
                 'invalid_message' => 'Could not json_decode the string you entered.',
-                'alert' => [/** @Translate */'This must be a json_encoded string of option key-value pairs.' => 'warning']
+                'alert' => [/** @Translate */ 'This must be a json_encoded string of option key-value pairs.' => 'warning']
             ])
         ;
         $builder->get('options')

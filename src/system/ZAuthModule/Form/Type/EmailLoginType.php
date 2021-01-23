@@ -37,7 +37,7 @@ class EmailLoginType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $forgotPassword = /** @Translate */'I forgot my password';
+        $forgotPassword = /** @Translate */ 'I forgot my password';
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'Email address',
