@@ -9,7 +9,7 @@ function initStyleSwitcher() {
         event.preventDefault();
         jQuery.ajax({
             method: 'POST',
-            url: Routing.generate('zikulaDefaultTheme_ajax_changeuserstyle'),
+            url: Routing.generate('zikuladefaulttheme_ajax_changeuserstyle'),
             data: {
                 style: jQuery(this).val()
             }
