@@ -135,16 +135,16 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "4.5.3",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "7e3ee4889b3b397e1ae4bdf218f9f0006ac9d277"
+                "reference": "16442b1b2ac3dbc357fb4137b46cc3e1096ff4da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/7e3ee4889b3b397e1ae4bdf218f9f0006ac9d277",
-                "reference": "7e3ee4889b3b397e1ae4bdf218f9f0006ac9d277",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/16442b1b2ac3dbc357fb4137b46cc3e1096ff4da",
+                "reference": "16442b1b2ac3dbc357fb4137b46cc3e1096ff4da",
                 "shasum": ""
             },
             "require": {
@@ -196,9 +196,9 @@
             ],
             "support": {
                 "issues": "https://github.com/components/bootstrap/issues",
-                "source": "https://github.com/components/bootstrap/tree/4.5.3"
+                "source": "https://github.com/components/bootstrap/tree/4.6.0"
             },
-            "time": "2020-10-14T07:22:57+00:00"
+            "time": "2021-01-23T18:24:55+00:00"
         },
         {
             "name": "components/font-awesome",
@@ -12301,12 +12301,12 @@
             "version": "1.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
                 "shasum": ""
             },
@@ -12344,8 +12344,8 @@
                 "validate"
             ],
             "support": {
-                "issues": "https://github.com/webmozart/assert/issues",
-                "source": "https://github.com/webmozart/assert/tree/master"
+                "issues": "https://github.com/webmozarts/assert/issues",
+                "source": "https://github.com/webmozarts/assert/tree/1.9.1"
             },
             "time": "2020-07-08T17:02:28+00:00"
         },
