@@ -3,7 +3,7 @@
 ##
 home_template:
   default_value: 3col_w_centerblock
-  type: 'Symfony\Component\Form\Extension\Default\Type\ChoiceType'
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
     label: 'Template for home page'
     choices:
@@ -14,7 +14,7 @@ home_template:
       'Three columns with centerblock': 3col_w_centerblock
 master_template:
   default_value: 2col
-  type: 'Symfony\Component\Form\Extension\Default\Type\ChoiceType'
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
     label: 'Template for front-end pages'
     choices:
@@ -25,7 +25,7 @@ master_template:
       'Three columns with centerblock': 3col_w_centerblock
 admin_template:
   default_value: 1col
-  type: 'Symfony\Component\Form\Extension\Default\Type\ChoiceType'
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
     label: 'Template for admin area'
     choices:
@@ -36,7 +36,7 @@ admin_template:
       'Three columns with centerblock': 3col_w_centerblock
 theme_style:
   default_value: cerulean
-  type: 'Symfony\Component\Form\Extension\Default\Type\ChoiceType'
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
     label: 'Theme style'
     choices:
@@ -64,7 +64,7 @@ theme_style:
       'Yeti': yeti
 allow_style_change:
   default_value: false
-  type: 'Symfony\Component\Form\Extension\Default\Type\CheckboxType'
+  type: 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
   options:
     label: 'Allow users switching the theme style'
     label_attr:
