@@ -6,10 +6,10 @@ jobs:
   update-deps:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout sources from master branch
+    - name: Checkout sources from main branch
       uses: actions/checkout@v2
       with:
-        ref: master
+        ref: main
 
     # persist composer's internal cache directory to reduce the workflow execution time
     - name: Get Composer cache directory
@@ -43,7 +43,6 @@ jobs:
         body: This is an auto-generated PR with dependency updates.
         labels: dep-updates
         branch: dep-updates
-        base: master
 
     - name: Check outputs
       run: |

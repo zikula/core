@@ -2,7 +2,7 @@ name: Copy Files to Distribution
 on:
   push:
     branches:
-      - master
+      - main
       - 3.0
 jobs:
   copy_kernel:
