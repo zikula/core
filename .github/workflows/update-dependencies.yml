@@ -38,8 +38,8 @@ jobs:
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'update dependencies :balloon:'
-        title: Vendor update
+        commit-message: '⬆️ update dependencies'
+        title: '⬆️ update dependencies'
         body: This is an auto-generated PR with dependency updates.
         labels: dep-updates
         branch: dep-updates
