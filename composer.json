@@ -107,7 +107,7 @@
         "zikula/legal-module": "3.*",
         "zikula/oauth-module": "1.*",
         "zikula/pagelock-module": "1.*",
-        "zikula/profile-module": "dev-master",
+        "zikula/profile-module": "dev-main",
         "zikula/sortable-columns": "1.*",
         "zikula/staticcontent-module": "1.*",
         "zikula/wizard": "3.*"
