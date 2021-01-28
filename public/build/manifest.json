@@ -1,6 +1,6 @@
 {
-  "core.git/public/build/app.css": "/build/app.css",
-  "core.git/public/build/app.js": "/build/app.js",
-  "core.git/public/build/runtime.js": "/build/runtime.js",
-  "core.git/public/build/vendors~app.js": "/build/vendors~app.js"
+  "build/app.css": "/build/app.css",
+  "build/app.js": "/build/app.js",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors~app.js": "/build/vendors~app.js"
 }
