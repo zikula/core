@@ -879,10 +879,10 @@
   dependencies:
     webpack-virtual-modules "^0.3.2"
 
-"@symfony/webpack-encore@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.0.0.tgz#fa07453cbb430422836e34129de885f42160465b"
-  integrity sha512-lf3l44CaK+j371XokezK1AP07Wp+ua/rduNBjMHcqTiUb6uj8+B/7/FM9Hbj4uuyqw72tq0ZHlYxPT5+PU//+g==
+"@symfony/webpack-encore@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.0.2.tgz#7d98626c8424abf04f07f8f0ad626aa9b3f7e7d7"
+  integrity sha512-3ZMtkKE07SpYR5IT+hZS6Nf3tu4t05tXh07OjmTozP5ik61rZbOJi0so7nxA/Vb82LAy+tKbziaEULcVxfwJsw==
   dependencies:
     "@babel/core" "^7.7.0"
     "@babel/plugin-syntax-dynamic-import" "^7.0.0"
