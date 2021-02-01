@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
-use Symfony\Component\Form\Extension\Core\Type\LanguageType;
-use Symfony\Component\Form\Extension\Core\Type\LocaleType as SfLocaleType;
-use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
+//use Symfony\Component\Form\Extension\Core\Type\CountryType;
+//use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+//use Symfony\Component\Form\Extension\Core\Type\LanguageType;
+//use Symfony\Component\Form\Extension\Core\Type\LocaleType as SfLocaleType;
+//use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -53,7 +53,8 @@ class InlineFormDefinitionType extends AbstractType
         foreach ($this->dynamicFieldsContainer->getDynamicFieldsSpecification() as $fieldSpecification) {
             $fieldOptions = $fieldSpecification->getFormOptions();
             $fieldOptions['label'] = $fieldOptions['label'] ?? $fieldSpecification->getLabel($this->translator->getLocale());
-            $fieldOptions = $this->removeChoiceLoader($fieldSpecification->getFormType(), $fieldOptions);
+            // to be removed after it has been confirmed that it became unneeded
+            //$fieldOptions = $this->removeChoiceLoader($fieldSpecification->getFormType(), $fieldOptions);
 
             $prefix = $fieldSpecification->getPrefix();
             $prefix = null !== $prefix && '' !== $prefix ? $prefix . ':' : '';
@@ -64,7 +65,8 @@ class InlineFormDefinitionType extends AbstractType
 
     /**
      * Symfony 4+ requires the choice_loader be nullified for certain form types.
-     */
+     * to be removed after it has been confirmed that it became unneeded
+     * /
     private function removeChoiceLoader($type, $fieldOptions): array
     {
         if (in_array($type, [
@@ -78,7 +80,7 @@ class InlineFormDefinitionType extends AbstractType
         }
 
         return $fieldOptions;
-    }
+    }*/
 
     public function getBlockPrefix()
     {
