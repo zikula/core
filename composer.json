@@ -64,7 +64,6 @@
         "php-translation/symfony-storage": "2.*",
         "phpids/phpids": "dev-master",
         "sensio/framework-extra-bundle": "^5.6",
-        "sensiolabs/security-checker": "6.*",
         "symfony/asset": "^5.2",
         "symfony/browser-kit": "^5.2",
         "symfony/contracts": "^2.3",
@@ -75,6 +74,7 @@
         "symfony/flex": "^1.11",
         "symfony/form": "^5.2",
         "symfony/google-mailer": "^5.2",
+        "symfony/http-client": "^5.2",
         "symfony/mailer": "^5.2",
         "symfony/maker-bundle": "1.*",
         "symfony/messenger": "^5.2",
@@ -157,7 +157,6 @@
         "auto-scripts": {
             "cache:clear --env prod": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script",
             "requirements-checker": "script"
         },
         "zikula-scripts": [
