@@ -3631,16 +3631,16 @@
         },
         {
             "name": "league/oauth2-facebook",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-facebook.git",
-                "reference": "093cf588b9d508ee426c71d6bc68f138fe914ddc"
+                "reference": "e1d6cc369c56507b84811c985aa0ce9ed6683ed2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-facebook/zipball/093cf588b9d508ee426c71d6bc68f138fe914ddc",
-                "reference": "093cf588b9d508ee426c71d6bc68f138fe914ddc",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-facebook/zipball/e1d6cc369c56507b84811c985aa0ce9ed6683ed2",
+                "reference": "e1d6cc369c56507b84811c985aa0ce9ed6683ed2",
                 "shasum": ""
             },
             "require": {
@@ -3681,9 +3681,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/oauth2-facebook/issues",
-                "source": "https://github.com/thephpleague/oauth2-facebook/tree/2.0.3"
+                "source": "https://github.com/thephpleague/oauth2-facebook/tree/2.0.4"
             },
-            "time": "2020-10-01T15:22:47+00:00"
+            "time": "2021-01-31T17:56:04+00:00"
         },
         {
             "name": "league/oauth2-github",
