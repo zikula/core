@@ -12605,12 +12605,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "a8875dfe95db867aef799b778e6b47233efbcf17"
+                "reference": "cb1a0e60f3900b49daafedddd4dd447d98a76b3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a8875dfe95db867aef799b778e6b47233efbcf17",
-                "reference": "a8875dfe95db867aef799b778e6b47233efbcf17",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/cb1a0e60f3900b49daafedddd4dd447d98a76b3d",
+                "reference": "cb1a0e60f3900b49daafedddd4dd447d98a76b3d",
                 "shasum": ""
             },
             "require": {
@@ -12671,7 +12671,7 @@
                 "issues": "https://github.com/zikula-modules/Profile/issues",
                 "source": "https://github.com/zikula-modules/Profile/tree/main"
             },
-            "time": "2021-02-01T19:38:53+00:00"
+            "time": "2021-02-02T05:58:07+00:00"
         },
         {
             "name": "zikula/sortable-columns",
