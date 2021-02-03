@@ -6915,16 +6915,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.11.0",
+            "version": "v1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48"
+                "reference": "394f3e4dc03ea2a5448aeedc9658c8b596b1d39f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48",
-                "reference": "ceb2b4e612bd0b4bb36a4d7fb2e800c861652f48",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/394f3e4dc03ea2a5448aeedc9658c8b596b1d39f",
+                "reference": "394f3e4dc03ea2a5448aeedc9658c8b596b1d39f",
                 "shasum": ""
             },
             "require": {
@@ -6963,7 +6963,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v1.11.0"
+                "source": "https://github.com/symfony/flex/tree/v1.12.1"
             },
             "funding": [
                 {
@@ -6979,7 +6979,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-03T10:57:35+00:00"
+            "time": "2021-02-02T16:29:45+00:00"
         },
         {
             "name": "symfony/form",
@@ -11504,16 +11504,16 @@
         },
         {
             "name": "thomaspark/bootswatch",
-            "version": "v4.5.3",
+            "version": "v4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thomaspark/bootswatch.git",
-                "reference": "ea3997347564d23b282937ddf019f44a7482af03"
+                "reference": "91712182e0ed651625f2b3d8a0075454f195d7ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/ea3997347564d23b282937ddf019f44a7482af03",
-                "reference": "ea3997347564d23b282937ddf019f44a7482af03",
+                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/91712182e0ed651625f2b3d8a0075454f195d7ae",
+                "reference": "91712182e0ed651625f2b3d8a0075454f195d7ae",
                 "shasum": ""
             },
             "suggest": {
@@ -11543,9 +11543,9 @@
             "description": "Themes for Bootstrap",
             "support": {
                 "issues": "https://github.com/thomaspark/bootswatch/issues",
-                "source": "https://github.com/thomaspark/bootswatch/tree/v4.5.3"
+                "source": "https://github.com/thomaspark/bootswatch/tree/v4.6.0"
             },
-            "time": "2020-10-21T15:15:00+00:00"
+            "time": "2021-01-20T23:20:08+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
