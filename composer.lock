@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a32c2c616f50198a3ce2c5e4656bb459",
+    "content-hash": "d48c9668438c7810ae75ec5e2e453c2c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -5367,21 +5367,21 @@
         },
         {
             "name": "stof/doctrine-extensions-bundle",
-            "version": "dev-master",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "f3c948b390f82a357d814331e6ea47bcda813a38"
+                "reference": "c01e73e49cee5eac3353b6c4ebdbb0a151348c85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/f3c948b390f82a357d814331e6ea47bcda813a38",
-                "reference": "f3c948b390f82a357d814331e6ea47bcda813a38",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/c01e73e49cee5eac3353b6c4ebdbb0a151348c85",
+                "reference": "c01e73e49cee5eac3353b6c4ebdbb0a151348c85",
                 "shasum": ""
             },
             "require": {
                 "gedmo/doctrine-extensions": "^2.3.4 || ^3.0.0",
-                "php": "^7.1.3 || ^8.0",
+                "php": "^7.1.3",
                 "symfony/framework-bundle": "^4.3 || ^5.0"
             },
             "require-dev": {
@@ -5393,11 +5393,10 @@
                 "doctrine/mongodb-odm-bundle": "to use the MongoDB ODM extensions",
                 "symfony/mime": "To use the Mime component integration for Uploadable"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "1.5.x-dev"
                 }
             },
             "autoload": {
@@ -5432,9 +5431,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stof/StofDoctrineExtensionsBundle/issues",
-                "source": "https://github.com/stof/StofDoctrineExtensionsBundle/tree/master"
+                "source": "https://github.com/stof/StofDoctrineExtensionsBundle/tree/v1.5.0"
             },
-            "time": "2021-01-20T11:21:48+00:00"
+            "time": "2020-09-30T13:25:17+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -12933,7 +12932,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "phpids/phpids": 20,
-        "stof/doctrine-extensions-bundle": 20,
         "zikula/profile-module": 20
     },
     "prefer-stable": true,
