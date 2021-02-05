@@ -70,8 +70,7 @@
 
         "doctrine/orm": "2.*",
         "doctrine/doctrine-bundle": "2.*",
-        "antishov/doctrine-extensions-bundle": "1.*",
-        "gedmo/doctrine-extensions": "2.*",
+        "stof/doctrine-extensions-bundle": "^1.5.0",
         "liip/imagine-bundle": "2.*"
     },
     "autoload": {
