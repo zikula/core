@@ -46,7 +46,7 @@
         "friendsofsymfony/jsrouting-bundle": "2.*",
         "ircmaxell/random-lib": "1.*",
         "itsjavi/fontawesome-iconpicker": "3.*",
-        "jms/i18n-routing-bundle": "3.*",
+        "jms/i18n-routing-bundle": "dev-master",
         "justinrainbow/json-schema": "5.*",
         "knplabs/knp-menu-bundle": ">=2.2.1",
         "league/commonmark": "^1.0",
@@ -167,6 +167,10 @@
         {
             "type": "git",
             "url": "https://github.com/FrDH/mmenu-js"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/AdrenalineHunter/JMSI18nRoutingBundle"
         }
     ],
     "config": {

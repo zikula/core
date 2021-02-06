@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d48c9668438c7810ae75ec5e2e453c2c",
+    "content-hash": "c659a24d4119d86f749cda8b5e59bf50",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3039,18 +3039,12 @@
         },
         {
             "name": "jms/i18n-routing-bundle",
-            "version": "3.0.4",
+            "version": "dev-master",
             "target-dir": "JMS/I18nRoutingBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/schmittjoh/JMSI18nRoutingBundle.git",
-                "reference": "99e02159433a495c696bf9372db14b117f4480de"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSI18nRoutingBundle/zipball/99e02159433a495c696bf9372db14b117f4480de",
-                "reference": "99e02159433a495c696bf9372db14b117f4480de",
-                "shasum": ""
+                "url": "https://github.com/AdrenalineHunter/JMSI18nRoutingBundle",
+                "reference": "2c852d0e43f2e32263108503d2d6360f5c49b71f"
             },
             "require": {
                 "php": "^7.1",
@@ -3064,13 +3058,13 @@
             "suggest": {
                 "jms/translation-bundle": "If you want to use the RouteTranslation extractor"
             },
+            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-0": {
                     "JMS\\I18nRoutingBundle": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache2"
             ],
@@ -3091,11 +3085,7 @@
                 "routing",
                 "translation"
             ],
-            "support": {
-                "issues": "https://github.com/schmittjoh/JMSI18nRoutingBundle/issues",
-                "source": "https://github.com/schmittjoh/JMSI18nRoutingBundle/tree/master"
-            },
-            "time": "2020-07-07T09:30:26+00:00"
+            "time": "2021-02-01T23:31:12+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -12931,6 +12921,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20,
         "zikula/profile-module": 20
     },
