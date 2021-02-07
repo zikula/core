@@ -15,7 +15,7 @@ namespace Zikula\Bundle\HookBundle\HookEvent;
 
 /**
  * A FilterHookEvent id dispatched from either the controller or as a twig filter
- * to modfiy existing data in some way. The injected data is not restricted by
+ * to modify existing data in some way. The injected data is not restricted by
  * type and therefore could be a string, object, integer, etc.
  */
 abstract class FilterHookEvent extends HookEvent
