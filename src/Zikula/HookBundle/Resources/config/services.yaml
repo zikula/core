@@ -3,6 +3,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\Bundle\HookBundle\:
         resource: '../../*'
@@ -13,6 +15,7 @@ services:
             $providers: !tagged_iterator zikula.hook_provider
             $subscribers: !tagged_iterator zikula.hook_subscriber
 
-    Zikula\Bundle\HookBundle\Listener\HookListenerBuilderListener:
+    Zikula\Bundle\HookBundle\Locator\HookLocator:
         arguments:
-            $installed: '%env(ZIKULA_INSTALLED)%'
+            $hookEvents: !tagged_iterator zikula.hook_event
+            $hookEventListeners: !tagged_iterator zikula.hook_event_listener
