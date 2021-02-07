@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\HookEventListener;
 
-use Zikula\Bundle\HookBundle\HookEvent\DisplayHookEvent;
+use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
 
-abstract class DisplayHookEventListener implements HookEventListenerInterface
+abstract class FilterHookEventListener implements HookEventListenerInterface
 {
     final public function listensTo(): string
     {
-        return DisplayHookEvent::class;
+        return FilterHookEvent::class;
     }
 }

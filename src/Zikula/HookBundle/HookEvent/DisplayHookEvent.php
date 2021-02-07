@@ -15,6 +15,10 @@ namespace Zikula\Bundle\HookBundle\HookEvent;
 
 use Zikula\Bundle\HookBundle\HookEventResponse\DisplayHookEventResponse;
 
+/**
+ * A DisplayHookEvent is most often dispatched with the UI (tempalte) and can
+ * be used to add content to the display.
+ */
 abstract class DisplayHookEvent extends HookEvent
 {
     /**
