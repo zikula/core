@@ -18,7 +18,7 @@ final class DisplayHookEventResponse
     /**
      * @var string
      */
-    protected $content;
+    private $content;
 
     public function __construct(string $content = '')
     {

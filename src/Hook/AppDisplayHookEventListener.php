@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace App\Hook;
 
 use Zikula\Bundle\HookBundle\HookEvent\DisplayHookEvent;
+use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\DisplayHookEventListener;
 use Zikula\Bundle\HookBundle\HookEventResponse\DisplayHookEventResponse;
-use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 
 final class AppDisplayHookEventListener extends DisplayHookEventListener
 {

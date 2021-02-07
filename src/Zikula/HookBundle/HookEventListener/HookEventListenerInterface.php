@@ -24,21 +24,18 @@ interface HookEventListenerInterface
     /**
      * The abstract HookEvent classname to which this listener is responding.
      * The first concrete class should mark this method `final`
-     * @return string
      */
     public function listensTo(): string;
 
     /**
      * A short title indicating the purpose of the subscriber.
      * It is recommended to inject TranslatorInterface in the constructor and translate this string.
-     * @return string
      */
     public function getTitle(): string;
 
     /**
      * A long text providing further information about the subscriber.
      * It is recommended to inject TranslatorInterface in the constructor and translate this string.
-     * @return string
      */
     public function getInfo(): string;
 
