@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\HookEvent;
 
-use Zikula\Bundle\HookBundle\HookEventResponse\DisplayHookEventResponse;
-
 /**
  * A FilterHookEvent id dispatched from either the controller or as a twig filter
  * to modfiy existing data in some way. The injected data is not restricted by
