@@ -24,11 +24,16 @@ abstract class FilterHookEvent extends HookEvent
 
     public function __construct($data = null)
     {
-        $this->setData($data);
+        $this->data = $data;
     }
 
     public function getData()
     {
         return $this->data;
+    }
+
+    public function setData(string $data): void
+    {
+        $this->data = $data;
     }
 }

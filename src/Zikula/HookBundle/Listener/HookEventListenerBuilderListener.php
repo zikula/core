@@ -77,7 +77,8 @@ class HookEventListenerBuilderListener implements EventSubscriberInterface
     private function getConnections(): array
     {
         return [
-            new Connection('App\\Hook\\AppDisplayHookEvent', 'App\\Hook\\AppDisplayHookEventListener', 0)
+            new Connection('App\\Hook\\AppDisplayHookEvent', 'App\\Hook\\AppDisplayHookEventListener'),
+            new Connection('App\\Hook\\AppFilterHookEvent', 'App\\Hook\\AppFilterHookEventListener')
         ];
     }
 }

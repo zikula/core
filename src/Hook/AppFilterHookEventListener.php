@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace App\Hook;
 
-use Zikula\Bundle\HookBundle\HookEvent\DisplayHookEvent;
+use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
-use Zikula\Bundle\HookBundle\HookEventListener\DisplayHookEventListener;
-use Zikula\Bundle\HookBundle\HookEventResponse\DisplayHookEventResponse;
+use Zikula\Bundle\HookBundle\HookEventListener\FilterHookEventListener;
+use function Symfony\Component\String\u;
 
-final class AppDisplayHookEventListener extends DisplayHookEventListener
+final class AppFilterHookEventListener extends FilterHookEventListener
 {
     public function getTitle(): string
     {
-        return 'App Title';
+        return 'Filter Twinkle!';
     }
 
     public function getInfo(): string
@@ -33,8 +33,9 @@ final class AppDisplayHookEventListener extends DisplayHookEventListener
     public function execute(HookEvent $event): void
     {
         // Strongly encouraged to check for exact HookEvent type here because typehint required to be generic
-        if ($event instanceof DisplayHookEvent) {
-            $event->addResponse(new DisplayHookEventResponse('🤣 bar-' . $event->getId()));
+        if ($event instanceof FilterHookEvent) {
+            $event->setData(str_replace(['star', 'are', 'high', 'sky'], ['<b>biz</b>', '<b>is</b>', '<b>fat</b>', '<b>cat</b>'], $event->getData()));
         }
     }
 }
+
