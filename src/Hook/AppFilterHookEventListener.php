@@ -16,7 +16,6 @@ namespace App\Hook;
 use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\FilterHookEventListener;
-use function Symfony\Component\String\u;
 
 final class AppFilterHookEventListener extends FilterHookEventListener
 {
@@ -38,4 +37,3 @@ final class AppFilterHookEventListener extends FilterHookEventListener
         }
     }
 }
-

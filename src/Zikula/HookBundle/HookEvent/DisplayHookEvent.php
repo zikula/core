@@ -40,4 +40,9 @@ abstract class DisplayHookEvent extends HookEvent
     {
         return $this->responses;
     }
+
+    public function __toString(): string
+    {
+        return implode('<br />', $this->responses);
+    }
 }
