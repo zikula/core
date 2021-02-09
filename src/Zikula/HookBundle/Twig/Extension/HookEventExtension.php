@@ -15,19 +15,10 @@ namespace Zikula\Bundle\HookBundle\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Twig\TwigFunction;
 use Zikula\Bundle\HookBundle\Twig\Runtime\HookEventRuntime;
 
 class HookEventExtension extends AbstractExtension
 {
-    public function getFunctions()
-    {
-        return [
-//            new TwigFunction('dispatchHookEvent', [HookRuntime::class, 'notifyHookEvent'], ['is_safe' => ['html']]),
-//            new TwigFunction('routeUrl', [HookRuntime::class, 'createRouteUrl'])
-        ];
-    }
-
     public function getFilters()
     {
         return [
