@@ -17,7 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\PreHandleRequestFormHookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\PreHandleRequestFormHookEventListener;
-use Zikula\Bundle\HookBundle\HookEventResponse\DisplayHookEventResponse;
 
 class AppPreHandleRequestFormHookEventListener extends PreHandleRequestFormHookEventListener
 {

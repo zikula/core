@@ -33,7 +33,7 @@ class AppPostValidationFormHookEventListener extends PostValidationFormHookEvent
     {
         // Strongly encouraged to check for exact HookEvent type here because typehint required to be generic
         if ($event instanceof PostValidationFormHookEvent) {
-             $event->setDisplay((string) $event->getFormData('number'));
+            $event->setDisplay((string) $event->getFormData('number'));
         }
     }
 }
