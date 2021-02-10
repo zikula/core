@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Bundle\HookBundle\Hook\Connection;
+use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
 use Zikula\Bundle\HookBundle\Locator\HookLocator;
 
 class HookEventListenerBuilderListener implements EventSubscriberInterface
@@ -65,7 +66,7 @@ class HookEventListenerBuilderListener implements EventSubscriberInterface
         foreach ($this->getConnections() as $connection) {
             if ($this->hookLocator->isListener($connection->getListener())) {
                 $listener = $this->hookLocator->getListener($connection->getListener());
-                $callable = [$listener, 'execute'];
+                $callable = [$listener, HookEventListenerInterface::EXECUTE_METHOD];
                 $this->eventDispatcher->addListener($connection->getEvent(), $callable, $connection->getPriority());
             }
         }

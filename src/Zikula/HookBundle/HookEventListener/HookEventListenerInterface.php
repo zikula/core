@@ -21,6 +21,8 @@ use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
  */
 interface HookEventListenerInterface
 {
+    public const EXECUTE_METHOD = 'execute';
+
     /**
      * The abstract HookEvent classname to which this listener is responding.
      * The first concrete class should mark this method `final`
