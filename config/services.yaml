@@ -13,8 +13,8 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    App\Hook\:
-        resource: '../src/Hook/'
+    App\HookListener\:
+        resource: '../src/HookListener/'
     #    exclude:
     #        - '../src/DependencyInjection/'
     #        - '../src/Entity/'

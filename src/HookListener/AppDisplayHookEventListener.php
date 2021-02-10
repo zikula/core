@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Hook;
+namespace App\HookListener;
 
 use Zikula\Bundle\HookBundle\HookEvent\DisplayHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
@@ -22,12 +22,12 @@ final class AppDisplayHookEventListener extends DisplayHookEventListener
 {
     public function getTitle(): string
     {
-        return 'App Title';
+        return 'App DisplayHook Listener';
     }
 
     public function getInfo(): string
     {
-        return 'App Info - long text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+        return 'App DisplayHook Listener Info - long text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
     }
 
     public function execute(HookEvent $event): void

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Hook;
+namespace App\HookEvent;
 
 use Zikula\Bundle\HookBundle\HookEvent\DisplayHookEvent;
 
@@ -24,6 +24,6 @@ final class AppDisplayHookEvent extends DisplayHookEvent
 
     public function getInfo(): string
     {
-        return 'App Display Hook information. This event is fired in the TestHookController and reponses are added to the template for the response.';
+        return 'App Display Hook information. This event is fired in the template and reponses are added there.';
     }
 }

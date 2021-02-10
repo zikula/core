@@ -34,8 +34,14 @@ abstract class PostValidationFormHookEvent extends HookEvent
 
     /**
      * @var UrlInterface
+     * @todo is this still needed? what is the usecase to pass this to listener?
      */
     private $subjectUrl;
+
+    /**
+     * @var string
+     */
+    private $display;
 
     /**
      * @param mixed|null $formSubject This may be the object, an array, the subject id, null
@@ -47,7 +53,10 @@ abstract class PostValidationFormHookEvent extends HookEvent
         $this->subjectUrl = $subjectUrl;
     }
 
-    public function getFormData(string $name = null): array
+    /**
+     * @return mixed
+     */
+    public function getFormData(string $name = null)
     {
         if (isset($name)) {
             return $this->form->get($name)->getData();
@@ -64,5 +73,15 @@ abstract class PostValidationFormHookEvent extends HookEvent
     public function getSubjectUrl(): ?UrlInterface
     {
         return $this->subjectUrl;
+    }
+
+    public function getDisplay(): string
+    {
+        return $this->display ?? '';
+    }
+
+    public function setDisplay(string $display): void
+    {
+        $this->display = $display;
     }
 }

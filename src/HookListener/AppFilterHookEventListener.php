@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Hook;
+namespace App\HookListener;
 
 use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
@@ -26,7 +26,7 @@ final class AppFilterHookEventListener extends FilterHookEventListener
 
     public function getInfo(): string
     {
-        return 'App Info - long text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+        return 'This listener assumes it is passed the first lines of "Twinkle" and changes some words.';
     }
 
     public function execute(HookEvent $event): void

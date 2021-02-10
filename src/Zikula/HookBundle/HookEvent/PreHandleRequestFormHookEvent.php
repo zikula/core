@@ -66,7 +66,7 @@ abstract class PreHandleRequestFormHookEvent extends HookEvent
     public function addTemplate(string $template, array $templateVars = []): self
     {
         if (!in_array($template, $this->templates, true)) {
-            $this->templates[] = [$template, $templateVars];
+            $this->templates[] = ['filename' => $template, 'vars' => $templateVars];
         }
 
         return $this;

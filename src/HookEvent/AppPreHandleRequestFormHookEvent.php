@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Hook;
+namespace App\HookEvent;
 
-use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
+use Zikula\Bundle\HookBundle\HookEvent\PreHandleRequestFormHookEvent;
 
-final class AppFilterHookEvent extends FilterHookEvent
+final class AppPreHandleRequestFormHookEvent extends PreHandleRequestFormHookEvent
 {
     public function getTitle(): string
     {
-        return 'App Filter Hook';
+        return 'App Pre HandleRequest Hook';
     }
 
     public function getInfo(): string
     {
-        return 'App Filter Hook information. This event is fired in the TestHookController to filter a text example.';
+        return 'App Pre HandleRequest Hook information. This event is fired in the TestHookController before the form is handled.';
     }
 }

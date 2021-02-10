@@ -14,7 +14,9 @@
                 "src/system/"
             ],
             "App\\Controller\\": "src/Controller/",
-            "App\\Hook\\": "src/Hook/"
+            "App\\HookListener\\": "src/HookListener/",
+            "App\\HookEvent\\": "src/HookEvent/",
+            "App\\Form\\": "src/Form/"
         },
         "files": [
             "src/Kernel.php"
