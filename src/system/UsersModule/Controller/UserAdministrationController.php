@@ -299,7 +299,7 @@ class UserAdministrationController extends AbstractController
         } elseif (isset($user)) {
             $uids = [$user->getUid()];
         }
-        if (!count($uids)) {
+        if (!count($uids) && !$request->request->has('zikulausersmodule_deleteconfirmation')) {
             $this->addFlash('warning', 'No users selected.');
 
             return $this->redirectToRoute('zikulausersmodule_useradministration_listusers');
@@ -312,11 +312,6 @@ class UserAdministrationController extends AbstractController
         $deleteUserFormPostCreatedEvent = new DeleteUserFormPostCreatedEvent($deleteConfirmationForm);
         $eventDispatcher->dispatch($deleteUserFormPostCreatedEvent);
         $deleteConfirmationForm->handleRequest($request);
-        if (empty($uids) && !$deleteConfirmationForm->isSubmitted()) {
-            $this->addFlash('warning', 'No users selected.');
-
-            return $this->redirectToRoute('zikulausersmodule_useradministration_listusers');
-        }
         if ($deleteConfirmationForm->isSubmitted()) {
             if ($deleteConfirmationForm->get('cancel')->isClicked()) {
                 $this->addFlash('success', 'Operation cancelled.');

@@ -18,6 +18,7 @@
   - [ThemeModule] Corrected missing configurable value for `trimwhitespace` option (#4531).
   - [ThemeModule] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
   - [UsersModule] Fix regression when sending mail to more than one user in one step.
+  - [UsersModule] Fix broken mass deletion (#4597).
 
 - Features:
   - [dependency] Changed dependency from `symfony/symfony` to ALL the related `symfony/*` components (#4352, #4563).
