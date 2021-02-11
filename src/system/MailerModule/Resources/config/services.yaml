@@ -9,3 +9,7 @@ services:
     Zikula\MailerModule\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\MailerModule\Helper\MailTransportHelper:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
