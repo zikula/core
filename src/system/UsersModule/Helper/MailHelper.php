@@ -223,28 +223,32 @@ class MailHelper
      */
     public function mailUsers(array $users, array $messageData): bool
     {
+        $sender = new Address($messageData['replyto'], $messageData['from']);
         $email = (new Email())
-            ->from(new Address($messageData['replyto'], $messageData['from']))
+            ->from($sender)
             ->subject($messageData['subject'])
             ->html($messageData['message'])
         ;
         if (1 === count($users)) {
             $email->to(new Address($users[0]->getEmail(), $users[0]->getUname()));
         } else {
-            $email->to(new Address($messageData['replyto'], $messageData['from']));
+            $email->to($sender);
         }
         try {
-            if (count($users) > 1) {
+            if (1 < count($users)) {
                 $bcc = [];
                 foreach ($users as $user) {
-                    $bcc[] = $user->getEmail();
+                    if (!$user->getEmail()) {
+                        continue;
+                    }
+                    $bcc[] = new Address($user->getEmail(), $user->getUname());
                     if (count($bcc) === $messageData['batchsize']) {
-                        $email->bcc($bcc);
+                        $email->bcc(...$bcc);
                         $this->mailer->send($email);
                         $bcc = [];
                     }
                 }
-                $email->bcc($bcc);
+                $email->bcc(...$bcc);
             }
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {

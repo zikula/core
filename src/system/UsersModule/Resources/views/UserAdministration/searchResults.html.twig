@@ -81,29 +81,23 @@
     {{ form_end(resultsForm) }}
 </div>
 
-{% form_theme mailForm with [
-    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
-] %}
 <div class="collapse" id="email-users-form">
     <hr />
     {{ form_start(mailForm) }}
     {{ form_errors(mailForm) }}
     <div class="container-fluid">
-        <div class="row">
-            {{ form_row(mailForm.from) }}
-            {{ form_row(mailForm.replyto) }}
-            {{ form_row(mailForm.subject) }}
-            {{ form_row(mailForm.format) }}
-            {{ form_row(mailForm.message) }}
-            {{ form_row(mailForm.batchsize) }}
-            {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}{# allows admin to hook wysiwyg editor for mail form #}
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-9 offset-md-3">
-            {{ form_widget(mailForm.send) }}
-            <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#email-users-form"><i class="fas fa-times"></i> {% trans %}Close{% endtrans %}</button>
+        {{ form_row(mailForm.from) }}
+        {{ form_row(mailForm.replyto) }}
+        {{ form_row(mailForm.subject) }}
+        {{ form_row(mailForm.format) }}
+        {{ form_row(mailForm.message) }}
+        {{ form_row(mailForm.batchsize) }}
+        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}{# allows admin to hook wysiwyg editor for mail form #}
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
+                {{ form_widget(mailForm.send) }}
+                <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#email-users-form"><i class="fas fa-times"></i> {% trans %}Close{% endtrans %}</button>
+            </div>
         </div>
     </div>
     {{ form_end(mailForm) }}
