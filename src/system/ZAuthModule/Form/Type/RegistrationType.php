@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -54,7 +53,9 @@ class RegistrationType extends AbstractType
                 'attr' => [
                     'maxlength' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH
                 ],
-                'constraints' => [new ValidUname()]
+                'constraints' => [
+                    new ValidUname(),
+                ],
             ])
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
@@ -66,7 +67,9 @@ class RegistrationType extends AbstractType
                     'label' => 'Repeat email'
                 ],
                 'invalid_message' => 'The emails must match!',
-                'constraints' => [new ValidEmail()]
+                'constraints' => [
+                    new ValidEmail(),
+                ],
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -89,26 +92,27 @@ class RegistrationType extends AbstractType
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [
                     new NotNull(),
-                    new ValidPassword()
-                ]
+                    new ValidPassword(),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-plus',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
+            ])
+            ->add('cancel', SubmitType::class, [
+                'label' => 'Cancel',
+                'icon' => 'fa-times',
+                'validate' => false,
+                'attr' => [
+                    'class' => 'btn-danger',
+                ],
             ])
             ->add('reset', ResetType::class, [
                 'label' => 'Reset',
                 'icon' => 'fa-refresh',
-            ])
-            ->add('cancel', ButtonType::class, [
-                'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn-danger'
-                ]
             ])
         ;
         if (!empty($options['antiSpamQuestion'])) {
@@ -117,7 +121,7 @@ class RegistrationType extends AbstractType
                 /** @Ignore */
                 'label' => $options['antiSpamQuestion'],
                 'constraints' => new ValidAntiSpamAnswer(),
-                'help' => 'Asking this question helps us prevent automated scripts from accessing private areas of the site.'
+                'help' => 'Asking this question helps us prevent automated scripts from accessing private areas of the site.',
             ]);
         }
     }

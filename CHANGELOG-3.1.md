@@ -17,8 +17,9 @@
   - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
   - [ThemeModule] Corrected missing configurable value for `trimwhitespace` option (#4531).
   - [ThemeModule] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
-  - [UsersModule] Fix regression when sending mail to more than one user in one step.
-  - [UsersModule] Fix broken mass deletion (#4597).
+  - [UsersModule] Fixed regression when sending mail to more than one user in one step.
+  - [UsersModule] Fixed broken mass deletion (#4597).
+  - [UsersModule] Added redirect for cancel button on registration form (#4595).
 
 - Features:
   - [dependency] Changed dependency from `symfony/symfony` to ALL the related `symfony/*` components (#4352, #4563).

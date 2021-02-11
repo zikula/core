@@ -147,6 +147,11 @@ class RegistrationController extends AbstractController
             $form->handleRequest($request);
         }
 
+        if ($form->isSubmitted()) {
+            if ($form->has('cancel') && $form->get('cancel')->isClicked()) {
+                return $this->redirectToRoute('home');
+            }
+        }
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 // Validate the hook

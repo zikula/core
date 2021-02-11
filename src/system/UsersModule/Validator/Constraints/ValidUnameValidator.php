@@ -77,6 +77,9 @@ class ValidUnameValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
+        if (null === $value) {
+            return;
+        }
         if (!$constraint instanceof ValidUname) {
             throw new UnexpectedTypeException($constraint, ValidUname::class);
         }

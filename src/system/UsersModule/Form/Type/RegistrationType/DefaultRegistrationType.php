@@ -15,6 +15,7 @@ namespace Zikula\UsersModule\Form\Type\RegistrationType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,22 +32,20 @@ class DefaultRegistrationType extends AbstractType
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
                 'icon' => 'fa-times',
+                'validate' => false,
                 'attr' => [
-                    'class' => 'btn-danger'
-                ]
+                    'class' => 'btn-danger',
+                ],
             ])
-            ->add('reset', SubmitType::class, [
+            ->add('reset', ResetType::class, [
                 'label' => 'Reset',
                 'icon' => 'fa-refresh',
-                'attr' => [
-                    'class' => 'btn-primary'
-                ]
             ])
         ;
     }
