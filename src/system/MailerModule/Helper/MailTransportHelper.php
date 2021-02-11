@@ -19,13 +19,14 @@ use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 class MailTransportHelper
 {
     /**
-     * @var string
+     * @var LocalDotEnvHelper
      */
-    private $projectDir;
+    private $localDotEnvHelper;
 
-    public function __construct(string $projectDir)
-    {
-        $this->projectDir = $projectDir;
+    public function __construct(
+        LocalDotEnvHelper $localDotEnvHelper
+    ) {
+        $this->localDotEnvHelper = $localDotEnvHelper;
     }
 
     public function handleFormData(array $formData): bool
@@ -63,8 +64,7 @@ class MailTransportHelper
                 $vars['MAILER_KEY'] = $formData['mailer_key'];
             }
             $vars['MAILER_DSN'] = '!' . $dsn;
-            $helper = new LocalDotEnvHelper($this->projectDir);
-            $helper->writeLocalEnvVars($vars);
+            $this->localDotEnvHelper->writeLocalEnvVars($vars);
 
             return true;
         } catch (IOExceptionInterface $exception) {
