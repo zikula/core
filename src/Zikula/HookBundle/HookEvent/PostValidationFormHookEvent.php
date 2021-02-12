@@ -51,7 +51,7 @@ abstract class PostValidationFormHookEvent extends HookEvent
     }
 
     /**
-     * @param mixed $formSubject This may be the object, an array, the subject id, etc.
+     * @param mixed $formSubject This may be the object, an array, the subject id, etc
      */
     public function setFormSubject($formSubject): self
     {
