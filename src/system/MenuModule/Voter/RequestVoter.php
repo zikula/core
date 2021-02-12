@@ -41,6 +41,10 @@ class RequestVoter implements VoterInterface
         }
 
         $itemUri = $item->getUri();
+        if (null === $itemUri) {
+            return null;
+        }
+
         if ($itemUri === $request->getRequestUri()) {
             // URL's completely match
             return true;
