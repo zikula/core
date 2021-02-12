@@ -33,7 +33,7 @@ class HookEventRuntime implements RuntimeExtensionInterface
     public function dispatchFilterHookEvent(string $content, string $filterEventName): string
     {
         if (\class_exists($filterEventName) && \is_subclass_of($filterEventName, FilterHookEvent::class)) {
-            $hook = $this->eventDispatcher->dispatch(new $filterEventName($content));
+            $hook = $this->eventDispatcher->dispatch((new $filterEventName())->setData($content));
 
             return $hook->getData();
         }

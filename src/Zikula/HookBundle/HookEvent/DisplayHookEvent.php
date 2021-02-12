@@ -26,7 +26,7 @@ abstract class DisplayHookEvent extends HookEvent
      */
     private $responses = [];
 
-    public function addResponse(DisplayHookEventResponse $response): void
+    public function addResponse(DisplayHookEventResponse $response): self
     {
         $responseClass = get_class($response);
         if (isset($this->responses[$responseClass])) {
@@ -34,6 +34,8 @@ abstract class DisplayHookEvent extends HookEvent
         } else {
             $this->responses[$responseClass] = $response;
         }
+
+        return $this;
     }
 
     public function getResponses(): array
@@ -43,6 +45,6 @@ abstract class DisplayHookEvent extends HookEvent
 
     public function __toString(): string
     {
-        return implode('<br />', $this->responses);
+        return implode('', $this->responses);
     }
 }

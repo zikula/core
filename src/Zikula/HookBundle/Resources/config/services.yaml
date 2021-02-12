@@ -10,6 +10,9 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
+    Zikula\Bundle\HookBundle\Controller\ConnectionController:
+        public: true
+
     Zikula\Bundle\HookBundle\Collector\HookCollector:
         arguments:
             $providers: !tagged_iterator zikula.hook_provider

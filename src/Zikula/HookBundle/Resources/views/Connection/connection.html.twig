@@ -1,0 +1,28 @@
+<h2>{% trans %}Hook Connections{% endtrans %}</h2>
+
+<div>
+    <h3>Events</h3>
+    <ul>
+        {% for name, event in locator.hookEvents %}
+            <li>{{ event.title }} <code>{{ name }}</code> <small>({{ event.info }})</small></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div>
+    <h3>Listeners</h3>
+    <ul>
+        {% for name, listener in locator.hookEventListeners %}
+            <li>{{ listener.title }} <code>{{ name }}</code> <small>({{ listener.info }})</small></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div>
+    <h3>Connections</h3>
+    <ul>
+        {% for connection in connections %}
+            <li><code>{{ connection.event }}</code> connected to <code>{{ connection.listener }}</code> with priority <code>{{ connection.priority }}</code></li>
+        {% endfor %}
+    </ul>
+</div>

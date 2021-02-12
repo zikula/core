@@ -32,10 +32,11 @@ abstract class PreHandleRequestFormHookEvent extends HookEvent
      */
     protected $templates = [];
 
-    public function __construct(FormInterface $form, ?int $subjectId = null)
+    public function setForm(FormInterface $form): self
     {
         $this->form = $form;
-        $this->id = $subjectId;
+
+        return $this;
     }
 
     /**

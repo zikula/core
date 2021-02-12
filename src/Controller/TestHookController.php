@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\TestType;
+use App\HookEvent\AppDisplayHookEvent;
 use App\HookEvent\AppPostValidationFormHookEvent;
 use App\HookEvent\AppPreHandleRequestFormHookEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,10 +39,10 @@ class TestHookController extends AbstractController
     public function index(Request $request): Response
     {
         $form = $this->createForm(TestType::class);
-        $preHook = $this->eventDispatcher->dispatch(new AppPreHandleRequestFormHookEvent($form));
+        $preHook = $this->eventDispatcher->dispatch((new AppPreHandleRequestFormHookEvent())->setForm($form));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $postHook = $this->eventDispatcher->dispatch(new AppPostValidationFormHookEvent($form));
+            $postHook = $this->eventDispatcher->dispatch((new AppPostValidationFormHookEvent())->setForm($form));
             $this->addFlash('success', sprintf('Form saved! Values: %s & %s', implode(', ', $form->getData()), $postHook->getDisplay()));
 
             return $this->redirectToRoute('test_hook');
@@ -50,6 +51,7 @@ class TestHookController extends AbstractController
         return $this->render('test_hook/index.html.twig', [
             'controller_name' => 'TestHookController',
             'form' => $form->createView(),
+            'displayEvent' => $this->eventDispatcher->dispatch((new AppDisplayHookEvent())->setId('my-display-id')),
             'preHook' => $preHook
         ]);
     }

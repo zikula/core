@@ -43,14 +43,31 @@ abstract class PostValidationFormHookEvent extends HookEvent
      */
     private $display;
 
-    /**
-     * @param mixed|null $formSubject This may be the object, an array, the subject id, null
-     */
-    public function __construct(FormInterface $form, $formSubject = null, UrlInterface $subjectUrl = null)
+    public function setForm(FormInterface $form): self
     {
         $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $formSubject This may be the object, an array, the subject id, etc.
+     */
+    public function setFormSubject($formSubject): self
+    {
         $this->formSubject = $formSubject;
+
+        return $this;
+    }
+
+    /**
+     * @todo is this still needed? what is the usecase to pass this to listener?
+     */
+    public function setSubjectUrl(UrlInterface $subjectUrl): self
+    {
         $this->subjectUrl = $subjectUrl;
+
+        return $this;
     }
 
     /**
@@ -80,8 +97,10 @@ abstract class PostValidationFormHookEvent extends HookEvent
         return $this->display ?? '';
     }
 
-    public function setDisplay(string $display): void
+    public function setDisplay(string $display): self
     {
         $this->display = $display;
+
+        return $this;
     }
 }

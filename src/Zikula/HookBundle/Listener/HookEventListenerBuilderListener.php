@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Bundle\HookBundle\Hook\Connection;
 use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
 use Zikula\Bundle\HookBundle\Locator\HookLocator;
+use Zikula\Bundle\HookBundle\Repository\HookConnectionRepository;
 
 class HookEventListenerBuilderListener implements EventSubscriberInterface
 {
@@ -27,6 +28,11 @@ class HookEventListenerBuilderListener implements EventSubscriberInterface
      * @var HookLocator
      */
     private $hookLocator;
+
+    /**
+     * @var HookConnectionRepository
+     */
+    private $connectionRepository;
 
     /**
      * @var EventDispatcherInterface
@@ -40,10 +46,12 @@ class HookEventListenerBuilderListener implements EventSubscriberInterface
 
     public function __construct(
         HookLocator $hookLocator,
+        HookConnectionRepository $connectionRepository,
         EventDispatcherInterface $eventDispatcher,
         string $installed
     ) {
         $this->hookLocator = $hookLocator;
+        $this->connectionRepository = $connectionRepository;
         $this->eventDispatcher = $eventDispatcher;
         $this->installed = '0.0.0' !== $installed;
     }
@@ -63,25 +71,12 @@ class HookEventListenerBuilderListener implements EventSubscriberInterface
             return;
         }
 
-        foreach ($this->getConnections() as $connection) {
+        foreach ($this->connectionRepository->getAll() as $connection) {
             if ($this->hookLocator->isListener($connection->getListener())) {
                 $listener = $this->hookLocator->getListener($connection->getListener());
                 $callable = [$listener, HookEventListenerInterface::EXECUTE_METHOD];
                 $this->eventDispatcher->addListener($connection->getEvent(), $callable, $connection->getPriority());
             }
         }
-    }
-
-    /**
-     * @todo remove in favor of Storage class
-     */
-    private function getConnections(): array
-    {
-        return [
-            new Connection('App\\HookEvent\\AppDisplayHookEvent', 'App\\HookListener\\AppDisplayHookEventListener'),
-            new Connection('App\\HookEvent\\AppFilterHookEvent', 'App\\HookListener\\AppFilterHookEventListener'),
-            new Connection('App\\HookEvent\\AppPostValidationFormHookEvent', 'App\\HookListener\\AppPostValidationFormHookEventListener'),
-            new Connection('App\\HookEvent\\AppPreHandleRequestFormHookEvent', 'App\\HookListener\\AppPreHandleRequestFormHookEventListener')
-        ];
     }
 }

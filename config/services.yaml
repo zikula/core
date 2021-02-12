@@ -15,6 +15,10 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\HookListener\:
         resource: '../src/HookListener/'
+
+    App\HookEvent\:
+        resource: '../src/HookEvent/'
+
     #    exclude:
     #        - '../src/DependencyInjection/'
     #        - '../src/Entity/'

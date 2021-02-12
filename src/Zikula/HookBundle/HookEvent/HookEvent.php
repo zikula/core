@@ -21,12 +21,19 @@ abstract class HookEvent
      */
     protected $id;
 
+    final public function __construct()
+    {
+        // there should not be a constructor in HookEvents. Use setters.
+    }
+
     /**
      * Intentionally casting the id as a string to allow for UUID or other non-integer types.
      */
-    public function __construct(?string $id = null)
+    public function setId(?string $id = null): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getId(): ?string
