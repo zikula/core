@@ -1,10 +1,45 @@
 <h2>{% trans %}Hook Connections{% endtrans %}</h2>
+<table class="table table-bordered table-striped table-hover table-sm table-responsive">
+    <thead>
+    <tr>
+        <th></th>
+        {% for listener in locator.hookEventListeners %}
+            <th scope="col">{{ listener.title }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in locator.hookEvents %}
+    <tr>
+        <th scope="row">{{ event.title }}</th>
+        {% for listener in locator.hookEventListeners %}
+            {% set connection = getConnection(event, listener) %}
+            <td>
+                {% if connection is not null %}
+                    <a href="#" class="tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to disconnect %event% from %listener%{% endtrans %}">✅</a>
+                    <a href="#" class="tooltips" title="{% trans %}Click to change listener priority{% endtrans %}">{{ connection.priority }}</a>
+                {% else %}
+                    {% if connectionEligibile(event, listener) %}
+                        <a href="#" class="tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">➕</a>
+                    {% else %}
+                        ❌
+                    {% endif %}
+                {% endif %}
+            </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><small>❌ {% trans %}Not eligible for connection{% endtrans %}</small></p>
 
 <div>
     <h3>Events</h3>
     <ul>
         {% for name, event in locator.hookEvents %}
-            <li>{{ event.title }} <code>{{ name }}</code> <small>({{ event.info }})</small></li>
+            <li><strong>{{ event.title }}</strong> <code>{{ name }}</code>
+                <ul><li><small>{{ event.info }}</small></li></ul>
+            </li>
         {% endfor %}
     </ul>
 </div>
@@ -13,16 +48,18 @@
     <h3>Listeners</h3>
     <ul>
         {% for name, listener in locator.hookEventListeners %}
-            <li>{{ listener.title }} <code>{{ name }}</code> <small>({{ listener.info }})</small></li>
+            <li><strong>{{ listener.title }}</strong> <code>{{ name }}</code>
+                <ul><li><small>{{ listener.info }}</small></li></ul>
+            </li>
         {% endfor %}
     </ul>
 </div>
 
-<div>
-    <h3>Connections</h3>
-    <ul>
-        {% for connection in connections %}
-            <li><code>{{ connection.event }}</code> connected to <code>{{ connection.listener }}</code> with priority <code>{{ connection.priority }}</code></li>
-        {% endfor %}
-    </ul>
-</div>
+{#<div>#}
+{#    <h3>Connections</h3>#}
+{#    <ul>#}
+{#        {% for connection in connections %}#}
+{#            <li><code>{{ connection.event }}</code> connected to <code>{{ connection.listener }}</code> with priority <code>{{ connection.priority }}</code></li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#</div>#}
