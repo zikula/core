@@ -14,8 +14,9 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Entity;
 
-use Zikula\RoutesModule\Entity\Base\AbstractRouteEntity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Routing\RouterInterface;
+use Zikula\RoutesModule\Entity\Base\AbstractRouteEntity as BaseEntity;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -31,6 +32,11 @@ use Doctrine\ORM\Mapping as ORM;
 class RouteEntity extends BaseEntity
 {
     /**
+     * @var RouterInterface
+     */
+    private $router = null;
+
+    /**
      * When getting options, the `zkNoBundlePrefix` and `i18n` values must
      * be added before returning. These will override any values for same keys
      * set in the `options` array.
@@ -45,5 +51,66 @@ class RouteEntity extends BaseEntity
         }
 
         return $options;
+    }
+
+    // structure is controlled by Zikula\Bundle\FormExtensionBundle\Form\Type\ControllerType
+    public function getRouteController(): array
+    {
+        $routeController = null;
+        $bundle = $this->getBundle();
+        $controller = $this->getController();
+        $action = $this->getAction();
+
+        if (null !== $this->router) {
+            foreach ($this->router->getRouteCollection()->all() as $route => $params) {
+                $defaults = $params->getDefaults();
+                if (!isset($defaults['_controller']) || empty($defaults['_controller'])) {
+                    // skip routes without controller
+                    continue;
+                }
+                if (!isset($defaults['_zkBundle']) || $defaults['_zkBundle'] !== $bundle) {
+                    continue;
+                }
+                if ($defaults['_zkType'] !== $controller) {
+                    continue;
+                }
+                if ($defaults['_zkFunc'] !== $action) {
+                    continue;
+                }
+                $routeController = $route . '###' . ($defaults['_controller'] ?? '');
+                break;
+            }
+        }
+
+        return [
+            'controller' => $routeController
+        ];
+    }
+
+    public function setRouteController(array $input): self
+    {
+        $input = $input['controller'];
+
+        $controllerParts = explode('###', $input);
+        $controllerParts = explode('\\', $controllerParts[1]);
+        $bundle = $controllerParts[0] . $controllerParts[1];
+        [$controller, $action] = explode('::', $controllerParts[count($controllerParts) - 1]);
+
+        $controller = lcfirst(str_replace('Controller', '', $controller));
+        $action = lcfirst($action);
+
+        $this
+            ->setBundle($bundle)
+            ->setController($controller)
+            ->setAction($action)
+        ;
+
+        return $this;
+    }
+
+    public function setRouter(
+        RouterInterface $router
+    ) {
+        $this->router = $router;
     }
 }

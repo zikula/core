@@ -229,11 +229,11 @@ class RouteLoader extends Loader
             // Add modname, type and func to the route's default values.
             $defaults = $dbRoute->getDefaults();
             $defaults['_zkModule'] = $extensionName;
-            [, $type] = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
-            [, $func] = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
-            $defaults['_zkType'] = $type;
-            $defaults['_zkFunc'] = $func;
-            $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func);
+            $controller = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
+            $action = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
+            $defaults['_zkType'] = $controller;
+            $defaults['_zkFunc'] = $action;
+            $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($controller) . 'Controller::' . lcfirst($action);
 
             // We have to prepend the extension prefix (see detailed description in docblock of prependExtensionPrefix() method).
             $options = $dbRoute->getOptions(true);

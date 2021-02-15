@@ -13,33 +13,68 @@
         {{ form_errors(form) }}
         <fieldset>
             <legend>{% trans %}Basic settings{% endtrans %}</legend>
-            {{ form_row(form.bundle) }}
-            {{ form_row(form.controller) }}
-            {{ form_row(form.action) }}
-            {{ form_row(form.path) }}
-            {{ form_row(form.description) }}
+            {% if form.routeController is defined %}
+                {{ form_row(form.routeController.controller, {attr: {class: ''}}) }}
+            {% endif %}
+            {% if form.bundle is defined %}
+                {{ form_row(form.bundle) }}
+            {% endif %}
+            {% if form.controller is defined %}
+                {{ form_row(form.controller) }}
+            {% endif %}
+            {% if form.action is defined %}
+                {{ form_row(form.action) }}
+            {% endif %}
+            {% if form.path is defined %}
+                {{ form_row(form.path) }}
+            {% endif %}
+            {% if form.description is defined %}
+                {{ form_row(form.description) }}
+            {% endif %}
             <div class="d-none">
-                {{ form_row(form.sort) }}
+                {% if form.sort is defined %}
+                    {{ form_row(form.sort) }}
+                {% endif %}
             </div>
-            {{ form_row(form.prependBundlePrefix) }}
-            {{ form_row(form.translatable) }}
-            {{ form_row(form.translationPrefix) }}
+            {% if form.prependBundlePrefix is defined %}
+                {{ form_row(form.prependBundlePrefix) }}
+            {% endif %}
+            {% if form.translatable is defined %}
+                {{ form_row(form.translatable) }}
+            {% endif %}
+            {% if form.translationPrefix is defined %}
+                {{ form_row(form.translationPrefix) }}
+            {% endif %}
         </fieldset>
         <fieldset>
             <legend>{% trans %}Route scope{% endtrans %}</legend>
-            {{ form_row(form.schemes) }}
-            {{ form_row(form.methods) }}
+            {% if form.schemes is defined %}
+                {{ form_row(form.schemes) }}
+            {% endif %}
+            {% if form.methods is defined %}
+                {{ form_row(form.methods) }}
+            {% endif %}
         </fieldset>
         <fieldset>
             <legend>{% trans %}Parameter settings{% endtrans %}</legend>
-            {{ form_row(form.defaults, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
-            {{ form_row(form.requirements, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
-            {{ form_row(form.options, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
+            {% if form.defaults is defined %}
+                {{ form_row(form.defaults, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
+            {% endif %}
+            {% if form.requirements is defined %}
+                {{ form_row(form.requirements, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
+            {% endif %}
+            {% if form.options is defined %}
+                {{ form_row(form.options, {help: 'Enter one entry per line, use <code>key:value</code> syntax.'|trans, help_html: true}) }}
+            {% endif %}
         </fieldset>
         <fieldset>
             <legend>{% trans %}Advanced settings{% endtrans %}</legend>
-            {{ form_row(form.host) }}
-            {{ form_row(form.condition) }}
+            {% if form.host is defined %}
+                {{ form_row(form.host) }}
+            {% endif %}
+            {% if form.condition is defined %}
+                {{ form_row(form.condition) }}
+            {% endif %}
         </fieldset>
 
         {% if mode != 'create' %}
@@ -86,5 +121,5 @@
     {% if form.moderationSpecificCreator is defined %}
         <div class="field-editing-definition" data-field-type="user" data-field-name="zikularoutesmodule_route_moderationSpecificCreator"></div>
     {% endif %}
-    <div id="pathPrefixInfo" data-base-url="{{ app.request.baseUrl|e('html_attr') }}" data-module-url-names="{{ moduleUrlNames|json_encode|e('html_attr') }}"></div>
+    <div id="pathPrefixInfo" data-base-url="{{ app.request.baseUrl|e('html_attr') }}" data-extension-url-names="{{ extensionUrlNames|json_encode|e('html_attr') }}"></div>
 {% endblock %}

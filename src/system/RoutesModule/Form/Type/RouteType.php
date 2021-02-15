@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\ControllerType;
 use Zikula\ExtensionsModule\Constant as ExtensionConstant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -49,21 +49,10 @@ class RouteType extends AbstractRouteType
         }
         ksort($moduleChoices);
 
-        $builder->add('bundle', ChoiceType::class, [
-            'label' => 'Bundle:',
-            'empty_data' => '',
-            'attr' => [
-                'class' => '',
-                'title' => 'Enter the bundle of the route'
-            ],
-            'required' => true,
-            'choices' => $moduleChoices,
-            'choice_attr' => $moduleChoiceAttributes,
-            'multiple' => false,
-            'expanded' => false
-        ]);
-
-        $builder->add('controller', TextType::class, [
+        $builder->remove('bundle');
+        $builder->remove('controller');
+        $builder->remove('action');
+        $builder->add('routeController', ControllerType::class, [
             'label' => 'Controller:',
             'empty_data' => '',
             'attr' => [
@@ -72,19 +61,7 @@ class RouteType extends AbstractRouteType
                 'title' => 'Enter the controller of the route'
             ],
             'required' => true,
-            'help' => 'Insert the name of the controller, which was called "type" in earlier versions of Zikula.'
-        ]);
-
-        $builder->add('action', TextType::class, [
-            'label' => 'Action:',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 255,
-                'class' => '',
-                'title' => 'Enter the action of the route'
-            ],
-            'required' => true,
-            'help' => 'Insert the name of the action, which was called "func" in earlier versions of Zikula.'
+            'parameterTypes' => [],
         ]);
 
         $builder->add('path', TextType::class, [

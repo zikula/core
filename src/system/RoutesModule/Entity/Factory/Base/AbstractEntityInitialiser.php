@@ -74,10 +74,12 @@ abstract class AbstractEntityInitialiser
         return $this->listEntriesHelper;
     }
     
-    public function setListEntriesHelper(?ListEntriesHelper $listEntriesHelper = null): void
+    public function setListEntriesHelper(?ListEntriesHelper $listEntriesHelper = null): self
     {
         if ($this->listEntriesHelper !== $listEntriesHelper) {
             $this->listEntriesHelper = $listEntriesHelper;
         }
+    
+        return $this;
     }
 }

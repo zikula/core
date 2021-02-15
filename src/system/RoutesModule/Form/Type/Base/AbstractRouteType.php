@@ -113,13 +113,55 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
         ]);
-        $builder->add('host', TextType::class, [
-            'label' => 'Host:',
+        $builder->add('description', TextType::class, [
+            'label' => 'Description:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => 'Enter the host of the route.',
+                'title' => 'Enter the description of the route.',
+            ],
+            'required' => false,
+        ]);
+        $builder->add($builder->create('sort', IntegerType::class, [
+            'label' => 'Sort:',
+            'empty_data' => 0,
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => 'Enter the sort of the route. Only digits are allowed.',
+            ],
+            'required' => false,
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('prependBundlePrefix', CheckboxType::class, [
+            'label' => 'Prepend bundle prefix:',
+            'label_attr' => [
+                'class' => 'switch-custom',
+            ],
+            'attr' => [
+                'class' => '',
+                'title' => 'prepend bundle prefix ?',
+            ],
+            'required' => false,
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add($builder->create('translatable', CheckboxType::class, [
+            'label' => 'Translatable:',
+            'label_attr' => [
+                'class' => 'switch-custom',
+            ],
+            'attr' => [
+                'class' => '',
+                'title' => 'translatable ?',
+            ],
+            'required' => false,
+        ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add('translationPrefix', TextType::class, [
+            'label' => 'Translation prefix:',
+            'empty_data' => '',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => 'Enter the translation prefix of the route.',
             ],
             'required' => false,
         ]);
@@ -169,38 +211,6 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => true,
             'expanded' => true,
         ]);
-        $builder->add($builder->create('prependBundlePrefix', CheckboxType::class, [
-            'label' => 'Prepend bundle prefix:',
-            'label_attr' => [
-                'class' => 'switch-custom',
-            ],
-            'attr' => [
-                'class' => '',
-                'title' => 'prepend bundle prefix ?',
-            ],
-            'required' => false,
-        ])->addModelTransformer(new NullToEmptyTransformer()));
-        $builder->add($builder->create('translatable', CheckboxType::class, [
-            'label' => 'Translatable:',
-            'label_attr' => [
-                'class' => 'switch-custom',
-            ],
-            'attr' => [
-                'class' => '',
-                'title' => 'translatable ?',
-            ],
-            'required' => false,
-        ])->addModelTransformer(new NullToEmptyTransformer()));
-        $builder->add('translationPrefix', TextType::class, [
-            'label' => 'Translation prefix:',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 255,
-                'class' => '',
-                'title' => 'Enter the translation prefix of the route.',
-            ],
-            'required' => false,
-        ]);
         $builder->add($builder->create('defaults', ArrayType::class, [
             'label' => 'Defaults:',
             'help' => 'Enter one entry per line.',
@@ -231,6 +241,16 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => false,
         ])->addModelTransformer(new NullToEmptyTransformer()));
+        $builder->add('host', TextType::class, [
+            'label' => 'Host:',
+            'empty_data' => '',
+            'attr' => [
+                'maxlength' => 255,
+                'class' => '',
+                'title' => 'Enter the host of the route.',
+            ],
+            'required' => false,
+        ]);
         $builder->add('condition', TextType::class, [
             'label' => 'Condition:',
             'empty_data' => '',
@@ -241,26 +261,6 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => false,
         ]);
-        $builder->add('description', TextType::class, [
-            'label' => 'Description:',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 255,
-                'class' => '',
-                'title' => 'Enter the description of the route.',
-            ],
-            'required' => false,
-        ]);
-        $builder->add($builder->create('sort', IntegerType::class, [
-            'label' => 'Sort:',
-            'empty_data' => 0,
-            'attr' => [
-                'maxlength' => 11,
-                'class' => '',
-                'title' => 'Enter the sort of the route. Only digits are allowed.',
-            ],
-            'required' => false,
-        ])->addModelTransformer(new NullToEmptyTransformer()));
     }
 
     /**
@@ -299,9 +299,6 @@ abstract class AbstractRouteType extends AbstractType
             'label' => 'Cancel',
             'validate' => false,
             'icon' => 'fa-times',
-            'attr' => [
-                'formnovalidate' => 'formnovalidate',
-            ],
         ]);
     }
 

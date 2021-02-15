@@ -190,13 +190,15 @@ abstract class AbstractCollectionFilterHelper
             return $qb;
         }
     
-        $showOnlyOwnEntries = (bool) $request->query->getInt('own', (int) $this->showOnlyOwnEntries);
+        $routeName = $request->get('_route', '');
+        $isAdminArea = false !== mb_strpos($routeName, 'zikularoutesmodule_route_admin');
+    
+        $showOnlyOwnDefault = $isAdminArea ? false : $this->showOnlyOwnEntries;
+        $showOnlyOwnEntries = (bool) $request->query->getInt('own', (int) $showOnlyOwnDefault);
         if ($showOnlyOwnEntries) {
             $qb = $this->addCreatorFilter($qb);
         }
     
-        $routeName = $request->get('_route', '');
-        $isAdminArea = false !== mb_strpos($routeName, 'zikularoutesmodule_route_admin');
         if ($isAdminArea) {
             return $qb;
         }
@@ -232,22 +234,22 @@ abstract class AbstractCollectionFilterHelper
             $parameters['searchAction'] = '%' . $fragment . '%';
             $filters[] = 'tbl.path LIKE :searchPath';
             $parameters['searchPath'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.host LIKE :searchHost';
-            $parameters['searchHost'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.schemes = :searchSchemes';
-            $parameters['searchSchemes'] = $fragment;
-            $filters[] = 'tbl.methods = :searchMethods';
-            $parameters['searchMethods'] = $fragment;
-            $filters[] = 'tbl.translationPrefix LIKE :searchTranslationPrefix';
-            $parameters['searchTranslationPrefix'] = '%' . $fragment . '%';
-            $filters[] = 'tbl.condition LIKE :searchCondition';
-            $parameters['searchCondition'] = '%' . $fragment . '%';
             $filters[] = 'tbl.description LIKE :searchDescription';
             $parameters['searchDescription'] = '%' . $fragment . '%';
             if (is_numeric($fragment)) {
                 $filters[] = 'tbl.sort = :searchSort';
                 $parameters['searchSort'] = $fragment;
             }
+            $filters[] = 'tbl.translationPrefix LIKE :searchTranslationPrefix';
+            $parameters['searchTranslationPrefix'] = '%' . $fragment . '%';
+            $filters[] = 'tbl.schemes = :searchSchemes';
+            $parameters['searchSchemes'] = $fragment;
+            $filters[] = 'tbl.methods = :searchMethods';
+            $parameters['searchMethods'] = $fragment;
+            $filters[] = 'tbl.host LIKE :searchHost';
+            $parameters['searchHost'] = '%' . $fragment . '%';
+            $filters[] = 'tbl.condition LIKE :searchCondition';
+            $parameters['searchCondition'] = '%' . $fragment . '%';
         }
     
         $qb->andWhere('(' . implode(' OR ', $filters) . ')');

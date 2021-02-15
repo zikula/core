@@ -1,6 +1,6 @@
 {# purpose of this template: routes view filter form #}
 {% macro renderQuickNavEntry(quickNavForm, fieldName, isVisible) %}
-    {% if attribute(quickNavForm, fieldName) is defined and attribute(quickNavForm, fieldName) is not null %}
+    {% if attribute(quickNavForm, fieldName) is defined %}
         {% if not isVisible %}
             <div class="d-none">
         {% endif %}

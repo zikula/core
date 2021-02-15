@@ -136,9 +136,6 @@ abstract class AbstractConfigType extends AbstractType
             'label' => 'Cancel',
             'validate' => false,
             'icon' => 'fa-times',
-            'attr' => [
-                'formnovalidate' => 'formnovalidate',
-            ],
         ]);
     }
 

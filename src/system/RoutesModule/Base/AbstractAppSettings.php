@@ -84,11 +84,13 @@ abstract class AbstractAppSettings
         return $this->routeEntriesPerPage;
     }
     
-    public function setRouteEntriesPerPage(int $routeEntriesPerPage): void
+    public function setRouteEntriesPerPage(int $routeEntriesPerPage): self
     {
         if ((int) $this->routeEntriesPerPage !== $routeEntriesPerPage) {
             $this->routeEntriesPerPage = $routeEntriesPerPage;
         }
+    
+        return $this;
     }
     
     public function getShowOnlyOwnEntries(): bool
@@ -96,11 +98,13 @@ abstract class AbstractAppSettings
         return $this->showOnlyOwnEntries;
     }
     
-    public function setShowOnlyOwnEntries(bool $showOnlyOwnEntries): void
+    public function setShowOnlyOwnEntries(bool $showOnlyOwnEntries): self
     {
         if ((bool) $this->showOnlyOwnEntries !== $showOnlyOwnEntries) {
             $this->showOnlyOwnEntries = $showOnlyOwnEntries;
         }
+    
+        return $this;
     }
     
     public function getAllowModerationSpecificCreatorForRoute(): bool
@@ -108,11 +112,13 @@ abstract class AbstractAppSettings
         return $this->allowModerationSpecificCreatorForRoute;
     }
     
-    public function setAllowModerationSpecificCreatorForRoute(bool $allowModerationSpecificCreatorForRoute): void
+    public function setAllowModerationSpecificCreatorForRoute(bool $allowModerationSpecificCreatorForRoute): self
     {
         if ((bool) $this->allowModerationSpecificCreatorForRoute !== $allowModerationSpecificCreatorForRoute) {
             $this->allowModerationSpecificCreatorForRoute = $allowModerationSpecificCreatorForRoute;
         }
+    
+        return $this;
     }
     
     public function getAllowModerationSpecificCreationDateForRoute(): bool
@@ -120,11 +126,13 @@ abstract class AbstractAppSettings
         return $this->allowModerationSpecificCreationDateForRoute;
     }
     
-    public function setAllowModerationSpecificCreationDateForRoute(bool $allowModerationSpecificCreationDateForRoute): void
+    public function setAllowModerationSpecificCreationDateForRoute(bool $allowModerationSpecificCreationDateForRoute): self
     {
         if ((bool) $this->allowModerationSpecificCreationDateForRoute !== $allowModerationSpecificCreationDateForRoute) {
             $this->allowModerationSpecificCreationDateForRoute = $allowModerationSpecificCreationDateForRoute;
         }
+    
+        return $this;
     }
     
     /**

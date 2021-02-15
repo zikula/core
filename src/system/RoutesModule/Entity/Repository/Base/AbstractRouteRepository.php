@@ -62,15 +62,15 @@ abstract class AbstractRouteRepository extends SortableRepository
             'controller',
             'action',
             'path',
-            'host',
-            'schemes',
-            'methods',
+            'description',
+            'sort',
             'prependBundlePrefix',
             'translatable',
             'translationPrefix',
+            'schemes',
+            'methods',
+            'host',
             'condition',
-            'description',
-            'sort',
             'createdBy',
             'createdDate',
             'updatedBy',
@@ -83,11 +83,13 @@ abstract class AbstractRouteRepository extends SortableRepository
         return $this->defaultSortingField;
     }
     
-    public function setDefaultSortingField(?string $defaultSortingField = null): void
+    public function setDefaultSortingField(?string $defaultSortingField = null): self
     {
         if ($this->defaultSortingField !== $defaultSortingField) {
             $this->defaultSortingField = $defaultSortingField;
         }
+    
+        return $this;
     }
     
     public function getCollectionFilterHelper(): ?CollectionFilterHelper
@@ -95,11 +97,13 @@ abstract class AbstractRouteRepository extends SortableRepository
         return $this->collectionFilterHelper;
     }
     
-    public function setCollectionFilterHelper(?CollectionFilterHelper $collectionFilterHelper = null): void
+    public function setCollectionFilterHelper(?CollectionFilterHelper $collectionFilterHelper = null): self
     {
         if ($this->collectionFilterHelper !== $collectionFilterHelper) {
             $this->collectionFilterHelper = $collectionFilterHelper;
         }
+    
+        return $this;
     }
     
     /**
@@ -380,9 +384,8 @@ abstract class AbstractRouteRepository extends SortableRepository
             $qb = $this->addExclusion($qb, $exclude);
         }
     
-        if (null !== $this->collectionFilterHelper) {
-            $qb = $this->collectionFilterHelper->addSearchFilter('route', $qb, $fragment);
-        }
+        // $fragment is currently not used because getListQueryBuilder calls CollectionFilterHelper
+        // which processes the search term given in the request automatically
     
         $paginator = $this->retrieveCollectionResult($qb, true, $currentPage, $resultsPerPage);
     

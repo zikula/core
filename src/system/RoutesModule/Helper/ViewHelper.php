@@ -52,12 +52,12 @@ class ViewHelper extends AbstractViewHelper
                 ];
             } elseif ('edit' === $func) {
                 $urlNames = [];
-                /** @var ExtensionEntity[] $modules */
-                $modules = $this->extensionRepository->findBy(['state' => ExtensionConstant::STATE_ACTIVE]);
-                foreach ($modules as $module) {
-                    $urlNames[$module->getName()] = $module->getUrl();
+                /** @var ExtensionEntity[] $extensions */
+                $extensions = $this->extensionRepository->findBy(['state' => ExtensionConstant::STATE_ACTIVE]);
+                foreach ($extensions as $extension) {
+                    $urlNames[$extension->getName()] = $extension->getUrl();
                 }
-                $enrichedTemplateParameters['moduleUrlNames'] = $urlNames;
+                $enrichedTemplateParameters['extensionUrlNames'] = $urlNames;
             }
         }
 

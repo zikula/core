@@ -57,7 +57,19 @@ abstract class AbstractEntityDisplayHelper
     }
     
     /**
-     * Returns the formatted title for a given entity.
+     * Returns an additional description for a given entity.
+     */
+    public function getDescription(EntityAccess $entity): string
+    {
+        if ($entity instanceof RouteEntity) {
+            return $this->getRouteDescription($entity);
+        }
+    
+        return '';
+    }
+    
+    /**
+     * Returns the formatted title for a given route.
      */
     protected function formatRoute(RouteEntity $entity): string
     {
@@ -68,6 +80,19 @@ abstract class AbstractEntityDisplayHelper
                 '%sort%' => $entity->getSort(),
             ]
         );
+    }
+    
+    /**
+     * Returns an additional description for a given route.
+     */
+    protected function getRouteDescription(RouteEntity $entity): string
+    {
+        $descriptionFieldName = $this->getDescriptionFieldName($entity->get_objectType());
+    
+        return isset($entity[$descriptionFieldName]) && !empty($entity[$descriptionFieldName])
+            ? $entity[$descriptionFieldName]
+            : ''
+        ;
     }
     
     /**

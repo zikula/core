@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Form\Handler\Route;
 
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\RoutesModule\Form\Handler\Route\Base\AbstractEditHandler;
@@ -63,6 +64,13 @@ class EditHandler extends AbstractEditHandler
         return $return;
     }
 
+    protected function createForm(): ?FormInterface
+    {
+        $this->entityRef->setRouter($this->router);
+
+        return parent::createForm();
+    }
+
     /**
      * Ensures validity of input data.
      */
@@ -70,12 +78,11 @@ class EditHandler extends AbstractEditHandler
     {
         $entity = $this->entityRef;
 
-        list($controller,) = $this->sanitizeHelper->sanitizeController((string) $entity['controller']);
-        list($action,) = $this->sanitizeHelper->sanitizeAction((string) $entity['action']);
-
-        $entity['controller'] = $controller;
-        $entity['action'] = $action;
-        $entity['sort'] = 0;
+        $entity
+            ->setController($this->sanitizeHelper->sanitizeController($entity->getController()))
+            ->setAction($this->sanitizeHelper->sanitizeAction($entity->getAction()))
+            ->setSort(0)
+        ;
 
         $this->entityRef = $entity;
     }
@@ -147,32 +154,15 @@ class EditHandler extends AbstractEditHandler
     /**
      * @required
      */
-    public function setPathBuilderHelper(PathBuilderHelper $pathBuilderHelper): void
-    {
+    public function setAdditionalDependencies(
+        PathBuilderHelper $pathBuilderHelper,
+        RouteDumperHelper $routeDumperHelper,
+        SanitizeHelper $sanitizeHelper,
+        CacheClearer $cacheClearer
+    ): void {
         $this->pathBuilderHelper = $pathBuilderHelper;
-    }
-
-    /**
-     * @required
-     */
-    public function setRouteDumperHelper(RouteDumperHelper $routeDumperHelper): void
-    {
         $this->routeDumperHelper = $routeDumperHelper;
-    }
-
-    /**
-     * @required
-     */
-    public function setSanitizeHelper(SanitizeHelper $sanitizeHelper): void
-    {
         $this->sanitizeHelper = $sanitizeHelper;
-    }
-
-    /**
-     * @required
-     */
-    public function setCacheClearer(CacheClearer $cacheClearer): void
-    {
         $this->cacheClearer = $cacheClearer;
     }
 }

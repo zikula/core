@@ -26,22 +26,16 @@ class SanitizeHelper
     /**
      * Sanitizes the controller / type parameter.
      */
-    public function sanitizeController(string $controllerName): array
+    public function sanitizeController(string $controllerName): string
     {
-        $controller = ucfirst(s($controllerName)->ensureEnd(self::SUFFIX_CONTROLLER)->toString());
-        $type = s($controllerName)->beforeLast(self::SUFFIX_CONTROLLER)->lower()->toString();
-
-        return [$controller, $type];
+        return s($controllerName)->beforeLast(self::SUFFIX_CONTROLLER)->lower()->toString();
     }
 
     /**
      * Sanitizes the action / func parameter.
      */
-    public function sanitizeAction(string $methodName): array
+    public function sanitizeAction(string $methodName): string
     {
-        $methodName = ucfirst(s($methodName)->ensureEnd(self::SUFFIX_ACTION)->toString());
-        $func = lcfirst(s($methodName)->beforeLast(self::SUFFIX_ACTION)->toString());
-
-        return [$methodName, $func];
+        return lcfirst(s($methodName)->beforeLast(self::SUFFIX_ACTION)->toString());
     }
 }

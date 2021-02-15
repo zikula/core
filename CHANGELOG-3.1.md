@@ -9,18 +9,19 @@
   - [dependency] The following symfony components are no longer included:
     - amazon-mailer, mailchimp-mailer, mailgun-mailer, postmark-mailer, sendgrid-mailer
   - [CoreBundle] Removed `Zikula\Bundle\CoreBundle\DynamicConfigDumper`.
-  - [ThemeModule] Removed Require.js config (#4558).
+  - [Routes] Controller actions are now named without the old `Action` suffix.
+  - [Theme] Removed Require.js config (#4558).
 
 - Fixes:
   - [composer] Correct Composer 2 compatibilty.
   - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
-  - [MenuModule] Fixed handling of menu items without URI in custom request voter.
-  - [ThemeModule] Asset combination now defaults to `false` on installation (#4419).
-  - [ThemeModule] Corrected missing configurable value for `trimwhitespace` option (#4531).
-  - [ThemeModule] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
-  - [UsersModule] Fixed regression when sending mail to more than one user in one step.
-  - [UsersModule] Fixed broken mass deletion (#4597).
-  - [UsersModule] Added redirect for cancel button on registration form (#4595).
+  - [Menu] Fixed handling of menu items without URI in custom request voter.
+  - [Theme] Asset combination now defaults to `false` on installation (#4419).
+  - [Theme] Corrected missing configurable value for `trimwhitespace` option (#4531).
+  - [Theme] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
+  - [Users] Fixed regression when sending mail to more than one user in one step.
+  - [Users] Fixed broken mass deletion (#4597).
+  - [Users] Added redirect for cancel button on registration form (#4595).
 
 - Features:
   - [dependency] Changed dependency from `symfony/symfony` to ALL the related `symfony/*` components (#4352, #4563).
@@ -35,7 +36,8 @@
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
   - [General] Implemented `Twig\Extension\RuntimeExtensionInterface` for all Twig extensions, allowing them to dynamically load (#4522).
   - [General] Added `addAnnotatedClassesToCompile` method to needed core classes to improve performance when activated.
-  - [ThemeModule] Add `Symfony\WebpackEncoreBundle` (#4571).
+  - [Routes] Dropdown for choosing bundle/controller/action combination (#4517).
+  - [Theme] Add `Symfony\WebpackEncoreBundle` (#4571).
     - Automatically adds webpack assets via a listener.
 
 - Deprecated:

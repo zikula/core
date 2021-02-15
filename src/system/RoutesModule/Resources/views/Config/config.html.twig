@@ -33,8 +33,12 @@
                         <legend>{{ tabTitle }}</legend>
                         <p class="alert alert-info">{% trans %}Here you can configure parameters for list views.{% endtrans %}</p>
 
-                        {{ form_row(form.routeEntriesPerPage) }}
-                        {{ form_row(form.showOnlyOwnEntries) }}
+                        {% if form.routeEntriesPerPage is defined %}
+                            {{ form_row(form.routeEntriesPerPage) }}
+                        {% endif %}
+                        {% if form.showOnlyOwnEntries is defined %}
+                            {{ form_row(form.showOnlyOwnEntries) }}
+                        {% endif %}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
@@ -43,8 +47,12 @@
                         <legend>{{ tabTitle }}</legend>
                         <p class="alert alert-info">{% trans %}Here you can define moderation-related settings.{% endtrans %}</p>
 
-                        {{ form_row(form.allowModerationSpecificCreatorForRoute) }}
-                        {{ form_row(form.allowModerationSpecificCreationDateForRoute) }}
+                        {% if form.allowModerationSpecificCreatorForRoute is defined %}
+                            {{ form_row(form.allowModerationSpecificCreatorForRoute) }}
+                        {% endif %}
+                        {% if form.allowModerationSpecificCreationDateForRoute is defined %}
+                            {{ form_row(form.allowModerationSpecificCreationDateForRoute) }}
+                        {% endif %}
                     </fieldset>
                 </div>
                 {#<div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
