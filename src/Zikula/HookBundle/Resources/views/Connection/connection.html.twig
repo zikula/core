@@ -16,13 +16,13 @@
             {% set connection = getConnection(event, listener) %}
             <td>
                 {% if connection is not null %}
-                    <a href="#" class="tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to disconnect %event% from %listener%{% endtrans %}">✅</a>
-                    <a href="#" class="tooltips" title="{% trans %}Click to change listener priority{% endtrans %}">{{ connection.priority }}</a>
+                    <a href="#" data-action="disconnect" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to disconnect %event% from %listener%{% endtrans %}">✅</a>
+                    <a href="#" data-action="decrement" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans %}Click to decrement listener priority{% endtrans %}">-</a>{{ connection.priority }}<a href="#" data-action="increment" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans %}Click to increment listener priority{% endtrans %}">+</a>
                 {% else %}
                     {% if connectionEligibile(event, listener) %}
-                        <a href="#" class="tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">➕</a>
+                        <button data-action="connect" data-event="{{ event.classname }}" data-listener="{{ listener.classname }}" href="#" class="connectionAction badge badge-success tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">add</button>
                     {% else %}
-                        ❌
+                        ✖️
                     {% endif %}
                 {% endif %}
             </td>
@@ -31,7 +31,7 @@
     {% endfor %}
     </tbody>
 </table>
-<p><small>❌ {% trans %}Not eligible for connection{% endtrans %}</small></p>
+<p><small>✖ {% trans %}Not eligible for connection{% endtrans %}</small></p>
 
 <div>
     <h3>Events</h3>
@@ -63,3 +63,6 @@
 {#        {% endfor %}#}
 {#    </ul>#}
 {#</div>#}
+
+{#<script src="{{ asset('bundles/zikulahook/js/hookConnection.js') }}"></script>#}
+{{ pageAddAsset('javascript', zasset('@ZikulaHookBundle:js/hookConnection.js')) }}

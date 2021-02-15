@@ -13,9 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
+use Zikula\BlocksModule\Api\BlockApi;
+use Zikula\Bundle\HookBundle\Hook\Connection;
 use Zikula\Bundle\HookBundle\Locator\HookLocator;
 use Zikula\Bundle\HookBundle\Repository\HookConnectionRepository;
 
@@ -51,5 +56,33 @@ class ConnectionController
         ]);
 
         return new Response($content);
+    }
+
+    /**
+     * @Route("hook-modify", methods = {"POST"}, options={"expose"=true})
+     */
+    public function modify(Request $request): JsonResponse
+    {
+        $id = $request->request->get('id', null);
+        switch ($action = $request->request->getAlpha('action')) {
+            case 'connect':
+                // check if already connected?
+                // create new connection with event and listener classnames
+//                $connection = new Connection(null, $event, $listener);
+                break;
+            case 'disconnect':
+                // delete the existing connection @id
+                break;
+            case 'increment':
+                // increase priority @id
+                break;
+            case 'decrement':
+                // decrease priority @id
+                break;
+            default:
+                // throw error
+        }
+
+        return new JsonResponse(['action_from_controller' => $action]);
     }
 }

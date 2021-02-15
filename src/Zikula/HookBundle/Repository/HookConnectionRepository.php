@@ -25,10 +25,10 @@ class HookConnectionRepository extends ServiceEntityRepository
     {
 //        parent::__construct($registry, HookRuntimeEntity::class);
         $this->data = [
-            new Connection('App\\HookEvent\\AppDisplayHookEvent', 'App\\HookListener\\AppDisplayHookEventListener', 5),
-            new Connection('App\\HookEvent\\AppFilterHookEvent', 'App\\HookListener\\AppFilterHookEventListener', 2),
-            new Connection('App\\HookEvent\\AppPostValidationFormHookEvent', 'App\\HookListener\\AppPostValidationFormHookEventListener'),
-//            new Connection('App\\HookEvent\\AppPreHandleRequestFormHookEvent', 'App\\HookListener\\AppPreHandleRequestFormHookEventListener')
+            new Connection(0, 'App\\HookEvent\\AppDisplayHookEvent', 'App\\HookListener\\AppDisplayHookEventListener', 5),
+            new Connection(1, 'App\\HookEvent\\AppFilterHookEvent', 'App\\HookListener\\AppFilterHookEventListener', 2),
+            new Connection(2, 'App\\HookEvent\\AppPostValidationFormHookEvent', 'App\\HookListener\\AppPostValidationFormHookEventListener'),
+//            new Connection(3, 'App\\HookEvent\\AppPreHandleRequestFormHookEvent', 'App\\HookListener\\AppPreHandleRequestFormHookEventListener')
         ];
     }
 

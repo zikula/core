@@ -41,6 +41,11 @@ abstract class HookEvent
         return $this->id;
     }
 
+    public function getClassname(): string
+    {
+        return get_class($this);
+    }
+
     abstract public function getTitle(): string;
 
     abstract public function getInfo(): string;

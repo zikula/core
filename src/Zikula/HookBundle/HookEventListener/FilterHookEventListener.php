@@ -21,4 +21,9 @@ abstract class FilterHookEventListener implements HookEventListenerInterface
     {
         return FilterHookEvent::class;
     }
+
+    public function getClassname(): string
+    {
+        return get_class($this);
+    }
 }

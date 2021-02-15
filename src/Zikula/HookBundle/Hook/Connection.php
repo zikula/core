@@ -16,6 +16,11 @@ namespace Zikula\Bundle\HookBundle\Hook;
 class Connection
 {
     /**
+     * @var int
+     */
+    private $id;
+
+    /**
      * @var string
      */
     private $event;
@@ -30,11 +35,17 @@ class Connection
      */
     private $priority;
 
-    public function __construct(string $event, string $listener, int $priority = 0)
+    public function __construct(int $id, string $event, string $listener, int $priority = 0)
     {
+        $this->id = $id;
         $this->event = $event;
         $this->listener = $listener;
         $this->priority = $priority;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getEvent(): string

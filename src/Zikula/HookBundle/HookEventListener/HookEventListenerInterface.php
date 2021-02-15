@@ -45,4 +45,6 @@ interface HookEventListenerInterface
      * Take action based on the event. $event may modified.
      */
     public function execute(HookEvent $event): void;
+
+    public function getClassname(): string;
 }

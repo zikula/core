@@ -21,4 +21,9 @@ abstract class PostValidationFormHookEventListener implements HookEventListenerI
     {
         return PostValidationFormHookEvent::class;
     }
+
+    public function getClassname(): string
+    {
+        return get_class($this);
+    }
 }
