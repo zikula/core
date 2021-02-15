@@ -43,7 +43,7 @@ abstract class HookEvent
 
     public function getClassname(): string
     {
-        return get_class($this);
+        return static::class;
     }
 
     abstract public function getTitle(): string;

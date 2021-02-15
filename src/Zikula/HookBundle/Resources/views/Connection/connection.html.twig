@@ -20,7 +20,7 @@
                     <a href="#" data-action="decrement" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans %}Click to decrement listener priority{% endtrans %}">-</a>{{ connection.priority }}<a href="#" data-action="increment" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans %}Click to increment listener priority{% endtrans %}">+</a>
                 {% else %}
                     {% if connectionEligibile(event, listener) %}
-                        <button data-action="connect" data-event="{{ event.classname }}" data-listener="{{ listener.classname }}" href="#" class="connectionAction badge badge-success tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">add</button>
+                        <button data-action="connect" data-event="{{ event.classname }}" data-listener="{{ listener.classname }}" href="#" class="connectionAction badge badge-success tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">{% trans %}add{% endtrans %}</button>
                     {% else %}
                         ✖️
                     {% endif %}

@@ -24,6 +24,6 @@ abstract class DisplayHookEventListener implements HookEventListenerInterface
 
     public function getClassname(): string
     {
-        return get_class($this);
+        return static::class;
     }
 }

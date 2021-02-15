@@ -24,6 +24,6 @@ abstract class PreHandleRequestFormHookEventListener implements HookEventListene
 
     public function getClassname(): string
     {
-        return get_class($this);
+        return static::class;
     }
 }
