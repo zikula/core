@@ -4,7 +4,7 @@
 {% if paginator.hasToPaginate %}
     {% set paginatorId = random() %}
     <nav aria-label="{% trans %}Page navigation{% endtrans %}">
-        <ul id="pagination{{ paginatorId|e('html_attr') }}" class="pagination justify-content-center flex-wrap{# flex-wrap class is required for responsive behaviour, see https://github.com/twbs/bootstrap/issues/23504 #}">
+        <ul class="pagination justify-content-center flex-wrap{# flex-wrap class is required for responsive behaviour, see https://github.com/twbs/bootstrap/issues/23504 #}" data-pages="{{ paginator.lastPage }}" data-currentpage="{{ paginator.currentPage }}">
             {% if paginator.hasPreviousPage %}
                 {% do paginator.setRouteParameter('page', 1) %}
                 <li class="page-item">
@@ -71,56 +71,6 @@
             {% endif %}
         </ul>
     </nav>
-    {{ pageAddAsset('javascript', zasset('@CoreBundle:js/simplePagination.js/jquery.simplePagination.js'), 99) }}
-    {% set customScript %}
-        <script>
-        /* <![CDATA[ */
-            ( function($) {
-                var paginationLinks = [];
-                var pager = null;
-                function bootstrapifyPager() {
-                    if (null === pager) {
-                        return;
-                    }
-                    pager.find('li').addClass('page-item');
-                    pager.find('li > span').addClass('page-link');
-                    pager.find('li > a').each(function (index) {
-                        var pageNumber = $(this).attr('href');
-                        $(this).attr('href', paginationLinks[pageNumber]);
-                    });
-                };
-                $(document).ready(function() {
-                    pager = $('#pagination{{ paginatorId|e('js') }}');
-                    pager.addClass('d-none');
-                    pager.find('li > a').each(function (index) {
-                        var pageNumber = $(this).data('page');
-                        if (pageNumber) {
-                            paginationLinks[pageNumber] = $(this).attr('href');
-                        }
-                    });
-                    pager.pagination({
-                        pages: {{ paginator.lastPage }},
-                        currentPage: {{ paginator.currentPage }},
-                        hrefTextPrefix: '',
-                        prevText: '<i class="fas fw fa-arrow-left"></i>',
-                        nextText: '<i class="fas fw fa-arrow-right"></i>',
-                        onPageClick: function (pageNumber, event) {
-                            bootstrapifyPager();
-                            if (paginationLinks[pageNumber]) {
-                                document.location = paginationLinks[pageNumber];
-
-                                return;
-                            }
-                        },
-                        onInit: function () {
-                            bootstrapifyPager();
-                            pager.removeClass('d-none');
-                        }
-                    });
-                });
-            })(jQuery);
-        /* ]]> */
-        </script>
-    {% endset %}
-    {{ pageAddAsset('footer', customScript) }}
+    {{ pageAddAsset('javascript', zasset('@CoreBundle:js/simplePagination.js/jquery.simplePagination.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@CoreBundle:js/paginator.js'), 99) }}
 {% endif %}
