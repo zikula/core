@@ -67,7 +67,7 @@ class ConnectionController
         switch ($postVars['action']) {
             case 'connect':
                 // check if already connected?
-                $connection = new Connection(400/* this is a bogus ID. should be null on persist */, $postVars['eventName'], $postVars['listenerName']);
+                $connection = new Connection(400/* this is a bogus ID. should be null on persist */ , $postVars['eventName'], $postVars['listenerName']);
                 // persist connection
                 break;
             case 'disconnect':
