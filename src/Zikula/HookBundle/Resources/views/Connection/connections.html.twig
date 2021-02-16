@@ -1,0 +1,48 @@
+<h2>{% trans %}Hook Connections{% endtrans %}</h2>
+<table class="table table-bordered table-striped table-hover table-sm table-responsive">
+    <thead>
+    <tr>
+        <th></th>
+        {% for listener in locator.hookEventListeners %}
+            <th scope="col">{{ listener.title }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for event in locator.hookEvents %}
+    <tr>
+        <th scope="row">{{ event.title }}</th>
+        {% for listener in locator.hookEventListeners %}
+            {% set connection = getConnection(event, listener) %}
+            {{ include('@ZikulaHook/Connection/connection.html.twig', {event:event, listener:listener, connection:connection}) }}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p><small>✖ {% trans %}Not eligible for connection{% endtrans %}</small></p>
+
+<div>
+    <h3>Events</h3>
+    <ul>
+        {% for name, event in locator.hookEvents %}
+            <li><strong>{{ event.title }}</strong> <code>{{ name }}</code>
+                <ul><li><small>{{ event.info }}</small></li></ul>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div>
+    <h3>Listeners</h3>
+    <ul>
+        {% for name, listener in locator.hookEventListeners %}
+            <li><strong>{{ listener.title }}</strong> <code>{{ name }}</code>
+                <ul><li><small>{{ listener.info }}</small></li></ul>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{#<script src="{{ asset('bundles/zikulahook/js/hookConnection.js') }}"></script>#}
+{{ pageAddAsset('javascript', zasset('@ZikulaHookBundle:js/hookConnection.js')) }}

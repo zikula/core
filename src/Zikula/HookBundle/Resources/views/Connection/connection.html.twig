@@ -1,68 +1,13 @@
-<h2>{% trans %}Hook Connections{% endtrans %}</h2>
-<table class="table table-bordered table-striped table-hover table-sm table-responsive">
-    <thead>
-    <tr>
-        <th></th>
-        {% for listener in locator.hookEventListeners %}
-            <th scope="col">{{ listener.title }}</th>
-        {% endfor %}
-    </tr>
-    </thead>
-    <tbody>
-    {% for event in locator.hookEvents %}
-    <tr>
-        <th scope="row">{{ event.title }}</th>
-        {% for listener in locator.hookEventListeners %}
-            {% set connection = getConnection(event, listener) %}
-            <td>
-                {% if connection is not null %}
-                    <a href="#" data-action="disconnect" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to disconnect %event% from %listener%{% endtrans %}">✅</a>
-                    <a href="#" data-action="decrement" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans %}Click to decrement listener priority{% endtrans %}">-</a>{{ connection.priority }}<a href="#" data-action="increment" data-id="{{ connection.id }}" class="connectionAction tooltips" title="{% trans %}Click to increment listener priority{% endtrans %}">+</a>
-                {% else %}
-                    {% if connectionEligibile(event, listener) %}
-                        <button data-action="connect" data-event="{{ event.classname }}" data-listener="{{ listener.classname }}" href="#" class="connectionAction badge badge-success tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">{% trans %}add{% endtrans %}</button>
-                    {% else %}
-                        ✖️
-                    {% endif %}
-                {% endif %}
-            </td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-<p><small>✖ {% trans %}Not eligible for connection{% endtrans %}</small></p>
-
-<div>
-    <h3>Events</h3>
-    <ul>
-        {% for name, event in locator.hookEvents %}
-            <li><strong>{{ event.title }}</strong> <code>{{ name }}</code>
-                <ul><li><small>{{ event.info }}</small></li></ul>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div>
-    <h3>Listeners</h3>
-    <ul>
-        {% for name, listener in locator.hookEventListeners %}
-            <li><strong>{{ listener.title }}</strong> <code>{{ name }}</code>
-                <ul><li><small>{{ listener.info }}</small></li></ul>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-
-{#<div>#}
-{#    <h3>Connections</h3>#}
-{#    <ul>#}
-{#        {% for connection in connections %}#}
-{#            <li><code>{{ connection.event }}</code> connected to <code>{{ connection.listener }}</code> with priority <code>{{ connection.priority }}</code></li>#}
-{#        {% endfor %}#}
-{#    </ul>#}
-{#</div>#}
-
-{#<script src="{{ asset('bundles/zikulahook/js/hookConnection.js') }}"></script>#}
-{{ pageAddAsset('javascript', zasset('@ZikulaHookBundle:js/hookConnection.js')) }}
+{% set id = connection.id|default('new-'~random(10000,99999)) %}
+<td id="{{ id }}" data-event-name="{{ event.classname }}" data-listener-name="{{ listener.classname }}">
+{% if connection is not null %}
+    <a href="#" data-action="disconnect" class="connectionAction tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to disconnect %event% from %listener%{% endtrans %}">✅</a>
+    <a href="#" data-action="decrement" class="connectionAction tooltips" title="{% trans %}Click to decrement listener priority{% endtrans %}">-</a>{{ connection.priority }}<a href="#" data-action="increment" class="connectionAction tooltips" title="{% trans %}Click to increment listener priority{% endtrans %}">+</a>
+{% else %}
+    {% if connectionEligibile(event, listener) %}
+        <button data-action="connect" href="#" class="connectionAction badge badge-success tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">{% trans %}add{% endtrans %}</button>
+    {% else %}
+        ✖️
+    {% endif %}
+{% endif %}
+</td>

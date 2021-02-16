@@ -62,4 +62,14 @@ class Connection
     {
         return $this->priority;
     }
+
+    public function incPriority(): void
+    {
+        $this->priority++;
+    }
+
+    public function decPriority(): void
+    {
+        $this->priority--;
+    }
 }

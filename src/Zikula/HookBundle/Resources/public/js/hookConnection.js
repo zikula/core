@@ -2,27 +2,34 @@
 
 (function($) {
     $(document).ready(function() {
-        $('.connectionAction').click(function (event) {
+        $('.connectionAction').click(modifyConnection);
+
+        function modifyConnection(event) {
             event.preventDefault();
             var a = $(this);
-            var id = a.data('id');
-            var action = a.data('action')
+            var target = a.parent("td");
 
             $.ajax({
                 url: Routing.generate('zikula_hook_connection_modify'),
                 method: 'POST',
                 data: {
-                    id: id,
-                    action: action
+                    id: target.attr('id'),
+                    eventName: target.data('event-name'),
+                    listenerName: target.data('listener-name'),
+                    action: a.data('action')
                 }
             }).done(function (data) {
-                console.log(data)
+                a.tooltip('hide');
+                var html = $.parseHTML(data);
+                target.replaceWith(html);
+                $(html).find('.connectionAction').click(modifyConnection).tooltip('enable');
             }).fail(function (jqXHR, textStatus) {
                 alert('Request failed: ' + textStatus);
             })
-            .always(function () {
-                console.log('id: ' + id, 'action: ' + action)
+            .always(function (data) {
+                // console.log($(data).find('.connectionAction'))
+                // $('.connectionAction').off('click').click(modifyConnection).tooltip('enable');
             });
-        });
+        }
     });
 })(jQuery);

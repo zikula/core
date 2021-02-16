@@ -43,6 +43,11 @@ class HookConnectionRepository extends ServiceEntityRepository
         return null;
     }
 
+    public function get(int $id): Connection
+    {
+        return $this->data[$id];
+    }
+
     public function getAll(): array
     {
         return $this->data;

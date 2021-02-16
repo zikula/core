@@ -42,6 +42,11 @@ class HookLocator
         $this->hookEventListeners[get_class($eventListener)] = $eventListener;
     }
 
+    public function getHookEvent(string $eventClassname): ?HookEvent
+    {
+        return $this->hookEvents[$eventClassname];
+    }
+
     public function getHookEvents(): array
     {
         return $this->hookEvents;

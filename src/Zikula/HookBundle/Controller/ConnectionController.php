@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,7 +47,7 @@ class ConnectionController
      */
     public function connections(): Response
     {
-        $content = $this->twig->render('@ZikulaHook/Connection/connection.html.twig', [
+        $content = $this->twig->render('@ZikulaHook/Connection/connections.html.twig', [
             'locator' => $this->hookLocator,
             'connections' => $this->connectionRepository->getAll()
         ]);
@@ -59,28 +58,39 @@ class ConnectionController
     /**
      * @Route("hook-modify", methods = {"POST"}, options={"expose"=true})
      */
-    public function modify(Request $request): JsonResponse
+    public function modify(Request $request): Response
     {
-        $id = $request->request->get('id', null);
-        switch ($action = $request->request->getAlpha('action')) {
+        $postVars = $request->request->all();
+        if (is_numeric($postVars['id'])) {
+            $connection = $this->connectionRepository->get((int) $postVars['id']);
+        }
+        switch ($postVars['action']) {
             case 'connect':
                 // check if already connected?
-                // create new connection with event and listener classnames
-//                $connection = new Connection(null, $event, $listener);
+                $connection = new Connection(400/* this is a bogus ID. should be null on persist */, $postVars['eventName'], $postVars['listenerName']);
+                // persist connection
                 break;
             case 'disconnect':
                 // delete the existing connection @id
+                $connection = null;
                 break;
             case 'increment':
-                // increase priority @id
+                $connection->incPriority();
                 break;
             case 'decrement':
-                // decrease priority @id
+                $connection->decPriority();
                 break;
             default:
                 // throw error
         }
+        // flush entityManager
 
-        return new JsonResponse(['action_from_controller' => $action]);
+        $content = $this->twig->render('@ZikulaHook/Connection/connection.html.twig', [
+            'connection' => $connection,
+            'event' => $this->hookLocator->getHookEvent($postVars['eventName']),
+            'listener' => $this->hookLocator->getListener($postVars['listenerName'])
+        ]);
+
+        return new Response($content);
     }
 }
