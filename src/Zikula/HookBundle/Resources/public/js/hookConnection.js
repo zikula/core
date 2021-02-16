@@ -27,8 +27,6 @@
                 alert('Request failed: ' + textStatus);
             })
             .always(function (data) {
-                // console.log($(data).find('.connectionAction'))
-                // $('.connectionAction').off('click').click(modifyConnection).tooltip('enable');
             });
         }
     });

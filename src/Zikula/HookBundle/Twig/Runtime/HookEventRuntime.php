@@ -15,7 +15,7 @@ namespace Zikula\Bundle\HookBundle\Twig\Runtime;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Twig\Extension\RuntimeExtensionInterface;
-use Zikula\Bundle\HookBundle\Hook\Connection;
+use Zikula\Bundle\HookBundle\Entity\Connection;
 use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
@@ -51,11 +51,7 @@ class HookEventRuntime implements RuntimeExtensionInterface
 
     public function getConnection(HookEvent $event, HookEventListenerInterface $listener): ?Connection
     {
-        if (null !== $connection = $this->hookConnectionRespository->isConnected(get_class($event), get_class($listener))) {
-            return $connection;
-        }
-
-        return null;
+        return $this->hookConnectionRespository->findOneBy(['event' => get_class($event), 'listener' => get_class($listener)]);
     }
 
     public function connectionEligibile(HookEvent $event, HookEventListenerInterface $listener): bool

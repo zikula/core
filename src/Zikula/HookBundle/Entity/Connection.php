@@ -11,33 +11,49 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Hook;
+namespace Zikula\Bundle\HookBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Table(name="connections")
+ * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Repository\HookConnectionRepository")
+ */
 class Connection
 {
     /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @var int
      */
     private $id;
 
     /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="1", max="255")
      * @var string
      */
     private $event;
 
     /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="1", max="255")
      * @var string
      */
     private $listener;
 
     /**
+     * @ORM\Column(type="integer")
      * @var int
      */
     private $priority;
 
-    public function __construct(int $id, string $event, string $listener, int $priority = 0)
+    public function __construct(string $event, string $listener, int $priority = 0)
     {
-        $this->id = $id;
         $this->event = $event;
         $this->listener = $listener;
         $this->priority = $priority;

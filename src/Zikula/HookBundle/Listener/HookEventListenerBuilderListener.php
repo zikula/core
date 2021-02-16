@@ -70,7 +70,7 @@ class HookEventListenerBuilderListener implements EventSubscriberInterface
             return;
         }
 
-        foreach ($this->connectionRepository->getAll() as $connection) {
+        foreach ($this->connectionRepository->findAll() as $connection) {
             if ($this->hookLocator->isListener($connection->getListener())) {
                 $listener = $this->hookLocator->getListener($connection->getListener());
                 $callable = [$listener, HookEventListenerInterface::EXECUTE_METHOD];
