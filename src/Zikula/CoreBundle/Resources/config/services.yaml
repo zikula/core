@@ -25,7 +25,7 @@ services:
 
     Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector:
         tags:
-            - { name: data_collector, template: '@Core/Collector/ZikulaVersion.html.twig', id: 'zikula_version', priority: 300 }
+            - { name: data_collector, template: '@Core/Collector/zikulaVersion.html.twig', id: 'zikula_version', priority: 300 }
 
     Zikula\Bundle\CoreBundle\CacheClearer:
         arguments:

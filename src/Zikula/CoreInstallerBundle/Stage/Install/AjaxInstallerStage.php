@@ -33,7 +33,7 @@ class AjaxInstallerStage implements AjaxStageInterface
 
     public function getTemplateName(): string
     {
-        return '@ZikulaCoreInstaller/Install/ajaxinstaller.html.twig';
+        return '@ZikulaCoreInstaller/Install/ajaxInstaller.html.twig';
     }
 
     public function isNecessary(): bool

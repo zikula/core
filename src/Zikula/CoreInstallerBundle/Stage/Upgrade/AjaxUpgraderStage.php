@@ -42,7 +42,7 @@ class AjaxUpgraderStage implements AjaxStageInterface
 
     public function getTemplateName(): string
     {
-        return '@ZikulaCoreInstaller/Upgrade/ajaxupgrader.html.twig';
+        return '@ZikulaCoreInstaller/Upgrade/ajaxUpgrader.html.twig';
     }
 
     public function isNecessary(): bool

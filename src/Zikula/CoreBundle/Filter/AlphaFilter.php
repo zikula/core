@@ -31,7 +31,7 @@ class AlphaFilter
 
     private $routeParameters;
 
-    private $template = '@Core/Filter/AlphaFilter.html.twig';
+    private $template = '@Core/Filter/alphaFilter.html.twig';
 
     private $includeNumbers = false;
 

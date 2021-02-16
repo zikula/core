@@ -35,7 +35,7 @@ class Paginator implements PaginatorInterface
 
     private $routeParameters;
 
-    private $template = '@Core/Paginator/Paginator.html.twig';
+    private $template = '@Core/Paginator/paginator.html.twig';
 
     public function __construct(DoctrineQueryBuilder $queryBuilder, int $pageSize = self::PAGE_SIZE)
     {

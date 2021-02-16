@@ -24,7 +24,7 @@ class NotInstalledStage implements StageInterface
 
     public function getTemplateName(): string
     {
-        return '@ZikulaCoreInstaller/Install/notinstalled.html.twig';
+        return '@ZikulaCoreInstaller/Install/notInstalled.html.twig';
     }
 
     public function isNecessary(): bool

@@ -62,7 +62,7 @@ class NotUpgradedStage implements StageInterface
 
     public function getTemplateName(): string
     {
-        return '@ZikulaCoreInstaller/Upgrade/notupgraded.html.twig';
+        return '@ZikulaCoreInstaller/Upgrade/notUpgraded.html.twig';
     }
 
     public function isNecessary(): bool
