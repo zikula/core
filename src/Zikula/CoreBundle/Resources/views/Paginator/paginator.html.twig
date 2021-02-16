@@ -2,15 +2,16 @@
     {% do paginator.setRoute(app.request.attributes.get('_route')) %}
 {% endif %}
 {% if paginator.hasToPaginate %}
+    {% set paginatorId = random() %}
     <nav aria-label="{% trans %}Page navigation{% endtrans %}">
-        <ul class="pagination justify-content-center flex-wrap{# flex-wrap class is required for responsive behaviour, see https://github.com/twbs/bootstrap/issues/23504 #}">
-            {% do paginator.setRouteParameter('page', 1) %}
-            <li class="page-item">
-                <a class="page-link" title="{% trans %}First page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
-                    <i class="fas fa-angle-double-left"></i>
-                </a>
-            </li>
+        <ul id="pagination{{ paginatorId|e('html_attr') }}" class="pagination justify-content-center flex-wrap{# flex-wrap class is required for responsive behaviour, see https://github.com/twbs/bootstrap/issues/23504 #}">
             {% if paginator.hasPreviousPage %}
+                {% do paginator.setRouteParameter('page', 1) %}
+                <li class="page-item">
+                    <a class="page-link" title="{% trans %}First page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
+                        <i class="fas fa-angle-double-left"></i>
+                    </a>
+                </li>
                 {% do paginator.setRouteParameter('page', paginator.previousPage) %}
                 <li class="page-item">
                     <a class="page-link" title="{% trans %}Previous page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
@@ -18,6 +19,11 @@
                     </a>
                 </li>
             {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" title="{% trans %}First page{% endtrans %}" href="#" aria-label="{% trans %}First page{% endtrans %}">
+                        <span aria-hidden="true"><i class="fas fa-angle-double-left"></i></span>
+                    </a>
+                </li>
                 <li class="page-item disabled">
                     <a class="page-link" title="{% trans %}Previous page{% endtrans %}" href="#" aria-label="{% trans %}Previous page{% endtrans %}">
                         <span aria-hidden="true"><i class="fas fw fa-arrow-left"></i></span>
@@ -29,11 +35,11 @@
                 {% do paginator.setRouteParameter('page', i) %}
                 {% if i == paginator.currentPage %}
                     <li class="page-item active" aria-current="page">
-                        <a class="page-link" href="{{ path(paginator.route, paginator.routeParameters) }}">{{ i }} <span class="sr-only">{{ 'paginator.current'|trans }}</span></a>
+                        <a class="page-link" href="{{ path(paginator.route, paginator.routeParameters) }}" data-page="{{ i }}">{{ i }} <span class="sr-only">{% trans %}current{% endtrans %}</span></a>
                     </li>
                 {% else %}
                     <li class="page-item">
-                        <a class="page-link" href="{{ path(paginator.route, paginator.routeParameters) }}">{{ i }}</a>
+                        <a class="page-link" href="{{ path(paginator.route, paginator.routeParameters) }}" data-page="{{ i }}">{{ i }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
@@ -45,19 +51,76 @@
                         <i class="fas fw fa-arrow-right"></i>
                     </a>
                 </li>
+                {% do paginator.setRouteParameter('page', paginator.lastPage) %}
+                <li class="page-item">
+                    <a class="page-link" title="{% trans %}Last page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
+                        <i class="fas fa-angle-double-right"></i>
+                    </a>
+                </li>
             {% else %}
                 <li class="page-item disabled">
                     <a class="page-link" title="{% trans %}Next page{% endtrans %}" href="#" aria-label="{% trans %}Next page{% endtrans %}">
                         <span aria-hidden="true"><i class="fas fw fa-arrow-right"></i></span>
                     </a>
                 </li>
+                <li class="page-item disabled">
+                    <a class="page-link" title="{% trans %}Last page{% endtrans %}" href="#" aria-label="{% trans %}Last page{% endtrans %}">
+                        <span aria-hidden="true"><i class="fas fa-angle-double-right"></i></span>
+                    </a>
+                </li>
             {% endif %}
-            {% do paginator.setRouteParameter('page', paginator.lastPage) %}
-            <li class="page-item">
-                <a class="page-link" title="{% trans %}Last page{% endtrans %}" href="{{ path(paginator.route, paginator.routeParameters) }}">
-                    <i class="fas fa-angle-double-right"></i>
-                </a>
-            </li>
         </ul>
     </nav>
+    {{ pageAddAsset('javascript', zasset('@CoreBundle:js/simplePagination.js/jquery.simplePagination.js'), 99) }}
+    {% set customScript %}
+        <script>
+        /* <![CDATA[ */
+            ( function($) {
+                var paginationLinks = [];
+                var pager = null;
+                function bootstrapifyPager() {
+                    if (null === pager) {
+                        return;
+                    }
+                    pager.find('li').addClass('page-item');
+                    pager.find('li > span').addClass('page-link');
+                    pager.find('li > a').each(function (index) {
+                        var pageNumber = $(this).attr('href');
+                        $(this).attr('href', paginationLinks[pageNumber]);
+                    });
+                };
+                $(document).ready(function() {
+                    pager = $('#pagination{{ paginatorId|e('js') }}');
+                    pager.addClass('d-none');
+                    pager.find('li > a').each(function (index) {
+                        var pageNumber = $(this).data('page');
+                        if (pageNumber) {
+                            paginationLinks[pageNumber] = $(this).attr('href');
+                        }
+                    });
+                    pager.pagination({
+                        pages: {{ paginator.lastPage }},
+                        currentPage: {{ paginator.currentPage }},
+                        hrefTextPrefix: '',
+                        prevText: '<i class="fas fw fa-arrow-left"></i>',
+                        nextText: '<i class="fas fw fa-arrow-right"></i>',
+                        onPageClick: function (pageNumber, event) {
+                            bootstrapifyPager();
+                            if (paginationLinks[pageNumber]) {
+                                document.location = paginationLinks[pageNumber];
+
+                                return;
+                            }
+                        },
+                        onInit: function () {
+                            bootstrapifyPager();
+                            pager.removeClass('d-none');
+                        }
+                    });
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', customScript) }}
 {% endif %}

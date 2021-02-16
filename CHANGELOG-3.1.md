@@ -30,6 +30,7 @@
     - CoreBundle, ZikulaRoutesModule, ZikulaSecurityCenterModule, ZikulaSettingsModule, ZikulaThemeModule
   - [extensions] Add StaticContent module to manage all static content (#4369).
   - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
+  - [CoreBundle] Improved pagination display avoiding large amount of page links (#4547).
   - [FormExtensionsBundle] Add bsCustomFileInput for direct file selection feedback (#4491).
   - [BlocksModule] Add new block positions automatically on theme installation (#4228). 
   - [DefaultTheme] Add new default theme (#4462).
