@@ -21,6 +21,9 @@ use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\FilterHook;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class HookRuntime implements RuntimeExtensionInterface
 {
     /**

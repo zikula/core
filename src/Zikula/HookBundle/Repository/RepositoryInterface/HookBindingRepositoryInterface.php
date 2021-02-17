@@ -16,6 +16,9 @@ namespace Zikula\Bundle\HookBundle\Repository\RepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 interface HookBindingRepositoryInterface extends ObjectRepository, Selectable
 {
     public function deleteByBothAreas(string $subscriberArea, string $providerArea): void;

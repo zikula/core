@@ -17,7 +17,7 @@ use Zikula\Bundle\HookBundle\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
- * Interface HookDispatcherInterface
+ * @deprecated remove at Core 4.0.0
  */
 interface HookDispatcherInterface
 {

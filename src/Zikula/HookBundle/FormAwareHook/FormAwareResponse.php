@@ -17,6 +17,9 @@ use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\UrlInterface;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class FormAwareResponse extends Hook
 {
     /**

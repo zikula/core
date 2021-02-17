@@ -15,6 +15,7 @@ namespace Zikula\Bundle\HookBundle;
 
 /**
  * Interface HookProviderInterface
+ * @deprecated remove at Core 4.0.0
  *
  * Create a service that implements this interface and tag it with `zikula.hook_provider`
  * The tag must also include an `areaName` argument.

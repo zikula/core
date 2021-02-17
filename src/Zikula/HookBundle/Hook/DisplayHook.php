@@ -16,7 +16,7 @@ namespace Zikula\Bundle\HookBundle\Hook;
 use Zikula\Bundle\CoreBundle\UrlInterface;
 
 /**
- * DisplayHook class.
+ * @deprecated remove at Core 4.0.0
  */
 class DisplayHook extends Hook
 {

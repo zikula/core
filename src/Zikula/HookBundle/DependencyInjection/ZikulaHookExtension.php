@@ -35,12 +35,14 @@ class ZikulaHookExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
 
+        // start deprecated code - remove at Core 4.0.0
         $container->registerForAutoconfiguration(HookProviderInterface::class)
             ->addTag('zikula.hook_provider')
         ;
         $container->registerForAutoconfiguration(HookSubscriberInterface::class)
             ->addTag('zikula.hook_subscriber')
         ;
+        // end deprecated code
 
         $container->registerForAutoconfiguration(HookEvent::class)
             ->addTag('zikula.hook_event')

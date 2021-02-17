@@ -16,6 +16,9 @@ namespace Zikula\Bundle\HookBundle\Dispatcher;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class HookDispatcher implements HookDispatcherInterface
 {
     /**

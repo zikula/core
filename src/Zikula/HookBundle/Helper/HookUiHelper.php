@@ -20,7 +20,7 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
- * HookUiHelper class.
+ * @deprecated remove at Core 4.0.0
  */
 class HookUiHelper
 {

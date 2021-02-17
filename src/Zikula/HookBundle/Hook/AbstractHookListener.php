@@ -18,7 +18,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 
 /**
- * Custom Hook Handler interface.
+ * @deprecated remove at Core 4.0.0
  */
 abstract class AbstractHookListener
 {

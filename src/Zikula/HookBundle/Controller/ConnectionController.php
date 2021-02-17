@@ -31,14 +31,10 @@ class ConnectionController
     /* @var Environment */
     private $twig;
 
-    /**
-     * @var ObjectManager
-     */
+    /* @var ObjectManager */
     private $persistenceManager;
 
-    /**
-     * @var ValidatorInterface
-     */
+    /* @var ValidatorInterface */
     private $validator;
 
     /* @var HookLocator */

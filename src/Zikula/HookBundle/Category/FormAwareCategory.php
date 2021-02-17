@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Category;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class FormAwareCategory implements CategoryInterface
 {
     public const NAME = 'form_aware_hook';

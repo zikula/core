@@ -21,6 +21,9 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class HookListenerBuilderListener implements EventSubscriberInterface
 {
     /**

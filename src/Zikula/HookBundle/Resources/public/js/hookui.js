@@ -1,4 +1,5 @@
 // Copyright Zikula, licensed MIT.
+// This file is @deprecated and will be removed in Core 4.0.0
 
 var subscriberAreas = [];
 var appendItemBeforeResponse = true;

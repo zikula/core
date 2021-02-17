@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Hook;
 
 /**
- * Validation object for hooks.
+ * @deprecated remove at Core 4.0.0
  */
 class ValidationResponse
 {

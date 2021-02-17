@@ -16,9 +16,7 @@ namespace Zikula\Bundle\HookBundle\Hook;
 use Zikula\Bundle\CoreBundle\UrlInterface;
 
 /**
- * Event encapsulation class.
- *
- * Encapsulates events thus decoupling the observer from the subject they encapsulate.
+ * @deprecated remove at Core 4.0.0
  */
 class ProcessHook extends Hook
 {

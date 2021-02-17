@@ -14,6 +14,7 @@ services:
         public: true
 
     Zikula\Bundle\HookBundle\Collector\HookCollector:
+        deprecated: The "%service_id%" is deprecated and will be removed in Core 4.0.0
         arguments:
             $providers: !tagged_iterator zikula.hook_provider
             $subscribers: !tagged_iterator zikula.hook_subscriber

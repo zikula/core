@@ -19,6 +19,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class HookBindingRepository extends ServiceEntityRepository implements HookBindingRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)

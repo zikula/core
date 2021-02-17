@@ -43,6 +43,7 @@ interface HookEventListenerInterface
 
     /**
      * Take action based on the event. $event may modified.
+     * It is strongly encouraged to check for exact HookEvent type here because typehint required to be generic
      */
     public function execute(HookEvent $event): void;
 

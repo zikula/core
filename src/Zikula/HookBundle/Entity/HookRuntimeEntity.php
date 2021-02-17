@@ -19,6 +19,7 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * HookRuntime
+ * @deprecated remove at Core 4.0.0
  *
  * @ORM\Table(name="hook_runtime")
  * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Repository\HookRuntimeRepository")
