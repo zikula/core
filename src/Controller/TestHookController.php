@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\TestType;
-use App\HookEvent\AppDisplayHookEvent;
 use App\HookEvent\AppPostValidationFormHookEvent;
 use App\HookEvent\AppPreHandleRequestFormHookEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -34,7 +34,7 @@ final class FooDisplayHookEventListener extends DisplayHookEventListener
     {
         // Strongly encouraged to check for exact HookEvent type here because typehint required to be generic
         if ($event instanceof DisplayHookEvent) {
-            $event->addResponse(new DisplayHookEventResponse(self::class,'This is the Foo Hook Response'));
+            $event->addResponse(new DisplayHookEventResponse(self::class, 'This is the Foo Hook Response'));
         }
     }
 }
