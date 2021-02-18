@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace App\HookEvent;
 
-use Zikula\Bundle\HookBundle\HookEvent\PreHandleRequestFormHookEvent;
+use Zikula\Bundle\HookBundle\HookEvent\FormHookEvent;
 
-final class AppPreHandleRequestFormHookEvent extends PreHandleRequestFormHookEvent
+final class AppFormHookEvent extends FormHookEvent
 {
     public function getTitle(): string
     {
-        return 'App Pre HandleRequest Hook';
+        return 'App Form Hook Event';
     }
 
     public function getInfo(): string
     {
-        return 'App Pre HandleRequest Hook information. This event is fired in the TestHookController before the form is handled.';
+        return 'App Form Hook Event information. This event is fired in the TestHookController with the TestType Form.';
     }
 }
