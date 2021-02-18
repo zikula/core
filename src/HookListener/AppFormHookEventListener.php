@@ -15,10 +15,7 @@ namespace App\HookListener;
 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Zikula\Bundle\HookBundle\HookEvent\FormHookEvent;
-use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
-use Zikula\Bundle\HookBundle\HookEvent\PostValidationFormHookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\FormHookEventListener;
-use Zikula\Bundle\HookBundle\HookEventListener\PostValidationFormHookEventListener;
 
 class AppFormHookEventListener extends FormHookEventListener
 {
