@@ -28,11 +28,10 @@ abstract class DisplayHookEvent extends HookEvent
 
     public function addResponse(DisplayHookEventResponse $response): self
     {
-        $responseClass = get_class($response);
-        if (isset($this->responses[$responseClass])) {
-            $this->responses[$responseClass]->appendContent($response);
+        if (isset($this->responses[$response->getListenerClassName()])) {
+            $this->responses[$response->getListenerClassName()]->appendContent((string) $response);
         } else {
-            $this->responses[$responseClass] = $response;
+            $this->responses[$response->getListenerClassName()] = $response;
         }
 
         return $this;

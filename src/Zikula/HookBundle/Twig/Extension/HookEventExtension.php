@@ -24,7 +24,8 @@ class HookEventExtension extends AbstractExtension
     {
         return [
             new TwigFunction('getConnection', [HookEventRuntime::class, 'getConnection']),
-            new TwigFunction('connectionEligibile', [HookEventRuntime::class, 'connectionEligibile'])
+            new TwigFunction('connectionEligibile', [HookEventRuntime::class, 'connectionEligibile']),
+            new TwigFunction('dispatchDisplayHookEvent', [HookEventRuntime::class, 'dispatchDisplayHookEvent'])
         ];
     }
 

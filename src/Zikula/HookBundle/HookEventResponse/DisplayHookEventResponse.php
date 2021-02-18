@@ -15,14 +15,21 @@ namespace Zikula\Bundle\HookBundle\HookEventResponse;
 
 final class DisplayHookEventResponse
 {
-    /**
-     * @var string
-     */
+    /* var string */
+    private $listenerClassname;
+
+    /* @var string */
     private $content;
 
-    public function __construct(string $content = '')
+    public function __construct(string $listenerClassname, string $content = '')
     {
+        $this->listenerClassname = $listenerClassname;
         $this->content = $content;
+    }
+
+    public function getListenerClassName(): string
+    {
+        return $this->listenerClassname;
     }
 
     public function appendContent(string $content): void

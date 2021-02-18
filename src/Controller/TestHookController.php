@@ -51,7 +51,6 @@ class TestHookController extends AbstractController
         return $this->render('test_hook/index.html.twig', [
             'controller_name' => 'TestHookController',
             'form' => $form->createView(),
-            'displayEvent' => $this->eventDispatcher->dispatch((new AppDisplayHookEvent())->setId('my-display-id')),
             'preHook' => $preHook
         ]);
     }

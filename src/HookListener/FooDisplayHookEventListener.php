@@ -18,23 +18,23 @@ use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\DisplayHookEventListener;
 use Zikula\Bundle\HookBundle\HookEventResponse\DisplayHookEventResponse;
 
-final class AppDisplayHookEventListener extends DisplayHookEventListener
+final class FooDisplayHookEventListener extends DisplayHookEventListener
 {
     public function getTitle(): string
     {
-        return 'App DisplayHook Listener';
+        return 'Foo DisplayHook Listener';
     }
 
     public function getInfo(): string
     {
-        return 'App DisplayHook Listener Info - long text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+        return 'Foo DisplayHook Listener Info - long text. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
     }
 
     public function execute(HookEvent $event): void
     {
         // Strongly encouraged to check for exact HookEvent type here because typehint required to be generic
         if ($event instanceof DisplayHookEvent) {
-            $event->addResponse(new DisplayHookEventResponse(self::class,'🤣 bar-' . $event->getId()));
+            $event->addResponse(new DisplayHookEventResponse(self::class,'This is the Foo Hook Response'));
         }
     }
 }

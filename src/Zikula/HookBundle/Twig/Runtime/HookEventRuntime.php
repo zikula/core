@@ -16,6 +16,7 @@ namespace Zikula\Bundle\HookBundle\Twig\Runtime;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\Bundle\HookBundle\Entity\Connection;
+use Zikula\Bundle\HookBundle\HookEvent\DisplayHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
@@ -47,6 +48,13 @@ class HookEventRuntime implements RuntimeExtensionInterface
         }
 
         return $content;
+    }
+
+    public function dispatchDisplayHookEvent(string $displayHookEventName, string $id): ?DisplayHookEvent
+    {
+        if (\class_exists($displayHookEventName) && \is_subclass_of($displayHookEventName, DisplayHookEvent::class)) {
+            return $this->eventDispatcher->dispatch((new $displayHookEventName())->setId($id));
+        }
     }
 
     public function getConnection(HookEvent $event, HookEventListenerInterface $listener): ?Connection
