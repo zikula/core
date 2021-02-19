@@ -21,23 +21,23 @@ final class DisplayHookEventResponse
     /* @var string */
     private $content;
 
-    public function __construct(string $listenerClassname, string $content = '')
+    final public function __construct(string $listenerClassname, string $content = '')
     {
         $this->listenerClassname = $listenerClassname;
         $this->content = $content;
     }
 
-    public function getListenerClassName(): string
+    final public function getListenerClassName(): string
     {
         return $this->listenerClassname;
     }
 
-    public function appendContent(string $content): void
+    final public function appendContent(string $content): void
     {
         $this->content .= $content;
     }
 
-    public function __toString(): string
+    final public function __toString(): string
     {
         return $this->content;
     }

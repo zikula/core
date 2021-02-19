@@ -16,6 +16,11 @@ namespace Zikula\Bundle\HookBundle\HookEvent;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * A FormHookEvent is dispatched twice within the worflow of a Symfony Form.
+ * First after the instantiation of a new Form and second after its submission.
+ * The FormHookEvent can modify the form and handle the modifications it makes.
+ */
 abstract class FormHookEvent extends HookEvent
 {
     /* @var FormInterface */

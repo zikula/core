@@ -29,19 +29,19 @@ abstract class HookEvent
     /**
      * Intentionally casting the id as a string to allow for UUID or other non-integer types.
      */
-    public function setId(?string $id = null): self
+    final public function setId(?string $id = null): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function getId(): ?string
+    final public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function getClassname(): string
+    final public function getClassname(): string
     {
         return static::class;
     }

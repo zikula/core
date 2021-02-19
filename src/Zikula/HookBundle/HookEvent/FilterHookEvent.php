@@ -22,12 +22,12 @@ abstract class FilterHookEvent extends HookEvent
 {
     private $data;
 
-    public function getData()
+    final public function getData()
     {
         return $this->data;
     }
 
-    public function setData(string $data): self
+    final public function setData(string $data): self
     {
         $this->data = $data;
 

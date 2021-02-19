@@ -15,6 +15,10 @@ namespace Zikula\Bundle\HookBundle\HookEventListener;
 
 use Zikula\Bundle\HookBundle\HookEvent\FilterHookEvent;
 
+/**
+ * A FilterHookEventListener responds to FilterHookEvents and can modify/filter
+ * the provided data.
+ */
 abstract class FilterHookEventListener implements HookEventListenerInterface
 {
     final public function listensTo(): string
@@ -22,7 +26,7 @@ abstract class FilterHookEventListener implements HookEventListenerInterface
         return FilterHookEvent::class;
     }
 
-    public function getClassname(): string
+    final public function getClassname(): string
     {
         return static::class;
     }

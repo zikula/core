@@ -26,7 +26,7 @@ abstract class DisplayHookEvent extends HookEvent
      */
     private $responses = [];
 
-    public function addResponse(DisplayHookEventResponse $response): self
+    final public function addResponse(DisplayHookEventResponse $response): self
     {
         if (isset($this->responses[$response->getListenerClassName()])) {
             $this->responses[$response->getListenerClassName()]->appendContent((string) $response);
@@ -37,7 +37,7 @@ abstract class DisplayHookEvent extends HookEvent
         return $this;
     }
 
-    public function getResponses(): array
+    final public function getResponses(): array
     {
         return $this->responses;
     }

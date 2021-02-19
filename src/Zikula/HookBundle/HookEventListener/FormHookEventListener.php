@@ -16,6 +16,11 @@ namespace Zikula\Bundle\HookBundle\HookEventListener;
 use Zikula\Bundle\HookBundle\HookEvent\FormHookEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 
+/**
+ * A FormHookEventListener responds to FormHookEvents and can modify the
+ * Event's Form object, add templates, act upon Form post-submission data
+ * and set post-submission display data if desired (and handled by the controller).
+ */
 abstract class FormHookEventListener implements HookEventListenerInterface
 {
     final public function listensTo(): string

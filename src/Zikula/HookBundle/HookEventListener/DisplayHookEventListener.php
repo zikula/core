@@ -15,6 +15,10 @@ namespace Zikula\Bundle\HookBundle\HookEventListener;
 
 use Zikula\Bundle\HookBundle\HookEvent\DisplayHookEvent;
 
+/**
+ * A DisplayHookEventListener responds to DisplayHookEvents and can add
+ * DisplayHookEventReponses to the Event for later display.
+ */
 abstract class DisplayHookEventListener implements HookEventListenerInterface
 {
     final public function listensTo(): string
@@ -22,7 +26,7 @@ abstract class DisplayHookEventListener implements HookEventListenerInterface
         return DisplayHookEvent::class;
     }
 
-    public function getClassname(): string
+    final public function getClassname(): string
     {
         return static::class;
     }
