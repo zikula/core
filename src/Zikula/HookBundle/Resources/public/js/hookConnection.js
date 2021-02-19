@@ -2,7 +2,9 @@
 
 (function($) {
     $(document).ready(function() {
+        var numberOfColumns = $("#connections-table > tbody > tr:first > td").length;
         $('.connectionAction').click(modifyConnection);
+        $('#filter-text').on('input', filterColumns);
 
         function modifyConnection(event) {
             event.preventDefault();
@@ -27,6 +29,21 @@
                 alert('Request failed: ' + textStatus);
             })
             .always(function (data) {
+            });
+        }
+
+        function filterColumns(event) {
+            event.preventDefault();
+            $('#connections-table td,#connections-table th').show();
+            var filterText = $(this).val().toLowerCase();
+            if (!filterText) return;
+            // find the column ids that do not contain the search text (removes first column which always matches)
+            var columnsToHide = $("#connections-table thead th:not( [id*='" + filterText + "'] )").slice(1);
+            if (columnsToHide.length === numberOfColumns) return;
+            columnsToHide.each(function () {
+                var columnIndex = $(this).parent().children().index($(this));
+                columnIndex++; // convert from zero-based to one-based
+                $('#connections-table td:nth-child(' + columnIndex + '),#connections-table th:nth-child( ' + columnIndex + ')').hide();
             });
         }
     });

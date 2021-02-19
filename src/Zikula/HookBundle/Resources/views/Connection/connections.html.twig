@@ -1,10 +1,13 @@
 <h2>{% trans %}Hook Connections{% endtrans %}</h2>
-<table class="table table-bordered table-striped table-hover table-sm table-responsive">
+<div class="text-right">
+    <label>{% trans %}Filter columns{% endtrans %}:&nbsp</label><input type="text" id="filter-text" placeholder="characters in title ">
+</div>
+<table id="connections-table" class="table table-bordered table-striped table-hover table-sm table-responsive">
     <thead>
     <tr>
-        <th></th>
+        <th scope="col"></th>
         {% for listener in locator.hookEventListeners %}
-            <th scope="col">{{ listener.title }}</th>
+            <th scope="col" id="{{ listener.title|u.replaceMatches('/[^A-Za-z0-9]++/', '')|lower }}">{{ listener.title }}</th>
         {% endfor %}
     </tr>
     </thead>
