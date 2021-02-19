@@ -21,9 +21,7 @@ use Zikula\Bundle\HookBundle\HookEventResponse\DisplayHookEventResponse;
  */
 abstract class DisplayHookEvent extends HookEvent
 {
-    /**
-     * @var DisplayHookEventResponse[]
-     */
+    /* @var DisplayHookEventResponse[] */
     private $responses = [];
 
     final public function addResponse(DisplayHookEventResponse $response): self

@@ -17,7 +17,7 @@ abstract class HookEvent
 {
     /**
      * ID of the hooked object
-     * @var string
+     * @var mixed
      */
     protected $id;
 
@@ -27,9 +27,9 @@ abstract class HookEvent
     }
 
     /**
-     * Intentionally casting the id as a string to allow for UUID or other non-integer types.
+     * There is no argument casting here in order to allow for UUID or other non-integer types.
      */
-    final public function setId(?string $id = null): self
+    final public function setId($id = null): self
     {
         $this->id = $id;
 

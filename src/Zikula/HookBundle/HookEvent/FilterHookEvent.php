@@ -20,6 +20,7 @@ namespace Zikula\Bundle\HookBundle\HookEvent;
  */
 abstract class FilterHookEvent extends HookEvent
 {
+    /* @var string */
     private $data;
 
     final public function getData()

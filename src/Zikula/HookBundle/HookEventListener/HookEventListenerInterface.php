@@ -47,5 +47,8 @@ interface HookEventListenerInterface
      */
     public function execute(HookEvent $event): void;
 
+    /**
+     * The final child classname.
+     */
     public function getClassname(): string;
 }

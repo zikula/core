@@ -37,7 +37,7 @@ class TestHookController extends AbstractController
     public function index(Request $request): Response
     {
         $form = $this->createForm(TestType::class);
-        $hook = $this->eventDispatcher->dispatch((new AppFormHookEvent())->setId((string) 543)->setForm($form));
+        $hook = $this->eventDispatcher->dispatch((new AppFormHookEvent())->setId(543)->setForm($form));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->eventDispatcher->dispatch($hook->setSubject(['id' => 543, 'text' => 'foo']));
