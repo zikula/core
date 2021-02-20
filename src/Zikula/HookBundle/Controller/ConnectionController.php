@@ -19,12 +19,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Zikula\Bundle\HookBundle\Entity\Connection;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
 use Zikula\Bundle\HookBundle\Locator\HookLocator;
 use Zikula\Bundle\HookBundle\Repository\HookConnectionRepository;
+use Zikula\Zikula\Bundle\HookBundle\Event\ConnectionChangeEvent;
 
 class ConnectionController
 {
@@ -43,18 +45,23 @@ class ConnectionController
     /* @var HookConnectionRepository */
     private $connectionRepository;
 
+    /* @var EventDispatcherInterface */
+    private $eventDispatcher;
+
     public function __construct(
         Environment $twig,
         ManagerRegistry $managerRegistry,
         ValidatorInterface $validator,
         HookLocator $hookLocator,
-        HookConnectionRepository $connectionRepository
+        HookConnectionRepository $connectionRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->twig = $twig;
         $this->persistenceManager = $managerRegistry->getManager();
         $this->validator = $validator;
         $this->hookLocator = $hookLocator;
         $this->connectionRepository = $connectionRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -99,6 +106,8 @@ class ConnectionController
                 throw new \InvalidArgumentException('Invalid action');
         }
         $this->persistenceManager->flush();
+        $priority = isset($connection) ? $connection->getPriority() : null;
+        $this->eventDispatcher->dispatch(new ConnectionChangeEvent($postVars['eventName'], $postVars['listenerName'], $priority, $postVars['action']));
 
         $content = $this->twig->render('@ZikulaHook/Connection/connection.html.twig', [
             'connection' => $connection,

@@ -30,6 +30,7 @@
   - [extensions] Add StaticContent module to manage all static content (#4369).
   - [CoreBundle] Add `Zikula\Bundle\CoreBundle\Configurator` for writing config files to the filesystem (#4433).
   - [FormExtensionsBundle] Add bsCustomFileInput for direct file selection feedback (#4491).
+  - [HookBundle] Added Forward-Compatibility layer of new HookEvent concept (#4593).
   - [BlocksModule] Add new block positions automatically on theme installation (#4228). 
   - [DefaultTheme] Add new default theme (#4462).
     - This looks the same as ZikulaBootstrapTheme but improves the templates in a way that is not BC.
@@ -41,5 +42,6 @@
 - Deprecated:
   - [General] Controller methods should not have an `Action` suffix in their names anymore.
   - [CoreBundle] `Zikula/CoreBundle/YamlDumper` is deprecated. Please use `Configurator` as needed.
+  - [HookBundle] The old hook concept is deprecated. Use new HookEvent concept described in README.
   - [BlocksModule] Content-providing blocks (FincludeBlock, HtmlBlock, TextBlock, XsltBlock) use StaticContentModule instead.
   - [BootstrapTheme] The entire theme is deprecated. Please see DefaultTheme for replacement.

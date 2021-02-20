@@ -6,7 +6,7 @@ How are Core 4 HookEvents different from Core 3 Hooks?
 2. Hook **names**, **types**, **areas** and **categories** are all _eliminated_.
    - Generic contracts are enforced through inheritance.
    - Locations and IDs are unique because the classname is unique.
-3. Hooks now use more standardized terminology: `HookEvent` and `HookEventListener`
+3. Hooks now use more standard terminology: `HookEvent` and `HookEventListener`
    instead of **Subscriber** and **Provider** (which were reversed from Symfony and therefore confusing).
 4. The admin User Interface is MUCH simpler.
 5. HookEvents use the Symfony `EventDispatcher` instead of a custom `HookDispatcher`.

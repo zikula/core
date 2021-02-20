@@ -11,13 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreBundle\Command;
+namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Zikula\Bundle\CoreBundle\Command\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 
 class SchemaToolInstallCommand extends Command

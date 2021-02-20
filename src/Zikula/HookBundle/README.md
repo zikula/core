@@ -26,6 +26,12 @@ How are HookEvents different from standard Events?
    within the Symfony container and cannot be dynamically assigned at will via a UI.
  - Events are uniquely contractural and specific to a single workflow.
 
+Installation
+------------
+ - If using this bundle within Zikula, there is no need to do anything, it is automatically installed.
+ - If using this bundle without Zikula, You must create the database table schema that associates with the
+   `ConnectionEntity` and you must also add this bundle to your `bundles.php` file.
+
 HookEvent Types
 ---------------
 The following abstractHookEvents are provided by HookBundle. Additional
@@ -45,13 +51,13 @@ blog article).
 
 ### FilterHookEvent
 A FilterHookEvent is dispatched from withing a twig template using the provided
-twig filter `{{ text|dispatchFilterHookEvent('HookEventClassname') }}`
+twig filter `{{ targetString|dispatchFilterHookEvent('HookEventClassname') }}`
 FilterHookEventListeners are provided the target string and this string may be
 altered (or filtered) as needed. (Example: profanity removal).
 
 ### FormHookEvent
 A FormHookEvent is dispatched twice within a Symfony Form workflow inside a
-controller. First, after the instatiation of the form and then again after the form
+controller. First, after the instantiation of the form and then again after the form
 has been submitted and validated. FormHookEventListeners are provided the target
 Form and may alter the Form as needed, provide additional templates and then finally
 process the unbound form data. (Example: adding profile fields to a user 
@@ -87,7 +93,7 @@ can provide the same responses in any location within an application in this
 generic way.
 
 The contract is based upon the abstract parent HookEvent class not upon the final 
-concrete class. The final concrete class simply defines the unique name or 'id' so
+concrete class. The final concrete classname becomes the unique event name so
 that the Connections User Interface may identify the location to assign that 
 connection. This is what is meant by generic contract: generic by HookEvent, and
 the power is in the flexibility this standardization brings.

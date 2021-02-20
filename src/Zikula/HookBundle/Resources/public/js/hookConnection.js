@@ -10,6 +10,7 @@
             event.preventDefault();
             var a = $(this);
             var target = a.parent("td");
+            target.css('background-color', '#ffdb99');
 
             $.ajax({
                 url: Routing.generate('zikula_hook_connection_modify'),
