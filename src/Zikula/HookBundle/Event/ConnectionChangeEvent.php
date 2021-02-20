@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Zikula\Bundle\HookBundle\Event;
+namespace Zikula\Bundle\HookBundle\Event;
 
 /**
  * This is a notification event only. Listeners cannot modify the event data.

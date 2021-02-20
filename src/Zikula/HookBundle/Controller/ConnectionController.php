@@ -26,7 +26,7 @@ use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
 use Zikula\Bundle\HookBundle\Locator\HookLocator;
 use Zikula\Bundle\HookBundle\Repository\HookConnectionRepository;
-use Zikula\Zikula\Bundle\HookBundle\Event\ConnectionChangeEvent;
+use Zikula\Bundle\HookBundle\Event\ConnectionChangeEvent;
 
 class ConnectionController
 {
