@@ -22,11 +22,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Zikula\Bundle\HookBundle\Entity\Connection;
+use Zikula\Bundle\HookBundle\Event\ConnectionChangeEvent;
 use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
 use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
 use Zikula\Bundle\HookBundle\Locator\HookLocator;
 use Zikula\Bundle\HookBundle\Repository\HookConnectionRepository;
-use Zikula\Bundle\HookBundle\Event\ConnectionChangeEvent;
 
 class ConnectionController
 {
