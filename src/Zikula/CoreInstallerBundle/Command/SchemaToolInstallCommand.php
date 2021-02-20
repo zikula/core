@@ -18,7 +18,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Zikula\Bundle\CoreBundle\Command\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 
 class SchemaToolInstallCommand extends Command
@@ -29,11 +28,6 @@ class SchemaToolInstallCommand extends Command
      * @var SchemaHelper
      */
     private $schemaHelper;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
 
     public function __construct(SchemaHelper $schemaHelper)
     {
