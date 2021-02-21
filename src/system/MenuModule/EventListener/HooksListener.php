@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Listener;
+namespace Zikula\MenuModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -50,11 +50,17 @@ class HooksListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExtensionMenuEvent::class => ['addHookMenu', -254]
+            ExtensionMenuEvent::class => [
+                ['addLegacyHookMenu', -254], // @deprecated remove at core 4.0.0
+                ['addConnectionsMenu', -253]
+            ]
         ];
     }
 
-    public function addHookMenu(ExtensionMenuEvent $event): void
+    /**
+     * @deprecated remove at Core 4.0.0
+     */
+    public function addLegacyHookMenu(ExtensionMenuEvent $event): void
     {
         // return if not collection admin links
         if (ExtensionMenuInterface::TYPE_ADMIN !== $event->getMenuType()) {
@@ -75,5 +81,19 @@ class HooksListener implements EventSubscriberInterface
         ])
             ->setAttribute('icon', 'fas fa-paperclip')
         ;
+    }
+
+    public function addConnectionsMenu(ExtensionMenuEvent $event): void
+    {
+        if (ExtensionMenuInterface::TYPE_ADMIN !== $event->getMenuType()) {
+            return;
+        }
+        if (class_exists('Zikula\\Bundle\\HookBundle\\Controller\\ConnectionController')) {
+            $event->getMenu()->addChild($this->translator->trans('Hooks'), [
+                'route' => 'zikula_hook_connection_connections',
+            ])
+                ->setAttribute('icon', 'fas fa-bell')
+            ;
+        }
     }
 }

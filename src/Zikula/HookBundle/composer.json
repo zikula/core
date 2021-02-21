@@ -21,9 +21,7 @@
         "symfony/validator": "^5.2",
 
         "zikula/core-bundle": "dev-master",
-        "zikula/coreinstaller-bundle": "dev-master",
         "zikula/extensions-module": "dev-master",
-        "zikula/menu-module": "dev-master",
         "zikula/permissions-module": "dev-master",
         "zikula/theme-module": "dev-master"
     },

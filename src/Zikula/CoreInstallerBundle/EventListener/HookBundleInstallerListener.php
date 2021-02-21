@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Listener;
+namespace Zikula\Bundle\CoreInstallerBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Bundle\CoreInstallerBundle\Bridge\HookBundle\HookBundleInstaller;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreInstallationPreExtensionInstallation;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
-use Zikula\Bundle\HookBundle\HookBundleInstaller;
 
-class CoreInstallerListener implements EventSubscriberInterface
+class HookBundleInstallerListener implements EventSubscriberInterface
 {
     private $hookBundleInstaller;
 
