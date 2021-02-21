@@ -943,16 +943,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "1.11.2",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "b81688bc95a16b76b2849bb67004d8f34ddfffd7"
+                "reference": "ebec9b1708c95d7602245c8172773f6b4e0c3be1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/b81688bc95a16b76b2849bb67004d8f34ddfffd7",
-                "reference": "b81688bc95a16b76b2849bb67004d8f34ddfffd7",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/ebec9b1708c95d7602245c8172773f6b4e0c3be1",
+                "reference": "ebec9b1708c95d7602245c8172773f6b4e0c3be1",
                 "shasum": ""
             },
             "require": {
@@ -1007,9 +1007,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/annotations/issues",
-                "source": "https://github.com/doctrine/annotations/tree/1.11.2"
+                "source": "https://github.com/doctrine/annotations/tree/1.12.0"
             },
-            "time": "2021-01-12T23:01:21+00:00"
+            "time": "2021-02-14T13:22:18+00:00"
         },
         {
             "name": "doctrine/cache",
