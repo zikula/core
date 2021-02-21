@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Bridge\HookBundle;
 use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\HookBundle\Entity\Connection;
-use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
 use Zikula\ExtensionsModule\Installer\InstallerInterface;
 
