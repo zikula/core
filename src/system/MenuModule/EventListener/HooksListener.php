@@ -89,7 +89,7 @@ class HooksListener implements EventSubscriberInterface
             return;
         }
         if (class_exists('Zikula\\Bundle\\HookBundle\\Controller\\ConnectionController')) {
-            $event->getMenu()->addChild($this->translator->trans('Hooks'), [
+            $event->getMenu()->addChild($this->translator->trans('Connections'), [
                 'route' => 'zikula_hook_connection_connections',
             ])
                 ->setAttribute('icon', 'fas fa-bell')

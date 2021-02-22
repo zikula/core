@@ -310,10 +310,13 @@ class Engine
      *  1) manual setting
      *  2) the default system theme
      */
-    public function setActiveTheme(string $newThemeName = null): void
+    public function setActiveTheme(string $newThemeName = null, $annotation = ''): void
     {
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme', 'ZikulaDefaultTheme');
 
+        if (!empty($annotation) ) {
+            $this->annotationValue = $annotation;
+        }
         $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
         $this->activeThemeBundle->loadThemeVars();
     }

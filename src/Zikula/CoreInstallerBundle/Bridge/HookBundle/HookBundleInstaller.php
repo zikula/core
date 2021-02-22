@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Bridge\HookBundle;
 use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\Bundle\HookBundle\Entity\Connection;
+use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
 use Zikula\ExtensionsModule\Installer\InstallerInterface;
 
@@ -32,6 +33,8 @@ class HookBundleInstaller implements InstallerInterface
     private $em;
 
     private static $entities = [
+        HookBindingEntity::class, // @deprecated remove this line at Core 4.0.0
+        HookRuntimeEntity::class, // @deprecated remove this line at Core 4.0.0
         Connection::class
     ];
 
