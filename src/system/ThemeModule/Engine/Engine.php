@@ -314,7 +314,7 @@ class Engine
     {
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme', 'ZikulaDefaultTheme');
 
-        if (!empty($annotation) ) {
+        if (!empty($annotation)) {
             $this->annotationValue = $annotation;
         }
         $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
