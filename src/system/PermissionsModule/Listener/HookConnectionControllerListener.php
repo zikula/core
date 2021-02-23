@@ -11,35 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreBundle\Bridge\HookBundle;
+namespace Zikula\PermissionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Controller\ConnectionController;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ThemeModule\Engine\Engine;
 
-class ConnectionControllerListener implements EventSubscriberInterface
+class HookConnectionControllerListener implements EventSubscriberInterface
 {
-    /* @var VariableApiInterface */
-    private $variableApi;
-
-    /* @var Engine */
-    private $themeEngine;
-
     /* @var PermissionApiInterface */
     private $permissionApi;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        Engine $themeEngine,
         PermissionApiInterface $permissionApi
     ) {
-        $this->variableApi = $variableApi;
-        $this->themeEngine = $themeEngine;
         $this->permissionApi = $permissionApi;
     }
 
@@ -47,17 +35,19 @@ class ConnectionControllerListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::CONTROLLER => [
-                ['protectAndTheme', 100]
+                ['protect', 100]
             ]
         ];
     }
 
     /**
      * This listener protects the HookBundle ConnectionController and limits to admin privileges.
-     * It also sets the theme to the selected admin theme setting and sets the annotation in the theme engine.
      */
-    public function protectAndTheme(ControllerEvent $event)
+    public function protect(ControllerEvent $event)
     {
+        if (!class_exists(ConnectionController::class)) {
+            return;
+        }
         if (!$event->isMasterRequest()) {
             return;
         }
@@ -72,7 +62,5 @@ class ConnectionControllerListener implements EventSubscriberInterface
         if (!$this->permissionApi->hasPermission('HookBundle::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $adminThemeName = $this->variableApi->get('ZikulaAdminModule', 'admintheme', '');
-        $this->themeEngine->setActiveTheme($adminThemeName, 'admin');
     }
 }
