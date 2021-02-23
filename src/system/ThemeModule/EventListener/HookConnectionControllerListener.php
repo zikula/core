@@ -16,7 +16,6 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Controller\ConnectionController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Engine;

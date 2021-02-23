@@ -52,7 +52,7 @@ class HookChangeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            HookPostChangeEvent::class => ['clearCombinedAssetCache'],
+            HookPostChangeEvent::class => ['clearCombinedAssetCache'], // @deprecated remove at Core 4.0.0
             ConnectionChangeEvent::class => ['clearCombinedAssetCache']
         ];
     }
