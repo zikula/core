@@ -20,6 +20,8 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Zikula\Bundle\HookBundle\Controller\HookController;
 use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
+use Zikula\Bundle\HookBundle\HookEvent\HookEvent;
+use Zikula\Bundle\HookBundle\HookEventListener\HookEventListenerInterface;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
 
@@ -33,11 +35,20 @@ class ZikulaHookExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
 
+        // start deprecated code - remove at Core 4.0.0
         $container->registerForAutoconfiguration(HookProviderInterface::class)
             ->addTag('zikula.hook_provider')
         ;
         $container->registerForAutoconfiguration(HookSubscriberInterface::class)
             ->addTag('zikula.hook_subscriber')
+        ;
+        // end deprecated code
+
+        $container->registerForAutoconfiguration(HookEvent::class)
+            ->addTag('zikula.hook_event')
+        ;
+        $container->registerForAutoconfiguration(HookEventListenerInterface::class)
+            ->addTag('zikula.hook_event_listener')
         ;
 
         $this->addAnnotatedClassesToCompile([

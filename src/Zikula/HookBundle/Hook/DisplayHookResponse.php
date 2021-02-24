@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Hook;
 
 /**
- * Zikula display hook response class.
+ * @deprecated remove at Core 4.0.0
  *
  * Hook handlers should return one of these.
  */

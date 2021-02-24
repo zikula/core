@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\HookBundle\Event\HookPostChangeEvent;
+use Zikula\Zikula\Bundle\HookBundle\Event\ConnectionChangeEvent;
 
 /**
  * Clear the combined asset cache when a hook state is changed.
@@ -51,7 +52,8 @@ class HookChangeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            HookPostChangeEvent::class => ['clearCombinedAssetCache']
+            HookPostChangeEvent::class => ['clearCombinedAssetCache'], // @deprecated remove at Core 4.0.0
+            ConnectionChangeEvent::class => ['clearCombinedAssetCache']
         ];
     }
 

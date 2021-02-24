@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Category;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class UiHooksCategory implements CategoryInterface
 {
     public const NAME = 'ui_hooks';

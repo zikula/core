@@ -3,16 +3,23 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\Bundle\HookBundle\:
         resource: '../../*'
-        exclude: '../../{bootstrap.php,Tests,vendor}'
+        exclude: '../../{Resources,Tests,vendor}'
+
+    Zikula\Bundle\HookBundle\Controller\ConnectionController:
+        public: true
 
     Zikula\Bundle\HookBundle\Collector\HookCollector:
+        deprecated: The "%service_id%" is deprecated and will be removed in Core 4.0.0
         arguments:
             $providers: !tagged_iterator zikula.hook_provider
             $subscribers: !tagged_iterator zikula.hook_subscriber
 
-    Zikula\Bundle\HookBundle\Listener\HookListenerBuilderListener:
+    Zikula\Bundle\HookBundle\Locator\HookLocator:
         arguments:
-            $installed: '%env(ZIKULA_INSTALLED)%'
+            $hookEvents: !tagged_iterator zikula.hook_event
+            $hookEventListeners: !tagged_iterator zikula.hook_event_listener

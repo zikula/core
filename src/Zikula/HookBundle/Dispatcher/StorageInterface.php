@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 interface StorageInterface
 {
     public function bindSubscriber(string $subscriberArea, string $providerArea): void;

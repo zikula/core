@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TestHookController!{% endblock %}
+
+{% block body %}
+{{ showflashes() }}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ '/Applications/MAMP/htdocs/core.git/src/Controller/TestHookController.php'|file_link(0) }}">src/Controller/TestHookController.php</a></code></li>
+        <li>Your template at <code><a href="{{ '/Applications/MAMP/htdocs/core.git/templates/test_hook/index.html.twig'|file_link(0) }}">templates/test_hook/index.html.twig</a></code></li>
+    </ul>
+</div>
+    <div>
+        <h3>Display Hook Responses:</h3>
+        <p>Display hook dispatched then responses are looped and formatted individually into list items:</p>
+        <ul>
+            {% set displayEvent = dispatchDisplayHookEvent('App\\HookEvent\\AppDisplayHookEvent', 'my-display-id') %}
+            {% for response in displayEvent.responses %}
+                <li>{{ response }}</li>
+            {% endfor %}
+        </ul>
+        <p>Or the same object simply output</p>
+        <p>{{ displayEvent }}</p>
+        {{ dispatchDisplayHookEvent('App\\HookEvent\\AppDisplayHookEvent', 'my-second-id') }}
+
+    </div>
+    <div>
+        <h3>Filter Hook Demo</h3>
+        {% set text = 'Twinkle, twinkle, little star, How I wonder what you are! Up above the world so high, Like a diamond in the sky.' %}
+        <p>ORIGINAL TEXT = {{ text }}</p>
+        <p>FILTERED TEXT = {{ text|dispatchFilterHookEvent('App\\HookEvent\\AppFilterHookEvent') }}</p>
+    </div>
+    <div>
+        <h3>Form Demo</h3>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.name) }}
+{#        {% for template in preHook.templates %}#}
+        {% for template in hook.templates %}
+            {{ include(template.filename, template.vars, true, true) }}
+        {% endfor %}
+        {{ form_row(form.save) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

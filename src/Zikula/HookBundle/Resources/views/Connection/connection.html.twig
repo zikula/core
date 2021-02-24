@@ -1,0 +1,13 @@
+{% set id = connection.id|default('new-'~random(10000,99999)) %}
+<td id="{{ id }}" data-event-name="{{ event.classname }}" data-listener-name="{{ listener.classname }}">
+{% if connection is not null %}
+    <a href="#" data-action="disconnect" class="connectionAction tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to disconnect %event% from %listener%{% endtrans %}">✅</a>
+    <a href="#" data-action="decrement" class="connectionAction tooltips" title="{% trans %}Click to decrement listener priority{% endtrans %}">-</a>{{ connection.priority }}<a href="#" data-action="increment" class="connectionAction tooltips" title="{% trans %}Click to increment listener priority{% endtrans %}">+</a>
+{% else %}
+    {% if connectionEligibile(event, listener) %}
+        <button data-action="connect" href="#" class="connectionAction badge badge-success tooltips" title="{% trans with {'%event%': event.title, '%listener%': listener.title} %}Click to connect %event% with %listener%{% endtrans %}">{% trans %}add{% endtrans %}</button>
+    {% else %}
+        ✖️
+    {% endif %}
+{% endif %}
+</td>

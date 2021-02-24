@@ -17,6 +17,9 @@ use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class FormAwareHook extends Hook
 {
     /**

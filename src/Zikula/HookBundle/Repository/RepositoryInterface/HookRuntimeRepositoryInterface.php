@@ -16,6 +16,9 @@ namespace Zikula\Bundle\HookBundle\Repository\RepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 interface HookRuntimeRepositoryInterface extends ObjectRepository, Selectable
 {
     public function truncate(): void;

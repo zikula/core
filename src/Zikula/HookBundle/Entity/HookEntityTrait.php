@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Entity;
 
 /**
- * Hook entity trait.
+ * @deprecated remove at Core 4.0.0
  */
 trait HookEntityTrait
 {

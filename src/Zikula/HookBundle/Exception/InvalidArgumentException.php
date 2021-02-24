@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Exception;
 
 /**
- * InvalidArgumentException.
+ * @deprecated remove at Core 4.0.0
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {

@@ -18,6 +18,9 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Zikula\Bundle\HookBundle\Twig\Runtime\HookRuntime;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class HookExtension extends AbstractExtension
 {
     public function getFunctions()

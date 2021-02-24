@@ -19,6 +19,7 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * HookBinding
+ * @deprecated remove at Core 4.0.0
  *
  * @ORM\Table(name="hook_binding")
  * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Repository\HookBindingRepository")

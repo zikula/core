@@ -15,6 +15,7 @@ namespace Zikula\Bundle\HookBundle\Event;
 
 /**
  * Hook post change event to allow reactions on binding changes.
+ * @deprecated remove at Core 4.0.0
  */
 class HookPostChangeEvent
 {

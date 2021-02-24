@@ -24,6 +24,9 @@ use Zikula\Bundle\HookBundle\Exception\InvalidArgumentException;
 use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositoryInterface;
 use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class DoctrineStorage implements StorageInterface
 {
     /**

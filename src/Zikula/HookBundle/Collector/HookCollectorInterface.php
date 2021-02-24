@@ -17,6 +17,9 @@ use InvalidArgumentException;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 interface HookCollectorInterface
 {
     /**

@@ -18,6 +18,9 @@ use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookBindingRepositor
 use Zikula\Bundle\HookBundle\Repository\RepositoryInterface\HookRuntimeRepositoryInterface;
 use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class ModuleUninstallListener implements EventSubscriberInterface
 {
     /**

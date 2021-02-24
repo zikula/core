@@ -21,6 +21,9 @@ use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSelfAllowedProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
 
+/**
+ * @deprecated remove at Core 4.0.0
+ */
 class HookCollectorTest extends TestCase
 {
     protected function setUp(): void

@@ -11,17 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle;
+namespace Zikula\Bundle\CoreInstallerBundle\Bridge\HookBundle;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
+use Zikula\Bundle\HookBundle\Entity\Connection;
 use Zikula\Bundle\HookBundle\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Entity\HookRuntimeEntity;
 use Zikula\ExtensionsModule\Installer\InstallerInterface;
 
-/**
- * Class HookBundleInstaller
- */
 class HookBundleInstaller implements InstallerInterface
 {
     /**
@@ -35,8 +33,9 @@ class HookBundleInstaller implements InstallerInterface
     private $em;
 
     private static $entities = [
-        HookBindingEntity::class,
-        HookRuntimeEntity::class
+        HookBindingEntity::class, // @deprecated remove this line at Core 4.0.0
+        HookRuntimeEntity::class, // @deprecated remove this line at Core 4.0.0
+        Connection::class
     ];
 
     public function __construct(
@@ -87,7 +86,11 @@ class HookBundleInstaller implements InstallerInterface
                     HookRuntimeEntity::class
                 ]);
                 // no break
-            case '2.0.1': //current version
+            case '2.0.1':
+                // nothing
+            case '3.1.0'://current version
+                // allow old tables to remain on upgrade, just add the new one
+                $this->schemaTool->create(self::$entities);
         }
 
         // Update successful

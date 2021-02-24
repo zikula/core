@@ -34,7 +34,7 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * Class HookController
+ * @deprecated remove at Core 4.0.0
  * @Route("/hooks")
  */
 class HookController extends AbstractController

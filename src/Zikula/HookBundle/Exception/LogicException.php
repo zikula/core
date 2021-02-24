@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Exception;
 
 /**
- * LogicException.
+ * @deprecated remove at Core 4.0.0
  */
 class LogicException extends \LogicException
 {

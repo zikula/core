@@ -18,7 +18,7 @@ use InvalidArgumentException;
 use Zikula\Bundle\CoreBundle\Collection\Container;
 
 /**
- * Hook validation collection
+ * @deprecated remove at Core 4.0.0
  */
 class ValidationProviders extends Container
 {
