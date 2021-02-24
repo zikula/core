@@ -8,6 +8,8 @@
         <th scope="col"></th>
         {% for listener in locator.hookEventListeners %}
             <th scope="col" id="{{ listener.title|u.replaceMatches('/[^A-Za-z0-9]++/', '')|lower }}">{{ listener.title }}</th>
+        {% else %}
+            <th scope="col">{% trans %}There were no HookEventListeners found{% endtrans %}</th>
         {% endfor %}
     </tr>
     </thead>
@@ -20,6 +22,9 @@
             {{ include('@ZikulaHook/Connection/connection.html.twig', {event:event, listener:listener, connection:connection}) }}
         {% endfor %}
     </tr>
+    {% else %}
+        {% set cols = locator.hookEventListeners.length + 2 %}
+        <tr><td colspan="{{ cols }}">{% trans %}There were no HookEvents found{% endtrans %}</td></tr>
     {% endfor %}
     </tbody>
 </table>
@@ -32,6 +37,8 @@
             <li><strong>{{ event.title }}</strong> <code>{{ name }}</code>
                 <ul><li><small>{{ event.info }}</small></li></ul>
             </li>
+        {% else %}
+            <li>{% trans %}There were no HookEvents found{% endtrans %}</li>
         {% endfor %}
     </ul>
 </div>
@@ -43,6 +50,8 @@
             <li><strong>{{ listener.title }}</strong> <code>{{ name }}</code>
                 <ul><li><small>{{ listener.info }}</small></li></ul>
             </li>
+        {% else %}
+            <li>{% trans %}There were no HookEventListeners found{% endtrans %}</li>
         {% endfor %}
     </ul>
 </div>

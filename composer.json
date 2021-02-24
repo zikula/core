@@ -12,11 +12,7 @@
             ],
             "Zikula\\": [
                 "src/system/"
-            ],
-            "App\\Controller\\": "src/Controller/",
-            "App\\HookListener\\": "src/HookListener/",
-            "App\\HookEvent\\": "src/HookEvent/",
-            "App\\Form\\": "src/Form/"
+            ]
         },
         "files": [
             "src/Kernel.php"

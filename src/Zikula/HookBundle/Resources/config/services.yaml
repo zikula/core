@@ -8,7 +8,7 @@ services:
 
     Zikula\Bundle\HookBundle\:
         resource: '../../*'
-        exclude: '../../{bootstrap.php,Tests,vendor}'
+        exclude: '../../{Resources,Tests,vendor}'
 
     Zikula\Bundle\HookBundle\Controller\ConnectionController:
         public: true
