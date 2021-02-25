@@ -9,7 +9,7 @@ Templates are resolved in the following order:
 
 1. Override on system level: `/templates/bundles/AcmeFooModule/News/display.html.twig`.
 2. Override on theme level: `/src/extensions/Acme/CustomTheme/Resources/AcmeFooModule/views/News/display.html.twig`.
-3. Original location: `/src/modules/Acme/FooModule/Resources/views/News/display.html.twig`.
+3. Original location: `/src/extensions/Acme/FooModule/Resources/views/News/display.html.twig`.
 
 Further information: [Theme template overrides](../Themes/TemplateOverrides.md).
 
