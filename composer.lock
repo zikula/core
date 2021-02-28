@@ -2301,12 +2301,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "214cb8a6934f9682ce5a9d7a7f5a76801c7822e6"
+                "reference": "1354e7e8c558dc9ae353e07b8cde7ab0d46e7a25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/214cb8a6934f9682ce5a9d7a7f5a76801c7822e6",
-                "reference": "214cb8a6934f9682ce5a9d7a7f5a76801c7822e6",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/1354e7e8c558dc9ae353e07b8cde7ab0d46e7a25",
+                "reference": "1354e7e8c558dc9ae353e07b8cde7ab0d46e7a25",
                 "shasum": ""
             },
             "require": {
@@ -2348,7 +2348,7 @@
                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
                 "source": "https://github.com/ezyang/htmlpurifier/tree/master"
             },
-            "time": "2021-01-26T16:11:50+00:00"
+            "time": "2021-02-28T01:42:20+00:00"
         },
         {
             "name": "frdh/mmenu.js",
