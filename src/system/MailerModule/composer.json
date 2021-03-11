@@ -34,7 +34,7 @@
         "zikula/permissions-module": "dev-master",
         "zikula/theme-module": "dev-master",
 
-        "egulias/email-validator": "^2.1.10"
+        "egulias/email-validator": "^3"
     },
     "extra": {
         "zikula": {
