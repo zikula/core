@@ -856,16 +856,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.4.5",
+            "version": "1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4"
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f28d44c286812c714741478d968104c5e604a1d4",
-                "reference": "f28d44c286812c714741478d968104c5e604a1d4",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/f27e06cd9675801df441b3656569b328e04aa37c",
+                "reference": "f27e06cd9675801df441b3656569b328e04aa37c",
                 "shasum": ""
             },
             "require": {
@@ -873,7 +873,8 @@
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8"
+                "phpstan/phpstan": "^0.12.55",
+                "symfony/phpunit-bridge": "^4.2 || ^5"
             },
             "type": "library",
             "autoload": {
@@ -899,7 +900,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/composer",
                 "issues": "https://github.com/composer/xdebug-handler/issues",
-                "source": "https://github.com/composer/xdebug-handler/tree/1.4.5"
+                "source": "https://github.com/composer/xdebug-handler/tree/1.4.6"
             },
             "funding": [
                 {
@@ -915,7 +916,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-13T08:04:11+00:00"
+            "time": "2021-03-25T17:01:18+00:00"
         },
         {
             "name": "dimsemenov/magnific-popup",
@@ -4520,22 +4521,22 @@
         },
         {
             "name": "php-translation/extractor",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/extractor.git",
-                "reference": "e2703aea3a35361bd9e3130253c8a82c14119f10"
+                "reference": "296026263aeabb5f17c6b6958608ba255b92ad9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/extractor/zipball/e2703aea3a35361bd9e3130253c8a82c14119f10",
-                "reference": "e2703aea3a35361bd9e3130253c8a82c14119f10",
+                "url": "https://api.github.com/repos/php-translation/extractor/zipball/296026263aeabb5f17c6b6958608ba255b92ad9c",
+                "reference": "296026263aeabb5f17c6b6958608ba255b92ad9c",
                 "shasum": ""
             },
             "require": {
                 "doctrine/annotations": "^1.2",
                 "nikic/php-parser": "^3.0 || ^4.0",
-                "php": "^7.2",
+                "php": "^7.2 || ^8.0",
                 "symfony/finder": "^3.4 || ^4.3 || ^5.0",
                 "twig/twig": "^2.0 || ^3.0"
             },
@@ -4571,9 +4572,9 @@
             "description": "Extract translations form the source code",
             "support": {
                 "issues": "https://github.com/php-translation/extractor/issues",
-                "source": "https://github.com/php-translation/extractor/tree/2.0.2"
+                "source": "https://github.com/php-translation/extractor/tree/2.0.3"
             },
-            "time": "2020-06-10T08:44:05+00:00"
+            "time": "2021-03-25T18:08:57+00:00"
         },
         {
             "name": "php-translation/symfony-bundle",
