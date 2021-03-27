@@ -4476,20 +4476,20 @@
         },
         {
             "name": "php-translation/common",
-            "version": "3.0.1",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/common.git",
-                "reference": "b786f49d7f222ca345b0e4c32d4a205a845b0e27"
+                "reference": "fcb8338be8d4a65e76e916660c053c06e8376765"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/common/zipball/b786f49d7f222ca345b0e4c32d4a205a845b0e27",
-                "reference": "b786f49d7f222ca345b0e4c32d4a205a845b0e27",
+                "url": "https://api.github.com/repos/php-translation/common/zipball/fcb8338be8d4a65e76e916660c053c06e8376765",
+                "reference": "fcb8338be8d4a65e76e916660c053c06e8376765",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": ">=7.2",
                 "symfony/translation": " ^3.4 || ^4.3 || ^5.0"
             },
             "require-dev": {
@@ -4515,9 +4515,9 @@
             "description": "Common translation stuff",
             "support": {
                 "issues": "https://github.com/php-translation/common/issues",
-                "source": "https://github.com/php-translation/common/tree/master"
+                "source": "https://github.com/php-translation/common/tree/3.1.0"
             },
-            "time": "2020-01-18T09:48:23+00:00"
+            "time": "2021-03-26T17:44:48+00:00"
         },
         {
             "name": "php-translation/extractor",
@@ -4578,50 +4578,47 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.12.1",
+            "version": "0.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "7fbc991062d6cf7d862122d07428adfa972fce78"
+                "reference": "ccdf1e2a4acf314488caf608cfb1b7a6191a83ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/7fbc991062d6cf7d862122d07428adfa972fce78",
-                "reference": "7fbc991062d6cf7d862122d07428adfa972fce78",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/ccdf1e2a4acf314488caf608cfb1b7a6191a83ea",
+                "reference": "ccdf1e2a4acf314488caf608cfb1b7a6191a83ea",
                 "shasum": ""
             },
             "require": {
                 "nyholm/nsa": "^1.1",
-                "php": "^7.1",
+                "php": "^7.2 || ^8.0",
                 "php-translation/extractor": "^2.0",
                 "php-translation/symfony-storage": "^2.1",
-                "symfony/finder": "^3.4 || ^4.3 || ^5.0",
-                "symfony/framework-bundle": "^3.4 || ^4.3 || ^5.0",
-                "symfony/intl": "^3.4 || ^4.3 || ^5.0",
-                "symfony/translation": "^3.4 || ^4.3 || ^5.0",
-                "symfony/twig-bundle": "^3.4 || ^4.3 || ^5.0",
-                "symfony/validator": "^3.4 || ^4.3 || ^5.0",
-                "twig/twig": "^2.11 || ^3.0"
-            },
-            "conflict": {
-                "symfony/config": "<3.4.31"
+                "symfony/finder": "^4.4.20 || ^5.2.4",
+                "symfony/framework-bundle": "^4.4.20 || ^5.2.5",
+                "symfony/intl": "^4.4.20 || ^5.2.4",
+                "symfony/translation": "^4.4.20 || ^5.2.5",
+                "symfony/twig-bundle": "^4.4.20 || ^5.2.4",
+                "symfony/validator": "^4.4.20 || ^5.2.5",
+                "twig/twig": "^2.14.4 || ^3.3"
             },
             "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.3",
                 "matthiasnoback/symfony-config-test": "^4.1",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.1",
                 "nyholm/psr7": "^1.1",
                 "nyholm/symfony-bundle-test": "^1.6.1",
-                "php-http/curl-client": "^1.7",
-                "php-http/message": "^1.6",
+                "php-http/curl-client": "^1.7 || ^2.0",
+                "php-http/message": "^1.11",
                 "php-http/message-factory": "^1.0.2",
                 "php-translation/translator": "^1.0",
-                "phpunit/phpunit": "^8.4",
-                "symfony/asset": "^3.4 || ^4.3 || ^5.0",
-                "symfony/console": "^3.4 || ^4.3 || ^5.0",
-                "symfony/dependency-injection": "^3.4 || ^4.3 || ^5.0",
-                "symfony/phpunit-bridge": "^4.4 || ^5.0",
-                "symfony/twig-bridge": "^3.4 || ^4.3 || ^5.0",
-                "symfony/web-profiler-bundle": "^3.4 || ^4.3 || ^5.0"
+                "symfony/asset": "^4.4.20 || ^5.2.4",
+                "symfony/console": "^4.4.20 || ^5.2.5",
+                "symfony/dependency-injection": "^4.4.20 || ^5.2.5",
+                "symfony/phpunit-bridge": "^5.2",
+                "symfony/twig-bridge": "^4.4.20 || ^5.2.5",
+                "symfony/web-profiler-bundle": "^4.4.20 || ^5.2.4"
             },
             "suggest": {
                 "php-http/httplug-bundle": "To easier configure your httplug clients."
@@ -4652,33 +4649,32 @@
             ],
             "support": {
                 "issues": "https://github.com/php-translation/symfony-bundle/issues",
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.1"
+                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.3"
             },
-            "time": "2020-02-25T16:44:05+00:00"
+            "time": "2021-03-26T20:13:10+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-storage.git",
-                "reference": "9d6e34d6ed662a6438365bc891768b701fdd6c24"
+                "reference": "8b1954b9b4933245250bc5b3d45f0d7bde38c761"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/9d6e34d6ed662a6438365bc891768b701fdd6c24",
-                "reference": "9d6e34d6ed662a6438365bc891768b701fdd6c24",
+                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/8b1954b9b4933245250bc5b3d45f0d7bde38c761",
+                "reference": "8b1954b9b4933245250bc5b3d45f0d7bde38c761",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2",
+                "php": "^7.2 || ^8.0",
                 "php-translation/common": "^3.0",
                 "symfony/translation": "^3.4 || ^4.2 || ^5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.4",
-                "symfony/framework-bundle": " ^3.4 || ^4.2 || ^5.0",
-                "symfony/phpunit-bridge": "^4.2 || ^5.0"
+                "symfony/framework-bundle": " ^3.4 || ^4.2 || ^5.0"
             },
             "type": "library",
             "extra": {
@@ -4704,9 +4700,9 @@
             "description": "A translation file storage using Symfony translation component.",
             "support": {
                 "issues": "https://github.com/php-translation/symfony-storage/issues",
-                "source": "https://github.com/php-translation/symfony-storage/tree/master"
+                "source": "https://github.com/php-translation/symfony-storage/tree/2.3.0"
             },
-            "time": "2020-02-11T12:49:11+00:00"
+            "time": "2021-03-26T18:01:29+00:00"
         },
         {
             "name": "phpids/phpids",
