@@ -38,7 +38,7 @@
         "composer/installers": "1.*",
         "composer/semver": "1.*",
         "dimsemenov/magnific-popup": "1.*",
-        "doctrine/doctrine-bundle": "2.*",
+        "doctrine/doctrine-bundle": "2.2.*",
         "doctrine/orm": "2.*",
         "egulias/email-validator": "^3",
         "erusev/parsedown": "^1.7",
