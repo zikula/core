@@ -39,10 +39,6 @@ services:
         arguments:
           $blameableListener: '@stof_doctrine_extensions.listener.blameable'
 
-    Zikula\Bundle\CoreBundle\EventListener\DoctrineListener:
-        arguments:
-          $driver: '@doctrine.orm.default_annotation_metadata_driver'
-
     Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener:
         lazy: true
 

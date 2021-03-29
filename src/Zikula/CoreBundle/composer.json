@@ -69,7 +69,7 @@
         "nikic/php-parser": "4.*",
 
         "doctrine/orm": "2.*",
-        "doctrine/doctrine-bundle": "2.2.*",
+        "doctrine/doctrine-bundle": "2.*",
         "stof/doctrine-extensions-bundle": "^1.5.0",
         "liip/imagine-bundle": "2.*"
     },
