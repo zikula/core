@@ -22,15 +22,9 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: Install dependencies
-      run: |
-        php7.4 /usr/bin/composer install
-
     - name: Update dependencies
       run: |
-        composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
-        php7.4 /usr/bin/composer update
-        composer config --global --auth --unset github-oauth.github.com
+        composer update
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
