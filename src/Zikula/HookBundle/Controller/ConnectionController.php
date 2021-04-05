@@ -121,7 +121,7 @@ class ConnectionController
     private function createConnection(HookEvent $event, HookEventListenerInterface $listener): Connection
     {
         if (null !== $this->connectionRepository->findOneBy(['event' => $event->getClassname(), 'listener' => $listener->getClassname()])) {
-            throw new Exception('Connection already exists, cannot create again.');
+            throw new \Exception('Connection already exists, cannot create again.');
         }
         if (!\is_subclass_of($event, $listener->listensTo())) {
             throw new \InvalidArgumentException('This listener cannot listen to this event.');
