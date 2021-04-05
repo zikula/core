@@ -16,8 +16,8 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\HookBundle\Event\HookPostChangeEvent;
 use Zikula\Bundle\HookBundle\Event\ConnectionChangeEvent;
+use Zikula\Bundle\HookBundle\Event\HookPostChangeEvent;
 
 /**
  * Clear the combined asset cache when a hook state is changed.
