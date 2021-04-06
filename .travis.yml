@@ -164,4 +164,4 @@ env:
     - GIT_EMAIL: info@ziku.la
     - GH_REF: github.com/zikula/core
     # deployment key for couscous
-    - secure: hIc9fYIbJRRI5vi56HyOz1uGafmID0RrkprMysiK3AGZyHI9VKVs7Vx53poiN8mUhQtedvLcChmp5H0yj86oL9Uli6oF2a9JrtYt3wLUTXXUuiV+NsiYVhPfFSgm/9Ku3N1OwaNliQJIxO3pLQS0SS/QR3YW5oZjGmChd675cqY=
+    - secure: C9Ewfm0pngHAK26vbcmfUXsiq0BT5psvyzBbCHnRoIcvFMscZ7o2afa57RSKWSmgPxo4DIonjhS726sGfN7lGWGjo40y905niDHWVmRsu0zeKaR65i2VltC1oOf/99F8ldK6JLyYk12Y+sZLkiqdJNmkdNFEMQVgVf+os223vYE=
