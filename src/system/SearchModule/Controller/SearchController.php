@@ -106,6 +106,7 @@ class SearchController extends AbstractController
             $searchApiErrors = $result['errors'];
             if (0 < $result['paginator']->getNumResults()) {
                 $result['paginator']->setRoute('zikulasearchmodule_search_execute');
+                $result['paginator']->setRouteParameters($request->query->all());
                 $templateParameters = array_merge($formData, [
                     'paginator' => $result['paginator'],
                     'router' => $router,

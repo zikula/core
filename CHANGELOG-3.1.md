@@ -16,6 +16,7 @@
   - [composer] Correct Composer 2 compatibilty.
   - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
   - [Menu] Fixed handling of menu items without URI in custom request voter.
+  - [Search] Add missing query string to search results pagination.
   - [Theme] Asset combination now defaults to `false` on installation (#4419).
   - [Theme] Corrected missing configurable value for `trimwhitespace` option (#4531).
   - [Theme] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
