@@ -1,6 +1,6 @@
 // Copyright Zikula, licensed MIT.
 
-var plumbInstance;
+var plumbInstance = null;
 var currentZoom;
 
 function updateZoomLevel(factor) {
@@ -16,7 +16,9 @@ function updateZoomLevel(factor) {
         '-o-transform': 'scale(' + currentZoom + ')',
         'transform': 'scale(' + currentZoom + ')'
     });
-    jsPlumb.setZoom(currentZoom);
+    if (null !== plumbInstance) {
+        plumbInstance.collicat.setZoom(currentZoom);
+    }
 }
 
 function initZoomTools() {
@@ -120,7 +122,7 @@ var regenerateOutput = function () {
                 output.xml.push(indent + oneIndent + oneIndent + '<framework:from>' + jQuery('#' + connections.get(0).sourceId).text() + '</framework:from>');
             }
             output.xml.push('');
-            connections = plumbInstance.select({ source: jQuery(this).attr('id') });
+            connections = plumbInstance.select({ source: jQuery('#' + jQuery(this).attr('id')).get(0) });
             if (connections.length > 0) {
                 // use only first outgoing connection (as a transition may only lead to one state)
                 output.yaml.push(indent + oneIndent + oneIndent + 'to: ' + jQuery('#' + connections.get(0).targetId).text());
@@ -141,13 +143,13 @@ var regenerateOutput = function () {
 };
 
 function initDiagramEventListeners() {
-    plumbInstance.bind('connection', function (info, originalEvent) {
+    plumbInstance.bind('connection', function (connection) {
         regenerateOutput();
     });
-    plumbInstance.bind('connectionDetached', function (info, originalEvent) {
+    plumbInstance.bind('connection:detach', function (connectionDetachedParams) {
         regenerateOutput();
     });
-    plumbInstance.bind('click', jsPlumb.deleteConnection);
+    plumbInstance.bind('click', plumbInstance.deleteConnection);
     plumbInstance.bind('beforeDrop', function (info) {
         var sourceNode, targetNode, existingOutgoingConnections;
 
@@ -187,9 +189,10 @@ function initDiagramEventListeners() {
 }
 
 var addNodeTools = function(node) {
-    node.append('<p class="node-tools"><i class="ep fas fa-exchange" title="' + Translator.trans('Add connection') + '"></i><i class="fas fa-trash-alt pointer" title="' + Translator.trans('Remove element') + '"></i></p>');
+    node.append('<p class="node-tools"><i class="ep fas fa-exchange-alt" title="' + Translator.trans('Add connection') + '"></i><i class="fas fa-trash-alt pointer" title="' + Translator.trans('Remove element') + '"></i></p>');
     node.find('i.fa-trash-alt').click(function (event) {
-        plumbInstance.remove(node.attr('id'));
+        plumbInstance.deleteEndpoint(node.attr('id'));
+        node.remove();
         regenerateOutput();
     });
 };
@@ -261,7 +264,7 @@ var editNode = function (event) {
             } else if (node.hasClass('transition')) {
                 newId = 'transition' + uniqueName;
             }
-            jsPlumb.setId(node, newId);
+            // TODO remove window.jsPlumbBrowserUI.setId(node, newId);
             regenerateOutput();
         }
         jQuery('#nodeModal').modal('hide');
@@ -270,79 +273,88 @@ var editNode = function (event) {
 };
 
 var initNode = function (node) {
-    // initialise draggable element
-    plumbInstance.draggable(node, {
-        grid: [50, 50],
-        snapThreshold: 0
-    });
-
-    // node-specific events
     node.dblclick(editNode);
 
     addNodeTools(node);
 
+    // create endpoint
+    var ep = plumbInstance.addEndpoint(node.get(0), {
+        uuid: node.attr('id')
+    });
     // initialise element as connection targets and source.
-    plumbInstance.makeSource(node, {
+    plumbInstance.makeSource(node.get(0), {
         filter: '.ep',
         extract: {
             'action': 'the-action'
         }
     });
-    plumbInstance.makeTarget(node, {
+    plumbInstance.makeTarget(node.get(0), {
         allowLoopback: false
     });
 };
 
-jsPlumb.ready(function () {
+function startJsPlumb() {
     initZoomTools();
 
-    plumbInstance = jsPlumb.getInstance({
-        Anchor: 'Continuous',
-        ConnectionOverlays: [
-            ['Arrow', {
-                location: 1,
-                visible: true,
-                width: 15,
-                length: 12,
-                foldback: 0.8
-            }]
+    plumbInstance = window.jsPlumbBrowserUI.newInstance({
+        anchor: 'Continuous',
+        connectionOverlays: [
+            {
+                type: 'Arrow',
+                options: {
+                    location: 1,
+                    visible: true,
+                    width: 15,
+                    length: 12,
+                    foldback: 0.8
+                }
+            }
         ],
-        Connector: ['Flowchart', {
-            stub: [40, 60],
-            gap: 4,
-            cornerRadius: 5
-        }],
-        Container: 'canvas',
-        DragOptions: {
-            cursor: 'pointer',
-            zIndex: 2000
+        connector: {
+            type: 'Flowchart',
+            options: {
+                stub: [40, 60],
+                gap: 4,
+                cornerRadius: 5
+            }
         },
-        DropOptions: {
+        container: jQuery('#canvas').get(0),
+        dragOptions: {
+            cursor: 'pointer',
+            zIndex: 2000,
+            grid: [50, 50],
+            snapThreshold: 0
+        },
+        dropOptions: {
             tolerance: 'touch',
             hoverClass: 'drop-hover',
             activeClass: 'drag-active'
         },
-        Endpoint: ['Dot', {
-            radius: 3
-        }],
-        PaintStyle: {
+        endpoint: {
+            type: 'Dot',
+            options: {
+                radius: 3
+            }
+        },
+        paintStyle: {
             strokeWidth: 2,
             stroke: '#a4a8ab',
             joinstyle: 'round',
             outlineWidth: 2,
             outlineStroke: 'white'
         },
-        HoverPaintStyle: {
+        hoverPaintStyle: {
             strokeWidth: 3,
             stroke: '#8f9fb0',
             outlineWidth: 5,
             outlineStroke: 'white'
         },
-        MaxConnections: -1,
-        ReattachConnections: true
+        maxConnections: -1,
+        reattachConnections: true
     });
 
-    var allNodes = jQuery('.jtk-canvas .node');
+    var nodeSelector = '.jtk-canvas .node';
+    var allNodes = jQuery(nodeSelector);
     var allConnections = jQuery('#connectionList li');
 
     // suspend drawing until all elements are initialised
@@ -372,20 +384,32 @@ jsPlumb.ready(function () {
         // add existing connections
         allConnections.each(function (index) {
             plumbInstance.connect({
-                source: jQuery(this).data('from'),
-                target: jQuery(this).data('to')/*,
+                uuids: [jQuery(this).data('from'), jQuery(this).data('to')]/*,
                     editable: true*/
-/*                          overlays:[
-    ["Custom", {
-      create:function(component) {
-        return jQuery("<select id='myDropDown'><option value='foo'>foo</option><option value='bar'>bar</option></select>");
-      },
-      location:0.7,
-      id:"customOverlay"
-    }]
+/*                          overlays: [
+        {
+            type: 'Custom',
+            options: {
+            create: function (component) {
+                return jQuery("<select id='myDropDown'><option value='foo'>foo</option><option value='bar'>bar</option></select>");
+            },
+            location: 0.7,
+            id: 'customOverlay'
+        }
+    ]
   ],*/
             });
         });
+    });
+
+    plumbInstance.on(document.querySelectorAll(nodeSelector), 'click', function (e) {
+        if (!this.parentNode) {
+            // node has just been deleted
+            return;
+        }
+        /*var s = */plumbInstance.toggleDraggable(this.parentNode);
+        //this.innerHTML = (s ? 'disable dragging' : 'enable dragging');
+        plumbInstance.consume(e);
     });
 
     jQuery('#addNode').click(addNode);
@@ -423,4 +447,6 @@ jsPlumb.ready(function () {
     });
     jQuery('#supportedEntities').on('change keypress', regenerateOutput);
     jQuery('#workflowType').trigger('change');
-});
+}
+
+window.jsPlumbBrowserUI.ready(startJsPlumb);

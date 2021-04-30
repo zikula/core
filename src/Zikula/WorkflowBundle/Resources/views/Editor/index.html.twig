@@ -1,6 +1,7 @@
-{{ pageAddAsset('stylesheet', zasset('@ZikulaWorkflowBundle:js/jsPlumb/css/jsplumbtoolkit-defaults.css'), 98) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaWorkflowBundle:js/jsPlumb/browser-ui/css/jsplumbtoolkit.css'), 98) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaWorkflowBundle:css/style.css'), 99) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/jsPlumb/js/jsplumb.min.js'), 98) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/jsPlumb/core/js/jsplumb.core.umd.js'), 98) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/jsPlumb/browser-ui/js/jsplumb.browser-ui.umd.js'), 98) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/WorkflowEditor.js'), 99) }}
 {{ pageSetVar('title', 'Workflow editor'|trans) }}
 {{ showflashes() }}
@@ -17,12 +18,12 @@
                 </div>
                 <div class="jtk-canvas canvas-wide jtk-surface jtk-surface-nopan" id="canvas">
                     {% for place in workflow.getPlaces() %}
-                        <div class="node state" id="state{{ place }}">{{ place }}</div>
+                        <div class="node state" id="state{{ place }}" data-jtk-managed="state{{ place }}">{{ place }}</div>
                     {% endfor %}
                     {% set uniqueTransitionNames = [] %}
                     {% for transition in workflow.getTransitions() %}
                         {% if transition.getName() not in uniqueTransitionNames %}
-                            <div class="node transition" id="transition{{ transition.getName() }}">{{ transition.getName() }}</div>
+                            <div class="node transition" id="transition{{ transition.getName() }}" data-jtk-managed="transition{{ transition.getName() }}">{{ transition.getName() }}</div>
                             {% set uniqueTransitionNames = uniqueTransitionNames|merge([transition.getName()]) %}
                         {% endif %}
                     {% endfor %}
