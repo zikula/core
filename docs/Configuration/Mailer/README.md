@@ -18,7 +18,6 @@ TBD
 ### Related Symfony components (Mailer, Mime, Notifier)
 
 - <https://symfony.com/blog/new-in-symfony-4-3-mailer-component>
-- <https://symfony.com/doc/current/components/mailer.html>
 - <https://symfony.com/doc/current/mailer.html>
 - <https://speakerdeck.com/fabpot/mailer>
 - <https://speakerdeck.com/fabpot/symfony-notifier>

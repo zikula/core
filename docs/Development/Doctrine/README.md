@@ -18,5 +18,5 @@ Like Symfony, Zikula uses Doctrine for managing database operations.
 - [DoctrineBundle docs](https://symfony.com/doc/current/bundles/DoctrineBundle/index.html)
 - [DoctrineFixturesBundle docs](https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html)
 - [DoctrineMigrationsBundle docs](https://symfony.com/doc/current/bundles/DoctrineMigrationsBundle/index.html)
-- [Gedmo extensions](https://github.com/Atlantic18/DoctrineExtensions/)
+- [Gedmo extensions](https://github.com/doctrine-extensions/DoctrineExtensions)
 - [StofDoctrineExtensionsBundle docs](https://symfony.com/doc/current/bundles/StofDoctrineExtensionsBundle/index.html)
