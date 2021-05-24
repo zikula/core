@@ -23,6 +23,7 @@
   - [Users] Fixed regression when sending mail to more than one user in one step.
   - [Users] Fixed broken mass deletion (#4597).
   - [Users] Added redirect for cancel button on registration form (#4595).
+  - [ZAuth] Fix wrong `DateTime` value (#4657).
 
 - Features:
   - [dependency] Changed dependency from `symfony/symfony` to ALL the related `symfony/*` components (#4352, #4563).
