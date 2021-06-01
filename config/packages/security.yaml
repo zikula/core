@@ -1,8 +1,9 @@
 security:
+    # https://symfony.com/doc/current/security/experimental_authenticators.html
+    #enable_authenticator_manager: true
     encoders:
         Zikula\ZAuthModule\Entity\AuthenticationMappingEntity:
-            algorithm: auto
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+            algorithm: auto    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         users_in_memory: { memory: null }
     firewalls:
@@ -10,7 +11,6 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
             lazy: true
             provider: users_in_memory
 
