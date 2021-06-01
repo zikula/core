@@ -202,7 +202,7 @@ class AbstractMenuBuilder
             new ViewActionsMenuPreConfigurationEvent($this->factory, $menu, $options)
         );
     
-        $query = $this->requestStack->getMasterRequest()->query;
+        $query = $this->requestStack->getMainRequest()->query;
         $currentTemplate = $query->getAlnum('tpl', '');
         if ('route' === $objectType) {
             $routePrefix = 'zikularoutesmodule_route_';

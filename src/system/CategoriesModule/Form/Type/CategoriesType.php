@@ -65,7 +65,7 @@ class CategoriesType extends AbstractType
             'entityname' => $options['entity']
         ]);
 
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $locale = null !== $request ? $request->getLocale() : 'en';
 
         /** @var CategoryRegistryEntity[] $registries */

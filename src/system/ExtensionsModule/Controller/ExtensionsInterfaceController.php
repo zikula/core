@@ -38,7 +38,7 @@ class ExtensionsInterfaceController extends AbstractController
         Asset $assetHelper
     ): Response {
         $currentRequest = $requestStack->getCurrentRequest();
-        $caller = $requestStack->getMasterRequest()->attributes->all();
+        $caller = $requestStack->getMainRequest()->attributes->all();
         $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig', [
@@ -62,7 +62,7 @@ class ExtensionsInterfaceController extends AbstractController
     public function footer(RequestStack $requestStack): Response
     {
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/footer.html.twig', [
-            'caller' => $requestStack->getMasterRequest()->attributes->all()
+            'caller' => $requestStack->getMainRequest()->attributes->all()
         ]);
     }
 
@@ -75,7 +75,7 @@ class ExtensionsInterfaceController extends AbstractController
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository
     ): Response {
-        $caller = $requestStack->getMasterRequest()->attributes->all();
+        $caller = $requestStack->getMainRequest()->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
 
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/breadcrumbs.html.twig', [
@@ -93,11 +93,11 @@ class ExtensionsInterfaceController extends AbstractController
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionMenuCollector $extensionMenuCollector
     ): Response {
-        /** @var Request $masterRequest */
-        $masterRequest = $requestStack->getMasterRequest();
+        /** @var Request $mainRequest */
+        $mainRequest = $requestStack->getMainRequest();
         /** @var Request $currentRequest */
         $currentRequest = $requestStack->getCurrentRequest();
-        $caller = $masterRequest->attributes->all();
+        $caller = $mainRequest->attributes->all();
         $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
         // your own links array
         $links = '' !== $currentRequest->attributes->get('links') ? $currentRequest->attributes->get('links') : '';
@@ -110,8 +110,8 @@ class ExtensionsInterfaceController extends AbstractController
         if (empty($links)) {
             // define type - default
             $linksType = 'user';
-            // detect from masterRequest
-            $linksType = '' !== $masterRequest->attributes->get('type') ? $masterRequest->attributes->get('type') : $linksType;
+            // detect from mainRequest
+            $linksType = '' !== $mainRequest->attributes->get('type') ? $mainRequest->attributes->get('type') : $linksType;
             // passed to currentRequest most important
             $linksType = '' !== $currentRequest->attributes->get('type') ? $currentRequest->attributes->get('type') : $linksType;
             // get the menu links
@@ -138,7 +138,7 @@ class ExtensionsInterfaceController extends AbstractController
             'caller' => $caller,
             'menu_css' => $menu_css,
             'extensionMenu' => $extensionMenu,
-            'current_path' => $masterRequest->getPathInfo()
+            'current_path' => $mainRequest->getPathInfo()
         ]);
     }
 }

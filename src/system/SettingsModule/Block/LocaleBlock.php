@@ -51,7 +51,7 @@ class LocaleBlock extends AbstractBlockHandler
         $locales = $this->localeApi->getSupportedLocaleNames();
         $localeLinks = [];
         /** @var Request $request */
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         try {
             $routeInfo = $this->router->match($request->getPathInfo());
         } catch (Exception $exception) {

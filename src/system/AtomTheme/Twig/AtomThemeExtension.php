@@ -57,7 +57,7 @@ class AtomThemeExtension extends AbstractExtension
 
     public function id(): string
     {
-        $host = null !== $this->requestStack->getMasterRequest() ? $this->requestStack->getMasterRequest()->getSchemeAndHttpHost() : '';
+        $host = null !== $this->requestStack->getMainRequest() ? $this->requestStack->getMainRequest()->getSchemeAndHttpHost() : '';
         $startDate = $this->variableApi->getSystemVar('startdate');
         $startDateParts = explode('/', $startDate);
         $startTimestamp = strtotime($startDateParts[1] . '-' . $startDateParts[0] . '-01');

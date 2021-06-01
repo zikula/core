@@ -123,7 +123,7 @@ class LocaleApi implements LocaleApiInterface
                     $syncConfig = false;
                 } elseif ($request->isXmlHttpRequest()) {
                     $syncConfig = false;
-                } elseif ($request !== $this->requestStack->getMasterRequest()) {
+                } elseif ($request !== $this->requestStack->getMainRequest()) {
                     $syncConfig = false;
                 }
             }

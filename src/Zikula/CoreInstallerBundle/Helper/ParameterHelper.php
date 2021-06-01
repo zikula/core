@@ -145,7 +145,7 @@ class ParameterHelper
      */
     private function configureRequestContext(array &$params): void
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $hostFromRequest = isset($request) ? $request->getHost() : 'localhost';
         $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
         $basePathFromRequest = isset($request) ? $request->getBasePath() : null;

@@ -122,7 +122,7 @@ class Engine
     {
         $activeTheme = $this->getTheme();
         $activeTheme->addStylesheet();
-        $moduleName = $this->requestStack->getMasterRequest()->attributes->get('_zkModule');
+        $moduleName = $this->requestStack->getMainRequest()->attributes->get('_zkModule');
         $themedResponse = $activeTheme->generateThemedResponse($this->getRealm(), $response, $moduleName);
 
         $themedResponse->setStatusCode($response->getStatusCode());
@@ -260,7 +260,7 @@ class Engine
         }
         $pathInfo = null;
         $requestAttributes = [];
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (null !== $request) {
             $requestAttributes = $request->attributes->all();
             if (isset($requestAttributes['_route'])

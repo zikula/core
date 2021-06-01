@@ -46,7 +46,7 @@ class AdminInterfaceController extends AbstractController
     public function header(RequestStack $requestStack): Response
     {
         return $this->render('@ZikulaAdminModule/AdminInterface/header.html.twig', [
-            'caller' => $requestStack->getMasterRequest()->attributes->all()
+            'caller' => $requestStack->getMainRequest()->attributes->all()
         ]);
     }
 
@@ -59,7 +59,7 @@ class AdminInterfaceController extends AbstractController
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository
     ): Response {
-        $caller = $requestStack->getMasterRequest()->attributes->all();
+        $caller = $requestStack->getMainRequest()->attributes->all();
         $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
         return $this->render('@ZikulaAdminModule/AdminInterface/footer.html.twig', [
@@ -81,11 +81,11 @@ class AdminInterfaceController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): Response {
-        $masterRequest = $requestStack->getMasterRequest();
-        $caller = $masterRequest->attributes->all();
+        $mainRequest = $requestStack->getMainRequest();
+        $caller = $mainRequest->attributes->all();
         $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
-        $requestedCid = $masterRequest->attributes->get('acid');
+        $requestedCid = $mainRequest->attributes->get('acid');
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
         $categoryId = $defaultCid;
@@ -137,13 +137,13 @@ class AdminInterfaceController extends AbstractController
         ZikulaHttpKernelInterface $kernel,
         UpdateCheckHelper $updateCheckHelper
     ): Response {
-        $masterRequest = $requestStack->getMasterRequest();
+        $mainRequest = $requestStack->getMainRequest();
 
         return $this->render('@ZikulaAdminModule/AdminInterface/updateCheck.html.twig', [
             'mode' => $kernel->getEnvironment(),
             'caller' => [
-                '_route' => $masterRequest->attributes->get('_route'),
-                '_route_params' => $masterRequest->attributes->get('_route_params')
+                '_route' => $mainRequest->attributes->get('_route'),
+                '_route_params' => $mainRequest->attributes->get('_route_params')
             ],
             'updateCheckHelper' => $updateCheckHelper
         ]);
@@ -164,19 +164,19 @@ class AdminInterfaceController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): Response {
-        $masterRequest = $requestStack->getMasterRequest();
+        $mainRequest = $requestStack->getMainRequest();
         $currentRequest = $requestStack->getCurrentRequest();
 
         // get caller info
         $caller = [];
-        $caller['_zkModule'] = $masterRequest->attributes->get('_zkModule');
-        $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
-        $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
-        $caller['path'] = $masterRequest->getPathInfo();
+        $caller['_zkModule'] = $mainRequest->attributes->get('_zkModule');
+        $caller['_zkType'] = $mainRequest->attributes->get('_zkType');
+        $caller['_zkFunc'] = $mainRequest->attributes->get('_zkFunc');
+        $caller['path'] = $mainRequest->getPathInfo();
         $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
         // category we are in
-        $requestedCid = $masterRequest->attributes->get('acid');
+        $requestedCid = $mainRequest->attributes->get('acid');
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
         $categoryId = $defaultCid;

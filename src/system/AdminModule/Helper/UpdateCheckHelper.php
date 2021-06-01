@@ -79,7 +79,7 @@ class UpdateCheckHelper
         $this->checkInterval = (int) $variableApi->getSystemVar('updatefrequency');
         $this->updateversion = $variableApi->getSystemVar('updateversion');
 
-        $this->force = (bool) $requestStack->getMasterRequest()->query->get('forceupdatecheck');
+        $this->force = (bool) $requestStack->getMainRequest()->query->get('forceupdatecheck');
         $this->checked = false;
         $this->releases = false;
 
