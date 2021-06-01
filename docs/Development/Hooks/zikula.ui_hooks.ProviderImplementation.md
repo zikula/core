@@ -61,7 +61,7 @@ class UiHooksProviderHandler
 
     public function processEdit(ProcessHook $hook)
     {
-        $this->requestStack->getMasterRequest()->getSession()->getFlashBag()->add('success', 'Ui hook properly processed!');
+        $this->requestStack->getMainRequest()->getSession()->getFlashBag()->add('success', 'Ui hook properly processed!');
     }
 
     public function filter(FilterHook $hook)
