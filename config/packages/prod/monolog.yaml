@@ -23,6 +23,7 @@ monolog:
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
             max_files: 10
+            formatter: monolog.formatter.json
         console:
             type: console
             process_psr_3_messages: false
