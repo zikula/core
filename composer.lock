@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c653c638faa5f09f1f9c67929f0e6ee",
+    "content-hash": "6c2660f01ad9694df90b7e5444424da0",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -12585,21 +12585,22 @@
         },
         {
             "name": "zikula/legal-module",
-            "version": "3.2.9",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "829f7b089dd3fbd89ba301c795a47c729d99eeee"
+                "reference": "b8ec5eee94088ec7eb7b618215804f5ae2e74cdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/829f7b089dd3fbd89ba301c795a47c729d99eeee",
-                "reference": "829f7b089dd3fbd89ba301c795a47c729d99eeee",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/b8ec5eee94088ec7eb7b618215804f5ae2e74cdf",
+                "reference": "b8ec5eee94088ec7eb7b618215804f5ae2e74cdf",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5"
             },
+            "default-branch": true,
             "type": "zikula-module",
             "extra": {
                 "zikula": {
@@ -12649,9 +12650,9 @@
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
                 "issues": "https://github.com/zikula-modules/Legal/issues",
-                "source": "https://github.com/zikula-modules/Legal/tree/master"
+                "source": "https://github.com/zikula-modules/Legal/tree/main"
             },
-            "time": "2020-07-11T10:44:39+00:00"
+            "time": "2021-06-01T07:48:49+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -12717,21 +12718,22 @@
         },
         {
             "name": "zikula/pagelock-module",
-            "version": "1.3.8",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "b57761c6af4ca68ad66ea4199e34b68eeb103a08"
+                "reference": "fd9ef6d84556de0a28502625b6b3cb6d0477d734"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/b57761c6af4ca68ad66ea4199e34b68eeb103a08",
-                "reference": "b57761c6af4ca68ad66ea4199e34b68eeb103a08",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/fd9ef6d84556de0a28502625b6b3cb6d0477d734",
+                "reference": "fd9ef6d84556de0a28502625b6b3cb6d0477d734",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5"
             },
+            "default-branch": true,
             "type": "zikula-module",
             "extra": {
                 "zikula": {
@@ -12764,9 +12766,9 @@
             "description": "Page locking support",
             "support": {
                 "issues": "https://github.com/zikula-modules/PageLock/issues",
-                "source": "https://github.com/zikula-modules/PageLock/tree/master"
+                "source": "https://github.com/zikula-modules/PageLock/tree/main"
             },
-            "time": "2020-06-11T20:42:31+00:00"
+            "time": "2021-06-01T07:48:57+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -12774,12 +12776,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "cb1a0e60f3900b49daafedddd4dd447d98a76b3d"
+                "reference": "145127bd3c12c8853c2c583b4e221b1bab4b1ac3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/cb1a0e60f3900b49daafedddd4dd447d98a76b3d",
-                "reference": "cb1a0e60f3900b49daafedddd4dd447d98a76b3d",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/145127bd3c12c8853c2c583b4e221b1bab4b1ac3",
+                "reference": "145127bd3c12c8853c2c583b4e221b1bab4b1ac3",
                 "shasum": ""
             },
             "require": {
@@ -12840,7 +12842,7 @@
                 "issues": "https://github.com/zikula-modules/Profile/issues",
                 "source": "https://github.com/zikula-modules/Profile/tree/main"
             },
-            "time": "2021-02-02T05:58:07+00:00"
+            "time": "2021-06-01T07:49:03+00:00"
         },
         {
             "name": "zikula/sortable-columns",
@@ -13101,6 +13103,8 @@
     "stability-flags": {
         "jms/i18n-routing-bundle": 20,
         "phpids/phpids": 20,
+        "zikula/legal-module": 20,
+        "zikula/pagelock-module": 20,
         "zikula/profile-module": 20
     },
     "prefer-stable": true,
