@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.3/phpunit.xsd"
-         bootstrap="vendor/autoload.php"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         backupGlobals="false"
+         bootstrap="tests/bootstrap.php"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
@@ -9,10 +11,12 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
     <php>
-        <!-- from https://github.com/symfony/recipes/blob/master/symfony/phpunit-bridge/3.3/phpunit.xml.dist -->
+        <!-- from https://github.com/symfony/recipes/blob/master/symfony/phpunit-bridge/5.3/phpunit.xml.dist -->
         <ini name="error_reporting" value="-1" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/><!-- avoid deprecation warnings in test output -->
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
         <env name="ZIKULA_INSTALLED" value="3.0.0" />
     </php>
     <testsuites>
@@ -25,4 +29,21 @@
             <exclude>./src/system/CategoriesModule/Tests/Form/Type/CategoriesTypeTest.php</exclude>
         </testsuite>
     </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
+
+    <!-- Run `composer require symfony/panther` before enabling this extension -->
+    <!--
+    <extensions>
+        <extension class="Symfony\Component\Panther\ServerExtension" />
+    </extensions>
+    -->
 </phpunit>

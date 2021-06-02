@@ -61,6 +61,7 @@
         "php-translation/symfony-bundle": "0.*",
         "php-translation/symfony-storage": "2.*",
         "phpids/phpids": "dev-master",
+        "phpunit/phpunit": "*",
         "sensio/framework-extra-bundle": "^5.6",
         "stof/doctrine-extensions-bundle": "^1.5.0",
         "symfony/asset": "^5.2",
