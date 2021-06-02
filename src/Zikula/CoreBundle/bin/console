@@ -41,13 +41,13 @@ if ($input->hasParameterOption('--no-debug', true)) {
 foreach ($possibleRootDirectories as $directory) {
     $file = $directory . 'config/bootstrap.php';
     if (file_exists($file)) {
-        require $file;
+        require_once $file;
         break;
     }
 }
 
 return function (array $context) {
-    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG'], $_SERVER['DATABASE_URL']);
+    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG'], $context['DATABASE_URL']);
 
     return new Application($kernel);
 };

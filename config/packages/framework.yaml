@@ -1,9 +1,9 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-    csrf_protection: ~
-    #http_method_override: true
+    #csrf_protection: true
+    http_method_override: false
 
-    form: ~
     assets:
         #base_path: '%router.request_context.base_url%'
         base_path: ''
@@ -13,3 +13,9 @@ framework:
     #fragments: true
     php_errors:
         log: true
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file
