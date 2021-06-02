@@ -1,14 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\ErrorHandler\Debug;
-use Symfony\Component\Yaml\Yaml;
-
-if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
-    echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
-}
 
 set_time_limit(0);
 
@@ -18,7 +12,7 @@ $possibleRootDirectories = [
 ];
 
 foreach ($possibleRootDirectories as $directory) {
-    $file = $directory . 'vendor/autoload.php';
+    $file = $directory . 'vendor/autoload_runtime.php';
     if (file_exists($file)) {
         require_once $file;
         break;
@@ -52,14 +46,8 @@ foreach ($possibleRootDirectories as $directory) {
     }
 }
 
-if ($_SERVER['APP_DEBUG']) {
-    umask(0000);
+return function (array $context) {
+    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG'], $_SERVER['DATABASE_URL']);
 
-    if (class_exists(Debug::class)) {
-        Debug::enable();
-    }
-}
-
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG'], $_SERVER['DATABASE_URL']);
-$application = new Application($kernel);
-$application->run($input);
+    return new Application($kernel);
+};
