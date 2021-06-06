@@ -298,7 +298,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.7",
-            "ref": "fc18a41d910bd168b6d83b09330d3dd892ddbcdd"
+            "ref": "3b372539f3886b07a7d80ff58d70abb6f2e4219a"
         },
         "files": [
             ".env.test",
@@ -492,7 +492,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "8af7647cd89416f68e41df5c343a5e531d2bf025"
+            "ref": "772b77cfb5017644547ef7f9364c54e4eb9a6c61"
         },
         "files": [
             "config/packages/cache.yaml",
@@ -619,7 +619,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.3",
-            "ref": "96ecb38bd6370ce71cff0af755a636ba3a2bb394"
+            "ref": "05aa34fc27227a46bb75872b0efff102bd7d77e0"
         },
         "files": [
             ".env.test",
