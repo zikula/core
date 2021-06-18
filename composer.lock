@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c387c0df279d705c44044c8af21d705a",
+    "content-hash": "a6f1fca6408e791fc7adc179086b6298",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3434,27 +3434,30 @@
         },
         {
             "name": "league/html-to-markdown",
-            "version": "4.10.0",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/html-to-markdown.git",
-                "reference": "0868ae7a552e809e5cd8f93ba022071640408e88"
+                "reference": "c4dbebbebe0fe454b6b38e6c683a977615bd7dc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/0868ae7a552e809e5cd8f93ba022071640408e88",
-                "reference": "0868ae7a552e809e5cd8f93ba022071640408e88",
+                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/c4dbebbebe0fe454b6b38e6c683a977615bd7dc2",
+                "reference": "c4dbebbebe0fe454b6b38e6c683a977615bd7dc2",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-xml": "*",
-                "php": ">=5.3.3"
+                "php": "^7.2.5 || ^8.0"
             },
             "require-dev": {
-                "mikehaertl/php-shellcommand": "~1.1.0",
-                "phpunit/phpunit": "^4.8|^5.7",
-                "scrutinizer/ocular": "~1.1"
+                "mikehaertl/php-shellcommand": "^1.1.0",
+                "phpstan/phpstan": "^0.12.82",
+                "phpunit/phpunit": "^8.5 || ^9.2",
+                "scrutinizer/ocular": "^1.6",
+                "unleashedtech/php-coding-standard": "^2.7",
+                "vimeo/psalm": "^4.6"
             },
             "bin": [
                 "bin/html-to-markdown"
@@ -3462,7 +3465,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.10-dev"
+                    "dev-master": "5.1-dev"
                 }
             },
             "autoload": {
@@ -3496,7 +3499,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/html-to-markdown/issues",
-                "source": "https://github.com/thephpleague/html-to-markdown/tree/4.10.0"
+                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.0.0"
             },
             "funding": [
                 {
@@ -3516,7 +3519,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-07-01T00:34:03+00:00"
+            "time": "2021-03-29T01:29:08+00:00"
         },
         {
             "name": "league/oauth2-client",
