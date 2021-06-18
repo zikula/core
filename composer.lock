@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dee9811d600026c4324a53dc78aed2be",
+    "content-hash": "db5a3076bac34aa6b5b224135ce124db",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -13313,16 +13313,16 @@
         },
         {
             "name": "thomaspark/bootswatch",
-            "version": "v4.6.0",
+            "version": "v5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thomaspark/bootswatch.git",
-                "reference": "91712182e0ed651625f2b3d8a0075454f195d7ae"
+                "reference": "b970b0a2bb6a0fe01359a445ecc021a9eaf98c1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/91712182e0ed651625f2b3d8a0075454f195d7ae",
-                "reference": "91712182e0ed651625f2b3d8a0075454f195d7ae",
+                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/b970b0a2bb6a0fe01359a445ecc021a9eaf98c1b",
+                "reference": "b970b0a2bb6a0fe01359a445ecc021a9eaf98c1b",
                 "shasum": ""
             },
             "suggest": {
@@ -13352,9 +13352,9 @@
             "description": "Themes for Bootstrap",
             "support": {
                 "issues": "https://github.com/thomaspark/bootswatch/issues",
-                "source": "https://github.com/thomaspark/bootswatch/tree/v4.6.0"
+                "source": "https://github.com/thomaspark/bootswatch/tree/v5.0.1"
             },
-            "time": "2021-01-20T23:20:08+00:00"
+            "time": "2021-05-14T15:58:17+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
