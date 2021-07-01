@@ -12871,16 +12871,16 @@
         },
         {
             "name": "symfony/web-link",
-            "version": "v5.3.0",
+            "version": "v5.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-link.git",
-                "reference": "87b34e33e833e948256b237f25fdd54f85975a94"
+                "reference": "820cd4e31c1b5b440bd2e3c01d3e2583fa8472a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-link/zipball/87b34e33e833e948256b237f25fdd54f85975a94",
-                "reference": "87b34e33e833e948256b237f25fdd54f85975a94",
+                "url": "https://api.github.com/repos/symfony/web-link/zipball/820cd4e31c1b5b440bd2e3c01d3e2583fa8472a2",
+                "reference": "820cd4e31c1b5b440bd2e3c01d3e2583fa8472a2",
                 "shasum": ""
             },
             "require": {
@@ -12937,7 +12937,7 @@
                 "push"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-link/tree/v5.3.0"
+                "source": "https://github.com/symfony/web-link/tree/v5.3.3"
             },
             "funding": [
                 {
@@ -12953,7 +12953,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T17:43:10+00:00"
+            "time": "2021-06-22T16:07:00+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
