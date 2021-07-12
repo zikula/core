@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zikula/core.svg?branch=master)](https://travis-ci.org/zikula/core)
+[![Build Status](https://travis-ci.com/zikula/core.svg?branch=master)](https://travis-ci.com/zikula/core)
 [![StyleCI](https://styleci.io/repos/781544/shield?branch=master)](https://styleci.io/repos/781544)
 [![SensioLabsInsight](https://insight.symfony.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487/mini.png)](https://insight.symfony.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487)
 [![Scrutinizer](https://scrutinizer-ci.com/g/zikula/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zikula/core/)
