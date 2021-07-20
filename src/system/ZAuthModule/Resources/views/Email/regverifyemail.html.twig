@@ -10,7 +10,7 @@
 {% if not isApproved %}{% trans %}Your request is also waiting for administrator approval.{% endtrans %}
 {% trans %}Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.{% endtrans %}{% endif %}</p>
 
-<p>{% trans %}Please click on the following link to complete the e-mail address check: {% endtrans %}<a href="{{ verificationurl }}">{% trans %}Verify my e-mail address{% endtrans %}</a></p>
+<p>{% trans %}Please click on the following link to complete the e-mail address check:{% endtrans %} <a href="{{ verificationurl }}">{% trans %}Verify my e-mail address{% endtrans %}</a></p>
 
 <p>{% trans %}If you are not able to click on the above link, you can copy the following URL into your browser:{% endtrans %} {{ verificationurl }}</p>
 

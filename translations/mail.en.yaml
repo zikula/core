@@ -31,7 +31,7 @@ Hello!: Hello!
 Password: Password
 'Password:  %sub%': 'Password:  %sub%'
 'Password: %sub%': 'Password: %sub%'
-'Please click on the following link to complete the e-mail address check: ': 'Please click on the following link to complete the e-mail address check: '
+'Please click on the following link to complete the e-mail address check:': 'Please click on the following link to complete the e-mail address check:'
 'Recently, this e-mail address (''%email'') was used to request an account on ''%site%'' (%url%).': 'Recently, this e-mail address (''%email'') was used to request an account on ''%site%'' (%url%).'
 'Remember: both this verification step and approval from an administrator must be completed before you can log in.': 'Remember: both this verification step and approval from an administrator must be completed before you can log in.'
 'Reset my password': 'Reset my password'
