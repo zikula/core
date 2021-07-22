@@ -1,0 +1,67 @@
+name: Feature Request
+description: Tell us about a new addition you want to see
+labels: [Feature]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Pleaseprovide a brief overview of what the new feature is all about.
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: desired-behavior
+    attributes:
+      label: Desired behaviour
+      description: Please tell us, how the new feature should work, be specific.
+      placeholder: Describe what you imagine!
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: possible-solution
+    attributes:
+      label: Possible solution
+      description: Not required, but suggest ideas on how to implement the addition or change.
+      render: bash
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description:  Why does this feature matter to you? What unique circumstances do you have?
+      render: bash
+  - type: dropdown
+    id: zikula-version
+    attributes:
+      label: Zikula version
+      description: Which Zikula version are you running?
+      options:
+        - 3.0.x
+        - 3.x-git
+        - 2.0.x
+        - 2.x-git
+        - 1.5.x
+        - 1.5.x-git
+    validations:
+      required: true
+  - type: dropdown
+    id: php-version
+    attributes:
+      label: PHP version
+      description: Which PHP version are you running?
+      options:
+        - 8.0.x
+        - 7.4.x
+        - 7.3.x
+        - 7.2.x
+        - 7.1.x
+        - 7.0.x
+        - 5.6.x
+        - 5.5.x
+    validations:
+      required: true

@@ -1,0 +1,82 @@
+name: Bug Report
+description: Provide information about a problem
+labels: [Bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behaviour - What did you expect to happen?
+      description: Please tell us, what is the intended behavior?
+      placeholder: Describe what you wanted to see!
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current behavior - What happened instead?
+      description: Also tell us, what actually happened? If possible include screenshots of your problem!
+      placeholder: Tell us what you see!
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: possible-solution
+    attributes:
+      label: Possible solution
+      description: Not required, but suggest a fix/reason for the bug.
+      render: bash
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Provide a link to a live example, or an unambiguous set of steps to reproduce this bug. Include code to reproduce, if relevant.
+      value: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+        ...
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: How has this issue affected you? What unique circumstances do you have?
+      render: bash
+  - type: dropdown
+    id: zikula-version
+    attributes:
+      label: Zikula version
+      description: Which Zikula version are you running?
+      options:
+        - 3.0.x
+        - 3.x-git
+        - 2.0.x
+        - 2.x-git
+        - 1.5.x
+        - 1.5.x-git
+    validations:
+      required: true
+  - type: dropdown
+    id: php-version
+    attributes:
+      label: PHP version
+      description: Which PHP version are you running?
+      options:
+        - 8.0.x
+        - 7.4.x
+        - 7.3.x
+        - 7.2.x
+        - 7.1.x
+        - 7.0.x
+        - 5.6.x
+        - 5.5.x
+    validations:
+      required: true
