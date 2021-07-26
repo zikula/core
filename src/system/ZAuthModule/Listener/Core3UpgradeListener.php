@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Bundle\CoreBundle\Doctrine\ColumnExistsTrait;
 use Zikula\Bundle\CoreInstallerBundle\Event\CoreUpgradePreExtensionUpgrade;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class Core3UpgradeListener implements EventSubscriberInterface
 {
+    use ColumnExistsTrait;
+
     public static function getSubscribedEvents()
     {
         return [
