@@ -35,7 +35,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
 
         $this->createDefaultData();
         $this->setVars($this->getDefaultModvars());
-        $this->getVariableApi()->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
+        $this->getVariableApi()->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_either' => true]);
 
         return true;
     }

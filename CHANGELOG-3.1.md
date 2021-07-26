@@ -43,6 +43,7 @@
   - [Routes] Dropdown for choosing bundle/controller/action combination (#4517).
   - [Theme] Add `Symfony\WebpackEncoreBundle` (#4571).
     - Automatically adds webpack assets via a listener.
+  - [Users/ZAuth] Default authentication method is changed to "native either" (#4351).
 
 - Deprecated:
   - [General] Controller methods should not have an `Action` suffix in their names anymore.
