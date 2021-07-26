@@ -99,12 +99,12 @@ class ConfigController extends AbstractController
                 $data = $form->getData();
                 if (!in_array(true, $data['authenticationMethodsStatus'], true)) {
                     // do not allow all methods to be inactive.
-                    $data['authenticationMethodsStatus']['native_uname'] = true;
+                    $data['authenticationMethodsStatus']['native_either'] = true;
                     $this->addFlash(
                         'info',
                         $this->trans(
                             'All methods cannot be inactive. At least one methods must be enabled (%method% has been enabled).',
-                            ['%method%' => $allMethods['native_uname']->getDisplayName()]
+                            ['%method%' => $allMethods['native_either']->getDisplayName()]
                         )
                     );
                 }
