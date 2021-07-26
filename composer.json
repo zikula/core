@@ -95,7 +95,7 @@
         "symfony/webpack-encore-bundle": "^1.8",
         "symfony/workflow": "^5.3",
         "symfony/yaml": "^5.3",
-        "thomaspark/bootswatch": "4.*",
+        "thomaspark/bootswatch": "5.*",
         "twig/cssinliner-extra": "3.*",
         "twig/extra-bundle": "3.*",
         "twig/html-extra": "3.*",
