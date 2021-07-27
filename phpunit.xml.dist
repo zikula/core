@@ -13,7 +13,7 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
     <php>
-        <!-- from https://github.com/symfony/recipes/blob/master/symfony/phpunit-bridge/5.3/phpunit.xml.dist -->
+        <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/><!-- avoid deprecation warnings in test output -->
         <server name="APP_ENV" value="test" force="true" />
@@ -21,6 +21,7 @@
         <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
         <env name="ZIKULA_INSTALLED" value="3.0.0" />
     </php>
+
     <testsuites>
         <testsuite name="Zikula Bundle Tests">
             <directory>./src/Zikula/*/Tests/</directory>
