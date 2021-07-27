@@ -535,7 +535,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "5.2",
-            "ref": "13350583a83fa636bf45a5fb62da3bdc73be52a1"
+            "ref": "a1c8800e40ae735206bb14586fdd6c4630a51b8d"
         },
         "files": [
             "config/packages/lock.yaml"
