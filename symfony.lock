@@ -820,7 +820,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.9",
-            "ref": "9399a0bfc6ee7a0c019f952bca46d6a6045dd451"
+            "ref": "12e0ad8155c23b9f9290e8c49215d4ec921cdf71"
         },
         "files": [
             "assets/app.js",
