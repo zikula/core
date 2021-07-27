@@ -14,6 +14,12 @@ framework:
     php_errors:
         log: true
 
+when@dev:
+    framework:
+        profiler: { only_exceptions: false }
+        # see https://symfony.com/doc/current/reference/configuration/framework.html#ide
+        #ide: phpstorm
+
 when@test:
     framework:
         test: true
