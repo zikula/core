@@ -56,7 +56,7 @@ You can also use an additional command `zikula:translation:keytovalue` to fix de
 
 ```shell
 php -dmemory_limit=2G bin/console zikula:translation:keytovalue
-php -dmemory_limit=2G bin/console zikula:translation:keytovalue --bundle AcmeFooModule
+php -dmemory_limit=2G bin/console zikula:translation:keytovalue AcmeFooModule
 ```
 
 ## Translation annotations
