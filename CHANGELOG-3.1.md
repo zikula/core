@@ -15,6 +15,7 @@
 - Fixes:
   - [composer] Correct Composer 2 compatibilty.
   - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
+  - [Admin] Add missing numeric casts to admin module setting usages (#4709).
   - [Menu] Fixed handling of menu items without URI in custom request voter.
   - [Search] Add missing query string to search results pagination.
   - [Theme] Asset combination now defaults to `false` on installation (#4419).

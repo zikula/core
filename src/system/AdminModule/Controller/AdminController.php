@@ -63,7 +63,7 @@ class AdminController extends AbstractController
      */
     public function view(AdminCategoryRepositoryInterface $repository, int $page = 1): array
     {
-        $pageSize = $this->getVar('itemsperpage');
+        $pageSize = (int) $this->getVar('itemsperpage');
 
         /** @var PaginatorInterface $paginator */
         $paginator = $repository->getPagedCategories(['sortorder' => 'ASC'], $page, $pageSize);
