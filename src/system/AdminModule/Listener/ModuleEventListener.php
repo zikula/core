@@ -70,7 +70,7 @@ class ModuleEventListener implements EventSubscriberInterface
             return;
         }
         $extension = $event->getExtensionBundle();
-        $category = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
+        $category = (int) $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
         $module = $this->extensionRepository->findOneBy(['name' => $extension->getName()]);
         $sortOrder = $this->adminModuleRepository->countModulesByCategory($category);
 
