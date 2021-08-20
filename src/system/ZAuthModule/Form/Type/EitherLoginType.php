@@ -20,8 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
-use Translation\Extractor\Annotation\Translate;
 
 class EitherLoginType extends AbstractType
 {
@@ -30,15 +30,21 @@ class EitherLoginType extends AbstractType
      */
     private $router;
 
-    public function __construct(RouterInterface $router)
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(RouterInterface $router, TranslatorInterface $translator)
     {
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $forgotUsername = /** @Translate */ 'I forgot my username';
-        $forgotPassword = /** @Translate */ 'I forgot my password';
+        $forgotUsername = $this->translator->trans('I forgot my username');
+        $forgotPassword = $this->translator->trans('I forgot my password');
         $builder
             ->add('either', TextType::class, [
                 'label' => 'User name or email',

@@ -20,8 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
-use Translation\Extractor\Annotation\Translate;
 
 class EmailLoginType extends AbstractType
 {
@@ -30,14 +30,20 @@ class EmailLoginType extends AbstractType
      */
     private $router;
 
-    public function __construct(RouterInterface $router)
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(RouterInterface $router, TranslatorInterface $translator)
     {
         $this->router = $router;
+        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $forgotPassword = /** @Translate */ 'I forgot my password';
+        $forgotPassword = $this->translator->trans('I forgot my password');
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'Email address',

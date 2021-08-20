@@ -40,6 +40,7 @@
 '==': '=='
 '>': '>'
 '>=': '>='
+'A block of type %type% is in use. This type is deprecated and will not be available in future versions of Zikula. Please replace it with %replace%': 'A block of type %type% is in use. This type is deprecated and will not be available in future versions of Zikula. Please replace it with %replace%'
 'A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"': 'A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"'
 'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%': 'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%'
 'A new version of the Zikula core is available. Please download the new Zikula core.': 'A new version of the Zikula core is available. Please download the new Zikula core.'
@@ -49,6 +50,7 @@
 'A user with this address does not exist at this site.': 'A user with this address does not exist at this site.'
 'A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue': 'A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'
 'About the CSV file': 'About the CSV file'
+Accept: Accept
 'Accept %username%': 'Accept %username%'
 'Access forbidden.': 'Access forbidden.'
 'Account Information': 'Account Information'
@@ -107,6 +109,7 @@ All: All
 'All instances of LangBlock have been converted to LocaleBlock.': 'All instances of LangBlock have been converted to LocaleBlock.'
 'All methods cannot be inactive. At least one methods must be enabled (%method% has been enabled).': 'All methods cannot be inactive. At least one methods must be enabled (%method% has been enabled).'
 'All the dependencies for this extensions are fulfilled. You can safely install!': 'All the dependencies for this extensions are fulfilled. You can safely install!'
+'All users': 'All users'
 'All words': 'All words'
 'Allow a user to authenticate and login via Zikula''s native user database with their email address.': 'Allow a user to authenticate and login via Zikula''s native user database with their email address.'
 'Allow a user to authenticate and login via Zikula''s native user database with their username or email address.': 'Allow a user to authenticate and login via Zikula''s native user database with their username or email address.'
@@ -269,8 +272,12 @@ Clear: Clear
 'Click on the %add_node% button to add new states and transitions.': 'Click on the %add_node% button to add new states and transitions.'
 'Click on the trash-can icons to delete nodes and their connections.': 'Click on the trash-can icons to delete nodes and their connections.'
 'Click to activate block': 'Click to activate block'
+'Click to connect %event% with %listener%': 'Click to connect %event% with %listener%'
 'Click to deactivate block': 'Click to deactivate block'
 'Click to deactivate this block': 'Click to deactivate this block'
+'Click to decrement listener priority': 'Click to decrement listener priority'
+'Click to disconnect %event% from %listener%': 'Click to disconnect %event% from %listener%'
+'Click to increment listener priority': 'Click to increment listener priority'
 Close: Close
 Closed: Closed
 'Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting': 'Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting'
@@ -289,12 +296,14 @@ Condition: Condition
 Configuration: Configuration
 'Configuration successful. Please verify your parameters below:': 'Configuration successful. Please verify your parameters below:'
 'Configuring Zikula installation in %env% environment.': 'Configuring Zikula installation in %env% environment.'
+Confirm: Confirm
 'Confirm deletion': 'Confirm deletion'
 'Confirm sending code': 'Confirm sending code'
 'Confirm verification code': 'Confirm verification code'
 'Confirm verification code is to be sent to %sub%': 'Confirm verification code is to be sent to %sub%'
 'Confirmation prompt': 'Confirmation prompt'
 'Congratulations! Upgrade Complete.': 'Congratulations! Upgrade Complete.'
+'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.': 'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.'
 'Congratulations! Zikula has been successfully installed.': 'Congratulations! Zikula has been successfully installed.'
 Connections: Connections
 Content: Content
@@ -366,6 +375,7 @@ Date: Date
 'Date: %date%': 'Date: %date%'
 DateTime: DateTime
 'DateTime object': 'DateTime object'
+Day: Day
 'De-select all': 'De-select all'
 'Deactivate extension': 'Deactivate extension'
 'Decrease zoom level': 'Decrease zoom level'
@@ -405,6 +415,7 @@ Deleted: Deleted
 'Deleting could ''orphan'' data in the system and cause display errors or other unknown problems.': 'Deleting could ''orphan'' data in the system and cause display errors or other unknown problems.'
 'Deleting your Account is not recommended.': 'Deleting your Account is not recommended.'
 'Deletion type': 'Deletion type'
+Deny: Deny
 'Deny %username%': 'Deny %username%'
 Descending: Descending
 Description: Description
@@ -512,6 +523,8 @@ Download: Download
 E-mail: E-mail
 'E-mail address to notify of registrations': 'E-mail address to notify of registrations'
 'E-mail address:': 'E-mail address:'
+'Each item on this list is an e-mail address domain (the part after the ''@''). E-mail addresses on new registrations or on an existing user''s change of e-mail address requests are not allowed to have any domain on this list.': 'Each item on this list is an e-mail address domain (the part after the ''@''). E-mail addresses on new registrations or on an existing user''s change of e-mail address requests are not allowed to have any domain on this list.'
+'Each user name on this list is not allowed to be chosen by someone registering for a new account.': 'Each user name on this list is not allowed to be chosen by someone registering for a new account.'
 Edit: Edit
 'Edit %sub%': 'Edit %sub%'
 'Edit access': 'Edit access'
@@ -682,6 +695,7 @@ Extensions: Extensions
 Filter: Filter
 'Filter %active%': 'Filter %active%'
 'Filter colour': 'Filter colour'
+'Filter columns': 'Filter columns'
 'Filter component': 'Filter component'
 'Filter group': 'Filter group'
 Filters: Filters
@@ -758,10 +772,12 @@ Help: Help
 'Hide closed groups': 'Hide closed groups'
 'Hide private groups': 'Hide private groups'
 Home: Home
+'Hook Connections': 'Hook Connections'
 Hooks: Hooks
 Host: Host
 'Host:': 'Host:'
 'How help documents for an extension should be displayed.': 'How help documents for an extension should be displayed.'
+'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider. For further information about the mailer transport setup please refer to the Symfony docs %link%. Please do not install any mailer transport using composer, as they are already included in Zikula.': 'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider. For further information about the mailer transport setup please refer to the Symfony docs %link%. Please do not install any mailer transport using composer, as they are already included in Zikula.'
 'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider. For further information about the mailer transport setup please refer to the Symfony docs %link1% and %link2%.': 'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider. For further information about the mailer transport setup please refer to the Symfony docs %link1% and %link2%.'
 'How to use the editor': 'How to use the editor'
 'However, your user ID will remain valid and be associated to a ''ghost'' username where required.': 'However, your user ID will remain valid and be associated to a ''ghost'' username where required.'
@@ -769,6 +785,8 @@ Html: Html
 Html5: Html5
 Http: Http
 Https: Https
+'I forgot my password': 'I forgot my password'
+'I forgot my username': 'I forgot my username'
 ID: ID
 'ID of main administration permission rule': 'ID of main administration permission rule'
 IP: IP
@@ -969,6 +987,7 @@ Modules: Modules
 'Modules per page in module categories list': 'Modules per page in module categories list'
 'Modules per row in admin panel': 'Modules per row in admin panel'
 Money: Money
+Month: Month
 'Move all children': 'Move all children'
 'Move all sub-categories': 'Move all sub-categories'
 'Move and delete': 'Move and delete'
@@ -1031,6 +1050,7 @@ Next: Next
 None: None
 'Not Available in System': 'Not Available in System'
 'Not allowed': 'Not allowed'
+'Not eligible for connection': 'Not eligible for connection'
 'Not installed': 'Not installed'
 'Not yet approved': 'Not yet approved'
 'Note: Upon saving, the cache will be rebuilt and this may take several seconds to reload. Please be patient.': 'Note: Upon saving, the cache will be rebuilt and this may take several seconds to reload. Please be patient.'
@@ -1233,6 +1253,7 @@ Route: Route
 'Route scope': 'Route scope'
 Routes: Routes
 'Routes list': 'Routes list'
+'Run pre-install checks': 'Run pre-install checks'
 'SMTP host server': 'SMTP host server'
 'SMTP port': 'SMTP port'
 'SMTP server': 'SMTP server'
@@ -1283,7 +1304,9 @@ Select: Select
 Sendgrid: Sendgrid
 'Sending a password via email is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.': 'Sending a password via email is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.'
 'Sendmail binary': 'Sendmail binary'
+'Separate each domain with a comma.': 'Separate each domain with a comma.'
 'Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.': 'Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.'
+'Separate each user name with a comma.': 'Separate each user name with a comma.'
 'Separate with &, for example: <code>foo=2&bar=5</code>': 'Separate with &, for example: <code>foo=2&bar=5</code>'
 'Server time zone is %tz%': 'Server time zone is %tz%'
 'Session are currently configured to use the filesystem. It is recommended that you change this to use the database. Click %here% to configure.': 'Session are currently configured to use the filesystem. It is recommended that you change this to use the database. Click %here% to configure.'
@@ -1320,6 +1343,7 @@ Settings: Settings
 'Sorry! New user registration is currently disabled.': 'Sorry! New user registration is currently disabled.'
 'Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.': 'Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'
 'Sorry! There was a problem sending a verification code to %sub%.': 'Sorry! There was a problem sending a verification code to %sub%.'
+'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.': 'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.'
 'Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.': 'Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'
 'Sorry! Your account is marked as inactive. Please contact a site administrator for more information.': 'Sorry! Your account is marked as inactive. Please contact a site administrator for more information.'
 'Sorry, but an error occured during the %action% action.': 'Sorry, but an error occured during the %action% action.'
@@ -1382,6 +1406,7 @@ Textarea: Textarea
 'The allow moderation specific creation date for route option': 'The allow moderation specific creation date for route option'
 'The allow moderation specific creator for route option': 'The allow moderation specific creator for route option'
 'The amount of routes shown per page': 'The amount of routes shown per page'
+'The amount of routes shown per page.': 'The amount of routes shown per page.'
 'The code provided is invalid or this user has never registered or has fully completed registration.': 'The code provided is invalid or this user has never registered or has fully completed registration.'
 'The create process failed for an unknown reason.': 'The create process failed for an unknown reason.'
 'The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.': 'The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.'
@@ -1457,6 +1482,8 @@ Themes: Themes
 'There was an error upgrading the extensions': 'There was an error upgrading the extensions'
 'There was an error upgrading to Core %version%': 'There was an error upgrading to Core %version%'
 'There was no need to migrate any users.': 'There was no need to migrate any users.'
+'There were no HookEventListeners found': 'There were no HookEventListeners found'
+'There were no HookEvents found': 'There were no HookEvents found'
 'Third party module': 'Third party module'
 'Third party modules are responsible to remove their own data tied to your account.': 'Third party modules are responsible to remove their own data tied to your account.'
 'Third party theme': 'Third party theme'
@@ -1573,6 +1600,7 @@ Users: Users
 'Users groups': 'Users groups'
 'Users list': 'Users list'
 'Users pending approval': 'Users pending approval'
+'Users with old passwords (recommended)': 'Users with old passwords (recommended)'
 Value: Value
 'Value to change?': 'Value to change?'
 'Vector icon for Safari': 'Vector icon for Safari'
@@ -1600,6 +1628,7 @@ Warning: Warning
 'Welcome to the route section of the Routes application.': 'Welcome to the route section of the Routes application.'
 'When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.': 'When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.'
 'Whether only own entries should be shown on view pages by default or not': 'Whether only own entries should be shown on view pages by default or not'
+'Whether only own entries should be shown on view pages by default or not.': 'Whether only own entries should be shown on view pages by default or not.'
 'Whether to allow moderators choosing a custom creation date.': 'Whether to allow moderators choosing a custom creation date.'
 'Whether to allow moderators choosing a user which will be set as creator.': 'Whether to allow moderators choosing a user which will be set as creator.'
 Widget: Widget
@@ -1611,9 +1640,13 @@ Workflow: Workflow
 'Writing and thinking': 'Writing and thinking'
 XML: XML
 YAML: YAML
+Year: Year
 'Yes': 'Yes'
+'Yes, cancel the change of password': 'Yes, cancel the change of password'
+'Yes, force the change of password': 'Yes, force the change of password'
 'You already have a pending application. Please wait until the administrator notifies you.': 'You already have a pending application. Please wait until the administrator notifies you.'
 'You are already a member of this group.': 'You are already a member of this group.'
+'You are an anonymous guest.': 'You are an anonymous guest.'
 'You are an anonymous guest.'', ''zikula': 'You are an anonymous guest.'', ''zikula'
 'You are currently using an unreleased version of the Zikula Core.': 'You are currently using an unreleased version of the Zikula Core.'
 'You are in:': 'You are in:'
@@ -1693,6 +1726,7 @@ YAML: YAML
 'Zikula is not upgraded!': 'Zikula is not upgraded!'
 'Zikula is upgrading!': 'Zikula is upgrading!'
 active: active
+add: add
 'albert,12secure09,albert@example.org': 'albert,12secure09,albert@example.org'
 'albert,12secure09,albert@example.org,1,1,2': 'albert,12secure09,albert@example.org,1,1,2'
 alpha.current: alpha.current
@@ -1705,6 +1739,7 @@ categoryAssignments: categoryAssignments
 content: content
 copy: copy
 'copy & close': 'copy & close'
+current: current
 days: days
 'default 5000 = 5 seconds': 'default 5000 = 5 seconds'
 dependencies: dependencies
@@ -1734,6 +1769,7 @@ list: list
 'marked for deletion': 'marked for deletion'
 milliseconds: milliseconds
 model_timezone: model_timezone
+name: name
 new: new
 'no title defined': 'no title defined'
 'online documentation': 'online documentation'

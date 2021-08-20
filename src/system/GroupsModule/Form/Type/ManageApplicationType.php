@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
 
@@ -27,11 +28,21 @@ use Translation\Extractor\Annotation\Translate;
  */
 class ManageApplicationType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $reason = 'accept' === $options['data']['theAction']
-            ? /** @Translate */ 'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.'
-            : /** @Translate */ 'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.'
+            ? $this->translator->trans('Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.')
+            : $this->translator->trans('Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.')
         ;
         $builder
             ->add('theAction', HiddenType::class)

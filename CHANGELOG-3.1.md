@@ -14,8 +14,10 @@
 
 - Fixes:
   - [composer] Correct Composer 2 compatibilty.
+  - [translations] Fix non-working extraction of translation with `@Translate` annotation (#4694).
   - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
   - [Admin] Add missing numeric casts to admin module setting usages (#4709).
+  - [Groups] Fix some non-working translations (#4694).
   - [Menu] Fixed handling of menu items without URI in custom request voter.
   - [Search] Add missing query string to search results pagination.
   - [Theme] Asset combination now defaults to `false` on installation (#4419).
@@ -25,6 +27,7 @@
   - [Users] Fixed broken mass deletion (#4597).
   - [Users] Added redirect for cancel button on registration form (#4595).
   - [ZAuth] Fix wrong `DateTime` value (#4657).
+  - [ZAuth] Fix some non-working translations (#4694).
 
 - Features:
   - [dependency] Changed dependency from `symfony/symfony` to ALL the related `symfony/*` components (#4352, #4563).

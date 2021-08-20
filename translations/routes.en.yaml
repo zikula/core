@@ -16,6 +16,8 @@ translation_edit_in_place_update: '/admin/_trans_edit_in_place/{configName}/{loc
 translation_index: '/admin/_trans/{configName}'
 translation_show: '/admin/_trans/{configName}/{locale}/{domain}'
 upgrade: '/upgrade/{stage}'
+zikula_hook_connection_connections: /hook-connections
+zikula_hook_connection_modify: /hook-modify
 zikula_hook_hook_changeproviderareaorder: /hooks/changeorder
 zikula_hook_hook_edit: '/hooks/{moduleName}'
 zikula_hook_hook_togglesubscribeareastatus: /hooks/togglestatus

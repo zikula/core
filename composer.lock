@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "304b8dbfb73e46021172abac98ba6120",
+    "content-hash": "5d8cb5ec94fbf5e750912f1926576749",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4799,23 +4799,18 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.12.3",
+            "version": "dev-extractor-service-definitions",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "ccdf1e2a4acf314488caf608cfb1b7a6191a83ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/ccdf1e2a4acf314488caf608cfb1b7a6191a83ea",
-                "reference": "ccdf1e2a4acf314488caf608cfb1b7a6191a83ea",
-                "shasum": ""
+                "url": "https://github.com/Guite/symfony-bundle/",
+                "reference": "1cbc73dde879a016729ae4017292c744ce4e58c4"
             },
             "require": {
                 "nyholm/nsa": "^1.1",
                 "php": "^7.2 || ^8.0",
                 "php-translation/extractor": "^2.0",
                 "php-translation/symfony-storage": "^2.1",
+                "symfony/asset": "^4.4.20 || ^5.2.4",
                 "symfony/finder": "^4.4.20 || ^5.2.4",
                 "symfony/framework-bundle": "^4.4.20 || ^5.2.5",
                 "symfony/intl": "^4.4.20 || ^5.2.4",
@@ -4834,7 +4829,6 @@
                 "php-http/message": "^1.11",
                 "php-http/message-factory": "^1.0.2",
                 "php-translation/translator": "^1.0",
-                "symfony/asset": "^4.4.20 || ^5.2.4",
                 "symfony/console": "^4.4.20 || ^5.2.5",
                 "symfony/dependency-injection": "^4.4.20 || ^5.2.5",
                 "symfony/phpunit-bridge": "^5.2",
@@ -4858,7 +4852,14 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "test-ci": [
+                    "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml Tests/Unit"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -4868,11 +4869,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "support": {
-                "issues": "https://github.com/php-translation/symfony-bundle/issues",
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.3"
-            },
-            "time": "2021-03-26T20:13:10+00:00"
+            "time": "2021-08-19T08:16:18+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -6834,16 +6831,16 @@
         },
         {
             "name": "seld/phar-utils",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/phar-utils.git",
-                "reference": "8674b1d84ffb47cc59a101f5d5a3b61e87d23796"
+                "reference": "749042a2315705d2dfbbc59234dd9ceb22bf3ff0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/8674b1d84ffb47cc59a101f5d5a3b61e87d23796",
-                "reference": "8674b1d84ffb47cc59a101f5d5a3b61e87d23796",
+                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/749042a2315705d2dfbbc59234dd9ceb22bf3ff0",
+                "reference": "749042a2315705d2dfbbc59234dd9ceb22bf3ff0",
                 "shasum": ""
             },
             "require": {
@@ -6876,9 +6873,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/phar-utils/issues",
-                "source": "https://github.com/Seldaek/phar-utils/tree/master"
+                "source": "https://github.com/Seldaek/phar-utils/tree/1.1.2"
             },
-            "time": "2020-07-07T18:42:57+00:00"
+            "time": "2021-08-19T21:01:38+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -14791,6 +14788,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "jms/i18n-routing-bundle": 20,
+        "php-translation/symfony-bundle": 20,
         "phpids/phpids": 20,
         "zikula/legal-module": 20,
         "zikula/pagelock-module": 20,
