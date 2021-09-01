@@ -192,7 +192,7 @@
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "master",
             "version": "1.8",
-            "ref": "5a5bdc2d0e2533ed6935d5ae562f2b318a8fc1ee"
+            "ref": "ffbb72e74598f04cc7f79f9fc736c77eeb98f569"
         },
         "files": [
             "config/packages/liip_imagine.yaml",
