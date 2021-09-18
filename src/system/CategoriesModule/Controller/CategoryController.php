@@ -98,7 +98,7 @@ class CategoryController extends AbstractController
                 }
                 $class = !empty($classes) ? ' class="' . implode(' ', $classes) . '"' : '';
 
-                return '<a' . $class . $title . ' href="#">' . $displayName . '</a>';
+                return '<a' . $class . $title . ' href="#">' . htmlspecialchars($displayName) . '</a>';
             }
         ];
     }
@@ -115,6 +115,6 @@ class CategoryController extends AbstractController
         $title[] = $this->trans('Leaf') . ': ' . ($node['leaf'] ? 'Yes' : 'No');
         $title[] = $this->trans('Locked') . ': ' . ($node['locked'] ? 'Yes' : 'No');
 
-        return implode('<br />', $title);
+        return htmlspecialchars(implode('<br />', $title));
     }
 }
