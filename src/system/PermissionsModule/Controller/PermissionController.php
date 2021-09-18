@@ -206,7 +206,7 @@ class PermissionController extends AbstractController
         $result = $this->trans('Permission check result:') . ' ';
         if (!empty($data['user'])) {
             $user = $userRepository->findOneBy(['uname' => $data['user']]);
-            $uid = isset($user) ? $user->getUid() : Constant::USER_ID_ANONYMOUS;
+            $uid = isset($user) ? $user->getUid() : false;
         } else {
             $uid = Constant::USER_ID_ANONYMOUS;
         }
@@ -217,7 +217,7 @@ class PermissionController extends AbstractController
             $granted = $this->hasPermission($data['component'], $data['instance'], $data['level'], $uid);
 
             $result .= '<span class="' . ($granted ? 'text-success' : 'text-danger') . '">';
-            $result .= (0 === $uid) ? $this->trans('unregistered user') : $data['user'];
+            $result .= Constant::USER_ID_ANONYMOUS < $uid && isset($user) ? $user->getUname() : $this->trans('unregistered user');
             $result .= ': ';
             if ($granted) {
                 $result .= $this->trans('permission granted.');
