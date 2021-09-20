@@ -48,6 +48,7 @@
   - [Theme] Add `Symfony\WebpackEncoreBundle` (#4571).
     - Automatically adds webpack assets via a listener.
   - [Users/ZAuth] Default authentication method is changed to "native either" (#4351).
+  - [ZAuth] Utilize rate limiter component for lost username / lost password functionalities.
 
 - Deprecated:
   - [General] Controller methods should not have an `Action` suffix in their names anymore.

@@ -18,6 +18,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -58,6 +60,7 @@ class AccountController extends AbstractController
         Request $request,
         RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
+        RateLimiterFactory $lostCredentialsLimiter,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         VariableApiInterface $variableApi,
         MailHelper $mailHelper
@@ -66,9 +69,15 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
+
         $form = $this->createForm(LostUserNameType::class, []);
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $limiter = $lostCredentialsLimiter->create($request->getClientIp());
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }
+
             $data = $form->getData();
             $mapping = $authenticationMappingRepository->findBy(['email' => $data['email']]);
             if (1 === count($mapping)) {
@@ -109,6 +118,7 @@ class AccountController extends AbstractController
         Request $request,
         RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
+        RateLimiterFactory $lostCredentialsLimiter,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         LostPasswordVerificationHelper $lostPasswordVerificationHelper,
@@ -124,6 +134,11 @@ class AccountController extends AbstractController
         $form = $this->createForm(LostPasswordType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $limiter = $lostCredentialsLimiter->create($request->getClientIp());
+            if (false === $limiter->consume(1)->isAccepted()) {
+                throw new TooManyRequestsHttpException();
+            }
+
             $redirectToRoute = '';
             $map = ['uname' => $this->trans('username'), 'email' => $this->trans('email address')];
             $data = $form->getData();

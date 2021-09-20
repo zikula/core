@@ -46,10 +46,10 @@ class AddWebPackAssetsListener implements EventSubscriberInterface
         AssetBag $jsAssetBag,
         AssetBag $cssAssetBag,
         EntrypointLookupCollectionInterface $lookupCollection,
-        string $entryPoint = '_default',
-        string $entryName = 'app',
         string $installed,
-        string $projectDir
+        string $projectDir,
+        string $entryPoint = '_default',
+        string $entryName = 'app'
     ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;

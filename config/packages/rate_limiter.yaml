@@ -1,0 +1,6 @@
+framework:
+    rate_limiter:
+        lost_credentials:
+            policy: 'fixed_window'
+            limit: 20
+            interval: '60 minutes'
