@@ -38,6 +38,13 @@ class XsltBlock extends AbstractBlockHandler
         } else {
             $doc->loadXML($properties['stylecontents']);
         }
+
+        // remove scripts
+        $scriptTags = $doc->getElementsByTagName('script');
+        foreach ($scriptTags as $scriptTag) {
+            $scriptTag->parentNode->removeChild($scriptTag);
+        }
+
         $xsl->importStyleSheet($doc);
 
         // load xml source
