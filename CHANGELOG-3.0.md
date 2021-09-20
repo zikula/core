@@ -13,6 +13,7 @@
   - [Permissions] Correctly handle non-existing username during permission testing.
   - [Users] Dispatch `UserPostLoginFailureEvent` after login failure as expected.
   - [Users] Add missing check in `CurrentUserApi` to avoid an error in PHP8.
+  - [Users] Fix possibly open redirect in login function.
   - [ZAuth] Fix wrong `DateTime` argument in `UserVerificationRepository`.
 
 - Features:

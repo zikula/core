@@ -171,7 +171,7 @@ class AccessController extends AbstractController
                         $returnUrl = $userPreSuccessLoginEvent->getRedirectUrl();
                     }
 
-                    return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
+                    return !empty($returnUrl) ? $this->redirect($this->sanitizeReturnUrl($request, $returnUrl)) : $this->redirectToRoute('home');
                 }
             }
         }
@@ -185,7 +185,7 @@ class AccessController extends AbstractController
         $eventDispatcher->dispatch($userPostFailLoginEvent);
         $returnUrl = $userPostFailLoginEvent->getRedirectUrl();
 
-        return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
+        return !empty($returnUrl) ? $this->redirect($this->sanitizeReturnUrl($request, $returnUrl)) : $this->redirectToRoute('home');
     }
 
     /**
@@ -210,8 +210,21 @@ class AccessController extends AbstractController
         }
 
         return isset($returnUrl)
-            ? $this->redirect($returnUrl)
+            ? $this->redirect($this->sanitizeReturnUrl($request, $returnUrl))
             : $this->redirectToRoute('home', ['_locale' => $this->getParameter('locale')])
         ;
+    }
+
+    private function sanitizeReturnUrl(Request $request, $returnUrl = null)
+    {
+        if (null === $returnUrl || empty($returnUrl)) {
+            return $returnUrl;
+        }
+
+        if ('/' !== mb_substr($returnUrl, 0, 1)) {
+            $returnUrl = '/' . $returnUrl;
+        }
+
+        return $request->getUriForPath($returnUrl);
     }
 }
