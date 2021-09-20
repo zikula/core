@@ -69,7 +69,6 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-
         $form = $this->createForm(LostUserNameType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
