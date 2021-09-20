@@ -221,6 +221,10 @@ class AccessController extends AbstractController
             return $returnUrl;
         }
 
+        if (false !== mb_strpos($returnUrl, $request->getUriForPath(''))) {
+            return $returnUrl;
+        }
+
         if ('/' !== mb_substr($returnUrl, 0, 1)) {
             $returnUrl = '/' . $returnUrl;
         }
