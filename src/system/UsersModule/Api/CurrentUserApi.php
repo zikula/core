@@ -80,6 +80,9 @@ class CurrentUserApi implements CurrentUserApiInterface
         if (!isset($this->user)) {
             $this->setUser();
         }
+        if (!isset($this->user)) {
+            return null;
+        }
         $method = 'get' . ucwords($key);
         if (method_exists($this->user, $method)) {
             return $this->user->{$method}();
