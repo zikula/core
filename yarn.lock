@@ -4733,10 +4733,10 @@ webpack-merge@^5.7.3:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
 
-webpack-notifier@^1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/webpack-notifier/-/webpack-notifier-1.13.0.tgz#24e43d00ee47032f047373ca291b2d1f543ec12d"
-  integrity sha512-QLk6l/TZKGhyN6Hd1zobaiYno7S9YPX3wH86+YOSufHes77SegGhnGdj+4vrLDFK5A4ZKoQD5GRXXFnM0h0N8A==
+webpack-notifier@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/webpack-notifier/-/webpack-notifier-1.14.0.tgz#92b386eac9a6b9b4581f4469433fe3695c0abaea"
+  integrity sha512-hZLbjTheCt6/O6K0dvacqBlVEq/5TTna7P7eez0pzSQq5ksWDyOzlLZE4f3PStkKk2FmU5IErOItyncDfKg/ZA==
   dependencies:
     node-notifier "^9.0.0"
     strip-ansi "^6.0.0"
