@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 abstract class AbstractTheme extends AbstractExtension
 {
@@ -75,8 +76,16 @@ abstract class AbstractTheme extends AbstractExtension
         ]);
 
         $content = $twig->render('@' . $this->name . '/' . $template, ['maincontent' => $content]);
+        $response = new Response($content);
 
-        return new Response($content);
+        $isLoggedIn = $this->getContainer()->get(CurrentUserApi::class)->isLoggedIn();
+        if ($isLoggedIn) {
+            $response->headers->set('Cache-Control','nocache, no-store, max-age=0, must-revalidate');
+            $response->headers->set('Pragma','no-cache');
+            $response->headers->set('Expires','Sun, 02 Jan 1990 00:00:00 GMT');
+        }
+
+        return $response;
     }
 
     /**
