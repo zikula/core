@@ -63,7 +63,7 @@
         "phpids/phpids": "dev-master",
         "phpunit/phpunit": "*",
         "sensio/framework-extra-bundle": "^6.1",
-        "stof/doctrine-extensions-bundle": "^1.5.0",
+        "stof/doctrine-extensions-bundle": "1.*",
         "symfony/asset": "^5.3",
         "symfony/browser-kit": "^5.3",
         "symfony/contracts": "^2.3",
