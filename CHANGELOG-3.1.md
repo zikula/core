@@ -16,6 +16,7 @@
   - [composer] Correct Composer 2 compatibilty.
   - [translations] Fix non-working extraction of translation with `@Translate` annotation (#4694).
   - [CoreBundle] Added clearing of OPCache (if in use) to standard clearcache operation (#4507).
+  - [CoreInstallerBundle] Use DBAL for cross-database determination of existing tables (#4688).
   - [Admin] Add missing numeric casts to admin module setting usages (#4709).
   - [Groups] Fix some non-working translations (#4694).
   - [Menu] Fixed handling of menu items without URI in custom request voter.

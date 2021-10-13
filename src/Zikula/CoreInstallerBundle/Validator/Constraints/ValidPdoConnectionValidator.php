@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Validator\Constraints;
 
-use PDO;
-use PDOException;
+use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,31 +41,42 @@ class ValidPdoConnectionValidator extends ConstraintValidator
             return;
         }
 
-        $dbName = $object['database_name'];
-        $dsn = $object['database_driver'] . ':host=' . $object['database_host'] . ';dbname=' . $dbName;
+        $connectionParams = [
+            'url' => $this->buildDsn($object),
+        ];
+
         try {
-            $dbh = new PDO($dsn, $object['database_user'], $object['database_password']);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = in_array($object['database_driver'], ['mysql', 'mysqli'])
-                ? 'SHOW TABLES FROM `' . $dbName . "` LIKE '%'"
-                : 'SHOW TABLES FROM ' . $dbName . " LIKE '%'";
-            $tables = $dbh->query($sql);
-            if (!is_object($tables)) {
+            $connection = DriverManager::getConnection($connectionParams, new Configuration());
+            if (!$connection->connect()) {
                 $this->context
-                    ->buildViolation($this->trans('Error! Determination existing tables failed.') . ' SQL: ' . $sql)
+                    ->buildViolation($this->trans('Error! Could not connect to the database. Please check that you have entered the correct database information and try again.'))
                     ->addViolation()
                 ;
-            } elseif ($tables->rowCount() > 0) {
-                $this->context
-                    ->buildViolation($this->trans('Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'))
-                    ->addViolation()
-                ;
+            } else {
+                $tables = $connection->getSchemaManager()->listTableNames();
+                if (0 < count($tables)) {
+                    $this->context
+                        ->buildViolation($this->trans('Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'))
+                        ->addViolation()
+                    ;
+                }
             }
-        } catch (PDOException $exception) {
+        } catch (DBALException $exception) {
             $this->context
-                ->buildViolation($this->trans('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ') . $exception->getMessage())
+                ->buildViolation($this->trans('Error! Could not connect to the database. Please check that you have entered the correct database information and try again.') . ' ' . $exception->getMessage())
                 ->addViolation()
             ;
         }
+    }
+
+    private function buildDsn($object): string
+    {
+        $dsn = $object['database_driver'] . '://' . $object['database_user'] . ':' . $object['database_password']
+            . '@' . $object['database_host'] . (!empty($object['database_port']) ? ':' . $object['database_port'] : '')
+                . '/' . $object['database_name']
+                . '?serverVersion=' . ($object['database_server_version'] ?? '5.7') // any value for serverVersion will work (bypasses DBALException)
+        ;
+
+        return $dsn;
     }
 }
