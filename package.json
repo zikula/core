@@ -5,7 +5,7 @@
         "core-js": "^3.18.3",
         "regenerator-runtime": "^0.13.9",
         "stimulus": "^2.0.0",
-        "webpack-notifier": "^1.14.0"
+        "webpack-notifier": "^1.14.1"
     },
     "license": "UNLICENSED",
     "private": true,
