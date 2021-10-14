@@ -1,4 +1,6 @@
 build:
+    environment:
+        node: v14.18.1 # LTS
     nodes:
         analysis:
             tests:
