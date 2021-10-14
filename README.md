@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zikula/core.svg?branch=main)](https://travis-ci.org/zikula/core)
+[![Build Status](https://travis-ci.com/zikula/core.svg?branch=main)](https://travis-ci.com/zikula/core)
 [![StyleCI](https://styleci.io/repos/781544/shield?branch=main)](https://styleci.io/repos/781544)
 [![Scrutinizer](https://scrutinizer-ci.com/g/zikula/core/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/zikula/core/)
 
