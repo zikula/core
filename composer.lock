@@ -3979,16 +3979,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.7.0",
+            "version": "2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "f815b7b664fe2b0023048affdbb61225a0393ec4"
+                "reference": "f15570747af01c5a8b3907e1c3f72b1664a99608"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/f815b7b664fe2b0023048affdbb61225a0393ec4",
-                "reference": "f815b7b664fe2b0023048affdbb61225a0393ec4",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/f15570747af01c5a8b3907e1c3f72b1664a99608",
+                "reference": "f15570747af01c5a8b3907e1c3f72b1664a99608",
                 "shasum": ""
             },
             "require": {
@@ -4075,9 +4075,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipImagineBundle/issues",
-                "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.0"
+                "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.1"
             },
-            "time": "2021-10-28T10:11:26+00:00"
+            "time": "2021-11-02T10:56:26+00:00"
         },
         {
             "name": "lorenzo/pinky",
