@@ -1,6 +1,6 @@
 build:
     environment:
-        node: v14.18.1 # LTS
+        node: v16.13.0 # LTS
     nodes:
         analysis:
             tests:
@@ -9,7 +9,10 @@ build:
 
         tests-and-coverage:
             environment:
-                php: '7.2.5'
+                php:
+                    version: '7.2.5'
+                    ini:
+                        'memory_limit': '512M'
                 apache2:
                     modules: ['rewrite']
             tests:
