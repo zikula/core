@@ -3974,28 +3974,28 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.7.1",
+            "version": "2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "f15570747af01c5a8b3907e1c3f72b1664a99608"
+                "reference": "8581eed5dddbecaf7e442b0fd968b33c65a13db8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/f15570747af01c5a8b3907e1c3f72b1664a99608",
-                "reference": "f15570747af01c5a8b3907e1c3f72b1664a99608",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/8581eed5dddbecaf7e442b0fd968b33c65a13db8",
+                "reference": "8581eed5dddbecaf7e442b0fd968b33c65a13db8",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "imagine/imagine": "^1.2.4",
                 "php": "^7.1|^8.0",
-                "symfony/filesystem": "^3.4|^4.3|^5.0",
-                "symfony/finder": "^3.4|^4.3|^5.0",
-                "symfony/framework-bundle": "^3.4.23|^4.3|^5.0",
-                "symfony/mime": "^4.3|^5.0",
-                "symfony/options-resolver": "^3.4|^4.3|^5.0",
-                "symfony/process": "^3.4|^4.3|^5.0",
+                "symfony/filesystem": "^3.4|^4.4|^5.3",
+                "symfony/finder": "^3.4|^4.4|^5.3",
+                "symfony/framework-bundle": "^3.4.23|^4.4|^5.3",
+                "symfony/mime": "^4.4|^5.3",
+                "symfony/options-resolver": "^3.4|^4.4|^5.3",
+                "symfony/process": "^3.4|^4.4|^5.3",
                 "twig/twig": "^1.44|^2.9|^3.0"
             },
             "require-dev": {
@@ -4009,16 +4009,16 @@
                 "phpstan/phpstan": "^0.12.64",
                 "psr/cache": "^1.0|^2.0|^3.0",
                 "psr/log": "^1.0",
-                "symfony/browser-kit": "^3.4|^4.3|^5.0",
-                "symfony/cache": "^3.4|^4.3|^5.0",
-                "symfony/console": "^3.4|^4.3|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.3|^5.0",
-                "symfony/form": "^3.4|^4.3|^5.0",
-                "symfony/messenger": "^4.3|^5.0",
-                "symfony/phpunit-bridge": "^5.2",
-                "symfony/templating": "^3.4|^4.3|^5.0",
-                "symfony/validator": "^3.4|^4.3|^5.0",
-                "symfony/yaml": "^3.4|^4.3|^5.0"
+                "symfony/browser-kit": "^3.4|^4.4|^5.3",
+                "symfony/cache": "^3.4|^4.4|^5.3",
+                "symfony/console": "^3.4|^4.4|^5.3",
+                "symfony/dependency-injection": "^3.4|^4.4|^5.3",
+                "symfony/form": "^3.4|^4.4|^5.3",
+                "symfony/messenger": "^4.4|^5.3",
+                "symfony/phpunit-bridge": "^5.3",
+                "symfony/templating": "^3.4|^4.4|^5.3",
+                "symfony/validator": "^3.4|^4.4|^5.3",
+                "symfony/yaml": "^3.4|^4.4|^5.3"
             },
             "suggest": {
                 "alcaeus/mongo-php-adapter": "required for mongodb components",
@@ -4070,9 +4070,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipImagineBundle/issues",
-                "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.1"
+                "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.2"
             },
-            "time": "2021-11-02T10:56:26+00:00"
+            "time": "2021-11-11T12:21:07+00:00"
         },
         {
             "name": "lorenzo/pinky",
