@@ -9521,16 +9521,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.36.2",
+            "version": "v1.36.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "63dc8ba1089f7ab7ae400b03dbee347f8b631275"
+                "reference": "0f40c826c0725208c254ddcd3481690e6c7e5047"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/63dc8ba1089f7ab7ae400b03dbee347f8b631275",
-                "reference": "63dc8ba1089f7ab7ae400b03dbee347f8b631275",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/0f40c826c0725208c254ddcd3481690e6c7e5047",
+                "reference": "0f40c826c0725208c254ddcd3481690e6c7e5047",
                 "shasum": ""
             },
             "require": {
@@ -9589,7 +9589,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.36.2"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.36.3"
             },
             "funding": [
                 {
@@ -9605,7 +9605,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-22T15:24:14+00:00"
+            "time": "2021-11-22T18:44:03+00:00"
         },
         {
             "name": "symfony/messenger",
