@@ -17,7 +17,7 @@ function updateZoomLevel(factor) {
         'transform': 'scale(' + currentZoom + ')'
     });
     if (null !== plumbInstance) {
-        plumbInstance.collicat.setZoom(currentZoom);
+        plumbInstance.setZoom(currentZoom);
     }
 }
 
@@ -34,7 +34,7 @@ function initZoomTools() {
     updateZoomLevel(0);
 }
 
-var configSection = 'workflow'; // change to framework in master branch
+var configSection = 'framework';
 
 var regenerateOutput = function () {
     var oneIndent, indent, output, states, transitions, connections;
@@ -282,7 +282,8 @@ var initNode = function (node) {
         uuid: node.attr('id')
     });
     // initialise element as connection targets and source.
-    plumbInstance.addSourceSelector(node.find('.ep'), {
+    plumbInstance.addSourceSelector(node.get(0), {
+        filter: '.ep',
         allowLoopback: false
     });
     plumbInstance.addTargetSelector(node.get(0), {
@@ -397,16 +398,6 @@ function startJsPlumb() {
   ],*/
             });
         });
-    });
-
-    plumbInstance.on(document.querySelectorAll(nodeSelector), 'click', function (e) {
-        if (!this.parentNode) {
-            // node has just been deleted
-            return;
-        }
-        /*var s = */plumbInstance.toggleDraggable(this.parentNode);
-        //this.innerHTML = (s ? 'disable dragging' : 'enable dragging');
-        plumbInstance.consume(e);
     });
 
     jQuery('#addNode').click(addNode);
