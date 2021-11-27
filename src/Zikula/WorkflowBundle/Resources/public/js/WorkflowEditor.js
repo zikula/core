@@ -282,13 +282,13 @@ var initNode = function (node) {
         uuid: node.attr('id')
     });
     // initialise element as connection targets and source.
-    plumbInstance.makeSource(node.get(0), {
+    plumbInstance.addSourceSelector(node.get(0), {
         filter: '.ep',
         extract: {
             'action': 'the-action'
         }
     });
-    plumbInstance.makeTarget(node.get(0), {
+    plumbInstance.addTargetSelector(node.get(0), {
         allowLoopback: false
     });
 };
