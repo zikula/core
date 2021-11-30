@@ -9944,16 +9944,16 @@
         },
         {
             "name": "symfony/notifier",
-            "version": "v5.3.11",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/notifier.git",
-                "reference": "9cf5ae2ae6838f8866f63826721671e7066275a4"
+                "reference": "181743e5b2abe0082e0e08fa17ffe48d4381b699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/notifier/zipball/9cf5ae2ae6838f8866f63826721671e7066275a4",
-                "reference": "9cf5ae2ae6838f8866f63826721671e7066275a4",
+                "url": "https://api.github.com/repos/symfony/notifier/zipball/181743e5b2abe0082e0e08fa17ffe48d4381b699",
+                "reference": "181743e5b2abe0082e0e08fa17ffe48d4381b699",
                 "shasum": ""
             },
             "require": {
@@ -9978,15 +9978,16 @@
                 "symfony/sendinblue-notifier": "<5.3",
                 "symfony/sinch-notifier": "<5.3",
                 "symfony/slack-notifier": "<5.3",
+                "symfony/sms77-notifier": "<5.3",
                 "symfony/smsapi-notifier": "<5.3",
                 "symfony/telegram-notifier": "<5.3",
                 "symfony/twilio-notifier": "<5.3",
                 "symfony/zulip-notifier": "<5.3"
             },
             "require-dev": {
-                "symfony/event-dispatcher-contracts": "^2",
-                "symfony/http-client-contracts": "^2",
-                "symfony/messenger": "^4.4|^5.0"
+                "symfony/event-dispatcher-contracts": "^2|^3",
+                "symfony/http-client-contracts": "^2|^3",
+                "symfony/messenger": "^4.4|^5.0|^6.0"
             },
             "type": "library",
             "autoload": {
@@ -10018,7 +10019,7 @@
                 "notifier"
             ],
             "support": {
-                "source": "https://github.com/symfony/notifier/tree/v5.3.11"
+                "source": "https://github.com/symfony/notifier/tree/v5.4.0"
             },
             "funding": [
                 {
@@ -10034,7 +10035,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-17T10:45:54+00:00"
+            "time": "2021-11-29T14:01:12+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -13002,16 +13003,16 @@
         },
         {
             "name": "symfony/web-link",
-            "version": "v5.3.4",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-link.git",
-                "reference": "0075c9949c30a61d9b9e7483686d72d261480ef1"
+                "reference": "de535b46002214d976c5b092f33f46de5e0c1d05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-link/zipball/0075c9949c30a61d9b9e7483686d72d261480ef1",
-                "reference": "0075c9949c30a61d9b9e7483686d72d261480ef1",
+                "url": "https://api.github.com/repos/symfony/web-link/zipball/de535b46002214d976c5b092f33f46de5e0c1d05",
+                "reference": "de535b46002214d976c5b092f33f46de5e0c1d05",
                 "shasum": ""
             },
             "require": {
@@ -13026,7 +13027,7 @@
                 "psr/link-implementation": "1.0"
             },
             "require-dev": {
-                "symfony/http-kernel": "^5.3"
+                "symfony/http-kernel": "^5.3|^6.0"
             },
             "suggest": {
                 "symfony/http-kernel": ""
@@ -13069,7 +13070,7 @@
                 "push"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-link/tree/v5.3.4"
+                "source": "https://github.com/symfony/web-link/tree/v5.4.0"
             },
             "funding": [
                 {
@@ -13085,7 +13086,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T12:40:44+00:00"
+            "time": "2021-07-21T12:43:48+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
