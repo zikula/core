@@ -10,13 +10,13 @@
         <li data-modid="{{ adminLink.id }}" class="draggable">
             {# module icon #}
             {% if getModVar('ZikulaAdminModule', 'admingraphic') == 1 %}
-            <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}"><i class="fa-fw {{ adminLink.adminIcon|default('fas fa-layer-group') }} fa-4x" title="{{ adminLink.menuText }}"></i></a>
+            <a title="{{ adminLink.menuTextTitle|e('html_attr') }}" href="{{ adminLink.menuTextUrl|e('html_attr') }}"><i class="fa-fw {{ adminLink.adminIcon|default('fas fa-layer-group') }} fa-4x" title="{{ adminLink.menuText|e('html_attr') }}"></i></a>
             {% endif %}
             <div>
                 {# movable icon #}
                 <span title="{% trans %}Drag and drop into a new module category{% endtrans %}" class="tooltips fas fa-arrows-alt admintabs-lock"></span>
                 {# module title #}
-                <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}">{{ adminLink.menuText|raw }}</a>
+                <a title="{{ adminLink.menuTextTitle|e('html_attr') }}" href="{{ adminLink.menuTextUrl|e('html_attr') }}">{{ adminLink.menuText }}</a>
                 {# dropdown with quick links #}
                 {% if adminLink.extensionMenu|default %}
                     <div class="dropdown d-inline">

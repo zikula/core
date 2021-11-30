@@ -43,8 +43,8 @@
             {% for block in blocks %}
                 <tr>
                     <td headers="hBlockId">{{ block.bid }}</td>
-                    <td headers="hBlockTitle">{{ block.title|safeHtml }}</td>
-                    <td headers="hBlockDescription">{{ block.description|safeHtml }}</td>
+                    <td headers="hBlockTitle">{{ block.title }}</td>
+                    <td headers="hBlockDescription">{{ block.description }}</td>
                     <td headers="hBlockModule">{{ block.module.name }}</td>
                     <td headers="hBlockType">{{ block.blocktype }}</td>
                     <td headers="hBlockPositions">

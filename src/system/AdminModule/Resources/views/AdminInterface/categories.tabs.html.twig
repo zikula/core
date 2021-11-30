@@ -9,7 +9,7 @@
             <li class="nav-item dropdown droppable nowrap" data-catid="{{ category.cid }}">
                 <a href="#" class="nav-link dropdown-toggle{% if caller.category.cid == category.cid %} active{% endif %}" data-toggle="dropdown"><span class="fas fa-arrows-alt admintabs-lock"></span>
                     <span>
-                        <i class="text-muted fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i> {{ category.title }}
+                        <i class="text-muted fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i> {{ category.title|safeHtml }}
                     </span>
                 </a>
                 <ul class="dropdown-menu">
@@ -30,7 +30,7 @@
                     {% if category.modules|length > 0 %}
                         <li class="dropdown-divider"></li>
                         {% for item in category.modules %}
-                            <li class="dropdown-item"><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><i class="{{ item.icon|default('fas fa-layer-group')|raw }} fa-fw align-middle"></i> {{ item.menutext|raw }}</a></li>
+                            <li class="dropdown-item"><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><i class="{{ item.icon|default('fas fa-layer-group')|raw }} fa-fw align-middle"></i> {{ item.menutext }}</a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>

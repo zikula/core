@@ -9,7 +9,7 @@
             {% for module in adminMenu %}
                 <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>
                     <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}">
-                        <i class="{{ module.icon|default('fas fa-layer-group') }} fa-fw fa-lg align-middle text-info"></i> {{ module.menutext|raw }}
+                        <i class="{{ module.icon|default('fas fa-layer-group') }} fa-fw fa-lg align-middle text-info"></i> {{ module.menutext|striptags }}
                     </a>
                     {% if module.extensionMenu|default %}
                         {{ knp_menu_render(module.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
