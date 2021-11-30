@@ -10,7 +10,7 @@
                 <li{% if caller.category.cid == category.cid %} class="selected"{% endif %}>
                     <a href="{{ category.url }}">
                         <i class="fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i>
-                        {{ category.title|raw }}
+                        {{ category.title|safeHtml }}
                     </a>
                     {% if category.modules|length > 0 %}
                         <ul class="text-left">

@@ -8,6 +8,8 @@
 - Fixes:
   - [CoreBundle] More robust autoloader detection.
   - [CoreBundle] Add `flex-wrap` class to pagination for responsive behaviour ([bs#23504](https://github.com/twbs/bootstrap/issues/23504)).
+  - [Admin] Sanitize extension title in admin panel.
+  - [Blocks] Sanitize block title and description in admin list view.
   - [Blocks] Strip script tags from XSLT block stylesheets.
   - [Categories] Sanitize context menu in admin category list.
   - [Extensions] Disable caching headers in `AbstractTheme` if user is logged in.
