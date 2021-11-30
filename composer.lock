@@ -13250,16 +13250,16 @@
         },
         {
             "name": "symfony/workflow",
-            "version": "v5.3.4",
+            "version": "v5.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "aac97c13b8f9642890a323b4b6879ad5186f3a3f"
+                "reference": "f68f6f51a3433343a7f730689b54ea9caee176f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/aac97c13b8f9642890a323b4b6879ad5186f3a3f",
-                "reference": "aac97c13b8f9642890a323b4b6879ad5186f3a3f",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/f68f6f51a3433343a7f730689b54ea9caee176f4",
+                "reference": "f68f6f51a3433343a7f730689b54ea9caee176f4",
                 "shasum": ""
             },
             "require": {
@@ -13271,11 +13271,11 @@
             },
             "require-dev": {
                 "psr/log": "^1|^2|^3",
-                "symfony/dependency-injection": "^4.4|^5.0",
-                "symfony/event-dispatcher": "^4.4|^5.0",
-                "symfony/expression-language": "^4.4|^5.0",
-                "symfony/security-core": "^4.4|^5.0",
-                "symfony/validator": "^4.4|^5.0"
+                "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/event-dispatcher": "^4.4|^5.0|^6.0",
+                "symfony/expression-language": "^4.4|^5.0|^6.0",
+                "symfony/security-core": "^4.4|^5.0|^6.0",
+                "symfony/validator": "^4.4|^5.0|^6.0"
             },
             "type": "library",
             "autoload": {
@@ -13312,7 +13312,7 @@
                 "workflow"
             ],
             "support": {
-                "source": "https://github.com/symfony/workflow/tree/v5.3.4"
+                "source": "https://github.com/symfony/workflow/tree/v5.4.0"
             },
             "funding": [
                 {
@@ -13328,7 +13328,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T09:14:51+00:00"
+            "time": "2021-11-03T09:24:47+00:00"
         },
         {
             "name": "symfony/yaml",
