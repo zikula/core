@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Doctrine\DBAL\Type;
 
 use DateTime;
+use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
@@ -28,7 +29,7 @@ class UTCDateTimeType extends DateTimeType
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if ($value instanceof DateTime) {
+        if ($value instanceof DateTimeInterface) {
             $value->setTimezone(self::$utc ?: self::$utc = new DateTimeZone(DateTimeZone::UTC));
         }
 
@@ -37,7 +38,7 @@ class UTCDateTimeType extends DateTimeType
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if (null === $value || $value instanceof DateTime) {
+        if (null === $value || $value instanceof DateTimeInterface) {
             return $value;
         }
 
