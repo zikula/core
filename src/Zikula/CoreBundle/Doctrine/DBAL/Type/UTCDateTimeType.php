@@ -22,11 +22,6 @@ use Doctrine\DBAL\Types\DateTimeType;
 
 class UTCDateTimeType extends DateTimeType
 {
-    /**
-     * @var DateTimeZone
-     */
-    private static $utc;
-
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof DateTimeInterface) {
@@ -52,6 +47,6 @@ class UTCDateTimeType extends DateTimeType
 
     private static function getUtc(): DateTimeZone
     {
-        return self::$utc ?: self::$utc = new DateTimeZone(DateTimeZone::UTC);
+        return new DateTimeZone('UTC');
     }
 }
