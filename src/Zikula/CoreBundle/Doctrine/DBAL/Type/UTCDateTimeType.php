@@ -30,7 +30,7 @@ class UTCDateTimeType extends DateTimeType
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof DateTimeInterface) {
-            $value->setTimezone(self::$utc ?: self::$utc = new DateTimeZone(DateTimeZone::UTC));
+            $value->setTimezone(self::getUtc());
         }
 
         return parent::convertToDatabaseValue($value, $platform);
@@ -42,16 +42,16 @@ class UTCDateTimeType extends DateTimeType
             return $value;
         }
 
-        $converted = DateTime::createFromFormat(
-            $platform->getDateTimeFormatString(),
-            $value,
-            self::$utc ?: self::$utc = new DateTimeZone(DateTimeZone::UTC)
-        );
-
+        $converted = DateTime::createFromFormat($platform->getDateTimeFormatString(), $value, self::getUtc());
         if (!$converted) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeFormatString());
         }
 
         return $converted;
+    }
+
+    private static function getUtc(): DateTimeZone
+    {
+        return self::$utc ?: self::$utc = new DateTimeZone(DateTimeZone::UTC);
     }
 }
