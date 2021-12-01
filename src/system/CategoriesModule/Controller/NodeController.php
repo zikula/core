@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +44,7 @@ class NodeController extends AbstractController
      */
     public function contextMenu(
         Request $request,
+        ManagerRegistry $doctrine,
         CategoryRepository $categoryRepository,
         CategoryProcessingHelper $processingHelper,
         LocaleApiInterface $localeApi,
@@ -102,7 +104,7 @@ class NodeController extends AbstractController
                     } elseif ('new' === $mode) {
                         $categoryRepository->persistAsLastChild($category);
                     } // no need to persist edited entity
-                    $this->getDoctrine()->getManager()->flush();
+                    $doctrine->getManager()->flush();
 
                     return $this->json([
                         'node' => $category->toJson($this->domTreeNodePrefix, $request->getLocale()),
@@ -134,19 +136,19 @@ class NodeController extends AbstractController
                         $child->setParent($newParent);
                     }
                 }
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
                 // intentionally no break here
                 // no break
             case 'delete':
                 $categoryId = $category->getId();
-                $this->removeRecursive($category, $processingHelper);
+                $this->removeRecursive($category, $doctrine, $processingHelper);
                 $categoryRemoved = false;
                 if (0 === $category->getChildren()->count()
                     && $processingHelper->mayCategoryBeDeletedOrMoved($category)) {
-                    $this->getDoctrine()->getManager()->remove($category);
+                    $doctrine->getManager()->remove($category);
                     $categoryRemoved = true;
                 }
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
                 $response = [
                     'result' => $categoryRemoved,
                     'id' => $categoryId,
@@ -154,12 +156,12 @@ class NodeController extends AbstractController
                     'parent' => isset($newParent) ? $newParent->getId() : null
                 ];
                 $categoryRepository->recover();
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
                 break;
             case 'activate':
             case 'deactivate':
                 $category->setStatus('A' === $category->getStatus() ? 'I' : 'A');
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
                 $response = [
                     'id' => $category->getId(),
                     'parent' => null !== $category->getParent() ? $category->getParent()->getId() : null,
@@ -177,12 +179,12 @@ class NodeController extends AbstractController
     /**
      * Recursive method to remove all generations below parent.
      */
-    private function removeRecursive(CategoryEntity $parent, CategoryProcessingHelper $processingHelper): void
+    private function removeRecursive(CategoryEntity $parent, ManagerRegistry $doctrine, CategoryProcessingHelper $processingHelper): void
     {
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $doctrine->getManager();
         foreach ($parent->getChildren() as $child) {
             if ($child->getChildren()->count() > 0) {
-                $this->removeRecursive($child, $processingHelper);
+                $this->removeRecursive($child, $doctrine, $processingHelper);
             }
             if ($processingHelper->mayCategoryBeDeletedOrMoved($child)) {
                 $entityManager->remove($child);
@@ -196,6 +198,7 @@ class NodeController extends AbstractController
      */
     public function move(
         Request $request,
+        ManagerRegistry $doctrine,
         CategoryRepository $categoryRepository,
         CategoryProcessingHelper $processingHelper
     ): JsonResponse {
@@ -224,7 +227,7 @@ class NodeController extends AbstractController
                 $categoryRepository->persistAsNextSiblingOf($category, $children[$position - 1]);
             }
         }
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return $this->json(['result' => true]);
     }

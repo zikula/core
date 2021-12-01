@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,7 @@ class PositionController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions for the position
      */
-    public function edit(Request $request, BlockPositionEntity $positionEntity = null)
+    public function edit(Request $request, ManagerRegistry $doctrine, BlockPositionEntity $positionEntity = null)
     {
         $permParam = (null !== $positionEntity) ? $positionEntity->getName() : 'position';
         if (!$this->hasPermission('ZikulaBlocksModule::' . $permParam, '::', ACCESS_EDIT)) {
@@ -58,7 +59,7 @@ class PositionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 /** @var EntityManager $em */
-                $em = $this->getDoctrine()->getManager();
+                $em = $doctrine->getManager();
                 $em->persist($positionEntity);
                 $em->flush();
                 $this->addFlash('status', 'Done! Position saved.');
@@ -84,7 +85,7 @@ class PositionController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions for the position
      */
-    public function delete(Request $request, BlockPositionEntity $positionEntity)
+    public function delete(Request $request, ManagerRegistry $doctrine, BlockPositionEntity $positionEntity)
     {
         if (!$this->hasPermission('ZikulaBlocksModule::position', $positionEntity->getName() . '::' . $positionEntity->getPid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -94,7 +95,7 @@ class PositionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                $em = $this->getDoctrine()->getManager();
+                $em = $doctrine->getManager();
                 $em->remove($positionEntity);
                 $em->flush();
                 $this->addFlash('status', 'Done! Position deleted.');

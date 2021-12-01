@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -97,6 +98,7 @@ class MenuController extends AbstractController
      */
     public function edit(
         Request $request,
+        ManagerRegistry $doctrine,
         MenuItemRepository $menuItemRepository,
         MenuItemEntity $menuItemEntity = null
     ): Response {
@@ -128,7 +130,7 @@ class MenuController extends AbstractController
                 $dummy->setTitle('dummy child');
                 $menuItemRepository->persistAsFirstChildOf($dummy, $menuItemEntity);
             }
-            $this->getDoctrine()->getManager()->flush();
+            $doctrine->getManager()->flush();
 
             return $this->redirectToRoute('zikulamenumodule_menu_list');
         }
@@ -150,7 +152,7 @@ class MenuController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function delete(Request $request, MenuItemEntity $menuItemEntity)
+    public function delete(Request $request, ManagerRegistry $doctrine, MenuItemEntity $menuItemEntity)
     {
         $form = $this->createForm(DeleteMenuItemType::class, [
             'entity' => $menuItemEntity
@@ -159,8 +161,8 @@ class MenuController extends AbstractController
         if ($form->isSubmitted()) {
             if ($form->isSubmitted() && $form->get('delete')->isClicked()) {
                 $menuItemEntity = $form->get('entity')->getData();
-                $this->getDoctrine()->getManager()->remove($menuItemEntity);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->remove($menuItemEntity);
+                $doctrine->getManager()->flush();
                 $this->addFlash('status', 'Done! Menu removed.');
             } elseif ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');

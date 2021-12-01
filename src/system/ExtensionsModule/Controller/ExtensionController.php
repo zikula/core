@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -183,6 +184,7 @@ class ExtensionController extends AbstractController
     public function modify(
         Request $request,
         ZikulaHttpKernelInterface $kernel,
+        ManagerRegistry $doctrine,
         ExtensionEntity $extension,
         CacheClearer $cacheClearer,
         bool $forceDefaults = false
@@ -214,7 +216,7 @@ class ExtensionController extends AbstractController
                 return $this->redirectToRoute('zikulaextensionsmodule_extension_modify', ['id' => $extension->getId(), 'forceDefaults' => 1]);
             }
             if ($form->get('save')->isClicked()) {
-                $em = $this->getDoctrine()->getManager();
+                $em = $doctrine->getManager();
                 $em->persist($extension);
                 $em->flush();
 

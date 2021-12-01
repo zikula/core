@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,7 @@ class NodeController extends AbstractController
      */
     public function contextMenu(
         Request $request,
+        ManagerRegistry $doctrine,
         MenuItemRepository $menuItemRepository,
         string $action = 'edit',
         MenuItemEntity $menuItemEntity = null
@@ -81,7 +83,7 @@ class NodeController extends AbstractController
                     } elseif ('new' === $mode) {
                         $menuItemRepository->persistAsLastChild($menuItemEntity);
                     } // no need to persist edited entity
-                    $this->getDoctrine()->getManager()->flush();
+                    $doctrine->getManager()->flush();
 
                     return $this->json([
                         'node' => $menuItemEntity->toJson($this->domTreeNodePrefix),
@@ -99,8 +101,8 @@ class NodeController extends AbstractController
                 break;
             case 'delete':
                 $id = $menuItemEntity->getId();
-                $this->getDoctrine()->getManager()->remove($menuItemEntity);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->remove($menuItemEntity);
+                $doctrine->getManager()->flush();
                 $response = [
                     'id' => $id,
                     'action' => $action,
@@ -119,6 +121,7 @@ class NodeController extends AbstractController
      */
     public function move(
         Request $request,
+        ManagerRegistry $doctrine,
         MenuItemRepository $menuItemRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
@@ -144,7 +147,7 @@ class NodeController extends AbstractController
                 $menuItemRepository->persistAsNextSiblingOf($menuItemEntity, $children[$position - 1]);
             }
         }
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return $this->json(['result' => true]);
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,15 +85,15 @@ class AdminController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function create(Request $request)
+    public function create(Request $request, ManagerRegistry $doctrine)
     {
         $form = $this->createForm(AdminCategoryType::class, new AdminCategoryEntity());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $adminCategory = $form->getData();
-                $this->getDoctrine()->getManager()->persist($adminCategory);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->persist($adminCategory);
+                $doctrine->getManager()->flush();
                 $this->addFlash('status', 'Done! Created new category.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -116,7 +117,7 @@ class AdminController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit a category
      */
-    public function modify(Request $request, AdminCategoryEntity $category)
+    public function modify(Request $request, ManagerRegistry $doctrine, AdminCategoryEntity $category)
     {
         if (!$this->hasPermission('ZikulaAdminModule::Category', $category['name'] . '::' . $category->getCid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -130,7 +131,7 @@ class AdminController extends AbstractController
                 if (!$this->hasPermission('ZikulaAdminModule::Category', $category->getName() . '::' . $category->getCid(), ACCESS_EDIT)) {
                     throw new AccessDeniedException();
                 }
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
                 $this->addFlash('status', 'Done! Saved category.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -154,7 +155,7 @@ class AdminController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user doesn't have permission to edit a category
      */
-    public function delete(Request $request, AdminCategoryEntity $category)
+    public function delete(Request $request, ManagerRegistry $doctrine, AdminCategoryEntity $category)
     {
         if (!$this->hasPermission('ZikulaAdminModule::Category', $category->getName() . '::' . $category->getCid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -165,8 +166,8 @@ class AdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $category = $form->getData();
-                $this->getDoctrine()->getManager()->remove($category);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->remove($category);
+                $doctrine->getManager()->flush();
                 $this->addFlash('status', 'Done! Category deleted.');
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');

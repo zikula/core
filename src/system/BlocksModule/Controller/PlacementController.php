@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +72,7 @@ class PlacementController extends AbstractController
      *
      * Change the block order.
      */
-    public function changeBlockOrder(Request $request): JsonResponse
+    public function changeBlockOrder(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $blockOrder = $request->request->get('blockorder', null); // [7, 1]
         if (null === $blockOrder) {
@@ -79,7 +80,7 @@ class PlacementController extends AbstractController
         }
         $position = $request->request->get('position'); // 1
         /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
+        $em = $doctrine->getManager();
 
         // remove all block placements from this position
         $query = $em->createQueryBuilder()

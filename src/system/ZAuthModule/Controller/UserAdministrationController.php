@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -410,7 +411,7 @@ class UserAdministrationController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
      */
-    public function togglePasswordChange(Request $request, UserEntity $user)
+    public function togglePasswordChange(Request $request, ManagerRegistry $doctrine, UserEntity $user)
     {
         if (!$this->hasPermission('ZikulaZAuthModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
@@ -435,7 +436,7 @@ class UserAdministrationController extends AbstractController
                     $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);
                     $this->addFlash('success', $this->trans('Done! A password change will be required the next time %userName% logs in.', ['%userName%' => $user->getUname()]));
                 }
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('info', 'Operation cancelled.');
             }

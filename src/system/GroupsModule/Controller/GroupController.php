@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,6 +103,7 @@ class GroupController extends AbstractController
      */
     public function create(
         Request $request,
+        ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher
     ) {
         $form = $this->createForm(CreateGroupType::class, new GroupEntity());
@@ -109,8 +111,8 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $groupEntity = $form->getData();
-                $this->getDoctrine()->getManager()->persist($groupEntity);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->persist($groupEntity);
+                $doctrine->getManager()->flush();
                 $eventDispatcher->dispatch(new GroupPostCreatedEvent($groupEntity));
                 $this->addFlash('status', 'Done! Created the group.');
             } elseif ($form->get('cancel')->isClicked()) {
@@ -135,6 +137,7 @@ class GroupController extends AbstractController
      */
     public function edit(
         Request $request,
+        ManagerRegistry $doctrine,
         GroupEntity $groupEntity,
         EventDispatcherInterface $eventDispatcher
     ) {
@@ -143,8 +146,8 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $groupEntity = $form->getData();
-                $this->getDoctrine()->getManager()->persist($groupEntity); // this isn't technically required
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->persist($groupEntity); // this isn't technically required
+                $doctrine->getManager()->flush();
                 $eventDispatcher->dispatch(new GroupPostUpdatedEvent($groupEntity));
                 $this->addFlash('status', 'Done! Updated the group.');
             }
@@ -170,6 +173,7 @@ class GroupController extends AbstractController
      */
     public function remove(
         Request $request,
+        ManagerRegistry $doctrine,
         GroupEntity $groupEntity,
         EventDispatcherInterface $eventDispatcher
     ) {
@@ -194,8 +198,8 @@ class GroupController extends AbstractController
             if ($form->get('delete')->isClicked()) {
                 $groupEntity = $form->getData();
                 $eventDispatcher->dispatch(new GroupPreDeletedEvent($groupEntity));
-                $this->getDoctrine()->getManager()->remove($groupEntity);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->remove($groupEntity);
+                $doctrine->getManager()->flush();
                 $eventDispatcher->dispatch(new GroupPostDeletedEvent($groupEntity));
                 $this->addFlash('status', 'Done! Group deleted.');
             } elseif ($form->get('cancel')->isClicked()) {

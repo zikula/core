@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
@@ -157,6 +158,7 @@ class UserAdministrationController extends AbstractController
     public function modify(
         Request $request,
         UserEntity $user,
+        ManagerRegistry $doctrine,
         CurrentUserApiInterface $currentUserApi,
         VariableApiInterface $variableApi,
         EventDispatcherInterface $eventDispatcher,
@@ -186,7 +188,7 @@ class UserAdministrationController extends AbstractController
 
                 $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
 
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
 
                 $updateEvent = UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()
                     ? new RegistrationPostUpdatedEvent($user, $originalUser)

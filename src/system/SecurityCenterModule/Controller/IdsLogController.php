@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -265,7 +266,7 @@ class IdsLogController extends AbstractController
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      * @throws InvalidArgumentException Thrown if the object id is not numeric or if
      */
-    public function deleteEntry(Request $request, IntrusionRepository $repository): RedirectResponse
+    public function deleteEntry(Request $request, ManagerRegistry $doctrine, IntrusionRepository $repository): RedirectResponse
     {
         if (!$this->isCsrfTokenValid('delete-idsentry', $request->query->get('token'))) {
             throw new AccessDeniedException();
@@ -277,8 +278,8 @@ class IdsLogController extends AbstractController
             $this->addFlash('error', $this->trans('Error! Invalid %identifier% received.', ['%identifier%' => "object ID [${id}]"]));
         } else {
             // delete object
-            $this->getDoctrine()->getManager()->remove($intrusion);
-            $this->getDoctrine()->getManager()->flush();
+            $doctrine->getManager()->remove($intrusion);
+            $doctrine->getManager()->flush();
         }
 
         return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,6 +54,7 @@ class ApplicationController extends AbstractController
     public function admin(
         Request $request,
         string $action,
+        ManagerRegistry $doctrine,
         GroupApplicationEntity $groupApplicationEntity,
         EventDispatcherInterface $eventDispatcher
     ) {
@@ -67,10 +69,10 @@ class ApplicationController extends AbstractController
                 $formData = $form->getData();
                 /** @var GroupApplicationEntity $groupApplicationEntity */
                 $groupApplicationEntity = $formData['application'];
-                $this->getDoctrine()->getManager()->remove($groupApplicationEntity);
+                $doctrine->getManager()->remove($groupApplicationEntity);
                 if ('accept' === $action) {
                     $groupApplicationEntity->getUser()->addGroup($groupApplicationEntity->getGroup());
-                    $this->getDoctrine()->getManager()->flush();
+                    $doctrine->getManager()->flush();
                     $eventDispatcher->dispatch(new GroupPostUserAddedEvent($groupApplicationEntity->getGroup(), $groupApplicationEntity->getUser()));
                 }
                 $eventDispatcher->dispatch(new GroupApplicationPostProcessedEvent($groupApplicationEntity, $formData['reason']));
@@ -108,6 +110,7 @@ class ApplicationController extends AbstractController
     public function create(
         Request $request,
         GroupEntity $group,
+        ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
         GroupApplicationRepository $applicationRepository,
         CurrentUserApiInterface $currentUserApi,
@@ -145,8 +148,8 @@ class ApplicationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('apply')->isClicked()) {
                 $groupApplicationEntity = $form->getData();
-                $this->getDoctrine()->getManager()->persist($groupApplicationEntity);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->persist($groupApplicationEntity);
+                $doctrine->getManager()->flush();
                 $eventDispatcher->dispatch(new GroupApplicationPostCreatedEvent($groupApplicationEntity));
                 $this->addFlash('status', 'Done! The application has been sent. You will be notified by email when the application is processed.');
             } elseif ($form->get('cancel')->isClicked()) {

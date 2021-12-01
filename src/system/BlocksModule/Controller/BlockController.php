@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,6 +72,7 @@ class BlockController extends AbstractController
     public function edit(
         Request $request,
         BlockApiInterface $blockApi,
+        ManagerRegistry $doctrine,
         ExtensionRepositoryInterface $extensionRepository,
         BlockEntity $blockEntity = null
     ): Response {
@@ -124,7 +126,7 @@ class BlockController extends AbstractController
                 $blockEntity->setFilters($filters);
 
                 /** @var EntityManager $em */
-                $em = $this->getDoctrine()->getManager();
+                $em = $doctrine->getManager();
                 /** @var ExtensionEntity $module */
                 $module = $extensionRepository->findOneBy(['name' => $moduleName]);
                 $blockEntity->setModule($module);
@@ -154,7 +156,7 @@ class BlockController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions for the block
      */
-    public function delete(Request $request, BlockEntity $blockEntity): Response
+    public function delete(Request $request, BlockEntity $blockEntity, ManagerRegistry $doctrine): Response
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', $blockEntity->getBkey() . ':' . $blockEntity->getTitle() . ':' . $blockEntity->getBid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -164,7 +166,7 @@ class BlockController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                $em = $this->getDoctrine()->getManager();
+                $em = $doctrine->getManager();
                 $em->remove($blockEntity);
                 $em->flush();
                 $this->addFlash('status', 'Done! Block deleted.');
@@ -189,13 +191,13 @@ class BlockController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
-    public function toggleblock(Request $request): JsonResponse
+    public function toggleblock(Request $request, ManagerRegistry $doctrine): JsonResponse
     {
         $bid = $request->request->getInt('bid', -1);
         if (-1 === $bid) {
             return $this->json($this->trans('No block ID passed.'), Response::HTTP_BAD_REQUEST);
         }
-        $em = $this->getDoctrine()->getManager();
+        $em = $doctrine->getManager();
         $block = $em->find('ZikulaBlocksModule:BlockEntity', $bid);
         if (null !== $block) {
             $block->setActive(BlockApi::BLOCK_ACTIVE === $block->getActive() ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);

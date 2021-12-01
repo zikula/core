@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -142,6 +143,7 @@ class PermissionController extends AbstractController
      */
     public function changeOrder(
         Request $request,
+        ManagerRegistry $doctrine,
         PermissionRepositoryInterface $permissionRepository
     ): JsonResponse {
         $permOrder = $request->request->get('permorder');
@@ -150,7 +152,7 @@ class PermissionController extends AbstractController
             $permission = $permissionRepository->find($permOrder[$cnt]);
             $permission->setSequence($cnt + 1);
         }
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return $this->json(['result' => true]);
     }
@@ -165,6 +167,7 @@ class PermissionController extends AbstractController
      */
     public function delete(
         PermissionEntity $permissionEntity,
+        ManagerRegistry $doctrine,
         PermissionRepositoryInterface $permissionRepository
     ): JsonResponse {
         // check if this is the overall admin permission and return if this shall be deleted
@@ -176,8 +179,8 @@ class PermissionController extends AbstractController
             throw new RuntimeException($this->trans('Notice: You cannot delete the main administration permission rule.'));
         }
 
-        $this->getDoctrine()->getManager()->remove($permissionEntity);
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->remove($permissionEntity);
+        $doctrine->getManager()->flush();
         $permissionRepository->reSequence();
         if ($permissionEntity->getPid() === $this->getVar('adminid')) {
             $this->setVar('adminid', 0);

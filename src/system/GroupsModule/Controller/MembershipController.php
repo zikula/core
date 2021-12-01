@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule\Controller;
 
 use DateTime;
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -103,6 +104,7 @@ class MembershipController extends AbstractController
         UserEntity $userEntity,
         GroupEntity $group,
         string $token,
+        ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher
     ): RedirectResponse {
         if (!$this->isCsrfTokenValid('membership-add', $token)) {
@@ -113,7 +115,7 @@ class MembershipController extends AbstractController
             $this->addFlash('warning', 'The selected user is already a member of this group.');
         } else {
             $userEntity->addGroup($group);
-            $this->getDoctrine()->getManager()->flush();
+            $doctrine->getManager()->flush();
             $this->addFlash('status', 'Done! The user was added to the group.');
             // Let other modules know that we have updated a group.
             $eventDispatcher->dispatch(new GroupPostUserAddedEvent($group, $userEntity));
@@ -132,6 +134,7 @@ class MembershipController extends AbstractController
      */
     public function join(
         GroupEntity $group,
+        ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
@@ -153,7 +156,7 @@ class MembershipController extends AbstractController
             );
         } else {
             $userEntity->addGroup($group);
-            $this->getDoctrine()->getManager()->flush();
+            $doctrine->getManager()->flush();
             $this->addFlash('success', $this->trans('Joined the "%groupName%" group', ['%groupName%' => $group->getName()]));
             // Let other modules know that we have updated a group.
             $eventDispatcher->dispatch(new GroupPostUserAddedEvent($group, $userEntity));
@@ -176,6 +179,7 @@ class MembershipController extends AbstractController
      */
     public function remove(
         Request $request,
+        ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
         GroupRepositoryInterface $groupRepository,
         UserRepositoryInterface $userRepository,
@@ -207,7 +211,7 @@ class MembershipController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('remove')->isClicked()) {
                 $user->removeGroup($group);
-                $this->getDoctrine()->getManager()->flush();
+                $doctrine->getManager()->flush();
                 $this->addFlash('status', 'Done! The user was removed from the group.');
                 $eventDispatcher->dispatch(new GroupPostUserRemovedEvent($group, $user));
             } elseif ($form->get('cancel')->isClicked()) {
@@ -234,6 +238,7 @@ class MembershipController extends AbstractController
      */
     public function leave(
         GroupEntity $group,
+        ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
@@ -244,7 +249,7 @@ class MembershipController extends AbstractController
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $userEntity->removeGroup($group);
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
         $this->addFlash('success', $this->trans('Left the "%groupName%" group', ['%groupName%' => $group->getName()]));
         // Let other modules know that we have updated a group.
         $eventDispatcher->dispatch(new GroupPostUserRemovedEvent($group, $userEntity));

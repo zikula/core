@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,6 +44,7 @@ class CategoryController extends AbstractController
      */
     public function listCategories(
         Request $request,
+        ManagerRegistry $doctrine,
         CategoryEntity $category,
         CategoryRepository $categoryRepository
     ): array {
@@ -52,7 +54,7 @@ class CategoryController extends AbstractController
         }
 
         $categoryRepository->recover();
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
         $tree = $categoryRepository->childrenHierarchy(
             $category, /* node to start from */
             false, /* false: load all children, true: only direct */

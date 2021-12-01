@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,6 +95,7 @@ class AjaxController extends AbstractController
     public function addCategory(
         Request $request,
         RouterInterface $router,
+        ManagerRegistry $doctrine,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
@@ -126,8 +128,8 @@ class AjaxController extends AbstractController
         $item->setDescription('');
         $item->setSortorder($adminCategoryRepository->countCategories());
 
-        $this->getDoctrine()->getManager()->persist($item);
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->persist($item);
+        $doctrine->getManager()->flush();
 
         return $this->json([
             'id' => $item->getCid(),
@@ -143,6 +145,7 @@ class AjaxController extends AbstractController
      */
     public function deleteCategory(
         Request $request,
+        ManagerRegistry $doctrine,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository
     ): JsonResponse {
@@ -180,7 +183,7 @@ class AjaxController extends AbstractController
         $adminModuleRepository->changeCategory($cid, $defaultcategory);
 
         // delete the category
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $doctrine->getManager();
         $entityManager->remove($item);
         $entityManager->flush();
 
@@ -196,6 +199,7 @@ class AjaxController extends AbstractController
      */
     public function editCategory(
         Request $request,
+        ManagerRegistry $doctrine,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
@@ -252,7 +256,7 @@ class AjaxController extends AbstractController
             'name' => $name,
             'description' => $item['description']
         ]);
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return $this->json([
             'response' => $name
@@ -303,6 +307,7 @@ class AjaxController extends AbstractController
      */
     public function sortCategories(
         Request $request,
+        ManagerRegistry $doctrine,
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
@@ -318,7 +323,7 @@ class AjaxController extends AbstractController
             }
         }
 
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return $this->json([]);
     }
@@ -330,6 +335,7 @@ class AjaxController extends AbstractController
      */
     public function sortModules(
         Request $request,
+        ManagerRegistry $doctrine,
         AdminModuleRepositoryInterface $adminModuleRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
@@ -345,7 +351,7 @@ class AjaxController extends AbstractController
             }
         }
 
-        $this->getDoctrine()->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return $this->json([]);
     }
