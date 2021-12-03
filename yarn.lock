@@ -945,10 +945,10 @@
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"@symfony/webpack-encore@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.6.1.tgz#bcf1cdeffb05486eea4c7531c4941e2b4af543bc"
-  integrity sha512-N00IwDHK88SfnH5GYeXapSpZ6VSZOITL6xeMt9VzP4m9HpBk8s7yGRRJs4quj7VIsO/j3qM8EX/1J4knw7n/Kg==
+"@symfony/webpack-encore@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.7.0.tgz#f5ef49ab3e1b2470a621d3ad312afdeaa7038838"
+  integrity sha512-Jpq04gOXvRZMtVTyNenpgjW1LBlG4E0XdcMVGSwsjMVp0yIsM/PHrBWI5kpCx7tSo07u8XCMTRpus4EwWostQg==
   dependencies:
     "@babel/core" "^7.7.0"
     "@babel/plugin-syntax-dynamic-import" "^7.0.0"
