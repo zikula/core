@@ -207,7 +207,6 @@ class GroupEntity extends EntityAccess
         return $this;
     }
 
-
     public function getApplications(): Collection
     {
         return $this->applications;
