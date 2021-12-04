@@ -110,9 +110,11 @@ class UserVerificationEntity extends EntityAccess
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getChangetype(): int
@@ -120,9 +122,11 @@ class UserVerificationEntity extends EntityAccess
         return $this->changetype;
     }
 
-    public function setChangetype(int $changetype): void
+    public function setChangetype(int $changetype): self
     {
         $this->changetype = $changetype;
+
+        return $this;
     }
 
     public function getUid(): int
@@ -130,9 +134,11 @@ class UserVerificationEntity extends EntityAccess
         return $this->uid;
     }
 
-    public function setUid(int $uid): void
+    public function setUid(int $uid): self
     {
         $this->uid = $uid;
+
+        return $this;
     }
 
     public function getNewemail(): string
@@ -140,9 +146,11 @@ class UserVerificationEntity extends EntityAccess
         return $this->newemail;
     }
 
-    public function setNewemail(string $newemail): void
+    public function setNewemail(string $newemail): self
     {
         $this->newemail = $newemail;
+
+        return $this;
     }
 
     public function getVerifycode(): string
@@ -150,9 +158,11 @@ class UserVerificationEntity extends EntityAccess
         return $this->verifycode;
     }
 
-    public function setVerifycode(string $verifycode): void
+    public function setVerifycode(string $verifycode): self
     {
         $this->verifycode = $verifycode;
+
+        return $this;
     }
 
     public function getCreatedDate(): DateTime
@@ -163,12 +173,14 @@ class UserVerificationEntity extends EntityAccess
     /**
      * @param string|DateTime $createdDate the user verification's created date
      */
-    public function setCreatedDate($createdDate): void
+    public function setCreatedDate($createdDate): self
     {
         if ($createdDate instanceof DateTime) {
             $this->createdDate = $createdDate;
         } else {
             $this->createdDate = new DateTime($createdDate);
         }
+
+        return $this;
     }
 }

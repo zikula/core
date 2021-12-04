@@ -86,14 +86,23 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getMethod(): ?string
     {
         return $this->method;
     }
 
-    public function setMethod(string $method): void
+    public function setMethod(string $method): self
     {
         $this->method = $method;
+
+        return $this;
     }
 
     public function getUid(): ?int
@@ -101,9 +110,11 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
         return $this->uid;
     }
 
-    public function setUid(int $uid): void
+    public function setUid(int $uid): self
     {
         $this->uid = $uid;
+
+        return $this;
     }
 
     public function getUname(): ?string
@@ -111,9 +122,11 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
         return $this->uname;
     }
 
-    public function setUname(string $uname): void
+    public function setUname(string $uname): self
     {
         $this->uname = $uname;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -121,9 +134,11 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     public function isVerifiedEmail(): bool
@@ -131,9 +146,11 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
         return $this->verifiedEmail;
     }
 
-    public function setVerifiedEmail(bool $verifiedEmail): void
+    public function setVerifiedEmail(bool $verifiedEmail): self
     {
         $this->verifiedEmail = $verifiedEmail;
+
+        return $this;
     }
 
     public function getPass(): ?string
@@ -141,11 +158,13 @@ class AuthenticationMappingEntity extends EntityAccess implements UserInterface
         return $this->pass;
     }
 
-    public function setPass(?string $pass): void
+    public function setPass(?string $pass): self
     {
         if (isset($pass)) {
             $this->pass = $pass;
         }
+
+        return $this;
     }
 
     public function getUserEntityData(): array

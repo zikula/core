@@ -59,14 +59,23 @@ class ExtensionVarEntity extends EntityAccess
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getModname(): string
     {
         return $this->modname;
     }
 
-    public function setModname(string $modname): void
+    public function setModname(string $modname): self
     {
         $this->modname = $modname;
+
+        return $this;
     }
 
     public function getName(): string
@@ -74,9 +83,11 @@ class ExtensionVarEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getValue()
@@ -98,8 +109,10 @@ class ExtensionVarEntity extends EntityAccess
         return $result;
     }
 
-    public function setValue($value): void
+    public function setValue($value): self
     {
         $this->value = serialize($value);
+
+        return $this;
     }
 }

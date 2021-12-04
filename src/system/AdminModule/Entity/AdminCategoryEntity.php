@@ -92,9 +92,11 @@ class AdminCategoryEntity extends EntityAccess
         return $this->cid;
     }
 
-    public function setCid(int $cid): void
+    public function setCid(int $cid): self
     {
         $this->cid = $cid;
+
+        return $this;
     }
 
     public function getName(): string
@@ -102,9 +104,11 @@ class AdminCategoryEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -112,9 +116,11 @@ class AdminCategoryEntity extends EntityAccess
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description ?? '';
+
+        return $this;
     }
 
     public function getIcon(): string
@@ -122,9 +128,11 @@ class AdminCategoryEntity extends EntityAccess
         return $this->icon;
     }
 
-    public function setIcon(string $icon): void
+    public function setIcon(string $icon): self
     {
         $this->icon = $icon ?? '';
+
+        return $this;
     }
 
     public function getSortorder(): int
@@ -132,8 +140,10 @@ class AdminCategoryEntity extends EntityAccess
         return $this->sortorder;
     }
 
-    public function setSortorder(int $sortorder): void
+    public function setSortorder(int $sortorder): self
     {
         $this->sortorder = $sortorder;
+
+        return $this;
     }
 }

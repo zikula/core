@@ -125,9 +125,9 @@ class IntrusionEntity extends EntityAccess
         return $this->id;
     }
 
-    public function setName(string $name): self
+    public function setId(int $id): self
     {
-        $this->name = $name;
+        $this->id = $id;
 
         return $this;
     }
@@ -137,9 +137,9 @@ class IntrusionEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setTag(string $tag): self
+    public function setName(string $name): self
     {
-        $this->tag = $tag;
+        $this->name = $name;
 
         return $this;
     }
@@ -149,9 +149,9 @@ class IntrusionEntity extends EntityAccess
         return $this->tag;
     }
 
-    public function setValue(string $value): self
+    public function setTag(string $tag): self
     {
-        $this->value = $value;
+        $this->tag = $tag;
 
         return $this;
     }
@@ -161,9 +161,9 @@ class IntrusionEntity extends EntityAccess
         return $this->value;
     }
 
-    public function setPage(string $page): self
+    public function setValue(string $value): self
     {
-        $this->page = $page;
+        $this->value = $value;
 
         return $this;
     }
@@ -173,9 +173,9 @@ class IntrusionEntity extends EntityAccess
         return $this->page;
     }
 
-    public function setUser(UserEntity $user): self
+    public function setPage(string $page): self
     {
-        $this->user = $user;
+        $this->page = $page;
 
         return $this;
     }
@@ -195,9 +195,9 @@ class IntrusionEntity extends EntityAccess
         return $this->getUser()->getUname();
     }
 
-    public function setIp(string $ip): self
+    public function setUser(UserEntity $user): self
     {
-        $this->ip = $ip;
+        $this->user = $user;
 
         return $this;
     }
@@ -207,9 +207,9 @@ class IntrusionEntity extends EntityAccess
         return $this->ip;
     }
 
-    public function setImpact(int $impact): self
+    public function setIp(string $ip): self
     {
-        $this->impact = $impact;
+        $this->ip = $ip;
 
         return $this;
     }
@@ -219,9 +219,9 @@ class IntrusionEntity extends EntityAccess
         return $this->impact;
     }
 
-    public function setFilters(string $filters): self
+    public function setImpact(int $impact): self
     {
-        $this->filters = $filters;
+        $this->impact = $impact;
 
         return $this;
     }
@@ -231,9 +231,9 @@ class IntrusionEntity extends EntityAccess
         return $this->filters;
     }
 
-    public function setDate(DateTime $date): self
+    public function setFilters(string $filters): self
     {
-        $this->date = $date;
+        $this->filters = $filters;
 
         return $this;
     }
@@ -241,5 +241,12 @@ class IntrusionEntity extends EntityAccess
     public function getDate(): DateTime
     {
         return $this->date;
+    }
+
+    public function setDate(DateTime $date): self
+    {
+        $this->date = $date;
+
+        return $this;
     }
 }

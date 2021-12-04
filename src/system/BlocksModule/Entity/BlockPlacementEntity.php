@@ -64,7 +64,7 @@ class BlockPlacementEntity extends EntityAccess
         return $this->position;
     }
 
-    public function setPosition(BlockPositionEntity $position = null): self
+    public function setPosition(?BlockPositionEntity $position = null): self
     {
         if (null !== $this->position) {
             $this->position->removePlacement($this);
@@ -84,7 +84,7 @@ class BlockPlacementEntity extends EntityAccess
         return $this->block;
     }
 
-    public function setBlock(BlockEntity $block = null): self
+    public function setBlock(?BlockEntity $block = null): self
     {
         if (null !== $this->block) {
             $this->block->removePlacement($this);
@@ -104,9 +104,11 @@ class BlockPlacementEntity extends EntityAccess
         return $this->sortorder;
     }
 
-    public function setSortorder(int $sortorder): void
+    public function setSortorder(int $sortorder): self
     {
         $this->sortorder = $sortorder;
+
+        return $this;
     }
 
     /**

@@ -78,9 +78,11 @@ class GroupApplicationEntity extends EntityAccess
         return $this->app_id;
     }
 
-    public function setAppId(int $app_id): void
+    public function setAppId(int $app_id): self
     {
         $this->app_id = $app_id;
+
+        return $this;
     }
 
     public function getUser(): UserEntity
@@ -88,9 +90,11 @@ class GroupApplicationEntity extends EntityAccess
         return $this->user;
     }
 
-    public function setUser(UserEntity $user): void
+    public function setUser(UserEntity $user): self
     {
         $this->user = $user;
+
+        return $this;
     }
 
     public function getGroup(): GroupEntity
@@ -98,9 +102,11 @@ class GroupApplicationEntity extends EntityAccess
         return $this->group;
     }
 
-    public function setGroup(GroupEntity $group): void
+    public function setGroup(GroupEntity $group): self
     {
         $this->group = $group;
+
+        return $this;
     }
 
     public function getApplication(): string
@@ -108,9 +114,11 @@ class GroupApplicationEntity extends EntityAccess
         return $this->application;
     }
 
-    public function setApplication(string $application): void
+    public function setApplication(string $application): self
     {
         $this->application = $application;
+
+        return $this;
     }
 
     public function getStatus(): int
@@ -118,8 +126,10 @@ class GroupApplicationEntity extends EntityAccess
         return $this->status;
     }
 
-    public function setStatus(int $status): void
+    public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 }

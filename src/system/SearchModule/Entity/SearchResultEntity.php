@@ -115,9 +115,9 @@ class SearchResultEntity
         return $this->id;
     }
 
-    public function setTitle(string $title): self
+    public function setId(int $id): self
     {
-        $this->title = $title;
+        $this->id = $id;
 
         return $this;
     }
@@ -127,9 +127,9 @@ class SearchResultEntity
         return $this->title;
     }
 
-    public function setText(string $text): self
+    public function setTitle(string $title): self
     {
-        $this->text = $text;
+        $this->title = $title;
 
         return $this;
     }
@@ -139,9 +139,9 @@ class SearchResultEntity
         return $this->text;
     }
 
-    public function setModule(string $module): self
+    public function setText(string $text): self
     {
-        $this->module = $module;
+        $this->text = $text;
 
         return $this;
     }
@@ -149,6 +149,18 @@ class SearchResultEntity
     public function getModule(): string
     {
         return $this->module;
+    }
+
+    public function setModule(string $module): self
+    {
+        $this->module = $module;
+
+        return $this;
+    }
+
+    public function getExtra(): array
+    {
+        return $this->extra;
     }
 
     /**
@@ -165,9 +177,9 @@ class SearchResultEntity
         return $this;
     }
 
-    public function getExtra(): array
+    public function getCreated(): DateTime
     {
-        return $this->extra;
+        return $this->created;
     }
 
     public function setCreated(DateTime $created): self
@@ -177,9 +189,9 @@ class SearchResultEntity
         return $this;
     }
 
-    public function getCreated(): DateTime
+    public function getFound(): DateTime
     {
-        return $this->created;
+        return $this->found;
     }
 
     public function setFound(DateTime $found): self
@@ -189,9 +201,9 @@ class SearchResultEntity
         return $this;
     }
 
-    public function getFound(): DateTime
+    public function getSesid(): string
     {
-        return $this->found;
+        return $this->sesid;
     }
 
     public function setSesid(string $sesid): self
@@ -201,9 +213,9 @@ class SearchResultEntity
         return $this;
     }
 
-    public function getSesid(): string
+    public function getUrl(): ?UrlInterface
     {
-        return $this->sesid;
+        return $this->url;
     }
 
     public function setUrl(UrlInterface $url): self
@@ -213,19 +225,14 @@ class SearchResultEntity
         return $this;
     }
 
-    public function getUrl(): ?UrlInterface
-    {
-        return $this->url;
-    }
-
     public function merge(array $result = []): void
     {
         $this->title = $result['title'] ?? 'unknown';
         $this->text = $result['text'] ?? null;
         $this->extra = $result['extra'] ?? null;
         $this->module = $result['module'] ?? null;
-        $this->created = (isset($result['created']) && $result['created'] instanceof DateTime) ? $result['created'] : new DateTime('now', new DateTimeZone('UTC'));
+        $this->created = isset($result['created']) && $result['created'] instanceof DateTime ? $result['created'] : new DateTime('now', new DateTimeZone('UTC'));
         $this->sesid = $result['sesid'] ?? null;
-        $this->url = (isset($result['url']) && $result['url'] instanceof UrlInterface) ? $result['url'] : null;
+        $this->url = isset($result['url']) && $result['url'] instanceof UrlInterface ? $result['url'] : null;
     }
 }

@@ -245,9 +245,9 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             $blockEntity->merge($block);
             $this->entityManager->persist($blockEntity);
             $placement = new BlockPlacementEntity();
-            $placement->setBlock($blockEntity);
-            $placement->setPosition($position);
-            $placement->setSortorder($sortOrder);
+            $placement->setBlock($blockEntity)
+                ->setPosition($position)
+                ->setSortorder($sortOrder);
             $this->entityManager->persist($placement);
         }
         $this->entityManager->flush();

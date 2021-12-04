@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Entity;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -158,9 +159,11 @@ class BlockEntity extends EntityAccess
         return $this->bid;
     }
 
-    public function setBid(int $bid): void
+    public function setBid(int $bid): self
     {
         $this->bid = $bid;
+
+        return $this;
     }
 
     public function getBkey(): string
@@ -168,9 +171,11 @@ class BlockEntity extends EntityAccess
         return $this->bkey;
     }
 
-    public function setBkey(string $bkey): void
+    public function setBkey(string $bkey): self
     {
         $this->bkey = $bkey;
+
+        return $this;
     }
 
     public function getBlocktype(): string
@@ -178,9 +183,11 @@ class BlockEntity extends EntityAccess
         return $this->blocktype;
     }
 
-    public function setBlocktype(string $blocktype): void
+    public function setBlocktype(string $blocktype): self
     {
         $this->blocktype = $blocktype;
+
+        return $this;
     }
 
     public function getTitle(): string
@@ -188,9 +195,11 @@ class BlockEntity extends EntityAccess
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -198,9 +207,11 @@ class BlockEntity extends EntityAccess
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getProperties(): array
@@ -208,9 +219,11 @@ class BlockEntity extends EntityAccess
         return $this->properties;
     }
 
-    public function setProperties(array $properties = []): void
+    public function setProperties(array $properties = []): self
     {
         $this->properties = $properties;
+
+        return $this;
     }
 
     public function getModule(): ExtensionEntity
@@ -218,9 +231,11 @@ class BlockEntity extends EntityAccess
         return $this->module;
     }
 
-    public function setModule(ExtensionEntity $module): void
+    public function setModule(ExtensionEntity $module): self
     {
         $this->module = $module;
+
+        return $this;
     }
 
     public function getFilters(): array
@@ -228,9 +243,11 @@ class BlockEntity extends EntityAccess
         return $this->filters;
     }
 
-    public function setFilters(array $filters = []): void
+    public function setFilters(array $filters = []): self
     {
         $this->filters = $filters;
+
+        return $this;
     }
 
     public function getActive(): int
@@ -238,19 +255,23 @@ class BlockEntity extends EntityAccess
         return $this->active;
     }
 
-    public function setActive(int $active): void
+    public function setActive(int $active): self
     {
         $this->active = $active;
+
+        return $this;
     }
 
-    public function getLastUpdate(): DateTime
+    public function getLastUpdate(): DateTimeInterface
     {
         return $this->lastUpdate;
     }
 
-    public function setLastUpdate(): void
+    public function setLastUpdate(): self
     {
         $this->lastUpdate = new DateTime('now');
+
+        return $this;
     }
 
     public function getLanguage(): string
@@ -258,9 +279,11 @@ class BlockEntity extends EntityAccess
         return $this->language;
     }
 
-    public function setLanguage(string $language): void
+    public function setLanguage(string $language): self
     {
         $this->language = $language;
+
+        return $this;
     }
 
     public function getPlacements(): Collection
@@ -268,18 +291,22 @@ class BlockEntity extends EntityAccess
         return $this->placements;
     }
 
-    public function addPlacement(BlockPlacementEntity $placement): void
+    public function addPlacement(BlockPlacementEntity $placement): self
     {
         if (!$this->placements->contains($placement)) {
             $this->placements->add($placement);
         }
+
+        return $this;
     }
 
-    public function removePlacement(BlockPlacementEntity $placement): void
+    public function removePlacement(BlockPlacementEntity $placement): self
     {
         if ($this->placements->contains($placement)) {
             $this->placements->removeElement($placement);
         }
+
+        return $this;
     }
 
     public function getPositions(): ArrayCollection
@@ -299,7 +326,7 @@ class BlockEntity extends EntityAccess
      *   orphanRemoval=true
      *   on the association of $this->placements
      */
-    public function setPositions(ArrayCollection $positions): void
+    public function setPositions(ArrayCollection $positions): self
     {
         // remove placements and skip existing placements.
         foreach ($this->placements as $placement) {
@@ -318,5 +345,7 @@ class BlockEntity extends EntityAccess
             // sortorder is irrelevant at this stage.
             $placement->setBlock($this); // auto-adds placement
         }
+
+        return $this;
     }
 }

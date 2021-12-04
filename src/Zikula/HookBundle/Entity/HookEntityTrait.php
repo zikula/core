@@ -23,9 +23,11 @@ trait HookEntityTrait
         return $this->id;
     }
 
-    public function setSowner(string $sowner): void
+    public function setId(int $id): self
     {
-        $this->sowner = $sowner;
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getSowner(): string
@@ -33,9 +35,11 @@ trait HookEntityTrait
         return $this->sowner;
     }
 
-    public function setPowner(string $powner): void
+    public function setSowner(string $sowner): self
     {
-        $this->powner = $powner;
+        $this->sowner = $sowner;
+
+        return $this;
     }
 
     public function getPowner(): string
@@ -43,9 +47,11 @@ trait HookEntityTrait
         return $this->powner;
     }
 
-    public function setSareaid(string $subscriberAreaId): void
+    public function setPowner(string $powner): self
     {
-        $this->sareaid = $subscriberAreaId;
+        $this->powner = $powner;
+
+        return $this;
     }
 
     public function getSareaid(): string
@@ -53,13 +59,22 @@ trait HookEntityTrait
         return $this->sareaid;
     }
 
-    public function setPareaid(string $providerAreaId): void
+    public function setSareaid(string $subscriberAreaId): self
     {
-        $this->pareaid = $providerAreaId;
+        $this->sareaid = $subscriberAreaId;
+
+        return $this;
     }
 
     public function getPareaid(): string
     {
         return $this->pareaid;
+    }
+
+    public function setPareaid(string $providerAreaId): self
+    {
+        $this->pareaid = $providerAreaId;
+
+        return $this;
     }
 }

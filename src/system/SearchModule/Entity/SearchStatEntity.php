@@ -75,9 +75,9 @@ class SearchStatEntity extends EntityAccess
         return $this->id;
     }
 
-    public function setSearch(string $search): self
+    public function setId(int $id): self
     {
-        $this->search = $search;
+        $this->id = $id;
 
         return $this;
     }
@@ -85,6 +85,18 @@ class SearchStatEntity extends EntityAccess
     public function getSearch(): string
     {
         return $this->search;
+    }
+
+    public function setSearch(string $search): self
+    {
+        $this->search = $search;
+
+        return $this;
+    }
+
+    public function getCount(): int
+    {
+        return $this->scount;
     }
 
     public function setCount(int $scount): self
@@ -99,9 +111,9 @@ class SearchStatEntity extends EntityAccess
         $this->scount++;
     }
 
-    public function getCount(): int
+    public function getDate(): DateTime
     {
-        return $this->scount;
+        return $this->date;
     }
 
     public function setDate(DateTime $date): self
@@ -109,10 +121,5 @@ class SearchStatEntity extends EntityAccess
         $this->date = $date;
 
         return $this;
-    }
-
-    public function getDate(): DateTime
-    {
-        return $this->date;
     }
 }

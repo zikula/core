@@ -60,9 +60,11 @@ class CategoryAttributeEntity extends EntityAccess
         return $this->category;
     }
 
-    public function setCategory(CategoryEntity $category): void
+    public function setCategory(CategoryEntity $category): self
     {
         $this->category = $category;
+
+        return $this;
     }
 
     public function getName(): string
@@ -70,9 +72,11 @@ class CategoryAttributeEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getValue(): string
@@ -80,14 +84,18 @@ class CategoryAttributeEntity extends EntityAccess
         return $this->value;
     }
 
-    public function setValue(string $value): void
+    public function setValue(string $value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 
-    public function setAttribute(string $name, string $value): void
+    public function setAttribute(string $name, string $value): self
     {
-        $this->setName($name);
-        $this->setValue($value);
+        $this->setName($name)
+            ->setValue($value);
+
+        return $this;
     }
 }

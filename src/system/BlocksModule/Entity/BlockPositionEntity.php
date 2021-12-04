@@ -78,9 +78,11 @@ class BlockPositionEntity extends EntityAccess
         return $this->pid;
     }
 
-    public function setPid(int $pid): void
+    public function setPid(int $pid): self
     {
         $this->pid = $pid;
+
+        return $this;
     }
 
     public function getName(): string
@@ -88,9 +90,11 @@ class BlockPositionEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -98,9 +102,11 @@ class BlockPositionEntity extends EntityAccess
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getPlacements(): Collection
@@ -108,17 +114,21 @@ class BlockPositionEntity extends EntityAccess
         return $this->placements;
     }
 
-    public function addPlacement(BlockPlacementEntity $placement): void
+    public function addPlacement(BlockPlacementEntity $placement): self
     {
         if (!$this->placements->contains($placement)) {
             $this->placements->add($placement);
         }
+
+        return $this;
     }
 
-    public function removePlacement(BlockPlacementEntity $placement): void
+    public function removePlacement(BlockPlacementEntity $placement): self
     {
         if ($this->placements->contains($placement)) {
             $this->placements->removeElement($placement);
         }
+
+        return $this;
     }
 }

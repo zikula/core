@@ -60,9 +60,11 @@ abstract class AbstractCategoryAssignment extends EntityAccess
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getCategoryRegistryId(): int
@@ -70,9 +72,11 @@ abstract class AbstractCategoryAssignment extends EntityAccess
         return $this->categoryRegistryId;
     }
 
-    public function setCategoryRegistryId(int $categoryRegistryId): void
+    public function setCategoryRegistryId(int $categoryRegistryId): self
     {
         $this->categoryRegistryId = $categoryRegistryId;
+
+        return $this;
     }
 
     public function getCategory(): CategoryEntity
@@ -80,8 +84,10 @@ abstract class AbstractCategoryAssignment extends EntityAccess
         return $this->category;
     }
 
-    public function setCategory(CategoryEntity $category): void
+    public function setCategory(CategoryEntity $category): self
     {
         $this->category = $category;
+
+        return $this;
     }
 }

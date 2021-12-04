@@ -109,24 +109,16 @@ class GroupEntity extends EntityAccess
         $this->applications = new ArrayCollection();
     }
 
-    public function getApplications(): Collection
-    {
-        return $this->applications;
-    }
-
-    public function setApplications(Collection $applications): void
-    {
-        $this->applications = $applications;
-    }
-
     public function getGid(): ?int
     {
         return $this->gid;
     }
 
-    public function setGid(int $gid): void
+    public function setGid(int $gid): self
     {
         $this->gid = $gid;
+
+        return $this;
     }
 
     public function getName(): string
@@ -134,9 +126,11 @@ class GroupEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getGtype(): int
@@ -144,9 +138,11 @@ class GroupEntity extends EntityAccess
         return $this->gtype;
     }
 
-    public function setGtype(int $gtype): void
+    public function setGtype(int $gtype): self
     {
         $this->gtype = $gtype;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -154,9 +150,11 @@ class GroupEntity extends EntityAccess
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getState(): int
@@ -164,9 +162,11 @@ class GroupEntity extends EntityAccess
         return $this->state;
     }
 
-    public function setState(int $state): void
+    public function setState(int $state): self
     {
         $this->state = $state;
+
+        return $this;
     }
 
     public function getNbumax(): int
@@ -174,9 +174,11 @@ class GroupEntity extends EntityAccess
         return $this->nbumax;
     }
 
-    public function setNbumax(int $nbumax): void
+    public function setNbumax(int $nbumax): self
     {
         $this->nbumax = $nbumax;
+
+        return $this;
     }
 
     public function getUsers(): Collection
@@ -184,18 +186,37 @@ class GroupEntity extends EntityAccess
         return $this->users;
     }
 
-    public function addUser(UserEntity $user): void
+    public function addUser(UserEntity $user): self
     {
         $this->users[] = $user;
+
+        return $this;
     }
 
-    public function removeUser(UserEntity $user): void
+    public function removeUser(UserEntity $user): self
     {
         $this->users->removeElement($user);
+
+        return $this;
     }
 
-    public function removeAllUsers(): void
+    public function removeAllUsers(): self
     {
         $this->users->clear();
+
+        return $this;
+    }
+
+
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function setApplications(Collection $applications): self
+    {
+        $this->applications = $applications;
+
+        return $this;
     }
 }

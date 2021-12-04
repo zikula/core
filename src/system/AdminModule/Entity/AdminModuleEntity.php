@@ -73,9 +73,11 @@ class AdminModuleEntity extends EntityAccess
         return $this->amid;
     }
 
-    public function setAmid(int $amid): void
+    public function setAmid(int $amid): self
     {
         $this->amid = $amid;
+
+        return $this;
     }
 
     public function getMid(): int
@@ -83,9 +85,11 @@ class AdminModuleEntity extends EntityAccess
         return $this->mid;
     }
 
-    public function setMid(int $mid): void
+    public function setMid(int $mid): self
     {
         $this->mid = $mid;
+
+        return $this;
     }
 
     public function getCid(): int
@@ -93,9 +97,11 @@ class AdminModuleEntity extends EntityAccess
         return $this->cid;
     }
 
-    public function setCid(int $cid): void
+    public function setCid(int $cid): self
     {
         $this->cid = $cid;
+
+        return $this;
     }
 
     public function getSortorder(): int
@@ -103,8 +109,10 @@ class AdminModuleEntity extends EntityAccess
         return $this->sortorder;
     }
 
-    public function setSortorder(int $sortorder): void
+    public function setSortorder(int $sortorder): self
     {
         $this->sortorder = $sortorder;
+
+        return $this;
     }
 }

@@ -133,14 +133,23 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->id;
     }
 
-    public function setTitle(string $title): void
+    public function setId(int $id): self
     {
-        $this->title = $title;
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
     public function getLft(): int
@@ -158,24 +167,28 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->rgt;
     }
 
-    public function setRoot(self $root): void
-    {
-        $this->root = $root;
-    }
-
     public function getRoot(): ?self
     {
         return $this->root;
     }
 
-    public function setParent(self $parent = null): void
+    public function setRoot(self $root): self
     {
-        $this->parent = $parent;
+        $this->root = $root;
+
+        return $this;
     }
 
     public function getParent(): ?self
     {
         return $this->parent;
+    }
+
+    public function setParent(self $parent = null): self
+    {
+        $this->parent = $parent;
+
+        return $this;
     }
 
     public function getName(): string
@@ -193,19 +206,27 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->options[$name] ?? $default;
     }
 
-    public function setOptions(array $options = []): void
+    public function setOptions(array $options = []): self
     {
         $this->options = $options;
+
+        return $this;
     }
 
-    public function setOption(string $name, $value): void
+    public function setOption(string $name, $value): self
     {
         $this->options[$name] = $value;
+
+        return $this;
     }
 
-    public function removeOption(string $name): void
+    public function removeOption(string $name): self
     {
-        unset($this->options[$name]);
+        if ($this->hasOption($name)) {
+            unset($this->options[$name]);
+        }
+
+        return $this;
     }
 
     public function hasOption(string $name): bool
@@ -228,24 +249,35 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->hasAttributes() ? $this->options['attributes'] : [];
     }
 
+    /**
+     * @return mixed
+     */
     public function getAttribute(string $name, $default = null)
     {
         return $this->options['attributes'][$name] ?? $default;
     }
 
-    public function setAttributes(array $attributes = []): void
+    public function setAttributes(array $attributes = []): self
     {
         $this->options['attributes'] = $attributes;
+
+        return $this;
     }
 
-    public function setAttribute(string $name, $value): void
+    public function setAttribute(string $name, $value): self
     {
         $this->options['attributes'][$name] = $value;
+
+        return $this;
     }
 
-    public function removeAttribute(string $name): void
+    public function removeAttribute(string $name): self
     {
-        unset($this->options['attributes'][$name]);
+        if (isset($this->options['attributes'][$name])) {
+            unset($this->options['attributes'][$name]);
+        }
+
+        return $this;
     }
 
     public function hasAttributes(): bool
@@ -258,24 +290,35 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->hasLinkAttributes() ? $this->options['linkAttributes'] : [];
     }
 
+    /**
+     * @return mixed
+     */
     public function getLinkAttribute(string $name, $default = null)
     {
         return $this->options['linkAttributes'][$name] ?? $default;
     }
 
-    public function setLinkAttributes(array $attributes = []): void
+    public function setLinkAttributes(array $attributes = []): self
     {
         $this->options['linkAttributes'] = $attributes;
+
+        return $this;
     }
 
-    public function setLinkAttribute(string $name, $value): void
+    public function setLinkAttribute(string $name, $value): self
     {
         $this->options['linkAttributes'][$name] = $value;
+
+        return $this;
     }
 
-    public function removeLinkAttribute(string $name): void
+    public function removeLinkAttribute(string $name): self
     {
-        unset($this->options['linkAttributes'][$name]);
+        if (isset($this->options['linkAttributes'][$name])) {
+            unset($this->options['linkAttributes'][$name]);
+        }
+
+        return $this;
     }
 
     public function hasLinkAttributes(): bool
@@ -288,24 +331,35 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->hasChildrenAttributes() ? $this->options['childrenAttributes'] : [];
     }
 
+    /**
+     * @return mixed
+     */
     public function getChildrenAttribute(string $name, $default = null)
     {
         return $this->options['childrenAttributes'][$name] ?? $default;
     }
 
-    public function setChildrenAttributes(array $attributes = []): void
+    public function setChildrenAttributes(array $attributes = []): self
     {
         $this->options['childrenAttributes'] = $attributes;
+
+        return $this;
     }
 
-    public function setChildrenAttribute(string $name, $value): void
+    public function setChildrenAttribute(string $name, $value): self
     {
         $this->options['childrenAttributes'][$name] = $value;
+
+        return $this;
     }
 
-    public function removeChildrenAttribute(string $name): void
+    public function removeChildrenAttribute(string $name): self
     {
-        unset($this->options['childrenAttributes'][$name]);
+        if (isset($this->options['childrenAttributes'][$name])) {
+            unset($this->options['childrenAttributes'][$name]);
+        }
+
+        return $this;
     }
 
     public function hasChildrenAttributes(): bool
@@ -318,24 +372,35 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->hasLabelAttributes() ? $this->options['labelAttributes'] : [];
     }
 
+    /**
+     * @return mixed
+     */
     public function getLabelAttribute(string $name, $default = null)
     {
         return $this->options['labelAttributes'][$name] ?? $default;
     }
 
-    public function setLabelAttributes(array $attributes = []): void
+    public function setLabelAttributes(array $attributes = []): self
     {
         $this->options['labelAttributes'] = $attributes;
+
+        return $this;
     }
 
-    public function setLabelAttribute(string $name, $value): void
+    public function setLabelAttribute(string $name, $value): self
     {
         $this->options['labelAttributes'][$name] = $value;
+
+        return $this;
     }
 
-    public function removeLabelAttribute(string $name): void
+    public function removeLabelAttribute(string $name): self
     {
-        unset($this->options['labelAttributes'][$name]);
+        if (isset($this->options['labelAttributes'][$name])) {
+            unset($this->options['labelAttributes'][$name]);
+        }
+
+        return $this;
     }
 
     public function hasLabelAttributes(): bool
@@ -348,24 +413,35 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->hasExtras() ? $this->options['extras'] : [];
     }
 
+    /**
+     * @return mixed
+     */
     public function getExtra(string $name, $default = null)
     {
         return $this->options['extras'][$name] ?? $default;
     }
 
-    public function setExtras(array $attributes = []): void
+    public function setExtras(array $attributes = []): self
     {
         $this->options['extras'] = $attributes;
+
+        return $this;
     }
 
-    public function setExtra(string $name, $value): void
+    public function setExtra(string $name, $value): self
     {
         $this->options['extras'][$name] = $value;
+
+        return $this;
     }
 
-    public function removeExtra(string $name): void
+    public function removeExtra(string $name): self
     {
-        unset($this->options['extras'][$name]);
+        if (isset($this->options['extras'][$name])) {
+            unset($this->options['extras'][$name]);
+        }
+
+        return $this;
     }
 
     public function hasExtras(): bool

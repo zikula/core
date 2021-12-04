@@ -88,9 +88,11 @@ class CategoryRegistryEntity extends EntityAccess
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getModname(): ?string
@@ -98,9 +100,11 @@ class CategoryRegistryEntity extends EntityAccess
         return $this->modname;
     }
 
-    public function setModname(string $modname): void
+    public function setModname(string $modname): self
     {
         $this->modname = $modname;
+
+        return $this;
     }
 
     public function getEntityname(): ?string
@@ -108,9 +112,11 @@ class CategoryRegistryEntity extends EntityAccess
         return $this->entityname;
     }
 
-    public function setEntityname(string $entityname): void
+    public function setEntityname(string $entityname): self
     {
         $this->entityname = $entityname;
+
+        return $this;
     }
 
     public function getProperty(): ?string
@@ -118,9 +124,11 @@ class CategoryRegistryEntity extends EntityAccess
         return $this->property;
     }
 
-    public function setProperty(string $property): void
+    public function setProperty(string $property): self
     {
         $this->property = $property;
+
+        return $this;
     }
 
     public function getCategory(): ?CategoryEntity
@@ -128,9 +136,11 @@ class CategoryRegistryEntity extends EntityAccess
         return $this->category;
     }
 
-    public function setCategory(CategoryEntity $category): void
+    public function setCategory(CategoryEntity $category): self
     {
         $this->category = $category;
+
+        return $this;
     }
 
     public function getStatus(): string
@@ -138,8 +148,10 @@ class CategoryRegistryEntity extends EntityAccess
         return $this->status;
     }
 
-    public function setStatus(string $status): void
+    public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 }

@@ -124,9 +124,11 @@ class ExtensionEntity extends EntityAccess
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): string
@@ -134,9 +136,11 @@ class ExtensionEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getType(): int
@@ -144,9 +148,11 @@ class ExtensionEntity extends EntityAccess
         return $this->type;
     }
 
-    public function setType(int $type): void
+    public function setType(int $type): self
     {
         $this->type = $type;
+
+        return $this;
     }
 
     public function getDisplayname(): string
@@ -154,9 +160,11 @@ class ExtensionEntity extends EntityAccess
         return $this->displayname;
     }
 
-    public function setDisplayname(string $displayname): void
+    public function setDisplayname(string $displayname): self
     {
         $this->displayname = $displayname;
+
+        return $this;
     }
 
     public function getUrl(): string
@@ -164,9 +172,11 @@ class ExtensionEntity extends EntityAccess
         return $this->url;
     }
 
-    public function setUrl(string $url): void
+    public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
     }
 
     public function getDescription(): string
@@ -174,9 +184,11 @@ class ExtensionEntity extends EntityAccess
         return $this->description;
     }
 
-    public function setDescription(string $description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getIcon(): string
@@ -184,9 +196,11 @@ class ExtensionEntity extends EntityAccess
         return $this->icon ?? '';
     }
 
-    public function setIcon(string $icon): void
+    public function setIcon(string $icon): self
     {
         $this->icon = $icon ?? '';
+
+        return $this;
     }
 
     public function getVersion(): string
@@ -194,9 +208,11 @@ class ExtensionEntity extends EntityAccess
         return $this->version;
     }
 
-    public function setVersion(string $version): void
+    public function setVersion(string $version): self
     {
         $this->version = $version;
+
+        return $this;
     }
 
     public function getCapabilities(): array
@@ -204,9 +220,11 @@ class ExtensionEntity extends EntityAccess
         return $this->capabilities;
     }
 
-    public function setCapabilities(array $capabilities): void
+    public function setCapabilities(array $capabilities): self
     {
         $this->capabilities = $capabilities;
+
+        return $this;
     }
 
     public function getState(): int
@@ -214,9 +232,11 @@ class ExtensionEntity extends EntityAccess
         return $this->state;
     }
 
-    public function setState(int $state): void
+    public function setState(int $state): self
     {
         $this->state = $state;
+
+        return $this;
     }
 
     public function getSecurityschema(): array
@@ -224,9 +244,11 @@ class ExtensionEntity extends EntityAccess
         return $this->securityschema;
     }
 
-    public function setSecurityschema(array $securityschema): void
+    public function setSecurityschema(array $securityschema): self
     {
         $this->securityschema = $securityschema;
+
+        return $this;
     }
 
     public function getCoreCompatibility(): string
@@ -234,8 +256,10 @@ class ExtensionEntity extends EntityAccess
         return $this->coreCompatibility;
     }
 
-    public function setCoreCompatibility(string $coreCompatibility): void
+    public function setCoreCompatibility(string $coreCompatibility): self
     {
         $this->coreCompatibility = $coreCompatibility;
+
+        return $this;
     }
 }

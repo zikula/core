@@ -91,9 +91,11 @@ class HookRuntimeEntity extends EntityAccess
      */
     private $priority;
 
-    public function setEventname(string $eventname): void
+    public function setEventname(string $eventname): self
     {
         $this->eventname = $eventname;
+
+        return $this;
     }
 
     public function getEventname(): string
@@ -101,9 +103,11 @@ class HookRuntimeEntity extends EntityAccess
         return $this->eventname;
     }
 
-    public function setClassname(string $classname): void
+    public function setClassname(string $classname): self
     {
         $this->classname = $classname;
+
+        return $this;
     }
 
     public function getClassname(): string
@@ -111,9 +115,11 @@ class HookRuntimeEntity extends EntityAccess
         return $this->classname;
     }
 
-    public function setMethod(string $method): void
+    public function setMethod(string $method): self
     {
         $this->method = $method;
+
+        return $this;
     }
 
     public function getMethod(): string
@@ -121,9 +127,11 @@ class HookRuntimeEntity extends EntityAccess
         return $this->method;
     }
 
-    public function setPriority(int $priority): void
+    public function setPriority(int $priority): self
     {
         $this->priority = $priority;
+
+        return $this;
     }
 
     public function getPriority(): int

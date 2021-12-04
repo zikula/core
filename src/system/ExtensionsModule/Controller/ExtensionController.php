@@ -198,10 +198,10 @@ class ExtensionController extends AbstractController
         $metaData = $extensionBundle->getMetaData(false)->getFilteredVersionInfoArray();
 
         if ($forceDefaults) {
-            $extension->setName($metaData['name']);
-            $extension->setDisplayname($metaData['displayname']);
-            $extension->setUrl($metaData['url']);
-            $extension->setDescription($metaData['description']);
+            $extension->setName($metaData['name'])
+                ->setDisplayname($metaData['displayname'])
+                ->setUrl($metaData['url'])
+                ->setDescription($metaData['description']);
         }
 
         $formOptions = [

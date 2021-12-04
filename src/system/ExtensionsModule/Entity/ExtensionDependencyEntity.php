@@ -85,9 +85,11 @@ class ExtensionDependencyEntity extends EntityAccess
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getModid(): int
@@ -95,9 +97,11 @@ class ExtensionDependencyEntity extends EntityAccess
         return $this->modid;
     }
 
-    public function setModid(int $modid): void
+    public function setModid(int $modid): self
     {
         $this->modid = $modid;
+
+        return $this;
     }
 
     public function getModname(): string
@@ -105,9 +109,11 @@ class ExtensionDependencyEntity extends EntityAccess
         return $this->modname;
     }
 
-    public function setModname(string $modname): void
+    public function setModname(string $modname): self
     {
         $this->modname = $modname;
+
+        return $this;
     }
 
     public function getMinversion(): string
@@ -115,9 +121,11 @@ class ExtensionDependencyEntity extends EntityAccess
         return $this->minversion;
     }
 
-    public function setMinversion(string $minVersion): void
+    public function setMinversion(string $minVersion): self
     {
         $this->minversion = $minVersion;
+
+        return $this;
     }
 
     public function getMaxversion(): string
@@ -125,9 +133,11 @@ class ExtensionDependencyEntity extends EntityAccess
         return $this->maxversion;
     }
 
-    public function setMaxversion(string $maxVersion): void
+    public function setMaxversion(string $maxVersion): self
     {
         $this->maxversion = $maxVersion;
+
+        return $this;
     }
 
     public function getStatus(): int
@@ -135,9 +145,11 @@ class ExtensionDependencyEntity extends EntityAccess
         return $this->status;
     }
 
-    public function setStatus(int $status): void
+    public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -155,8 +167,10 @@ class ExtensionDependencyEntity extends EntityAccess
      *
      * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded during sync.
      */
-    public function setReason(string $reason): void
+    public function setReason(string $reason): self
     {
         $this->reason = $reason;
+
+        return $this;
     }
 }

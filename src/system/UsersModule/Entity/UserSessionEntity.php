@@ -102,9 +102,11 @@ class UserSessionEntity extends EntityAccess
         return $this->sessid;
     }
 
-    public function setSessid(string $sessid): void
+    public function setSessid(string $sessid): self
     {
         $this->sessid = $sessid;
+
+        return $this;
     }
 
     public function getIpaddr(): string
@@ -112,9 +114,11 @@ class UserSessionEntity extends EntityAccess
         return $this->ipaddr;
     }
 
-    public function setIpaddr(string $ipaddr): void
+    public function setIpaddr(string $ipaddr): self
     {
         $this->ipaddr = $ipaddr;
+
+        return $this;
     }
 
     public function getLastused(): DateTime
@@ -125,13 +129,15 @@ class UserSessionEntity extends EntityAccess
     /**
      * @param string|DateTime $lastused the user session's last used datetime
      */
-    public function setLastused($lastused): void
+    public function setLastused($lastused): self
     {
         if ($lastused instanceof DateTime) {
             $this->lastused = $lastused;
         } else {
             $this->lastused = new DateTime($lastused);
         }
+
+        return $this;
     }
 
     public function getUid(): int
@@ -139,9 +145,11 @@ class UserSessionEntity extends EntityAccess
         return $this->uid;
     }
 
-    public function setUid(int $uid): void
+    public function setUid(int $uid): self
     {
         $this->uid = $uid;
+
+        return $this;
     }
 
     public function getRemember(): int
@@ -149,9 +157,11 @@ class UserSessionEntity extends EntityAccess
         return $this->remember;
     }
 
-    public function setRemember(int $remember): void
+    public function setRemember(int $remember): self
     {
         $this->remember = $remember;
+
+        return $this;
     }
 
     public function getVars(): string
@@ -159,8 +169,10 @@ class UserSessionEntity extends EntityAccess
         return $this->vars;
     }
 
-    public function setVars(string $vars): void
+    public function setVars(string $vars): self
     {
         $this->vars = $vars;
+
+        return $this;
     }
 }

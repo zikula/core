@@ -117,9 +117,11 @@ class PermissionEntity extends EntityAccess
         return $this->pid;
     }
 
-    public function setPid(int $pid): void
+    public function setPid(int $pid): self
     {
         $this->pid = $pid;
+
+        return $this;
     }
 
     public function getGid(): int
@@ -127,9 +129,11 @@ class PermissionEntity extends EntityAccess
         return $this->gid;
     }
 
-    public function setGid(int $gid): void
+    public function setGid(int $gid): self
     {
         $this->gid = $gid;
+
+        return $this;
     }
 
     public function getSequence(): int
@@ -137,9 +141,11 @@ class PermissionEntity extends EntityAccess
         return $this->sequence;
     }
 
-    public function setSequence(int $sequence): void
+    public function setSequence(int $sequence): self
     {
         $this->sequence = $sequence;
+
+        return $this;
     }
 
     public function getComponent(): string
@@ -147,9 +153,11 @@ class PermissionEntity extends EntityAccess
         return $this->component;
     }
 
-    public function setComponent(string $component): void
+    public function setComponent(string $component): self
     {
         $this->component = $component;
+
+        return $this;
     }
 
     public function getInstance(): string
@@ -157,9 +165,11 @@ class PermissionEntity extends EntityAccess
         return $this->instance;
     }
 
-    public function setInstance(string $instance): void
+    public function setInstance(string $instance): self
     {
         $this->instance = $instance;
+
+        return $this;
     }
 
     public function getLevel(): int
@@ -167,9 +177,11 @@ class PermissionEntity extends EntityAccess
         return $this->level;
     }
 
-    public function setLevel(int $level): void
+    public function setLevel(int $level): self
     {
         $this->level = $level;
+
+        return $this;
     }
 
     public function getComment(): string
@@ -177,9 +189,11 @@ class PermissionEntity extends EntityAccess
         return $this->comment;
     }
 
-    public function setComment(string $comment): void
+    public function setComment(string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
     }
 
     public function getColour(): string
@@ -187,8 +201,10 @@ class PermissionEntity extends EntityAccess
         return $this->colour;
     }
 
-    public function setColour(string $colour): void
+    public function setColour(string $colour): self
     {
         $this->colour = $colour;
+
+        return $this;
     }
 }

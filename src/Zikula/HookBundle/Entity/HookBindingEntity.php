@@ -77,23 +77,27 @@ class HookBindingEntity extends EntityAccess
      */
     private $sortorder;
 
-    public function setCategory(string $category): void
-    {
-        $this->category = $category;
-    }
-
     public function getCategory(): string
     {
         return $this->category;
     }
 
-    public function setSortorder(int $sortorder): void
+    public function setCategory(string $category): self
     {
-        $this->sortorder = $sortorder;
+        $this->category = $category;
+
+        return $this;
     }
 
     public function getSortorder(): int
     {
         return $this->sortorder;
+    }
+
+    public function setSortorder(int $sortorder): self
+    {
+        $this->sortorder = $sortorder;
+
+        return $this;
     }
 }

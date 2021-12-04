@@ -203,9 +203,11 @@ class CategoryEntity extends EntityAccess
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getParent(): ?self
@@ -213,9 +215,11 @@ class CategoryEntity extends EntityAccess
         return $this->parent;
     }
 
-    public function setParent(self $parent = null): void
+    public function setParent(self $parent = null): self
     {
         $this->parent = $parent;
+
+        return $this;
     }
 
     public function getChildren(): Collection
@@ -223,9 +227,11 @@ class CategoryEntity extends EntityAccess
         return !empty($this->children) ? $this->children : new ArrayCollection();
     }
 
-    public function setChildren(Collection $children): void
+    public function setChildren(Collection $children): self
     {
         $this->children = $children;
+
+        return $this;
     }
 
     public function getLocked(): bool
@@ -233,9 +239,11 @@ class CategoryEntity extends EntityAccess
         return $this->locked;
     }
 
-    public function setLocked(bool $locked): void
+    public function setLocked(bool $locked): self
     {
         $this->locked = $locked;
+
+        return $this;
     }
 
     public function getLeaf(): bool
@@ -243,9 +251,11 @@ class CategoryEntity extends EntityAccess
         return $this->leaf;
     }
 
-    public function setLeaf(bool $leaf): void
+    public function setLeaf(bool $leaf): self
     {
         $this->leaf = $leaf;
+
+        return $this;
     }
 
     public function getName(): string
@@ -253,9 +263,11 @@ class CategoryEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getValue(): string
@@ -263,9 +275,11 @@ class CategoryEntity extends EntityAccess
         return $this->value;
     }
 
-    public function setValue(string $value): void
+    public function setValue(string $value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
@@ -280,9 +294,11 @@ class CategoryEntity extends EntityAccess
         return $this->displayName;
     }
 
-    public function setDisplayName(array $displayName): void
+    public function setDisplayName(array $displayName): self
     {
         $this->displayName = $displayName;
+
+        return $this;
     }
 
     /**
@@ -297,9 +313,11 @@ class CategoryEntity extends EntityAccess
         return $this->displayDesc;
     }
 
-    public function setDisplayDesc(array $displayDesc): void
+    public function setDisplayDesc(array $displayDesc): self
     {
         $this->displayDesc = $displayDesc;
+
+        return $this;
     }
 
     public function getStatus(): bool
@@ -307,12 +325,14 @@ class CategoryEntity extends EntityAccess
         return 'A' === $this->status;
     }
 
-    public function setStatus($status): void
+    public function setStatus($status): self
     {
         if (is_bool($status)) {
             $status = $status ? 'A' : 'I';
         }
         $this->status = $status;
+
+        return $this;
     }
 
     public function getIcon(): string
@@ -320,9 +340,11 @@ class CategoryEntity extends EntityAccess
         return $this->icon;
     }
 
-    public function setIcon(string $icon): void
+    public function setIcon(string $icon): self
     {
         $this->icon = $icon ?? '';
+
+        return $this;
     }
 
     public function getAttributes(): Collection
@@ -330,23 +352,29 @@ class CategoryEntity extends EntityAccess
         return $this->attributes;
     }
 
-    public function setAttributes(Collection $attributes): void
+    public function setAttributes(Collection $attributes): self
     {
         $this->attributes = $attributes;
+
+        return $this;
     }
 
-    public function addAttribute(CategoryAttributeEntity $attribute): void
+    public function addAttribute(CategoryAttributeEntity $attribute): self
     {
         $attribute->setCategory($this);
         $this->attributes->add($attribute);
+
+        return $this;
     }
 
-    public function removeAttribute(CategoryAttributeEntity $attribute): void
+    public function removeAttribute(CategoryAttributeEntity $attribute): self
     {
         $this->attributes->removeElement($attribute);
+
+        return $this;
     }
 
-    public function setAttribute(string $name, string $value): void
+    public function setAttribute(string $name, string $value): self
     {
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
@@ -357,13 +385,17 @@ class CategoryEntity extends EntityAccess
             $attribute->setValue($value);
             $this->attributes[$name] = $attribute;
         }
+
+        return $this;
     }
 
-    public function delAttribute(string $name): void
+    public function delAttribute(string $name): self
     {
         if (isset($this->attributes[$name])) {
             $this->attributes->remove($name);
         }
+
+        return $this;
     }
 
     public function getLft(): int
@@ -371,9 +403,11 @@ class CategoryEntity extends EntityAccess
         return $this->lft;
     }
 
-    public function setLft(int $lft): void
+    public function setLft(int $lft): self
     {
         $this->lft = $lft;
+
+        return $this;
     }
 
     public function getLvl(): int
@@ -381,9 +415,11 @@ class CategoryEntity extends EntityAccess
         return $this->lvl;
     }
 
-    public function setLvl(int $lvl): void
+    public function setLvl(int $lvl): self
     {
         $this->lvl = $lvl;
+
+        return $this;
     }
 
     public function getRgt(): int
@@ -391,9 +427,11 @@ class CategoryEntity extends EntityAccess
         return $this->rgt;
     }
 
-    public function setRgt(int $rgt): void
+    public function setRgt(int $rgt): self
     {
         $this->rgt = $rgt;
+
+        return $this;
     }
 
     public function getRoot(): self
@@ -401,9 +439,11 @@ class CategoryEntity extends EntityAccess
         return $this->root;
     }
 
-    public function setRoot(self $root): void
+    public function setRoot(self $root): self
     {
         $this->root = $root;
+
+        return $this;
     }
 
     public function toJson(string $prefix = '', string $locale = 'en'): string

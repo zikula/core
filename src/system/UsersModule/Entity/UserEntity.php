@@ -212,9 +212,11 @@ class UserEntity extends EntityAccess
         return $this->uid;
     }
 
-    public function setUid(int $uid): void
+    public function setUid(int $uid): self
     {
         $this->uid = $uid;
+
+        return $this;
     }
 
     public function getUname(): string
@@ -227,9 +229,11 @@ class UserEntity extends EntityAccess
         return $this->getUname();
     }
 
-    public function setUname(string $uname): void
+    public function setUname(string $uname): self
     {
         $this->uname = $uname;
+
+        return $this;
     }
 
     public function getEmail(): string
@@ -237,9 +241,11 @@ class UserEntity extends EntityAccess
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     public function getActivated(): int
@@ -247,9 +253,11 @@ class UserEntity extends EntityAccess
         return $this->activated;
     }
 
-    public function setActivated(int $activated): void
+    public function setActivated(int $activated): self
     {
         $this->activated = $activated;
+
+        return $this;
     }
 
     public function getApprovedDate(): DateTime
@@ -260,13 +268,15 @@ class UserEntity extends EntityAccess
     /**
      * @param string|DateTime $approvedDate the user's approved date
      */
-    public function setApprovedDate($approvedDate): void
+    public function setApprovedDate($approvedDate): self
     {
         if ($approvedDate instanceof DateTime) {
             $this->approvedDate = $approvedDate;
         } else {
             $this->approvedDate = new DateTime($approvedDate);
         }
+
+        return $this;
     }
 
     public function getApprovedBy(): int
@@ -274,9 +284,11 @@ class UserEntity extends EntityAccess
         return $this->approvedBy;
     }
 
-    public function setApprovedBy(int $approvedBy): void
+    public function setApprovedBy(int $approvedBy): self
     {
         $this->approvedBy = $approvedBy;
+
+        return $this;
     }
 
     public function isApproved(): bool
@@ -292,13 +304,15 @@ class UserEntity extends EntityAccess
     /**
      * @param string|DateTime $registrationDate the user's regdate
      */
-    public function setRegistrationDate($registrationDate): void
+    public function setRegistrationDate($registrationDate): self
     {
         if ($registrationDate instanceof DateTime) {
             $this->registrationDate = $registrationDate;
         } else {
             $this->registrationDate = new DateTime($registrationDate);
         }
+
+        return $this;
     }
 
     public function getLastLogin(): DateTime
@@ -309,13 +323,15 @@ class UserEntity extends EntityAccess
     /**
      * @param string DateTime $lastLogin the user's last login
      */
-    public function setLastLogin($lastLogin): void
+    public function setLastLogin($lastLogin): self
     {
         if ($lastLogin instanceof DateTime) {
             $this->lastLogin = $lastLogin;
         } else {
             $this->lastLogin = new DateTime($lastLogin);
         }
+
+        return $this;
     }
 
     public function getTz(): string
@@ -323,9 +339,11 @@ class UserEntity extends EntityAccess
         return $this->tz;
     }
 
-    public function setTz(string $tz): void
+    public function setTz(string $tz): self
     {
         $this->tz = $tz;
+
+        return $this;
     }
 
     public function getLocale(): string
@@ -333,9 +351,11 @@ class UserEntity extends EntityAccess
         return $this->locale;
     }
 
-    public function setLocale(string $locale): void
+    public function setLocale(string $locale): self
     {
         $this->locale = $locale;
+
+        return $this;
     }
 
     public function getAttributes(): Collection
@@ -348,28 +368,34 @@ class UserEntity extends EntityAccess
         return $this->getAttributes()->offsetExists($name) ? $this->getAttributes()->get($name)->getValue() : '';
     }
 
-    public function setAttributes(ArrayCollection $attributes): void
+    public function setAttributes(ArrayCollection $attributes): self
     {
         $this->attributes = $attributes;
+
+        return $this;
     }
 
     /**
      * @param mixed $value
      */
-    public function setAttribute(string $name, $value): void
+    public function setAttribute(string $name, $value): self
     {
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
             $this->attributes[$name] = new UserAttributeEntity($this, $name, $value);
         }
+
+        return $this;
     }
 
-    public function delAttribute(string $name): void
+    public function delAttribute(string $name): self
     {
         if (isset($this->attributes[$name])) {
             $this->attributes->remove($name);
         }
+
+        return $this;
     }
 
     public function hasAttribute(string $name): bool
@@ -382,34 +408,42 @@ class UserEntity extends EntityAccess
         return $this->groups;
     }
 
-    public function setGroups(ArrayCollection $groups): void
+    public function setGroups(ArrayCollection $groups): self
     {
         $this->groups = $groups;
+
+        return $this;
     }
 
     /**
      * UserEntity is the 'Owning side'
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
      */
-    public function addGroup(GroupEntity $group): void
+    public function addGroup(GroupEntity $group): self
     {
         $group->addUser($this);
         $this->groups[] = $group;
+
+        return $this;
     }
 
-    public function removeGroup(GroupEntity $group): void
+    public function removeGroup(GroupEntity $group): self
     {
         $group->removeUser($this);
         $this->groups->removeElement($group);
+
+        return $this;
     }
 
-    public function removeGroups(): void
+    public function removeGroups(): self
     {
         /** @var GroupEntity $group */
         foreach ($this->groups as $group) {
             $group->removeUser($this);
         }
         $this->groups->clear();
+
+        return $this;
     }
 
     /**

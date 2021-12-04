@@ -77,9 +77,11 @@ class UserAttributeEntity extends EntityAccess
         return $this->user;
     }
 
-    public function setUser(UserEntity $user): void
+    public function setUser(UserEntity $user): self
     {
         $this->user = $user;
+
+        return $this;
     }
 
     public function getName(): string
@@ -87,9 +89,11 @@ class UserAttributeEntity extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getValue()
@@ -100,18 +104,22 @@ class UserAttributeEntity extends EntityAccess
     /**
      * @param mixed $value
      */
-    public function setValue($value): void
+    public function setValue($value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
      * @param mixed $value
      */
-    public function setAttribute(string $name, $value): void
+    public function setAttribute(string $name, $value): self
     {
         $this->setName($name);
         $this->setValue($value);
+
+        return $this;
     }
 
     public function getExtra(): string
@@ -119,9 +127,11 @@ class UserAttributeEntity extends EntityAccess
         return $this->extra;
     }
 
-    public function setExtra(string $extra): void
+    public function setExtra(string $extra): self
     {
         $this->extra = $extra;
+
+        return $this;
     }
 
     public function __toString(): string
