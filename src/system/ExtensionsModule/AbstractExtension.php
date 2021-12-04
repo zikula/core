@@ -122,7 +122,7 @@ abstract class AbstractExtension extends Bundle
         }
     }
 
-    public function getMetaData(): MetaData
+    public function getMetaData(bool $applyDynamicSettings = true): MetaData
     {
         $scanner = new Scanner();
         $jsonPath = $this->getPath() . '/composer.json';
@@ -131,7 +131,7 @@ abstract class AbstractExtension extends Bundle
         if (!empty($this->container) && $this->container->has('translator')) {
             $metaData->setTranslator($this->container->get('translator'));
         }
-        if (!empty($this->container) && $this->container->has(MetaDataHelper::class)) {
+        if (!empty($this->container) && $this->container->has(MetaDataHelper::class) && $applyDynamicSettings) {
             $metaData = $this->container->get(MetaDataHelper::class)->setDynamicMetaData($metaData);
         }
 

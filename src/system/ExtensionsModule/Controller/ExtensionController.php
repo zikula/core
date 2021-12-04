@@ -195,10 +195,11 @@ class ExtensionController extends AbstractController
 
         /** @var AbstractExtension $extensionBundle */
         $extensionBundle = $kernel->getBundle($extension->getName());
-        $metaData = $extensionBundle->getMetaData()->getFilteredVersionInfoArray();
+        $metaData = $extensionBundle->getMetaData(false)->getFilteredVersionInfoArray();
 
         if ($forceDefaults) {
             $extension->setName($metaData['name']);
+            $extension->setDisplayname($metaData['displayname']);
             $extension->setUrl($metaData['url']);
             $extension->setDescription($metaData['description']);
         }
@@ -216,9 +217,8 @@ class ExtensionController extends AbstractController
                 return $this->redirectToRoute('zikulaextensionsmodule_extension_modify', ['id' => $extension->getId(), 'forceDefaults' => 1]);
             }
             if ($form->get('save')->isClicked()) {
-                $em = $doctrine->getManager();
-                $em->persist($extension);
-                $em->flush();
+                $doctrine->getManager()->persist($extension);
+                $doctrine->getManager()->flush();
 
                 $cacheClearer->clear('symfony.routing');
                 $this->addFlash('status', 'Done! Extension updated.');
