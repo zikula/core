@@ -20,6 +20,7 @@
   - [Admin] Add missing numeric casts to admin module setting usages (#4709).
   - [Extensions] Fixed non-working extension modification actions (#4768).
   - [Groups] Fix some non-working translations (#4694).
+  - [Groups] Rename database tables for improved PostgreSQL compatibilty (#4762).
   - [Menu] Fixed handling of menu items without URI in custom request voter.
   - [Search] Add missing query string to search results pagination.
   - [Theme] Asset combination now defaults to `false` on installation (#4419).
