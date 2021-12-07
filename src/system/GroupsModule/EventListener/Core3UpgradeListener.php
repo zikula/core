@@ -35,7 +35,7 @@ class Core3UpgradeListener implements EventSubscriberInterface
         }
         $sm = $this->conn->getSchemaManager();
         if ($sm->tablesExist(['groups'])) {
-            $sql = 'RENAME TABLE `groups` TO `zikula_groups_group`, `group_applications` TO `zikula_groups_application`;';
+            $sql = 'RENAME TABLE `groups` TO `groups_group`, `group_applications` TO `groups_application`;';
             $this->conn->executeQuery($sql);
         }
     }
