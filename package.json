@@ -4,7 +4,7 @@
         "@symfony/webpack-encore": "^1.7.0",
         "core-js": "^3.19.3",
         "regenerator-runtime": "^0.13.9",
-        "stimulus": "^2.0.0",
+        "@hotwired/stimulus": "^3.0",
         "webpack-notifier": "^1.14.1"
     },
     "license": "UNLICENSED",
