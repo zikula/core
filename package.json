@@ -14,5 +14,10 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "bootstrap4": "npm:bootstrap@4.6.1",
+        "jquery": "^3.6.0",
+        "jquery-ui": "1.12.1"
     }
 }
