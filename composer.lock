@@ -6577,16 +6577,16 @@
         },
         {
             "name": "seld/phar-utils",
-            "version": "1.1.2",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/phar-utils.git",
-                "reference": "749042a2315705d2dfbbc59234dd9ceb22bf3ff0"
+                "reference": "9f3452c93ff423469c0d56450431562ca423dcee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/749042a2315705d2dfbbc59234dd9ceb22bf3ff0",
-                "reference": "749042a2315705d2dfbbc59234dd9ceb22bf3ff0",
+                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/9f3452c93ff423469c0d56450431562ca423dcee",
+                "reference": "9f3452c93ff423469c0d56450431562ca423dcee",
                 "shasum": ""
             },
             "require": {
@@ -6619,9 +6619,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/phar-utils/issues",
-                "source": "https://github.com/Seldaek/phar-utils/tree/1.1.2"
+                "source": "https://github.com/Seldaek/phar-utils/tree/1.2.0"
             },
-            "time": "2021-08-19T21:01:38+00:00"
+            "time": "2021-12-10T11:20:11+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -13920,16 +13920,16 @@
         },
         {
             "name": "zikula/legal-module",
-            "version": "dev-main",
+            "version": "3.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "69b93853bf0e25fa777c03657ad65007c2aeebf9"
+                "reference": "ee17d8482fcd657fc82481bab51c22945e7bbe29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/69b93853bf0e25fa777c03657ad65007c2aeebf9",
-                "reference": "69b93853bf0e25fa777c03657ad65007c2aeebf9",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/ee17d8482fcd657fc82481bab51c22945e7bbe29",
+                "reference": "ee17d8482fcd657fc82481bab51c22945e7bbe29",
                 "shasum": ""
             },
             "require": {
@@ -13984,9 +13984,9 @@
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
                 "issues": "https://github.com/zikula-modules/Legal/issues",
-                "source": "https://github.com/zikula-modules/Legal/tree/main"
+                "source": "https://github.com/zikula-modules/Legal/tree/3.2.10"
             },
-            "time": "2021-12-02T11:55:45+00:00"
+            "time": "2021-12-02T11:53:15+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -14052,7 +14052,7 @@
         },
         {
             "name": "zikula/pagelock-module",
-            "version": "dev-main",
+            "version": "1.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
@@ -14099,22 +14099,22 @@
             "description": "Page locking support",
             "support": {
                 "issues": "https://github.com/zikula-modules/PageLock/issues",
-                "source": "https://github.com/zikula-modules/PageLock/tree/main"
+                "source": "https://github.com/zikula-modules/PageLock/tree/1.3.9"
             },
             "time": "2021-06-18T06:29:35+00:00"
         },
         {
             "name": "zikula/profile-module",
-            "version": "dev-main",
+            "version": "3.1.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "2465f0a32fe43c4aefc0e6f61e2c27bdbbce906d"
+                "reference": "902599daa417eeee99ff77be7d2c33c5f8692583"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/2465f0a32fe43c4aefc0e6f61e2c27bdbbce906d",
-                "reference": "2465f0a32fe43c4aefc0e6f61e2c27bdbbce906d",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/902599daa417eeee99ff77be7d2c33c5f8692583",
+                "reference": "902599daa417eeee99ff77be7d2c33c5f8692583",
                 "shasum": ""
             },
             "require": {
@@ -14172,9 +14172,9 @@
             "description": "User profiles and member list",
             "support": {
                 "issues": "https://github.com/zikula-modules/Profile/issues",
-                "source": "https://github.com/zikula-modules/Profile/tree/main"
+                "source": "https://github.com/zikula-modules/Profile/tree/3.1.18"
             },
-            "time": "2021-12-02T11:59:18+00:00"
+            "time": "2021-12-02T11:58:18+00:00"
         },
         {
             "name": "zikula/sortable-columns",
@@ -14231,16 +14231,16 @@
         },
         {
             "name": "zikula/staticcontent-module",
-            "version": "1.0.2",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/StaticContent.git",
-                "reference": "d7fb1ce7e7f02521cc2b49b50e0d1ca18d5e58b9"
+                "reference": "7bf846b971e14d39f124939f62905b3b445caadc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/StaticContent/zipball/d7fb1ce7e7f02521cc2b49b50e0d1ca18d5e58b9",
-                "reference": "d7fb1ce7e7f02521cc2b49b50e0d1ca18d5e58b9",
+                "url": "https://api.github.com/repos/zikula-modules/StaticContent/zipball/7bf846b971e14d39f124939f62905b3b445caadc",
+                "reference": "7bf846b971e14d39f124939f62905b3b445caadc",
                 "shasum": ""
             },
             "require": {
@@ -14286,9 +14286,9 @@
             "description": "Display static content simply.",
             "support": {
                 "issues": "https://github.com/zikula-modules/StaticContent/issues",
-                "source": "https://github.com/zikula-modules/StaticContent/tree/master"
+                "source": "https://github.com/zikula-modules/StaticContent/tree/1.0.6"
             },
-            "time": "2020-08-30T19:27:48+00:00"
+            "time": "2021-12-14T12:52:19+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -14435,10 +14435,7 @@
     "stability-flags": {
         "jms/i18n-routing-bundle": 20,
         "php-translation/symfony-bundle": 20,
-        "phpids/phpids": 20,
-        "zikula/legal-module": 20,
-        "zikula/pagelock-module": 20,
-        "zikula/profile-module": 20
+        "phpids/phpids": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -96,10 +96,10 @@
         "twig/markdown-extra": "3.*",
         "twig/string-extra": "3.*",
         "willdurand/js-translation-bundle": "4.*",
-        "zikula/legal-module": "dev-main",
+        "zikula/legal-module": "3.*",
         "zikula/oauth-module": "1.*",
-        "zikula/pagelock-module": "dev-main",
-        "zikula/profile-module": "dev-main",
+        "zikula/pagelock-module": "1.*",
+        "zikula/profile-module": "3.*",
         "zikula/sortable-columns": "1.*",
         "zikula/staticcontent-module": "1.*",
         "zikula/wizard": "3.*"

@@ -21,7 +21,7 @@ use Zikula\UsersModule\Entity\UserEntity;
  * GroupApplication entity class.
  *
  * @ORM\Entity(repositoryClass="Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository")
- * @ORM\Table(name="group_applications")
+ * @ORM\Table(name="groups_application")
  */
 class GroupApplicationEntity extends EntityAccess
 {
