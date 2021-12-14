@@ -30,22 +30,15 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
-        "components/bootstrap": "4.*",
-        "components/font-awesome": "5.*",
-        "components/jquery": "3.*",
-        "components/jqueryui": "1.*",
         "composer/composer": "1.*",
         "composer/installers": "1.*",
         "composer/semver": "1.*",
-        "dimsemenov/magnific-popup": "1.*",
         "doctrine/doctrine-bundle": "2.*",
         "doctrine/orm": "2.*",
         "egulias/email-validator": "^3",
         "erusev/parsedown": "^1.7",
-        "frdh/mmenu.js": "8.*",
         "friendsofsymfony/jsrouting-bundle": "2.*",
         "ircmaxell/random-lib": "1.*",
-        "itsjavi/fontawesome-iconpicker": "3.*",
         "jms/i18n-routing-bundle": "dev-master",
         "justinrainbow/json-schema": "5.*",
         "knplabs/knp-menu-bundle": ">=2.2.1",
@@ -95,7 +88,6 @@
         "symfony/webpack-encore-bundle": "^1.8",
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
-        "thomaspark/bootswatch": "4.*",
         "twig/cssinliner-extra": "3.*",
         "twig/extra-bundle": "3.*",
         "twig/html-extra": "3.*",
@@ -103,7 +95,6 @@
         "twig/intl-extra": "3.*",
         "twig/markdown-extra": "3.*",
         "twig/string-extra": "3.*",
-        "vakata/jstree": "3.*",
         "willdurand/js-translation-bundle": "4.*",
         "zikula/legal-module": "dev-main",
         "zikula/oauth-module": "1.*",
@@ -166,10 +157,6 @@
         ]
     },
     "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/FrDH/mmenu-js"
-        },
         {
             "type": "git",
             "url": "https://github.com/AdrenalineHunter/JMSI18nRoutingBundle"

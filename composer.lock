@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4497a7c444c474ffe6703855f9fcc43",
+    "content-hash": "651df6e13d837f50d0e041dbe6459cb8",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -54,250 +54,6 @@
                 "source": "https://github.com/Behat/Transliterator/tree/v1.3.0"
             },
             "time": "2020-01-14T16:39:13+00:00"
-        },
-        {
-            "name": "components/bootstrap",
-            "version": "4.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/components/bootstrap.git",
-                "reference": "97f06b5527fba4083b85b7bdb152513ad8c7d6ce"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/97f06b5527fba4083b85b7bdb152513ad8c7d6ce",
-                "reference": "97f06b5527fba4083b85b7bdb152513ad8c7d6ce",
-                "shasum": ""
-            },
-            "require": {
-                "components/jquery": ">=2"
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "scripts": [
-                        "js/bootstrap.js"
-                    ],
-                    "files": [
-                        "js/*.js",
-                        "js/*.map",
-                        "css/*.css",
-                        "css/*.map"
-                    ],
-                    "shim": {
-                        "deps": [
-                            "jquery"
-                        ]
-                    }
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mark Otto",
-                    "email": "markdotto@gmail.com"
-                },
-                {
-                    "name": "Jacob Thornton",
-                    "email": "jacobthornton@gmail.com"
-                }
-            ],
-            "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "homepage": "https://getbootstrap.com",
-            "keywords": [
-                "css",
-                "framework",
-                "front-end",
-                "mobile-first",
-                "responsive",
-                "sass",
-                "web"
-            ],
-            "support": {
-                "issues": "https://github.com/components/bootstrap/issues",
-                "source": "https://github.com/components/bootstrap/tree/4.6.1"
-            },
-            "time": "2021-11-09T13:15:59+00:00"
-        },
-        {
-            "name": "components/font-awesome",
-            "version": "5.15.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/components/font-awesome.git",
-                "reference": "e6fd09f30f578915cc0cf186b0dd0da54385b6be"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/e6fd09f30f578915cc0cf186b0dd0da54385b6be",
-                "reference": "e6fd09f30f578915cc0cf186b0dd0da54385b6be",
-                "shasum": ""
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "styles": [
-                        "css/all.css"
-                    ],
-                    "files": [
-                        "css/all.min.css",
-                        "webfonts/*"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "CC-BY-4.0",
-                "MIT",
-                "OFL-1.1"
-            ],
-            "description": "Font Awesome, the iconic SVG, font, and CSS framework.",
-            "support": {
-                "issues": "https://github.com/components/font-awesome/issues",
-                "source": "https://github.com/components/font-awesome/tree/5.15.4"
-            },
-            "time": "2021-08-15T10:31:24+00:00"
-        },
-        {
-            "name": "components/jquery",
-            "version": "3.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/components/jquery.git",
-                "reference": "6cf38ee1fd04b6adf8e7dda161283aa35be818c3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/components/jquery/zipball/6cf38ee1fd04b6adf8e7dda161283aa35be818c3",
-                "reference": "6cf38ee1fd04b6adf8e7dda161283aa35be818c3",
-                "shasum": ""
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "scripts": [
-                        "jquery.js"
-                    ],
-                    "files": [
-                        "jquery.min.js",
-                        "jquery.min.map",
-                        "jquery.slim.js",
-                        "jquery.slim.min.js",
-                        "jquery.slim.min.map"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "JS Foundation and other contributors"
-                }
-            ],
-            "description": "jQuery JavaScript Library",
-            "homepage": "http://jquery.com",
-            "support": {
-                "forum": "http://forum.jquery.com",
-                "irc": "irc://irc.freenode.org/jquery",
-                "issues": "https://github.com/jquery/jquery/issues",
-                "source": "https://github.com/jquery/jquery",
-                "wiki": "http://docs.jquery.com/"
-            },
-            "time": "2021-03-20T19:13:42+00:00"
-        },
-        {
-            "name": "components/jqueryui",
-            "version": "1.12.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/components/jqueryui.git",
-                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/components/jqueryui/zipball/44ecf3794cc56b65954cc19737234a3119d036cc",
-                "reference": "44ecf3794cc56b65954cc19737234a3119d036cc",
-                "shasum": ""
-            },
-            "require": {
-                "components/jquery": ">=1.6"
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "name": "jquery-ui",
-                    "scripts": [
-                        "jquery-ui.js"
-                    ],
-                    "files": [
-                        "ui/**",
-                        "themes/**",
-                        "jquery-ui.min.js"
-                    ],
-                    "shim": {
-                        "deps": [
-                            "jquery"
-                        ],
-                        "exports": "jQuery"
-                    }
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "jQuery UI Team",
-                    "homepage": "http://jqueryui.com/about"
-                },
-                {
-                    "name": "Joern Zaefferer",
-                    "email": "joern.zaefferer@gmail.com",
-                    "homepage": "http://bassistance.de"
-                },
-                {
-                    "name": "Scott Gonzalez",
-                    "email": "scott.gonzalez@gmail.com",
-                    "homepage": "http://scottgonzalez.com"
-                },
-                {
-                    "name": "Kris Borchers",
-                    "email": "kris.borchers@gmail.com",
-                    "homepage": "http://krisborchers.com"
-                },
-                {
-                    "name": "Mike Sherov",
-                    "email": "mike.sherov@gmail.com",
-                    "homepage": "http://mike.sherov.com"
-                },
-                {
-                    "name": "TJ VanToll",
-                    "email": "tj.vantoll@gmail.com",
-                    "homepage": "http://tjvantoll.com"
-                },
-                {
-                    "name": "Corey Frang",
-                    "email": "gnarf37@gmail.com",
-                    "homepage": "http://gnarf.net"
-                },
-                {
-                    "name": "Felix Nagel",
-                    "email": "info@felixnagel.com",
-                    "homepage": "http://www.felixnagel.com"
-                }
-            ],
-            "description": "jQuery UI is a curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery JavaScript Library. Whether you're building highly interactive web applications or you just need to add a date picker to a form control, jQuery UI is the perfect choice.",
-            "support": {
-                "issues": "https://github.com/components/jqueryui/issues",
-                "source": "https://github.com/components/jqueryui/tree/master"
-            },
-            "time": "2016-09-16T05:47:55+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -921,30 +677,6 @@
                 }
             ],
             "time": "2021-03-25T17:01:18+00:00"
-        },
-        {
-            "name": "dimsemenov/magnific-popup",
-            "version": "1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dimsemenov/Magnific-Popup.git",
-                "reference": "6b7a8088783cbce01034414c1fd2d8e1889093ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dimsemenov/Magnific-Popup/zipball/6b7a8088783cbce01034414c1fd2d8e1889093ae",
-                "reference": "6b7a8088783cbce01034414c1fd2d8e1889093ae",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "description": "Light and responsive lightbox script with focus on performance.",
-            "homepage": "http://dimsemenov.com/plugins/magnific-popup/",
-            "support": {
-                "issues": "https://github.com/dimsemenov/Magnific-Popup/issues",
-                "source": "https://github.com/dimsemenov/Magnific-Popup/tree/1.1.0"
-            },
-            "time": "2016-02-20T09:06:30+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2355,7 +2087,6 @@
             "require-dev": {
                 "simpletest/simpletest": "dev-master#72de02a7b80c6bb8864ef9bf66d41d2f58f826bd"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -2389,44 +2120,6 @@
                 "source": "https://github.com/ezyang/htmlpurifier/tree/master"
             },
             "time": "2021-09-07T18:16:55+00:00"
-        },
-        {
-            "name": "frdh/mmenu.js",
-            "version": "8.5.23",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FrDH/mmenu-js",
-                "reference": "fc73fd03ee015a13dab0e8a57a0f2ad56e7e548a"
-            },
-            "type": "library",
-            "license": [
-                "CC-BY-NC-4.0"
-            ],
-            "authors": [
-                {
-                    "name": "Fred Heusschen",
-                    "email": "info@frebsite.nl",
-                    "homepage": "http://www.frebsite.nl",
-                    "role": "King :)"
-                }
-            ],
-            "description": "The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
-            "keywords": [
-                "app",
-                "curtain",
-                "list",
-                "listview",
-                "megamenu",
-                "menu",
-                "mmenu",
-                "mobile",
-                "navigation",
-                "off-canvas",
-                "on-canvas",
-                "panels",
-                "submenu"
-            ],
-            "time": "2021-05-06T21:36:17+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -3091,47 +2784,6 @@
             "time": "2015-03-20T14:31:23+00:00"
         },
         {
-            "name": "itsjavi/fontawesome-iconpicker",
-            "version": "3.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/farbelous/fontawesome-iconpicker.git",
-                "reference": "ca4d2f2b03140af422ea9e15160494e887844d39"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/farbelous/fontawesome-iconpicker/zipball/ca4d2f2b03140af422ea9e15160494e887844d39",
-                "reference": "ca4d2f2b03140af422ea9e15160494e887844d39",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Javi Aguilar",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Font Awesome Icon Picker plugin for Twitter Bootstrap",
-            "homepage": "https://farbelous.github.io/fontawesome-iconpicker/",
-            "keywords": [
-                "FontAwesome",
-                "bootstrap",
-                "iconpicker",
-                "picker",
-                "popover"
-            ],
-            "support": {
-                "issues": "https://github.com/farbelous/fontawesome-iconpicker/issues",
-                "source": "https://github.com/farbelous/fontawesome-iconpicker"
-            },
-            "abandoned": true,
-            "time": "2018-11-04T00:40:48+00:00"
-        },
-        {
             "name": "jakeasmith/http_build_url",
             "version": "1.0.1",
             "source": {
@@ -3189,7 +2841,6 @@
             "suggest": {
                 "jms/translation-bundle": "If you want to use the RouteTranslation extractor"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-0": {
@@ -5193,7 +4844,6 @@
             "require": {
                 "ezyang/htmlpurifier": "dev-master"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -13468,51 +13118,6 @@
             "time": "2021-07-28T10:34:58+00:00"
         },
         {
-            "name": "thomaspark/bootswatch",
-            "version": "v4.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thomaspark/bootswatch.git",
-                "reference": "8e6358e490c4caf9523b3cc5dd71167276dd77c8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/8e6358e490c4caf9523b3cc5dd71167276dd77c8",
-                "reference": "8e6358e490c4caf9523b3cc5dd71167276dd77c8",
-                "shasum": ""
-            },
-            "suggest": {
-                "robloach/component-installer": "Allows installation of Components via Composer"
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "name": "bootswatch",
-                    "files": [
-                        "README.md",
-                        "LICENSE",
-                        "dist/**/*"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "thomaspark",
-                    "email": "thomas@bootswatch.com"
-                }
-            ],
-            "description": "Themes for Bootstrap",
-            "support": {
-                "issues": "https://github.com/thomaspark/bootswatch/issues",
-                "source": "https://github.com/thomaspark/bootswatch/tree/v4.6.1"
-            },
-            "time": "2021-10-31T01:26:25+00:00"
-        },
-        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "2.2.4",
             "source": {
@@ -14144,78 +13749,6 @@
             "time": "2021-11-25T13:46:55+00:00"
         },
         {
-            "name": "vakata/jstree",
-            "version": "3.3.12",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vakata/jstree.git",
-                "reference": "7a03954015eaea2467956dc05e6be78f4d1a1ff0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/7a03954015eaea2467956dc05e6be78f4d1a1ff0",
-                "reference": "7a03954015eaea2467956dc05e6be78f4d1a1ff0",
-                "shasum": ""
-            },
-            "require": {
-                "components/jquery": ">=1.9.1"
-            },
-            "suggest": {
-                "robloach/component-installer": "Allows installation of Components via Composer"
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "scripts": [
-                        "dist/jstree.js"
-                    ],
-                    "styles": [
-                        "dist/themes/default/style.css"
-                    ],
-                    "images": [
-                        "dist/themes/default/32px.png",
-                        "dist/themes/default/40px.png",
-                        "dist/themes/default/throbber.gif"
-                    ],
-                    "files": [
-                        "dist/jstree.min.js",
-                        "dist/themes/default/style.min.css",
-                        "dist/themes/default/32px.png",
-                        "dist/themes/default/40px.png",
-                        "dist/themes/default/throbber.gif"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Bozhanov",
-                    "email": "jstree@jstree.com"
-                }
-            ],
-            "description": "jsTree is jquery plugin, that provides interactive trees.",
-            "homepage": "http://jstree.com",
-            "support": {
-                "forum": "https://groups.google.com/forum/#!forum/jstree",
-                "issues": "https://github.com/vakata/jstree/issues",
-                "source": "https://github.com/vakata/jstree"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@vakata.com&currency_code=USD&amount=&return=http://jstree.com/donation&item_name=Buy+me+a+coffee+for+jsTree",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/vakata",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-09-03T12:55:53+00:00"
-        },
-        {
             "name": "webmozart/assert",
             "version": "1.10.0",
             "source": {
@@ -14402,7 +13935,6 @@
             "require": {
                 "php": ">=7.2.5"
             },
-            "default-branch": true,
             "type": "zikula-module",
             "extra": {
                 "zikula": {
@@ -14535,7 +14067,6 @@
             "require": {
                 "php": ">=7.2.5"
             },
-            "default-branch": true,
             "type": "zikula-module",
             "extra": {
                 "zikula": {
@@ -14589,7 +14120,6 @@
             "require": {
                 "php": ">=7.2.5"
             },
-            "default-branch": true,
             "type": "zikula-module",
             "extra": {
                 "zikula": {
@@ -14923,5 +14453,5 @@
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "1.1.0"
 }

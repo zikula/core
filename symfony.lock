@@ -2,18 +2,6 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
-    "components/bootstrap": {
-        "version": "4.5.3"
-    },
-    "components/font-awesome": {
-        "version": "5.15.1"
-    },
-    "components/jquery": {
-        "version": "3.5.1"
-    },
-    "components/jqueryui": {
-        "version": "1.12.1"
-    },
     "composer/ca-bundle": {
         "version": "1.2.8"
     },
@@ -28,9 +16,6 @@
     },
     "composer/xdebug-handler": {
         "version": "1.4.5"
-    },
-    "dimsemenov/magnific-popup": {
-        "version": "1.1.0"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -108,9 +93,6 @@
     "ezyang/htmlpurifier": {
         "version": "dev-master"
     },
-    "frdh/mmenu.js": {
-        "version": "8.5.20"
-    },
     "friendsofsymfony/jsrouting-bundle": {
         "version": "2.3",
         "recipe": {
@@ -143,9 +125,6 @@
     },
     "ircmaxell/security-lib": {
         "version": "v1.1.0"
-    },
-    "itsjavi/fontawesome-iconpicker": {
-        "version": "3.2.0"
     },
     "jakeasmith/http_build_url": {
         "version": "1.0.1"
@@ -851,9 +830,6 @@
     "theseer/tokenizer": {
         "version": "1.2.0"
     },
-    "thomaspark/bootswatch": {
-        "version": "v4.5.3"
-    },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.3"
     },
@@ -880,9 +856,6 @@
     },
     "twig/twig": {
         "version": "v3.1.1"
-    },
-    "vakata/jstree": {
-        "version": "3.3.10"
     },
     "webmozart/assert": {
         "version": "1.9.1"
