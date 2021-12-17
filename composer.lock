@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22713911ff7b4d5d11f53e88797786da",
+    "content-hash": "8c20abc6046a8abc200007acb952f3d9",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -6967,16 +6967,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v6.2.2",
+            "version": "v6.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "8be174975f05cb9a91860308b8b306213689b736"
+                "reference": "eeab0bbe6ac94a600a7da7aac020646dcd739484"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/8be174975f05cb9a91860308b8b306213689b736",
-                "reference": "8be174975f05cb9a91860308b8b306213689b736",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/eeab0bbe6ac94a600a7da7aac020646dcd739484",
+                "reference": "eeab0bbe6ac94a600a7da7aac020646dcd739484",
                 "shasum": ""
             },
             "require": {
@@ -7039,9 +7039,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/issues",
-                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.2"
+                "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.3"
             },
-            "time": "2021-12-17T02:08:16+00:00"
+            "time": "2021-12-17T14:36:53+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -14267,38 +14267,38 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "4.0.2",
+            "version": "5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "6cbaa477f5b76c9208b3c28145777481b734ccf6"
+                "reference": "811fff5e9cf16471d350d8d3d0d09127bfe31b1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/6cbaa477f5b76c9208b3c28145777481b734ccf6",
-                "reference": "6cbaa477f5b76c9208b3c28145777481b734ccf6",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/811fff5e9cf16471d350d8d3d0d09127bfe31b1e",
+                "reference": "811fff5e9cf16471d350d8d3d0d09127bfe31b1e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "symfony/console": "~4.4|~5.0",
-                "symfony/finder": "~4.4|~5.0",
-                "symfony/framework-bundle": "~4.4|~5.0",
-                "symfony/intl": "~4.4|~5.0",
-                "symfony/translation": "~4.4|~5.0",
-                "symfony/twig-bundle": "~4.4|~5.0"
+                "symfony/console": "~4.4|~5.0|~6.0",
+                "symfony/finder": "~4.4|~5.0|~6.0",
+                "symfony/framework-bundle": "~4.4|~5.0|~6.0",
+                "symfony/intl": "~4.4|~5.0|~6.0",
+                "symfony/translation": "~4.4|~5.0|~6.0",
+                "symfony/twig-bundle": "~4.4|~5.0|~6.0"
             },
             "replace": {
                 "willdurand/expose-translation-bundle": "2.5.*"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8|~5.7|~6.5|~8",
-                "symfony/asset": "~4.4|~5.0",
-                "symfony/browser-kit": "~4.4|~5.0",
-                "symfony/filesystem": "~4.4|~5.0",
-                "symfony/phpunit-bridge": "^5.0",
-                "symfony/twig-bundle": "~4.4|~5.0",
-                "symfony/yaml": "~4.4|~5.0"
+                "symfony/asset": "~4.4|~5.0|~6.0",
+                "symfony/browser-kit": "~4.4|~5.0|~6.0",
+                "symfony/filesystem": "~4.4|~5.0|~6.0",
+                "symfony/phpunit-bridge": "^5.0|^6.0",
+                "symfony/twig-bundle": "~4.4|~5.0|~6.0",
+                "symfony/yaml": "~4.4|~5.0|~6.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -14329,9 +14329,9 @@
             ],
             "support": {
                 "issues": "https://github.com/willdurand/BazingaJsTranslationBundle/issues",
-                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/4.0.2"
+                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/5.0.0"
             },
-            "time": "2021-08-04T14:51:10+00:00"
+            "time": "2021-12-02T07:27:01+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",

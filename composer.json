@@ -104,7 +104,7 @@
         "twig/markdown-extra": "3.*",
         "twig/string-extra": "3.*",
         "vakata/jstree": "3.*",
-        "willdurand/js-translation-bundle": "4.*",
+        "willdurand/js-translation-bundle": "5.*",
         "zikula/legal-module": "3.*",
         "zikula/oauth-module": "1.*",
         "zikula/pagelock-module": "1.*",
