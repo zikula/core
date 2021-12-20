@@ -62,7 +62,7 @@
         "php-translation/symfony-storage": "2.*",
         "phpids/phpids": "dev-master",
         "phpunit/phpunit": "*",
-        "sensio/framework-extra-bundle": "^6.1",
+        "sensio/framework-extra-bundle": "^6",
         "stof/doctrine-extensions-bundle": "1.*",
         "symfony/asset": "^5.4",
         "symfony/browser-kit": "^5.4",
