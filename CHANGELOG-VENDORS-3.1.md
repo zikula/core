@@ -3,5 +3,5 @@
 ## 3.1.0 VENDOR CHANGES (2021-12-20)
 
 - Vendor updates:
-###PLACEHOLDER_FOR_VENDOR_UPDATES###
+
 
