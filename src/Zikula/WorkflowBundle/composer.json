@@ -14,16 +14,16 @@
     "require": {
         "php": ">=7.2.5",
         "symfony/contracts": "^2.3",
-        "symfony/finder": "^5.2",
-        "symfony/form": "^5.2",
-        "symfony/framework-bundle": "^5.2",
-        "symfony/string": "^5.2",
-        "symfony/validator": "^5.2",
-        "symfony/workflow": "^5.2",
+        "symfony/finder": "^5.4",
+        "symfony/form": "^5.4",
+        "symfony/framework-bundle": "^5.4",
+        "symfony/string": "^5.4",
+        "symfony/validator": "^5.4",
+        "symfony/workflow": "^5.4",
 
-        "zikula/core-bundle": "dev-master",
-        "zikula/permissions-module": "dev-master",
-        "zikula/theme-module": "dev-master"
+        "zikula/core-bundle": "dev-main",
+        "zikula/permissions-module": "dev-main",
+        "zikula/theme-module": "dev-main"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\WorkflowBundle\\": "" }

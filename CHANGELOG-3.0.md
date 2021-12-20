@@ -1,9 +1,17 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.0.4 (unreleased)
+## 3.0.5 (unreleased)
 
 - BC Breaks:
   - _there should be none_
+
+- Fixes:
+  - none yet
+
+- Features:
+  - _there should be none_
+
+## 3.0.4 (2021-12-20)
 
 - Fixes:
   - [CoreBundle] More robust autoloader detection.
@@ -15,13 +23,11 @@
   - [Extensions] Disable caching headers in `AbstractTheme` if user is logged in.
   - [Theme] Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).
   - [Permissions] Correctly handle non-existing username during permission testing.
+  - [ThemeModule] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
   - [Users] Dispatch `UserPostLoginFailureEvent` after login failure as expected.
   - [Users] Add missing check in `CurrentUserApi` to avoid an error in PHP8.
   - [Users] Fix possibly open redirect in login function.
   - [ZAuth] Fix wrong `DateTime` argument in `UserVerificationRepository`.
-
-- Features:
-  - _there should be none_
 
 ## 3.0.3 (2020-09-04)
 
