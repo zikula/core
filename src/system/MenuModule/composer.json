@@ -1,6 +1,6 @@
 {
     "name": "zikula/menu-module",
-    "version": "3.1.0-dev",
+    "version": "3.1.0",
     "description": "Menu management",
     "type": "zikula-system-module",
     "license": "MIT",
