@@ -38,6 +38,7 @@
         "zikula/zauth-module": "3.*",
 
         "symfony/symfony": "5.*",
+        "symfony/framework-bundle": "v5.1.9",
         "symfony/monolog-bundle": "3.*",
         "sensio/framework-extra-bundle": "5.*",
         "symfony/maker-bundle": "1.*",
