@@ -48,7 +48,7 @@
         "itsjavi/fontawesome-iconpicker": "3.*",
         "jms/i18n-routing-bundle": "dev-master",
         "justinrainbow/json-schema": "5.*",
-        "knplabs/knp-menu-bundle": ">=2.2.1",
+        "knplabs/knp-menu-bundle": "^3",
         "league/commonmark": "^1.0",
         "league/html-to-markdown": "^5.0",
         "liip/imagine-bundle": "2.*",
