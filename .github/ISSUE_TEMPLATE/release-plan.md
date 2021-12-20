@@ -12,7 +12,7 @@ assignees: 'Guite, craigh'
 - [ ] Check if there are no open issues labeled as `blocker`
 - [ ] Check if there are no open issues which are not labeled as `blocker` but seem critical
 - [ ] Ensure all VA modules and own components have been released to ensure all changes are correctly pulled.
-     - [ ] ensure core and distribution composer.json files are set to appropriate version strings for VA (not dev-master)
+     - [ ] ensure core and distribution composer.json files are set to appropriate version strings for VA (not `dev-main`)
 - [ ] Ensure all dependencies and `composer.lock` are up to date (execute `composer update`)
 - [ ] Ensure all translation templates are up to date (see `Check translations` workflow)
   - [ ] If not update translation templates:
@@ -21,7 +21,7 @@ assignees: 'Guite, craigh'
 - [ ] Review whether there are changes required for install and/or upgrade docs
 - [ ] Update version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2-dev 3.0.2` (creates a pull request)
 - [ ] update dependency versions for all `/system` and `/Zikula` subpackages to version of current release
-     - `bin/console rt:set-deps master dev-master 3.1.0` (`dev-master` is current value, `3.1.0` is desired value)
+     - `bin/console rt:set-deps master dev-main 3.1.0` (`dev-main` is current value, `3.1.0` is desired value)
 - [ ] Create/update vendor changelog
   - [ ] Ensure the `CHANGELOG-VENDORS-<branch>.md` file contains a `###PLACEHOLDER_FOR_VENDOR_UPDATES###` line below the `- Vendor updates:` line
   - [ ] Run `bin/console rt:vendor 3.0.1 3.0` whereby `3.0.1` is the last release tag and `3.0` the desired target branch (creates a pull request).
@@ -33,7 +33,7 @@ assignees: 'Guite, craigh'
   - [ ] Split the monorepo using `bin/console rt:split 3.0 --tag=3.0.6` to push the release tag to all component repositories.
   - [ ] Wait a bit for packagist to update
   - [ ] Update distribution
-    - [ ] Update dependency versions in distribution's `composer.json` (e.g. `dev-master` -> `^3.1` or `^3.1` -> `3.2`)
+    - [ ] Update dependency versions in distribution's `composer.json` (e.g. `dev-main` -> `^3.1` or `^3.1` -> `3.2`)
     - [ ] Run `symfony composer update` to update `composer.lock` (take care for using the correct branch)
     - [ ] Commit the changes (this triggers the distribution build for creating the final artifacts)
     - [ ] Wait until the [build job](https://github.com/zikula/distribution/actions?query=workflow%3A%22Build+archives%22) is completed
@@ -77,6 +77,6 @@ assignees: 'Guite, craigh'
   - [ ] increment version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2 3.0.3-dev` (creates a pull request)
   - [ ] increment version in VA extensions
   - [ ] Add new section to both changelogs (normal + vendor)
-  - [ ] Reset zikula dependencies to dev-master
-    - `bin/console rt:set-deps master 3.1.0 dev-master` (`3.1.0` is current value, `dev-master` is desired value)
-- [ ] Merge to `master` branch
+  - [ ] Reset zikula dependencies to `dev-main`
+    - `bin/console rt:set-deps main 3.1.0 dev-main` (`3.1.0` is current value, `dev-main` is desired value)
+- [ ] Merge to `main` branch
