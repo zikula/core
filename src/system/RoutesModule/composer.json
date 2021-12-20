@@ -47,7 +47,7 @@
         "zikula/sortable-columns": "1.*",
 
         "jms/i18n-routing-bundle": "3.*",
-        "friendsofsymfony/jsrouting-bundle": "3.*"
+        "friendsofsymfony/jsrouting-bundle": "2.*"
     },
     "extra": {
         "zikula": {
