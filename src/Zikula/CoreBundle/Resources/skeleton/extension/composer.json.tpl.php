@@ -1,5 +1,5 @@
 {
-    "name": "<?php echo mb_strtolower($vendor); ?>/<?php echo mb_strtolower($name); ?>-<?php echo mb_strtolower($type); ?>",
+    "name": "<?php echo mb_strtolower($vendor) . '/' . mb_strtolower($name) . '-' . mb_strtolower($type); ?>",
     "version": "1.0.0",
     "description": "This is a description.",
     "type": "zikula-<?php echo mb_strtolower($type); ?>",
