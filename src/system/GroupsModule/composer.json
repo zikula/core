@@ -28,7 +28,7 @@
         "symfony/validator": "^5.4",
 
         "zikula/core-bundle": "dev-main",
-        "zikula/coreinstaller-bundle": "dev-master",
+        "zikula/coreinstaller-bundle": "dev-main",
         "zikula/formextension-bundle": "dev-main",
         "zikula/extensions-module": "dev-main",
         "zikula/menu-module": "dev-main",
