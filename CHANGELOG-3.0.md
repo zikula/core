@@ -15,6 +15,7 @@
   - [Extensions] Disable caching headers in `AbstractTheme` if user is logged in.
   - [Theme] Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).
   - [Permissions] Correctly handle non-existing username during permission testing.
+  - [ThemeModule] Replaced `robloach/component-installer` with `oomphinc/composer-installers-extender` (#4558).
   - [Users] Dispatch `UserPostLoginFailureEvent` after login failure as expected.
   - [Users] Add missing check in `CurrentUserApi` to avoid an error in PHP8.
   - [Users] Fix possibly open redirect in login function.
