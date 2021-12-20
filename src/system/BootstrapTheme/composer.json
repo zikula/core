@@ -1,6 +1,6 @@
 {
     "name": "zikula/bootstrap-theme",
-    "version": "3.0.4-dev",
+    "version": "3.0.4",
     "description": "Bootstrap based theme",
     "type": "zikula-system-theme",
     "license": "LGPL-3.0-or-later",
