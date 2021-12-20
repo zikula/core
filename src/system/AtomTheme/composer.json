@@ -21,9 +21,9 @@
         "symfony/http-foundation": "^5.4",
         "symfony/http-kernel": "^5.4",
 
-        "zikula/core-bundle": "dev-main",
-        "zikula/extensions-module": "dev-main",
-        "zikula/theme-module": "dev-main"
+        "zikula/core-bundle": "3.1.0",
+        "zikula/extensions-module": "3.1.0",
+        "zikula/theme-module": "3.1.0"
     },
     "extra": {
         "zikula" : {
