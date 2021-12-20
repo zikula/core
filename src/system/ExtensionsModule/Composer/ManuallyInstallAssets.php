@@ -61,5 +61,8 @@ class ManuallyInstallAssets
             $fs->copy($vendorDir . $assetPath, $publicDir . $destinationPath, true);
             $event->getIO()->write(sprintf('Zikula installed <comment>%s</comment> in <comment>%s</comment>', $assetPath, $publicDir . $destinationPath));
         }
+        $cwd = getcwd();
+        $fs->symlink($cwd . '/' . $publicDir . '/jqueryui', $cwd . '/' . $publicDir . '/jquery-ui');
+        $event->getIO()->write(sprintf('Zikula symlinked <comment>%s</comment> to <comment>%s</comment>', $publicDir . '/jqueryui', $publicDir . '/jquery-ui'));
     }
 }
