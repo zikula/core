@@ -3,7 +3,7 @@
 ## 3.0.4 VENDOR CHANGES (unreleased)
 
 - Vendor updates:
-###PLACEHOLDER_FOR_VENDOR_UPDATES###
+
 
 ## 3.0.3 VENDOR CHANGES (2020-09-04)
 
