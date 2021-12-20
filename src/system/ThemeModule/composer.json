@@ -56,7 +56,7 @@
 
         "erusev/parsedown": "^1.7",
         "league/commonmark": "^1.0",
-        "league/html-to-markdown": "^4.8",
+        "league/html-to-markdown": "^5.0",
         "michelf/php-markdown": "^1.9",
 
         "oro/twig-inspector": "1.*",
