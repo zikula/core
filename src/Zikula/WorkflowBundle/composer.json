@@ -21,9 +21,9 @@
         "symfony/validator": "^5.4",
         "symfony/workflow": "^5.4",
 
-        "zikula/core-bundle": "dev-main",
-        "zikula/permissions-module": "dev-main",
-        "zikula/theme-module": "dev-main"
+        "zikula/core-bundle": "3.1.0",
+        "zikula/permissions-module": "3.1.0",
+        "zikula/theme-module": "3.1.0"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\WorkflowBundle\\": "" }
