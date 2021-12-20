@@ -37,7 +37,7 @@
         "zikula/settings-module": "3.1.0",
         "zikula/users-module": "3.1.0",
         "zikula/zauth-module": "3.1.0",
-        "zikula/wizard": "3.1.0",
+        "zikula/wizard": "^3",
 
         "matthiasnoback/symfony-console-form": "4.*"
     },
