@@ -39,7 +39,7 @@
         "zikula/extensions-module": "3.1.0",
         "zikula/groups-module": "3.1.0",
         "zikula/menu-module": "3.1.0",
-        "zikula/pagelock-module": "3.1.0",
+        "zikula/pagelock-module": "1.*",
         "zikula/permissions-module": "3.1.0",
         "zikula/settings-module": "3.1.0",
         "zikula/theme-module": "3.1.0",
