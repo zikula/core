@@ -38,7 +38,7 @@
         "zikula/users-module": "3.1.0",
         "zikula/sortable-columns": "1.*",
 
-        "phpids/phpids": "dev-main"
+        "phpids/phpids": "dev-master"
     },
     "extra": {
         "zikula": {
