@@ -1,6 +1,6 @@
 # CHANGELOG-VENDORS - ZIKULA 3.0.x
 
-## 3.0.4 VENDOR CHANGES (unreleased)
+## 3.0.4 VENDOR CHANGES (2021-12-20)
 
 - Vendor updates:
   - components/bootstrap updated from 4.5.2 to 4.5.3
