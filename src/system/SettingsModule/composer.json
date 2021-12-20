@@ -43,6 +43,12 @@
 
         "willdurand/js-translation-bundle": "5.*"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/Guite/symfony-bundle/"
+        }
+    ],
     "extra": {
         "zikula": {
             "class": "Zikula\\SettingsModule\\ZikulaSettingsModule",

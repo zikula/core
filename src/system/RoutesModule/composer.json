@@ -49,6 +49,12 @@
         "jms/i18n-routing-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "2.*"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/AdrenalineHunter/JMSI18nRoutingBundle"
+        }
+    ],
     "extra": {
         "zikula": {
             "core-compatibility": ">=3.0.0 <4.0.0",
