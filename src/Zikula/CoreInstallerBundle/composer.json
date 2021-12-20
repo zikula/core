@@ -18,7 +18,7 @@
         "symfony/framework-bundle": "5.*",
         "symfony/requirements-checker": "1.*",
         "matthiasnoback/symfony-console-form": "4.*",
-        "zikula/wizard": "dev-master"
+        "zikula/wizard": "dev-main"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreInstallerBundle\\": "" }
