@@ -3,7 +3,61 @@
 ## 3.0.4 VENDOR CHANGES (unreleased)
 
 - Vendor updates:
-###PLACEHOLDER_FOR_VENDOR_UPDATES###
+  - components/bootstrap updated from 4.5.2 to 4.5.3
+  - components/font-awesome updated from 5.14.0 to 5.15.1
+  - composer/composer updated from 1.10.9 to 1.10.19
+  - composer/semver updated from 1.5.1 to 1.7.2
+  - composer/spdx-licenses updated from 1.5.4 to 1.5.5
+  - composer/xdebug-handler updated from 1.4.3 to 1.4.5
+  - doctrine/annotations updated from 1.10.4 to 1.11.1
+  - doctrine/dbal updated from 2.10.3 to 2.10.4
+  - doctrine/doctrine-bundle updated from 2.1.2 to 2.2.2
+  - doctrine/instantiator updated from 1.3.1 to 1.4.0
+  - doctrine/orm updated from 2.7.3 to 2.7.5
+  - doctrine/reflection updated from 1.2.1 to 1.2.2
+  - egulias/email-validator updated from 2.1.19 to 2.1.24
+  - frdh/mmenu.js updated from 8.5.9 to 8.5.20
+  - friendsofsymfony/jsrouting-bundle updated from 2.6.0 to 2.7.0
+  - guzzlehttp/guzzle updated from 7.0.1 to 7.2.0
+  - guzzlehttp/promises updated from 1.3.1 to 1.4.0
+  - guzzlehttp/psr7 updated from 1.6.1 to 1.7.0
+  - imagine/imagine updated from 1.2.3 to 1.2.4
+  - knplabs/knp-menu-bundle updated from 3.0.0 to 3.1.0
+  - league/commonmark updated from 1.5.4 to 1.5.7
+  - league/oauth2-client updated from 2.5.0 to 2.6.0
+  - league/oauth2-facebook updated from 2.0.2 to 2.0.3
+  - nikic/php-parser updated from v4.9.0 to v4.10.3
+  - nyholm/nsa updated from 1.2.0 to 1.2.1
+  - ocramius/package-versions updated from 1.4.2 to composer/package-versions-deprecated 1.11.99.1
+  - paragonie/random_compat updated from 9.99.99 to 9.99.100
+  - seld/jsonlint updated from 1.8.2 to 1.8.3
+  - symfony/contracts updated from v2.1.3 to v2.3.1
+  - symfony/maker-bundle updated from v1.21.0 to v1.24.2
+  - symfony/monolog-bundle updated from v3.5.0 to v3.6.0
+  - symfony/phpunit-bridge updated from v5.1.5 to v5.2.0
+  - symfony/polyfill-ctype updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-intl-grapheme updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-intl-icu updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-intl-idn updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-intl-messageformatter updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-intl-normalizer updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-mbstring updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-php70 removed
+  - symfony/polyfill-php72 updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-php73 updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-php80 updated from v1.18.1 to v1.20.0
+  - symfony/polyfill-uuid updated from v1.18.1 to v1.20.0
+  - symfony/requirements-checker updated from v1.1.5 to v1.1.8
+  - symfony/symfony updated from v5.1.5 to v5.1.9
+  - thomaspark/bootswatch updated from v4.5.2 to v4.5.3
+  - twig/cssinliner-extra updated from v3.0.5 to v3.1.1
+  - twig/extra-bundle updated from v3.0.5 to v3.1.1
+  - twig/html-extra updated from v3.0.5 to v3.1.1
+  - twig/inky-extra updated from v3.0.5 to v3.1.1
+  - twig/intl-extra updated from v3.0.5 to v3.1.1
+  - twig/markdown-extra updated from v3.0.5 to v3.1.1
+  - twig/string-extra updated from v3.0.5 to v3.1.1
+  - twig/twig updated from v3.0.5 to v3.1.1
 
 ## 3.0.3 VENDOR CHANGES (2020-09-04)
 
@@ -139,7 +193,7 @@
   - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.6.0
   - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.41
   - guzzlehttp/guzzle updated from 6.4.1 to 6.5.5
-  - imagine/imagine updated from 0.7.1 to 1.3.3
+  - imagine/imagine updated from 0.7.1 to 1.2.3
   - itsjavi/fontawesome-iconpicker installed in 3.2.0
   - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using lightcoresystems/i18n-routing-bundle dev-master instead)
   - jquery.mmenu updated from 7.3.3 to frdh/mmenu.js 8.5.9
