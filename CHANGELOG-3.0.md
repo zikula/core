@@ -1,9 +1,17 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.0.4 (2021-12-20)
+## 3.0.5 (unreleased)
 
 - BC Breaks:
   - _there should be none_
+
+- Fixes:
+  - none yet
+
+- Features:
+  - _there should be none_
+
+## 3.0.4 (2021-12-20)
 
 - Fixes:
   - [CoreBundle] More robust autoloader detection.
@@ -20,9 +28,6 @@
   - [Users] Add missing check in `CurrentUserApi` to avoid an error in PHP8.
   - [Users] Fix possibly open redirect in login function.
   - [ZAuth] Fix wrong `DateTime` argument in `UserVerificationRepository`.
-
-- Features:
-  - _there should be none_
 
 ## 3.0.3 (2020-09-04)
 
