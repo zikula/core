@@ -16,7 +16,7 @@
         "php": ">=7.2.5",
         "composer/composer": "1.*",
         "composer/installers": "1.*",
-        "robloach/component-installer": "*",
+        "oomphinc/composer-installers-extender": "2.*",
 
         "zikula/sortable-columns": "1.*",
 
