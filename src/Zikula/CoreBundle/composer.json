@@ -54,7 +54,6 @@
         "symfony/yaml": "^5.4",
 
         "sensio/framework-extra-bundle": "^6",
-        "sensiolabs/security-checker": "6.*",
         "symfony/browser-kit": "^5.4",
         "symfony/debug-bundle": "^5.4",
         "symfony/doctrine-bridge": "^5.2",
