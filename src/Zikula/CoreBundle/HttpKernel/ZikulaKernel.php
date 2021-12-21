@@ -56,7 +56,7 @@ define('ACCESS_ADMIN', 800);
 
 abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 {
-    public const VERSION = '3.0.4';
+    public const VERSION = '3.0.5-DEV';
 
     public const PHP_MINIMUM_VERSION = '7.2.5';
 
