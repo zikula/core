@@ -1,6 +1,6 @@
 {
     "name": "zikula/search-module",
-    "version": "3.0.5-dev",
+    "version": "3.0.4",
     "description": "Site search support",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
