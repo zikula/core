@@ -1,6 +1,6 @@
 # CHANGELOG - ZIKULA 3.1.x
 
-## 3.1.0 (2021-12-20)
+## 3.1.0 (2021-12-21)
 
 - BC Breaks:
   - [config] Removed `config/dynamic/*.yaml` files (use standard package config files).

@@ -1,6 +1,6 @@
 # CHANGELOG-VENDORS - ZIKULA 3.0.x
 
-## 3.1.0 VENDOR CHANGES (2021-12-20)
+## 3.1.0 VENDOR CHANGES (2021-12-21)
 
 - Vendor updates:
   - antishov/doctrine-extensions-bundle removed (installed version was v1.4.2)
