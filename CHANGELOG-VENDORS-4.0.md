@@ -1,0 +1,6 @@
+# CHANGELOG-VENDORS - ZIKULA 4.0.x
+
+## 4.0.0 VENDOR CHANGES (unreleased)
+
+- Vendor updates:
+###PLACEHOLDER_FOR_VENDOR_UPDATES###

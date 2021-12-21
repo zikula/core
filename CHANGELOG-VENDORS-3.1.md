@@ -1,0 +1,184 @@
+# CHANGELOG-VENDORS - ZIKULA 3.1.x
+
+## 3.1.1 VENDOR CHANGES (unreleased)
+
+- Vendor updates:
+###PLACEHOLDER_FOR_VENDOR_UPDATES###
+
+## 3.1.0 VENDOR CHANGES (2021-12-21)
+
+- Vendor updates:
+  - antishov/doctrine-extensions-bundle removed (installed version was v1.4.2)
+  - components/bootstrap updated from 4.5.3 to 4.6.1 minor
+  - components/font-awesome updated from 5.15.1 to 5.15.4 patch
+  - components/jquery updated from 3.5.1 to 3.6.0 minor
+  - composer/ca-bundle updated from 1.2.8 to 1.3.1 minor
+  - composer/composer updated from 1.10.19 to 1.10.24 patch
+  - composer/installers updated from v1.9.0 to v2.0.1 major
+  - composer/package-versions-deprecated updated from 1.11.99.1 to 1.11.99.4 patch
+  - composer/spdx-licenses updated from 1.5.5 to 1.5.6 patch
+  - composer/xdebug-handler updated from 1.4.5 to 1.4.6 patch
+  - doctrine/annotations updated from 1.11.1 to 1.13.2 minor
+  - doctrine/cache updated from 1.10.2 to 1.12.1 minor
+  - doctrine/collections updated from 1.6.7 to 1.6.8 patch
+  - doctrine/dbal updated from 2.10.4 to 2.13.6 minor
+  - doctrine/deprecations installed in version v0.5.3
+  - doctrine/doctrine-bundle updated from 2.2.2 to 2.3.2 minor
+  - doctrine/inflector updated from 1.4.3 to 1.4.4 patch
+  - doctrine/sql-formatter updated from 1.1.1 to 1.1.2 patch
+  - egulias/email-validator updated from 2.1.24 to 3.1.2 major
+  - ezyang/htmlpurifier updated from dev-master@2512f59 to dev-master@996eaf4
+  - frdh/mmenu.js updated from 8.5.20 to 8.5.23 patch
+  - friendsofsymfony/jsrouting-bundle updated from 2.7.0 to 2.8.0 minor
+  - gedmo/doctrine-extensions updated from v2.4.42 to v3.2.0 major
+  - guzzlehttp/guzzle updated from 7.2.0 to 7.4.1 minor
+  - guzzlehttp/promises updated from 1.4.0 to 1.5.1 minor
+  - guzzlehttp/psr7 updated from 1.7.0 to 2.1.0 major
+  - jms/i18n-routing-bundle downgraded from 3.0.4 to dev-master@2c852d0 major
+  - justinrainbow/json-schema updated from 5.2.10 to 5.2.11 patch
+  - knplabs/knp-menu updated from v3.1.2 to v3.2.0 minor
+  - knplabs/knp-menu-bundle updated from v3.1.0 to v3.2.0 minor
+  - league/commonmark updated from 1.5.7 to 1.6.6 minor
+  - league/html-to-markdown updated from 4.10.0 to 5.0.2 major
+  - league/oauth2-facebook updated from 2.0.3 to 2.0.5 patch
+  - league/oauth2-google updated from 3.0.3 to 3.0.4 patch
+  - liip/imagine-bundle updated from 2.3.1 to 2.7.3 minor
+  - michelf/php-markdown updated from 1.9.0 to 1.9.1 patch
+  - monolog/monolog updated from 2.1.1 to 2.3.5 minor
+  - myclabs/deep-copy installed in version 1.10.2
+  - nikic/php-parser updated from v4.10.3 to v4.13.2 minor
+  - nyholm/nsa updated from 1.2.1 to 1.3.0 minor
+  - phar-io/manifest installed in version 2.0.3
+  - phar-io/version installed in version 3.1.0
+  - php-translation/common updated from 3.0.1 to 3.1.0 minor
+  - php-translation/extractor updated from 2.0.2 to 2.0.3 patch
+  - php-translation/symfony-bundle downgraded from 0.12.1 to dev-extractor-service-definitions@1cbc73d major
+  - php-translation/symfony-storage updated from 2.2.0 to 2.3.0 minor
+  - phpdocumentor/reflection-common installed in version 2.2.0
+  - phpdocumentor/reflection-docblock installed in version 5.3.0
+  - phpdocumentor/type-resolver installed in version 1.5.1
+  - phpspec/prophecy installed in version v1.15.0
+  - phpunit/php-code-coverage installed in version 7.0.15
+  - phpunit/php-file-iterator installed in version 2.0.5
+  - phpunit/php-text-template installed in version 1.2.1
+  - phpunit/php-timer installed in version 2.1.3
+  - phpunit/php-token-stream installed in version 3.1.3
+  - phpunit/phpunit installed in version 8.5.21
+  - psr/container updated from 1.0.0 to 1.1.1 minor
+  - psr/http-factory installed in version 1.0.1
+  - psr/log updated from 1.1.3 to 1.1.4 patch
+  - sebastian/code-unit-reverse-lookup installed in version 1.0.2
+  - sebastian/comparator installed in version 3.0.3
+  - sebastian/diff installed in version 3.0.3
+  - sebastian/environment installed in version 4.2.4
+  - sebastian/exporter installed in version 3.1.4
+  - sebastian/global-state installed in version 3.0.1
+  - sebastian/object-enumerator installed in version 3.0.4
+  - sebastian/object-reflector installed in version 1.1.2
+  - sebastian/recursion-context installed in version 3.0.1
+  - sebastian/resource-operations installed in version 2.0.2
+  - sebastian/type installed in version 1.1.4
+  - sebastian/version installed in version 2.0.1
+  - seld/phar-utils updated from 1.1.1 to 1.2.0 minor
+  - sensio/framework-extra-bundle updated from v5.6.1 to v6.2.3 major
+  - sensiolabs/security-checker removed (installed version was v6.0.3)
+  - stof/doctrine-extensions-bundle installed in version v1.7.0
+  - symfony/amqp-messenger installed in version v5.4.0
+  - symfony/asset installed in version v5.4.0
+  - symfony/browser-kit installed in version v5.4.0
+  - symfony/cache installed in version v5.4.0
+  - symfony/config installed in version v5.4.0
+  - symfony/console installed in version v5.4.1
+  - symfony/contracts updated from v2.3.1 to v2.5.0 minor
+  - symfony/css-selector installed in version v5.4.0
+  - symfony/debug-bundle installed in version v5.4.0
+  - symfony/dependency-injection installed in version v5.4.1
+  - symfony/doctrine-bridge installed in version v5.2.0-RC2
+  - symfony/doctrine-messenger installed in version v5.4.0
+  - symfony/dom-crawler installed in version v5.4.0
+  - symfony/dotenv installed in version v5.4.0
+  - symfony/error-handler installed in version v5.4.1
+  - symfony/event-dispatcher installed in version v5.4.0
+  - symfony/expression-language installed in version v5.4.0
+  - symfony/filesystem installed in version v5.4.0
+  - symfony/finder installed in version v5.4.0
+  - symfony/flex installed in version v1.17.6
+  - symfony/form installed in version v5.4.0
+  - symfony/framework-bundle installed in version v5.4.1
+  - symfony/google-mailer installed in version v5.4.0
+  - symfony/http-client installed in version v5.4.1
+  - symfony/http-foundation installed in version v5.4.1
+  - symfony/http-kernel installed in version v5.4.1
+  - symfony/intl installed in version v5.4.0
+  - symfony/lock installed in version v5.4.1
+  - symfony/mailer installed in version v5.4.0
+  - symfony/maker-bundle updated from v1.24.2 to v1.36.4 minor
+  - symfony/messenger installed in version v5.4.0
+  - symfony/mime installed in version v5.4.0
+  - symfony/monolog-bridge installed in version v5.4.0
+  - symfony/monolog-bundle updated from v3.6.0 to v3.7.1 minor
+  - symfony/notifier installed in version v5.4.0
+  - symfony/options-resolver installed in version v5.4.0
+  - symfony/password-hasher installed in version v5.4.0
+  - symfony/phpunit-bridge updated from v5.2.0 to v5.4.0 minor
+  - symfony/polyfill-ctype updated from v1.20.0 to v1.23.0 minor
+  - symfony/polyfill-intl-grapheme updated from v1.20.0 to v1.23.1 minor
+  - symfony/polyfill-intl-icu updated from v1.20.0 to v1.23.0 minor
+  - symfony/polyfill-intl-idn updated from v1.20.0 to v1.23.0 minor
+  - symfony/polyfill-intl-messageformatter updated from v1.20.0 to v1.23.0 minor
+  - symfony/polyfill-intl-normalizer updated from v1.20.0 to v1.23.0 minor
+  - symfony/polyfill-mbstring updated from v1.20.0 to v1.23.1 minor
+  - symfony/polyfill-php72 updated from v1.20.0 to v1.23.0 minor
+  - symfony/polyfill-php73 updated from v1.20.0 to v1.23.0 minor
+  - symfony/polyfill-php80 updated from v1.20.0 to v1.23.1 minor
+  - symfony/polyfill-php81 installed in version v1.23.0
+  - symfony/polyfill-uuid updated from v1.20.0 to v1.23.0 minor
+  - symfony/process installed in version v5.4.0
+  - symfony/profiler-pack removed (installed version was v1.0.5)
+  - symfony/property-access installed in version v5.4.0
+  - symfony/property-info installed in version v5.4.0
+  - symfony/rate-limiter installed in version v5.4.0
+  - symfony/redis-messenger installed in version v5.4.0
+  - symfony/requirements-checker updated from v1.1.8 to v2.0.1 major
+  - symfony/routing installed in version v5.4.0
+  - symfony/runtime installed in version v5.4.1
+  - symfony/security-bundle installed in version v5.4.1
+  - symfony/security-core installed in version v5.4.0
+  - symfony/security-csrf installed in version v5.4.0
+  - symfony/security-guard installed in version v5.4.0
+  - symfony/security-http installed in version v5.4.0
+  - symfony/serializer installed in version v5.4.0
+  - symfony/stopwatch installed in version v5.4.0
+  - symfony/string installed in version v5.4.0
+  - symfony/symfony removed (installed version was v5.1.9)
+  - symfony/translation installed in version v5.4.1
+  - symfony/twig-bridge installed in version v5.4.0
+  - symfony/twig-bundle installed in version v5.4.0
+  - symfony/validator installed in version v5.4.1
+  - symfony/var-dumper installed in version v5.4.1
+  - symfony/var-exporter installed in version v5.4.0
+  - symfony/web-link installed in version v5.4.0
+  - symfony/web-profiler-bundle installed in version v5.4.0
+  - symfony/webpack-encore-bundle installed in version v1.13.2
+  - symfony/workflow installed in version v5.4.0
+  - symfony/yaml installed in version v5.4.0
+  - theseer/tokenizer installed in version 1.2.1
+  - thomaspark/bootswatch updated from v4.5.3 to v4.6.1 minor
+  - tijsverkoyen/css-to-inline-styles updated from 2.2.3 to 2.2.4 patch
+  - twig/cssinliner-extra updated from v3.1.1 to v3.3.4 minor
+  - twig/extra-bundle updated from v3.1.1 to v3.3.4 minor
+  - twig/html-extra updated from v3.1.1 to v3.3.4 minor
+  - twig/inky-extra updated from v3.1.1 to v3.3.4 minor
+  - twig/intl-extra updated from v3.1.1 to v3.3.4 minor
+  - twig/markdown-extra updated from v3.1.1 to v3.3.4 minor
+  - twig/string-extra updated from v3.1.1 to v3.3.4 minor
+  - twig/twig updated from v3.1.1 to v3.3.4 minor
+  - vakata/jstree updated from 3.3.10 to 3.3.12 patch
+  - webmozart/assert updated from 1.9.1 to 1.10.0 minor
+  - willdurand/js-translation-bundle updated from 3.0.1 to 5.0.0 major
+  - zikula/legal-module updated from 3.2.9 to 3.2.10 patch
+  - zikula/pagelock-module updated from 1.3.8 to 1.3.9 patch
+  - zikula/profile-module updated from 3.1.17 to 3.1.18 patch
+  - zikula/staticcontent-module installed in version 1.0.6
+  - zikula/wizard updated from 3.1.0 to 3.1.1 patch
+

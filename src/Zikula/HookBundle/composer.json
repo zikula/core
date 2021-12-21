@@ -20,10 +20,10 @@
         "symfony/string": "^5.4",
         "symfony/validator": "^5.4",
 
-        "zikula/core-bundle": "dev-main",
-        "zikula/extensions-module": "dev-main",
-        "zikula/permissions-module": "dev-main",
-        "zikula/theme-module": "dev-main"
+        "zikula/core-bundle": "dev-3.1",
+        "zikula/extensions-module": "dev-3.1",
+        "zikula/permissions-module": "dev-3.1",
+        "zikula/theme-module": "dev-3.1"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\HookBundle\\": "" }

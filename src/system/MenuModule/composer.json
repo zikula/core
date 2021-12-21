@@ -1,6 +1,6 @@
 {
     "name": "zikula/menu-module",
-    "version": "3.1.0",
+    "version": "4.0.0-dev",
     "description": "Menu management",
     "type": "zikula-system-module",
     "license": "MIT",
@@ -15,26 +15,26 @@
     },
     "require": {
         "php": ">=7.2.5",
-        "symfony/config": "^5.2",
+        "symfony/config": "^5.4",
         "symfony/contracts": "^2.3",
-        "symfony/dependency-injection": "^5.2",
+        "symfony/dependency-injection": "^5.4",
         "symfony/doctrine-bridge": "^5.2",
-        "symfony/event-dispatcher": "^5.2",
-        "symfony/http-foundation": "^5.2",
-        "symfony/http-kernel": "^5.2",
-        "symfony/finder": "^5.2",
-        "symfony/form": "^5.2",
-        "symfony/routing": "^5.2",
-        "symfony/string": "^5.2",
-        "symfony/validator": "^5.2",
+        "symfony/event-dispatcher": "^5.4",
+        "symfony/http-foundation": "^5.4",
+        "symfony/http-kernel": "^5.4",
+        "symfony/finder": "^5.4",
+        "symfony/form": "^5.4",
+        "symfony/routing": "^5.4",
+        "symfony/string": "^5.4",
+        "symfony/validator": "^5.4",
 
-        "zikula/core-bundle": "dev-master",
-        "zikula/blocks-module": "dev-master",
-        "zikula/extensions-module": "dev-master",
-        "zikula/permissions-module": "dev-master",
-        "zikula/theme-module": "dev-master",
+        "zikula/core-bundle": "dev-3.1",
+        "zikula/blocks-module": "dev-3.1",
+        "zikula/extensions-module": "dev-3.1",
+        "zikula/permissions-module": "dev-3.1",
+        "zikula/theme-module": "dev-3.1",
 
-        "knplabs/knp-menu-bundle": ">=2.2.1"
+        "knplabs/knp-menu-bundle": "^3"
     },
     "extra": {
         "zikula": {
