@@ -1,6 +1,6 @@
 {
     "name": "zikula/admin-module",
-    "version": "3.0.4",
+    "version": "3.0.5-dev",
     "description": "Backend administration interface",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",

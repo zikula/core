@@ -1,6 +1,6 @@
 {
     "name": "zikula/mailer-module",
-    "version": "3.0.4",
+    "version": "3.0.5-dev",
     "description": "Mailer support",
     "type": "zikula-system-module",
     "license": "LGPL-3.0-or-later",
