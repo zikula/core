@@ -27,7 +27,6 @@ use Zikula\CategoriesModule\Traits\StandardFieldsTrait;
  * @Gedmo\Tree(type="nested")
  * @ORM\Entity(repositoryClass="Zikula\CategoriesModule\Entity\Repository\CategoryRepository")
  * @ORM\Table(name="categories_category",indexes={@ORM\Index(name="idx_categories_is_leaf",columns={"is_leaf"}),
- *                                                @ORM\Index(name="idx_categories_name",columns={"name"}),
  *                                                @ORM\Index(name="idx_categories_status",columns={"status"})})
  */
 class CategoryEntity extends EntityAccess
