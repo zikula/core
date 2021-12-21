@@ -64,6 +64,7 @@
         "symfony/notifier": "^5.4",
         "symfony/polyfill-uuid": "^1.19",
         "symfony/polyfill-intl-messageformatter": "^1.19",
+        "symfony/runtime": "^5.4",
         "symfony/stopwatch": "^5.4",
         "symfony/web-link": "^5.4",
         "symfony/web-profiler-bundle": "^5.4",
