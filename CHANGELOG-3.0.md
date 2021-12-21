@@ -1,24 +1,15 @@
 # CHANGELOG - ZIKULA 3.0.x
 
-## 3.0.5 (unreleased)
-
-- BC Breaks:
-  - _there should be none_
-
-- Fixes:
-  - none yet
-
-- Features:
-  - _there should be none_
-
-## 3.0.4 (2021-12-20)
+## 3.0.4 (2021-12-21)
 
 - Fixes:
   - [CoreBundle] More robust autoloader detection.
   - [CoreBundle] Add `flex-wrap` class to pagination for responsive behaviour ([bs#23504](https://github.com/twbs/bootstrap/issues/23504)).
   - [Admin] Sanitize extension title in admin panel.
+  - [Blocks] Removed unneeded index for string column from block positions (#4825)
   - [Blocks] Sanitize block title and description in admin list view.
   - [Blocks] Strip script tags from XSLT block stylesheets.
+  - [Categories] Removed unneeded index for string column from categories (#4825)
   - [Categories] Sanitize context menu in admin category list.
   - [Extensions] Disable caching headers in `AbstractTheme` if user is logged in.
   - [Theme] Fix resolving assets location on Windows if Zikula is installed in a sub directory (#4480).

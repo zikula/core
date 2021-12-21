@@ -23,7 +23,7 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
  * BlockPosition entity class.
  *
  * @ORM\Entity(repositoryClass="Zikula\BlocksModule\Entity\Repository\BlockPositionRepository")
- * @ORM\Table(name="block_positions",indexes={@ORM\Index(name="name_idx",columns={"name"})})
+ * @ORM\Table(name="block_positions")
  */
 class BlockPositionEntity extends EntityAccess
 {
