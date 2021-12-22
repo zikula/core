@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "257608880748ca6fef0f39156edae4ff",
+    "content-hash": "641d292190f3a981311797e687a5fc92",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -4885,7 +4885,7 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "dev-extractor-service-definitions",
+            "version": "dev-zk",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guite/symfony-bundle/",
