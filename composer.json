@@ -58,7 +58,7 @@
         "oomphinc/composer-installers-extender": "2.*",
         "oro/twig-inspector": "1.*",
         "php-translation/extractor": "2.*",
-        "php-translation/symfony-bundle": "dev-extractor-service-definitions",
+        "php-translation/symfony-bundle": "dev-zk",
         "php-translation/symfony-storage": "2.*",
         "phpids/phpids": "dev-master",
         "phpunit/phpunit": "*",

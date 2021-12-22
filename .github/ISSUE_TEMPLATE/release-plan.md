@@ -21,7 +21,7 @@ assignees: 'Guite, craigh'
 - [ ] Review whether there are changes required for install and/or upgrade docs
 - [ ] Update version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2-dev 3.0.2` (creates a pull request)
 - [ ] Update dependency versions for all `/system` and `/Zikula` subpackages to version of current release
-     - `bin/console rt:set-deps 3.1 dev-main 3.1.0` (`dev-main` is current value, `3.1.0` is desired value)
+     - `bin/console rt:set-deps 3.1 dev-3.1 3.1.0` (`dev-3.1` is current value, `3.1.0` is desired value)
 - [ ] Create/update vendor changelog
   - [ ] Ensure the `CHANGELOG-VENDORS-<branch>.md` file contains a `###PLACEHOLDER_FOR_VENDOR_UPDATES###` line below the `- Vendor updates:` line
   - [ ] Run `bin/console rt:vendor 3.0.1 3.0` whereby `3.0.1` is the last release tag and `3.0` the desired target branch (creates a pull request).
@@ -77,6 +77,6 @@ assignees: 'Guite, craigh'
   - [ ] increment version in Kernel class and `/system` extensions: `bin/console rt:up 3.0 3.0.2 3.0.3-dev` (creates a pull request)
   - [ ] increment version in VA extensions
   - [ ] Add new section to both changelogs (normal + vendor)
-  - [ ] Reset zikula dependencies to `dev-main`
-    - `bin/console rt:set-deps main 3.1.0 dev-main` (`3.1.0` is current value, `dev-main` is desired value)
+  - [ ] Reset zikula dependencies to `dev-x.y`
+    - `bin/console rt:set-deps main 3.1.0 dev-3.1` (`3.1.0` is current value, `dev-3.1` is desired value)
 - [ ] Merge to `main` branch
