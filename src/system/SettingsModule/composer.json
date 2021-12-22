@@ -29,7 +29,7 @@
         "symfony/string": "^5.4",
         "symfony/validator": "^5.4",
         "php-translation/extractor": "2.*",
-        "php-translation/symfony-bundle": "0.*",
+        "php-translation/symfony-bundle": "dev-zk*",
         "php-translation/symfony-storage": "2.*",
 
         "zikula/core-bundle": "3.1.0",
