@@ -2,14 +2,8 @@
 
 ## 3.1.1 (unreleased)
 
-- BC Breaks:
-  - _there should be none_
-
 - Fixes:
-  - none yet
-
-- Features:
-  - _there should be none_
+  - [config] Restored broken routes configuration (#4837).
 
 ## 3.1.0 (2021-12-21)
 
