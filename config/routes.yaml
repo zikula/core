@@ -1,3 +1,11 @@
+# Note: if you want to add routes for a native Symfony bundle insert them
+# either in /routes/ directory or above the following "Routing" entry
+# do not add them below the "Routing" entry
+
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+Routing:
+    resource: .
+    type: zikularoutesmodule
