@@ -6,7 +6,7 @@
   - _there should be none_
 
 - Fixes:
-  - none yet
+  - [Admin] Sanitize extension title in admin panel.
 
 - Features:
   - _there should be none_
