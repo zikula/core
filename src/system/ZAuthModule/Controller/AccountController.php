@@ -249,7 +249,7 @@ class AccountController extends AbstractController
         /** @var UserEntity $user */
         $user = $userRepository->find($requestDetails['userId']);
         if (null === $user) {
-            $this->addFlash('error', 'User not found. Please contact a site administrator for assistance.');
+            $this->addFlash('error', 'If an account exists with that email or username, a password reset will be sent to it.');
 
             return $this->redirectToRoute($redirectToRoute);
         }
