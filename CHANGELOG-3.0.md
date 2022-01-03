@@ -7,6 +7,7 @@
 
 - Fixes:
   - [Admin] Sanitize extension title in admin panel.
+  - [ZAuth] Generic response message in lost password functionality to avoid account enumeration.
 
 - Features:
   - _there should be none_
