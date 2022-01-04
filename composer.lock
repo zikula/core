@@ -13630,25 +13630,26 @@
         },
         {
             "name": "twig/extra-bundle",
-            "version": "v3.3.4",
+            "version": "v3.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
-                "reference": "1fe52d84aa22b7891c7717ef904b1551c8d70100"
+                "reference": "e0cc9c35a0650006b0da232a3f749cc060c65d3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/1fe52d84aa22b7891c7717ef904b1551c8d70100",
-                "reference": "1fe52d84aa22b7891c7717ef904b1551c8d70100",
+                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/e0cc9c35a0650006b0da232a3f749cc060c65d3b",
+                "reference": "e0cc9c35a0650006b0da232a3f749cc060c65d3b",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3|^8.0",
+                "php": ">=7.2.5",
                 "symfony/framework-bundle": "^4.4|^5.0|^6.0",
                 "symfony/twig-bundle": "^4.4|^5.0|^6.0",
                 "twig/twig": "^2.7|^3.0"
             },
             "require-dev": {
+                "league/commonmark": "^1.0|^2.0",
                 "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0",
                 "twig/cache-extra": "^3.0",
                 "twig/cssinliner-extra": "^2.12|^3.0",
@@ -13692,7 +13693,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.3.4"
+                "source": "https://github.com/twigphp/twig-extra-bundle/tree/v3.3.7"
             },
             "funding": [
                 {
@@ -13704,7 +13705,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-13T16:20:21+00:00"
+            "time": "2022-01-03T21:04:59+00:00"
         },
         {
             "name": "twig/html-extra",
