@@ -817,7 +817,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.9",
-            "ref": "10e67e9dc87263a25007130ee59975a36ea624fe"
+            "ref": "d2d1e09675fff3fa4193aa9950a7c39934524a25"
         },
         "files": [
             "assets/app.js",
