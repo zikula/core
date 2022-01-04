@@ -9,4 +9,4 @@
   - none yet
 
 - Features:
-  - none yet
+  - [Mailer] Utilize rate limiter component for test email functionality.

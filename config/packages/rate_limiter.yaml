@@ -4,3 +4,7 @@ framework:
             policy: 'fixed_window'
             limit: 20
             interval: '60 minutes'
+        test_mails:
+            policy: 'fixed_window'
+            limit: 5
+            interval: '30 minutes'

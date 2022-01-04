@@ -16,10 +16,12 @@ namespace Zikula\MailerModule\Controller;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
@@ -98,6 +100,7 @@ class ConfigController extends AbstractController
         Request $request,
         VariableApiInterface $variableApi,
         MailerInterface $mailer,
+        RateLimiterFactory $testMailsLimiter,
         LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         SiteDefinitionInterface $site
     ): array {
@@ -105,6 +108,11 @@ class ConfigController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('test')->isClicked()) {
+                $limiter = $testMailsLimiter->create($request->getClientIp());
+                if (false === $limiter->consume(1)->isAccepted()) {
+                    throw new TooManyRequestsHttpException();
+                }
+
                 $formData = $form->getData();
                 $html = in_array($formData['messageType'], ['html', 'multipart']) ? true : false;
                 try {
