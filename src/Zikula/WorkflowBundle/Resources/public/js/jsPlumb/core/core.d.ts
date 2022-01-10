@@ -354,7 +354,7 @@ export declare interface BehaviouralTypeDescriptor<T = any> extends EndpointType
      * @param el - The element that is the drag source
      * @param eventTarget - The element that captured the event that started the connection drag.
      */
-    parameterExtractor?: (el: T, eventTarget: T) => Record<string, string>;
+    parameterExtractor?: (el: T, eventTarget: T) => Record<string, any>;
     redrop?: RedropPolicy;
     extract?: Record<string, string>;
     uniqueEndpoint?: boolean;
@@ -1976,7 +1976,7 @@ export declare abstract class JsPlumbInstance<T extends {
      * @param h
      * @param doNotCascade
      */
-    abstract setConnectorHover(connector: AbstractConnector, h: boolean, doNotCascade?: boolean): void;
+    abstract setConnectorHover(connector: AbstractConnector, h: boolean, sourceEndpoint?: Endpoint): void;
     /**
      * @internal
      * @param connector

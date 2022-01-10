@@ -3046,13 +3046,13 @@ var EndpointDragHandler = function () {
     }
   }, {
     key: "_populateTargets",
-    value: function _populateTargets(canvasElement) {
+    value: function _populateTargets(canvasElement, eventTarget) {
       var _this = this;
       var isSourceDrag = this.jpc && this.jpc.endpoints[0] === this.ep;
       var boundingRect;
       var matchingEndpoints = this.instance.getContainer().querySelectorAll([".", core.CLASS_ENDPOINT, "[", core.ATTRIBUTE_SCOPE_PREFIX, this.ep.scope, "]"].join(""));
       util.forEach(matchingEndpoints, function (candidate) {
-        if ((_this.jpc != null || candidate !== canvasElement) && candidate !== _this.floatingElement) {
+        if ((_this.jpc != null || candidate !== canvasElement) && candidate !== _this.floatingElement && !candidate.jtk.endpoint.isFull()) {
           if (isSourceDrag && candidate.jtk.endpoint.isSource || !isSourceDrag && candidate.jtk.endpoint.isTarget) {
             var o = _this.instance.getOffset(candidate),
                 s = _this.instance.getSize(candidate);
@@ -3134,6 +3134,20 @@ var EndpointDragHandler = function () {
                   return;
                 }
               }
+              var maxConnections = targetDef.def.def.maxConnections;
+              if (targetDef.def.def.parameterExtractor) {
+                var extractedParameters = targetDef.def.def.parameterExtractor(d.targetEl, eventTarget);
+                if (extractedParameters.maxConnections != null) {
+                  maxConnections = extractedParameters.maxConnections;
+                }
+              }
+              if (maxConnections != null && maxConnections !== -1) {
+                if (_this.instance.select({
+                  target: d.targetEl
+                }).length >= maxConnections) {
+                  return;
+                }
+              }
               var o = _this.instance.getOffset(el),
                   s = _this.instance.getSize(el);
               d.r = {
@@ -3186,6 +3200,7 @@ var EndpointDragHandler = function () {
       this._stopped = false;
       var dragEl = p.drag.getDragElement();
       this.ep = dragEl.jtk.endpoint;
+      var eventTarget = p.e.srcElement || p.e.target;
       if (!this.ep) {
         return false;
       }
@@ -3206,7 +3221,7 @@ var EndpointDragHandler = function () {
         this.jpc = null;
       }
       this._createFloatingEndpoint(this.canvasElement);
-      this._populateTargets(this.canvasElement);
+      this._populateTargets(this.canvasElement, eventTarget);
       if (this.jpc == null) {
         this.startNewConnectionDrag(this.ep.scope, payload);
       } else {
@@ -4866,7 +4881,7 @@ var BrowserJsPlumbInstance = function (_JsPlumbInstance) {
     }
   }, {
     key: "setConnectorHover",
-    value: function setConnectorHover(connector, hover, doNotCascade) {
+    value: function setConnectorHover(connector, hover, sourceEndpoint) {
       if (hover === false || !this.currentlyDragging && !this.isHoverSuspended()) {
         var canvas = connector.canvas;
         if (canvas != null) {
@@ -4889,8 +4904,10 @@ var BrowserJsPlumbInstance = function (_JsPlumbInstance) {
             this.paintConnection(connector.connection);
           }
         }
-        if (!doNotCascade) {
+        if (connector.connection.endpoints[0] !== sourceEndpoint) {
           this.setEndpointHover(connector.connection.endpoints[0], hover, true);
+        }
+        if (connector.connection.endpoints[1] !== sourceEndpoint) {
           this.setEndpointHover(connector.connection.endpoints[1], hover, true);
         }
       }
@@ -5014,7 +5031,7 @@ var BrowserJsPlumbInstance = function (_JsPlumbInstance) {
         }
         if (!doNotCascade) {
           for (var i = 0; i < endpoint.connections.length; i++) {
-            this.setConnectorHover(endpoint.connections[i].connector, hover, true);
+            this.setConnectorHover(endpoint.connections[i].connector, hover, endpoint);
           }
         }
       }
