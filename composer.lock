@@ -7776,16 +7776,16 @@
         },
         {
             "name": "symfony/debug-bundle",
-            "version": "v5.4.0",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug-bundle.git",
-                "reference": "71c299d4516dbc7c8e7bc73f57d57c7f7df9817e"
+                "reference": "3f3e9c9f77c9b1813d07181975a8c154fb4eb215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/71c299d4516dbc7c8e7bc73f57d57c7f7df9817e",
-                "reference": "71c299d4516dbc7c8e7bc73f57d57c7f7df9817e",
+                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/3f3e9c9f77c9b1813d07181975a8c154fb4eb215",
+                "reference": "3f3e9c9f77c9b1813d07181975a8c154fb4eb215",
                 "shasum": ""
             },
             "require": {
@@ -7832,10 +7832,10 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Provides a tight integration of the Symfony Debug component into the Symfony full-stack framework",
+            "description": "Provides a tight integration of the Symfony VarDumper component and the ServerLogCommand from MonologBridge into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/debug-bundle/tree/v5.4.0"
+                "source": "https://github.com/symfony/debug-bundle/tree/v5.4.2"
             },
             "funding": [
                 {
@@ -7851,7 +7851,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-21T12:43:48+00:00"
+            "time": "2021-12-11T13:33:37+00:00"
         },
         {
             "name": "symfony/dependency-injection",
