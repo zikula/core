@@ -13718,16 +13718,16 @@
         },
         {
             "name": "twig/html-extra",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/html-extra.git",
-                "reference": "ce33ea51bb0df393d2bc9945d08e2ce7fbe808c5"
+                "reference": "f31c6296b1f0797118c142cf9c9bddf1d8e0acea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/html-extra/zipball/ce33ea51bb0df393d2bc9945d08e2ce7fbe808c5",
-                "reference": "ce33ea51bb0df393d2bc9945d08e2ce7fbe808c5",
+                "url": "https://api.github.com/repos/twigphp/html-extra/zipball/f31c6296b1f0797118c142cf9c9bddf1d8e0acea",
+                "reference": "f31c6296b1f0797118c142cf9c9bddf1d8e0acea",
                 "shasum": ""
             },
             "require": {
@@ -13771,7 +13771,7 @@
                 "twig"
             ],
             "support": {
-                "source": "https://github.com/twigphp/html-extra/tree/v3.3.4"
+                "source": "https://github.com/twigphp/html-extra/tree/v3.3.5"
             },
             "funding": [
                 {
@@ -13783,7 +13783,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-13T16:20:21+00:00"
+            "time": "2022-01-02T10:02:25+00:00"
         },
         {
             "name": "twig/inky-extra",
