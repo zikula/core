@@ -114,7 +114,7 @@
         "zikula/wizard": "3.*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^5.4"
+        "symfony/phpunit-bridge": "^6.0"
     },
     "conflict": {
         "symfony/symfony": "*"
