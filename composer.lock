@@ -3955,16 +3955,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.7.5",
+            "version": "2.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "e53f36d9027167e3c803e80dd68d2729feb8ab46"
+                "reference": "9baad226c7cbc85e7cd751d2bc587c35b0ad0325"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/e53f36d9027167e3c803e80dd68d2729feb8ab46",
-                "reference": "e53f36d9027167e3c803e80dd68d2729feb8ab46",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/9baad226c7cbc85e7cd751d2bc587c35b0ad0325",
+                "reference": "9baad226c7cbc85e7cd751d2bc587c35b0ad0325",
                 "shasum": ""
             },
             "require": {
@@ -3986,7 +3986,7 @@
                 "doctrine/persistence": "^1.3|^2.0",
                 "enqueue/enqueue-bundle": "^0.9|^0.10",
                 "ext-gd": "*",
-                "league/flysystem": "^1.0|^2.0",
+                "league/flysystem": "^1.0|^2.0|^3.0",
                 "phpstan/phpstan": "^0.12.64",
                 "psr/cache": "^1.0|^2.0|^3.0",
                 "psr/log": "^1.0",
@@ -4051,9 +4051,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipImagineBundle/issues",
-                "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.5"
+                "source": "https://github.com/liip/LiipImagineBundle/tree/2.7.6"
             },
-            "time": "2022-01-11T09:38:48+00:00"
+            "time": "2022-01-14T16:46:57+00:00"
         },
         {
             "name": "lorenzo/pinky",
