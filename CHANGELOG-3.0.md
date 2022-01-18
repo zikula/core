@@ -7,6 +7,7 @@
 
 - Fixes:
   - [Admin] Sanitize extension title in admin panel.
+  - [Blocks] Sanitize block title and description in position placement management view.
   - [ZAuth] Generic response message in lost password functionality to avoid account enumeration.
 
 - Features:
