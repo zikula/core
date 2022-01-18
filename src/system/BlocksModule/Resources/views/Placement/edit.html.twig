@@ -50,7 +50,7 @@
             <td headers="hAssignedDnd"><span class="fas fa-arrows-alt"></span></td>
             <td headers="hAssignedId">{{ block.bid }}</td>
             <td headers="hAssignedTitle" id="blockdrag_{{ block.bid }}">
-                {{ block.title|safeHtml|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description|safeHtml }}
+                {{ block.title|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description }}
             </td>
             <td headers="hAssignedModule">{{ block.module.name }}</td>
             <td headers="hAssignedType">{{ block.blocktype }}</td>
