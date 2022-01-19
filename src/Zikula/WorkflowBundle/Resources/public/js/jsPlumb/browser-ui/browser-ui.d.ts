@@ -90,7 +90,7 @@ export declare interface BrowserJsPlumbDefaults extends JsPlumbDefaults<Element>
  */
 export declare class BrowserJsPlumbInstance extends JsPlumbInstance<ElementType> {
     _instanceIndex: number;
-    private dragSelection;
+    private readonly dragSelection;
     dragManager: DragManager;
     _connectorClick: Function;
     _connectorDblClick: Function;
@@ -138,8 +138,8 @@ export declare class BrowserJsPlumbInstance extends JsPlumbInstance<ElementType>
      */
     elementsDraggable: boolean;
     private elementDragHandler;
-    private groupDragOptions;
-    private elementDragOptions;
+    private readonly groupDragOptions;
+    private readonly elementDragOptions;
     constructor(_instanceIndex: number, defaults?: BrowserJsPlumbDefaults);
     /**
      * Fire an event for an overlay, and for its related component.
@@ -527,9 +527,11 @@ export declare class BrowserJsPlumbInstance extends JsPlumbInstance<ElementType>
      * @internal
      * @param endpoint
      * @param hover
+     * @param endpointIndex Optional (though you must provide a value) index that identifies whether the endpoint being hovered is the source
+     * or target of some connection. A value for this will be provided whenever the source of the hover event is the connector.
      * @param doNotCascade
      */
-    setEndpointHover(endpoint: Endpoint, hover: boolean, doNotCascade?: boolean): void;
+    setEndpointHover(endpoint: Endpoint, hover: boolean, endpointIndex: -1 | 0 | 1, doNotCascade?: boolean): void;
     /**
      * @internal
      * @param ep

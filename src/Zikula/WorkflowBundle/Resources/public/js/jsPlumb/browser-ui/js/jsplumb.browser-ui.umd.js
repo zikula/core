@@ -4079,8 +4079,7 @@
       _this.managedElementsSelector = defaults ? defaults.managedElementsSelector || core.SELECTOR_MANAGED_ELEMENT : core.SELECTOR_MANAGED_ELEMENT;
       _this.eventManager = new EventManager();
       _this.dragSelection = new DragSelection(_assertThisInitialized(_this));
-      _this.dragManager = new DragManager(_assertThisInitialized(_this), _this.dragSelection
-      );
+      _this.dragManager = new DragManager(_assertThisInitialized(_this), _this.dragSelection);
       _this.dragManager.addHandler(new EndpointDragHandler(_assertThisInitialized(_this)));
       _this.groupDragOptions = {
         constrainFunction: groupDragConstrain
@@ -4105,7 +4104,16 @@
       var _connectorHover = function _connectorHover(state, e) {
         var el = getEventSource(e).parentNode;
         if (el.jtk && el.jtk.connector) {
-          this.setConnectorHover(el.jtk.connector, state);
+          var connector = el.jtk.connector;
+          var connection = connector.connection;
+          this.setConnectorHover(connector, state);
+          if (state) {
+            this.addClass(connection.source, this.hoverSourceClass);
+            this.addClass(connection.target, this.hoverTargetClass);
+          } else {
+            this.removeClass(connection.source, this.hoverSourceClass);
+            this.removeClass(connection.target, this.hoverTargetClass);
+          }
           this.fire(state ? EVENT_CONNECTION_MOUSEOVER : EVENT_CONNECTION_MOUSEOUT, el.jtk.connector.connection, e);
         }
       };
@@ -4867,7 +4875,7 @@
       value: function setHover(component, hover) {
         component._hover = hover;
         if (component instanceof core.Endpoint && component.endpoint != null) {
-          this.setEndpointHover(component, hover);
+          this.setEndpointHover(component, hover, -1);
         } else if (component instanceof core.Connection && component.connector != null) {
           this.setConnectorHover(component.connector, hover);
         }
@@ -4903,10 +4911,10 @@
             }
           }
           if (connector.connection.endpoints[0] !== sourceEndpoint) {
-            this.setEndpointHover(connector.connection.endpoints[0], hover, true);
+            this.setEndpointHover(connector.connection.endpoints[0], hover, 0, true);
           }
           if (connector.connection.endpoints[1] !== sourceEndpoint) {
-            this.setEndpointHover(connector.connection.endpoints[1], hover, true);
+            this.setEndpointHover(connector.connection.endpoints[1], hover, 1, true);
           }
         }
       }
@@ -5009,7 +5017,7 @@
       }
     }, {
       key: "setEndpointHover",
-      value: function setEndpointHover(endpoint, hover, doNotCascade) {
+      value: function setEndpointHover(endpoint, hover, endpointIndex, doNotCascade) {
         if (endpoint != null && (hover === false || !this.currentlyDragging && !this.isHoverSuspended())) {
           var canvas = getEndpointCanvas(endpoint.endpoint);
           if (canvas != null) {
@@ -5018,6 +5026,14 @@
                 this.addClass(canvas, endpoint.hoverClass);
               } else {
                 this.removeClass(canvas, endpoint.hoverClass);
+              }
+            }
+            if (endpointIndex === 0 || endpointIndex === 1) {
+              var genericHoverClass = endpointIndex === 0 ? this.hoverSourceClass : this.hoverTargetClass;
+              if (hover) {
+                this.addClass(canvas, genericHoverClass);
+              } else {
+                this.removeClass(canvas, genericHoverClass);
               }
             }
           }
@@ -5055,8 +5071,8 @@
       key: "deleteConnection",
       value: function deleteConnection(connection, params) {
         if (connection != null && connection.deleted !== true) {
-          this.setEndpointHover(connection.endpoints[0], false, true);
-          this.setEndpointHover(connection.endpoints[1], false, true);
+          this.setEndpointHover(connection.endpoints[0], false, 0, true);
+          this.setEndpointHover(connection.endpoints[1], false, 1, true);
           return _get(_getPrototypeOf(BrowserJsPlumbInstance.prototype), "deleteConnection", this).call(this, connection, params);
         } else {
           return false;
