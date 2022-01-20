@@ -58,7 +58,7 @@
         "oomphinc/composer-installers-extender": "2.*",
         "oro/twig-inspector": "1.*",
         "php-translation/extractor": "2.*",
-        "php-translation/symfony-bundle": "dev-zk",
+        "php-translation/symfony-bundle": "^0.12",
         "php-translation/symfony-storage": "2.*",
         "phpids/phpids": "dev-master",
         "phpunit/phpunit": "*",
@@ -173,10 +173,6 @@
         {
             "type": "git",
             "url": "https://github.com/AdrenalineHunter/JMSI18nRoutingBundle"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/Guite/symfony-bundle/"
         }
     ],
     "config": {
