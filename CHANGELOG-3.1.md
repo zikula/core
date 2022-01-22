@@ -4,6 +4,7 @@
 
 - Fixes:
   - [config] Restored broken routes configuration (#4837).
+  - [Permissions] Fix wrong self requirement in `composer.json` file.
 
 ## 3.1.0 (2021-12-21)
 
