@@ -16,7 +16,7 @@ namespace Zikula\Bundle\CoreBundle\Doctrine;
 /**
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  * Most of this file is copied from
- *     https://github.com/javiereguiluz/symfony-demo/blob/master/src/Pagination/Paginator.php
+ *     https://github.com/javiereguiluz/demo/blob/master/src/Pagination/Paginator.php
  *
  * usage:
  *     in Repository class:
