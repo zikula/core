@@ -4810,32 +4810,31 @@
         },
         {
             "name": "php-translation/extractor",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/extractor.git",
-                "reference": "296026263aeabb5f17c6b6958608ba255b92ad9c"
+                "reference": "0ffd4e14caaad1e8ead91111c216f9e69caf7fd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/extractor/zipball/296026263aeabb5f17c6b6958608ba255b92ad9c",
-                "reference": "296026263aeabb5f17c6b6958608ba255b92ad9c",
+                "url": "https://api.github.com/repos/php-translation/extractor/zipball/0ffd4e14caaad1e8ead91111c216f9e69caf7fd0",
+                "reference": "0ffd4e14caaad1e8ead91111c216f9e69caf7fd0",
                 "shasum": ""
             },
             "require": {
-                "doctrine/annotations": "^1.2",
+                "doctrine/annotations": "^1.7",
                 "nikic/php-parser": "^3.0 || ^4.0",
                 "php": "^7.2 || ^8.0",
-                "symfony/finder": "^3.4 || ^4.3 || ^5.0",
+                "symfony/finder": "^3.4 || ^4.4 || ^5.0",
                 "twig/twig": "^2.0 || ^3.0"
             },
             "require-dev": {
                 "knplabs/knp-menu": "^3.1",
-                "phpunit/phpunit": "^8.4",
                 "symfony/phpunit-bridge": "^5.0",
-                "symfony/translation": "^3.4 || ^4.3 || ^5.0",
-                "symfony/twig-bridge": "^3.4 || ^4.3 || ^5.0",
-                "symfony/validator": "^3.4 || ^4.3 || ^5.0"
+                "symfony/translation": "^3.4 || ^4.4 || ^5.0",
+                "symfony/twig-bridge": "^3.4 || ^4.4 || ^5.0",
+                "symfony/validator": "^3.4 || ^4.4 || ^5.0"
             },
             "type": "library",
             "extra": {
@@ -4861,9 +4860,9 @@
             "description": "Extract translations form the source code",
             "support": {
                 "issues": "https://github.com/php-translation/extractor/issues",
-                "source": "https://github.com/php-translation/extractor/tree/2.0.3"
+                "source": "https://github.com/php-translation/extractor/tree/2.0.4"
             },
-            "time": "2021-03-25T18:08:57+00:00"
+            "time": "2022-01-26T13:39:03+00:00"
         },
         {
             "name": "php-translation/symfony-bundle",
