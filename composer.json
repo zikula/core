@@ -180,7 +180,13 @@
             "php": "7.2.5"
         },
         "bin-dir": "bin",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
     },
     "extra": {
         "tests-dir": "tests",
