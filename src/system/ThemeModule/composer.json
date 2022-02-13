@@ -65,7 +65,7 @@
         "components/jquery": "3.*",
         "components/jqueryui": "1.*",
         "components/bootstrap": "4.*",
-        "components/font-awesome": "5.*",
+        "components/font-awesome": "6.*",
         "itsjavi/fontawesome-iconpicker": "3.*",
         "dimsemenov/magnific-popup": "1.*",
         "vakata/jstree": "3.*"

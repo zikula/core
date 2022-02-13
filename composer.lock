@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e99fb77c268fc8ae79d4f5a58299079f",
+    "content-hash": "09da09b0a001f04bec19103adeee1f05",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -124,16 +124,16 @@
         },
         {
             "name": "components/font-awesome",
-            "version": "5.15.4",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "e6fd09f30f578915cc0cf186b0dd0da54385b6be"
+                "reference": "7ece3fe765a89cb09eff1ad04fce6a92710b5a79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/e6fd09f30f578915cc0cf186b0dd0da54385b6be",
-                "reference": "e6fd09f30f578915cc0cf186b0dd0da54385b6be",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/7ece3fe765a89cb09eff1ad04fce6a92710b5a79",
+                "reference": "7ece3fe765a89cb09eff1ad04fce6a92710b5a79",
                 "shasum": ""
             },
             "type": "component",
@@ -157,9 +157,9 @@
             "description": "Font Awesome, the iconic SVG, font, and CSS framework.",
             "support": {
                 "issues": "https://github.com/components/font-awesome/issues",
-                "source": "https://github.com/components/font-awesome/tree/5.15.4"
+                "source": "https://github.com/components/font-awesome/tree/6.0.0"
             },
-            "time": "2021-08-15T10:31:24+00:00"
+            "time": "2022-02-13T17:04:18+00:00"
         },
         {
             "name": "components/jquery",
@@ -2625,12 +2625,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -4333,9 +4333,6 @@
             "require": {
                 "php": "^7.1 || ^8.0"
             },
-            "replace": {
-                "myclabs/deep-copy": "self.version"
-            },
             "require-dev": {
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.6",
@@ -4717,16 +4714,16 @@
         },
         {
             "name": "phar-io/version",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/version.git",
-                "reference": "bae7c545bef187884426f042434e561ab1ddb182"
+                "reference": "15a90844ad40f127afd244c0cad228de2a80052a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/version/zipball/bae7c545bef187884426f042434e561ab1ddb182",
-                "reference": "bae7c545bef187884426f042434e561ab1ddb182",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/15a90844ad40f127afd244c0cad228de2a80052a",
+                "reference": "15a90844ad40f127afd244c0cad228de2a80052a",
                 "shasum": ""
             },
             "require": {
@@ -4762,31 +4759,31 @@
             "description": "Library for handling version information and constraints",
             "support": {
                 "issues": "https://github.com/phar-io/version/issues",
-                "source": "https://github.com/phar-io/version/tree/3.1.0"
+                "source": "https://github.com/phar-io/version/tree/3.1.1"
             },
-            "time": "2021-02-23T14:00:09+00:00"
+            "time": "2022-02-07T21:56:48+00:00"
         },
         {
             "name": "php-translation/common",
-            "version": "3.1.0",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/common.git",
-                "reference": "fcb8338be8d4a65e76e916660c053c06e8376765"
+                "reference": "986ddf4e3b2b3458d2a7353658bd40764d8ca1d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/common/zipball/fcb8338be8d4a65e76e916660c053c06e8376765",
-                "reference": "fcb8338be8d4a65e76e916660c053c06e8376765",
+                "url": "https://api.github.com/repos/php-translation/common/zipball/986ddf4e3b2b3458d2a7353658bd40764d8ca1d1",
+                "reference": "986ddf4e3b2b3458d2a7353658bd40764d8ca1d1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2",
-                "symfony/translation": " ^3.4 || ^4.3 || ^5.0"
+                "symfony/translation": " ^3.4 || ^4.3 || ^5.0 || ^6.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.4",
-                "symfony/phpunit-bridge": "^4.3 || ^5.0"
+                "symfony/phpunit-bridge": "^4.3 || ^5.0 || ^6.0"
             },
             "type": "library",
             "autoload": {
@@ -4807,9 +4804,9 @@
             "description": "Common translation stuff",
             "support": {
                 "issues": "https://github.com/php-translation/common/issues",
-                "source": "https://github.com/php-translation/common/tree/3.1.0"
+                "source": "https://github.com/php-translation/common/tree/3.2.0"
             },
-            "time": "2021-03-26T17:44:48+00:00"
+            "time": "2022-02-04T11:49:38+00:00"
         },
         {
             "name": "php-translation/extractor",
@@ -6449,16 +6446,16 @@
         },
         {
             "name": "sebastian/global-state",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/global-state.git",
-                "reference": "474fb9edb7ab891665d3bfc6317f42a0a150454b"
+                "reference": "de036ec91d55d2a9e0db2ba975b512cdb1c23921"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/474fb9edb7ab891665d3bfc6317f42a0a150454b",
-                "reference": "474fb9edb7ab891665d3bfc6317f42a0a150454b",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/de036ec91d55d2a9e0db2ba975b512cdb1c23921",
+                "reference": "de036ec91d55d2a9e0db2ba975b512cdb1c23921",
                 "shasum": ""
             },
             "require": {
@@ -6501,7 +6498,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/global-state/issues",
-                "source": "https://github.com/sebastianbergmann/global-state/tree/3.0.1"
+                "source": "https://github.com/sebastianbergmann/global-state/tree/3.0.2"
             },
             "funding": [
                 {
@@ -6509,7 +6506,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-30T07:43:24+00:00"
+            "time": "2022-02-10T06:55:38+00:00"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -7642,12 +7639,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Contracts\\": ""
-                },
                 "files": [
                     "Deprecation/function.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Contracts\\": ""
+                },
                 "exclude-from-classmap": [
                     "**/Tests/"
                 ]
@@ -10282,12 +10279,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Grapheme\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Grapheme\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -10452,12 +10449,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -10537,12 +10534,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\MessageFormatter\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\MessageFormatter\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -10621,12 +10618,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Normalizer\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -10708,12 +10705,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Mbstring\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Mbstring\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -10785,12 +10782,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php72\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php72\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -10861,12 +10858,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php73\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php73\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -10940,12 +10937,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php80\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php80\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -11023,12 +11020,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Php81\\": ""
-                },
                 "files": [
                     "bootstrap.php"
                 ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Php81\\": ""
+                },
                 "classmap": [
                     "Resources/stubs"
                 ]
@@ -11108,12 +11105,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Symfony\\Polyfill\\Uuid\\": ""
-                },
                 "files": [
                     "bootstrap.php"
-                ]
+                ],
+                "psr-4": {
+                    "Symfony\\Polyfill\\Uuid\\": ""
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -14907,5 +14904,5 @@
     "platform-overrides": {
         "php": "7.2.5"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
