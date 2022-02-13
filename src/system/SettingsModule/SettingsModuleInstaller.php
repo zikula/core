@@ -79,9 +79,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE);
         $this->setSystemVar('languageurl', 0);
         $this->setSystemVar('ajaxtimeout', 5000);
-        //! this is a comma-separated list of special characters to search for in permalinks
+        // ! this is a comma-separated list of special characters to search for in permalinks
         $this->setSystemVar('permasearch', $this->getDefaultValue('permasearch'));
-        //! this is a comma-separated list of special characters to replace in permalinks
+        // ! this is a comma-separated list of special characters to replace in permalinks
         $this->setSystemVar('permareplace', $this->getDefaultValue('permareplace'));
 
         $this->setSystemVar('locale', $this->locale);

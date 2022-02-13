@@ -87,7 +87,7 @@ class MailHelper
         array $templateArgs = [],
         string $subject = ''
     ): bool {
-        //Set translation domain to avoid problems when calling sendNotification from external modules
+        // Set translation domain to avoid problems when calling sendNotification from external modules
         $templateName = '@ZikulaZAuthModule/Email/' . $notificationType . '.html.twig';
         try {
             $html = true;
