@@ -458,7 +458,7 @@ class CategoryEntity extends EntityAccess
             'leaf' => $this->leaf,
             'locked' => $this->locked,
             'parent' => $this->parent->getId(),
-            //'children' => $this->children,
+            // 'children' => $this->children,
             'root' => null !== $this->getRoot() ? $this->getRoot()->getId() : null
         ]);
     }
