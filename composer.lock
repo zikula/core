@@ -128,12 +128,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "7ece3fe765a89cb09eff1ad04fce6a92710b5a79"
+                "reference": "f4ea2a4bb540af601952db5e5200f4b0407b7f4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/7ece3fe765a89cb09eff1ad04fce6a92710b5a79",
-                "reference": "7ece3fe765a89cb09eff1ad04fce6a92710b5a79",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/f4ea2a4bb540af601952db5e5200f4b0407b7f4d",
+                "reference": "f4ea2a4bb540af601952db5e5200f4b0407b7f4d",
                 "shasum": ""
             },
             "type": "component",
@@ -159,7 +159,7 @@
                 "issues": "https://github.com/components/font-awesome/issues",
                 "source": "https://github.com/components/font-awesome/tree/6.0.0"
             },
-            "time": "2022-02-13T17:04:18+00:00"
+            "time": "2022-02-14T14:44:14+00:00"
         },
         {
             "name": "components/jquery",
