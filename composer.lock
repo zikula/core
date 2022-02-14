@@ -4866,16 +4866,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.12.4",
+            "version": "0.12.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "d9d71b137b8f4dca020fa44ce704020a8b2465b3"
+                "reference": "830cc04ee84736a2f8fd52892b483cf2b02ef0bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/d9d71b137b8f4dca020fa44ce704020a8b2465b3",
-                "reference": "d9d71b137b8f4dca020fa44ce704020a8b2465b3",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/830cc04ee84736a2f8fd52892b483cf2b02ef0bb",
+                "reference": "830cc04ee84736a2f8fd52892b483cf2b02ef0bb",
                 "shasum": ""
             },
             "require": {
@@ -4883,13 +4883,13 @@
                 "php": "^7.2 || ^8.0",
                 "php-translation/extractor": "^2.0",
                 "php-translation/symfony-storage": "^2.1",
-                "symfony/asset": "^4.4.20 || ^5.2.4",
-                "symfony/finder": "^4.4.20 || ^5.2.4",
-                "symfony/framework-bundle": "^4.4.20 || ^5.2.5",
-                "symfony/intl": "^4.4.20 || ^5.2.4",
-                "symfony/translation": "^4.4.20 || ^5.2.5",
-                "symfony/twig-bundle": "^4.4.20 || ^5.2.4",
-                "symfony/validator": "^4.4.20 || ^5.2.5",
+                "symfony/asset": "^4.4.20 || ^5.2.4 || ^6.0",
+                "symfony/finder": "^4.4.20 || ^5.2.4 || ^6.0",
+                "symfony/framework-bundle": "^4.4.20 || ^5.2.5 || ^6.0",
+                "symfony/intl": "^4.4.20 || ^5.2.4 || ^6.0",
+                "symfony/translation": "^4.4.20 || ^5.2.5 || ^6.0",
+                "symfony/twig-bundle": "^4.4.20 || ^5.2.4 || ^6.0",
+                "symfony/validator": "^4.4.20 || ^5.2.5 || ^6.0",
                 "twig/twig": "^2.14.4 || ^3.3"
             },
             "require-dev": {
@@ -4902,11 +4902,11 @@
                 "php-http/message": "^1.11",
                 "php-http/message-factory": "^1.0.2",
                 "php-translation/translator": "^1.0",
-                "symfony/console": "^4.4.20 || ^5.2.5",
-                "symfony/dependency-injection": "^4.4.20 || ^5.2.5",
-                "symfony/phpunit-bridge": "^5.2",
-                "symfony/twig-bridge": "^4.4.20 || ^5.2.5",
-                "symfony/web-profiler-bundle": "^4.4.20 || ^5.2.4"
+                "symfony/console": "^4.4.20 || ^5.2.5 || ^6.0",
+                "symfony/dependency-injection": "^4.4.20 || ^5.2.5 || ^6.0",
+                "symfony/phpunit-bridge": "^5.2 || ^6.0",
+                "symfony/twig-bridge": "^4.4.20 || ^5.2.5 || ^6.0",
+                "symfony/web-profiler-bundle": "^4.4.20 || ^5.2.4 || ^6.0"
             },
             "suggest": {
                 "php-http/httplug-bundle": "To easier configure your httplug clients."
@@ -4937,9 +4937,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-translation/symfony-bundle/issues",
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.4"
+                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.5"
             },
-            "time": "2022-01-20T09:27:04+00:00"
+            "time": "2022-02-14T11:52:48+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
