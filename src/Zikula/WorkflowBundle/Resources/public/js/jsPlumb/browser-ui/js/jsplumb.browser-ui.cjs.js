@@ -747,10 +747,26 @@ function _unstore(obj, event, fn) {
   }
   fn.__taUnstore && fn.__taUnstore();
 }
+var NOT_SELECTOR_REGEX = /:not\(([^)]+)\)/;
 function _curryChildFilter(children, obj, fn, evt) {
-  if (children == null) return fn;else {
+  if (children == null) {
+    return fn;
+  } else {
     var c = children.split(","),
-        _fn = function _fn(e) {
+        pc = [],
+        nc = [];
+    util.forEach(c, function (sel) {
+      var m = sel.match(NOT_SELECTOR_REGEX);
+      if (m != null) {
+        nc.push(m[1]);
+      } else {
+        pc.push(sel);
+      }
+    });
+    if (nc.length > 0 && pc.length === 0) {
+      pc.push(common.WILDCARD);
+    }
+    var _fn = function _fn(e) {
       _fn.__tauid = fn.__tauid;
       var t = _t(e);
       var done = false;
@@ -759,8 +775,13 @@ function _curryChildFilter(children, obj, fn, evt) {
       if (pathInfo.end != -1) {
         for (var p = 0; !done && p < pathInfo.end; p++) {
           target = pathInfo.path[p];
-          for (var i = 0; !done && i < c.length; i++) {
-            if (matchesSelector(target, c[i], obj)) {
+          for (var i = 0; i < nc.length; i++) {
+            if (matchesSelector(target, nc[i], obj)) {
+              return;
+            }
+          }
+          for (var _i = 0; !done && _i < pc.length; _i++) {
+            if (matchesSelector(target, pc[_i], obj)) {
               fn.apply(target, [e, target]);
               done = true;
               break;
@@ -1276,6 +1297,7 @@ var Drag = function (_Base) {
     _defineProperty(_assertThisInitialized(_this), "downListener", void 0);
     _defineProperty(_assertThisInitialized(_this), "moveListener", void 0);
     _defineProperty(_assertThisInitialized(_this), "upListener", void 0);
+    _defineProperty(_assertThisInitialized(_this), "scrollTracker", void 0);
     _defineProperty(_assertThisInitialized(_this), "listeners", {
       "start": [],
       "drag": [],
@@ -1303,32 +1325,8 @@ var Drag = function (_Base) {
     _this._ignoreZoom = params.ignoreZoom === true;
     _this._ghostProxyParent = params.ghostProxyParent;
     if (_this.trackScroll) {
-      document.addEventListener("scroll", function (e) {
-        if (_this._moving) {
-          var currentScrollValues = {
-            x: document.documentElement.scrollLeft,
-            y: document.documentElement.scrollTop
-          },
-              dsx = currentScrollValues.x - _this._lastScrollValues.x,
-              dsy = currentScrollValues.y - _this._lastScrollValues.y,
-              _pos = {
-            x: dsx + _this._lastPosition.x,
-            y: dsy + _this._lastPosition.y
-          },
-          dx = _pos.x - _this._downAt.x,
-              dy = _pos.y - _this._downAt.y,
-              _z = _this._ignoreZoom ? 1 : _this.k.getZoom();
-          if (_this._dragEl && _this._dragEl.parentNode) {
-            dx += _this._dragEl.parentNode.scrollLeft - _this._initialScroll.x;
-            dy += _this._dragEl.parentNode.scrollTop - _this._initialScroll.y;
-          }
-          dx /= _z;
-          dy /= _z;
-          _this.moveBy(dx, dy, e);
-          _this._lastPosition = _pos;
-          _this._lastScrollValues = currentScrollValues;
-        }
-      });
+      _this.scrollTracker = _this._trackScroll.bind(_assertThisInitialized(_this));
+      document.addEventListener("scroll", _this.scrollTracker);
     }
     if (params.ghostProxy === true) {
       _this._useGhostProxy = TRUE;
@@ -1368,6 +1366,34 @@ var Drag = function (_Base) {
     return _this;
   }
   _createClass(Drag, [{
+    key: "_trackScroll",
+    value: function _trackScroll(e) {
+      if (this._moving) {
+        var currentScrollValues = {
+          x: document.documentElement.scrollLeft,
+          y: document.documentElement.scrollTop
+        },
+            dsx = currentScrollValues.x - this._lastScrollValues.x,
+            dsy = currentScrollValues.y - this._lastScrollValues.y,
+            _pos = {
+          x: dsx + this._lastPosition.x,
+          y: dsy + this._lastPosition.y
+        },
+        dx = _pos.x - this._downAt.x,
+            dy = _pos.y - this._downAt.y,
+            _z = this._ignoreZoom ? 1 : this.k.getZoom();
+        if (this._dragEl && this._dragEl.parentNode) {
+          dx += this._dragEl.parentNode.scrollLeft - this._initialScroll.x;
+          dy += this._dragEl.parentNode.scrollTop - this._initialScroll.y;
+        }
+        dx /= _z;
+        dy /= _z;
+        this.moveBy(dx, dy, e);
+        this._lastPosition = _pos;
+        this._lastScrollValues = currentScrollValues;
+      }
+    }
+  }, {
     key: "on",
     value: function on(evt, fn) {
       if (this.listeners[evt]) {
@@ -1781,6 +1807,9 @@ var Drag = function (_Base) {
       this.downListener = null;
       this.upListener = null;
       this.moveListener = null;
+      if (this.scrollTracker != null) {
+        document.removeEventListener("scroll", this.scrollTracker);
+      }
     }
   }]);
   return Drag;
@@ -2078,7 +2107,7 @@ var DragManager = function () {
       }, dragOptions || {});
       o.start = util.wrap(o.start, function (p) {
         return handler.onStart(p);
-      });
+      }, false);
       o.drag = util.wrap(o.drag, function (p) {
         return handler.onDrag(p);
       });
@@ -2157,6 +2186,11 @@ var DragManager = function () {
       handler.init(this.drag);
     }
   }, {
+    key: "addSelector",
+    value: function addSelector(params, atStart) {
+      this.drag && this.drag.addSelector(params, atStart);
+    }
+  }, {
     key: "addFilter",
     value: function addFilter(filter, exclude) {
       if (this.drag == null) {
@@ -2187,6 +2221,7 @@ var DragManager = function () {
       util.forEach(this.handlers, function (p) {
         p.handler.reset();
       });
+      this.handlers.length = 0;
       if (this.drag != null) {
         var currentFilters = this.drag._filters;
         for (var f in currentFilters) {
@@ -2716,13 +2751,13 @@ var ElementDragHandler = function () {
   return ElementDragHandler;
 }();
 
-function _makeFloatingEndpoint(paintStyle, endpoint, referenceCanvas, sourceElement, instance, scope) {
+function _makeFloatingEndpoint(ep, endpoint, referenceCanvas, sourceElement, instance) {
   var floatingAnchor = core.createFloatingAnchor(instance, sourceElement);
   var p = {
-    paintStyle: paintStyle,
+    paintStyle: ep.getPaintStyle(),
     preparedAnchor: floatingAnchor,
     element: sourceElement,
-    scope: scope
+    scope: ep.scope
   };
   if (endpoint != null) {
     if (util.isAssignableFrom(endpoint, core.EndpointRepresentation)) {
@@ -2731,9 +2766,9 @@ function _makeFloatingEndpoint(paintStyle, endpoint, referenceCanvas, sourceElem
       p.endpoint = endpoint;
     }
   }
-  var ep = instance._internal_newEndpoint(p);
-  instance.paintEndpoint(ep, {});
-  return ep;
+  var actualEndpoint = instance._internal_newEndpoint(p);
+  instance._paintEndpoint(actualEndpoint, {});
+  return actualEndpoint;
 }
 function selectorFilter(evt, _el, selector, _instance, negate) {
   var t = evt.target || evt.srcElement,
@@ -2755,7 +2790,7 @@ var EndpointDragHandler = function () {
     this.instance = instance;
     _defineProperty(this, "jpc", void 0);
     _defineProperty(this, "existingJpc", void 0);
-    _defineProperty(this, "_originalAnchor", void 0);
+    _defineProperty(this, "_originalAnchorSpec", void 0);
     _defineProperty(this, "ep", void 0);
     _defineProperty(this, "endpointRepresentation", void 0);
     _defineProperty(this, "canvasElement", void 0);
@@ -2824,6 +2859,9 @@ var EndpointDragHandler = function () {
           consume(e);
           this._activeDefinition = sourceSelector;
           def = sourceSelector.def.def;
+          if (def.canAcceptNewConnection != null && !def.canAcceptNewConnection(sourceEl, e)) {
+            return false;
+          }
           var elxy = getPositionOnElement(e, sourceEl, this.instance.currentZoom);
           var tempEndpointParams = {
             element: sourceEl
@@ -2838,7 +2876,7 @@ var EndpointDragHandler = function () {
               tempEndpointParams.scope = scopeFromElement;
             }
           }
-          var extractedParameters = def.parameterExtractor ? def.parameterExtractor(sourceEl, eventTarget) : {};
+          var extractedParameters = def.parameterExtractor ? def.parameterExtractor(sourceEl, eventTarget, e) : {};
           tempEndpointParams = util.merge(tempEndpointParams, extractedParameters);
           if (tempEndpointParams.maxConnections != null && tempEndpointParams.maxConnections >= 0) {
             var sourceCount = this.instance.select({
@@ -2856,8 +2894,25 @@ var EndpointDragHandler = function () {
               return false;
             }
           }
-          this._originalAnchor = tempEndpointParams.anchor || (this.instance.areDefaultAnchorsSet() ? this.instance.defaults.anchors[0] : this.instance.defaults.anchor);
-          tempEndpointParams.anchor = [elxy.x, elxy.y, 0, 0];
+          if (def.anchorPositionFinder) {
+            var maybeAnchorSpec = def.anchorPositionFinder(sourceEl, elxy, def, e);
+            if (maybeAnchorSpec != null) {
+              tempEndpointParams.anchor = maybeAnchorSpec;
+            }
+          }
+          this._originalAnchorSpec = tempEndpointParams.anchor || (this.instance.areDefaultAnchorsSet() ? this.instance.defaults.anchors[0] : this.instance.defaults.anchor);
+          var _originalAnchor = this.instance.router.prepareAnchor(this._originalAnchorSpec);
+          var anchorSpecToUse = [elxy.x, elxy.y, 0, 0];
+          if (_originalAnchor.locations.length > 0) {
+            anchorSpecToUse[2] = _originalAnchor.locations[0].ox;
+            anchorSpecToUse[3] = _originalAnchor.locations[0].oy;
+          } else if (_originalAnchor.isContinuous) {
+            var dx = elxy.x < 0.5 ? elxy.x : 1 - elxy.x;
+            var dy = elxy.y < 0.5 ? elxy.y : 1 - elxy.y;
+            anchorSpecToUse[2] = dx < dy ? elxy.x < 0.5 ? -1 : 1 : 0;
+            anchorSpecToUse[3] = dy < dx ? elxy.y < 0.5 ? -1 : 1 : 0;
+          }
+          tempEndpointParams.anchor = anchorSpecToUse;
           tempEndpointParams.deleteOnEmpty = true;
           this.ep = this.instance._internal_newEndpoint(tempEndpointParams);
           var payload = {};
@@ -3038,7 +3093,7 @@ var EndpointDragHandler = function () {
         var aae = this.instance._deriveEndpointAndAnchorSpec(this.ep.edgeType);
         endpointToFloat = aae.endpoints[1];
       }
-      this.floatingEndpoint = _makeFloatingEndpoint(this.ep.getPaintStyle(), endpointToFloat, canvasElement, this.placeholderInfo.element, this.instance, this.ep.scope);
+      this.floatingEndpoint = _makeFloatingEndpoint(this.ep, endpointToFloat, canvasElement, this.placeholderInfo.element, this.instance);
       this.floatingAnchor = this.floatingEndpoint._anchor;
       this.floatingEndpoint.deleteOnEmpty = true;
       this.floatingElement = this.floatingEndpoint.endpoint.canvas;
@@ -3046,7 +3101,7 @@ var EndpointDragHandler = function () {
     }
   }, {
     key: "_populateTargets",
-    value: function _populateTargets(canvasElement, eventTarget) {
+    value: function _populateTargets(canvasElement, eventTarget, event) {
       var _this = this;
       var isSourceDrag = this.jpc && this.jpc.endpoints[0] === this.ep;
       var boundingRect;
@@ -3134,13 +3189,10 @@ var EndpointDragHandler = function () {
                   return;
                 }
               }
-              var maxConnections = targetDef.def.def.maxConnections;
-              if (targetDef.def.def.parameterExtractor) {
-                var extractedParameters = targetDef.def.def.parameterExtractor(d.targetEl, eventTarget);
-                if (extractedParameters.maxConnections != null) {
-                  maxConnections = extractedParameters.maxConnections;
-                }
+              if (targetDef.def.def.canAcceptNewConnection != null && !targetDef.def.def.canAcceptNewConnection(d.targetEl, event)) {
+                return;
               }
+              var maxConnections = targetDef.def.def.maxConnections;
               if (maxConnections != null && maxConnections !== -1) {
                 if (_this.instance.select({
                   target: d.targetEl
@@ -3221,7 +3273,7 @@ var EndpointDragHandler = function () {
         this.jpc = null;
       }
       this._createFloatingEndpoint(this.canvasElement);
-      this._populateTargets(this.canvasElement, eventTarget);
+      this._populateTargets(this.canvasElement, eventTarget, p.e);
       if (this.jpc == null) {
         this.startNewConnectionDrag(this.ep.scope, payload);
       } else {
@@ -3287,7 +3339,7 @@ var EndpointDragHandler = function () {
                 newDropTarget.endpoint.endpoint.addClass(this.instance.endpointDropForbiddenClass);
               }
               this.floatingAnchor.over(newDropTarget.endpoint);
-              this.instance.paintConnection(this.jpc);
+              this.instance._paintConnection(this.jpc);
             } else {
               newDropTarget = null;
             }
@@ -3385,7 +3437,7 @@ var EndpointDragHandler = function () {
         } else {
           this._reattachOrDiscard(p.e);
         }
-        this.instance.refreshEndpoint(this.ep);
+        this.instance._refreshEndpoint(this.ep);
         this.ep.removeClass(this.instance.draggingClass);
         this._cleanupDraggablePlaceholder();
         this.jpc.removeClass(this.instance.draggingClass);
@@ -3429,22 +3481,27 @@ var EndpointDragHandler = function () {
         if (targetDefinition == null) {
           return null;
         }
+        var targetElement = this.currentDropTarget.targetEl;
+        var elxy = getPositionOnElement(p.e, targetElement, this.instance.currentZoom);
         var eps = this.instance._deriveEndpointAndAnchorSpec(jpc.getType().join(" "), true);
         var pp = eps.endpoints ? util.extend(p, {
           endpoint: targetDefinition.def.endpoint || eps.endpoints[1]
         }) : p;
         var anchorsToUse = this.instance.validAnchorsSpec(eps.anchors) ? eps.anchors : this.instance.areDefaultAnchorsSet() ? this.instance.defaults.anchors : null;
-        if (anchorsToUse) {
+        var anchorFromDef = targetDefinition.def.anchor;
+        var anchorFromPositionFinder = targetDefinition.def.anchorPositionFinder ? targetDefinition.def.anchorPositionFinder(targetElement, elxy, targetDefinition.def, p.e) : null;
+        var dropAnchor = anchorFromPositionFinder != null ? anchorFromPositionFinder : anchorFromDef != null ? anchorFromDef : anchorsToUse != null && anchorsToUse[1] != null ? anchorsToUse[1] : null;
+        if (dropAnchor != null) {
           pp = util.extend(pp, {
-            anchor: targetDefinition.def.anchor || anchorsToUse[1]
+            anchor: dropAnchor
           });
         }
         if (targetDefinition.def.portId != null) {
           pp.portId = targetDefinition.def.portId;
         }
-        var extractedParameters = targetDefinition.def.parameterExtractor ? targetDefinition.def.parameterExtractor(this.currentDropTarget.el, eventTarget) : {};
+        var extractedParameters = targetDefinition.def.parameterExtractor ? targetDefinition.def.parameterExtractor(this.currentDropTarget.el, eventTarget, p.e) : {};
         pp = util.merge(pp, extractedParameters);
-        pp.element = this.currentDropTarget.targetEl;
+        pp.element = targetElement;
         dropEndpoint = this.instance._internal_newEndpoint(pp);
         dropEndpoint._mtNew = true;
         dropEndpoint.deleteOnEmpty = true;
@@ -3547,9 +3604,9 @@ var EndpointDragHandler = function () {
       if (util.isObject(optionalData)) {
         this.jpc.mergeData(optionalData);
       }
-      if (this._originalAnchor) {
-        this.jpc.endpoints[0].setAnchor(this._originalAnchor);
-        this._originalAnchor = null;
+      if (this._originalAnchorSpec) {
+        this.jpc.endpoints[0].setAnchor(this._originalAnchorSpec);
+        this._originalAnchorSpec = null;
       }
       this.instance._finaliseConnection(this.jpc, null, originalEvent);
       this.instance.setHover(this.jpc, false);
@@ -3627,20 +3684,19 @@ var HTMLElementOverlay = function () {
     this.htmlElementOverlay = overlay;
   }
   _createClass(HTMLElementOverlay, null, [{
-    key: "createElement",
-    value: function createElement$1(o) {
-      var el = createElement(ELEMENT_DIV, {}, o.instance.overlayClass + " " + (o.cssClass ? o.cssClass : ""));
-      o.instance.setAttribute(el, "jtk-overlay-id", o.id);
-      return el;
-    }
-  }, {
     key: "getElement",
     value: function getElement(o, component, elementCreator) {
       if (o.canvas == null) {
         if (elementCreator && component) {
           o.canvas = elementCreator(component);
+          var cls = o.instance.overlayClass + " " + (o.cssClass ? o.cssClass : "");
+          o.instance.addClass(o.canvas, cls);
         } else {
-          o.canvas = HTMLElementOverlay.createElement(o);
+          o.canvas = createElement(ELEMENT_DIV, {}, o.instance.overlayClass + " " + (o.cssClass ? o.cssClass : ""));
+        }
+        o.instance.setAttribute(o.canvas, "jtk-overlay-id", o.id);
+        for (var att in o.attributes) {
+          o.instance.setAttribute(o.canvas, att, o.attributes[att]);
         }
         o.canvas.style.position = core.ABSOLUTE;
         o.instance._appendElement(o.canvas, o.instance.getContainer());
@@ -3699,9 +3755,10 @@ var SVGElementOverlay = function (_Overlay) {
     key: "ensurePath",
     value: function ensurePath(o) {
       if (o.path == null) {
-        o.path = _node(ELEMENT_PATH, {
+        var atts = util.extend({
           "jtk-overlay-id": o.id
-        });
+        }, o.attributes);
+        o.path = _node(ELEMENT_PATH, atts);
         var parent = null;
         if (o.component instanceof core.Connection) {
           var connector = o.component.connector;
@@ -3713,7 +3770,8 @@ var SVGElementOverlay = function (_Overlay) {
         if (parent != null) {
           _appendAtIndex(parent, o.path, 1);
         }
-        o.instance.addClass(o.path, o.instance.overlayClass);
+        var cls = o.instance.overlayClass + " " + (o.cssClass ? o.cssClass : "");
+        o.instance.addClass(o.path, cls);
         o.path.jtk = {
           overlay: o
         };
@@ -4706,8 +4764,8 @@ var BrowserJsPlumbInstance = function (_JsPlumbInstance) {
       }
     }
   }, {
-    key: "paintOverlay",
-    value: function paintOverlay(o, params, extents) {
+    key: "_paintOverlay",
+    value: function _paintOverlay(o, params, extents) {
       if (core.isLabelOverlay(o)) {
         getLabelElement(o);
         var XY = o.component.getXY();
@@ -4909,7 +4967,7 @@ var BrowserJsPlumbInstance = function (_JsPlumbInstance) {
         if (connector.connection.hoverPaintStyle != null) {
           connector.connection.paintStyleInUse = hover ? connector.connection.hoverPaintStyle : connector.connection.paintStyle;
           if (!this._suspendDrawing) {
-            this.paintConnection(connector.connection);
+            this._paintConnection(connector.connection);
           }
         }
         if (connector.connection.endpoints[0] !== sourceEndpoint) {
@@ -5179,9 +5237,17 @@ exports.ATTRIBUTE_GROUP_CONTENT = ATTRIBUTE_GROUP_CONTENT;
 exports.ATTRIBUTE_JTK_ENABLED = ATTRIBUTE_JTK_ENABLED;
 exports.ATTRIBUTE_JTK_SCOPE = ATTRIBUTE_JTK_SCOPE;
 exports.BrowserJsPlumbInstance = BrowserJsPlumbInstance;
+exports.CLASS_DELEGATED_DRAGGABLE = CLASS_DELEGATED_DRAGGABLE;
+exports.CLASS_DRAGGABLE = CLASS_DRAGGABLE;
+exports.CLASS_DRAGGED = CLASS_DRAGGED;
+exports.CLASS_DRAG_ACTIVE = CLASS_DRAG_ACTIVE;
+exports.CLASS_DRAG_CONTAINER = CLASS_DRAG_CONTAINER;
+exports.CLASS_DRAG_HOVER = CLASS_DRAG_HOVER;
+exports.CLASS_GHOST_PROXY = CLASS_GHOST_PROXY;
 exports.CONNECTION = CONNECTION;
 exports.Collicat = Collicat;
 exports.Drag = Drag;
+exports.DragManager = DragManager;
 exports.ELEMENT = ELEMENT;
 exports.ELEMENT_DIV = ELEMENT_DIV;
 exports.ENDPOINT = ENDPOINT;

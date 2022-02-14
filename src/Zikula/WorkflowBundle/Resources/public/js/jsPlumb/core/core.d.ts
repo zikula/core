@@ -350,13 +350,26 @@ export declare interface BeforeStartDetachParams<E> extends BeforeDragParams<E> 
 export declare interface BehaviouralTypeDescriptor<T = any> extends EndpointTypeDescriptor {
     /**
      * A function that can be used to extract a set of parameters pertinent to the connection that is being dragged
-     * from a given source.
+     * from a given source or dropped on a given target.
      * @param el - The element that is the drag source
      * @param eventTarget - The element that captured the event that started the connection drag.
      */
-    parameterExtractor?: (el: T, eventTarget: T) => Record<string, any>;
+    parameterExtractor?: (el: T, eventTarget: T, event: Event) => Record<string, any>;
+    /**
+     * Optional policy for dropping existing connections that have been detached by their source. See RedropPolicy.
+     */
     redrop?: RedropPolicy;
+    /**
+     * Optional function that is used to determine whether at the start of a drag, a given element is able to accept
+     * new connections. For a source element returning false from here aborts the connection drag. For a target element
+     * returning false from here means the target element is not active as a drop target.
+     */
+    canAcceptNewConnection?: (el: Element, e: Event) => boolean;
     extract?: Record<string, string>;
+    /**
+     * If true, only one endpoint will be created on any given element for this type descriptor, and subsequent connections will
+     * all attach to that endpoint. Defaults to false.
+     */
     uniqueEndpoint?: boolean;
     /**
      * Optional function to call if the user begins a new connection drag when the associated element is full.
@@ -376,6 +389,18 @@ export declare interface BehaviouralTypeDescriptor<T = any> extends EndpointType
      * are added. By default this is the internal attribute jsPlumb uses to mark managed elements (data-jtk-managed)
      */
     parentSelector?: string;
+    /**
+     * This function offers a means for you to provide the anchor to use for
+     * a new drag, or a drop. You're given the source/target element, the proportional location on
+     * the element that the drag started/drop occurred, the associated type descriptor, and
+     * the originating event.  Return null if you don't wish to provide a value,
+     * and any other return value will be treated as an AnchorSpec.
+     * @param el
+     * @param elxy
+     * @param def
+     * @param e
+     */
+    anchorPositionFinder?: (el: Element, elxy: PointXY, def: BehaviouralTypeDescriptor, e: Event) => AnchorSpec | null;
 }
 
 export declare class BlankEndpoint extends EndpointRepresentation<ComputedBlankEndpoint> {
@@ -496,6 +521,12 @@ export declare abstract class Component extends EventGenerator {
     getData(): Record<string, any>;
     setData(d: any): void;
     mergeData(d: any): void;
+    /**
+     * Add an overlay to the component.  You must `revalidate` an associated element for this component if you call
+     * this method directly. Consider using the `addOverlay` method of `JsPlumbInstance` instead, which adds the overlay
+     * and then revalidates.
+     * @param overlay
+     */
     addOverlay(overlay: OverlaySpec): Overlay;
     /**
      * Get the Overlay with the given ID. You can optionally provide a type parameter for this method in order to get
@@ -506,9 +537,21 @@ export declare abstract class Component extends EventGenerator {
     getOverlay<T extends Overlay>(id: string): T;
     getOverlays(): Record<string, Overlay>;
     hideOverlay(id: string): void;
-    hideOverlays(): void;
+    /**
+     * Hide all overlays, or a specific set of overlays.
+     * @param ids optional list of ids to hide.
+     */
+    hideOverlays(...ids: Array<string>): void;
+    /**
+     * Show a specific overlay
+     * @param id
+     */
     showOverlay(id: string): void;
-    showOverlays(): void;
+    /**
+     * Show all overlays, or a specific set of overlays.
+     * @param ids optional list of ids to show.
+     */
+    showOverlays(...ids: Array<string>): void;
     removeAllOverlays(): void;
     removeOverlay(overlayId: string, dontCleanup?: boolean): void;
     removeOverlays(...overlays: string[]): void;
@@ -552,8 +595,8 @@ export declare type ComputedDotEndpoint = [number, number, number, number, numbe
 export declare interface ComputedPosition {
     curX: number;
     curY: number;
-    ox: number;
-    oy: number;
+    ox: AnchorOrientationHint;
+    oy: AnchorOrientationHint;
     x: number;
     y: number;
 }
@@ -1098,7 +1141,7 @@ export declare type EndpointComputeFunction<T> = (endpoint: EndpointRepresentati
 export declare const EndpointFactory: {
     get: (ep: Endpoint<any>, name: string, params: any) => EndpointRepresentation<any>;
     clone: <C>(epr: EndpointRepresentation<C>) => EndpointRepresentation<C>;
-    compute: <T>(endpoint: EndpointRepresentation<T>, anchorPoint: AnchorPlacement, orientation: [number, number], endpointStyle: any) => T;
+    compute: <T>(endpoint: EndpointRepresentation<T>, anchorPoint: AnchorPlacement, orientation: [AnchorOrientationHint, AnchorOrientationHint], endpointStyle: any) => T;
     registerHandler: <E, T>(eph: EndpointHandler<E, T>) => void;
 };
 
@@ -1880,12 +1923,43 @@ export declare abstract class JsPlumbInstance<T extends {
      */
     toggleVisible(el: T["E"], changeEndpoints?: boolean): void;
     private _operation;
+    /**
+     * Register a connection type: a set of connection attributes grouped together with an ID.
+     * @param id
+     * @param type
+     */
     registerConnectionType(id: string, type: ConnectionTypeDescriptor): void;
+    /**
+     * Register a set of connection types
+     * @param types Set of types to register.
+     */
     registerConnectionTypes(types: Record<string, ConnectionTypeDescriptor>): void;
+    /**
+     * Register an endpoint type: a set of endpoint attributes grouped together with an ID.
+     * @param id
+     * @param type
+     */
     registerEndpointType(id: string, type: EndpointTypeDescriptor): void;
+    /**
+     * Register a set of endpoint types
+     * @param types Set of types to register.
+     */
     registerEndpointTypes(types: Record<string, EndpointTypeDescriptor>): void;
+    /**
+     * Retrieve an endpoint or connection type by its id.
+     * @param id
+     * @param typeDescriptor
+     */
     getType(id: string, typeDescriptor: string): TypeDescriptor;
+    /**
+     * Retrieve a connection type by its id.
+     * @param id
+     */
     getConnectionType(id: string): ConnectionTypeDescriptor;
+    /**
+     * Retrieve an endpoint type by its id.
+     * @param id
+     */
     getEndpointType(id: string): EndpointTypeDescriptor;
     importDefaults(d: JsPlumbDefaults<T["E"]>): JsPlumbInstance;
     restoreDefaults(): JsPlumbInstance;
@@ -1904,7 +1978,13 @@ export declare abstract class JsPlumbInstance<T extends {
     removeGroup(group: string | UIGroup<T["E"]>, deleteMembers?: boolean, manipulateView?: boolean, doNotFireEvent?: boolean): Record<string, PointXY>;
     removeAllGroups(deleteMembers?: boolean, manipulateView?: boolean): void;
     removeFromGroup(group: string | UIGroup<T["E"]>, el: T["E"], doNotFireEvent?: boolean): void;
-    paintEndpoint(endpoint: Endpoint, params: {
+    /**
+     * @internal
+     * @param endpoint
+     * @param params
+     * @private
+     */
+    _paintEndpoint(endpoint: Endpoint, params: {
         timestamp?: string;
         offset?: ViewportElement<T["E"]>;
         recalc?: boolean;
@@ -1912,11 +1992,37 @@ export declare abstract class JsPlumbInstance<T extends {
         connectorPaintStyle?: PaintStyle;
         anchorLoc?: AnchorPlacement;
     }): void;
-    paintConnection(connection: Connection, params?: {
+    /**
+     * @internal
+     * @param connection
+     * @param params
+     */
+    _paintConnection(connection: Connection, params?: {
         timestamp?: string;
     }): void;
-    refreshEndpoint(endpoint: Endpoint): void;
-    makeConnector(connection: Connection<T["E"]>, name: string, args: any): AbstractConnector;
+    /**
+     * @internal
+     * @param endpoint
+     * @private
+     */
+    _refreshEndpoint(endpoint: Endpoint): void;
+    /**
+     * Prepare a connector using the given name and args.
+     * @internal
+     * @param connection
+     * @param name
+     * @param args
+     * @private
+     */
+    _makeConnector(connection: Connection<T["E"]>, name: string, args: any): AbstractConnector;
+    /**
+     * Adds an overlay to the given component, repainting the UI as necessary.
+     * @param component A Connection or Endpoint to add the overlay to
+     * @param overlay Spec for the overlay
+     * @param doNotRevalidate Defaults to true. If false, a repaint won't occur after adding the overlay. This flag can be used when adding
+     * several overlays in a loop.
+     */
+    addOverlay(component: Component, overlay: OverlaySpec, doNotRevalidate?: boolean): void;
     /**
      * For some given element, find any other elements we want to draw whenever that element
      * is being drawn. for groups, for example, this means any child elements of the group. For an element that has child
@@ -1947,7 +2053,13 @@ export declare abstract class JsPlumbInstance<T extends {
     abstract off(el: Document | T["E"] | ArrayLike<T["E"]>, event: string, callback: Function): void;
     abstract trigger(el: Document | T["E"], event: string, originalEvent?: Event, payload?: any, detail?: number): void;
     getPathData(connector: AbstractConnector): any;
-    abstract paintOverlay(o: Overlay, params: any, extents: any): void;
+    /**
+     * @internal
+     * @param o
+     * @param params
+     * @param extents
+     */
+    abstract _paintOverlay(o: Overlay, params: any, extents: any): void;
     abstract addOverlayClass(o: Overlay, clazz: string): void;
     abstract removeOverlayClass(o: Overlay, clazz: string): void;
     abstract setOverlayVisible(o: Overlay, visible: boolean): void;
@@ -1974,7 +2086,7 @@ export declare abstract class JsPlumbInstance<T extends {
      * @internal
      * @param connector
      * @param h
-     * @param doNotCascade
+     * @param sourceEndpoint
      */
     abstract setConnectorHover(connector: AbstractConnector, h: boolean, sourceEndpoint?: Endpoint): void;
     /**
@@ -2046,7 +2158,7 @@ export declare class LightweightFloatingAnchor implements LightweightAnchor {
     isFloating: boolean;
     isContinuous: false;
     isDynamic: false;
-    locations: any[];
+    locations: Array<AnchorRecord>;
     currentLocation: number;
     locked: boolean;
     cssClass: string;
@@ -2110,11 +2222,11 @@ export declare class LightweightRouter<T extends {
     computeAnchorLocation(anchor: LightweightAnchor, params: AnchorComputeParams): AnchorPlacement;
     computePath(connection: Connection<any>, timestamp: string): void;
     getEndpointLocation(endpoint: Endpoint<any>, params: AnchorComputeParams): AnchorPlacement;
-    getEndpointOrientation(ep: Endpoint<any>): [number, number];
+    getEndpointOrientation(ep: Endpoint<any>): Orientation;
     setAnchorOrientation(anchor: LightweightAnchor, orientation: Orientation): void;
     isDynamicAnchor(ep: Endpoint<any>): boolean;
     isFloating(ep: Endpoint<any>): boolean;
-    prepareAnchor(endpoint: Endpoint<any>, params: AnchorSpec | Array<AnchorSpec>): LightweightAnchor;
+    prepareAnchor(params: AnchorSpec | Array<AnchorSpec>): LightweightAnchor;
     redraw(elementId: string, timestamp?: string, offsetToUI?: PointXY): RedrawResult;
     reset(): void;
     setAnchor(endpoint: Endpoint<any>, anchor: LightweightAnchor): void;
@@ -2194,7 +2306,7 @@ export declare interface ManageElementParams<E = any> {
 
 export declare const NONE = "none";
 
-export declare type Orientation = [number, number];
+export declare type Orientation = [AnchorOrientationHint, AnchorOrientationHint];
 
 export declare abstract class Overlay extends EventGenerator {
     instance: JsPlumbInstance;
@@ -2204,7 +2316,8 @@ export declare abstract class Overlay extends EventGenerator {
     cssClass: string;
     visible: boolean;
     location: number | Array<number>;
-    events?: Record<string, (value: any, event?: any) => any>;
+    events: Record<string, (value: any, event?: any) => any>;
+    attributes: Record<string, string>;
     constructor(instance: JsPlumbInstance, component: Component, p: OverlayOptions);
     shouldFireEvent(event: string, value: any, originalEvent?: Event): boolean;
     setVisible(v: boolean): void;
@@ -2312,7 +2425,7 @@ export declare interface Router<T extends {
     getEndpointOrientation(endpoint: Endpoint): Orientation;
     setAnchorOrientation(anchor: A, orientation: Orientation): void;
     setAnchor(endpoint: Endpoint, anchor: A): void;
-    prepareAnchor(endpoint: Endpoint, params: AnchorSpec | Array<AnchorSpec>): A;
+    prepareAnchor(params: AnchorSpec | Array<AnchorSpec>): A;
     setConnectionAnchors(conn: Connection, anchors: [A, A]): void;
     isDynamicAnchor(ep: Endpoint): boolean;
     isFloating(ep: Endpoint): boolean;

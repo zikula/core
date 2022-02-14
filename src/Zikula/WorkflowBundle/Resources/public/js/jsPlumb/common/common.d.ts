@@ -4,6 +4,7 @@
  * @packageDocumentation
  */
 
+import { AnchorOrientationHint } from '@jsplumb/core';
 import { BoundingBox } from '@jsplumb/util';
 import { Component } from '@jsplumb/core';
 import { Extents } from '@jsplumb/util';
@@ -152,10 +153,6 @@ export declare enum AnchorLocations {
     TopRight = "TopRight"
 }
 
-/**
- * Common options for anchors.
- * @public
- */
 export declare interface AnchorOptions extends Record<string, any> {
     /**
      * Optional css class that will be applied to any DOM element for an endpoint using this anchor.
@@ -172,8 +169,8 @@ export declare type AnchorPlacement = {
     curY: number;
     x: number;
     y: number;
-    ox: number;
-    oy: number;
+    ox: AnchorOrientationHint;
+    oy: AnchorOrientationHint;
 };
 
 /**
@@ -185,7 +182,7 @@ export declare type AnchorSpec = SingleAnchorSpec | Array<SingleAnchorSpec>;
 /**
  * An anchor spec in the form [ x, y, ox, oy ]
  */
-export declare type ArrayAnchorSpec = [number, number, number, number, number?, number?];
+export declare type ArrayAnchorSpec = [number, number, AnchorOrientationHint, AnchorOrientationHint, number?, number?];
 
 /**
  * @public
@@ -369,6 +366,7 @@ export declare interface OverlayOptions extends Record<string, any> {
     cssClass?: string;
     location?: number | number[];
     events?: Record<string, (value: any, event?: any) => any>;
+    attributes?: Record<string, string>;
 }
 
 /**

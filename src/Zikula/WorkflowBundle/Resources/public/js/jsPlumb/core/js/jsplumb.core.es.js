@@ -685,15 +685,21 @@ var AbstractConnector = function () {
           y = swapY ? y2 : y1,
           w = Math.abs(x2 - x1),
           h = Math.abs(y2 - y1);
-      if (so[0] === 0 && so[1] === 0 || to[0] === 0 && to[1] === 0) {
+      var noSourceOrientation = so[0] === 0 && so[1] === 0;
+      var noTargetOrientation = to[0] === 0 && to[1] === 0;
+      if (noSourceOrientation || noTargetOrientation) {
         var index = w > h ? 0 : 1,
             oIndex = [1, 0][index],
             v1 = index === 0 ? x1 : y1,
             v2 = index === 0 ? x2 : y2;
-        so[index] = v1 > v2 ? -1 : 1;
-        to[index] = v1 > v2 ? 1 : -1;
-        so[oIndex] = 0;
-        to[oIndex] = 0;
+        if (noSourceOrientation) {
+          so[index] = v1 > v2 ? -1 : 1;
+          so[oIndex] = 0;
+        }
+        if (noTargetOrientation) {
+          to[index] = v1 > v2 ? 1 : -1;
+          to[oIndex] = 0;
+        }
       }
       var sx = swapX ? w + this.sourceGap * so[0] : this.sourceGap * so[0],
           sy = swapY ? h + this.sourceGap * so[1] : this.sourceGap * so[1],
@@ -1227,11 +1233,13 @@ var Overlay = function (_EventGenerator) {
     _defineProperty(_assertThisInitialized(_this), "visible", true);
     _defineProperty(_assertThisInitialized(_this), "location", void 0);
     _defineProperty(_assertThisInitialized(_this), "events", void 0);
+    _defineProperty(_assertThisInitialized(_this), "attributes", void 0);
     p = p || {};
     _this.id = p.id || uuid();
     _this.cssClass = p.cssClass || "";
     _this.location = p.location || 0.5;
     _this.events = p.events || {};
+    _this.attributes = p.attributes || {};
     for (var _event in _this.events) {
       _this.bind(_event, _this.events[_event]);
     }
@@ -1862,8 +1870,14 @@ var Component = function (_EventGenerator) {
   }, {
     key: "hideOverlays",
     value: function hideOverlays() {
+      for (var _len = arguments.length, ids = new Array(_len), _key = 0; _key < _len; _key++) {
+        ids[_key] = arguments[_key];
+      }
+      ids = ids || [];
       for (var i in this.overlays) {
-        this.overlays[i].setVisible(false);
+        if (ids.length === 0 || ids.indexOf(i) !== -1) {
+          this.overlays[i].setVisible(false);
+        }
       }
     }
   }, {
@@ -1877,8 +1891,14 @@ var Component = function (_EventGenerator) {
   }, {
     key: "showOverlays",
     value: function showOverlays() {
+      for (var _len2 = arguments.length, ids = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        ids[_key2] = arguments[_key2];
+      }
+      ids = ids || [];
       for (var i in this.overlays) {
-        this.overlays[i].setVisible(true);
+        if (ids.length === 0 || ids.indexOf(i) !== -1) {
+          this.overlays[i].setVisible(true);
+        }
       }
     }
   }, {
@@ -1912,8 +1932,8 @@ var Component = function (_EventGenerator) {
   }, {
     key: "removeOverlays",
     value: function removeOverlays() {
-      for (var _len = arguments.length, overlays = new Array(_len), _key = 0; _key < _len; _key++) {
-        overlays[_key] = arguments[_key];
+      for (var _len3 = arguments.length, overlays = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        overlays[_key3] = arguments[_key3];
       }
       for (var i = 0, j = overlays.length; i < j; i++) {
         this.removeOverlay(arguments[i]);
@@ -1980,17 +2000,7 @@ var LightweightFloatingAnchor = function () {
     _defineProperty(this, "isFloating", true);
     _defineProperty(this, "isContinuous", void 0);
     _defineProperty(this, "isDynamic", void 0);
-    _defineProperty(this, "locations", [{
-      x: 0.5,
-      y: 0.5,
-      ox: 0,
-      oy: 0,
-      offx: 0,
-      offy: 0,
-      iox: 0,
-      ioy: 0,
-      cls: ''
-    }]);
+    _defineProperty(this, "locations", []);
     _defineProperty(this, "currentLocation", 0);
     _defineProperty(this, "locked", false);
     _defineProperty(this, "cssClass", '');
@@ -2000,6 +2010,17 @@ var LightweightFloatingAnchor = function () {
     _defineProperty(this, "orientation", [0, 0]);
     _defineProperty(this, "size", void 0);
     this.size = instance.getSize(element);
+    this.locations.push({
+      x: 0.5,
+      y: 0.5,
+      ox: this.orientation[0],
+      oy: this.orientation[1],
+      offx: 0,
+      offy: 0,
+      iox: this.orientation[0],
+      ioy: this.orientation[1],
+      cls: ''
+    });
   }
   _createClass(LightweightFloatingAnchor, [{
     key: "_updateOrientationInRouter",
@@ -2560,10 +2581,10 @@ var Connection = function (_Component) {
     });
     if (!_this.instance._suspendDrawing) {
       var initialTimestamp = _this.instance._suspendedAt || uuid();
-      _this.instance.paintEndpoint(_this.endpoints[0], {
+      _this.instance._paintEndpoint(_this.endpoints[0], {
         timestamp: initialTimestamp
       });
-      _this.instance.paintEndpoint(_this.endpoints[1], {
+      _this.instance._paintEndpoint(_this.endpoints[1], {
         timestamp: initialTimestamp
       });
     }
@@ -2716,7 +2737,7 @@ var Connection = function (_Component) {
       if (this.connector) {
         this.instance.setConnectorVisible(this.connector, v);
       }
-      this.instance.paintConnection(this);
+      this.instance._paintConnection(this);
     }
   }, {
     key: "destroy",
@@ -2745,10 +2766,10 @@ var Connection = function (_Component) {
       },
           connector;
       if (isString(connectorSpec)) {
-        connector = this.instance.makeConnector(this, connectorSpec, connectorArgs);
+        connector = this.instance._makeConnector(this, connectorSpec, connectorArgs);
       } else {
         var co = connectorSpec;
-        connector = this.instance.makeConnector(this, co.type, merge(co.options, connectorArgs));
+        connector = this.instance._makeConnector(this, co.type, merge(co.options, connectorArgs));
       }
       if (typeId != null) {
         connector.typeId = typeId;
@@ -2778,7 +2799,7 @@ var Connection = function (_Component) {
           }
         }
         if (!doNotRepaint) {
-          this.instance.paintConnection(this);
+          this.instance._paintConnection(this);
         }
       }
     }
@@ -2966,7 +2987,7 @@ var Endpoint = function (_Component) {
   }, {
     key: "setAnchor",
     value: function setAnchor(anchorParams) {
-      var a = this.instance.router.prepareAnchor(this, anchorParams);
+      var a = this.instance.router.prepareAnchor(anchorParams);
       this.setPreparedAnchor(a);
       return this;
     }
@@ -2993,7 +3014,7 @@ var Endpoint = function (_Component) {
       idx = idx == null ? this.connections.indexOf(connection) : idx;
       if (idx >= 0) {
         this.connections.splice(idx, 1);
-        this.instance.refreshEndpoint(this);
+        this.instance._refreshEndpoint(this);
       }
       if (!transientDetach && this.deleteOnEmpty && this.connections.length === 0) {
         this.instance.deleteEndpoint(this);
@@ -4355,7 +4376,7 @@ var ConnectionSelection = function (_SelectionBase) {
     value: function repaint() {
       var _this2 = this;
       this.each(function (c) {
-        return _this2.instance.paintConnection(c);
+        return _this2.instance._paintConnection(c);
       });
       return this;
     }
@@ -4833,8 +4854,12 @@ var LightweightRouter = function () {
     _defineProperty(this, "anchorLists", new Map());
     _defineProperty(this, "anchorLocations", new Map());
     instance.bind(EVENT_INTERNAL_CONNECTION_DETACHED, function (p) {
-      _this._removeEndpointFromAnchorLists(p.sourceEndpoint);
-      _this._removeEndpointFromAnchorLists(p.targetEndpoint);
+      if (p.sourceEndpoint._anchor.isContinuous) {
+        _this._removeEndpointFromAnchorLists(p.sourceEndpoint);
+      }
+      if (p.targetEndpoint._anchor.isContinuous) {
+        _this._removeEndpointFromAnchorLists(p.targetEndpoint);
+      }
     });
     instance.bind(EVENT_INTERNAL_ENDPOINT_UNREGISTERED, function (ep) {
       _this._removeEndpointFromAnchorLists(ep);
@@ -5187,7 +5212,7 @@ var LightweightRouter = function () {
     }
   }, {
     key: "prepareAnchor",
-    value: function prepareAnchor(endpoint, params) {
+    value: function prepareAnchor(params) {
       return makeLightweightAnchorFromSpec(params);
     }
   }, {
@@ -5285,7 +5310,7 @@ var LightweightRouter = function () {
                 var otherEndpoint = anEndpoint.connections[_i2].endpoints[conn.sourceId === elementId ? 1 : 0],
                     otherAnchor = otherEndpoint._anchor;
                 if (isDynamic(otherAnchor)) {
-                  this.instance.paintEndpoint(otherEndpoint, {
+                  this.instance._paintEndpoint(otherEndpoint, {
                     elementWithPrecedence: elementId,
                     timestamp: timestamp
                   });
@@ -5307,13 +5332,13 @@ var LightweightRouter = function () {
         });
         endpointsToPaint.forEach(function (ep) {
           var cd = _this3.instance.viewport.getPosition(ep.elementId);
-          _this3.instance.paintEndpoint(ep, {
+          _this3.instance._paintEndpoint(ep, {
             timestamp: timestamp,
             offset: cd
           });
         });
         connectionsToPaint.forEach(function (c) {
-          _this3.instance.paintConnection(c, {
+          _this3.instance._paintConnection(c, {
             timestamp: timestamp
           });
         });
@@ -5877,7 +5902,7 @@ var JsPlumbInstance = function (_EventGenerator) {
         c[_st.elId] = ep.elementId;
         evtParams[idx === 0 ? "newSourceId" : "newTargetId"] = ep.elementId;
         this.fireMoveEvent(evtParams);
-        this.paintConnection(c);
+        this._paintConnection(c);
       }
       return evtParams;
     }
@@ -6217,7 +6242,7 @@ var JsPlumbInstance = function (_EventGenerator) {
       }
       addToDictionary(this.endpointsByElement, ep.elementId, ep);
       if (!this._suspendDrawing) {
-        this.paintEndpoint(ep, {
+        this._paintEndpoint(ep, {
           timestamp: this._suspendedAt
         });
       }
@@ -6527,7 +6552,7 @@ var JsPlumbInstance = function (_EventGenerator) {
       params.id = "con_" + this._idstamp();
       var c = new Connection(this, params);
       addManagedConnection(c, this._managedElements[c.sourceId], this._managedElements[c.targetId]);
-      this.paintConnection(c);
+      this._paintConnection(c);
       return c;
     }
   }, {
@@ -6932,8 +6957,8 @@ var JsPlumbInstance = function (_EventGenerator) {
       });
     }
   }, {
-    key: "paintEndpoint",
-    value: function paintEndpoint(endpoint, params) {
+    key: "_paintEndpoint",
+    value: function _paintEndpoint(endpoint, params) {
       function findConnectionToUseForDynamicAnchor(ep) {
         var idx = 0;
         if (params.elementWithPrecedence != null) {
@@ -6992,7 +7017,7 @@ var JsPlumbInstance = function (_EventGenerator) {
               var _o = endpoint.overlays[i];
               if (_o.isVisible()) {
                 endpoint.overlayPlacements[i] = this.drawOverlay(_o, endpoint.endpoint, endpoint.paintStyleInUse, endpoint.getAbsoluteOverlayPosition(_o));
-                this.paintOverlay(_o, endpoint.overlayPlacements[i], {
+                this._paintOverlay(_o, endpoint.overlayPlacements[i], {
                   xmin: 0,
                   ymin: 0
                 });
@@ -7003,8 +7028,8 @@ var JsPlumbInstance = function (_EventGenerator) {
       }
     }
   }, {
-    key: "paintConnection",
-    value: function paintConnection(connection, params) {
+    key: "_paintConnection",
+    value: function _paintConnection(connection, params) {
       if (!this._suspendDrawing && connection.visible !== false) {
         params = params || {};
         var timestamp = params.timestamp;
@@ -7044,7 +7069,7 @@ var JsPlumbInstance = function (_EventGenerator) {
             if (connection.overlays.hasOwnProperty(j)) {
               var _p2 = connection.overlays[j];
               if (_p2.isVisible()) {
-                this.paintOverlay(_p2, connection.overlayPlacements[j], _extents);
+                this._paintOverlay(_p2, connection.overlayPlacements[j], _extents);
               }
             }
           }
@@ -7053,8 +7078,8 @@ var JsPlumbInstance = function (_EventGenerator) {
       }
     }
   }, {
-    key: "refreshEndpoint",
-    value: function refreshEndpoint(endpoint) {
+    key: "_refreshEndpoint",
+    value: function _refreshEndpoint(endpoint) {
       if (endpoint.connections.length > 0) {
         this.addEndpointClass(endpoint, this.endpointConnectedClass);
       } else {
@@ -7067,9 +7092,18 @@ var JsPlumbInstance = function (_EventGenerator) {
       }
     }
   }, {
-    key: "makeConnector",
-    value: function makeConnector(connection, name, args) {
+    key: "_makeConnector",
+    value: function _makeConnector(connection, name, args) {
       return Connectors.get(connection, name, args);
+    }
+  }, {
+    key: "addOverlay",
+    value: function addOverlay(component, overlay, doNotRevalidate) {
+      component.addOverlay(overlay);
+      if (!doNotRevalidate) {
+        var relatedElement = component instanceof Endpoint ? component.element : component.source;
+        this.revalidate(relatedElement);
+      }
     }
   }, {
     key: "getPathData",
