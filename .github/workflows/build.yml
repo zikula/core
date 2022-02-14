@@ -103,7 +103,7 @@ jobs:
 
       - name: Run unit tests
         #run: ./bin/simple-phpunit --coverage-text
-        run: ./bin/simple-phpunit --coverage-text
+        run: ./bin/simple-phpunit
 
       - name: Test installation
         run: ./.github/scripts/testInstall.sh
