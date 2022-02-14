@@ -99,10 +99,10 @@ jobs:
 #          DATABASE_URL: mysql://root:zikula@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/zk_test
 
       - name: Install PHPUnit
-        run: ./bin/simple-phpunit install
+        run: ./vendor/bin/simple-phpunit install
 
       - name: Run unit tests
-        run: ./bin/simple-phpunit --coverage-text
+        run: ./vendor/bin/simple-phpunit --coverage-text
 
       - name: Test installation
         run: ./.github/scripts/testInstall.sh
