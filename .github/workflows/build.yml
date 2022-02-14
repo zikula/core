@@ -80,7 +80,7 @@ jobs:
 
       # Docs: composer global require sensiolabs-de/deprecation-detector
       - name: Run deprecation detector
-      - run: |
+        run: |
           composer global require sensiolabs-de/deprecation-detector
           deprecation-detector check src vendor
 
