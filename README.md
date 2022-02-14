@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/zikula/core.svg?branch=main)](https://travis-ci.com/zikula/core)
+[![Build status](https://github.com/zikula/core/workflows/Build%20and%20test/badge.svg)](https://github.com/zikula/core/actions?query=workflow%3A"Build+and+test")
 [![StyleCI](https://styleci.io/repos/781544/shield?branch=main)](https://styleci.io/repos/781544)
 [![Scrutinizer](https://scrutinizer-ci.com/g/zikula/core/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/zikula/core/)
 
