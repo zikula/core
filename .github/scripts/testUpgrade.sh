@@ -5,8 +5,9 @@ FROM_VERSION=$1
 DUMP_FILE=$2
 
 # setup
-mysql -e 'CREATE DATABASE zk_test;'
-mysql zk_test < "tests/test_dbs/${DUMP_FILE}"
+mysqlCmd="mysql -h mysql --port 3306 -u zikula -p12345678"
+${mysqlCmd} -e 'CREATE DATABASE zk_test;'
+${mysqlCmd} zk_test < "tests/test_dbs/${DUMP_FILE}"
 
 # start with fresh copy of .env.local
 cp .env .env.local
@@ -18,6 +19,6 @@ php bin/console zikula:pre-upgrade
 php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
 
 # cleanup
-mysql -e 'DROP DATABASE zk_test'
+${mysqlCmd} -e 'DROP DATABASE zk_test'
 rm -rf .env.local
 rm -rf config/services_custom.yaml
