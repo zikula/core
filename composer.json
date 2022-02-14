@@ -52,7 +52,7 @@
         "league/commonmark": "^1.0",
         "league/html-to-markdown": "^5.0",
         "liip/imagine-bundle": "2.*",
-        "matthiasnoback/symfony-console-form": "4.*",
+        "matthiasnoback/symfony-console-form": "^5",
         "michelf/php-markdown": "^1.9",
         "nikic/php-parser": "4.*",
         "oomphinc/composer-installers-extender": "2.*",

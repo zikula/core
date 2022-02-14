@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6818936a3b9eb7dd9f5699dd9840994d",
+    "content-hash": "a8632def0488a2db0f2c5c613d4abe93",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3948,34 +3948,35 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v4.1.0",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "c304e46f0d019ed36f3cd00334aae903b3a142c0"
+                "reference": "fab9b9320c96ddde139b41a3dc0f927d3a0a7549"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/c304e46f0d019ed36f3cd00334aae903b3a142c0",
-                "reference": "c304e46f0d019ed36f3cd00334aae903b3a142c0",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/fab9b9320c96ddde139b41a3dc0f927d3a0a7549",
+                "reference": "fab9b9320c96ddde139b41a3dc0f927d3a0a7549",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2",
-                "symfony/console": "~5.0",
-                "symfony/form": "~5.0",
-                "symfony/translation": "~5.0"
+                "php": ">=8.0",
+                "symfony/console": "~5.0 || ~6.0",
+                "symfony/form": "~5.0 || ~6.0",
+                "symfony/translation": "~5.0 || ~6.0"
             },
             "require-dev": {
                 "beberlei/assert": "~2.1",
                 "behat/behat": "^3.6",
-                "friendsofphp/php-cs-fixer": "^2.2",
-                "phpunit/phpunit": "^7",
-                "symfony/finder": "~5.0",
-                "symfony/framework-bundle": "~5.0",
-                "symfony/security-csrf": "~5.0",
-                "symfony/validator": "~5.0",
-                "symfony/yaml": "~5.0"
+                "phpunit/phpunit": "^9.5",
+                "symfony/finder": "~5 || ~6.0.0",
+                "symfony/framework-bundle": "~5.0 || ~6.0",
+                "symfony/security-csrf": "~5.0 || ~6.0",
+                "symfony/validator": "~5.0 || ~6.0",
+                "symfony/yaml": "~5.0 || ~6.0",
+                "symplify/coding-standard": "^9.4",
+                "symplify/easy-coding-standard": "^9.4"
             },
             "type": "library",
             "autoload": {
@@ -4003,9 +4004,9 @@
             ],
             "support": {
                 "issues": "https://github.com/matthiasnoback/symfony-console-form/issues",
-                "source": "https://github.com/matthiasnoback/symfony-console-form/tree/v4.1.0"
+                "source": "https://github.com/matthiasnoback/symfony-console-form/tree/v5.2.0"
             },
-            "time": "2020-05-08T10:13:01+00:00"
+            "time": "2022-02-09T14:47:00+00:00"
         },
         {
             "name": "michelf/php-markdown",
