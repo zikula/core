@@ -4810,31 +4810,31 @@
         },
         {
             "name": "php-translation/extractor",
-            "version": "2.0.4",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/extractor.git",
-                "reference": "0ffd4e14caaad1e8ead91111c216f9e69caf7fd0"
+                "reference": "d95f3fd89af6b2015819936c191bc11410fc7314"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/extractor/zipball/0ffd4e14caaad1e8ead91111c216f9e69caf7fd0",
-                "reference": "0ffd4e14caaad1e8ead91111c216f9e69caf7fd0",
+                "url": "https://api.github.com/repos/php-translation/extractor/zipball/d95f3fd89af6b2015819936c191bc11410fc7314",
+                "reference": "d95f3fd89af6b2015819936c191bc11410fc7314",
                 "shasum": ""
             },
             "require": {
                 "doctrine/annotations": "^1.7",
                 "nikic/php-parser": "^3.0 || ^4.0",
                 "php": "^7.2 || ^8.0",
-                "symfony/finder": "^3.4 || ^4.4 || ^5.0",
+                "symfony/finder": "^3.4 || ^4.4 || ^5.0 || ^6.0",
                 "twig/twig": "^2.0 || ^3.0"
             },
             "require-dev": {
                 "knplabs/knp-menu": "^3.1",
-                "symfony/phpunit-bridge": "^5.0",
-                "symfony/translation": "^3.4 || ^4.4 || ^5.0",
-                "symfony/twig-bridge": "^3.4 || ^4.4 || ^5.0",
-                "symfony/validator": "^3.4 || ^4.4 || ^5.0"
+                "symfony/phpunit-bridge": "^5.0 || ^6.0",
+                "symfony/translation": "^3.4 || ^4.4 || ^5.0 || ^6.0",
+                "symfony/twig-bridge": "^3.4 || ^4.4 || ^5.0 || ^6.0",
+                "symfony/validator": "^3.4 || ^4.4 || ^5.0 || ^6.0"
             },
             "type": "library",
             "extra": {
@@ -4860,9 +4860,9 @@
             "description": "Extract translations form the source code",
             "support": {
                 "issues": "https://github.com/php-translation/extractor/issues",
-                "source": "https://github.com/php-translation/extractor/tree/2.0.4"
+                "source": "https://github.com/php-translation/extractor/tree/2.1.0"
             },
-            "time": "2022-01-26T13:39:03+00:00"
+            "time": "2022-02-14T11:34:24+00:00"
         },
         {
             "name": "php-translation/symfony-bundle",
@@ -4943,31 +4943,31 @@
         },
         {
             "name": "php-translation/symfony-storage",
-            "version": "2.3.0",
+            "version": "2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-storage.git",
-                "reference": "8b1954b9b4933245250bc5b3d45f0d7bde38c761"
+                "reference": "95d52dd86d41fe0ec2c75e1469b5003956044cc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/8b1954b9b4933245250bc5b3d45f0d7bde38c761",
-                "reference": "8b1954b9b4933245250bc5b3d45f0d7bde38c761",
+                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/95d52dd86d41fe0ec2c75e1469b5003956044cc8",
+                "reference": "95d52dd86d41fe0ec2c75e1469b5003956044cc8",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2 || ^8.0",
                 "php-translation/common": "^3.0",
-                "symfony/translation": "^3.4 || ^4.2 || ^5.0"
+                "symfony/translation": "^3.4 || ^4.2 || ^5.0 || ^6.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.4",
-                "symfony/framework-bundle": " ^3.4 || ^4.2 || ^5.0"
+                "phpunit/phpunit": ">=8.5.20",
+                "symfony/framework-bundle": " ^3.4 || ^4.2 || ^5.0 || ^6.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.4-dev"
                 }
             },
             "autoload": {
@@ -4988,9 +4988,9 @@
             "description": "A translation file storage using Symfony translation component.",
             "support": {
                 "issues": "https://github.com/php-translation/symfony-storage/issues",
-                "source": "https://github.com/php-translation/symfony-storage/tree/2.3.0"
+                "source": "https://github.com/php-translation/symfony-storage/tree/2.3.1"
             },
-            "time": "2021-03-26T18:01:29+00:00"
+            "time": "2022-02-14T11:36:15+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
