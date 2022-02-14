@@ -28,7 +28,8 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: php-cs-fixer, phpunit-bridge
+          tools: phpunit
+          #tools: php-cs-fixer, phpunit-bridge
           extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql
           coverage: pcov
           #ini-values: post_max_size=256M, max_execution_time=180
@@ -96,11 +97,8 @@ jobs:
 #        env:
 #          DATABASE_URL: mysql://root:zikula@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/zk_test
 
-      - name: Install PHPUnit
-        run: simple-phpunit install
-
       - name: Run unit tests
-        run: simple-phpunit --coverage-text
+        run: ./bin/phpunit --coverage-text
 
       - name: Test installation
         run: ./.github/scripts/testInstall.sh
