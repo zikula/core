@@ -8,16 +8,6 @@ jobs:
   build:
     name: Build (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:latest
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: false
-          MYSQL_ROOT_PASSWORD: 12345678
-          MYSQL_DATABASE: zk_test
-        ports:
-          - 3306/tcp
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
         php-versions: ['8.0', '8.1']#, '8.2']
@@ -56,12 +46,22 @@ jobs:
         run: php bin/console translation:extract zikula en -vvv
 
   test:
-    name: Execute linter and tests
+    name: Tests (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
     needs: build
     strategy:
       matrix:
         php-versions: ['8.0', '8.1']#, '8.2']
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: 12345678
+          MYSQL_DATABASE: zk_test
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -130,7 +130,7 @@ jobs:
         run: ./.github/scripts/testUpgrade.sh 3.0.0 core300.sql
 
   docs:
-    name: Create and deploy documentation
+    name: Documentation
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     needs: [build, test]
@@ -151,7 +151,7 @@ jobs:
           publish_dir: ./.couscous/generated
 
   create-artifacts:
-    name: Create release artifacts
+    name: Package
     runs-on: ubuntu-latest
     needs: [build, test, docs]
     steps:
