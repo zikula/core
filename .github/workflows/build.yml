@@ -2,8 +2,8 @@ name: Build and test
 on:
   push:
     branches-ignore: [gh-pages]
-  pull_request:
-    branches-ignore: [gh-pages]
+#  pull_request:
+#    branches-ignore: [gh-pages]
 jobs:
   build:
     name: Build (PHP ${{ matrix.php-versions }})
