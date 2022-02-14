@@ -79,17 +79,14 @@ jobs:
       # see https://github.com/fabpot/local-php-security-checker/issues/12
       # Docs: https://github.com/pplotka/local-php-security-checker-github-actions
       - name: Run security checker
-#        uses: docker://pplotka/local-php-security-checker-github-actions
-        run: |
-          curl -OL https://github.com/sensiolabs-de/deprecation-detector/releases/download/0.1.0-alpha4/deprecation-detector.phar
-          php deprecation-detector.phar
-          rm deprecation-detector.phar
+        uses: docker://pplotka/local-php-security-checker-github-actions
 
       # Docs: composer global require sensiolabs-de/deprecation-detector
-      - name: Run deprecation detector
-        run: |
-          composer global require sensiolabs-de/deprecation-detector
-          deprecation-detector check src vendor
+#      - name: Run deprecation detector
+#        run: |
+#          curl -OL https://github.com/sensiolabs-de/deprecation-detector/releases/download/0.1.0-alpha4/deprecation-detector.phar
+#          php deprecation-detector.phar
+#          rm deprecation-detector.phar
 
 #      - name: Run Migration
 #        run: |
