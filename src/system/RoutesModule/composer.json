@@ -16,7 +16,7 @@
         "psr-4": { "Zikula\\RoutesModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/console": "^5.4",
         "symfony/contracts": "^2.3",

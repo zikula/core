@@ -25,7 +25,7 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
+        "php": "^8.0",
         "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
@@ -109,7 +109,7 @@
         "zikula/oauth-module": "1.*",
         "zikula/pagelock-module": "1.*",
         "zikula/profile-module": "3.*",
-        "zikula/sortable-columns": "1.*",
+        "zikula/sortable-columns": "dev-main",
         "zikula/staticcontent-module": "1.*",
         "zikula/wizard": "3.*"
     },
@@ -120,6 +120,16 @@
         "symfony/symfony": "*"
     },
     "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*",
         "zikula/core-bundle": "self.version",
         "zikula/coreinstaller-bundle": "self.version",
         "zikula/formextension-bundle": "self.version",
@@ -169,17 +179,9 @@
         {
             "type": "git",
             "url": "https://github.com/FrDH/mmenu-js"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/AdrenalineHunter/JMSI18nRoutingBundle"
         }
     ],
     "config": {
-        "platform": {
-            "php": "7.2.5"
-        },
-        "bin-dir": "bin",
         "sort-packages": true,
         "allow-plugins": {
             "composer/installers": true,
@@ -189,7 +191,10 @@
         }
     },
     "extra": {
-        "tests-dir": "tests",
+        "symfony": {
+            "allow-contrib": false,
+            "require": "^5.4"
+        },
         "symfony-assets-install": "relative",
         "installer-types": [
             "component"

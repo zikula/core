@@ -102,8 +102,7 @@ jobs:
         run: ./bin/simple-phpunit install
 
       - name: Run unit tests
-        #run: ./bin/simple-phpunit --coverage-text
-        run: ./bin/simple-phpunit
+        run: ./bin/simple-phpunit --coverage-text
 
       - name: Test installation
         run: ./.github/scripts/testInstall.sh

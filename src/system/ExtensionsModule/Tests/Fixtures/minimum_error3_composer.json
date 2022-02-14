@@ -12,7 +12,7 @@
     "psr-4": { "Zikula\\FooModule\\": "" }
   },
   "require": {
-    "php": ">=7.2.5"
+    "php": "^8.0"
   },
   "extra": {
     "zikula": {

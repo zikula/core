@@ -13,7 +13,7 @@
     ],
     "bin": ["bin/console"],
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "composer/composer": "1.*",
         "composer/installers": "1.*",
 
