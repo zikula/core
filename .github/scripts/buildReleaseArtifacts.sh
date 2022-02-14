@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 SOURCE_PATH="${GITHUB_WORKSPACE}"
 BUILD_PATH="${GITHUB_WORKSPACE}/build_work"
