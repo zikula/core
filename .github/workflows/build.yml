@@ -171,9 +171,6 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Install composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-
       - name: Build release artifacts
         run: ./.github/scripts/buildReleaseArtifacts.sh
 
