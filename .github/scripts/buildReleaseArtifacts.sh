@@ -94,36 +94,24 @@ else # Zikula 2
 fi
 
 echo "Setting directory permissions..."
-#if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
-    chmod -R 0777 "${PACKAGE_PATH}/config"
-    chmod -R 0777 "${PACKAGE_PATH}/config/dynamic"
-    chmod -R 0777 "${PACKAGE_PATH}/var/cache"
-    chmod -R 0777 "${PACKAGE_PATH}/var/log"
-#elif [ -e "${PACKAGE_PATH}/var/logs" ]; then # Zikula 2
-#    chmod -R 0777 "${PACKAGE_PATH}/app/config"
-#    chmod -R 0777 "${PACKAGE_PATH}/app/config/dynamic"
-#    chmod -R 0777 "${PACKAGE_PATH}/var/cache"
-#    chmod -R 0777 "${PACKAGE_PATH}/var/logs"
-#fi
+chmod -R 0777 "${PACKAGE_PATH}/config"
+chmod -R 0777 "${PACKAGE_PATH}/var/cache"
+chmod -R 0777 "${PACKAGE_PATH}/var/log"
 
 rm -rf "${PACKAGE_PATH}/.git" "${PACKAGE_PATH}/.github"
 
 echo "Creating archives..."
-#if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
-#    ${PHP_BUILD} build:package --name="${BRANCH_NAME}" --build-dir="${ARCHIVE_PATH}" --source-dir="${PACKAGE_PATH}"
-#else
-    ARCHIVE_BASE_PATH="${ARCHIVE_PATH}/zikula"
-    cd "${EXPORT_PATH}"; zip -q -D -r "${ARCHIVE_BASE_PATH}.zip" .
-    cd "${EXPORT_PATH}"; tar cp "zikula" > "${ARCHIVE_BASE_PATH}.tar"; gzip "${ARCHIVE_BASE_PATH}.tar"
+ARCHIVE_BASE_PATH="${ARCHIVE_PATH}/zikula"
+cd "${EXPORT_PATH}"; zip -q -D -r "${ARCHIVE_BASE_PATH}.zip" .
+cd "${EXPORT_PATH}"; tar cp "zikula" > "${ARCHIVE_BASE_PATH}.tar"; gzip "${ARCHIVE_BASE_PATH}.tar"
 
-    echo "Creating MD5 and SHA1 checksums..."
-    CHECKSUM_PATH="${ARCHIVE_PATH}/zikula-checksums"
-    TMP_FILE="${CHECKSUM_PATH}.tmp"
-    echo "-----------------md5sums-----------------" > "${TMP_FILE}"
-    md5sum "${ARCHIVE_PATH}/"*.tar.gz "${ARCHIVE_PATH}/"*.zip >> "${TMP_FILE}"
-    echo "-----------------sha1sums-----------------" >> "${TMP_FILE}"
-    sha1sum "${ARCHIVE_PATH}/"*.tar.gz "${ARCHIVE_PATH}/"*.zip >> "${TMP_FILE}"
+echo "Creating MD5 and SHA1 checksums..."
+CHECKSUM_PATH="${ARCHIVE_PATH}/zikula-checksums"
+TMP_FILE="${CHECKSUM_PATH}.tmp"
+echo "-----------------md5sums-----------------" > "${TMP_FILE}"
+md5sum "${ARCHIVE_PATH}/"*.tar.gz "${ARCHIVE_PATH}/"*.zip >> "${TMP_FILE}"
+echo "-----------------sha1sums-----------------" >> "${TMP_FILE}"
+sha1sum "${ARCHIVE_PATH}/"*.tar.gz "${ARCHIVE_PATH}/"*.zip >> "${TMP_FILE}"
 
-    cat "${TMP_FILE}" | sed "s!${ARCHIVE_PATH}/!!g" > "${CHECKSUM_PATH}.txt"
-    rm -f "${TMP_FILE}"
-#fi
+cat "${TMP_FILE}" | sed "s!${ARCHIVE_PATH}/!!g" > "${CHECKSUM_PATH}.txt"
+rm -f "${TMP_FILE}"
