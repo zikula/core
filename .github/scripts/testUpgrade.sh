@@ -13,7 +13,7 @@ ${mysqlCmd} zk_test < "tests/test_dbs/${DUMP_FILE}"
 # start with fresh copy of .env.local
 cp .env .env.local
 cp tests/services_custom.yaml $SETTINGS_FILE
-sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''${FROM_VERSION}''/" $SETTINGS_FILE
+sed -i -E "s/core_installed_version:(.*)/core_installed_version: '${FROM_VERSION}'/" $SETTINGS_FILE
 
 # action
 php bin/console zikula:pre-upgrade
