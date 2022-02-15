@@ -139,6 +139,9 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
+      - name: Install composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
       - name: Dump vendors into doc
         run: ./build.php build:generate_vendor_doc --write-to "docs/General/VendorInformation.md"
 
