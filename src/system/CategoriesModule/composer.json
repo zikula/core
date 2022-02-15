@@ -14,11 +14,11 @@
         "psr-4": { "Zikula\\CategoriesModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
-        "symfony/contracts": "^2.3",
+        "symfony/contracts": "^2",
         "symfony/dependency-injection": "^5.4",
-        "symfony/doctrine-bridge": "^5.2",
+        "symfony/doctrine-bridge": "^5.4",
         "symfony/event-dispatcher": "^5.4",
         "symfony/form": "^5.4",
         "symfony/http-foundation": "^5.4",
@@ -40,7 +40,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\CategoriesModule\\ZikulaCategoriesModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Categories",
             "url": "categories",
             "icon": "fas fa-sitemap",

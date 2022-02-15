@@ -14,8 +14,8 @@
         "psr-4": { "Zikula\\PermissionsModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
-        "symfony/contracts": "^2.3",
+        "php": "^8.0",
+        "symfony/contracts": "^2",
         "symfony/form": "^5.4",
         "symfony/framework-bundle": "^5.4",
         "symfony/security-bundle": "^5.4",
@@ -36,7 +36,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Permissions",
             "url": "permissions",
             "icon": "fas fa-key",

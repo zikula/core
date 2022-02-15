@@ -12,12 +12,12 @@
     "psr-0": { "Zikula\\Module\\FooModule\\": "" }
   },
   "require": {
-    "php": ">=7.2.5"
+    "php": "^8.0"
   },
   "extra": {
     "zikula": {
       "class": "Zikula\\SpecModule\\ZikulaFooModule",
-      "core-compatibility": ">=1.4.2",
+      "core-compatibility": ">=4.0.0",
       "icon": "fas fa-database"
     }
   }

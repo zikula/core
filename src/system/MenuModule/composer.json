@@ -14,11 +14,11 @@
         "psr-4": { "Zikula\\MenuModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
-        "symfony/contracts": "^2.3",
+        "symfony/contracts": "^2",
         "symfony/dependency-injection": "^5.4",
-        "symfony/doctrine-bridge": "^5.2",
+        "symfony/doctrine-bridge": "^5.4",
         "symfony/event-dispatcher": "^5.4",
         "symfony/http-foundation": "^5.4",
         "symfony/http-kernel": "^5.4",
@@ -39,7 +39,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\MenuModule\\ZikulaMenuModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Menu Module",
             "url": "menu",
             "icon": "fas fa-compass",

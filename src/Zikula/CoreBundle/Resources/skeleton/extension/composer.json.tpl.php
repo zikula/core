@@ -14,7 +14,7 @@
         "psr-4": { "<?php echo str_replace('\\', '\\\\', $namespace); ?>\\": "" }
     },
     "require": {
-        "php": ">=7.2.5"
+        "php": "^8.0"
     },
     "extra": {
         "zikula" : {

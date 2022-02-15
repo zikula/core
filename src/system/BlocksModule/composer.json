@@ -14,8 +14,8 @@
         "psr-4": { "Zikula\\BlocksModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
-        "symfony/contracts": "^2.3",
+        "php": "^8.0",
+        "symfony/contracts": "^2",
         "symfony/framework-bundle": "^5.4",
         "symfony/form": "^5.4",
         "symfony/security-bundle": "^5.4",
@@ -32,7 +32,7 @@
         "zikula/settings-module": "dev-3.1",
         "zikula/theme-module": "dev-3.1",
         "zikula/users-module": "dev-3.1",
-        "zikula/sortable-columns": "1.*"
+        "zikula/sortable-columns": "dev-main"
     },
     "require-dev": {
         "symfony/dotenv": "^5.4",
@@ -41,7 +41,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\BlocksModule\\ZikulaBlocksModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Blocks Module",
             "url": "blocks",
             "icon": "fas fa-table",

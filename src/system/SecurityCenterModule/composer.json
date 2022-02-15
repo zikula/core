@@ -14,9 +14,9 @@
         "psr-4": { "Zikula\\SecurityCenterModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
-        "symfony/contracts": "^2.3",
+        "symfony/contracts": "^2",
         "symfony/dependency-injection": "^5.4",
         "symfony/event-dispatcher": "^5.4",
         "symfony/filesystem": "^5.4",
@@ -36,14 +36,14 @@
         "zikula/permissions-module": "dev-3.1",
         "zikula/theme-module": "dev-3.1",
         "zikula/users-module": "dev-3.1",
-        "zikula/sortable-columns": "1.*",
+        "zikula/sortable-columns": "dev-main",
 
         "phpids/phpids": "dev-master"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\SecurityCenterModule\\ZikulaSecurityCenterModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Security Center",
             "url": "securitycenter",
             "icon": "fas fa-shield-alt",

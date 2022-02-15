@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\AdminModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/dependency-injection": "^5.4",
         "symfony/event-dispatcher": "^5.4",
@@ -35,7 +35,7 @@
         "zikula/permissions-module": "dev-3.1",
         "zikula/theme-module": "dev-3.1",
 
-        "frdh/mmenu.js": "8.*"
+        "frdh/mmenu.js": "^8"
     },
     "repositories": [
         {
@@ -46,7 +46,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\AdminModule\\ZikulaAdminModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Administration panel",
             "url": "adminpanel",
             "icon": "fas fa-object-group",

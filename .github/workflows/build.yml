@@ -1,0 +1,173 @@
+name: Build and test
+on:
+  push:
+    branches-ignore: [gh-pages]
+#  pull_request:
+#    branches-ignore: [gh-pages]
+jobs:
+  build:
+    name: Build (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-versions: ['8.0', '8.1']#, '8.2']
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      # Docs: https://github.com/shivammathur/setup-php
+      - name: Setup PHP with PCOV
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: php-cs-fixer, phpunit-bridge
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql
+          coverage: pcov
+          #ini-values: post_max_size=256M, max_execution_time=180
+
+      - name: Start mysql service
+        run: sudo systemctl start mysql
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Extract English translations
+        run: php bin/console translation:extract zikula en -vvv
+
+  test:
+    name: Tests (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        php-versions: ['8.0', '8.1']#, '8.2']
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: 12345678
+          #MYSQL_DATABASE: zk_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Run linter
+        run: |
+          php bin/console lint:container
+          php bin/console lint:yaml config/
+          php bin/console lint:yaml src/system/ --parse-tags
+          php bin/console lint:yaml src/Zikula/ --parse-tags
+          php bin/console lint:twig --show-deprecations src/system/ src/Zikula/
+
+      # see https://github.com/fabpot/local-php-security-checker/issues/11
+      # see https://github.com/fabpot/local-php-security-checker/issues/12
+      # Docs: https://github.com/pplotka/local-php-security-checker-github-actions
+      - name: Run security checker
+        uses: docker://pplotka/local-php-security-checker-github-actions
+
+      # Docs: composer global require sensiolabs-de/deprecation-detector
+#      - name: Run deprecation detector
+#        run: |
+#          curl -OL https://github.com/sensiolabs-de/deprecation-detector/releases/download/0.1.0-alpha4/deprecation-detector.phar
+#          php deprecation-detector.phar
+#          rm deprecation-detector.phar
+
+#      - name: Run Migration
+#        run: |
+#          composer require --dev symfony/orm-pack
+#          php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+#          php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+#        env:
+#          DATABASE_URL: mysql://root:zikula@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/zk_test
+
+      - name: Install PHPUnit
+        run: ./vendor/bin/simple-phpunit install
+
+# TODO reenable
+#      - name: Run unit tests
+#        run: ./vendor/bin/simple-phpunit --coverage-text
+
+      - name: Test installation
+        run: ./.github/scripts/testInstall.sh
+
+# TODO reenable - issue seems that services_custom.yaml is used but not supported anymore
+      #- name: Test upgrade from 1.4.3
+        #run: ./.github/scripts/testUpgrade.sh 1.4.3 core143.sql
+
+      #- name: Test upgrade from 1.4.4
+        #run: ./.github/scripts/testUpgrade.sh 1.4.4 core144.sql
+
+      #- name: Test upgrade from 1.4.5
+        #run: ./.github/scripts/testUpgrade.sh 1.4.5 core145.sql
+
+      #- name: Test upgrade from 1.4.6
+        #run: ./.github/scripts/testUpgrade.sh 1.4.6 core146.sql
+
+      #- name: Test upgrade from 1.5.9
+        #run: ./.github/scripts/testUpgrade.sh 1.5.9 core159.sql
+
+      #- name: Test upgrade from 2.0.15
+        #run: ./.github/scripts/testUpgrade.sh 2.0.15 core2015.sql
+
+      #- name: Test upgrade from 3.0.0
+        #run: ./.github/scripts/testUpgrade.sh 3.0.0 core300.sql
+
+  docs:
+    name: Documentation
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Dump vendors into doc
+        run: ./build.php build:generate_vendor_doc --write-to "docs/General/VendorInformation.md"
+
+      - name: Build docs
+        uses: CouscousPHP/GitHub-Action@v1
+
+      - name: Deploy docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./.couscous/generated
+
+  create-artifacts:
+    name: Package
+    runs-on: ubuntu-latest
+    needs: [build, test, docs]
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Build release artifacts
+        run: ./.github/scripts/buildReleaseArtifacts.sh
+
+      # see https://github.com/actions/upload-artifact
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: release-archives
+          path: './build_work/archive'

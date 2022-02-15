@@ -14,9 +14,9 @@
         "psr-4": { "Zikula\\MailerModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
-        "symfony/contracts": "^2.3",
+        "symfony/contracts": "^2",
         "symfony/dependency-injection": "^5.4",
         "symfony/filesystem": "^5.4",
         "symfony/form": "^5.4",
@@ -39,7 +39,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\MailerModule\\ZikulaMailerModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Mailer Module",
             "url": "mailer",
             "icon": "fas fa-envelope",

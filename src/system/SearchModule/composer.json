@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\SearchModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/dependency-injection": "^5.4",
         "symfony/event-dispatcher": "^5.4",
@@ -35,7 +35,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\SearchModule\\ZikulaSearchModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Site search",
             "url": "search",
             "icon": "fas fa-search",

@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\BootstrapTheme\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/dependency-injection": "^5.4",
         "symfony/event-dispatcher": "^5.4",
@@ -29,11 +29,11 @@
         "zikula/permissions-module": "dev-3.1",
         "zikula/theme-module": "dev-3.1",
 
-        "thomaspark/bootswatch": "4.*"
+        "thomaspark/bootswatch": "^4"
     },
     "extra": {
         "zikula" : {
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "class": "Zikula\\BootstrapTheme\\ZikulaBootstrapTheme",
             "displayname": "Bootstrap Theme",
             "icon": "fab fa-bootstrap",

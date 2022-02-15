@@ -12,8 +12,8 @@
         }
     ],
     "require": {
-        "php": ">=7.2.5",
-        "symfony/contracts": "^2.3",
+        "php": "^8.0",
+        "symfony/contracts": "^2",
         "symfony/finder": "^5.4",
         "symfony/form": "^5.4",
         "symfony/framework-bundle": "^5.4",

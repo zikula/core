@@ -19,6 +19,7 @@
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
         <env name="ZIKULA_INSTALLED" value="3.0.0" />
     </php>
 

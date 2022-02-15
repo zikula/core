@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\PrinterTheme\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/http-foundation": "^5.4",
 
         "zikula/core-bundle": "dev-3.1",
@@ -23,7 +23,7 @@
     },
     "extra": {
         "zikula" : {
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "class": "Zikula\\PrinterTheme\\ZikulaPrinterTheme",
             "displayname": "Printer Theme",
             "icon": "fas fa-print",

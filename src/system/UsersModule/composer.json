@@ -14,10 +14,10 @@
         "psr-4": { "Zikula\\UsersModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/console": "^5.4",
-        "symfony/contracts": "^2.3",
+        "symfony/contracts": "^2",
         "symfony/dependency-injection": "^5.4",
         "symfony/doctrine-bridge": "^5.2",
         "symfony/event-dispatcher": "^5.4",
@@ -45,12 +45,12 @@
         "zikula/theme-module": "dev-3.1",
         "zikula/permissions-module": "dev-3.1",
         "zikula/zauth-module": "dev-3.1",
-        "zikula/sortable-columns": "1.*"
+        "zikula/sortable-columns": "dev-main"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\UsersModule\\ZikulaUsersModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Users Module",
             "url": "users",
             "icon": "fas fa-users-cog",

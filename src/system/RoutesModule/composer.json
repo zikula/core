@@ -16,10 +16,10 @@
         "psr-4": { "Zikula\\RoutesModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.5",
+        "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/console": "^5.4",
-        "symfony/contracts": "^2.3",
+        "symfony/contracts": "^2",
         "symfony/dependency-injection": "^5.4",
         "symfony/event-dispatcher": "^5.4",
         "symfony/filesystem": "^5.4",
@@ -44,20 +44,14 @@
         "zikula/settings-module": "dev-3.1",
         "zikula/theme-module": "dev-3.1",
         "zikula/users-module": "dev-3.1",
-        "zikula/sortable-columns": "1.*",
+        "zikula/sortable-columns": "dev-main",
 
         "jms/i18n-routing-bundle": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "2.*"
+        "friendsofsymfony/jsrouting-bundle": "^3"
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/AdrenalineHunter/JMSI18nRoutingBundle"
-        }
-    ],
     "extra": {
         "zikula": {
-            "core-compatibility": ">=3.0.0 <4.0.0",
+            "core-compatibility": ">=4.0.0 <5.0.0",
             "class": "Zikula\\RoutesModule\\ZikulaRoutesModule",
             "displayname": "Routes",
             "url": "routes",

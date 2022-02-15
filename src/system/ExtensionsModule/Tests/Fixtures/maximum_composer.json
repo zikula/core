@@ -22,17 +22,17 @@
     "psr-4": { "Zikula\\FooModule\\": "" }
   },
   "require": {
-    "php": ">=7.2.5"
+    "php": "^8.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.5"
+    "phpunit/phpunit": "^9"
   },
   "suggest": {
-    "barmodule": "~1.0"
+    "barmodule": "^1.0"
   },
   "extra": {
     "zikula": {
-      "core-compatibility": ">=1.4.2",
+      "core-compatibility": ">=4.0.0",
       "class": "Zikula\\FooModule\\ZikulaFooModule",
       "displayname": "FooModule",
       "url": "foo",
