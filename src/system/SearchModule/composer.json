@@ -35,7 +35,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\SearchModule\\ZikulaSearchModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Site search",
             "url": "search",
             "icon": "fas fa-search",

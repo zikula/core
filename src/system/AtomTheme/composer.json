@@ -27,7 +27,7 @@
     },
     "extra": {
         "zikula" : {
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "class": "Zikula\\AtomTheme\\ZikulaAtomTheme",
             "displayname": "Atom Theme",
             "icon": "fas fa-atom",

@@ -23,7 +23,7 @@
     },
     "extra": {
         "zikula" : {
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "class": "Zikula\\PrinterTheme\\ZikulaPrinterTheme",
             "displayname": "Printer Theme",
             "icon": "fas fa-print",

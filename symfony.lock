@@ -20,6 +20,12 @@
     "composer/composer": {
         "version": "1.10.19"
     },
+    "composer/metadata-minifier": {
+        "version": "1.0.0"
+    },
+    "composer/pcre": {
+        "version": "1.0.1"
+    },
     "composer/semver": {
         "version": "1.7.2"
     },
@@ -28,6 +34,9 @@
     },
     "composer/xdebug-handler": {
         "version": "1.4.5"
+    },
+    "dflydev/dot-access-data": {
+        "version": "v3.0.1"
     },
     "dimsemenov/magnific-popup": {
         "version": "1.1.0"
@@ -162,6 +171,9 @@
     "league/commonmark": {
         "version": "1.5.7"
     },
+    "league/config": {
+        "version": "v1.1.1"
+    },
     "league/html-to-markdown": {
         "version": "4.10.0"
     },
@@ -210,6 +222,12 @@
     },
     "myclabs/deep-copy": {
         "version": "1.10.2"
+    },
+    "nette/schema": {
+        "version": "v1.2.2"
+    },
+    "nette/utils": {
+        "version": "v3.2.7"
     },
     "nikic/php-parser": {
         "version": "v4.10.3"
@@ -326,6 +344,9 @@
     },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
+    },
+    "react/promise": {
+        "version": "v2.9.0"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"

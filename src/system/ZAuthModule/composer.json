@@ -17,7 +17,7 @@
         "php": "^8.0",
         "symfony/config": "^5.4",
         "symfony/console": "^5.4",
-        "symfony/contracts": "^2.3",
+        "symfony/contracts": "^2",
         "symfony/dotenv": "^5.4",
         "symfony/event-dispatcher": "^5.4",
         "symfony/form": "^5.4",
@@ -38,14 +38,14 @@
         "zikula/permissions-module": "dev-3.1",
         "zikula/theme-module": "dev-3.1",
         "zikula/users-module": "dev-3.1",
-        "zikula/sortable-columns": "1.*",
+        "zikula/sortable-columns": "dev-main",
 
-        "ircmaxell/random-lib": "1.*"
+        "ircmaxell/random-lib": "^1"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\ZAuthModule\\ZikulaZAuthModule",
-            "core-compatibility": ">=3.0.0",
+            "core-compatibility": ">=4.0.0",
             "displayname": "Zikula Native Authorization",
             "url": "zauth",
             "icon": "fas fa-user-lock",
