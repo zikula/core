@@ -53,7 +53,7 @@ ${PHP_BUILD} build:generate_vendor_doc --write-to "${PACKAGE_PATH}/docs/General/
 echo "Copying docs and composer files..."
 mkdir -p "${DOC_PATH}/dev"
 for fileName in "${!COPY_FILES[@]}"; do
-    # TODO FILE_NAME="${fileName//_/.}"
+    FILE_NAME="${fileName//_/.}"
     FILE_FOLDER=${COPY_FILES[$fileName]}
     #echo "File: ${FILE_NAME}"
     #echo "Folder: ${FILE_FOLDER}"

@@ -39,10 +39,12 @@ class GenerateVendorDocCommand extends Command
             'zikula-theme' => 'Zikula Themes',
             'symfony-bundle' => 'Symfony Bundles',
             'component' => 'Web Components',
-            'library' => 'Other PHP libraries',
+            'library' => 'PHP libraries',
             'composer-installer' => 'Composer Installers',
             'composer-plugin' => 'Composer Plugins',
             'symfony-pack' => 'Symfony Packages',
+            'symfony-bridge' => 'Symfony Bridge',
+            'symfony-mailer-bridge' => 'Symfony Mailer Bridge',
             'symfony-messenger-bridge' => 'Symfony Messenger Bridge',
         ];
         $types = array_keys($typeOrder);
