@@ -145,8 +145,16 @@ jobs:
       - name: Dump vendors into doc
         run: ./build.php build:generate_vendor_doc --write-to "docs/General/VendorInformation.md"
 
+      # GH action not possible yet
+      # see https://github.com/CouscousPHP/Couscous/issues/263
+      # see https://github.com/CouscousPHP/Couscous/issues/265
       - name: Build docs
-        uses: CouscousPHP/GitHub-Action@v1
+        #uses: CouscousPHP/GitHub-Action@v1
+        run: |
+          wget https://github.com/CouscousPHP/Couscous/archive/refs/heads/master.zip
+          unzip master.zip && rm master.zip
+          Couscous-master/bin/couscous generate
+          rm -rf Couscous-master/
 
       - name: Deploy docs
         uses: peaceiris/actions-gh-pages@v3
