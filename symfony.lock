@@ -413,12 +413,12 @@
         ]
     },
     "stof/doctrine-extensions-bundle": {
-        "version": "1.2",
+        "version": "1.7",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "master",
             "version": "1.2",
-            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+            "ref": "e805aba9eff5372e2d149a9ff56566769e22819d"
         },
         "files": [
             "config/packages/stof_doctrine_extensions.yaml"
