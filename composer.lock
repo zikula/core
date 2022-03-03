@@ -3662,16 +3662,16 @@
         },
         {
             "name": "league/html-to-markdown",
-            "version": "5.0.2",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/html-to-markdown.git",
-                "reference": "4d0394e120dc14b0d5c52fd1755fd48656da2ec9"
+                "reference": "e0fc8cf07bdabbcd3765341ecb50c34c271d64e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/4d0394e120dc14b0d5c52fd1755fd48656da2ec9",
-                "reference": "4d0394e120dc14b0d5c52fd1755fd48656da2ec9",
+                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/e0fc8cf07bdabbcd3765341ecb50c34c271d64e1",
+                "reference": "e0fc8cf07bdabbcd3765341ecb50c34c271d64e1",
                 "shasum": ""
             },
             "require": {
@@ -3681,11 +3681,11 @@
             },
             "require-dev": {
                 "mikehaertl/php-shellcommand": "^1.1.0",
-                "phpstan/phpstan": "^0.12.82",
+                "phpstan/phpstan": "^0.12.99",
                 "phpunit/phpunit": "^8.5 || ^9.2",
                 "scrutinizer/ocular": "^1.6",
                 "unleashedtech/php-coding-standard": "^2.7",
-                "vimeo/psalm": "^4.6"
+                "vimeo/psalm": "^4.22"
             },
             "bin": [
                 "bin/html-to-markdown"
@@ -3693,7 +3693,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.1-dev"
+                    "dev-master": "5.2-dev"
                 }
             },
             "autoload": {
@@ -3727,7 +3727,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/html-to-markdown/issues",
-                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.0.2"
+                "source": "https://github.com/thephpleague/html-to-markdown/tree/5.1.0"
             },
             "funding": [
                 {
@@ -3747,7 +3747,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-06T05:38:26+00:00"
+            "time": "2022-03-02T17:24:08+00:00"
         },
         {
             "name": "league/oauth2-client",
