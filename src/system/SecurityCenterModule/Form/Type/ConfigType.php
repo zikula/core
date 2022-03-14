@@ -219,7 +219,7 @@ class ConfigType extends AbstractType
                 'choices' => [
                     'Session' => 'session',
                     'File' => 'file',
-                    //'Database' => 'database',
+                    // 'Database' => 'database',
                     'Memcached' => 'memcached',
                     'None' => 'none'
                 ],

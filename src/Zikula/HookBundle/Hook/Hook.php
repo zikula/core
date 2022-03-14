@@ -49,7 +49,7 @@ class Hook
         return $this;
     }
 
-    public function getId()/*: int type hint currently disabled as UsersModule assigns a UserEntity for LoginUiHooksSubscriber::LOGIN_PROCESS */
+    public function getId()/* : int type hint currently disabled as UsersModule assigns a UserEntity for LoginUiHooksSubscriber::LOGIN_PROCESS */
     {
         return $this->id;
     }
