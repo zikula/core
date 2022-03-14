@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\File\Exception\CannotWriteFileException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use function Symfony\Component\String\u;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\Configurator;
 use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -108,7 +109,7 @@ class ParameterHelper
 
         $this->variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
         if (!isset($params['upgrading']) || !$params['upgrading']) {
-            $this->variableApi->set(VariableApi::CONFIG, 'locale', $params['locale']);
+            $this->variableApi->set(VariableApi::CONFIG, 'locale', $this->getLocale());
             // Set the System Identifier as a unique string.
             if (!$this->variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
                 $this->variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid((string) (random_int(1000000000, 9999999999)), true)));
@@ -136,6 +137,14 @@ class ParameterHelper
         $this->cacheClearer->clear('symfony.config');
 
         return true;
+    }
+
+    private function getLocale(): string
+    {
+        $configurator = new Configurator($this->projectDir);
+        $configurator->loadPackages('zikula_settings');
+
+        return $configurator->get('zikula_settings', 'locale');
     }
 
     /**
