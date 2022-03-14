@@ -95,7 +95,7 @@ abstract class AbstractContentType implements ContentTypeInterface
         TranslatorInterface $translator,
         Environment $twig,
         FilesystemLoader $twigLoader,
-        /*PermissionHelper */
+        /* PermissionHelper */
         $permissionHelper,
         Asset $assetHelper
     ) {
@@ -121,7 +121,7 @@ abstract class AbstractContentType implements ContentTypeInterface
      *
      * @return \Zikula\ContentModule\Entity\ContentItemEntity
      */
-    public function getEntity()/*: ContentItemEntity*/
+    public function getEntity()/* : ContentItemEntity */
     {
         return $this->entity;
     }
@@ -131,7 +131,7 @@ abstract class AbstractContentType implements ContentTypeInterface
      *
      * @param \Zikula\ContentModule\Entity\ContentItemEntity $entity
      */
-    public function setEntity(/*ContentItemEntity */ $entity): void
+    public function setEntity(/* ContentItemEntity */ $entity): void
     {
         $this->entity = $entity;
 

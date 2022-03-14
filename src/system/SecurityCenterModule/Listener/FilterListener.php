@@ -280,7 +280,7 @@ class FilterListener implements EventSubscriberInterface
         // $result contains any suspicious fields enriched with additional info
 
         // Note: it is moreover possible to dump this information by simply doing
-        //"echo $result", calling the IdsReport::$this->__toString() method implicitely.
+        // "echo $result", calling the IdsReport::$this->__toString() method implicitely.
 
         $requestImpact = $result->getImpact();
         if ($requestImpact < 1) {

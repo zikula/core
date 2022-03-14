@@ -40,7 +40,7 @@ class MailTransportConfigType extends AbstractType
                     'Sendgrid' => 'sendgrid',
                     'SMTP server' => 'smtp',
                     'Sendmail binary' => 'sendmail',
-                    'Development/debug mode (Do not send any email)' => 'test'/*'null'*/
+                    'Development/debug mode (Do not send any email)' => 'test'/* 'null' */
                 ],
                 'help' => 'How mails are sent and delivered. For example, to use a mail account, choose "SMTP server". Alternatively, instead of using your own SMTP server, you can send emails via a 3rd party provider. For further information about the mailer transport setup please refer to the Symfony docs %link%. Please do not install any mailer transport using composer, as they are already included in Zikula.',
                 'help_translation_parameters' => [

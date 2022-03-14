@@ -101,7 +101,7 @@ class ConfigType extends AbstractType
             ->add(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, CheckboxType::class, [
                 'label' => 'New users must verify their email address on registration.',
                 'label_attr' => ['class' => 'switch-custom'],
-                //'help' => 'Users created by an admin are automatically considered verified.',
+                // 'help' => 'Users created by an admin are automatically considered verified.',
                 'required' => false,
             ])
             ->add(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, TextType::class, [

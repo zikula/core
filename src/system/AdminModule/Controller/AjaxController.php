@@ -149,10 +149,10 @@ class AjaxController extends AbstractController
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository
     ): JsonResponse {
-        //get passed cid to delete
+        // get passed cid to delete
         $cid = $request->request->getInt('cid');
 
-        //check user has permission to delete this
+        // check user has permission to delete this
         if (!$this->hasPermission('ZikulaAdminModule::Category', "::${cid}", ACCESS_DELETE)) {
             return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
@@ -206,21 +206,21 @@ class AjaxController extends AbstractController
             return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
-        //get form values
+        // get form values
         $cid = $request->request->getInt('cid');
         $name = trim($request->request->get('name'));
 
-        //security checks
+        // security checks
         if (!$this->hasPermission('ZikulaAdminModule::Category', $name . '::' . $cid, ACCESS_EDIT)) {
             return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
-        //make sure cid and category name (cat) are both set
+        // make sure cid and category name (cat) are both set
         if (!isset($cid, $name) || '' === $cid || '' === $name) {
             return $this->json($this->trans('No category name or id set.'), Response::HTTP_BAD_REQUEST);
         }
 
-        //check if category with same name exists
+        // check if category with same name exists
         $categories = [];
         $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $item) {
@@ -234,14 +234,14 @@ class AjaxController extends AbstractController
                 continue;
             }
 
-            //check to see if the category with same name is the same category.
+            // check to see if the category with same name is the same category.
             if ($cat['cid'] === $cid) {
                 return $this->json([
                     'response' => $name
                 ]);
             }
 
-            //a different category has the same name, not allowed.
+            // a different category has the same name, not allowed.
             return $this->json($this->trans('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
         }
 
@@ -273,12 +273,12 @@ class AjaxController extends AbstractController
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         VariableApiInterface $variableApi
     ): JsonResponse {
-        //check user has permission to change the initially selected category
+        // check user has permission to change the initially selected category
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
-        //get passed cid
+        // get passed cid
         $cid = trim($request->request->getInt('cid'));
 
         // retrieve the category object
@@ -296,7 +296,7 @@ class AjaxController extends AbstractController
             ]);
         }
 
-        //unknown error
+        // unknown error
         return $this->json($this->trans('Error! Could not make this category default.'), Response::HTTP_BAD_REQUEST);
     }
 

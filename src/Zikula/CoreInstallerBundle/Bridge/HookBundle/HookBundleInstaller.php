@@ -88,7 +88,7 @@ class HookBundleInstaller implements InstallerInterface
                 // no break
             case '2.0.1':
                 // nothing
-            case '3.1.0'://current version
+            case '3.1.0':// current version
                 // allow old tables to remain on upgrade, just add the new one
                 $this->schemaTool->create(self::$entities);
         }
