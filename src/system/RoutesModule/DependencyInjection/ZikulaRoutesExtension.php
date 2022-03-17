@@ -30,6 +30,7 @@ class ZikulaRoutesExtension extends Extension implements PrependExtensionInterfa
         if (!isset($container->getExtensions()['jms_i18n_routing'])) {
             return;
         }
+
         $configs = $container->getExtensionConfig($this->getAlias());
         $zikulaRoutesConfig = $this->processConfiguration(new Configuration(), $configs);
         $container->prependExtensionConfig('jms_i18n_routing', ['strategy' => $zikulaRoutesConfig['jms_i18n_routing_strategy']]);
@@ -40,8 +41,10 @@ class ZikulaRoutesExtension extends Extension implements PrependExtensionInterfa
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yaml');
 
+        /* can probably be removed
         $configs = $container->getExtensionConfig($this->getAlias());
         $zikulaRoutesConfig = $this->processConfiguration(new Configuration(), $configs);
         $container->setParameter('jms_i18n_routing.strategy', $zikulaRoutesConfig['jms_i18n_routing_strategy']);
+        */
     }
 }

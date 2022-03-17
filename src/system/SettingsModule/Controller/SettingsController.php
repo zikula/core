@@ -22,6 +22,7 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
+use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
 use Zikula\SettingsModule\Form\Type\MainSettingsType;
@@ -100,7 +101,8 @@ class SettingsController extends AbstractController
     public function localeSettings(
         Request $request,
         LocaleApiInterface $localeApi,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        MultilingualRoutingHelper $multilingualRoutingHelper
     ) {
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
@@ -131,6 +133,8 @@ class SettingsController extends AbstractController
                     $variableApi->set(VariableApi::CONFIG, $name, $value);
                 }
                 $localeApi->getSupportedLocales(true);
+
+                $multilingualRoutingHelper->reloadMultilingualRoutingSettings();
 
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     $session->set('_locale', $data['locale']);
