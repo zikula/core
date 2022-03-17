@@ -7,6 +7,7 @@
   - [CoreInstallerBundle] Correct determination of selected locale during finalizing parameters.
   - [Permissions] Fix wrong self requirement in `composer.json` file.
   - [Settings] Performance fix for Locales block.
+  - [Settings] Fix broken handling of _prepend language to URL_ option.
 
 ## 3.1.0 (2021-12-21)
 
