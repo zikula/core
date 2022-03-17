@@ -60,9 +60,9 @@ class LocaleApiTest extends TestCase
         ];
         $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'de', false));
         $expected = [
-            'inglese' => 'en',
-            'tedesco' => 'de',
-            'russo' => 'ru'
+            'Inglese' => 'en',
+            'Tedesco' => 'de',
+            'Russo' => 'ru'
         ];
         $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'it', false));
     }
