@@ -140,7 +140,7 @@ class LocaleApi implements LocaleApiInterface
         $namedLocales = [];
         foreach ($locales as $locale) {
             $localeName = Locales::getName($locale, $displayLocale);
-            $namedLocales[$localeName] = $locale;
+            $namedLocales[ucfirst($localeName)] = $locale;
         }
         ksort($namedLocales);
 
