@@ -91,7 +91,7 @@ class LocaleApi implements LocaleApiInterface
         $this->translationPath = $this->kernel->getProjectDir() . '/translations';
     }
 
-    public function getSupportedLocales(bool $includeRegions = true): array
+    public function getSupportedLocales(bool $includeRegions = true, bool $syncConfig = true): array
     {
         $this->sectionKey = $includeRegions ? 'withRegions' : 'withoutRegions';
 
@@ -116,7 +116,6 @@ class LocaleApi implements LocaleApiInterface
 
         // ensure config file is still in sync
         if (true === $includeRegions) {
-            $syncConfig = true;
             if (null !== $this->requestStack) {
                 $request = $this->requestStack->getCurrentRequest();
                 if (null === $request) {
@@ -137,7 +136,7 @@ class LocaleApi implements LocaleApiInterface
 
     public function getSupportedLocaleNames(string $region = null, string $displayLocale = null, bool $includeRegions = true): array
     {
-        $locales = $this->getSupportedLocales($includeRegions);
+        $locales = $this->getSupportedLocales($includeRegions, false);
         $namedLocales = [];
         foreach ($locales as $locale) {
             $localeName = Locales::getName($locale, $displayLocale);

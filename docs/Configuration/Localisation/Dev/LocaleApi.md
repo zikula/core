@@ -14,7 +14,7 @@ The class makes the following methods available:
 /**
  * Get array of supported locales
  */
-public function getSupportedLocales($includeRegions = true): array;
+public function getSupportedLocales($includeRegions = true, bool $syncConfig = true): array;
 
 /**
  * Get array of supported locales with their translated name
