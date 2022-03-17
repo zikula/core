@@ -18,7 +18,7 @@ interface LocaleApiInterface
     /**
      * Get array of supported locales.
      */
-    public function getSupportedLocales(bool $includeRegions = true): array;
+    public function getSupportedLocales(bool $includeRegions = true, bool $syncConfig = true): array;
 
     /**
      * Get array of supported locales with their translated name.
