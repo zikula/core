@@ -27,7 +27,6 @@
         "zikula/core-bundle": "dev-3.1",
         "zikula/formextension-bundle": "dev-3.1",
         "zikula/blocks-module": "dev-3.1",
-        "zikula/extensions-module": "dev-3.1",
         "zikula/menu-module": "dev-3.1",
         "zikula/permissions-module": "dev-3.1",
         "zikula/routes-module": "dev-3.1",
