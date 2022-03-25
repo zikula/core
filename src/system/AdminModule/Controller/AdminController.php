@@ -276,7 +276,7 @@ class AdminController extends AbstractController
                         : '';
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
-                    $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
+                    $menuText .= ' (⚠️ ' . $this->trans('invalid route') . ')';
                 }
 
                 $moduleName = (string) $adminModule['name'];
