@@ -377,16 +377,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "2.3.1",
+            "version": "2.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "d6c572e5f5d6d1a27bb7a1fbd1c74f777a26d436"
+                "reference": "c3777ea50f5ad561d4796b42fba4d180bb45cf77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/d6c572e5f5d6d1a27bb7a1fbd1c74f777a26d436",
-                "reference": "d6c572e5f5d6d1a27bb7a1fbd1c74f777a26d436",
+                "url": "https://api.github.com/repos/composer/composer/zipball/c3777ea50f5ad561d4796b42fba4d180bb45cf77",
+                "reference": "c3777ea50f5ad561d4796b42fba4d180bb45cf77",
                 "shasum": ""
             },
             "require": {
@@ -462,7 +462,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/composer/issues",
-                "source": "https://github.com/composer/composer/tree/2.3.1"
+                "source": "https://github.com/composer/composer/tree/2.3.2"
             },
             "funding": [
                 {
@@ -478,7 +478,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-30T13:41:28+00:00"
+            "time": "2022-03-30T18:45:25+00:00"
         },
         {
             "name": "composer/installers",
