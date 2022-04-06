@@ -5137,16 +5137,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.12.5",
+            "version": "0.12.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "830cc04ee84736a2f8fd52892b483cf2b02ef0bb"
+                "reference": "1a83e47666ebebc27bbf4e57d91c7f0064056a05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/830cc04ee84736a2f8fd52892b483cf2b02ef0bb",
-                "reference": "830cc04ee84736a2f8fd52892b483cf2b02ef0bb",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/1a83e47666ebebc27bbf4e57d91c7f0064056a05",
+                "reference": "1a83e47666ebebc27bbf4e57d91c7f0064056a05",
                 "shasum": ""
             },
             "require": {
@@ -5208,9 +5208,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-translation/symfony-bundle/issues",
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.5"
+                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.6"
             },
-            "time": "2022-02-14T11:52:48+00:00"
+            "time": "2022-04-06T11:17:06+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
