@@ -77,11 +77,14 @@ jobs:
           php bin/console lint:yaml src/Zikula/ --parse-tags
           php bin/console lint:twig --show-deprecations src/system/ src/Zikula/
 
-      # see https://github.com/fabpot/local-php-security-checker/issues/11
-      # see https://github.com/fabpot/local-php-security-checker/issues/12
-      # Docs: https://github.com/pplotka/local-php-security-checker-github-actions
+      - name: Iache vulnerability database
+        uses: actions/cache@v3
+        id: cache-db
+        with:
+          path: ~/.symfony/cache
+          key: db
       - name: Run security checker
-        uses: docker://pplotka/local-php-security-checker-github-actions
+        uses: symfonycorp/security-checker-action@v3
 
       # Docs: composer global require sensiolabs-de/deprecation-detector
 #      - name: Run deprecation detector
