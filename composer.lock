@@ -11685,16 +11685,16 @@
         },
         {
             "name": "symfony/rate-limiter",
-            "version": "v5.4.7",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/rate-limiter.git",
-                "reference": "0ed32c9731e204ac744d233447e3a133f2a74ca1"
+                "reference": "c77d140eb88f99051e934435af64963cc5d99e16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/0ed32c9731e204ac744d233447e3a133f2a74ca1",
-                "reference": "0ed32c9731e204ac744d233447e3a133f2a74ca1",
+                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/c77d140eb88f99051e934435af64963cc5d99e16",
+                "reference": "c77d140eb88f99051e934435af64963cc5d99e16",
                 "shasum": ""
             },
             "require": {
@@ -11735,7 +11735,7 @@
                 "rate-limiter"
             ],
             "support": {
-                "source": "https://github.com/symfony/rate-limiter/tree/v5.4.7"
+                "source": "https://github.com/symfony/rate-limiter/tree/v5.4.8"
             },
             "funding": [
                 {
@@ -11751,7 +11751,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-29T09:48:18+00:00"
+            "time": "2022-04-03T11:05:26+00:00"
         },
         {
             "name": "symfony/redis-messenger",
@@ -13032,16 +13032,16 @@
         },
         {
             "name": "symfony/validator",
-            "version": "v5.4.7",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "f6402ff65e23b7a701d6938809c6451a8a125a8b"
+                "reference": "bdc6d04ba95c73ccbf906b4ad9b8775c738d83ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/f6402ff65e23b7a701d6938809c6451a8a125a8b",
-                "reference": "f6402ff65e23b7a701d6938809c6451a8a125a8b",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/bdc6d04ba95c73ccbf906b4ad9b8775c738d83ad",
+                "reference": "bdc6d04ba95c73ccbf906b4ad9b8775c738d83ad",
                 "shasum": ""
             },
             "require": {
@@ -13125,7 +13125,7 @@
             "description": "Provides tools to validate values",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/validator/tree/v5.4.7"
+                "source": "https://github.com/symfony/validator/tree/v5.4.8"
             },
             "funding": [
                 {
@@ -13141,7 +13141,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-31T17:09:19+00:00"
+            "time": "2022-04-15T08:07:45+00:00"
         },
         {
             "name": "symfony/var-dumper",
@@ -13545,16 +13545,16 @@
         },
         {
             "name": "symfony/workflow",
-            "version": "v5.4.3",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "5bf479092b9b4c25fd8eb5416146ffa8de4a5393"
+                "reference": "34230252d35134e98bcd6d136a02542b7a3bd758"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/5bf479092b9b4c25fd8eb5416146ffa8de4a5393",
-                "reference": "5bf479092b9b4c25fd8eb5416146ffa8de4a5393",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/34230252d35134e98bcd6d136a02542b7a3bd758",
+                "reference": "34230252d35134e98bcd6d136a02542b7a3bd758",
                 "shasum": ""
             },
             "require": {
@@ -13607,7 +13607,7 @@
                 "workflow"
             ],
             "support": {
-                "source": "https://github.com/symfony/workflow/tree/v5.4.3"
+                "source": "https://github.com/symfony/workflow/tree/v5.4.8"
             },
             "funding": [
                 {
@@ -13623,7 +13623,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T09:53:40+00:00"
+            "time": "2022-04-12T15:48:08+00:00"
         },
         {
             "name": "symfony/yaml",
