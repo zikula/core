@@ -9543,16 +9543,16 @@
         },
         {
             "name": "symfony/google-mailer",
-            "version": "v5.4.3",
+            "version": "v5.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/google-mailer.git",
-                "reference": "fc813be25a9a58311a43ce26f423a0b177fdfed1"
+                "reference": "8da892489a7536e869c56efa06bf2f74f15a4693"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/google-mailer/zipball/fc813be25a9a58311a43ce26f423a0b177fdfed1",
-                "reference": "fc813be25a9a58311a43ce26f423a0b177fdfed1",
+                "url": "https://api.github.com/repos/symfony/google-mailer/zipball/8da892489a7536e869c56efa06bf2f74f15a4693",
+                "reference": "8da892489a7536e869c56efa06bf2f74f15a4693",
                 "shasum": ""
             },
             "require": {
@@ -9586,7 +9586,7 @@
             "description": "Symfony Google Mailer Bridge",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/google-mailer/tree/v5.4.3"
+                "source": "https://github.com/symfony/google-mailer/tree/v5.4.8"
             },
             "funding": [
                 {
@@ -9602,7 +9602,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-01-02T09:53:40+00:00"
+            "time": "2022-04-12T15:48:08+00:00"
         },
         {
             "name": "symfony/http-client",
