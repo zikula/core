@@ -1167,6 +1167,7 @@ var CLASS_CONNECTED = "jtk-connected";
 var CLASS_ENDPOINT = "jtk-endpoint";
 var CLASS_ENDPOINT_CONNECTED = "jtk-endpoint-connected";
 var CLASS_ENDPOINT_FULL = "jtk-endpoint-full";
+var CLASS_ENDPOINT_FLOATING = "jtk-floating-endpoint";
 var CLASS_ENDPOINT_DROP_ALLOWED = "jtk-endpoint-drop-allowed";
 var CLASS_ENDPOINT_DROP_FORBIDDEN = "jtk-endpoint-drop-forbidden";
 var CLASS_ENDPOINT_ANCHOR_PREFIX = "jtk-endpoint-anchor";
@@ -1346,7 +1347,9 @@ function isLabelOverlay(o) {
 OverlayFactory.register("Label", LabelOverlay);
 
 function _splitType(t) {
-  return t == null ? null : t.split(" ");
+  return t == null ? null : t.split(" ").filter(function (t) {
+    return t != null && t.length > 0;
+  });
 }
 function _mapType(map, obj, typeId) {
   for (var i in obj) {
@@ -1371,8 +1374,7 @@ function _applyTypes(component, params) {
     var defType = component.getDefaultType();
     var o = util.extend({}, defType);
     _mapType(map, defType, DEFAULT_TYPE_KEY);
-    for (var i = 0, j = component._types.length; i < j; i++) {
-      var tid = component._types[i];
+    component._types.forEach(function (tid) {
       if (tid !== DEFAULT_TYPE_KEY) {
         var _t = component.instance.getType(tid, td);
         if (_t != null) {
@@ -1386,16 +1388,15 @@ function _applyTypes(component, params) {
           _mapType(map, _t, tid);
         }
       }
-    }
+    });
     if (params) {
       o = util.populate(o, params, "_");
     }
     component.applyType(o, map);
   }
 }
-function _removeTypeCssHelper(component, typeIndex) {
-  var typeId = component._types[typeIndex],
-      type = component.instance.getType(typeId, component.getTypeDescriptor());
+function _removeTypeCssHelper(component, typeId) {
+  var type = component.instance.getType(typeId, component.getTypeDescriptor());
   if (type != null && type.cssClass) {
     component.removeClass(type.cssClass);
   }
@@ -1476,7 +1477,7 @@ var Component = function (_EventGenerator) {
     _this.hoverClass = params.hoverClass || instance.defaults.hoverClass;
     _this.beforeDetach = params.beforeDetach;
     _this.beforeDrop = params.beforeDrop;
-    _this._types = [];
+    _this._types = new Set();
     _this._typeCache = {};
     _this.parameters = util.clone(params.parameters || {});
     _this.id = params.id || _this.getIdPrefix() + new Date().getTime();
@@ -1590,13 +1591,13 @@ var Component = function (_EventGenerator) {
     key: "setType",
     value: function setType(typeId, params) {
       this.clearTypes();
-      this._types = _splitType(typeId) || [];
+      (_splitType(typeId) || []).forEach(this._types.add, this._types);
       _applyTypes(this, params);
     }
   }, {
     key: "getType",
     value: function getType() {
-      return this._types;
+      return Array.from(this._types.keys());
     }
   }, {
     key: "reapplyTypes",
@@ -1606,7 +1607,7 @@ var Component = function (_EventGenerator) {
   }, {
     key: "hasType",
     value: function hasType(typeId) {
-      return this._types.indexOf(typeId) !== -1;
+      return this._types.has(typeId);
     }
   }, {
     key: "addType",
@@ -1615,8 +1616,8 @@ var Component = function (_EventGenerator) {
           _somethingAdded = false;
       if (t != null) {
         for (var i = 0, j = t.length; i < j; i++) {
-          if (!this.hasType(t[i])) {
-            this._types.push(t[i]);
+          if (!this._types.has(t[i])) {
+            this._types.add(t[i]);
             _somethingAdded = true;
           }
         }
@@ -1632,10 +1633,9 @@ var Component = function (_EventGenerator) {
       var t = _splitType(typeId),
           _cont = false,
           _one = function _one(tt) {
-        var idx = _this2._types.indexOf(tt);
-        if (idx !== -1) {
-          _removeTypeCssHelper(_this2, idx);
-          _this2._types.splice(idx, 1);
+        if (_this2._types.has(tt)) {
+          _removeTypeCssHelper(_this2, tt);
+          _this2._types["delete"](tt);
           return true;
         }
         return false;
@@ -1651,12 +1651,12 @@ var Component = function (_EventGenerator) {
     }
   }, {
     key: "clearTypes",
-    value: function clearTypes(params, doNotRepaint) {
-      var i = this._types.length;
-      for (var j = 0; j < i; j++) {
-        _removeTypeCssHelper(this, 0);
-        this._types.splice(0, 1);
-      }
+    value: function clearTypes(params) {
+      var _this3 = this;
+      this._types.forEach(function (t) {
+        _removeTypeCssHelper(_this3, t);
+      });
+      this._types.clear();
       _applyTypes(this, params);
     }
   }, {
@@ -1665,12 +1665,11 @@ var Component = function (_EventGenerator) {
       var t = _splitType(typeId);
       if (t != null) {
         for (var i = 0, j = t.length; i < j; i++) {
-          var idx = this._types.indexOf(t[i]);
-          if (idx !== -1) {
-            _removeTypeCssHelper(this, idx);
-            this._types.splice(idx, 1);
+          if (this._types.has(t[i])) {
+            _removeTypeCssHelper(this, t[i]);
+            this._types["delete"](t[i]);
           } else {
-            this._types.push(t[i]);
+            this._types.add(t[i]);
           }
         }
         _applyTypes(this, params);
@@ -2469,6 +2468,7 @@ function prepareEndpoint(conn, existing, index, anchor, element, elementId, endp
       reattachConnections: conn.reattach || conn.instance.defaults.reattachConnections,
       connectionsDetachable: conn.detachable || conn.instance.defaults.connectionsDetachable
     });
+    conn.instance._refreshEndpoint(e);
     if (existing == null) {
       e.deleteOnEmpty = true;
     }
@@ -2998,19 +2998,8 @@ var Endpoint = function (_Component) {
   }, {
     key: "addConnection",
     value: function addConnection(conn) {
-      var wasFull = this.isFull();
-      var wasEmpty = this.connections.length === 0;
       this.connections.push(conn);
-      if (wasEmpty) {
-        this.addClass(this.instance.endpointConnectedClass);
-      }
-      if (this.isFull()) {
-        if (!wasFull) {
-          this.addClass(this.instance.endpointFullClass);
-        }
-      } else if (wasFull) {
-        this.removeClass(this.instance.endpointFullClass);
-      }
+      this.instance._refreshEndpoint(this);
     }
   }, {
     key: "detachFromConnection",
@@ -3147,6 +3136,7 @@ var Endpoint = function (_Component) {
       if (util.isAssignableFrom(ep, EndpointRepresentation)) {
         var epr = ep;
         endpoint = EndpointFactory.clone(epr);
+        endpoint.classes = endpointArgs.cssClass.split(" ");
       } else if (util.isString(ep)) {
         endpoint = EndpointFactory.get(this, ep, endpointArgs);
       } else {
@@ -4742,58 +4732,6 @@ var Viewport = function (_EventGenerator) {
   return Viewport;
 }(util.EventGenerator);
 
-var ConnectionDragSelector = function () {
-  function ConnectionDragSelector(selector, def) {
-    var exclude = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    _classCallCheck(this, ConnectionDragSelector);
-    this.selector = selector;
-    this.def = def;
-    this.exclude = exclude;
-    _defineProperty(this, "id", void 0);
-    this.id = util.uuid();
-  }
-  _createClass(ConnectionDragSelector, [{
-    key: "setEnabled",
-    value: function setEnabled(enabled) {
-      this.def.enabled = enabled;
-    }
-  }, {
-    key: "isEnabled",
-    value: function isEnabled() {
-      return this.def.enabled !== false;
-    }
-  }]);
-  return ConnectionDragSelector;
-}();
-var REDROP_POLICY_STRICT = "strict";
-var REDROP_POLICY_ANY = "any";
-var SourceSelector = function (_ConnectionDragSelect) {
-  _inherits(SourceSelector, _ConnectionDragSelect);
-  var _super = _createSuper(SourceSelector);
-  function SourceSelector(selector, def, exclude) {
-    var _this;
-    _classCallCheck(this, SourceSelector);
-    _this = _super.call(this, selector, def, exclude);
-    _this.def = def;
-    _defineProperty(_assertThisInitialized(_this), "redrop", void 0);
-    _this.redrop = def.def.redrop || REDROP_POLICY_STRICT;
-    return _this;
-  }
-  return SourceSelector;
-}(ConnectionDragSelector);
-var TargetSelector = function (_ConnectionDragSelect2) {
-  _inherits(TargetSelector, _ConnectionDragSelect2);
-  var _super2 = _createSuper(TargetSelector);
-  function TargetSelector(selector, def, exclude) {
-    var _this2;
-    _classCallCheck(this, TargetSelector);
-    _this2 = _super2.call(this, selector, def, exclude);
-    _this2.def = def;
-    return _this2;
-  }
-  return TargetSelector;
-}(ConnectionDragSelector);
-
 var _edgeSortFunctions;
 function _placeAnchorsOnLine(element, connections, horizontal, otherMultiplier, reverse) {
   var sizeInAxis = horizontal ? element.w : element.h;
@@ -5536,6 +5474,37 @@ var LightweightRouter = function () {
   return LightweightRouter;
 }();
 
+var ConnectionDragSelector = function () {
+  function ConnectionDragSelector(selector, def) {
+    var exclude = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+    _classCallCheck(this, ConnectionDragSelector);
+    this.selector = selector;
+    this.def = def;
+    this.exclude = exclude;
+    _defineProperty(this, "id", void 0);
+    _defineProperty(this, "redrop", void 0);
+    this.id = util.uuid();
+    this.redrop = def.def.redrop || REDROP_POLICY_STRICT;
+  }
+  _createClass(ConnectionDragSelector, [{
+    key: "setEnabled",
+    value: function setEnabled(enabled) {
+      this.def.enabled = enabled;
+    }
+  }, {
+    key: "isEnabled",
+    value: function isEnabled() {
+      return this.def.enabled !== false;
+    }
+  }]);
+  return ConnectionDragSelector;
+}();
+var REDROP_POLICY_STRICT = "strict";
+var REDROP_POLICY_ANY = "any";
+var REDROP_POLICY_ANY_SOURCE = "anySource";
+var REDROP_POLICY_ANY_TARGET = "anyTarget";
+var REDROP_POLICY_ANY_SOURCE_OR_TARGET = "anySourceOrTarget";
+
 function _scopeMatch(e1, e2) {
   var s1 = e1.scope.split(/\s/),
       s2 = e2.scope.split(/\s/);
@@ -5649,6 +5618,7 @@ var JsPlumbInstance = function (_EventGenerator) {
     _defineProperty(_assertThisInitialized(_this), "endpointClass", CLASS_ENDPOINT);
     _defineProperty(_assertThisInitialized(_this), "endpointConnectedClass", CLASS_ENDPOINT_CONNECTED);
     _defineProperty(_assertThisInitialized(_this), "endpointFullClass", CLASS_ENDPOINT_FULL);
+    _defineProperty(_assertThisInitialized(_this), "endpointFloatingClass", CLASS_ENDPOINT_FLOATING);
     _defineProperty(_assertThisInitialized(_this), "endpointDropAllowedClass", CLASS_ENDPOINT_DROP_ALLOWED);
     _defineProperty(_assertThisInitialized(_this), "endpointDropForbiddenClass", CLASS_ENDPOINT_DROP_FORBIDDEN);
     _defineProperty(_assertThisInitialized(_this), "endpointAnchorClassPrefix", CLASS_ENDPOINT_ANCHOR_PREFIX);
@@ -5926,6 +5896,12 @@ var JsPlumbInstance = function (_EventGenerator) {
       addManagedConnection(connection, this._managedElements[p.newTargetId]);
     }
   }, {
+    key: "setConnectionType",
+    value: function setConnectionType(connection, type, params) {
+      connection.setType(type, params);
+      this._paintConnection(connection);
+    }
+  }, {
     key: "isHoverSuspended",
     value: function isHoverSuspended() {
       return this.hoverSuspended;
@@ -6148,7 +6124,8 @@ var JsPlumbInstance = function (_EventGenerator) {
         delete _this3._managedElements[id];
         _this3.viewport.remove(id);
         _this3.fire(EVENT_UNMANAGE_ELEMENT, {
-          el: _el
+          el: _el,
+          id: id
         });
         if (_el && removeElement) {
           _this3._removeElement(_el);
@@ -6625,7 +6602,7 @@ var JsPlumbInstance = function (_EventGenerator) {
     value: function addSourceSelector(selector, params) {
       var exclude = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var _def = this._createSourceDefinition(params);
-      var sel = new SourceSelector(selector, _def, exclude);
+      var sel = new ConnectionDragSelector(selector, _def, exclude);
       this.sourceSelectors.push(sel);
       return sel;
     }
@@ -6648,7 +6625,7 @@ var JsPlumbInstance = function (_EventGenerator) {
     value: function addTargetSelector(selector, params) {
       var exclude = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       var _def = this._createTargetDefinition(params);
-      var sel = new TargetSelector(selector, _def, exclude);
+      var sel = new ConnectionDragSelector(selector, _def, exclude);
       this.targetSelectors.push(sel);
       return sel;
     }
@@ -7080,15 +7057,17 @@ var JsPlumbInstance = function (_EventGenerator) {
   }, {
     key: "_refreshEndpoint",
     value: function _refreshEndpoint(endpoint) {
-      if (endpoint.connections.length > 0) {
-        this.addEndpointClass(endpoint, this.endpointConnectedClass);
-      } else {
-        this.removeEndpointClass(endpoint, this.endpointConnectedClass);
-      }
-      if (endpoint.isFull()) {
-        this.addEndpointClass(endpoint, this.endpointFullClass);
-      } else {
-        this.removeEndpointClass(endpoint, this.endpointFullClass);
+      if (!endpoint._anchor.isFloating) {
+        if (endpoint.connections.length > 0) {
+          this.addEndpointClass(endpoint, this.endpointConnectedClass);
+        } else {
+          this.removeEndpointClass(endpoint, this.endpointConnectedClass);
+        }
+        if (endpoint.isFull()) {
+          this.addEndpointClass(endpoint, this.endpointFullClass);
+        } else {
+          this.removeEndpointClass(endpoint, this.endpointFullClass);
+        }
       }
     }
   }, {
@@ -7476,6 +7455,7 @@ exports.CLASS_ENDPOINT_ANCHOR_PREFIX = CLASS_ENDPOINT_ANCHOR_PREFIX;
 exports.CLASS_ENDPOINT_CONNECTED = CLASS_ENDPOINT_CONNECTED;
 exports.CLASS_ENDPOINT_DROP_ALLOWED = CLASS_ENDPOINT_DROP_ALLOWED;
 exports.CLASS_ENDPOINT_DROP_FORBIDDEN = CLASS_ENDPOINT_DROP_FORBIDDEN;
+exports.CLASS_ENDPOINT_FLOATING = CLASS_ENDPOINT_FLOATING;
 exports.CLASS_ENDPOINT_FULL = CLASS_ENDPOINT_FULL;
 exports.CLASS_GROUP_COLLAPSED = CLASS_GROUP_COLLAPSED;
 exports.CLASS_GROUP_EXPANDED = CLASS_GROUP_EXPANDED;
@@ -7536,6 +7516,9 @@ exports.Overlay = Overlay;
 exports.OverlayFactory = OverlayFactory;
 exports.PlainArrowOverlay = PlainArrowOverlay;
 exports.REDROP_POLICY_ANY = REDROP_POLICY_ANY;
+exports.REDROP_POLICY_ANY_SOURCE = REDROP_POLICY_ANY_SOURCE;
+exports.REDROP_POLICY_ANY_SOURCE_OR_TARGET = REDROP_POLICY_ANY_SOURCE_OR_TARGET;
+exports.REDROP_POLICY_ANY_TARGET = REDROP_POLICY_ANY_TARGET;
 exports.REDROP_POLICY_STRICT = REDROP_POLICY_STRICT;
 exports.RIGHT = RIGHT;
 exports.RectangleEndpoint = RectangleEndpoint;
@@ -7544,13 +7527,11 @@ exports.SELECTOR_MANAGED_ELEMENT = SELECTOR_MANAGED_ELEMENT;
 exports.SOURCE = SOURCE;
 exports.SOURCE_INDEX = SOURCE_INDEX;
 exports.STATIC = STATIC;
-exports.SourceSelector = SourceSelector;
 exports.StraightConnector = StraightConnector;
 exports.StraightSegment = StraightSegment;
 exports.TARGET = TARGET;
 exports.TARGET_INDEX = TARGET_INDEX;
 exports.TOP = TOP;
-exports.TargetSelector = TargetSelector;
 exports.UIGroup = UIGroup;
 exports.UINode = UINode;
 exports.Viewport = Viewport;
