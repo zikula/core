@@ -842,8 +842,12 @@ function toABC(line) {
   return {
     A: A,
     B: B,
-    C: A * line[0].x + B * line[0].y
+    C: fixPrecision(A * line[0].x + B * line[0].y)
   };
+}
+function fixPrecision(n, digits) {
+  digits = digits == null ? 3 : digits;
+  return Math.floor(n * Math.pow(10, digits)) / Math.pow(10, digits);
 }
 function lineIntersection(l1, l2) {
   var abc1 = toABC(l1),
@@ -853,17 +857,17 @@ function lineIntersection(l1, l2) {
     return null;
   } else {
     var candidate = {
-      x: (abc2.B * abc1.C - abc1.B * abc2.C) / det,
-      y: (abc1.A * abc2.C - abc2.A * abc1.C) / det
+      x: Math.round((abc2.B * abc1.C - abc1.B * abc2.C) / det),
+      y: Math.round((abc1.A * abc2.C - abc2.A * abc1.C) / det)
     },
-        l1xmin = Math.min(l1[0].x, l1[1].x),
-        l1xmax = Math.max(l1[0].x, l1[1].x),
-        l1ymin = Math.min(l1[0].y, l1[1].y),
-        l1ymax = Math.max(l1[0].y, l1[1].y),
-        l2xmin = Math.min(l2[0].x, l2[1].x),
-        l2xmax = Math.max(l2[0].x, l2[1].x),
-        l2ymin = Math.min(l2[0].y, l2[1].y),
-        l2ymax = Math.max(l2[0].y, l2[1].y);
+        l1xmin = Math.floor(Math.min(l1[0].x, l1[1].x)),
+        l1xmax = Math.round(Math.max(l1[0].x, l1[1].x)),
+        l1ymin = Math.floor(Math.min(l1[0].y, l1[1].y)),
+        l1ymax = Math.round(Math.max(l1[0].y, l1[1].y)),
+        l2xmin = Math.floor(Math.min(l2[0].x, l2[1].x)),
+        l2xmax = Math.round(Math.max(l2[0].x, l2[1].x)),
+        l2ymin = Math.floor(Math.min(l2[0].y, l2[1].y)),
+        l2ymax = Math.round(Math.max(l2[0].y, l2[1].y));
     if (candidate.x >= l1xmin && candidate.x <= l1xmax && candidate.y >= l1ymin && candidate.y <= l1ymax && candidate.x >= l2xmin && candidate.x <= l2xmax && candidate.y >= l2ymin && candidate.y <= l2ymax) {
       return candidate;
     } else {
@@ -962,4 +966,4 @@ function snapToGrid(pos, grid, thresholdX, thresholdY) {
   };
 }
 
-export { EventGenerator, OptimisticEventGenerator, TWO_PI, add, addToDictionary, addToList, addWithFunction, arraysEqual, clone, each, encloses, extend, fastTrim, filterList, filterNull, findAllWithFunction, findWithFunction, forEach, fromArray, functionChain, getAllWithFunction, getFromSetWithFunction, getWithFunction, getsert, gradient, insertSorted, intersects, isAssignableFrom, isBoolean, isDate, isEmpty, isFunction, isNamedFunction, isNumber, isObject, isString, lineIntersection, lineLength, lineRectangleIntersection, log, logEnabled, map, merge, normal, objectsEqual, perpendicularLineTo, pointOnLine, populate, quadrant, remove, removeWithFunction, replace, rotateAnchorOrientation, rotatePoint, setToArray, sgn, snapToGrid, subtract, suggest, theta, uuid, wrap };
+export { EventGenerator, OptimisticEventGenerator, TWO_PI, add, addToDictionary, addToList, addWithFunction, arraysEqual, clone, each, encloses, extend, fastTrim, filterList, filterNull, findAllWithFunction, findWithFunction, fixPrecision, forEach, fromArray, functionChain, getAllWithFunction, getFromSetWithFunction, getWithFunction, getsert, gradient, insertSorted, intersects, isAssignableFrom, isBoolean, isDate, isEmpty, isFunction, isNamedFunction, isNumber, isObject, isString, lineIntersection, lineLength, lineRectangleIntersection, log, logEnabled, map, merge, normal, objectsEqual, perpendicularLineTo, pointOnLine, populate, quadrant, remove, removeWithFunction, replace, rotateAnchorOrientation, rotatePoint, setToArray, sgn, snapToGrid, subtract, suggest, theta, uuid, wrap };
