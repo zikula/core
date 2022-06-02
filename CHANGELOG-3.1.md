@@ -6,6 +6,7 @@
   - [Admin] Minor improvement for shown warning when detecting invalid routes.
   - [config] Restored broken routes configuration (#4837).
   - [CoreInstallerBundle] Correct determination of selected locale during finalizing parameters.
+  - [CoreInstallerBundle] Fix Hook bundle entity creation on upgrade.
   - [Permissions] Fix wrong self requirement in `composer.json` file.
   - [Settings] Performance fix for Locales block.
   - [Settings] Fix broken handling of _prepend language to URL_ option.
