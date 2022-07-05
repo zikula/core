@@ -22,7 +22,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function Symfony\Component\String\s;
-use Zikula\Bundle\WorkflowBundle\Controller\EditorController;
 
 /**
  * Class ZikulaWorkflowExtension
