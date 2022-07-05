@@ -6,6 +6,3 @@ hook:
 
 installer:
     resource: "@ZikulaCoreInstallerBundle/Resources/config/routing.yaml"
-
-workflow_editor:
-    resource: "@ZikulaWorkflowBundle/Resources/config/routing.yaml"
