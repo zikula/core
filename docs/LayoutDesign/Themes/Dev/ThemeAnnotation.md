@@ -22,7 +22,4 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 Possible values are:
 
 - "admin"
-- "print"
-- "atom"
-- "rss"
-- any valid theme name (e.g. "ZikulaAndreas08Theme")
+- any valid theme name (e.g. "ZikulaDefaultTheme")
