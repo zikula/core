@@ -39,8 +39,6 @@
         {{ include(template.view, template.params, ignore_missing = true) }}
     {% endfor %}
 
-    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) }}
-
     {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION')) is not empty %}
     <fieldset>
         <legend>{% trans %}Answer the security question{% endtrans %}</legend>

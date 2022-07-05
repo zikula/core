@@ -16,8 +16,6 @@ namespace Zikula\UsersModule\Helper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -25,7 +23,6 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
-use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 
 class DeleteHelper
 {
@@ -33,11 +30,6 @@ class DeleteHelper
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
-
-    /**
-     * @var HookDispatcherInterface
-     */
-    private $hookDispatcher;
 
     /**
      * @var UserRepositoryInterface
@@ -51,12 +43,10 @@ class DeleteHelper
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher,
         UserRepositoryInterface $userRepository,
         GroupRepositoryInterface $groupRespository
     ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->hookDispatcher = $hookDispatcher;
         $this->userRepository = $userRepository;
         $this->groupRespository = $groupRespository;
     }
@@ -113,7 +103,6 @@ class DeleteHelper
         } else {
             $this->eventDispatcher->dispatch(new RegistrationPostDeletedEvent($user));
         }
-        $this->hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($user->getUid()));
         if ($fullDeletion) {
             $this->userRepository->removeAndFlush($user);
         } else {

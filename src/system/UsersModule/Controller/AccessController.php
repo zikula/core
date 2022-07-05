@@ -20,9 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
@@ -39,7 +36,6 @@ use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
 use Zikula\UsersModule\Helper\AccessHelper;
-use Zikula\UsersModule\HookSubscriber\LoginUiHooksSubscriber;
 
 class AccessController extends AbstractController
 {
@@ -54,8 +50,7 @@ class AccessController extends AbstractController
         UserRepositoryInterface $userRepository,
         AuthenticationMethodCollector $authenticationMethodCollector,
         AccessHelper $accessHelper,
-        EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher
+        EventDispatcherInterface $eventDispatcher
     ): Response {
         if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
@@ -117,8 +112,7 @@ class AccessController extends AbstractController
             // provide temp value for uid until form gives real value.
             $uid = Request::METHOD_POST === $request->getMethod() ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
             $hasListeners = $eventDispatcher->hasListeners(LoginFormPostCreatedEvent::class);
-            $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
-            if ($hasListeners || count($hookBindings) > 0) {
+            if ($hasListeners) {
                 $form = $this->createForm(DefaultLoginType::class, ['uid' => $uid]);
                 $loginFormEvent = new LoginFormPostCreatedEvent($form);
                 $eventDispatcher->dispatch($loginFormEvent);
@@ -145,15 +139,11 @@ class AccessController extends AbstractController
             /** @var UserEntity $user */
             $user = $userRepository->find($uid);
             if (isset($user)) {
-                $hook = new ValidationHook();
-                $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_VALIDATE, $hook);
-                $validators = $hook->getValidators();
-                if (!$validators->hasErrors() && $accessHelper->loginAllowed($user)) {
+                if ($accessHelper->loginAllowed($user)) {
                     if (isset($form)) {
                         $formDataEvent = new LoginFormPostValidatedEvent($form, $user);
                         $eventDispatcher->dispatch($formDataEvent);
                     }
-                    $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
                     $userPreSuccessLoginEvent = new UserPreLoginSuccessEvent($user, $selectedMethod);
                     $eventDispatcher->dispatch($userPreSuccessLoginEvent);
                     if (!$userPreSuccessLoginEvent->isPropagationStopped()) {

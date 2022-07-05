@@ -27,7 +27,6 @@
 
 {% set userAccountDisplayEvent = dispatchEvent('Zikula\\UsersModule\\Event\\UserAccountDisplayEvent', [user]) %}
 {{ userAccountDisplayEvent|raw }}
-{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_DISPLAY'), user.uid) }}
 
 <fieldset>
     <legend>{% trans %}Registration Status{% endtrans %}</legend>

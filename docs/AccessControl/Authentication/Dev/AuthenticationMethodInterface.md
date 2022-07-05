@@ -50,9 +50,9 @@ interface) of said user. This is because UserModule will take appropriate steps 
 required events, et al on user deletion. The providing authenticationMethod should react to said events in managing
 their own data.
 
-## Hooks and events in templates
+## Events in templates
 
-Authentication modules *must* implement hooks and events within their login and registration templates.
+Authentication modules *must* implement events within their login and registration templates.
 See [ZAuthModule](https://github.com/zikula/core/tree/master/src/system/ZAuthModule/) for examples:
 
 - `src/system/ZAuthModule/Resources/views/Authentication/register.html.twig`
@@ -60,7 +60,6 @@ See [ZAuthModule](https://github.com/zikula/core/tree/master/src/system/ZAuthMod
 
 Also see:
 
-- `\Zikula\UsersModule\Container\HookContainer`
 - `\Zikula\UsersModule\RegistrationEvents`
 
 ## Installation and discoverability

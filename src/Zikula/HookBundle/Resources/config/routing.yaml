@@ -1,3 +1,0 @@
-zikulahookbundle:
-    resource: "@ZikulaHookBundle/Controller"
-    type:     annotation

@@ -3,6 +3,7 @@
 ## 4.0.0 (unreleased)
 
 - BC Breaks:
+  - [HookBundle] Remove hooks support.
   - [WorkflowBundle] Remove graphical workflow editor.
   - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`.
 

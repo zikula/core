@@ -23,8 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
@@ -38,7 +36,6 @@ use Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersModule\Form\Type\ChangeLanguageType;
 use Zikula\UsersModule\Helper\DeleteHelper;
-use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 
 /**
  * @Route("/account")
@@ -134,7 +131,6 @@ class AccountController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher,
         DeleteHelper $deleteHelper
     ) {
         if (!$currentUserApi->isLoggedIn()) {
@@ -161,14 +157,7 @@ class AccountController extends AbstractController
                 return $this->redirectToRoute('zikulausersmodule_account_menu');
             }
             if ($form->get('delete')->isClicked()) {
-                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook = new ValidationHook());
-                $validHooks = true;
-                if ($hook->getValidators()->hasErrors()) {
-                    $message = implode('<br>', $hook->getValidators()->getErrors());
-                    $this->addFlash('error', $message);
-                    $validHooks = false;
-                }
-                if ($validHooks && $form->isValid()) {
+                if ($form->isValid()) {
                     $deletedUser = $userRepository->find($currentUserApi->get('uid'));
                     $deleteHelper->deleteUser($deletedUser);
                     $eventDispatcher->dispatch(new DeleteUserFormPostValidatedEvent($form, $deletedUser));

@@ -29,10 +29,6 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -60,7 +56,6 @@ use Zikula\UsersModule\Helper\AdministrationActionsHelper;
 use Zikula\UsersModule\Helper\DeleteHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
-use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 
 /**
  * Class UserAdministrationController
@@ -161,8 +156,7 @@ class UserAdministrationController extends AbstractController
         ManagerRegistry $doctrine,
         CurrentUserApiInterface $currentUserApi,
         VariableApiInterface $variableApi,
-        EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher
+        EventDispatcherInterface $eventDispatcher
     ) {
         if (!$this->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -177,11 +171,7 @@ class UserAdministrationController extends AbstractController
         $eventDispatcher->dispatch($editUserFormPostCreatedEvent);
         $form->handleRequest($request);
 
-        $hook = new ValidationHook(new ValidationProviders());
-        $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
-        $validators = $hook->getValidators();
-
-        if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
                 $this->checkSelf($currentUserApi, $variableApi, $user, $originalUser->getGroups()->toArray());
@@ -194,8 +184,6 @@ class UserAdministrationController extends AbstractController
                     ? new RegistrationPostUpdatedEvent($user, $originalUser)
                     : new ActiveUserPostUpdatedEvent($user, $originalUser);
                 $eventDispatcher->dispatch($updateEvent);
-
-                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', "Done! Saved user's account information.");
             } elseif ($form->get('cancel')->isClicked()) {
@@ -287,7 +275,6 @@ class UserAdministrationController extends AbstractController
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
-        HookDispatcherInterface $hookDispatcher,
         EventDispatcherInterface $eventDispatcher,
         DeleteHelper $deleteHelper,
         UserEntity $user = null
@@ -328,10 +315,6 @@ class UserAdministrationController extends AbstractController
                     unset($userIds[$k]);
                     $this->addFlash('danger', $this->trans('You are not allowed to delete user id %uid%', ['%uid%' => $uid]));
                     continue;
-                }
-                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook = new ValidationHook());
-                if ($hook->getValidators()->hasErrors()) {
-                    $valid = false;
                 }
             }
             if ($valid && $deleteConfirmationForm->isValid()) {

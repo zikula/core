@@ -90,7 +90,7 @@ Remember, just because you can fix an issue, does not mean it can be included in
 
 In general all work should be done in local topic branches. If you are collaborating with others on this, those topic branches should be published to _your_ repository forks and not the central repository (if you have access).
 
-Please name your topic branches so they are clear to understand - generally with the ticket number, e.g. `ticket_1234` or `hooks_ui`.
+Please name your topic branches so they are clear to understand - generally with the ticket number, e.g. `ticket_1234` or `feature_profile_ui`.
 
 When your work is ready to merge either create a pull request or if you have write access to the central repository, you may merge to the correct branch (usually master) and push into the central repository.
 

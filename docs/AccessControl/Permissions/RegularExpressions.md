@@ -53,7 +53,7 @@ Of course it would also be possible to use multiple different components and/or 
 
 ### Hook providers
 
-Extensions offering [hook providers](../../Development/Hooks/README.md) have extended requirements. Because they could want to support different permission schemes depending on the extensions that are connected as hook subscribers. The idea is that it is possible to define permissions for attached comments / reviews / files / etc. based on the objects where these are attached to.
+Extensions offering hook providers have extended requirements. Because they could want to support different permission schemes depending on the extensions that are connected as hook subscribers. The idea is that it is possible to define permissions for attached comments / reviews / files / etc. based on the objects where these are attached to.
 
 Hence, it makes sense to use the subscriber's name as first level for the instance part.
 

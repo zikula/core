@@ -8,7 +8,6 @@
 {% for template in additionalTemplates %}
     {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
-{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::DELETE_FORM')) }}
 <div class="mt-4 alert alert-danger">
     <h4 class="text-danger">{% trans %}Deleting your Account is not recommended.{% endtrans %}</h4>
     {% trans %}If you choose to proceed, your personal data will be removed from the site.{% endtrans %}

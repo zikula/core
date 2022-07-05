@@ -13,7 +13,6 @@
 {% for template in additionalTemplates %}
     {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
-{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::DELETE_FORM')) }}
 <div class="alert alert-warning">
     {% trans %}Fully deleting a user can have unintended side effects and <em>is not recommended</em>.{% endtrans %}<br /><br />
     {% trans %}Deleting could 'orphan' data in the system and cause display errors or other unknown problems.{% endtrans %}

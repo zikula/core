@@ -92,7 +92,6 @@
         {{ form_row(mailForm.format) }}
         {{ form_row(mailForm.message) }}
         {{ form_row(mailForm.batchsize) }}
-        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}{# allows admin to hook wysiwyg editor for mail form #}
         <div class="form-group row">
             <div class="col-md-9 offset-md-3">
                 {{ form_widget(mailForm.send) }}

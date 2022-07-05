@@ -48,7 +48,7 @@ class DeleteCommand extends Command
             ->setHelp(
                 <<<'EOT'
 The <info>%command.name%</info> command deletes one or more users.
-This command dispatches all events and hooks like a standard user deletion.
+This command dispatches all events like a standard user deletion.
 Do not use uid, gid or status simultaneously. Use only one
 
 <info>php %command.full_name% -u478 -f</info>

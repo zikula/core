@@ -13,8 +13,6 @@
     {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
 
-{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) }}
-
 {% set regQuestion = getModVar('ZikulaUsersModule', 'reg_question', '') %}
 {% if regQuestion is not empty %}
     <fieldset>

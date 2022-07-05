@@ -5,7 +5,7 @@
 </h3>
 
 <p class="alert alert-warning">{% trans with {'%title%': extension.displayname} %}Do you really want to uninstall '%title%'?{% endtrans %}</p>
-<p class="alert alert-danger">{% trans %}Warning! Uninstalling this extension will also permanently remove all data associated with it, including all data held by other extensions that are hooked to this extension.{% endtrans %}</p>
+<p class="alert alert-danger">{% trans %}Warning! Uninstalling this extension will also permanently remove all data associated with it.{% endtrans %}</p>
 {% if blocks|length > 0 %}
     <div class="alert alert-danger">
         {% trans %}Warning! Removing this extension will also remove the following blocks{% endtrans %}:

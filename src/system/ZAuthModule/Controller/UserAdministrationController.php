@@ -26,10 +26,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
-use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -46,7 +42,6 @@ use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
-use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\AdminCreatedUserType;
@@ -155,8 +150,7 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         RegistrationHelper $registrationHelper,
         UsersMailHelper $mailHelper,
-        EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher
+        EventDispatcherInterface $eventDispatcher
     ) {
         $mapping = new AuthenticationMappingEntity();
         $form = $this->createForm(AdminCreatedUserType::class, $mapping, [
@@ -166,11 +160,7 @@ class UserAdministrationController extends AbstractController
         $eventDispatcher->dispatch($editUserFormPostCreatedEvent);
         $form->handleRequest($request);
 
-        $hook = new ValidationHook(new ValidationProviders());
-        $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
-        $validators = $hook->getValidators();
-
-        if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 $mapping = $form->getData();
                 $passToSend = $form['sendpass']->getData() ? $mapping->getPass() : '';
@@ -208,8 +198,6 @@ class UserAdministrationController extends AbstractController
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_listmappings');
                 }
                 $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
-                $hook = new ProcessHook($user->getUid());
-                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
                 $eventDispatcher->dispatch(new RegistrationPostSuccessEvent($user));
 
                 if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
@@ -248,8 +236,7 @@ class UserAdministrationController extends AbstractController
         EncoderFactoryInterface $encoderFactory,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
-        EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher
+        EventDispatcherInterface $eventDispatcher
     ) {
         if (!$this->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -266,13 +253,9 @@ class UserAdministrationController extends AbstractController
         $eventDispatcher->dispatch($editUserFormPostCreatedEvent);
         $form->handleRequest($request);
 
-        $hook = new ValidationHook(new ValidationProviders());
-        $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
-        $validators = $hook->getValidators();
-
         $originalUser = clone $userRepository->find($mapping->getUid());
 
-        if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 /** @var AuthenticationMappingEntity $mapping */
                 $mapping = $form->getData();
@@ -290,7 +273,6 @@ class UserAdministrationController extends AbstractController
                 $eventDispatcher->dispatch(new ActiveUserPostUpdatedEvent($user, $originalUser));
 
                 $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
-                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
                 $this->addFlash('status', "Done! Saved user's account information.");
             } elseif ($form->get('cancel')->isClicked()) {

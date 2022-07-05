@@ -32,10 +32,9 @@ functions, filters, tags, tests and global variables.
 - getSystemVar(name, default = null)
 - defaultPath(extensionName, type = 'user')
 
-### Events and Hooks
+### Events
 
 - dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
-- notifyDisplayHooks(eventName, id = null, urlObject = null)
 - routeUrl(routeName, routeParameters = [], fragment = null)
 
 ### Admin Interface

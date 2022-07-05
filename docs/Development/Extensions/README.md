@@ -19,4 +19,3 @@ currentMenu: dev-extensions
 ## Misc
 
 - [Provide help docs](ExtensionDocs.md)
-- [Extension Connections](ExtensionConnections.md)

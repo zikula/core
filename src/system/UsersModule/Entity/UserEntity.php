@@ -73,7 +73,7 @@ class UserEntity extends EntityAccess
      * will have a negative integer representing their state. If the user's registration request expires before it the process is completed, or if the administrator
      * denies the request for an new account, the user account record will be deleted.
      * When this deletion happens, it will be assumed by the system that no external module has yet interacted with the user account record,
-     * because its state never progressed beyond its pending state, and therefore normal hooks/events may not be triggered
+     * because its state never progressed beyond its pending state, and therefore normal events may not be triggered
      * (although it is possible that events regarding the pending account may be triggered).
      *
      * @Assert\Choice(callback = "getActivatedValues")

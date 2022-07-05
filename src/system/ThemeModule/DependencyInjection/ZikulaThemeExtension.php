@@ -23,7 +23,6 @@ use Zikula\ThemeModule\Engine\Asset\Merger;
 use Zikula\ThemeModule\Engine\AssetFilter;
 use Zikula\ThemeModule\EventListener\DefaultPageAssetSetterListener;
 use Zikula\ThemeModule\EventListener\ExtensionInstallationListener;
-use Zikula\ThemeModule\EventListener\HookChangeListener;
 use Zikula\ThemeModule\EventListener\ResponseTransformerListener;
 
 class ZikulaThemeExtension extends Extension
@@ -42,8 +41,6 @@ class ZikulaThemeExtension extends Extension
             ->setArgument('$trimWhitespace', $config['trimwhitespace']);
 
         $container->getDefinition(ExtensionInstallationListener::class)
-            ->setArgument('$mergerActive', $config['asset_manager']['combine']);
-        $container->getDefinition(HookChangeListener::class)
             ->setArgument('$mergerActive', $config['asset_manager']['combine']);
         $container->getDefinition(JsResolver::class)
             ->setArgument('$combine', $config['asset_manager']['combine']);

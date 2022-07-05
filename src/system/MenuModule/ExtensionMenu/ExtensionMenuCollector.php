@@ -52,7 +52,7 @@ class ExtensionMenuCollector
                 return null;
             }
 
-            // fire event here to add more menu items like hooks, moduleServices, etc
+            // fire event here to add more menu items like additional services, etc
             $event = new ExtensionMenuEvent($bundleName, $type, $menu);
             $menu = $this->eventDispatcher->dispatch($event)->getMenu();
 

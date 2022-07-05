@@ -23,10 +23,6 @@ All the dependencies and requirements are included in this package.
 
 ## Upgrading
 - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
-- If upgrading from Core-1.x:
-    - All (1.x.x) blocks using MenuTree, ExtMenu or Menu will be DELETED during the upgrade as these are no longer available.
-      You should consider deleting and replacing these with a MenuModule block before upgrading.
-    - All (1.x.x) Hook connections will be deleted and need to be re-connected post-upgrade.
 - Before uploading the new files, delete (or move) **all files** in your web root (typically `public_html` or `httpdocs`).
 - Upload the new package and unpack the archive.
   - Please read the [INSTALL docs](INSTALL.md#upload) for detailed information on proper uploading.

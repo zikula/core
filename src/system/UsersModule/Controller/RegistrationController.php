@@ -24,10 +24,6 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
@@ -43,7 +39,6 @@ use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormExce
 use Zikula\UsersModule\Form\Type\RegistrationType\DefaultRegistrationType;
 use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
-use Zikula\UsersModule\HookSubscriber\RegistrationUiHooksSubscriber;
 use Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator;
 
 /**
@@ -71,7 +66,6 @@ class RegistrationController extends AbstractController
         RegistrationHelper $registrationHelper,
         AccessHelper $accessHelper,
         EventDispatcherInterface $eventDispatcher,
-        HookDispatcherInterface $hookDispatcher,
         ValidatorInterface $validator
     ) {
         if ($currentUserApi->isLoggedIn()) {
@@ -135,8 +129,7 @@ class RegistrationController extends AbstractController
             throw new InvalidAuthenticationMethodRegistrationFormException();
         }
         $hasListeners = $eventDispatcher->hasListeners(EditUserFormPostCreatedEvent::class);
-        $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.registration');
-        if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && 0 === count($hookBindings)) {
+        if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners) {
             // skip form display and process immediately.
             $userData['_token'] = $this->get('security.csrf.token_manager')->getToken($form->getName())->getValue();
             $userData['submit'] = true;
@@ -154,76 +147,68 @@ class RegistrationController extends AbstractController
         }
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
-                // Validate the hook
-                $hook = new ValidationHook(new ValidationProviders());
-                $hookDispatcher->dispatch(RegistrationUiHooksSubscriber::REGISTRATION_VALIDATE, $hook);
-                $validators = $hook->getValidators();
-
-                if (!$validators->hasErrors()) {
-                    $formData = $form->getData();
-                    $userEntity = new UserEntity();
-                    $userEntity->setUname($formData['uname']);
-                    $userEntity->setEmail($formData['email']);
-                    $userEntity->setLocale($request->getLocale());
-                    $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
-                    $validationErrors = $validator->validate($userEntity);
-                    if (count($validationErrors) > 0) {
-                        $codes = [];
-                        /** @var ConstraintViolationInterface $validationError */
-                        foreach ($validationErrors as $validationError) {
-                            $this->addFlash('error', $validationError->getMessage());
-                            $codes[] = $validationError->getCode();
-                        }
-                        if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
-                            $session->remove('authenticationMethod');
-                        }
-                        $route = 'zikulausersmodule_registration_register';
-                        if (in_array(ValidUserFieldsValidator::DUP_EMAIL_ALT_AUTH, $codes, true)) {
-                            $route = 'zikulausersmodule_access_login';
-                        }
-
-                        return $this->redirectToRoute($route); // try again.
+                $formData = $form->getData();
+                $userEntity = new UserEntity();
+                $userEntity->setUname($formData['uname']);
+                $userEntity->setEmail($formData['email']);
+                $userEntity->setLocale($request->getLocale());
+                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
+                $validationErrors = $validator->validate($userEntity);
+                if (count($validationErrors) > 0) {
+                    $codes = [];
+                    /** @var ConstraintViolationInterface $validationError */
+                    foreach ($validationErrors as $validationError) {
+                        $this->addFlash('error', $validationError->getMessage());
+                        $codes[] = $validationError->getCode();
+                    }
+                    if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
+                        $session->remove('authenticationMethod');
+                    }
+                    $route = 'zikulausersmodule_registration_register';
+                    if (in_array(ValidUserFieldsValidator::DUP_EMAIL_ALT_AUTH, $codes, true)) {
+                        $route = 'zikulausersmodule_access_login';
                     }
 
-                    $registrationHelper->registerNewUser($userEntity);
-
-                    $formData['id'] = $authenticationMethodId;
-                    $formData['uid'] = $userEntity->getUid();
-                    $externalRegistrationSuccess = $authenticationMethod->register($formData);
-                    if (true !== $externalRegistrationSuccess) {
-                        // revert registration
-                        $this->addFlash('error', 'The registration process failed.');
-                        $userRepository->removeAndFlush($userEntity);
-                        $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($userEntity));
-
-                        return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
-                    }
-                    $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $userEntity));
-                    $hookDispatcher->dispatch(RegistrationUiHooksSubscriber::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
-
-                    // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
-                    $canLogIn = UsersConstant::ACTIVATED_ACTIVE === $userEntity->getActivated();
-                    $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
-                    $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
-
-                    // Notify that we are completing a registration session.
-                    $eventDispatcher->dispatch($event = new RegistrationPostSuccessEvent($userEntity));
-                    $redirectUrl = $event->getRedirectUrl();
-
-                    if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
-                        $accessHelper->login($userEntity);
-
-                        return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
-                    }
-                    if (!empty($redirectUrl)) {
-                        return $this->redirect($redirectUrl);
-                    }
-                    if (!$canLogIn) {
-                        return $this->redirectToRoute('home');
-                    }
-
-                    return $this->redirectToRoute('zikulausersmodule_access_login');
+                    return $this->redirectToRoute($route); // try again.
                 }
+
+                $registrationHelper->registerNewUser($userEntity);
+
+                $formData['id'] = $authenticationMethodId;
+                $formData['uid'] = $userEntity->getUid();
+                $externalRegistrationSuccess = $authenticationMethod->register($formData);
+                if (true !== $externalRegistrationSuccess) {
+                    // revert registration
+                    $this->addFlash('error', 'The registration process failed.');
+                    $userRepository->removeAndFlush($userEntity);
+                    $eventDispatcher->dispatch(new RegistrationPostDeletedEvent($userEntity));
+
+                    return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
+                }
+                $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $userEntity));
+
+                // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
+                $canLogIn = UsersConstant::ACTIVATED_ACTIVE === $userEntity->getActivated();
+                $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
+                $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
+
+                // Notify that we are completing a registration session.
+                $eventDispatcher->dispatch($event = new RegistrationPostSuccessEvent($userEntity));
+                $redirectUrl = $event->getRedirectUrl();
+
+                if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
+                    $accessHelper->login($userEntity);
+
+                    return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
+                }
+                if (!empty($redirectUrl)) {
+                    return $this->redirect($redirectUrl);
+                }
+                if (!$canLogIn) {
+                    return $this->redirectToRoute('home');
+                }
+
+                return $this->redirectToRoute('zikulausersmodule_access_login');
             }
             if (null !== $session) {
                 $session->invalidate();

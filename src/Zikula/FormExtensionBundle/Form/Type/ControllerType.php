@@ -158,7 +158,6 @@ class ControllerType extends AbstractType
             || null !== $route->indexOf('liip_imagine')
             || null !== $route->indexOf('oro_twig_inspector')
             || null !== $route->indexOf('php_translation_profiler')
-            || null !== $route->indexOf('zikula_hook_hook')
             || null !== $controller->indexOf('CoreBundle')
             || null !== $controller->indexOf('CoreInstallerBundle')
         ;
