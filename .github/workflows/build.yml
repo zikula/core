@@ -111,28 +111,6 @@ jobs:
       - name: Test installation
         run: ./.github/scripts/testInstall.sh
 
-# TODO reenable - issue seems that services_custom.yaml is used but not supported anymore
-      #- name: Test upgrade from 1.4.3
-        #run: ./.github/scripts/testUpgrade.sh 1.4.3 core143.sql
-
-      #- name: Test upgrade from 1.4.4
-        #run: ./.github/scripts/testUpgrade.sh 1.4.4 core144.sql
-
-      #- name: Test upgrade from 1.4.5
-        #run: ./.github/scripts/testUpgrade.sh 1.4.5 core145.sql
-
-      #- name: Test upgrade from 1.4.6
-        #run: ./.github/scripts/testUpgrade.sh 1.4.6 core146.sql
-
-      #- name: Test upgrade from 1.5.9
-        #run: ./.github/scripts/testUpgrade.sh 1.5.9 core159.sql
-
-      #- name: Test upgrade from 2.0.15
-        #run: ./.github/scripts/testUpgrade.sh 2.0.15 core2015.sql
-
-      #- name: Test upgrade from 3.0.0
-        #run: ./.github/scripts/testUpgrade.sh 3.0.0 core300.sql
-
   docs:
     name: Documentation
     if: github.ref_name == 'main'
