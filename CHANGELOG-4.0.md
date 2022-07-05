@@ -3,7 +3,7 @@
 ## 4.0.0 (unreleased)
 
 - BC Breaks:
-  - none yet
+  - [WorkflowBundle] Remove graphical workflow editor.
 
 - Fixes:
   - none yet

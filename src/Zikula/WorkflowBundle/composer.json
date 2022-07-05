@@ -1,7 +1,7 @@
 {
     "name": "zikula/workflow-bundle",
     "type": "symfony-bundle",
-    "description": "An bundle providing workflow management functionality.",
+    "description": "A bundle for loading workflows from several directories.",
     "keywords": [ "zikula" ],
     "homepage": "https://ziku.la",
     "license": "MIT",
@@ -15,15 +15,11 @@
         "php": "^8.0",
         "symfony/contracts": "^2",
         "symfony/finder": "^5.4",
-        "symfony/form": "^5.4",
         "symfony/framework-bundle": "^5.4",
         "symfony/string": "^5.4",
-        "symfony/validator": "^5.4",
         "symfony/workflow": "^5.4",
 
-        "zikula/core-bundle": "dev-3.1",
-        "zikula/permissions-module": "dev-3.1",
-        "zikula/theme-module": "dev-3.1"
+        "zikula/core-bundle": "dev-3.1"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\WorkflowBundle\\": "" }
