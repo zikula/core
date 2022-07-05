@@ -4,6 +4,7 @@
 
 - BC Breaks:
   - [WorkflowBundle] Remove graphical workflow editor.
+  - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`.
 
 - Fixes:
   - none yet

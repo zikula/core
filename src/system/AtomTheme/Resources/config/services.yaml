@@ -1,9 +1,0 @@
-services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        public: false
-
-    Zikula\AtomTheme\:
-        resource: '../../*'
-        exclude: '../../{bootstrap.php,Tests,vendor}'

@@ -156,9 +156,6 @@ class CoreInstallerExtensionHelper
             'ZikulaMenuModule',
             'ZikulaBootstrapTheme', // @deprecated remove at Core-4.0.0
             'ZikulaDefaultTheme',
-            'ZikulaAtomTheme',
-            'ZikulaRssTheme',
-            'ZikulaPrinterTheme',
         ];
         $result = true;
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {

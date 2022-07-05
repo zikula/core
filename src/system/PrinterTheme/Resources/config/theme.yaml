@@ -1,5 +1,0 @@
-##
-# ZikulaPrinterTheme config
-##
-master:
-  page: "master.html.twig"

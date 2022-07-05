@@ -40,10 +40,7 @@ return [
     Zikula\ThemeModule\ZikulaThemeModule::class => ['all' => true],
     Zikula\UsersModule\ZikulaUsersModule::class => ['all' => true],
     Zikula\ZAuthModule\ZikulaZAuthModule::class => ['all' => true],
-    Zikula\AtomTheme\ZikulaAtomTheme::class => ['all' => true],
     Zikula\BootstrapTheme\ZikulaBootstrapTheme::class => ['all' => true],
     Zikula\DefaultTheme\ZikulaDefaultTheme::class => ['all' => true],
-    Zikula\PrinterTheme\ZikulaPrinterTheme::class => ['all' => true],
-    Zikula\RssTheme\ZikulaRssTheme::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];

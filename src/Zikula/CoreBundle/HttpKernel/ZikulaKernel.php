@@ -19,7 +19,6 @@ use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Zikula\AdminModule\ZikulaAdminModule;
-use Zikula\AtomTheme\ZikulaAtomTheme;
 use Zikula\BlocksModule\ZikulaBlocksModule;
 use Zikula\BootstrapTheme\ZikulaBootstrapTheme;
 use Zikula\CategoriesModule\ZikulaCategoriesModule;
@@ -32,9 +31,7 @@ use Zikula\GroupsModule\ZikulaGroupsModule;
 use Zikula\MailerModule\ZikulaMailerModule;
 use Zikula\MenuModule\ZikulaMenuModule;
 use Zikula\PermissionsModule\ZikulaPermissionsModule;
-use Zikula\PrinterTheme\ZikulaPrinterTheme;
 use Zikula\RoutesModule\ZikulaRoutesModule;
-use Zikula\RssTheme\ZikulaRssTheme;
 use Zikula\SearchModule\ZikulaSearchModule;
 use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\SettingsModule\ZikulaSettingsModule;
@@ -88,11 +85,8 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaThemeModule' => ZikulaThemeModule::class,
         'ZikulaUsersModule' => ZikulaUsersModule::class,
         'ZikulaZAuthModule' => ZikulaZAuthModule::class,
-        'ZikulaAtomTheme' => ZikulaAtomTheme::class,
         'ZikulaBootstrapTheme' => ZikulaBootstrapTheme::class, // @deprecated remove at Core-4.0.0
         'ZikulaDefaultTheme' => ZikulaDefaultTheme::class,
-        'ZikulaPrinterTheme' => ZikulaPrinterTheme::class,
-        'ZikulaRssTheme' => ZikulaRssTheme::class
     ];
 
     /**
