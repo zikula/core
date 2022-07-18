@@ -133,7 +133,6 @@
         "zikula/core-bundle": "self.version",
         "zikula/coreinstaller-bundle": "self.version",
         "zikula/formextension-bundle": "self.version",
-        "zikula/hook-bundle": "self.version",
         "zikula/workflow-bundle": "self.version",
         "zikula/admin-module": "self.version",
         "zikula/blocks-module": "self.version",
