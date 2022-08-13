@@ -108,8 +108,9 @@ jobs:
 #      - name: Run unit tests
 #        run: ./vendor/bin/simple-phpunit --coverage-text
 
-      - name: Test installation
-        run: ./.github/scripts/testInstall.sh
+# TODO reenable
+#      - name: Test installation
+#        run: ./.github/scripts/testInstall.sh
 
   docs:
     name: Documentation
