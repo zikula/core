@@ -7,6 +7,7 @@
   - [PageLock] Remove page lock module.
   - [WorkflowBundle] Remove graphical workflow editor.
   - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`.
+  - [Theme] Remove old `BootstrapTheme` in favor of `DefaultTheme`.
   - [ZAuth] Remove deprecated `PasswordApi`.
 
 - Fixes:

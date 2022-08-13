@@ -154,7 +154,6 @@ class CoreInstallerExtensionHelper
             'ZikulaMailerModule',
             'ZikulaSearchModule',
             'ZikulaMenuModule',
-            'ZikulaBootstrapTheme', // @deprecated remove at Core-4.0.0
             'ZikulaDefaultTheme',
         ];
         $result = true;

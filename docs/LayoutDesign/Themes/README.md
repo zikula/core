@@ -11,7 +11,7 @@ currentMenu: themes
 
 ## Creating a theme
 
-- [Creating a theme based on ZikulaBootstrapTheme](ThemeCreationExample.md)
+- [Creating a theme based on ZikulaDefaultTheme](ThemeCreationExample.md)
 - [Theme file structure](Structure.md)
 - [Theme template overrides](TemplateOverrides.md)
 - [Theme configuration](ThemeConfiguration.md)

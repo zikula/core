@@ -39,7 +39,7 @@ class MenuBuilder
 
     public function createAdminMenu(): ItemInterface
     {
-        $menu = $this->factory->createItem('bootstrapThemeAdminMenu');
+        $menu = $this->factory->createItem('defaultThemeAdminMenu');
         $menu->setChildrenAttribute('class', 'navbar-nav');
         $menu->addChild('Home', ['route' => 'home']);
         if ($this->permissionApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {

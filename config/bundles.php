@@ -39,7 +39,6 @@ return [
     Zikula\ThemeModule\ZikulaThemeModule::class => ['all' => true],
     Zikula\UsersModule\ZikulaUsersModule::class => ['all' => true],
     Zikula\ZAuthModule\ZikulaZAuthModule::class => ['all' => true],
-    Zikula\BootstrapTheme\ZikulaBootstrapTheme::class => ['all' => true],
     Zikula\DefaultTheme\ZikulaDefaultTheme::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];

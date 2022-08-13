@@ -91,7 +91,6 @@ class AdminCategoryHelper
             'ZikulaSettingsModule' => $this->translator->trans('System'),
             'ZikulaRoutesModule' => $this->translator->trans('System'),
             'ZikulaMenuModule' => $this->translator->trans('Content'),
-            'ZikulaBootstrapTheme' => $this->translator->trans('Layout'), // @deprecated remove at Core-4.0.0
             'ZikulaDefaultTheme' => $this->translator->trans('Layout'),
         ];
         $this->setUp();

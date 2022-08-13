@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Zikula\AdminModule\ZikulaAdminModule;
 use Zikula\BlocksModule\ZikulaBlocksModule;
-use Zikula\BootstrapTheme\ZikulaBootstrapTheme;
 use Zikula\CategoriesModule\ZikulaCategoriesModule;
 use Zikula\DefaultTheme\ZikulaDefaultTheme;
 use Zikula\ExtensionsModule\AbstractExtension;
@@ -85,7 +84,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaThemeModule' => ZikulaThemeModule::class,
         'ZikulaUsersModule' => ZikulaUsersModule::class,
         'ZikulaZAuthModule' => ZikulaZAuthModule::class,
-        'ZikulaBootstrapTheme' => ZikulaBootstrapTheme::class, // @deprecated remove at Core-4.0.0
         'ZikulaDefaultTheme' => ZikulaDefaultTheme::class,
     ];
 
