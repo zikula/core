@@ -96,4 +96,3 @@ Zikula can quickly become a Content Management System utilizing community-driven
 [StaticContent](https://github.com/zikula-modules/StaticContent)
 : Display static content simply.
 : Included in Core distribution.
-: See [User profiles](../AccessControl/Users/index.md#user-profiles) for further details.
