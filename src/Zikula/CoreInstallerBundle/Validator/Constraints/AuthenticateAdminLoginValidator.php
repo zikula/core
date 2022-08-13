@@ -21,7 +21,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 class AuthenticateAdminLoginValidator extends ConstraintValidator
@@ -43,23 +42,16 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
      */
     private $encoderFactory;
 
-    /**
-     * @var PasswordApiInterface
-     */
-    private $passwordApi;
-
     public function __construct(
         PermissionApiInterface $permissionApi,
         Connection $connection,
         TranslatorInterface $translator,
-        EncoderFactoryInterface $encoderFactory,
-        PasswordApiInterface $passwordApi
+        EncoderFactoryInterface $encoderFactory
     ) {
         $this->permissionApi = $permissionApi;
         $this->databaseConnection = $connection;
         $this->setTranslator($translator);
         $this->encoderFactory = $encoderFactory;
-        $this->passwordApi = $passwordApi;
     }
 
     public function validate($object, Constraint $constraint)
@@ -83,14 +75,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
                 ->addViolation();
         } else {
             $validPassword = false;
-            if ($this->passwordApi->passwordsMatch($object['password'], $user['pass'])) {
-                // old way - remove in Core-4.0.0
-                $validPassword = true;
-                // convert old encoding to new
-                $this->setPassword((int) $user['uid'], $object['password']);
-            } elseif (
-                // new way
-                $passwordEncoder->isPasswordValid($user['pass'], $object['password'], null)) {
+            if ($passwordEncoder->isPasswordValid($user['pass'], $object['password'], null)) {
                 $validPassword = true;
                 if ($passwordEncoder->needsRehash($user['pass'])) { // check to update hash to newer algo
                     $this->setPassword((int) $user['uid'], $object['password']);

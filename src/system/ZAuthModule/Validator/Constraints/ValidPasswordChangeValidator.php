@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
 class ValidPasswordChangeValidator extends ConstraintValidator
@@ -34,11 +33,6 @@ class ValidPasswordChangeValidator extends ConstraintValidator
     private $translator;
 
     /**
-     * @var PasswordApiInterface
-     */
-    private $passwordApi;
-
-    /**
      * @var EncoderFactoryInterface
      */
     private $encoderFactory;
@@ -46,12 +40,10 @@ class ValidPasswordChangeValidator extends ConstraintValidator
     public function __construct(
         AuthenticationMappingRepositoryInterface $repository,
         TranslatorInterface $translator,
-        PasswordApiInterface $passwordApi,
         EncoderFactoryInterface $encoderFactory
     ) {
         $this->repository = $repository;
         $this->translator = $translator;
-        $this->passwordApi = $passwordApi;
         $this->encoderFactory = $encoderFactory;
     }
 
@@ -63,10 +55,8 @@ class ValidPasswordChangeValidator extends ConstraintValidator
         $userEntity = $this->repository->findOneBy(['uid' => $data['uid']]);
         if ($userEntity) {
             $currentPass = $userEntity->getPass();
-            // is oldpass correct?
-            $validLegacyPassword = $this->passwordApi->passwordsMatch($data['oldpass'], $currentPass); // remove at Core-4.0.0
             $validPassword = $this->encoderFactory->getEncoder($userEntity)->isPasswordValid($currentPass, $data['oldpass'], null);
-            if (empty($data['oldpass']) || !($validLegacyPassword || $validPassword)) {
+            if (empty($data['oldpass']) || !$validPassword) {
                 $this->context->buildViolation($this->translator->trans('Old password is incorrect.', [], 'validators'))
                     ->atPath('oldpass')
                     ->addViolation();

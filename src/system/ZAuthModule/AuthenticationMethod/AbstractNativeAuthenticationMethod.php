@@ -1,4 +1,4 @@
-<?php
+<!-- // <?php -->
 
 declare(strict_types=1);
 
@@ -20,7 +20,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\RegistrationType;
@@ -54,11 +53,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $validator;
 
     /**
-     * @var PasswordApiInterface
-     */
-    private $passwordApi;
-
-    /**
      * @var EncoderFactoryInterface
      */
     private $encoderFactory;
@@ -69,7 +63,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         ValidatorInterface $validator,
-        PasswordApiInterface $passwordApi,
         EncoderFactoryInterface $encoderFactory
     ) {
         $this->mappingRepository = $mappingRepository;
@@ -77,7 +70,6 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $this->translator = $translator;
         $this->variableApi = $variableApi;
         $this->validator = $validator;
-        $this->passwordApi = $passwordApi;
         $this->encoderFactory = $encoderFactory;
     }
 
@@ -103,14 +95,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
         $passwordEncoder = $this->encoderFactory->getEncoder($mapping);
 
-        if ($this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
-            // old way - remove in Core-4.0.0
-            // convert old encoding to new
-            $this->updatePassword($mapping, $data['pass']);
-
-            return $mapping->getUid();
-        } elseif ($passwordEncoder->isPasswordValid($mapping->getPass(), $data['pass'], null)) {
-            // new way
+        if ($passwordEncoder->isPasswordValid($mapping->getPass(), $data['pass'], null)) {
             if ($passwordEncoder->needsRehash($mapping->getPass())) { // check to update hash to newer algo
                 $this->updatePassword($mapping, $data['pass']);
             }
