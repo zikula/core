@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
-use Zikula\BlocksModule\Block\HtmlBlock;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\BlocksModule\Form\Type\AdminViewFilterType;
