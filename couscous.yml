@@ -149,15 +149,6 @@ menu:
                 search:
                     text: Search
                     relativeUrl: Integration/Search/index.html
-        extensions:
-            name: Extensions
-            items:
-                ext-content:
-                    text: Content
-                    relativeUrl: Extensions/content.html
-                ext-other:
-                    text: Other
-                    relativeUrl: Extensions/other.html
         development:
             name: Extension Development
             items:

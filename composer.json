@@ -107,7 +107,6 @@
         "willdurand/js-translation-bundle": "^5",
         "zikula/legal-module": "^3",
         "zikula/oauth-module": "^1",
-        "zikula/pagelock-module": "^1",
         "zikula/profile-module": "^3",
         "zikula/sortable-columns": "dev-main",
         "zikula/staticcontent-module": "^1",

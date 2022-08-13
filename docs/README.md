@@ -77,6 +77,23 @@ Zikula can quickly become a Content Management System utilizing community-driven
 - Generates the Zikula module implementation
 - Read more at the [project's website](https://modulestudio.de/en)
 
-### Community Driven Modules
+### Relevant modules
 
-See [Extensions > Content](Extensions/Content.md) and [Extensions > Other](Extensions/Other.md).
+[Legal](https://github.com/zikula-modules/Legal)
+: Provides website TOS/AUP, privacy policy, and other legal documents.
+: Included in Core distribution.
+
+[Profile](https://github.com/zikula-modules/Profile)
+: User profile extension and avatar management.
+: Included in Core distribution.
+: See [User profiles](../AccessControl/Users/index.md#user-profiles) for further details.
+
+[OAuth](https://github.com/zikula/OAuth)
+: OAuth authentication provider.
+: Included in Core distribution.
+: See [Authentication / OAuth](../AccessControl/Authentication/index.md#oauth) for further details.
+
+[StaticContent](https://github.com/zikula-modules/StaticContent)
+: Display static content simply.
+: Included in Core distribution.
+: See [User profiles](../AccessControl/Users/index.md#user-profiles) for further details.

@@ -14825,59 +14825,6 @@
             "time": "2020-07-25T07:16:40+00:00"
         },
         {
-            "name": "zikula/pagelock-module",
-            "version": "1.3.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "bc21a6c7163b585edfefd29b0c4603d24641da81"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/bc21a6c7163b585edfefd29b0c4603d24641da81",
-                "reference": "bc21a6c7163b585edfefd29b0c4603d24641da81",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.5"
-            },
-            "type": "zikula-module",
-            "extra": {
-                "zikula": {
-                    "class": "Zikula\\PageLockModule\\ZikulaPageLockModule",
-                    "core-compatibility": ">=3.0.0",
-                    "displayname": "Page lock",
-                    "url": "pagelock",
-                    "icon": "fas fa-lock",
-                    "capabilities": [],
-                    "securityschema": {
-                        "ZikulaPageLockModule::": "::"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zikula\\PageLockModule\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Zikula",
-                    "homepage": "https://ziku.la/"
-                }
-            ],
-            "description": "Page locking support",
-            "support": {
-                "issues": "https://github.com/zikula-modules/PageLock/issues",
-                "source": "https://github.com/zikula-modules/PageLock/tree/1.3.9"
-            },
-            "time": "2021-06-18T06:29:35+00:00"
-        },
-        {
             "name": "zikula/profile-module",
             "version": "3.1.18",
             "source": {
