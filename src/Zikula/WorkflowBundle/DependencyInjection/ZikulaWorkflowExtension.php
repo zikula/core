@@ -23,12 +23,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function Symfony\Component\String\s;
 
-/**
- * Class ZikulaWorkflowExtension
- */
 class ZikulaWorkflowExtension extends Extension implements PrependExtensionInterface
 {
-    private $workflowDirectories = [];
+    private array $workflowDirectories = [];
 
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -77,7 +74,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
                 $loader = new XmlFileLoader($container, new FileLocator($file->getPath()));
                 $loader->load($file->getFilename());
             }
-        } catch (InvalidArgumentException $exception) {
+        } catch (InvalidArgumentException) {
             // no module with a workflow directory exists, ignore
         }
     }

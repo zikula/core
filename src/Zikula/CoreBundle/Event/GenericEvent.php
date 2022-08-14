@@ -24,27 +24,7 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyGenericEvent;
  */
 class GenericEvent extends SymfonyGenericEvent implements \ArrayAccess, \IteratorAggregate
 {
-    /**
-     * @var mixed
-     */
-    public $data;
-
-    /**
-     * Exception.
-     *
-     * @var Exception
-     */
-    protected $exception;
-
-    /**
-     * @var mixed
-     */
-    protected $subject;
-
-    /**
-     * @var array
-     */
-    protected $args = [];
+    protected Exception $exception;
 
     /**
      * Encapsulate an event with $subject, $args, and $data.
@@ -53,11 +33,8 @@ class GenericEvent extends SymfonyGenericEvent implements \ArrayAccess, \Iterato
      * @param array $args Arguments to store in the event
      * @param mixed $data Convenience argument of data for optional processing
      */
-    public function __construct($subject = null, array $args = [], $data = null)
+    public function __construct(protected mixed $subject = null, protected array $args = [], protected mixed $data = null)
     {
-        $this->data = $data;
-        $this->subject = $subject;
-        $this->args = $args;
     }
 
     /**

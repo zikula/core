@@ -19,10 +19,7 @@ class Kernel extends ZikulaKernel
 {
     use MicroKernelTrait;
 
-    /**
-     * @var string
-     */
-    private $databaseUrl;
+    private string $databaseUrl;
 
     public function __construct(string $environment, bool $debug, string $databaseUrl = '')
     {

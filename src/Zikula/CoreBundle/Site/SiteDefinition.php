@@ -25,38 +25,14 @@ class SiteDefinition implements SiteDefinitionInterface
 {
     use TranslatorTrait;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var ExtensionRepositoryInterface
-     */
-    private $extensionRepository;
-
-    /**
-     * @var ParameterBag
-     */
-    private $pageVars;
-
     public function __construct(
-        TranslatorInterface $translator,
-        RequestStack $requestStack,
-        VariableApiInterface $variableApi,
-        ExtensionRepositoryInterface $extensionRepository,
-        ParameterBag $pageVars
+        private TranslatorInterface $translator,
+        private readonly RequestStack $requestStack,
+        private readonly VariableApiInterface $variableApi,
+        private readonly ExtensionRepositoryInterface $extensionRepository,
+        private readonly ParameterBag $pageVars
     ) {
         $this->setTranslator($translator);
-        $this->requestStack = $requestStack;
-        $this->variableApi = $variableApi;
-        $this->extensionRepository = $extensionRepository;
-        $this->pageVars = $pageVars;
     }
 
     public function getName(): string

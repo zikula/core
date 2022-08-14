@@ -27,49 +27,16 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class SiteOffListener implements EventSubscriberInterface
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var boolean
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        PermissionApiInterface $permissionApi,
-        CurrentUserApiInterface $currentUserApi,
-        Environment $twig,
-        RouterInterface $router,
+        private readonly VariableApiInterface $variableApi,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly Environment $twig,
+        private readonly RouterInterface $router,
         string $installed
     ) {
-        $this->variableApi = $variableApi;
-        $this->permissionApi = $permissionApi;
-        $this->currentUserApi = $currentUserApi;
-        $this->twig = $twig;
-        $this->router = $router;
         $this->installed = '0.0.0' !== $installed;
     }
 
@@ -96,7 +63,7 @@ class SiteOffListener implements EventSubscriberInterface
         $this->router->getContext()->setBaseUrl($request->getBaseUrl());
         try {
             $routeInfo = $this->router->match($request->getPathInfo());
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return;
         }
         if ('zikulausersmodule_access_login' === $routeInfo['_route']

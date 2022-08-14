@@ -19,15 +19,9 @@ use Zikula\Bundle\CoreBundle\Composer\MetaData;
 
 class MetaDataTest extends TestCase
 {
-    /**
-     * @var MetaData
-     */
-    protected $metaData;
+    protected MetaData $metaData;
 
-    /**
-     * @var array
-     */
-    protected $json;
+    protected array $json;
 
     protected function setUp(): void
     {

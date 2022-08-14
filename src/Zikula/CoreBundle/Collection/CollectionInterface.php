@@ -17,41 +17,28 @@ interface CollectionInterface
 {
     /**
      * Add an item to the collection without a key.
-     *
-     * @param mixed $value The value to add
      */
-    public function add($value): void;
+    public function add(mixed $value): self;
 
     /**
      * Add an item to the collection with a key.
-     *
-     * @param mixed $key The key to the item within the collection
-     * @param mixed $value The value of the item
      */
-    public function set($key, $value): void;
+    public function set(mixed $key, mixed $value): self;
 
     /**
      * Retrieve an item from the collection by its key.
-     *
-     * @param mixed $key The key to the item within the collection to retrieve
-     *
-     * @return mixed
      */
-    public function get($key);
+    public function get(mixed $key): mixed;
 
     /**
      * Remove an item from the collection.
-     *
-     * @param mixed $key The key to the item within the collection
      */
-    public function del($key): void;
+    public function del(mixed $key): self;
 
     /**
      * Indicates whether the specified key is set within the collection.
-     *
-     * @param mixed $key The key to the item within the collection
      */
-    public function has($key): bool;
+    public function has(mixed $key): bool;
 
     /**
      * Indicates whether the collection is set.
@@ -60,8 +47,6 @@ interface CollectionInterface
 
     /**
      * Retrieve the internal collection container.
-     *
-     * @return mixed The collection
      */
-    public function getCollection();
+    public function getCollection(): mixed;
 }

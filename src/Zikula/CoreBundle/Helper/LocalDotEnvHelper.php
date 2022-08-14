@@ -18,15 +18,8 @@ use function Symfony\Component\String\s;
 
 class LocalDotEnvHelper
 {
-    /**
-     * @var string
-     */
-    private $projectDir;
-
-    public function __construct(
-        string $projectDir
-    ) {
-        $this->projectDir = $projectDir;
+    public function __construct(private readonly string $projectDir)
+    {
     }
 
     /**

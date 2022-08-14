@@ -25,61 +25,14 @@ namespace Zikula\Bundle\CoreBundle\Filter;
  */
 class AlphaFilter
 {
-    private $currentLetter;
+    private string $template = '@Core/Filter/alphaFilter.html.twig';
 
-    private $route;
-
-    private $routeParameters;
-
-    private $template = '@Core/Filter/alphaFilter.html.twig';
-
-    private $includeNumbers = false;
-
-    public function __construct(string $route, array $routeParameters = [], $currentLetter = 'a', $includeNumbers = false)
-    {
-        $this->route = $route;
-        $this->routeParameters = $routeParameters;
-        $this->currentLetter = $currentLetter;
-        $this->includeNumbers = $includeNumbers;
-    }
-
-    public function getCurrentLetter(): string
-    {
-        return $this->currentLetter;
-    }
-
-    public function setRoute(string $route): self
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    public function getRoute(): string
-    {
-        return $this->route;
-    }
-
-    public function setRouteParameters(array $parameters): self
-    {
-        $this->routeParameters = $parameters;
-
-        return $this;
-    }
-
-    public function setRouteParameter(string $name, ?string $value): void
-    {
-        $this->routeParameters[$name] = $value;
-    }
-
-    public function getRouteParameters(): array
-    {
-        return $this->routeParameters;
-    }
-
-    public function setTemplate(string $templateName): void
-    {
-        $this->template = $templateName;
+    public function __construct(
+        private readonly string $route,
+        private readonly array $routeParameters = [],
+        private readonly $currentLetter = 'a',
+        private readonly $includeNumbers = false
+    ) {
     }
 
     public function getTemplate(): string
@@ -87,9 +40,19 @@ class AlphaFilter
         return $this->template;
     }
 
-    public function setIncludeNumbers(bool $include): void
+    public function getRoute(): string
     {
-        $this->includeNumbers = $include;
+        return $this->route;
+    }
+
+    public function getRouteParameters(): array
+    {
+        return $this->routeParameters;
+    }
+
+    public function getCurrentLetter(): string
+    {
+        return $this->currentLetter;
     }
 
     public function getIncludeNumbers(): bool

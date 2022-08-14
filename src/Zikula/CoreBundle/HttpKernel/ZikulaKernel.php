@@ -87,15 +87,9 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaDefaultTheme' => ZikulaDefaultTheme::class,
     ];
 
-    /**
-     * @var array
-     */
-    private $modules = [];
+    private array $modules = [];
 
-    /**
-     * @var array
-     */
-    private $themes = [];
+    private array $themes = [];
 
     /**
      * @var callable

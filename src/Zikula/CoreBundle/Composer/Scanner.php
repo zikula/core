@@ -21,20 +21,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Scanner
 {
-    /**
-     * @var array
-     */
-    private $jsons = [];
+    private array $jsons = [];
 
-    /**
-     * @var array
-     */
-    private $invalid = [];
+    private array $invalid = [];
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * Scans and loads composer.json files.

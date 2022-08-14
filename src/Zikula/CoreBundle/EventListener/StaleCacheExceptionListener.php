@@ -22,15 +22,8 @@ use Zikula\Bundle\CoreBundle\Exception\StaleCacheException;
 
 class StaleCacheExceptionListener implements EventSubscriberInterface
 {
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    public function __construct(
-        CacheClearer $cacheClearer
-    ) {
-        $this->cacheClearer = $cacheClearer;
+    public function __construct(private readonly CacheClearer $cacheClearer)
+    {
     }
 
     public static function getSubscribedEvents()

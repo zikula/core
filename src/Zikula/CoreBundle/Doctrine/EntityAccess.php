@@ -17,12 +17,12 @@ use ArrayAccess;
 use ReflectionObject;
 use RuntimeException;
 
+/**
+ * @deprecated
+ */
 class EntityAccess implements ArrayAccess
 {
-    /**
-     * @var ReflectionObject
-     */
-    protected $reflection;
+    protected ?ReflectionObject $reflection = null;
 
     public function getReflection(): ReflectionObject
     {
@@ -41,7 +41,7 @@ class EntityAccess implements ArrayAccess
             $this->getGetterForProperty($key);
 
             return true;
-        } catch (RuntimeException $exception) {
+        } catch (RuntimeException) {
             return false;
         }
     }

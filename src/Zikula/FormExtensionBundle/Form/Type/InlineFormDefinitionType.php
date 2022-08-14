@@ -27,10 +27,7 @@ class InlineFormDefinitionType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @var DynamicFieldsContainerInterface
-     */
-    private $dynamicFieldsContainer;
+    private DynamicFieldsContainerInterface $dynamicFieldsContainer;
 
     public function __construct(TranslatorInterface $translator)
     {

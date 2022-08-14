@@ -28,32 +28,27 @@ abstract class AbstractEntityAttribute extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     * @var int
      */
-    protected $id;
+    protected int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="1", max="255")
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @ORM\Column(type="array")
-     * @var string
      */
-    protected $value;
+    protected string $value;
 
-    abstract public function getEntity();
+    abstract public function getEntity()/* TODO add return type: mixed*/;
 
-    abstract public function setEntity($entity);
+    abstract public function setEntity($entity)/* TODO add return type: self*/;
 
     public function __construct(string $name, string $value, $entity)
     {
-        $this->name = $name;
-        $this->value = $value;
-        $this->setEntity($entity);
+        $this->setName($name)->setValue($value)->setEntity($entity);
     }
 
     public function getId(): int
@@ -61,9 +56,11 @@ abstract class AbstractEntityAttribute extends EntityAccess
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): string
@@ -71,9 +68,11 @@ abstract class AbstractEntityAttribute extends EntityAccess
         return $this->name;
     }
 
-    public function setName(string $name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getValue(): string
@@ -81,8 +80,10 @@ abstract class AbstractEntityAttribute extends EntityAccess
         return $this->value;
     }
 
-    public function setValue(string $value): void
+    public function setValue(string $value): self
     {
         $this->value = $value;
+
+        return $this;
     }
 }

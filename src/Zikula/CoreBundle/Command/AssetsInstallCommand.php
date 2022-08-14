@@ -30,23 +30,11 @@ class AssetsInstallCommand extends Command
 {
     protected static $defaultName = 'assets:install';
 
-    /**
-     * @var Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
     public function __construct(
-        Filesystem $filesystem,
-        ZikulaHttpKernelInterface $kernel
+        private readonly Filesystem $filesystem,
+        private readonly ZikulaHttpKernelInterface $kernel
     ) {
         parent::__construct();
-        $this->filesystem = $filesystem;
-        $this->kernel = $kernel;
     }
 
     protected function configure()

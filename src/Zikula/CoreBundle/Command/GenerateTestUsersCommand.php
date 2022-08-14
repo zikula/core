@@ -27,53 +27,25 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class GenerateTestUsersCommand extends Command
 {
-    /**
-     * @var Connection
-     */
-    private $conn;
+    private \DateTimeInterface $nowUTC;
 
-    /**
-     * @var \DateTime
-     */
-    private $nowUTC;
+    private \DateTimeInterface $startUTC;
 
-    /**
-     * @var \DateTime
-     */
-    private $startUTC;
+    private string $regDateValue;
 
-    /**
-     * @var string
-     */
-    private $regDateValue;
+    private bool $range = false;
 
-    /**
-     * @var bool
-     */
-    private $range = false;
+    private \DateTimeInterface $regDate;
 
-    /**
-     * @var \DateTime
-     */
-    private $regDate;
+    private string $active;
 
-    /**
-     * @var string
-     */
-    private $active;
-
-    /**
-     * @var int
-     */
-    private $verified;
+    private int $verified;
 
     protected static $defaultName = 'zikula:users:generate';
 
-    public function __construct(
-        Connection $connection
-    ) {
+    public function __construct(private readonly Connection $connection)
+    {
         parent::__construct();
-        $this->conn = $connection;
         $utcTZ = new \DateTimeZone('UTC');
         $this->nowUTC = new \DateTime('now', $utcTZ);
         $this->startUTC = new \DateTime('1970-01-01 00:00:00', $utcTZ);

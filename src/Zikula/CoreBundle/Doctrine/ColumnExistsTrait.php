@@ -17,20 +17,13 @@ use Doctrine\DBAL\Connection;
 
 trait ColumnExistsTrait
 {
-    /**
-     * @var Connection
-     */
-    private $conn;
-
-    public function __construct(
-        Connection $connection
-    ) {
-        $this->conn = $connection;
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     private function columnExists(string $tableName, string $columnName): bool
     {
-        $sm = $this->conn->getSchemaManager();
+        $sm = $this->connection->getSchemaManager();
         $existingColumns = $sm->listTableColumns($tableName);
         foreach ($existingColumns as $existingColumn) {
             if ($existingColumn->getName() === $columnName) {

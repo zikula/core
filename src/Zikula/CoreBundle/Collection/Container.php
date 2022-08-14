@@ -22,89 +22,49 @@ use Traversable;
  */
 class Container implements CollectionInterface
 {
-    /**
-     * The name of the collection.
-     *
-     * @var string
-     */
-    protected $name;
+    protected ArrayObject $collection;
 
-    /**
-     * Collection.
-     *
-     * @var ArrayObject
-     */
-    protected $collection;
-
-    public function __construct(string $name, ArrayObject $collection = null)
+    public function __construct(private readonly string $name, ArrayObject $collection = null)
     {
-        $this->name = $name;
         $this->collection = $collection ?? new ArrayObject([]);
     }
 
-    /**
-     * Retrieve the collection.
-     */
     public function getCollection(): ArrayObject
     {
         return $this->collection;
     }
 
-    /**
-     * Set the collection.
-     */
-    public function setCollection(ArrayObject $collection): void
+    public function setCollection(ArrayObject $collection): self
     {
         $this->collection = $collection;
+
+        return $this;
     }
 
-    /**
-     * Retrieve the name of the collection.
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Append a value to the collection without an index.
-     *
-     * @param mixed $value The value to append
-     */
-    public function add($value): void
+    public function add(mixed $value): self
     {
         $this->collection[] = $value;
+
+        return $this;
     }
 
-    /**
-     * Set the value of the specified item in the collection.
-     *
-     * @param mixed $key The index of the item for which the value should be set
-     * @param mixed $value The value of the item
-     */
-    public function set($key, $value): void
+    public function set(mixed $key, mixed $value): self
     {
         $this->collection[$key] = $value;
-    }
 
-    /**
-     * Retrieve the specified item from the collection.
-     *
-     * @param mixed $key The index of the item to retrieve
-     *
-     * @return mixed
-     */
-    public function get($key)
+        return $this;
+    }
+    public function get(mixed $key): mixed
     {
         return $this->collection[$key];
     }
 
-    /**
-     * Indicates whether the element indexed by the $key is set.
-     *
-     * @param mixed $key The index to check
-     */
-    public function has($key): bool
+    public function has(mixed $key): bool
     {
         return $this->offsetExists($key);
     }
@@ -154,13 +114,9 @@ class Container implements CollectionInterface
     /**
      * Returns the value at the specified offset (see {@link ArrayAccess::offsetGet()}).
      *
-     * @param mixed $key The offset to retrieve
-     *
-     * @return mixed The value at the specified offset
-     *
      * @throws InvalidArgumentException Thrown if the key does not exist in the collection
      */
-    public function offsetGet($key)
+    public function offsetGet(mixed $key): mixed
     {
         if ($this->has($key)) {
             return $this->collection[$key];
@@ -168,34 +124,28 @@ class Container implements CollectionInterface
         throw new InvalidArgumentException(sprintf('Key %s does not exist in collection', $key));
     }
 
-    /**
-     * Set the value at the specified offset (see {@link ArrayAccess::offsetSet()}).
-     *
-     * @param mixed $key The offset to retrieve
-     * @param mixed $value The value to set at the specified offset
-     */
-    public function offsetSet($key, $value): void
+    public function offsetSet(mixed $key, mixed $value): self
     {
         $this->collection[$key] = $value;
+
+        return $this;
     }
 
     /**
      * Indicate whether the specified offset is set (see {@link ArrayAccess::offsetExists()}).
-     *
-     * @param mixed $key The offset to check
      */
-    public function offsetExists($key): bool
+    public function offsetExists(mixed $key): bool
     {
         return $this->collection->offsetExists($key);
     }
 
     /**
      * Unset the specified offset (see {@link ArrayAccess::offsetUnset()}).
-     *
-     * @param mixed $key The offset to unset
      */
-    public function offsetUnset($key): void
+    public function offsetUnset(mixed $key): self
     {
         $this->collection->offsetUnset($key);
+
+        return $this;
     }
 }

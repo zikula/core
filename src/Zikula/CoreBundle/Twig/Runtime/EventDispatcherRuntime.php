@@ -19,15 +19,8 @@ use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 
 class EventDispatcherRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
+    {
     }
 
     /**

@@ -13,29 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Twig\Runtime;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class SessionRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
-        SessionInterface $session,
-        TranslatorInterface $translator
+        private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator
     ) {
-        $this->session = $session;
-        $this->translator = $translator;
     }
 
     /**
@@ -59,8 +47,14 @@ class SessionRuntime implements RuntimeExtensionInterface
             'info' => 'info'
         ];
 
+        $request = $this->requestStack->getCurrentRequest();
+        $session = null !== $request && $request->hasSession() ? $request->getSession() : null;
+        if (null === $session) {
+            return $result;
+        }
+
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {
-            $messages = $this->session->getFlashBag()->get($messageType);
+            $messages = $session->getFlashBag()->get($messageType);
             if (1 > count($messages)) {
                 continue;
             }

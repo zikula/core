@@ -21,26 +21,20 @@ class Paginator implements PaginatorInterface
 {
     private const PAGE_SIZE = 25;
 
-    private $queryBuilder;
+    private int $currentPage;
 
-    private $currentPage;
+    private \Traversable $results;
 
-    private $pageSize;
+    private int $numResults;
 
-    private $results;
+    private string $route;
 
-    private $numResults;
+    private array $routeParameters;
 
-    private $route;
+    private string $template = '@Core/Paginator/paginator.html.twig';
 
-    private $routeParameters;
-
-    private $template = '@Core/Paginator/paginator.html.twig';
-
-    public function __construct(DoctrineQueryBuilder $queryBuilder, int $pageSize = self::PAGE_SIZE)
+    public function __construct(private readonly DoctrineQueryBuilder $queryBuilder, private readonly int $pageSize = self::PAGE_SIZE)
     {
-        $this->queryBuilder = $queryBuilder;
-        $this->pageSize = $pageSize;
     }
 
     public function paginate(int $page = 1): PaginatorInterface

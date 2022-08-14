@@ -19,7 +19,7 @@ use Zikula\Bundle\CoreBundle\Helper\LocalDotEnvHelper;
 
 class LocalDotEnvHelperTest extends TestCase
 {
-    private $projectDir;
+    private string $projectDir;
 
     public function testWriteLocalEnvVars()
     {

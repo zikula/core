@@ -24,14 +24,8 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
  */
 class LocaleType extends AbstractType
 {
-    /**
-     * @var LocaleApiInterface
-     */
-    protected $localeApi;
-
-    public function __construct(LocaleApiInterface $localeApi)
+    public function __construct(private readonly LocaleApiInterface $localeApi)
     {
-        $this->localeApi = $localeApi;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -46,39 +46,39 @@ class MetaData implements ArrayAccess
 
     public const DEPENDENCY_CONFLICTS = 3;
 
-    private $name;
+    private string $name;
 
-    private $version;
+    private string $version;
 
-    private $description;
+    private string $description;
 
-    private $type;
+    private string $type;
 
-    private $dependencies;
+    private array $dependencies;
 
-    private $shortName;
+    private string $shortName;
 
-    private $class;
+    private string $class;
 
-    private $namespace;
+    private string $namespace;
 
-    private $autoload;
+    private array $autoload;
 
-    private $displayName;
+    private string $displayName;
 
-    private $url;
+    private string $url;
 
-    private $oldNames;
+    private array $oldNames;
 
-    private $icon;
+    private string $icon;
 
-    private $capabilities;
+    private array $capabilities;
 
-    private $securitySchema;
+    private array $securitySchema;
 
-    private $extensionType;
+    private int $extensionType;
 
-    private $coreCompatibility;
+    private ?string $coreCompatibility;
 
     public function __construct(array $json = [])
     {

@@ -18,10 +18,7 @@ use Translation\Extractor\Annotation\Ignore;
 
 trait TranslatorTrait
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
     public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {

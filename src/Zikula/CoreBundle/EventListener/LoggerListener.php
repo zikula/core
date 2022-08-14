@@ -25,35 +25,14 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
  */
 class LoggerListener
 {
-    /**
-     * @var LoggableListener
-     */
-    private $loggableListener;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
-        LoggableListener $loggableListener,
-        TranslatorInterface $translator,
-        CurrentUserApiInterface $currentUserApi,
+        private readonly LoggableListener $loggableListener,
+        private readonly TranslatorInterface $translator,
+        private readonly CurrentUserApiInterface $currentUserApi,
         string $installed
     ) {
-        $this->loggableListener = $loggableListener;
-        $this->translator = $translator;
-        $this->currentUserApi = $currentUserApi;
         $this->installed = '0.0.0' !== $installed;
     }
 

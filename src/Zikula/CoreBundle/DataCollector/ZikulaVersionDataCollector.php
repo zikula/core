@@ -21,14 +21,8 @@ use Zikula\ThemeModule\Engine\Engine;
 
 class ZikulaVersionDataCollector extends DataCollector
 {
-    /**
-     * @var Engine
-     */
-    private $themeEngine;
-
-    public function __construct(Engine $themeEngine)
+    public function __construct(protected readonly Engine $themeEngine)
     {
-        $this->themeEngine = $themeEngine;
     }
 
     public function collect(Request $request, Response $response, \Throwable $exception = null): void

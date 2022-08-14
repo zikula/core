@@ -35,16 +35,12 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Configurator
 {
-    /** @var string */
-    private $configDir;
-    /** @var Filesystem */
-    private $fs;
-    /** @var array */
-    private $processedConfigurations = [];
-    /** @var array */
-    private $defaultConfigurations = [];
+    private string $configDir;
+    private Filesystem $fs;
+    private array $processedConfigurations = [];
+    private array $defaultConfigurations = [];
     /** @var string[] */
-    private $configurablePackages = [
+    private array $configurablePackages = [
         'core' => 'Zikula\Bundle\CoreBundle\DependencyInjection\Configuration',
         'zikula_security_center' => 'Zikula\SecurityCenterModule\DependencyInjection\Configuration',
         'zikula_theme' => 'Zikula\ThemeModule\DependencyInjection\Configuration',

@@ -31,32 +31,14 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class ExtensionMaker extends AbstractMaker
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
+    private Generator $localGenerator;
 
-    /**
-     * @var FileManager
-     */
-    private $fileManager;
-
-    /**
-     * @var Generator
-     */
-    private $localGenerator;
-
-    /**
-     * @var string
-     */
-    private $extensionPath;
+    private string $extensionPath;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        FileManager $fileManager
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly FileManager $fileManager
     ) {
-        $this->kernel = $kernel;
-        $this->fileManager = $fileManager;
     }
 
     public static function getCommandName(): string

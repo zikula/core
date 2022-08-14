@@ -26,14 +26,8 @@ use Zikula\Bundle\CoreBundle\Configurator;
 
 class SetNamespaceMaker extends AbstractMaker
 {
-    /**
-     * @var string
-     */
-    private $projectDir;
-
-    public function __construct(string $projectDir)
+    public function __construct(private readonly string $projectDir)
     {
-        $this->projectDir = $projectDir;
     }
 
     public static function getCommandName(): string

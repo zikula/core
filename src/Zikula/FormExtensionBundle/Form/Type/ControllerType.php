@@ -30,28 +30,12 @@ use Zikula\ThemeModule\Engine\Annotation\Theme as ThemeAnnotation;
  */
 class ControllerType extends AbstractType
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * The doctrine annotation reader service.
-     * @var Reader
-     */
-    private $annotationReader;
-
-    /**
-     * @var array
-     */
-    private $controllerChoices = [];
+    private array $controllerChoices = [];
 
     public function __construct(
-        RouterInterface $router,
-        Reader $annotationReader
+        private readonly RouterInterface $router,
+        private readonly Reader $annotationReader
     ) {
-        $this->router = $router;
-        $this->annotationReader = $annotationReader;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

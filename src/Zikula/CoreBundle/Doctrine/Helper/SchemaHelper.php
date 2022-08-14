@@ -19,20 +19,11 @@ use Doctrine\ORM\Tools\ToolsException;
 
 class SchemaHelper
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private SchemaTool $tool;
 
-    /**
-     * @var SchemaTool
-     */
-    private $tool;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $em;
-        $this->tool = new SchemaTool($em);
+        $this->tool = new SchemaTool($entityManager);
     }
 
     /**

@@ -65,31 +65,13 @@ class DynamicFieldType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var PageAssetApiInterface
-     */
-    private $pageAssetApi;
-
-    /**
-     * @var Asset
-     */
-    private $assetHelper;
-
     public function __construct(
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
-        PageAssetApiInterface $pageAssetApi,
-        Asset $assetHelper
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PageAssetApiInterface $pageAssetApi,
+        private readonly Asset $assetHelper
     ) {
         $this->setTranslator($translator);
-        $this->eventDispatcher = $eventDispatcher;
-        $this->pageAssetApi = $pageAssetApi;
-        $this->assetHelper = $assetHelper;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

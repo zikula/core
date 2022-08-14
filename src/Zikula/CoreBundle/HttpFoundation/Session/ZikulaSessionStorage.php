@@ -19,9 +19,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
 
-/**
- * Class ZikulaSessionStorage
- */
 class ZikulaSessionStorage extends NativeSessionStorage
 {
     /**

@@ -21,73 +21,30 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 class CacheClearer
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var ExposedRoutesExtractorInterface
-     */
-    private $fosJsRoutesExtractor;
+    private bool $installed;
 
-    /**
-     * @var string
-     */
-    private $cacheDir;
+    private Filesystem $fileSystem;
 
-    /**
-     * @var string
-     */
-    private $kernelContainerClass;
+    private array $cacheTypes = [];
 
-    /**
-     * @var bool
-     */
-    private $installed;
-
-    /**
-     * @var array
-     */
-    private $routingLocales = [];
-
-    /**
-     * @var array
-     */
-    private $cacheTypes = [];
-
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var CacheWarmerInterface
-     */
-    private $warmer;
-
-    /**
-     * @var array
-     */
-    private $cachesToClear;
+    private array $cachesToClear;
 
     public function __construct(
         LoggerInterface $zikulaLogger,
-        CacheWarmerInterface $warmer,
-        ExposedRoutesExtractorInterface $fosJsRoutesExtractor,
-        string $cacheDir,
-        string $kernelContainerClass,
+        private readonly CacheWarmerInterface $warmer,
+        private readonly ExposedRoutesExtractorInterface $fosJsRoutesExtractor,
+        private readonly string $cacheDir,
+        private readonly string $kernelContainerClass,
         string $installed,
-        array $routingLocales = []
+        private readonly array $routingLocales = []
     ) {
         $this->logger = $zikulaLogger;
-        $this->warmer = $warmer;
-        $this->fosJsRoutesExtractor = $fosJsRoutesExtractor;
-        $this->cacheDir = $cacheDir;
-        $this->kernelContainerClass = $kernelContainerClass;
         $this->installed = '0.0.0' !== $installed;
         $this->routingLocales = $routingLocales;
         $this->fileSystem = new Filesystem();
+        $this->cacheTypes = [];
         $this->cachesToClear = [];
     }
 

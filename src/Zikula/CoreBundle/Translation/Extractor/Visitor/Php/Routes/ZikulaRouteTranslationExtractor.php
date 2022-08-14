@@ -26,32 +26,14 @@ use Translation\Extractor\Visitor\Php\BasePHPVisitor;
  */
 class ZikulaRouteTranslationExtractor extends BasePHPVisitor implements NodeVisitor
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private string $domain = 'routes';
 
-    /**
-     * @var RouteExclusionStrategyInterface
-     */
-    private $routeExclusionStrategy;
-
-    /**
-     * @var string
-     */
-    private $domain = 'routes';
-
-    /**
-     * @var bool
-     */
-    private $routesExported = false;
+    private bool $routesExported = false;
 
     public function __construct(
-        RouterInterface $router,
-        RouteExclusionStrategyInterface $routeExclusionStrategy
+        private readonly RouterInterface $router,
+        private readonly RouteExclusionStrategyInterface $routeExclusionStrategy
     ) {
-        $this->router = $router;
-        $this->routeExclusionStrategy = $routeExclusionStrategy;
     }
 
     public function beforeTraverse(array $nodes): ?Node

@@ -26,25 +26,13 @@ use Symfony\Component\Form\FormInterface;
  */
 class FormAwareEvent
 {
-    /**
-     * @var FormInterface
-     */
-    private $form;
+    private array $templates = [];
 
-    /**
-     * @var array
-     */
-    private $templates = [];
-
-    public function __construct(FormInterface $form)
+    public function __construct(private readonly FormInterface $form)
     {
-        $this->form = $form;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFormData(string $prefix = null)
+    public function getFormData(string $prefix = null): mixed
     {
         if (isset($prefix)) {
             return $this->form->get($prefix)->getData();
@@ -53,21 +41,13 @@ class FormAwareEvent
         return $this->form->getData();
     }
 
-    /**
-     * @param FormInterface|string|int $child
-     *
-     * @return $this
-     */
-    public function formAdd($child, string $type = null, array $options = []): self
+    public function formAdd(FormInterface|string|int $child, string $type = null, array $options = []): self
     {
         $this->form->add($child, $type, $options);
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function addTemplate(string $template, array $templateVars = []): self
     {
         if (!in_array($template, $this->templates, true)) {

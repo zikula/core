@@ -32,27 +32,18 @@ abstract class AbstractController extends BaseController
     use ExtensionVariablesTrait;
     use TranslatorTrait;
 
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    protected $permissionApi;
+    protected string $name;
 
     /**
      * @throws InvalidArgumentException
      */
     public function __construct(
         AbstractExtension $extension,
-        PermissionApiInterface $permissionApi,
+        protected readonly PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
     ) {
         $this->name = $extension->getName();
-        $this->permissionApi = $permissionApi;
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $variableApi; // for ExtensionVariablesTrait
         $this->setTranslator($translator);

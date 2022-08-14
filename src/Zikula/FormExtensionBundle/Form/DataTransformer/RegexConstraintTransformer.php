@@ -16,9 +16,6 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Validator\Constraints\Regex;
 
-/**
- * Class RegexConstraintTransformer
- */
 class RegexConstraintTransformer implements DataTransformerInterface
 {
     /**
@@ -27,7 +24,7 @@ class RegexConstraintTransformer implements DataTransformerInterface
      * @param array $value
      * @return string
      */
-    public function transform($value)
+    public function transform(mixed $value)
     {
         /** @var Regex $constraint */
         $constraint = is_array($value) && isset($value[0]) ? $value[0] : new Regex('/.*/');
@@ -41,7 +38,7 @@ class RegexConstraintTransformer implements DataTransformerInterface
      * @param string $value
      * @return array
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value)
     {
         if (is_array($value)) {
             $value = $value[0];

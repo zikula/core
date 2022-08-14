@@ -20,27 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
-/**
- * Main controller.
- */
 class MainController
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        VariableApiInterface $variableApi
+        protected readonly ZikulaHttpKernelInterface $kernel,
+        protected readonly VariableApiInterface $variableApi
     ) {
-        $this->kernel = $kernel;
-        $this->variableApi = $variableApi;
     }
 
     /**

@@ -28,12 +28,9 @@ class TranslationKeyToValueCommand extends Command
 {
     protected static $defaultName = 'zikula:translation:keytovalue';
 
-    private $defaultTransPath;
-
-    public function __construct(string $defaultTransPath = null)
+    public function __construct(private readonly string $defaultTransPath = null)
     {
         parent::__construct();
-        $this->defaultTransPath = $defaultTransPath;
     }
 
     protected function configure()

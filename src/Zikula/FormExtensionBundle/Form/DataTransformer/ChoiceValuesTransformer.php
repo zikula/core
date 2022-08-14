@@ -26,7 +26,7 @@ class ChoiceValuesTransformer implements DataTransformerInterface
      * @param array $value
      * @return string
      */
-    public function transform($value)
+    public function transform(mixed $value)
     {
         $strings = [];
         if (is_array($value)) {
@@ -44,7 +44,7 @@ class ChoiceValuesTransformer implements DataTransformerInterface
      * @param string $value
      * @return array
      */
-    public function reverseTransform($value)
+    public function reverseTransform(mixed $value)
     {
         if (null === $value) {
             return [];

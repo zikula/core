@@ -20,10 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionExpireListener implements EventSubscriberInterface
 {
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(string $installed)
     {

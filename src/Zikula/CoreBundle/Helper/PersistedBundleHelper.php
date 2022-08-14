@@ -25,19 +25,11 @@ use Zikula\ExtensionsModule\Constant;
 
 class PersistedBundleHelper
 {
-    /**
-     * @var array the active/inactive state of each extension (extension state !== bundle state)
-     */
-    private $extensionStateMap = [];
+    // the active/inactive state of each extension (extension state !== bundle state)
+    private array $extensionStateMap = [];
 
-    /**
-     * @var string
-     */
-    private $databaseUrl;
-
-    public function __construct(string $databaseUrl = '')
+    public function __construct(private readonly string $databaseUrl = '')
     {
-        $this->databaseUrl = $databaseUrl;
     }
 
     public function getPersistedBundles(ZikulaHttpKernelInterface $kernel, array &$bundles): void
@@ -46,7 +38,7 @@ class PersistedBundleHelper
             $this->doGetPersistedBundles($kernel, $bundles);
         } catch (StaleCacheException $exception) {
             throw $exception;
-        } catch (Exception $exception) {
+        } catch (Exception) {
             // fail silently on purpose
         }
     }

@@ -23,28 +23,13 @@ use Zikula\Bundle\CoreBundle\Composer\Scanner;
 
 class BundlesSchemaHelper
 {
-    /**
-     * @var Connection
-     */
-    private $conn;
-
-    /**
-     * @var string
-     */
-    private $projectDir;
-
-    /**
-     * @var Scanner
-     */
-    private $scanner;
+    private Scanner $scanner;
 
     public function __construct(
-        Connection $conn,
+        private readonly Connection $connection,
+        private readonly string $projectDir
         TranslatorInterface $translator,
-        $projectDir
     ) {
-        $this->conn = $conn;
-        $this->projectDir = $projectDir;
         $this->scanner = new Scanner();
         $this->scanner->setTranslator($translator);
     }
@@ -71,7 +56,7 @@ class BundlesSchemaHelper
         // add what is in array but missing from db
         /** @var MetaData $metadata */
         foreach ($fileExtensions as $name => $metadata) {
-            $qb = $this->conn->createQueryBuilder();
+            $qb = $this->connection->createQueryBuilder();
             $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype')
                 ->from('bundles', 'b')
                 ->where('b.bundlename = :name')
@@ -87,12 +72,12 @@ class BundlesSchemaHelper
                     'bundleclass' => $metadata->getClass(),
                     'autoload' => serialize($metadata->getAutoload())
                 ];
-                $this->conn->update('bundles', $updatedMeta, ['id' => $row['id']]);
+                $this->connection->update('bundles', $updatedMeta, ['id' => $row['id']]);
             }
         }
 
         // remove what is in db but missing from array
-        $qb = $this->conn->createQueryBuilder();
+        $qb = $this->connection->createQueryBuilder();
         $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype')
             ->from('bundles', 'b');
         $res = $qb->execute();
@@ -105,7 +90,7 @@ class BundlesSchemaHelper
 
     private function removeById(int $id): void
     {
-        $this->conn->delete('bundles', ['id' => $id]);
+        $this->connection->delete('bundles', ['id' => $id]);
     }
 
     private function insert(MetaData $metadata): void
@@ -124,7 +109,7 @@ class BundlesSchemaHelper
                 throw new InvalidArgumentException(sprintf('Unknown type %s', $metadata->getType()));
         }
 
-        $this->conn->insert('bundles', [
+        $this->connection->insert('bundles', [
             'bundlename'  => $name,
             'autoload'    => $autoload,
             'bundleclass' => $class,
@@ -134,7 +119,7 @@ class BundlesSchemaHelper
 
     private function verifySchema(): void
     {
-        $schemaManager = $this->conn->getSchemaManager();
+        $schemaManager = $this->connection->getSchemaManager();
         if (true !== $schemaManager->tablesExist(['bundles'])) {
             $this->createSchema();
         }
@@ -142,7 +127,7 @@ class BundlesSchemaHelper
 
     private function createSchema(): void
     {
-        $schema = $this->conn->getSchemaManager();
+        $schema = $this->connection->getSchemaManager();
         $table = new Table('bundles');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('bundlename', 'string', ['length' => 100]);
@@ -151,7 +136,7 @@ class BundlesSchemaHelper
         $table->addColumn('bundletype', 'string', ['length' => 2]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['bundlename']);
-        $charset = $this->conn->getDriver() instanceof AbstractMySQLDriver ? 'utf8mb4' : 'utf8';
+        $charset = $this->connection->getDriver() instanceof AbstractMySQLDriver ? 'utf8mb4' : 'utf8';
         $table->addOption('charset', $charset);
         $schema->createTable($table);
     }

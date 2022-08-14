@@ -20,15 +20,9 @@ use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;
 
 class SwitchTokenParserTest extends TestCase
 {
-    /**
-     * @var SwitchTokenParser
-     */
-    protected $tokenParser;
+    protected SwitchTokenParser $tokenParser;
 
-    /**
-     * @var Parser
-     */
-    protected $twigParser;
+    protected Parser $twigParser;
 
     protected function setUp(): void
     {

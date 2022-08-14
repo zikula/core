@@ -25,15 +25,9 @@ trigger_deprecation('zikula/core-bundle', '3.1', 'The "%s" class is deprecated. 
  */
 class YamlDumper
 {
-    /**
-     * @var Filesystem
-     */
-    protected $fs;
+    protected Filesystem $fs;
 
-    /**
-     * @var string
-     */
-    protected $fullPath;
+    protected string $fullPath;
 
     public function __construct(string $configDir, string $filePath = 'services_custom.yaml')
     {

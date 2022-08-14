@@ -15,31 +15,10 @@ namespace Zikula\Bundle\CoreBundle;
 
 use InvalidArgumentException;
 
-/**
- * RouteUrl class.
- */
 class RouteUrl implements UrlInterface
 {
-    /**
-     * @var string
-     */
-    private $route;
-
-    /**
-     * @var array
-     */
-    private $args;
-
-    /**
-     * @var string
-     */
-    private $fragment;
-
-    public function __construct(string $route, array $args = [], string $fragment = null)
+    public function __construct(private readonly string $route, private readonly array $args = [], private readonly string $fragment = null)
     {
-        $this->route = $route;
-        $this->args = $args;
-        $this->fragment = $fragment;
     }
 
     public function getLanguage(): ?string

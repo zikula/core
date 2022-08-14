@@ -19,14 +19,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class CoreRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     /**

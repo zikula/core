@@ -20,19 +20,10 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class OutputCompressionListener implements EventSubscriberInterface
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
+    private bool $installed;
 
-    /**
-     * @var bool
-     */
-    private $installed;
-
-    public function __construct(VariableApiInterface $variableApi, $installed)
+    public function __construct(private readonly VariableApiInterface $variableApi, string $installed)
     {
-        $this->variableApi = $variableApi;
         $this->installed = $installed;
     }
 

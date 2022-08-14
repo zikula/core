@@ -16,50 +16,24 @@ namespace Zikula\Bundle\CoreBundle\HttpFoundation\Session;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserSessionEntity;
 
-/**
- * Class DoctrineSessionHandler
- */
 class DoctrineSessionHandler extends AbstractSessionHandler
 {
-    /**
-     * @var SessionStorageInterface
-     */
-    private $storage;
+    private SessionStorageInterface $storage;
 
-    /**
-     * @var UserSessionRepositoryInterface
-     */
-    private $userSessionRepository;
+    private bool $installed; // is Zikula installed?
 
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var bool is Zikula installed?
-     */
-    private $installed;
-
-    /**
-     * @var bool Whether gc() has been called
-     */
-    private $gcCalled = false;
+    private bool $gcCalled = false; // whether gc() has been called
 
     public function __construct(
-        UserSessionRepositoryInterface $userSessionRepository,
-        VariableApiInterface $variableApi,
-        RequestStack $requestStack,
+        private readonly UserSessionRepositoryInterface $userSessionRepository,
+        private readonly VariableApiInterface $variableApi,
+        private readonly RequestStack $requestStack,
         string $installed
     ) {
         $this->userSessionRepository = $userSessionRepository;
@@ -68,9 +42,7 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         $this->installed = '0.0.0' !== $installed;
     }
 
-    /**
-     * @Required
-     */
+    #[Required]
     public function setStorage(SessionStorageInterface $storage): void
     {
         $this->storage = $storage;

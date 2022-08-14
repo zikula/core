@@ -17,14 +17,8 @@ use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 
 class FormTypeChoiceEvent
 {
-    /**
-     * @var FormTypesChoices
-     */
-    protected $choices;
-
-    public function __construct(FormTypesChoices $choices)
+    public function __construct(private readonly FormTypesChoices $choices)
     {
-        $this->setChoices($choices);
     }
 
     public function getChoices(): FormTypesChoices
@@ -32,8 +26,10 @@ class FormTypeChoiceEvent
         return $this->choices;
     }
 
-    public function setChoices(FormTypesChoices $choices): void
+    public function setChoices(FormTypesChoices $choices): self
     {
         $this->choices = $choices;
+
+        return $this;
     }
 }

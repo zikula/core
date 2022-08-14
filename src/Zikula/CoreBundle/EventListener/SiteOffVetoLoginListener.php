@@ -23,43 +23,16 @@ use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 
 class SiteOffVetoLoginListener implements EventSubscriberInterface
 {
-    /**
-     * @var bool
-     */
-    private $siteOff;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private bool $siteOff;
 
     public function __construct(
         VariableApiInterface $variableApi,
-        PermissionApiInterface $permissionApi,
-        TranslatorInterface $translator,
-        RouterInterface $router,
-        RequestStack $requestStack
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+        private readonly RequestStack $requestStack
     ) {
         $this->siteOff = $variableApi->getSystemVar('siteoff');
-        $this->permissionApi = $permissionApi;
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()

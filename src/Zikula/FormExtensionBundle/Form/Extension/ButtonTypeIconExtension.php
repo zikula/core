@@ -23,7 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Xatoo (http://stackoverflow.com/users/3492835/xatoo)
  * @see http://stackoverflow.com/q/27905939/2600812
- * Class ButtonTypeIconExtension
  */
 class ButtonTypeIconExtension extends AbstractTypeExtension
 {
