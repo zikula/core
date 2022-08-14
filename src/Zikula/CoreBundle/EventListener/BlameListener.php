@@ -56,7 +56,6 @@ class BlameListener implements EventSubscriberInterface
                 if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
                     $uid = $this->session->isStarted() ? $this->session->get('uid', Constant::USER_ID_ANONYMOUS) : $uid;
                 }
-
             }
             $user = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid);
             $this->blameableListener->setUserValue($user);

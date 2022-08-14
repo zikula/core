@@ -42,9 +42,9 @@ abstract class AbstractEntityAttribute extends EntityAccess
      */
     protected string $value;
 
-    abstract public function getEntity()/* TODO add return type: mixed*/;
+    abstract public function getEntity()/* TODO add return type: mixed */;
 
-    abstract public function setEntity($entity)/* TODO add return type: self*/;
+    abstract public function setEntity($entity)/* TODO add return type: self */;
 
     public function __construct(string $name, string $value, $entity)
     {

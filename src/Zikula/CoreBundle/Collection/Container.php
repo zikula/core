@@ -53,15 +53,16 @@ class Container implements CollectionInterface
         return $this;
     }
 
+    public function get(mixed $key): mixed
+    {
+        return $this->collection[$key];
+    }
+
     public function set(mixed $key, mixed $value): self
     {
         $this->collection[$key] = $value;
 
         return $this;
-    }
-    public function get(mixed $key): mixed
-    {
-        return $this->collection[$key];
     }
 
     public function has(mixed $key): bool

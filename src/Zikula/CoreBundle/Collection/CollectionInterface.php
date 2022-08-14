@@ -21,14 +21,14 @@ interface CollectionInterface
     public function add(mixed $value): self;
 
     /**
-     * Add an item to the collection with a key.
-     */
-    public function set(mixed $key, mixed $value): self;
-
-    /**
      * Retrieve an item from the collection by its key.
      */
     public function get(mixed $key): mixed;
+
+    /**
+     * Add an item to the collection with a key.
+     */
+    public function set(mixed $key, mixed $value): self;
 
     /**
      * Remove an item from the collection.
