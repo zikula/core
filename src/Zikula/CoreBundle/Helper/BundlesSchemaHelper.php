@@ -27,8 +27,8 @@ class BundlesSchemaHelper
 
     public function __construct(
         private readonly Connection $connection,
-        private readonly string $projectDir
-        TranslatorInterface $translator,
+        private readonly string $projectDir,
+        TranslatorInterface $translator
     ) {
         $this->scanner = new Scanner();
         $this->scanner->setTranslator($translator);

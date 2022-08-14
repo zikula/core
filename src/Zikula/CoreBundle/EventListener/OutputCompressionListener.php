@@ -24,7 +24,7 @@ class OutputCompressionListener implements EventSubscriberInterface
 
     public function __construct(private readonly VariableApiInterface $variableApi, string $installed)
     {
-        $this->installed = $installed;
+        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()

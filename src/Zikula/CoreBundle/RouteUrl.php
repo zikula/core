@@ -17,7 +17,7 @@ use InvalidArgumentException;
 
 class RouteUrl implements UrlInterface
 {
-    public function __construct(private readonly string $route, private readonly array $args = [], private readonly string $fragment = null)
+    public function __construct(private readonly string $route, private readonly array $args = [], private readonly ?string $fragment = null)
     {
     }
 

@@ -30,8 +30,8 @@ class AlphaFilter
     public function __construct(
         private readonly string $route,
         private readonly array $routeParameters = [],
-        private readonly $currentLetter = 'a',
-        private readonly $includeNumbers = false
+        private readonly string $currentLetter = 'a',
+        private readonly bool $includeNumbers = false
     ) {
     }
 

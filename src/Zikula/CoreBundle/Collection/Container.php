@@ -69,16 +69,13 @@ class Container implements CollectionInterface
         return $this->offsetExists($key);
     }
 
-    /**
-     * Remove the specified item from the collection.
-     *
-     * @param mixed $key The index of the item to remove
-     */
-    public function del($key): void
+    public function del(mixed $key): self
     {
         if ($this->has($key)) {
             $this->offsetUnset($key);
         }
+
+        return $this;
     }
 
     // IteratorAggregate interface implementation

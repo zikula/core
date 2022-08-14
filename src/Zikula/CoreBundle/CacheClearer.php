@@ -42,7 +42,6 @@ class CacheClearer
     ) {
         $this->logger = $zikulaLogger;
         $this->installed = '0.0.0' !== $installed;
-        $this->routingLocales = $routingLocales;
         $this->fileSystem = new Filesystem();
         $this->cacheTypes = [];
         $this->cachesToClear = [];
