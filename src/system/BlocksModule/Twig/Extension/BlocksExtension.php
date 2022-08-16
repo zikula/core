@@ -15,8 +15,6 @@ namespace Zikula\BlocksModule\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Twig\TwigTest;
-use Zikula\BlocksModule\Collectible\PendingContentCollectible;
 use Zikula\BlocksModule\Twig\Runtime\BlocksRuntime;
 
 class BlocksExtension extends AbstractExtension
@@ -27,13 +25,6 @@ class BlocksExtension extends AbstractExtension
             new TwigFunction('showblockposition', [BlocksRuntime::class, 'showBlockPosition'], ['is_safe' => ['html']]),
             new TwigFunction('showblock', [BlocksRuntime::class, 'showBlock'], ['is_safe' => ['html']]),
             new TwigFunction('positionavailable', [BlocksRuntime::class, 'isPositionAvailable']),
-        ];
-    }
-
-    public function getTests()
-    {
-        return [
-            new TwigTest('pendingContentCollectible', function ($obj) { return $obj instanceof PendingContentCollectible; }),
         ];
     }
 }

@@ -55,7 +55,6 @@
                 "fincludeblock::": "Block title::",
                 "HTMLblock::": "Block title::",
                 "HTMLblock::bid": "::bid",
-                "PendingContent::": "Block title::",
                 "Textblock::": "Block title::",
                 "Textblock::bid": "::bid",
                 "xsltblock::": "Block title::"
