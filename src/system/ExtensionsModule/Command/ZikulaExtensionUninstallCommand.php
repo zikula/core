@@ -19,7 +19,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\ExtensionsModule\Constant;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
 {
