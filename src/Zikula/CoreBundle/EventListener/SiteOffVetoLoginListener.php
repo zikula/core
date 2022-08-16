@@ -32,7 +32,7 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
         private readonly RouterInterface $router,
         private readonly RequestStack $requestStack
     ) {
-        $this->siteOff = $variableApi->getSystemVar('siteoff');
+        $this->siteOff = $variableApi->getSystemVar('siteoff') ? true : false;
     }
 
     public static function getSubscribedEvents()

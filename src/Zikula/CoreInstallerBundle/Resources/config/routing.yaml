@@ -1,3 +1,0 @@
-zikulacoreinstallerbundle:
-    resource: "@ZikulaCoreInstallerBundle/Controller"
-    type: annotation

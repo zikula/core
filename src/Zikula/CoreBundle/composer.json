@@ -17,7 +17,6 @@
         "composer/composer": "^2",
         "composer/installers": "^2",
 
-        "zikula/coreinstaller-bundle": "dev-3.1",
         "zikula/formextension-bundle": "dev-3.1",
         "zikula/workflow-bundle": "dev-3.1",
 

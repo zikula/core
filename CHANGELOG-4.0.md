@@ -3,6 +3,7 @@
 ## 4.0.0 (unreleased)
 
 - BC Breaks:
+  - [CoreInstallerBundle] Remove custom installer.
   - [HookBundle] Remove hooks support.
   - [PageLock] Remove page lock module.
   - [WorkflowBundle] Remove graphical workflow editor.

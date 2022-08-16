@@ -10,7 +10,6 @@ return [
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     Zikula\Bundle\CoreBundle\CoreBundle::class => ['all' => true],
-    Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle::class => ['all' => true],
     Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle::class => ['all' => true],
     Zikula\SettingsModule\ZikulaSettingsModule::class => ['all' => true],
     JMS\I18nRoutingBundle\JMSI18nRoutingBundle::class => ['all' => true],

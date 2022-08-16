@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Dotenv\Dotenv;
-use Zikula\Bundle\CoreInstallerBundle\Util\RequirementChecker;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -22,9 +21,6 @@ if (!class_exists(Dotenv::class)) {
 }
 
 (new Dotenv())->bootEnv(dirname(__DIR__) . '/.env');
-
-// on install or upgrade, check if system requirements are met.
-(new RequirementChecker($_ENV['ZIKULA_INSTALLED']))->verify();
 
 // globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
 AnnotationReader::addGlobalIgnoredName('type');
