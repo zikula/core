@@ -26,7 +26,6 @@ use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\SearchModule\Block\SearchBlock;
 use Zikula\UsersModule\Block\LoginBlock;
 
 class BlocksModuleInstaller extends AbstractExtensionInstaller
@@ -194,21 +193,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         $blocks = [];
         $extensionRepo = $this->entityManager->getRepository(ExtensionEntity::class);
         $blocksModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaBlocksModule']);
-        $searchModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaSearchModule']);
         $usersModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaUsersModule']);
-        $blocks[] = [
-            'bkey' => SearchBlock::class,
-            'blocktype' => 'Search',
-            'language' => '',
-            'module' => $searchModuleEntity,
-            'title' => $this->trans('Search box'),
-            'description' => $this->trans('Search block'),
-            'properties' => [
-                'displaySearchBtn' => true,
-                'active' => ['ZikulaUsersModule' => 1]
-            ],
-            'position' => $positions['left']
-        ];
         $blocks[] = [
             // @deprecated at core-4.0.0 remove this block
             'bkey' => HtmlBlock::class,

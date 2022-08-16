@@ -1,8 +1,0 @@
-{{ form_row(form.displaySearchBtn) }}
-<fieldset>
-    <legend>{% trans %}Active modules{% endtrans %}</legend>
-    {{ form_row(form.active) }}
-    {% if form.active is empty %}
-        <div class="col-md-9 offset-md-3 alert alert-danger">{% trans with {'%link': '<a href="' ~ path('zikulasearchmodule_config_config') ~ '">' ~ 'Search Config'|trans ~ '</a>'|raw} %}There are no active modules to search. Please activate at %link{% endtrans %}</div>
-    {% endif %}
-</fieldset>

@@ -12,5 +12,3 @@ currentMenu: dev-general
 ## Specific topics
 
 - [Performance optimisation](Performance.md)
-- [Refactoring for 2.0](Refactoring_2.md)
-- [Refactoring for 3.0](Refactoring_3.md)

@@ -31,7 +31,6 @@ use Zikula\MailerModule\ZikulaMailerModule;
 use Zikula\MenuModule\ZikulaMenuModule;
 use Zikula\PermissionsModule\ZikulaPermissionsModule;
 use Zikula\RoutesModule\ZikulaRoutesModule;
-use Zikula\SearchModule\ZikulaSearchModule;
 use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\SettingsModule\ZikulaSettingsModule;
 use Zikula\ThemeModule\EventListener\AddJSConfigListener;
@@ -78,7 +77,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaMenuModule' => ZikulaMenuModule::class,
         'ZikulaPermissionsModule' => ZikulaPermissionsModule::class,
         'ZikulaRoutesModule' => ZikulaRoutesModule::class,
-        'ZikulaSearchModule' => ZikulaSearchModule::class,
         'ZikulaSecurityCenterModule' => ZikulaSecurityCenterModule::class,
         'ZikulaSettingsModule' => ZikulaSettingsModule::class,
         'ZikulaThemeModule' => ZikulaThemeModule::class,

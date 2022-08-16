@@ -36,13 +36,6 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
     {
         switch ($oldVersion) {
             case '1.0.0':
-                $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
-                foreach ($menuItems as $menuItem) {
-                    if ('zikulasearchmodule_user_form' === $menuItem->getOption('route')) {
-                        $menuItem->setOption('route', 'zikulasearchmodule_search_execute');
-                    }
-                }
-                $this->entityManager->flush();
                 // no break
             case '1.0.1': // shipped with Core-2.0.15
                 $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
@@ -86,19 +79,8 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
             ]
         ]);
 
-        $search = new MenuItemEntity();
-        $search->setParent($root);
-        $search->setTitle($this->trans('Site search'));
-        $search->setOptions([
-            'route' => 'zikulasearchmodule_search_execute',
-            'attributes' => [
-                'icon' => 'fas fa-search'
-            ]
-        ]);
-
         $this->entityManager->persist($root);
         $this->entityManager->persist($home);
-        $this->entityManager->persist($search);
         $this->entityManager->flush();
     }
 }

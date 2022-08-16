@@ -33,7 +33,6 @@ return [
     Zikula\MailerModule\ZikulaMailerModule::class => ['all' => true],
     Zikula\MenuModule\ZikulaMenuModule::class => ['all' => true],
     Zikula\PermissionsModule\ZikulaPermissionsModule::class => ['all' => true],
-    Zikula\SearchModule\ZikulaSearchModule::class => ['all' => true],
     Zikula\SecurityCenterModule\ZikulaSecurityCenterModule::class => ['all' => true],
     Zikula\ThemeModule\ZikulaThemeModule::class => ['all' => true],
     Zikula\UsersModule\ZikulaUsersModule::class => ['all' => true],
