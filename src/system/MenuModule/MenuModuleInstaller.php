@@ -36,7 +36,6 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
     {
         switch ($oldVersion) {
             case '1.0.0':
-                // no break
             case '1.0.1': // shipped with Core-2.0.15
                 $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
                 foreach ($menuItems as $menuItem) {
