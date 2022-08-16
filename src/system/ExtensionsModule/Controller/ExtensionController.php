@@ -39,7 +39,6 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
 use Zikula\ExtensionsModule\Event\ExtensionListPreReSyncEvent;
 use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
-use Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionStateHelper;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
@@ -297,8 +296,7 @@ class ExtensionController extends AbstractController
         string $token,
         ZikulaHttpKernelInterface $kernel,
         ExtensionHelper $extensionHelper,
-        ExtensionStateHelper $extensionStateHelper,
-        ExtensionDependencyHelper $dependencyHelper
+        ExtensionStateHelper $extensionStateHelper
     ) {
         if (!$this->isCsrfTokenValid('uninstall-extension', $token)) {
             throw new AccessDeniedException();
@@ -310,7 +308,6 @@ class ExtensionController extends AbstractController
         if (!$kernel->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
         }
-        $requiredDependents = $dependencyHelper->getDependentExtensions($extension);
 
         $form = $this->createForm(DeletionType::class, [], [
             'action' => $this->generateUrl('zikulaextensionsmodule_extension_uninstall', [
@@ -321,13 +318,6 @@ class ExtensionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                // remove dependent extensions
-                if (!$extensionHelper->uninstallArray($requiredDependents)) {
-                    $this->addFlash('error', 'Error: Could not uninstall dependent extensions.');
-
-                    return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
-                }
-
                 // remove the extension
                 if ($extensionHelper->uninstall($extension)) {
                     $this->addFlash('status', 'Done! Uninstalled extension.');
@@ -343,8 +333,7 @@ class ExtensionController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'extension' => $extension,
-            'requiredDependents' => $requiredDependents
+            'extension' => $extension
         ];
     }
 

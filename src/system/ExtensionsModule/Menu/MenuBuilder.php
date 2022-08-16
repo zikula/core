@@ -23,29 +23,11 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class MenuBuilder
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var CsrfTokenManagerInterface
-     */
-    private $csrfTokenManager;
-
     public function __construct(
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi,
-        CsrfTokenManagerInterface $csrfTokenManager
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly CsrfTokenManagerInterface $csrfTokenManager
     ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
-        $this->csrfTokenManager = $csrfTokenManager;
     }
 
     public function createAdminMenu(array $options): ItemInterface
@@ -142,10 +124,7 @@ class MenuBuilder
                 break;
         }
 
-        if (in_array($extension->getState(), [
-            Constant::STATE_ACTIVE,
-            Constant::STATE_INACTIVE,
-        ], true)) {
+        if (in_array($extension->getState(), [Constant::STATE_ACTIVE, Constant::STATE_INACTIVE], true)) {
             $menu->addChild('Edit extension', [
                 'route' => 'zikulaextensionsmodule_extension_modify',
                 'routeParameters' => ['id' => $id]

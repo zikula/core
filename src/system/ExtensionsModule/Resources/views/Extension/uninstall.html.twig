@@ -7,17 +7,6 @@
 <p class="alert alert-warning">{% trans with {'%title%': extension.displayname} %}Do you really want to uninstall '%title%'?{% endtrans %}</p>
 <p class="alert alert-danger">{% trans %}Warning! Uninstalling this extension will also permanently remove all data associated with it.{% endtrans %}</p>
 
-{% if requiredDependents|length > 0 %}
-    <div class="alert alert-danger">
-        {% trans %}Warning! Other extensions present in the system require this extension. If you uninstall this extension then these extensions that require it will also be uninstalled.{% endtrans %}
-        <ul>
-            {% for dependent in requiredDependents %}
-            <li>{{ dependent.displayname }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <div class="form-group row">

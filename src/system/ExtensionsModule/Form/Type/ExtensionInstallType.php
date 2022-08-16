@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -27,9 +25,6 @@ class ExtensionInstallType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('dependencies', CollectionType::class, [
-                'entry_type' => CheckboxType::class,
-            ])
             ->add('install', SubmitType::class, [
                 'label' => 'Install',
                 'icon' => 'fa-plus',

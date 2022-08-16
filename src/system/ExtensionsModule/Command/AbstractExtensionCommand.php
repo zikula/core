@@ -19,14 +19,12 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
-use Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 
 abstract class AbstractExtensionCommand extends Command
 {
     public function __construct(
         protected readonly ExtensionRepositoryInterface $extensionRepository,
-        protected readonly ExtensionDependencyHelper $dependencyHelper,
         protected readonly BundleSyncHelper $bundleSyncHelper,
         protected readonly ExtensionHelper $extensionHelper,
         protected readonly EventDispatcherInterface $eventDispatcher,

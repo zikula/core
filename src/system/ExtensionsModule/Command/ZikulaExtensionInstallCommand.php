@@ -58,19 +58,6 @@ class ZikulaExtensionInstallCommand extends AbstractExtensionCommand
 
         /** @var $extension ExtensionEntity */
         $extension = $this->extensionRepository->findOneBy(['name' => $bundleName]);
-        $unsatisfiedDependencies = $this->dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
-        $dependencyNames = [];
-        foreach ($unsatisfiedDependencies as $dependency) {
-            if (MetaData::DEPENDENCY_REQUIRED !== $dependency->getStatus()) {
-                continue;
-            }
-            $dependencyNames[] = $dependency->getModname();
-        }
-        if (!empty($dependencyNames)) {
-            $io->error(sprintf('Cannot install because this extension depends on other extensions. Please install the following extensions first: %s', implode(', ', $dependencyNames)));
-
-            return Command::FAILURE;
-        }
 
         if (false === $this->extensionHelper->install($extension)) {
             if ($input->isInteractive()) {

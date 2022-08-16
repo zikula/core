@@ -15,7 +15,6 @@ namespace Zikula\ExtensionsModule;
 
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
-use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
@@ -24,7 +23,6 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {
     private $entities = [
         ExtensionEntity::class,
-        ExtensionDependencyEntity::class,
         ExtensionVarEntity::class,
     ];
 

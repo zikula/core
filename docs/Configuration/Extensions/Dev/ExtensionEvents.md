@@ -60,9 +60,4 @@ class ExtensionPostDisabledEvent
  * Occurs when a module has been removed entirely.
  */
 class ExtensionPostRemoveEvent
-
-/**
- * Occurs when the connections menu for an extension is built.
- */
-class ConnectionsMenuEvent
 ```

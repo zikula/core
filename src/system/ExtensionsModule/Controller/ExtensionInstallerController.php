@@ -29,7 +29,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
 use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
-use Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionStateHelper;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
@@ -51,24 +50,17 @@ class ExtensionInstallerController extends AbstractController
      */
     private $extensionRepository;
 
-    /**
-     * @var ExtensionDependencyHelper
-     */
-    private $dependencyHelper;
-
     public function __construct(
         AbstractExtension $extension,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         TranslatorInterface $translator,
         ExtensionStateHelper $extensionStateHelper,
-        ExtensionRepositoryInterface $extensionRepository,
-        ExtensionDependencyHelper $dependencyHelper
+        ExtensionRepositoryInterface $extensionRepository
     ) {
         parent::__construct($extension, $permissionApi, $variableApi, $translator);
         $this->extensionStateHelper = $extensionStateHelper;
         $this->extensionRepository = $extensionRepository;
-        $this->dependencyHelper = $dependencyHelper;
     }
 
     /**
@@ -85,15 +77,11 @@ class ExtensionInstallerController extends AbstractController
 
             return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
         }
-        $unsatisfiedDependencies = $this->dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
-        $form = $this->createForm(ExtensionInstallType::class, [
-            'dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)
-        ], [
+        $form = $this->createForm(ExtensionInstallType::class, [], [
             'action' => $this->generateUrl('zikulaextensionsmodule_extensioninstaller_install', ['id' => $extension->getId()])
         ]);
 
         return [
-            'dependencies' => $unsatisfiedDependencies,
             'extension' => $extension,
             'form' => $form->createView()
         ];
@@ -115,35 +103,13 @@ class ExtensionInstallerController extends AbstractController
     ) {
         $id = $extension->getId();
 
-        $unsatisfiedDependencies = $this->dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
-        $form = $this->createForm(ExtensionInstallType::class, [
-            'dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)
-        ]);
+        $form = $this->createForm(ExtensionInstallType::class, []);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('install')->isClicked()) {
                 $extensionsInstalled = [];
                 $data = $form->getData();
-
-                // Install extension dependencies
-                foreach ($data['dependencies'] as $dependencyId => $installSelected) {
-                    if (!$installSelected && MetaData::DEPENDENCY_REQUIRED !== $unsatisfiedDependencies[$dependencyId]->getStatus()) {
-                        continue;
-                    }
-                    $dependencyExtensionEntity = $this->extensionRepository->get($unsatisfiedDependencies[$dependencyId]->getModname());
-                    if (isset($dependencyExtensionEntity)) {
-                        if (!$extensionHelper->install($dependencyExtensionEntity)) {
-                            $this->addFlash('error', $this->trans('Failed to install dependency "%name%"!', ['%name%' => $dependencyExtensionEntity->getName()]));
-
-                            return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
-                        }
-                        $extensionsInstalled[] = $dependencyExtensionEntity->getId();
-                        $this->addFlash('status', $this->trans('Installed dependency "%name%".', ['%name%' => $dependencyExtensionEntity->getName()]));
-                    } else {
-                        $this->addFlash('warning', $this->trans('Warning: could not install selected dependency "%name%".', ['%name%' => $unsatisfiedDependencies[$dependencyId]->getModname()]));
-                    }
-                }
 
                 if ($extensionHelper->install($extension)) {
                     $this->addFlash('status', $this->trans('Done! Installed "%name%".', ['%name%' => $extension->getName()]));
@@ -203,20 +169,5 @@ class ExtensionInstallerController extends AbstractController
         $this->addFlash('status', 'Operation cancelled.');
 
         return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
-    }
-
-    /**
-     * Create array suitable for checkbox FormType [[ID => bool][ID => bool]].
-     */
-    private function formatDependencyCheckboxArray(array $dependencies): array
-    {
-        $return = [];
-        foreach ($dependencies as $dependency) {
-            /** @var ExtensionEntity $dependencyExtension */
-            $dependencyExtension = $this->extensionRepository->get($dependency->getModname());
-            $return[$dependency->getId()] = null !== $dependencyExtension;
-        }
-
-        return $return;
     }
 }

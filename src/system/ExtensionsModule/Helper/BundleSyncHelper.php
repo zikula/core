@@ -27,7 +27,6 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
 use Zikula\ExtensionsModule\Event\ExtensionEntityPreInsertEvent;
@@ -51,11 +50,6 @@ class BundleSyncHelper
      * @var ExtensionVarRepositoryInterface
      */
     private $extensionVarRepository;
-
-    /**
-     * @var ExtensionDependencyRepository
-     */
-    private $extensionDependencyRepository;
 
     /**
      * @var TranslatorInterface
@@ -91,7 +85,6 @@ class BundleSyncHelper
         ZikulaHttpKernelInterface $kernel,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionVarRepositoryInterface $extensionVarRepository,
-        ExtensionDependencyRepository $extensionDependencyRepository,
         TranslatorInterface $translator,
         EventDispatcherInterface $dispatcher,
         ExtensionStateHelper $extensionStateHelper,
@@ -102,7 +95,6 @@ class BundleSyncHelper
         $this->kernel = $kernel;
         $this->extensionRepository = $extensionRepository;
         $this->extensionVarRepository = $extensionVarRepository;
-        $this->extensionDependencyRepository = $extensionDependencyRepository;
         $this->translator = $translator;
         $this->dispatcher = $dispatcher;
         $this->extensionStateHelper = $extensionStateHelper;
@@ -236,9 +228,6 @@ class BundleSyncHelper
         // See any extensions have been gained since last sync,
         // or if any current extensions have been upgraded
         $upgradedExtensions = $this->syncAddedExtensions($extensionsFromFile, $extensionsFromDB);
-
-        // Clear and reload the dependencies table with all current dependencies
-        $this->extensionDependencyRepository->reloadExtensionDependencies($extensionsFromFile);
 
         return $upgradedExtensions;
     }
