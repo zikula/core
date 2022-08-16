@@ -15,7 +15,6 @@ namespace Zikula\ExtensionsModule\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -25,57 +24,14 @@ use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 
 abstract class AbstractExtensionCommand extends Command
 {
-    /**
-     * @var ExtensionRepositoryInterface
-     */
-    protected $extensionRepository;
-
-    /**
-     * @var BlockRepositoryInterface
-     */
-    protected $blockRepository;
-
-    /**
-     * @var ExtensionDependencyHelper
-     */
-    protected $dependencyHelper;
-
-    /**
-     * @var BundleSyncHelper
-     */
-    protected $bundleSyncHelper;
-
-    /**
-     * @var ExtensionHelper
-     */
-    protected $extensionHelper;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    protected $kernel;
-
     public function __construct(
-        ExtensionRepositoryInterface $extensionRepository,
-        BlockRepositoryInterface $blockRepository,
-        ExtensionDependencyHelper $dependencyHelper,
-        BundleSyncHelper $bundleSyncHelper,
-        ExtensionHelper $extensionHelper,
-        EventDispatcherInterface $eventDispatcher,
-        ZikulaHttpKernelInterface $kernel
+        protected readonly ExtensionRepositoryInterface $extensionRepository,
+        protected readonly ExtensionDependencyHelper $dependencyHelper,
+        protected readonly BundleSyncHelper $bundleSyncHelper,
+        protected readonly ExtensionHelper $extensionHelper,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly ZikulaHttpKernelInterface $kernel
     ) {
-        $this->extensionRepository = $extensionRepository;
-        $this->blockRepository = $blockRepository;
-        $this->dependencyHelper = $dependencyHelper;
-        $this->bundleSyncHelper = $bundleSyncHelper;
-        $this->extensionHelper = $extensionHelper;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->kernel = $kernel;
         parent::__construct();
     }
 

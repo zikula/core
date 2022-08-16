@@ -21,6 +21,7 @@ functions, filters, tags, tests and global variables.
 
 ### Themes and Assets
 
+- localeSwitcher()
 - pageAddAsset(type, value, weight = 100)
 - pageGetVar(name, default = null)
 - pageSetVar(name, value)
@@ -76,14 +77,3 @@ functions, filters, tags, tests and global variables.
 
 - adminPanelMenu()
 - getPreviewImagePath(themeName, size = "medium")
-
-#### Blocks
-
-- positionavailable(name)
-- showblock(block, positionName = "")
-- showblockposition(positionName, implode = true)
-
-#### Atom Theme
-
-- atomFeedLastUpdated()
-- atomId()

@@ -18,14 +18,8 @@ use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
 class SecurityCenterRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var HtmlFilterApiInterface
-     */
-    private $htmlFilterApi;
-
-    public function __construct(HtmlFilterApiInterface $htmlFilterApi)
+    public function __construct(private readonly HtmlFilterApiInterface $htmlFilterApi)
     {
-        $this->htmlFilterApi = $htmlFilterApi;
     }
 
     public function safeHtml(string $string): string

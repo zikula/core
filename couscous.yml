@@ -95,9 +95,6 @@ menu:
                 content-pages:
                     text: Static pages
                     relativeUrl: Content/pages.html
-                content-blocks:
-                    text: Blocks
-                    relativeUrl: Content/blocks.html
         access-control:
             name: Access Control
             items:
@@ -122,9 +119,6 @@ menu:
                 themes:
                     text: Themes
                     relativeUrl: LayoutDesign/Themes/index.html
-                blocks:
-                    text: Blocks
-                    relativeUrl: LayoutDesign/Blocks/index.html
                 menus:
                     text: Menus
                     relativeUrl: LayoutDesign/Menus/index.html

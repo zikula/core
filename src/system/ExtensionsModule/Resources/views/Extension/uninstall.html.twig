@@ -6,16 +6,7 @@
 
 <p class="alert alert-warning">{% trans with {'%title%': extension.displayname} %}Do you really want to uninstall '%title%'?{% endtrans %}</p>
 <p class="alert alert-danger">{% trans %}Warning! Uninstalling this extension will also permanently remove all data associated with it.{% endtrans %}</p>
-{% if blocks|length > 0 %}
-    <div class="alert alert-danger">
-        {% trans %}Warning! Removing this extension will also remove the following blocks{% endtrans %}:
-        <ul>
-            {% for block in blocks %}
-            <li>{{ block.blocktype }} : {{ block.title|default(block.description) }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
+
 {% if requiredDependents|length > 0 %}
     <div class="alert alert-danger">
         {% trans %}Warning! Other extensions present in the system require this extension. If you uninstall this extension then these extensions that require it will also be uninstalled.{% endtrans %}

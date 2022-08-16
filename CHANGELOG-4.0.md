@@ -7,7 +7,7 @@
   - [HookBundle] Remove hooks support.
   - [PageLock] Remove page lock module.
   - [WorkflowBundle] Remove graphical workflow editor.
-  - [Blocks] Remove pending content.
+  - [Blocks] Remove blocks system and pending content.
   - [Menu] Remove custom (database-driven) menus.
   - [Routes] Remove custom (database-driven) routes.
   - [Search] Remove search module.

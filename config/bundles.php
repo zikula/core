@@ -26,7 +26,6 @@ return [
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
     Oro\TwigInspector\Bundle\OroTwigInspectorBundle::class => ['dev' => true],
     Zikula\AdminModule\ZikulaAdminModule::class => ['all' => true],
-    Zikula\BlocksModule\ZikulaBlocksModule::class => ['all' => true],
     Zikula\CategoriesModule\ZikulaCategoriesModule::class => ['all' => true],
     Zikula\ExtensionsModule\ZikulaExtensionsModule::class => ['all' => true],
     Zikula\GroupsModule\ZikulaGroupsModule::class => ['all' => true],

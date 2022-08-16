@@ -24,7 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -297,7 +296,6 @@ class ExtensionController extends AbstractController
         ExtensionEntity $extension,
         string $token,
         ZikulaHttpKernelInterface $kernel,
-        BlockRepositoryInterface $blockRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
         ExtensionDependencyHelper $dependencyHelper
@@ -313,7 +311,6 @@ class ExtensionController extends AbstractController
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
         }
         $requiredDependents = $dependencyHelper->getDependentExtensions($extension);
-        $blocks = $blockRepository->findBy(['module' => $extension]);
 
         $form = $this->createForm(DeletionType::class, [], [
             'action' => $this->generateUrl('zikulaextensionsmodule_extension_uninstall', [
@@ -330,14 +327,12 @@ class ExtensionController extends AbstractController
 
                     return $this->redirectToRoute('zikulaextensionsmodule_extension_listextensions');
                 }
-                // remove blocks
-                $blockRepository->remove($blocks);
 
                 // remove the extension
                 if ($extensionHelper->uninstall($extension)) {
                     $this->addFlash('status', 'Done! Uninstalled extension.');
                 } else {
-                    $this->addFlash('error', 'Extension removal failed! (note: blocks and dependents may have been removed)');
+                    $this->addFlash('error', 'Extension removal failed! (note: dependents may have been removed)');
                 }
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
@@ -349,7 +344,6 @@ class ExtensionController extends AbstractController
         return [
             'form' => $form->createView(),
             'extension' => $extension,
-            'blocks' => $blocks,
             'requiredDependents' => $requiredDependents
         ];
     }
@@ -374,7 +368,6 @@ class ExtensionController extends AbstractController
     public function preview(Engine $engine, string $themeName): Response
     {
         $engine->setActiveTheme($themeName);
-        $this->addFlash('warning', 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.');
 
         return $this->forward('Zikula\Bundle\CoreBundle\Controller\MainController::home');
     }

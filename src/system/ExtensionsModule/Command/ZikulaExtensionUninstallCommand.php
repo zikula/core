@@ -67,9 +67,6 @@ class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
             return Command::FAILURE;
         }
 
-        $blocks = $this->blockRepository->findBy(['module' => $extension]);
-        $this->blockRepository->remove($blocks);
-
         if (false === $this->extensionHelper->uninstall($extension)) {
             if ($input->isInteractive()) {
                 $io->error('Could not uninstall the extension');

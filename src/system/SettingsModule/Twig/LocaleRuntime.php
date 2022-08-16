@@ -11,50 +11,44 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\SettingsModule\Block;
+namespace Zikula\SettingsModule\Twig;
 
 use Exception;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\BlocksModule\AbstractBlockHandler;
+use Twig\Environment;use Twig\Extension\RuntimeExtensionInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
-/**
- * Block to display locale chooser
- */
-class LocaleBlock extends AbstractBlockHandler
+class LocaleRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly RequestStack $requestStack,
+        private readonly Environment $twig,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly LocaleApiInterface $localeApi
+    ) {
+    }
 
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    public function display(array $properties): string
+    public function renderLocaleSwitcher(): string
     {
-        if (!$this->hasPermission('LocaleBlock::', '::', ACCESS_OVERVIEW)
-        || (!$this->hasPermission('LocaleBlock::bid', '::' . $properties['bid'], ACCESS_OVERVIEW))) {
+        if (!$this->permissionApi->hasPermission('LocaleSwitcher::', '::', ACCESS_OVERVIEW)) {
             return '';
         }
+
         $locales = $this->localeApi->getSupportedLocaleNames();
         $localeLinks = [];
         /** @var Request $request */
         $request = $this->requestStack->getMainRequest();
         try {
             $routeInfo = $this->router->match($request->getPathInfo());
-        } catch (Exception $exception) {
+        } catch (Exception) {
             return '';
         }
         $locale = $request->getLocale();
@@ -68,13 +62,17 @@ class LocaleBlock extends AbstractBlockHandler
             }
             $localeLinks[$displayName] = $url;
         }
+        if (2 > count($localeLinks)) {
+            return '';
+        }
+
         $form = $this->formFactory->create()->add('locale', ChoiceType::class, [
             'choices' => $localeLinks,
             'data' => $selectedRoute,
             'attr' => ['class' => 'locale-switcher-block']
         ]);
 
-        return $this->renderView('@ZikulaSettingsModule/Block/localeBlock.html.twig', [
+        return $this->twig->render('@ZikulaSettingsModule/Locale/localeSwitcher.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -90,29 +88,5 @@ class LocaleBlock extends AbstractBlockHandler
         $params['_locale'] = $locale;
 
         return $params;
-    }
-
-    /**
-     * @required
-     */
-    public function setRouter(RouterInterface $router): void
-    {
-        $this->router = $router;
-    }
-
-    /**
-     * @required
-     */
-    public function setFormFactory(FormFactoryInterface $formFactory): void
-    {
-        $this->formFactory = $formFactory;
-    }
-
-    /**
-     * @required
-     */
-    public function setLocaleApi(LocaleApiInterface $localeApi): void
-    {
-        $this->localeApi = $localeApi;
     }
 }

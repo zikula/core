@@ -19,7 +19,6 @@ use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Zikula\AdminModule\ZikulaAdminModule;
-use Zikula\BlocksModule\ZikulaBlocksModule;
 use Zikula\CategoriesModule\ZikulaCategoriesModule;
 use Zikula\DefaultTheme\ZikulaDefaultTheme;
 use Zikula\ExtensionsModule\AbstractExtension;
@@ -69,7 +68,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      */
     public static $coreExtension = [
         'ZikulaAdminModule' => ZikulaAdminModule::class,
-        'ZikulaBlocksModule' => ZikulaBlocksModule::class,
         'ZikulaCategoriesModule' => ZikulaCategoriesModule::class,
         'ZikulaExtensionsModule' => ZikulaExtensionsModule::class,
         'ZikulaGroupsModule' => ZikulaGroupsModule::class,
