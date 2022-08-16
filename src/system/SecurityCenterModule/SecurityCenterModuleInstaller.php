@@ -29,7 +29,6 @@ use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
-
     public function __construct(
         private readonly CacheClearer $cacheClearer,
         private readonly PurifierHelper $purifierHelper,

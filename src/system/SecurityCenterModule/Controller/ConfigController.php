@@ -17,7 +17,6 @@ use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
