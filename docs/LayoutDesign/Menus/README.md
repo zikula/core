@@ -5,16 +5,11 @@ currentMenu: menus
 
 ## Basic topics
 
-- [Dynamic menus](DynamicMenus.md)
-  - [Bootstrap NavBar Menus](NavBarMenu.md)
-- [Translation](Translation.md)
-- [Permissions](Permissions.md)
 - [Custom menu templates](CustomTemplates.md)
 
 ## For developers
 
-Both dynamic and hard coded menus are enabled by the implementation of the
-[KnpMenuBundle](https://symfony.com/doc/current/bundles/KnpMenuBundle/index.html).
+Menus are enabled by the implementation of the [KnpMenuBundle](https://symfony.com/doc/current/bundles/KnpMenuBundle/index.html).
 It is already fully included, installed and configured - so there is no need
 to take these steps as outlined in the docs.
 
