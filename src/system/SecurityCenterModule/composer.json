@@ -36,7 +36,6 @@
         "zikula/permissions-module": "dev-3.1",
         "zikula/theme-module": "dev-3.1",
         "zikula/users-module": "dev-3.1",
-        "zikula/sortable-columns": "dev-main",
 
         "ezyang/htmlpurifier": "dev-master"
     },
