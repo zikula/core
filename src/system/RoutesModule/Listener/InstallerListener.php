@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Listener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
@@ -21,16 +22,14 @@ use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
 use Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
-use Zikula\RoutesModule\Listener\Base\AbstractInstallerListener;
 
 /**
  * Event handler implementation class for module installer events.
  */
-class InstallerListener extends AbstractInstallerListener
+class InstallerListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        // override subscription to ALL available events to only needed events.
         return [
             ExtensionPostCacheRebuildEvent::class => ['extensionPostInstalled', 5],
             ExtensionPostUpgradeEvent::class => ['extensionUpgraded', 5],
