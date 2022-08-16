@@ -48,8 +48,6 @@ class InstallerListener implements EventSubscriberInterface
 
     public function extensionPostInstalled(ExtensionPostCacheRebuildEvent $event): void
     {
-        parent::extensionPostInstalled($event);
-
         $extension = $event->getExtensionBundle();
         if (null === $extension) {
             return;
@@ -68,8 +66,6 @@ class InstallerListener implements EventSubscriberInterface
 
     public function extensionUpgraded(ExtensionPostUpgradeEvent $event): void
     {
-        parent::extensionUpgraded($event);
-
         $extension = $event->getExtensionBundle();
         if (null === $extension) {
             return;
@@ -83,8 +79,6 @@ class InstallerListener implements EventSubscriberInterface
 
     public function extensionRemoved(ExtensionPostRemoveEvent $event): void
     {
-        parent::extensionRemoved($event);
-
         $extension = $event->getExtensionBundle();
         if (null === $extension || 'ZikulaRoutesModule' === $extension->getName()) {
             return;
