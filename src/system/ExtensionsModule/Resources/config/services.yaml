@@ -23,8 +23,6 @@ services:
     # public because AbstractTheme and others access this using container
     Zikula\ExtensionsModule\Api\VariableApi:
         public: true
-        arguments:
-            $multisitesParameters: '%multisites%'
 
     # public because AbstractExtension accesses this using container
     Zikula\ExtensionsModule\Helper\MetaDataHelper:

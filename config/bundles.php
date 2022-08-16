@@ -23,7 +23,6 @@ return [
     Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle::class => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
-    Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true, 'test' => true],
     Oro\TwigInspector\Bundle\OroTwigInspectorBundle::class => ['dev' => true],
     Zikula\AdminModule\ZikulaAdminModule::class => ['all' => true],
     Zikula\CategoriesModule\ZikulaCategoriesModule::class => ['all' => true],

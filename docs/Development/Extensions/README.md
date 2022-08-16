@@ -3,10 +3,6 @@ currentMenu: dev-extensions
 ---
 # Extensions
 
-## Generating from scratch
-
-- [ExtensionMaker command](ExtensionMaker.md)
-
 ## Extension variables
 
 - [VariableApi](VariableApi.md)

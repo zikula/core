@@ -51,23 +51,16 @@ class VariableApi implements VariableApiInterface
     /**
      * @var array
      */
-    private $protectedSystemVars;
-
-    /**
-     * @var array
-     */
     private $variables;
 
     public function __construct(
         string $installed,
         ExtensionVarRepositoryInterface $repository,
-        ZikulaHttpKernelInterface $kernel,
-        array $multisitesParameters
+        ZikulaHttpKernelInterface $kernel
     ) {
         $this->installed = '0.0.0' !== $installed;
         $this->repository = $repository;
         $this->kernel = $kernel;
-        $this->protectedSystemVars = $multisitesParameters['protected.systemvars'] ?? [];
     }
 
     /**
@@ -174,9 +167,6 @@ class VariableApi implements VariableApiInterface
         }
         if (!$this->isInitialized) {
             $this->initialize();
-        }
-        if (self::CONFIG === $extensionName && in_array($variableName, $this->protectedSystemVars, true)) {
-            return false;
         }
 
         $entities = $this->repository->findBy(['modname' => $extensionName, 'name' => $variableName]);
