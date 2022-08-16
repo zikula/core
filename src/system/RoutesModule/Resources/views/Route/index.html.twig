@@ -1,9 +1,0 @@
-{# purpose of this template: routes index view #}
-{% extends routeArea == 'admin' ? '@ZikulaRoutesModule/adminBase.html.twig' : '@ZikulaRoutesModule/base.html.twig' %}
-{% block title 'Routes'|trans %}
-{% block admin_page_icon 'home' %}
-{% block content %}
-    <div class="zikularoutesmodule-route zikularoutesmodule-index">
-        <p>{% trans %}Welcome to the route section of the Routes application.{% endtrans %}</p>
-    </div>
-{% endblock %}

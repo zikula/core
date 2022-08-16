@@ -20,35 +20,14 @@ use Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy;
 
 class MultilingualRoutingHelper
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    /**
-     * @var string
-     */
-    private $projectDir;
-
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        CacheClearer $cacheClearer,
-        string $projectDir,
+        private readonly VariableApiInterface $variableApi,
+        private readonly CacheClearer $cacheClearer,
+        private readonly string $projectDir,
         string $installed
     ) {
-        $this->variableApi = $variableApi;
-        $this->cacheClearer = $cacheClearer;
-        $this->projectDir = $projectDir;
         $this->installed = '0.0.0' !== $installed;
     }
 

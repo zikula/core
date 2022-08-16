@@ -20,34 +20,37 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\RoutesModule\Helper\PermissionHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\RoutesModule\AppSettings;
-use Zikula\RoutesModule\Controller\Base\AbstractConfigController;
-use Zikula\RoutesModule\Helper\PermissionHelper;
 
 /**
  * Config controller implementation class.
  *
  * @Route("/config")
  */
-class ConfigController extends AbstractConfigController
+class ConfigController extends AbstractController
 {
     /**
      * @Route("/config",
      *        methods = {"GET", "POST"}
      * )
      * @Theme("admin")
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function config(
         Request $request,
         PermissionHelper $permissionHelper,
-        AppSettings $appSettings,
         LoggerInterface $logger,
         CurrentUserApiInterface $currentUserApi
     ): Response {
-        return parent::config($request, $permissionHelper, $appSettings, $logger, $currentUserApi);
+        if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+        
+        return new Response('<h3>Settings</h3><p>Nothing to do here.</p>');
     }
-
-    // feel free to add your own config controller methods here
 }

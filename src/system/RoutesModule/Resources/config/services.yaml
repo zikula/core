@@ -29,15 +29,6 @@ services:
 
     jms_i18n_routing.pattern_generation_strategy: '@Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy'
 
-    # public because EntityLifecycleListener accesses this using container
-    Zikula\RoutesModule\Entity\Factory\EntityFactory:
-        public: true
-
-    Zikula\RoutesModule\Form\Handler\:
-        resource: '../../Form/Handler'
-        calls:
-            - setLockingApi: ['@?Zikula\PageLockModule\Api\LockingApi']
-
     Zikula\RoutesModule\Helper\MultilingualRoutingHelper:
         arguments:
             $installed: '%env(ZIKULA_INSTALLED)%'
@@ -45,14 +36,6 @@ services:
     Zikula\RoutesModule\Helper\RouteDumperHelper:
         arguments:
             $dumpCommand: '@fos_js_routing.dump_command'
-
-    Zikula\RoutesModule\Listener\EntityLifecycleListener:
-        tags: ['doctrine.event_subscriber']
-
-    Zikula\RoutesModule\Menu\MenuBuilder:
-        tags:
-            - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: zikulaRoutesMenuItemActions }
-            - { name: knp_menu.menu_builder, method: createViewActionsMenu, alias: zikulaRoutesMenuViewActions }
 
     jms_i18n_routing.route_exclusion_strategy:
         class: '%jms_i18n_routing.route_exclusion_strategy.class%'

@@ -15,10 +15,7 @@ namespace Zikula\RoutesModule\Helper;
 
 class ExtractTranslationHelper
 {
-    /**
-     * @var string
-     */
-    private $extractedBundle = '';
+    private string $extractedBundle = '';
 
     /**
      * Returns the currently extracted bundle.

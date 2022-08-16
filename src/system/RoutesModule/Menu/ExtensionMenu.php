@@ -30,12 +30,6 @@ class ExtensionMenu extends AbstractExtensionMenu
         }
 
         $menu = $this->factory->createItem('zikularoutesmodule' . ucfirst($type) . 'Menu');
-        $menu->addChild('Routes', [
-            'route' => 'zikularoutesmodule_route_adminview',
-        ])
-            ->setAttribute('icon', 'fas fa-list')
-            ->setLinkAttribute('title', 'Route list')
-        ;
         $menu->addChild('Reload routes', [
             'route' => 'zikularoutesmodule_update_reload',
         ])

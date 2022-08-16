@@ -26,11 +26,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\AbstractTheme;
-use Zikula\RoutesModule\Entity\Factory\EntityFactory;
-use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
-use Zikula\RoutesModule\Helper\PathBuilderHelper;
-use Zikula\RoutesModule\Helper\SanitizeHelper;
 
 /**
  * Custom route loader.
@@ -39,62 +35,14 @@ use Zikula\RoutesModule\Helper\SanitizeHelper;
  */
 class RouteLoader extends Loader
 {
-    /**
-     * @var bool
-     */
-    private $loaded = false;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var EntityFactory
-     */
-    private $entityFactory;
-
-    /**
-     * @var ExtractTranslationHelper
-     */
-    private $extractTranslationHelper;
-
-    /**
-     * @var PathBuilderHelper
-     */
-    private $pathBuilderHelper;
-
-    /**
-     * @var SanitizeHelper
-     */
-    private $sanitizeHelper;
-
-    /**
-     * @var string
-     */
-    private $locale;
+    private bool $loaded = false;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        TranslatorInterface $translator,
-        EntityFactory $entityFactory,
-        ExtractTranslationHelper $extractTranslationHelper,
-        PathBuilderHelper $pathBuilderHelper,
-        SanitizeHelper $sanitizeHelper,
-        string $locale
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly TranslatorInterface $translator,
+        private readonly ExtractTranslationHelper $extractTranslationHelper,
+        private readonly string $locale
     ) {
-        $this->kernel = $kernel;
-        $this->translator = $translator;
-        $this->entityFactory = $entityFactory;
-        $this->extractTranslationHelper = $extractTranslationHelper;
-        $this->pathBuilderHelper = $pathBuilderHelper;
-        $this->sanitizeHelper = $sanitizeHelper;
-        $this->locale = $locale;
     }
 
     public function load($resource, string $type = null)
@@ -108,21 +56,6 @@ class RouteLoader extends Loader
         [$topRoutes, $middleRoutes, $bottomRoutes] = $this->findAll();
 
         $routeCollection->addCollection($topRoutes);
-
-        try {
-            $customRoutes = $this->entityFactory->getRepository('route')->findBy([], ['sort' => 'ASC']);
-        } catch (Exception $exception) {
-            $routeCollection->addCollection($middleRoutes);
-            $routeCollection->addCollection($bottomRoutes);
-
-            // It seems like the module is not yet installed. Fail silently.
-            return $routeCollection;
-        }
-
-        if (!empty($customRoutes)) {
-            $this->addCustomRoutes($routeCollection, $customRoutes);
-        }
-
         $routeCollection->addCollection($middleRoutes);
         $routeCollection->addCollection($bottomRoutes);
 
@@ -211,56 +144,6 @@ class RouteLoader extends Loader
         }
 
         return [$topRoutes, $middleRoutes, $bottomRoutes];
-    }
-
-    /**
-     * Adds custom routes from database to the given route collection.
-     */
-    private function addCustomRoutes(RouteCollection $routeCollection, array $customRoutes = []): void
-    {
-        /** @var RouteEntity $dbRoute */
-        foreach ($customRoutes as $dbRoute) {
-            $extensionName = $dbRoute->getBundle();
-            if (!$this->kernel->isBundle($extensionName)) {
-                continue;
-            }
-            $extension = $this->kernel->getBundle($extensionName);
-
-            // Add modname, type and func to the route's default values.
-            $defaults = $dbRoute->getDefaults();
-            $defaults['_zkModule'] = $extensionName;
-            $controller = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
-            $action = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
-            $defaults['_zkType'] = $controller;
-            $defaults['_zkFunc'] = $action;
-            $defaults['_controller'] = $extension->getNamespace() . '\\Controller\\' . ucfirst($controller) . 'Controller::' . lcfirst($action);
-
-            // We have to prepend the extension prefix (see detailed description in docblock of prependExtensionPrefix() method).
-            $options = $dbRoute->getOptions(true);
-            $prependExtension = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
-            if ($prependExtension) {
-                $path = $this->pathBuilderHelper->getPathWithBundlePrefix($dbRoute);
-            } else {
-                $path = $dbRoute->getPath();
-            }
-
-            $schemes = explode('###', $dbRoute->getSchemes());
-            $methods = explode('###', $dbRoute->getMethods());
-
-            $route = new Route(
-                $path,
-                $defaults,
-                $dbRoute->getRequirements(),
-                $options,
-                $dbRoute->getHost(),
-                $schemes,
-                $methods,
-                $dbRoute->getCondition()
-            );
-
-            $routeName = 'custom_' . str_replace('/', '_', $path);
-            $routeCollection->add($routeName, $route);
-        }
     }
 
     /**

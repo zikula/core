@@ -9,6 +9,7 @@
   - [WorkflowBundle] Remove graphical workflow editor.
   - [Blocks] Remove pending content.
   - [Menu] Remove custom (database-driven) menus.
+  - [Routes] Remove custom (database-driven) routes.
   - [Search] Remove search module.
   - [SecurityCenter] Remove PHPIDS in favor of your server's WAF.
   - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`.

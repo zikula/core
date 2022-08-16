@@ -86,9 +86,6 @@ menu:
                 extension-management:
                     text: Extensions
                     relativeUrl: Configuration/Extensions/index.html
-                routes-management:
-                    text: Routes
-                    relativeUrl: Configuration/Routes/index.html
                 workflows:
                     text: Workflows
                     relativeUrl: Configuration/Workflows/index.html

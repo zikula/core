@@ -58,15 +58,11 @@
             "icon": "fas fa-map-marked-alt",
             "capabilities": {
                 "admin": {
-                    "route": "zikularoutesmodule_route_adminindex"
-                },
-                "user": {
-                    "route": "zikularoutesmodule_route_index"
+                    "route": "zikularoutesmodule_config_config"
                 }
             },
             "securityschema": {
                 "ZikulaRoutesModule::": "::",
-                "ZikulaRoutesModule:Route:": "Route ID::",
                 "ZikulaRoutesModule::Ajax": "::"
             }
         }

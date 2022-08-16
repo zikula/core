@@ -25,15 +25,9 @@ use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
  */
 class ViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private $parameterBag;
+    private ParameterBagInterface $parameterBag;
 
-    /**
-     * @var ExtensionRepositoryInterface
-     */
-    private $extensionRepository;
+    private ExtensionRepositoryInterface $extensionRepository;
 
     public function processTemplate(
         string $type,

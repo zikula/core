@@ -26,50 +26,14 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class RouteDumperHelper
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var DumpCommand
-     */
-    private $dumpCommand;
-
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        VariableApiInterface $variableApi,
-        LocaleApiInterface $localeApi,
-        Filesystem $fileSystem,
-        TranslatorInterface $translator,
-        DumpCommand $dumpCommand
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly VariableApiInterface $variableApi,
+        private readonly LocaleApiInterface $localeApi,
+        private readonly Filesystem $fileSystem,
+        private readonly TranslatorInterface $translator,
+        private readonly DumpCommand $dumpCommand
     ) {
-        $this->kernel = $kernel;
-        $this->variableApi = $variableApi;
-        $this->localeApi = $localeApi;
-        $this->fileSystem = $fileSystem;
-        $this->translator = $translator;
-        $this->dumpCommand = $dumpCommand;
     }
 
     /**

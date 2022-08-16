@@ -27,35 +27,14 @@ use Zikula\RoutesModule\Helper\PermissionHelper;
  */
 abstract class AbstractExtensionMenu implements ExtensionMenuInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * @var ControllerHelper
-     */
-    protected $controllerHelper;
-
-    /**
-     * @var PermissionHelper
-     */
-    protected $permissionHelper;
-
     public function __construct(
-        FactoryInterface $factory,
-        ControllerHelper $controllerHelper,
-        PermissionHelper $permissionHelper
+        protected readonly FactoryInterface $factory,
+        protected readonly PermissionHelper $permissionHelper
     ) {
-        $this->factory = $factory;
-        $this->controllerHelper = $controllerHelper;
-        $this->permissionHelper = $permissionHelper;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
     {
-        $allowedObjectTypes = $this->controllerHelper->getObjectTypes('api');
-
         $permLevel = self::TYPE_ADMIN === $type ? ACCESS_ADMIN : ACCESS_READ;
 
         $menu = $this->factory->createItem('zikularoutesmodule' . ucfirst($type) . 'Menu');
@@ -85,16 +64,6 @@ abstract class AbstractExtensionMenu implements ExtensionMenuInterface
             }
         }
         
-        if (
-            in_array('route', $allowedObjectTypes, true)
-            && $this->permissionHelper->hasComponentPermission('route', $permLevel)
-        ) {
-            $menu->addChild('Routes', [
-                'route' => 'zikularoutesmodule_route_' . $routeArea . 'view',
-            ])
-                ->setLinkAttribute('title', 'Routes list')
-            ;
-        }
         if ('admin' === $routeArea && $this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
             $menu->addChild('Settings', [
                 'route' => 'zikularoutesmodule_config_config',

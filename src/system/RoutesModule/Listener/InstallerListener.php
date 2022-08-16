@@ -18,7 +18,6 @@ use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\ExtensionsModule\Event\ExtensionPostCacheRebuildEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostRemoveEvent;
 use Zikula\ExtensionsModule\Event\ExtensionPostUpgradeEvent;
-use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Event\RoutesNewlyAvailableEvent;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
@@ -29,31 +28,6 @@ use Zikula\RoutesModule\Listener\Base\AbstractInstallerListener;
  */
 class InstallerListener extends AbstractInstallerListener
 {
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    /**
-     * @var RouteDumperHelper
-     */
-    private $routeDumperHelper;
-
-    /**
-     * @var MultilingualRoutingHelper
-     */
-    private $multilingualRoutingHelper;
-
-    /**
-     * @var EntityFactory
-     */
-    private $entityFactory;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
     public static function getSubscribedEvents()
     {
         // override subscription to ALL available events to only needed events.
@@ -66,17 +40,11 @@ class InstallerListener extends AbstractInstallerListener
     }
 
     public function __construct(
-        CacheClearer $cacheClearer,
-        RouteDumperHelper $routeDumperHelper,
-        MultilingualRoutingHelper $multilingualRoutingHelper,
-        EntityFactory $entityFactory,
-        RequestStack $requestStack
+        private readonly CacheClearer $cacheClearer,
+        private readonly RouteDumperHelper $routeDumperHelper,
+        private readonly MultilingualRoutingHelper $multilingualRoutingHelper,
+        private readonly RequestStack $requestStack
     ) {
-        $this->cacheClearer = $cacheClearer;
-        $this->routeDumperHelper = $routeDumperHelper;
-        $this->multilingualRoutingHelper = $multilingualRoutingHelper;
-        $this->entityFactory = $entityFactory;
-        $this->requestStack = $requestStack;
     }
 
     public function extensionPostInstalled(ExtensionPostCacheRebuildEvent $event): void
@@ -122,9 +90,6 @@ class InstallerListener extends AbstractInstallerListener
         if (null === $extension || 'ZikulaRoutesModule' === $extension->getName()) {
             return;
         }
-
-        // delete any custom routes for the removed bundle
-        $this->entityFactory->getRepository('route')->deleteByBundle($extension->getName());
 
         // reload **all** JS routes
         $this->updateJsRoutes();
