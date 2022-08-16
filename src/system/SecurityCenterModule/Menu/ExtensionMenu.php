@@ -47,20 +47,6 @@ class ExtensionMenu extends AbstractExtensionMenu
         $menu->addChild('Allowed HTML settings', [
             'route' => 'zikulasecuritycentermodule_config_allowedhtml',
         ])->setAttribute('icon', 'fas fa-list');
-        $menu->addChild('View IDS log', [
-            'route' => 'zikulasecuritycentermodule_idslog_view',
-        ])->setAttribute('icon', 'fas fa-clipboard-list')
-        ->setAttribute('class', 'align-justify')
-            ->setAttribute('dropdown', true);
-        $menu['View IDS log']->addChild('View IDS log', [
-            'route' => 'zikulasecuritycentermodule_idslog_view'
-        ]);
-        $menu['View IDS log']->addChild('Export IDS log', [
-            'route' => 'zikulasecuritycentermodule_idslog_view'
-        ]);
-        $menu['View IDS log']->addChild('Purge IDS log', [
-            'route' => 'zikulasecuritycentermodule_idslog_purge'
-        ]);
 
         $outputfilter = $this->variableApi->getSystemVar('outputfilter');
         if (1 === $outputfilter) {

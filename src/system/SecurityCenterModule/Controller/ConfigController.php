@@ -38,8 +38,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Helper\AccessHelper;
 
 /**
- * Class ConfigController
- *
  * @Route("/config")
  * @PermissionCheck("admin")
  */
@@ -65,9 +63,6 @@ class ConfigController extends AbstractController
 
         $sessionName = $this->getParameter('zikula.session.name');
         $modVars['sessionname'] = $sessionName;
-        $modVars['idshtmlfields'] = implode(PHP_EOL, $modVars['idshtmlfields']);
-        $modVars['idsjsonfields'] = implode(PHP_EOL, $modVars['idsjsonfields']);
-        $modVars['idsexceptions'] = implode(PHP_EOL, $modVars['idsexceptions']);
 
         $form = $this->createForm(ConfigType::class, $modVars);
         $form->handleRequest($request);
@@ -155,72 +150,6 @@ class ConfigController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'sessionstoretofile', $sessionStoreToFile);
 
                 $variableApi->set(VariableApi::CONFIG, 'outputfilter', $formData['outputfilter'] ?? 1);
-
-                $useIds = $formData['useids'] ?? 0;
-                $variableApi->set(VariableApi::CONFIG, 'useids', $useIds);
-
-                // create tmp directory for PHPIDS
-                if (1 === $useIds) {
-                    $idsTmpDir = $this->getParameter('kernel.cache_dir') . '/idsTmp';
-                    $fs = new Filesystem();
-                    if (!$fs->exists($idsTmpDir)) {
-                        $fs->mkdir($idsTmpDir);
-                    }
-                }
-
-                $variableApi->set(VariableApi::CONFIG, 'idssoftblock', $formData['idssoftblock'] ?? 1);
-                $variableApi->set(VariableApi::CONFIG, 'idsmail', $formData['idsmail'] ?? 0);
-                $variableApi->set(VariableApi::CONFIG, 'idsfilter', $formData['idsfilter'] ?? 'xml');
-
-                $idsRulePath = $formData['idsrulepath'] ?? 'Resources/config/phpids_zikula_default.xml';
-                if (is_readable($securityCenterModule->getPath() . '/' . $idsRulePath)) {
-                    $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
-                } else {
-                    $this->addFlash('error', $this->trans('Error! PHPIDS rule file %filePath% does not exist or is not readable.', ['%filePath%' => $idsRulePath]));
-                }
-
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdone', $formData['idsimpactthresholdone'] ?? 1);
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdtwo', $formData['idsimpactthresholdtwo'] ?? 10);
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdthree', $formData['idsimpactthresholdthree'] ?? 25);
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdfour', $formData['idsimpactthresholdfour'] ?? 75);
-
-                $variableApi->set(VariableApi::CONFIG, 'idsimpactmode', $formData['idsimpactmode'] ?? 1);
-
-                $idsHtmlFields = $formData['idshtmlfields'] ?? '';
-                $idsHtmlFields = explode(PHP_EOL, $idsHtmlFields);
-                $idsHtmlArray = [];
-                foreach ($idsHtmlFields as $idsHtmlField) {
-                    $idsHtmlField = trim($idsHtmlField);
-                    if (!empty($idsHtmlField)) {
-                        $idsHtmlArray[] = $idsHtmlField;
-                    }
-                }
-                $variableApi->set(VariableApi::CONFIG, 'idshtmlfields', $idsHtmlArray);
-
-                $idsJsonFields = $formData['idsjsonfields'] ?? '';
-                $idsJsonFields = explode(PHP_EOL, $idsJsonFields);
-                $idsJsonArray = [];
-                foreach ($idsJsonFields as $idsJsonField) {
-                    $idsJsonField = trim($idsJsonField);
-                    if (!empty($idsJsonField)) {
-                        $idsJsonArray[] = $idsJsonField;
-                    }
-                }
-                $variableApi->set(VariableApi::CONFIG, 'idsjsonfields', $idsJsonArray);
-
-                $idsExceptions = $formData['idsexceptions'] ?? '';
-                $idsExceptions = explode(PHP_EOL, $idsExceptions);
-                $idsExceptionsArray = [];
-                foreach ($idsExceptions as $idsException) {
-                    $idsException = trim($idsException);
-                    if (!empty($idsException)) {
-                        $idsExceptionsArray[] = $idsException;
-                    }
-                }
-                $variableApi->set(VariableApi::CONFIG, 'idsexceptions', $idsExceptionsArray);
-
-                $variableApi->set(VariableApi::CONFIG, 'idscachingtype', $formData['idscachingtype'] ?? 'none');
-                $variableApi->set(VariableApi::CONFIG, 'idscachingexpiration', $formData['idscachingexpiration'] ?? 600);
 
                 // clear cache
                 $cacheClearer->clear('symfony');

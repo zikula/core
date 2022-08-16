@@ -24,37 +24,17 @@ use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\HtmlTagsHelper;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    /**
-     * @var PurifierHelper
-     */
-    private $purifierHelper;
-
-    /**
-     * @var HtmlTagsHelper
-     */
-    private $htmlTagsHelper;
-
-    /**
-     * @var string
-     */
-    private $projectDir;
 
     public function __construct(
-        CacheClearer $cacheClearer,
-        PurifierHelper $purifierHelper,
-        HtmlTagsHelper $htmlTagsHelper,
-        string $projectDir,
+        private readonly CacheClearer $cacheClearer,
+        private readonly PurifierHelper $purifierHelper,
+        private readonly HtmlTagsHelper $htmlTagsHelper,
+        private readonly string $projectDir,
         AbstractExtension $extension,
         ManagerRegistry $managerRegistry,
         SchemaHelper $schemaTool,
@@ -62,19 +42,11 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
     ) {
-        $this->cacheClearer = $cacheClearer;
-        $this->purifierHelper = $purifierHelper;
-        $this->htmlTagsHelper = $htmlTagsHelper;
-        $this->projectDir = $projectDir;
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
     }
 
     public function install(): bool
     {
-        $this->schemaTool->create([
-            IntrusionEntity::class
-        ]);
-
         // Set up an initial value for a module variable.
         $this->setVar('itemsperpage', 10);
 
@@ -104,31 +76,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $purifierDefaultConfig = $this->purifierHelper->getPurifierConfig(['forcedefault' => true]);
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
-        // create vars for phpids usage
-        $this->setSystemVar('useids', 0);
-        $this->setSystemVar('idsmail', 0);
-        $this->setSystemVar('idsrulepath', 'Resources/config/phpids_zikula_default.xml');
-        $this->setSystemVar('idssoftblock', 1); // do not block requests, but warn for debugging
-        $this->setSystemVar('idsfilter', 'xml'); // filter type
-        $this->setSystemVar('idsimpactthresholdone', 1); // db logging
-        $this->setSystemVar('idsimpactthresholdtwo', 10); // mail admin
-        $this->setSystemVar('idsimpactthresholdthree', 25); // block request
-        $this->setSystemVar('idsimpactthresholdfour', 75); // kick user, destroy session
-        $this->setSystemVar('idsimpactmode', 1); // per request per default
-        $this->setSystemVar('idshtmlfields', ['POST.__wysiwyg']);
-        $this->setSystemVar('idsjsonfields', ['POST.__jsondata']);
-        $this->setSystemVar('idsexceptions', [
-            'GET.__utmz',
-            'GET.__utmc',
-            'REQUEST.linksorder', 'POST.linksorder',
-            'REQUEST.fullcontent', 'POST.fullcontent',
-            'REQUEST.summarycontent', 'POST.summarycontent',
-            'REQUEST.filter.page', 'POST.filter.page',
-            'REQUEST.filter.value', 'POST.filter.value'
-        ]);
-        $this->setSystemVar('idscachingtype', 'none');
-        $this->setSystemVar('idscachingexpiration', 600);
-
         $this->setSystemVar('outputfilter', 1);
 
         $this->setSystemVar('htmlentities', 1);
@@ -142,11 +89,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         switch ($oldVersion) {
             case '1.5.0': // shipped with Core-1.4.3
                 $this->getVariableApi()->del(VariableApi::CONFIG, 'htmlpurifierlocation');
-                // only update this value if it has not been customised
-                $idsRulePath = $this->getVariableApi()->get(VariableApi::CONFIG, 'idsrulepath', 'Resources/config/phpids_zikula_default.xml');
-                if (false !== mb_strpos($idsRulePath, 'phpids_zikula_default')) {
-                    $this->setSystemVar('idsrulepath', 'Resources/config/phpids_zikula_default.xml');
-                }
                 // no break
             case '1.5.1':
                 // set the session information in /config/dynamic/generated.yaml
@@ -179,19 +121,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 foreach ($varsToRemove as $varName) {
                     $this->getVariableApi()->del(VariableApi::CONFIG, $varName);
                 }
-                $this->setSystemVar('idsrulepath', 'Resources/config/phpids_zikula_default.xml');
-                $this->setSystemVar('idscachingtype', 'none');
-                $this->setSystemVar('idscachingexpiration', 600);
-
-                $connection = $this->entityManager->getConnection();
-
-                // extend length of tag field of intrusion table
-                $sql = '
-                    ALTER TABLE `sc_intrusion`
-                    MODIFY `tag` VARCHAR(150) NOT NULL
-                ';
-                $stmt = $connection->prepare($sql);
-                $stmt->execute();
         }
 
         return true;

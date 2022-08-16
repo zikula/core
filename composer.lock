@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7152a2f08f89c055b88363bce7098e3b",
+    "content-hash": "0f92b59c06ef0d4a2b348814fee6e415",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2396,12 +2396,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "3fc193c7553ca9eb3431a48708c17ad081cc1e64"
+                "reference": "dff4746e133777583fbf43d2b95372e8d818df1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/3fc193c7553ca9eb3431a48708c17ad081cc1e64",
-                "reference": "3fc193c7553ca9eb3431a48708c17ad081cc1e64",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/dff4746e133777583fbf43d2b95372e8d818df1f",
+                "reference": "dff4746e133777583fbf43d2b95372e8d818df1f",
                 "shasum": ""
             },
             "require": {
@@ -2446,7 +2446,7 @@
                 "issues": "https://github.com/ezyang/htmlpurifier/issues",
                 "source": "https://github.com/ezyang/htmlpurifier/tree/master"
             },
-            "time": "2022-06-27T21:20:36+00:00"
+            "time": "2022-08-16T02:59:31+00:00"
         },
         {
             "name": "frdh/mmenu.js",
@@ -5443,49 +5443,6 @@
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.1"
             },
             "time": "2022-03-15T21:29:03+00:00"
-        },
-        {
-            "name": "phpids/phpids",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPIDS/PHPIDS.git",
-                "reference": "dfc1476e4ffe9f1dde72c0954912411082a17597"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPIDS/PHPIDS/zipball/dfc1476e4ffe9f1dde72c0954912411082a17597",
-                "reference": "dfc1476e4ffe9f1dde72c0954912411082a17597",
-                "shasum": ""
-            },
-            "require": {
-                "ezyang/htmlpurifier": "dev-master"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "IDS": "lib/",
-                    "IDS\\Tests": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Lars Strojny",
-                    "email": "lars@strojny.net"
-                }
-            ],
-            "description": "PHPIDS (PHP-Intrusion Detection System) is a simple to use, well structured, fast and state-of-the-art security layer for your PHP based web application",
-            "homepage": "http://phpids.org",
-            "support": {
-                "issues": "https://github.com/PHPIDS/PHPIDS/issues",
-                "source": "https://github.com/PHPIDS/PHPIDS/tree/master"
-            },
-            "time": "2014-09-03T11:39:39+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -15155,8 +15112,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "ezyang/htmlpurifier": 20,
         "jms/i18n-routing-bundle": 20,
-        "phpids/phpids": 20,
         "zikula/sortable-columns": 20
     },
     "prefer-stable": true,

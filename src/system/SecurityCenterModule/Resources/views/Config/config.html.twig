@@ -29,30 +29,6 @@
     </div>
     {{ form_row(form.sessionname) }}
 </fieldset>
-<fieldset id="securitycenter_ids">
-    <legend>{% trans %}Intrusion Detection System{% endtrans %}</legend>
-    {{ form_row(form.useids) }}
-    <div data-switch="zikulasecuritycentermodule_config[useids]" data-switch-value="1">
-        <p class="col-md-9 offset-md-3 help-block alert alert-info">
-            {% trans %}PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.{% endtrans %}
-            {% trans %}Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage" target="_blank">PHPIDS homepage</a>.{% endtrans %}
-        </p>
-        {{ form_row(form.idssoftblock) }}
-        {{ form_row(form.idsmail) }}
-        {{ form_row(form.idsfilter) }}
-        {{ form_row(form.idsrulepath) }}
-        {{ form_row(form.idsimpactthresholdone) }}
-        {{ form_row(form.idsimpactthresholdtwo) }}
-        {{ form_row(form.idsimpactthresholdthree) }}
-        {{ form_row(form.idsimpactthresholdfour) }}
-        {{ form_row(form.idsimpactmode) }}
-        {{ form_row(form.idshtmlfields) }}
-        {{ form_row(form.idsjsonfields) }}
-        {{ form_row(form.idsexceptions) }}
-        {{ form_row(form.idscachingtype) }}
-        {{ form_row(form.idscachingexpiration) }}
-    </div>
-</fieldset>
 <fieldset>
     <legend>{% trans %}Output filter settings{% endtrans %}</legend>
     {{ form_row(form.outputfilter) }}

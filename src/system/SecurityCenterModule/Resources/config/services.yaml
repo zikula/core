@@ -19,10 +19,6 @@ services:
 
     Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface: '@Zikula\SecurityCenterModule\Api\HtmlFilterApi'
 
-    Zikula\SecurityCenterModule\Listener\FilterListener:
-        arguments:
-          $cacheDir: '%kernel.cache_dir%'
-
     Zikula\SecurityCenterModule\Listener\ClickjackProtectionListener:
         arguments:
             $xFrameOptions: 'SAMEORIGIN'
