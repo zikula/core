@@ -33,7 +33,6 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         // populate default data
         $this->createDefaultData();
         $this->setVar('itemsperpage', 40);
-        $this->setVar('helpUiMode', 'modal');
 
         return true;
     }

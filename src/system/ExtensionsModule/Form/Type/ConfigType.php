@@ -34,15 +34,6 @@ class ConfigType extends AbstractType
                     new GreaterThan(0)
                 ]
             ])
-            ->add('helpUiMode', ChoiceType::class, [
-                'label' => 'Help UI Mode',
-                'choices' => [
-                    'Modal window' => 'modal',
-                    'Sidebar on right side' => 'sidebar-right',
-                    'Sidebar on left side' => 'sidebar-left'
-                ],
-                'help' => 'How help documents for an extension should be displayed.'
-            ])
             ->add('hardreset', CheckboxType::class, [
                 'label' => 'Reset all extensions to default values',
                 'label_attr' => ['class' => 'switch-custom'],
