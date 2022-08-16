@@ -8,6 +8,7 @@
   - [PageLock] Remove page lock module.
   - [WorkflowBundle] Remove graphical workflow editor.
   - [Blocks] Remove pending content.
+  - [Menu] Remove custom (database-driven) menus.
   - [Search] Remove search module.
   - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`.
   - [Theme] Remove old `BootstrapTheme` in favor of `DefaultTheme`.

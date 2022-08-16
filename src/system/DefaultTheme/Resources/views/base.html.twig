@@ -32,7 +32,7 @@
                         {% if admin|default %}
                             {{ knp_menu_render('zikulaDefaultThemeAdminMenu', {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                         {% else %}
-                            {{ showblockposition('topnav') }}
+                            {{ knp_menu_render('zikulaDefaultThemeAdminMenu', {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                             {% if currentUser.loggedIn %}
                                 <div class="btn-group navbar-btn ml-auto">
                                     <a href="{{ path('zikulausersmodule_account_menu') }}" class="btn btn-info">

@@ -21,29 +21,11 @@ use Knp\Menu\ItemInterface;
  */
 class ConfigureMenuEvent
 {
-    /**
-     * @var FactoryInterface
-     */
-    protected $factory;
-
-    /**
-     * @var ItemInterface
-     */
-    protected $menu;
-
-    /**
-     * @var array
-     */
-    protected $options;
-
     public function __construct(
-        FactoryInterface $factory,
-        ItemInterface $menu,
-        array $options = []
+        protected readonly FactoryInterface $factory,
+        protected readonly ItemInterface $menu,
+        protected readonly array $options = []
     ) {
-        $this->factory = $factory;
-        $this->menu = $menu;
-        $this->options = $options;
     }
 
     public function getFactory(): FactoryInterface

@@ -12,7 +12,7 @@ services:
 
     Zikula\DefaultTheme\Menu\MenuBuilder:
         tags:
-            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: ZikulaDefaultThemeAdminMenu }
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaDefaultThemeAdminMenu }
 
     Zikula\DefaultTheme\Listener\BootstrapAssetSetterListener:
         arguments:

@@ -13,40 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule;
 
-use function Symfony\Component\String\s;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
-use Zikula\MenuModule\Entity\MenuItemEntity;
 
 class MenuModuleInstaller extends AbstractExtensionInstaller
 {
-    private $entities = [
-        MenuItemEntity::class
-    ];
-
     public function install(): bool
     {
-        $this->schemaTool->create($this->entities);
-
-        $this->createMainMenu();
-
         return true;
     }
 
     public function upgrade(string $oldVersion): bool
     {
-        switch ($oldVersion) {
-            case '1.0.0':
-            case '1.0.1': // shipped with Core-2.0.15
-                $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
-                foreach ($menuItems as $menuItem) {
-                    if ($menuItem->hasOption('icon')) {
-                        $iconClass = (string) $menuItem->getOption('icon');
-                        $menuItem->setOption('icon', 'fas' . s($iconClass)->slice(3)->toString());
-                    }
-                }
-                $this->entityManager->flush();
-        }
-
         return true;
     }
 
@@ -54,32 +31,5 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
     {
         // cannot delete core modules
         return false;
-    }
-
-    /**
-     * Create a demo menu.
-     */
-    private function createMainMenu(): void
-    {
-        $root = new MenuItemEntity();
-        $root->setTitle('mainMenu');
-        $root->setOptions([
-            'childrenAttributes' => [
-                'class' => 'nav navbar-nav'
-            ]]);
-
-        $home = new MenuItemEntity();
-        $home->setParent($root);
-        $home->setTitle($this->trans('Home'));
-        $home->setOptions([
-            'route' => 'home',
-            'attributes' => [
-                'icon' => 'fas fa-home'
-            ]
-        ]);
-
-        $this->entityManager->persist($root);
-        $this->entityManager->persist($home);
-        $this->entityManager->flush();
     }
 }

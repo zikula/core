@@ -18,19 +18,12 @@ use Knp\Menu\Matcher\Voter\VoterInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Class RequestVoter
  * @see https://gist.github.com/nateevans/9958390
  */
 class RequestVoter implements VoterInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    public function __construct(RequestStack $requestStack)
+    public function __construct(private readonly RequestStack $requestStack)
     {
-        $this->requestStack = $requestStack;
     }
 
     public function matchItem(ItemInterface $item): ?bool

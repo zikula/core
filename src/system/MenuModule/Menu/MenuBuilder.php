@@ -24,24 +24,12 @@ class MenuBuilder
 {
     use TranslatorTrait;
 
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var CapabilityApiInterface
-     */
-    private $capabilityApi;
-
     public function __construct(
         TranslatorInterface $translator,
-        FactoryInterface $factory,
-        CapabilityApiInterface $capabilityApi
+        protected readonly FactoryInterface $factory,
+        protected readonly CapabilityApiInterface $capabilityApi
     ) {
         $this->setTranslator($translator);
-        $this->factory = $factory;
-        $this->capabilityApi = $capabilityApi;
     }
 
     public function createAdminMenu(): ItemInterface
