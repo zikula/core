@@ -3,13 +3,15 @@ currentMenu: mailer
 ---
 # Mailer
 
-The mailer module contains all configuration settings with reards to how mails are sent by the site.
+Symfony mailer component controls how mails are sent by the site.
 
 ## Mailer settings
 
 TBD
 
 ## Test page
+
+The settings module contains a section for sending arbitrary test mails.
 
 TBD
 

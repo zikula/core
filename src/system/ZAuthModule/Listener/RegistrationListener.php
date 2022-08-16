@@ -28,50 +28,14 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var AuthenticationMappingRepositoryInterface
-     */
-    private $mappingRepository;
-
-    /**
-     * @var RegistrationVerificationHelper
-     */
-    private $verificationHelper;
-
     public function __construct(
-        RequestStack $requestStack,
-        CurrentUserApiInterface $currentUserApi,
-        PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi,
-        AuthenticationMappingRepositoryInterface $mappingRepository,
-        RegistrationVerificationHelper $registrationVerificationHelper
+        private readonly RequestStack $requestStack,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly VariableApiInterface $variableApi,
+        private readonly AuthenticationMappingRepositoryInterface $mappingRepository,
+        private readonly RegistrationVerificationHelper $registrationVerificationHelper
     ) {
-        $this->requestStack = $requestStack;
-        $this->currentUserApi = $currentUserApi;
-        $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
-        $this->mappingRepository = $mappingRepository;
-        $this->verificationHelper = $registrationVerificationHelper;
     }
 
     public static function getSubscribedEvents()

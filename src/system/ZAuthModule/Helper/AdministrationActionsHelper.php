@@ -24,43 +24,13 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class AdministrationActionsHelper
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionsApi;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $verificationRepository;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
     public function __construct(
-        PermissionApiInterface $permissionsApi,
-        RouterInterface $router,
-        TranslatorInterface $translator,
-        UserVerificationRepositoryInterface $userVerificationRepository,
-        UserRepositoryInterface $userRepository
+        private readonly PermissionApiInterface $permissionsApi,
+        private readonly RouterInterface $router,
+        private readonly TranslatorInterface $translator,
+        private readonly UserVerificationRepositoryInterface $userVerificationRepository,
+        private readonly UserRepositoryInterface $userRepository
     ) {
-        $this->permissionsApi = $permissionsApi;
-        $this->router = $router;
-        $this->translator = $translator;
-        $this->verificationRepository = $userVerificationRepository;
-        $this->userRepository = $userRepository;
     }
 
     public function user(AuthenticationMappingEntity $mapping): array

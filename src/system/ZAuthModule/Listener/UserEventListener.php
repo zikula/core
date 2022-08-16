@@ -22,20 +22,8 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class UserEventListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    public function __construct(RequestStack $requestStack, RouterInterface $router)
+    public function __construct(private readonly RequestStack $requestStack, private readonly RouterInterface $router)
     {
-        $this->requestStack = $requestStack;
-        $this->router = $router;
     }
 
     public static function getSubscribedEvents()

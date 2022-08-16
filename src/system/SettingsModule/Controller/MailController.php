@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\MailerModule\Controller;
+namespace Zikula\SettingsModule\Controller;
 
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,73 +26,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MailerModule\Form\Type\MailTransportConfigType;
-use Zikula\MailerModule\Form\Type\TestType;
-use Zikula\MailerModule\Helper\MailTransportHelper;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
+use Zikula\SettingsModule\Form\Type\MailTestType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * Class ConfigController
- *
- * @Route("/config")
+ * @Route("/mail")
  * @PermissionCheck("admin")
  */
-class ConfigController extends AbstractController
+class MailController extends AbstractController
 {
-    /**
-     * @Route("/config")
-     * @Theme("admin")
-     * @Template("@ZikulaMailerModule/Config/config.html.twig")
-     */
-    public function config(
-        Request $request,
-        MailTransportHelper $mailTransportHelper
-    ): array {
-        $form = $this->createForm(
-            MailTransportConfigType::class,
-            $this->getVars()
-        );
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-                if ($this->transportConfigChanged($formData)) {
-                    if (true === $mailTransportHelper->handleFormData($formData)) {
-                        $this->addFlash('status', 'Done! Mailer Transport Config updated.');
-                    } else {
-                        $this->addFlash('error', $this->trans('Cannot write to %file%.', ['%file%' => '\.env.local']));
-                    }
-                    unset($formData['mailer_key'], $formData['save'], $formData['cancel']);
-                    $this->setVars($formData);
-                }
-                $this->setVar('enableLogging', $formData['enableLogging']);
-            } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', 'Operation cancelled.');
-            }
-        }
-
-        return [
-            'form' => $form->createView()
-        ];
-    }
-
-    private function transportConfigChanged(array $formData): bool
-    {
-        $transportVars = ['transport', 'mailer_id', 'host', 'port', 'customParameters'];
-        foreach ($transportVars as $transportVar) {
-            if ($formData[$transportVar] !== $this->getVar($transportVar)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * @Route("/test")
      * @Theme("admin")
-     * @Template("@ZikulaMailerModule/Config/test.html.twig")
+     * @Template("@ZikulaSettingsModule/Mail/test.html.twig")
      *
      * This function displays a form to send a test mail.
      */
@@ -104,7 +51,7 @@ class ConfigController extends AbstractController
         LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         SiteDefinitionInterface $site
     ): array {
-        $form = $this->createForm(TestType::class, $this->getDataValues($variableApi, $site));
+        $form = $this->createForm(MailTestType::class, $this->getDataValues($variableApi, $site));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('test')->isClicked()) {
@@ -126,7 +73,7 @@ class ConfigController extends AbstractController
                         $email->html($formData['bodyHtml']);
                     }
                     $mailer->send($email);
-                    if ($variableApi->get('ZikulaMailerModule', 'enableLogging', false)) {
+                    if ($variableApi->getSystemVar('enableMailLogging', false)) {
                         $mailLogger->info(sprintf('Email sent to %s', $formData['toAddress']), [
                             'in' => __METHOD__,
                         ]);
@@ -150,14 +97,13 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * Returns required data from module variables and mailer configuration.
+     * Returns required data from configuration.
      */
     private function getDataValues(
         VariableApiInterface $variableApi,
         SiteDefinitionInterface $site
     ): array {
-        $modVars = $variableApi->getAll('ZikulaMailerModule');
-
+        $modVars = [];
         $modVars['sitename'] = $site->getName();
         $modVars['adminmail'] = $variableApi->getSystemVar('adminmail');
 

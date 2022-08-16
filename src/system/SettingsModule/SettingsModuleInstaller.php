@@ -85,6 +85,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('permareplace', $this->getDefaultValue('permareplace'));
 
         $this->setSystemVar('locale', $this->locale);
+        $this->setSystemVar('enableMailLogging', false);
 
         return true;
     }

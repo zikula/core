@@ -22,29 +22,14 @@ class FileIOHelper
 {
     use TranslatorTrait;
 
-    /**
-     * @var MailHelper
-     */
-    private $mailHelper;
-
-    /**
-     * @var UserCreationApiInterface
-     */
-    private $userCreationApi;
-
-    /**
-     * @var array
-     */
-    private $createdUsers;
+    private array $createdUsers;
 
     public function __construct(
         TranslatorInterface $translator,
-        UserCreationApiInterface $userCreationApi,
-        MailHelper $mailHelper
+        private readonly UserCreationApiInterface $userCreationApi,
+        private readonly MailHelper $mailHelper
     ) {
         $this->setTranslator($translator);
-        $this->userCreationApi = $userCreationApi;
-        $this->mailHelper = $mailHelper;
     }
 
     public function importUsersFromFile(File $file, string $delimiter = ','): string

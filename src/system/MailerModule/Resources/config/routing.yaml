@@ -1,3 +1,0 @@
-zikulamailermodule:
-    resource: "@ZikulaMailerModule/Controller"
-    type:     annotation

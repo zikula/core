@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\MailerModule\Form\Type;
+namespace Zikula\SettingsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * Mailer testing form type class.
  */
-class TestType extends AbstractType
+class MailTestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -100,6 +100,6 @@ class TestType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'zikulamailermodule_test';
+        return 'zikulasettingsmodule_mailtest';
     }
 }

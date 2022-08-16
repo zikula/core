@@ -29,7 +29,6 @@ return [
     Zikula\CategoriesModule\ZikulaCategoriesModule::class => ['all' => true],
     Zikula\ExtensionsModule\ZikulaExtensionsModule::class => ['all' => true],
     Zikula\GroupsModule\ZikulaGroupsModule::class => ['all' => true],
-    Zikula\MailerModule\ZikulaMailerModule::class => ['all' => true],
     Zikula\MenuModule\ZikulaMenuModule::class => ['all' => true],
     Zikula\PermissionsModule\ZikulaPermissionsModule::class => ['all' => true],
     Zikula\SecurityCenterModule\ZikulaSecurityCenterModule::class => ['all' => true],

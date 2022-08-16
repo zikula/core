@@ -26,56 +26,17 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class MailHelper
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var bool
-     */
-    private $mailLoggingEnabled;
-
-    /**
-     * @var SiteDefinitionInterface
-     */
-    private $site;
+    private bool $mailLoggingEnabled;
 
     public function __construct(
-        TranslatorInterface $translator,
-        Environment $twig,
-        VariableApiInterface $variableApi,
-        MailerInterface $mailer,
-        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
-        SiteDefinitionInterface $site
+        private readonly TranslatorInterface $translator,
+        private readonly Environment $twig,
+        private readonly VariableApiInterface $variableApi,
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
+        private readonly SiteDefinitionInterface $site
     ) {
-        $this->translator = $translator;
-        $this->twig = $twig;
-        $this->variableApi = $variableApi;
-        $this->mailer = $mailer;
-        $this->logger = $mailLogger;
-        $this->site = $site;
-        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = (bool) $variableApi->getSystemVar('enableMailLogging', false);
     }
 
     /**
@@ -122,14 +83,14 @@ class MailHelper
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            $this->logger->error($exception->getMessage(), [
+            $this->mailLogger->error($exception->getMessage(), [
                 'in' => __METHOD__,
             ]);
 
             return false;
         }
         if ($this->mailLoggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %s', $toAddress), [
+            $this->mailLogger->info(sprintf('Email sent to %s', $toAddress), [
                 'in' => __METHOD__,
             ]);
         }

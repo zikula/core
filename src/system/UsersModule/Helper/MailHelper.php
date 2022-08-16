@@ -33,76 +33,25 @@ use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositor
 
 class MailHelper
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private string $registrationNotifyEmail;
 
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private string $adminEmail;
 
-    /**
-     * @var string
-     */
-    private $registrationNotifyEmail;
-
-    /**
-     * @var string
-     */
-    private $adminEmail;
-
-    /**
-     * @var bool
-     */
-    private $mailLoggingEnabled;
-
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var AuthenticationMappingRepositoryInterface
-     */
-    private $authenticationMappingRepository;
-
-    /**
-     * @var SiteDefinitionInterface
-     */
-    private $site;
+    private bool $mailLoggingEnabled;
 
     public function __construct(
-        TranslatorInterface $translator,
-        Environment $twig,
+        private readonly TranslatorInterface $translator,
+        private readonly Environment $twig,
         VariableApiInterface $variableApi,
-        MailerInterface $mailer,
-        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
-        PermissionApiInterface $permissionApi,
-        AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
-        SiteDefinitionInterface $site
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
+        private readonly SiteDefinitionInterface $site
     ) {
-        $this->translator = $translator;
-        $this->twig = $twig;
-        $this->mailer = $mailer;
-        $this->logger = $mailLogger;
-        $this->permissionApi = $permissionApi;
-        $this->authenticationMappingRepository = $authenticationMappingRepository;
-        $this->site = $site;
         $this->registrationNotifyEmail = $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
         $this->adminEmail = $variableApi->getSystemVar('adminmail');
-        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = (bool) $variableApi->getSystemVar('enableMailLogging', false);
     }
 
     /**
@@ -252,14 +201,14 @@ class MailHelper
             }
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            $this->logger->error($exception->getMessage(), [
+            $this->mailLogger->error($exception->getMessage(), [
                 'in' => __METHOD__
             ]);
 
             return false;
         }
         if ($this->mailLoggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %s', 'multiple users'), [
+            $this->mailLogger->info(sprintf('Email sent to %s', 'multiple users'), [
                 'in' => __METHOD__,
                 'users' => array_reduce($users, function ($result, UserEntity $user) { return $result . $user->getEmail() . ','; }, 'emails: ')
             ]);
@@ -317,7 +266,7 @@ class MailHelper
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            $this->logger->error($exception->getMessage(), [
+            $this->mailLogger->error($exception->getMessage(), [
                 'in' => __METHOD__,
                 'type' => $notificationType
             ]);
@@ -325,7 +274,7 @@ class MailHelper
             return false;
         }
         if ($this->mailLoggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %s', $toAddress), [
+            $this->mailLogger->info(sprintf('Email sent to %s', $toAddress), [
                 'in' => __METHOD__,
                 'type' => $notificationType
             ]);

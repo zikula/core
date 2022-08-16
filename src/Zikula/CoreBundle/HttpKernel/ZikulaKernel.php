@@ -26,7 +26,6 @@ use Zikula\ExtensionsModule\AbstractModule;
 use Zikula\ExtensionsModule\AbstractTheme;
 use Zikula\ExtensionsModule\ZikulaExtensionsModule;
 use Zikula\GroupsModule\ZikulaGroupsModule;
-use Zikula\MailerModule\ZikulaMailerModule;
 use Zikula\MenuModule\ZikulaMenuModule;
 use Zikula\PermissionsModule\ZikulaPermissionsModule;
 use Zikula\RoutesModule\ZikulaRoutesModule;
@@ -71,7 +70,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaCategoriesModule' => ZikulaCategoriesModule::class,
         'ZikulaExtensionsModule' => ZikulaExtensionsModule::class,
         'ZikulaGroupsModule' => ZikulaGroupsModule::class,
-        'ZikulaMailerModule' => ZikulaMailerModule::class,
         'ZikulaMenuModule' => ZikulaMenuModule::class,
         'ZikulaPermissionsModule' => ZikulaPermissionsModule::class,
         'ZikulaRoutesModule' => ZikulaRoutesModule::class,

@@ -31,63 +31,18 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class DeletePendingRegistrationsListener implements EventSubscriberInterface
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $userVerificationRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var bool
-     */
-    private $mailLoggingEnabled;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var SiteDefinitionInterface
-     */
-    private $site;
+    private bool $mailLoggingEnabled;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        UserVerificationRepositoryInterface $userVerificationRepository,
-        EventDispatcherInterface $eventDispatcher,
-        MailerInterface $mailer,
-        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
-        TranslatorInterface $translator,
-        SiteDefinitionInterface $site
+        private readonly VariableApiInterface $variableApi,
+        private readonly UserVerificationRepositoryInterface $userVerificationRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
+        private readonly TranslatorInterface $translator,
+        private readonly SiteDefinitionInterface $site
     ) {
-        $this->variableApi = $variableApi;
-        $this->userVerificationRepository = $userVerificationRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->mailer = $mailer;
-        $this->logger = $mailLogger;
-        $this->translator = $translator;
-        $this->site = $site;
-        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = (bool) $variableApi->getSystemVar('enableMailLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -127,12 +82,12 @@ EOT
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            $this->logger->error($exception->getMessage(), [
+            $this->mailLogger->error($exception->getMessage(), [
                 'in' => __METHOD__,
             ]);
         }
         if ($this->mailLoggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %s', $event->getUser()->getEmail()), [
+            $this->mailLogger->info(sprintf('Email sent to %s', $event->getUser()->getEmail()), [
                 'in' => __METHOD__,
             ]);
         }

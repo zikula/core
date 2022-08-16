@@ -24,43 +24,13 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
     public function __construct(
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi,
-        RequestStack $requestStack,
-        ZikulaHttpKernelInterface $kernel
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly VariableApiInterface $variableApi,
+        private readonly RequestStack $requestStack,
+        private readonly ZikulaHttpKernelInterface $kernel
     ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
-        $this->requestStack = $requestStack;
-        $this->kernel = $kernel;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
@@ -119,6 +89,10 @@ class ExtensionMenu implements ExtensionMenuInterface
                 ;
             }
         }
+
+        $menu->addChild('Test mail settings', [
+            'route' => 'zikulasettingsmodule_mail_test',
+        ])->setAttribute('icon', 'fas fa-envelope');
 
         $menu->addChild('PHP configuration', [
             'route' => 'zikulasettingsmodule_settings_phpinfo',

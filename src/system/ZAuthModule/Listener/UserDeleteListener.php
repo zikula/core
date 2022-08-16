@@ -22,22 +22,10 @@ use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInte
 
 class UserDeleteListener implements EventSubscriberInterface
 {
-    /**
-     * @var AuthenticationMappingRepositoryInterface
-     */
-    private $mappingRepository;
-
-    /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $verificationRepository;
-
     public function __construct(
-        AuthenticationMappingRepositoryInterface $mappingRepository,
-        UserVerificationRepositoryInterface $verificationRepository
+        private readonly AuthenticationMappingRepositoryInterface $mappingRepository,
+        private readonly UserVerificationRepositoryInterface $verificationRepository
     ) {
-        $this->mappingRepository = $mappingRepository;
-        $this->verificationRepository = $verificationRepository;
     }
 
     public static function getSubscribedEvents()

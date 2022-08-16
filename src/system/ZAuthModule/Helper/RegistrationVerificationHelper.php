@@ -27,50 +27,14 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationVerificationHelper
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $userVerificationRepository;
-
-    /**
-     * @var MailHelper
-     */
-    private $mailHelper;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
     public function __construct(
-        PermissionApiInterface $permissionApi,
-        UserVerificationRepositoryInterface $userVerificationRepository,
-        MailHelper $mailHelper,
-        CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository,
-        EncoderFactoryInterface $encoderFactory
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly UserVerificationRepositoryInterface $userVerificationRepository,
+        private readonly MailHelper $mailHelper,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly EncoderFactoryInterface $encoderFactory
     ) {
-        $this->permissionApi = $permissionApi;
-        $this->userVerificationRepository = $userVerificationRepository;
-        $this->mailHelper = $mailHelper;
-        $this->currentUserApi = $currentUserApi;
-        $this->userRepository = $userRepository;
-        $this->encoderFactory = $encoderFactory;
     }
 
     /**

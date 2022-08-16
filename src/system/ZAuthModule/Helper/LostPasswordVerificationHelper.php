@@ -23,16 +23,6 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class LostPasswordVerificationHelper
 {
     /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $userVerificationRepository;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
-    /**
      * Concatenation delimiter
      */
     private $delimiter = '#';
@@ -43,11 +33,9 @@ class LostPasswordVerificationHelper
     private $iterations = 3;
 
     public function __construct(
-        UserVerificationRepositoryInterface $userVerificationRepository,
-        EncoderFactoryInterface $encoderFactory
+        private readonly UserVerificationRepositoryInterface $userVerificationRepository,
+        private readonly EncoderFactoryInterface $encoderFactory
     ) {
-        $this->userVerificationRepository = $userVerificationRepository;
-        $this->encoderFactory = $encoderFactory;
     }
 
     /**

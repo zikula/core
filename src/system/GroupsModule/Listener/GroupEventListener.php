@@ -28,56 +28,17 @@ use Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent;
 
 class GroupEventListener implements EventSubscriberInterface
 {
-    /**
-     * @var VariableApiInterface
-     */
-    protected $variableApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var MailerInterface
-     */
-    protected $mailer;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var bool
-     */
-    private $mailLoggingEnabled;
-
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
-
-    /**
-     * @var SiteDefinitionInterface
-     */
-    private $site;
+    private bool $mailLoggingEnabled;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        TranslatorInterface $translator,
-        MailerInterface $mailer,
-        LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
-        RouterInterface $router,
-        SiteDefinitionInterface $site
+        private readonly VariableApiInterface $variableApi,
+        private readonly TranslatorInterface $translator,
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
+        private readonly RouterInterface $router,
+        private readonly SiteDefinitionInterface $site
     ) {
-        $this->variableApi = $variableApi;
-        $this->translator = $translator;
-        $this->mailer = $mailer;
-        $this->logger = $mailLogger;
-        $this->router = $router;
-        $this->site = $site;
-        $this->mailLoggingEnabled = $variableApi->get('ZikulaMailerModule', 'enableLogging', false);
+        $this->mailLoggingEnabled = (bool) $variableApi->getSystemVar('enableMailLogging', false);
     }
 
     public static function getSubscribedEvents()
@@ -113,12 +74,12 @@ class GroupEventListener implements EventSubscriberInterface
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            $this->logger->error($exception->getMessage(), [
+            $this->mailLogger->error($exception->getMessage(), [
                 'in' => __METHOD__,
             ]);
         }
         if ($this->mailLoggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %s', $user->getEmail()), [
+            $this->mailLogger->info(sprintf('Email sent to %s', $user->getEmail()), [
                 'in' => __METHOD__,
             ]);
         }
@@ -153,12 +114,12 @@ class GroupEventListener implements EventSubscriberInterface
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $exception) {
-            $this->logger->error($exception->getMessage(), [
+            $this->mailLogger->error($exception->getMessage(), [
                 'in' => __METHOD__,
             ]);
         }
         if ($this->mailLoggingEnabled) {
-            $this->logger->info(sprintf('Email sent to %s', $adminMail), [
+            $this->mailLogger->info(sprintf('Email sent to %s', $adminMail), [
                 'in' => __METHOD__,
             ]);
         }

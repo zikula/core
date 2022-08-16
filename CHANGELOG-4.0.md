@@ -8,6 +8,7 @@
   - [PageLock] Remove page lock module.
   - [WorkflowBundle] Remove graphical workflow editor.
   - [Blocks] Remove blocks system and pending content.
+  - [Mailer] Remove mailer module (keep test mail form, moving it to the Settings module).
   - [Menu] Remove custom (database-driven) menus.
   - [Routes] Remove custom (database-driven) routes.
   - [Search] Remove search module.
