@@ -19,23 +19,14 @@ Zikula can quickly become a Content Management System utilizing community-driven
 - Based on Symfony 5.x which provides stability, continuity and extensibility
 - Uses Doctrine for persisting data
 - Uses Twig as template engine
-- Uses Mailer Component for email handling
-
-### Extensions and bundles
-
-- Modular development system
-  - Modules are bundles which can be installed/uninstalled during runtime
-- Hook system for connecting module features with each other
-  - Hooks are a dynamic event dispatcher, allowing the administrator to choose which listeners respond to events.
+- Uses Mailer Component for mail handling
 
 ### Themes and templating
 
 - Twig-based theme engine for site-wide theming
-  - Themes are bundles which can be installed/uninstalled during runtime
 - Integration of common frontend technologies
   - Twitter Bootstrap
   - Font Awesome
-  - jQuery
 
 ### Users and security
 
@@ -53,8 +44,6 @@ Zikula can quickly become a Content Management System utilizing community-driven
 - Centralized site administration interface
 - Multi-language & translation support
 - Centralized category management
-- Dynamic and flexible content block creation
-- Centralized search functionality
 - Menu system based on KnpMenu
 
 ### Developer gems
@@ -63,7 +52,6 @@ Zikula can quickly become a Content Management System utilizing community-driven
 - Several distinct APIs for feature utilization
 - Imagine image manipulation library integration
 - CLI based module skeleton generator
-- Multi-Sites capability (one core-base, multiple custom DB)
 
 ## Further components
 
@@ -74,7 +62,7 @@ Zikula can quickly become a Content Management System utilizing community-driven
   - easy customization
   - quick updating
 - Creates models describing your extensions
-- Generates the Zikula module implementation
+- Generates the Symfony bundle implementation
 - Read more at the [project's website](https://modulestudio.de/en)
 
 ### Relevant modules
