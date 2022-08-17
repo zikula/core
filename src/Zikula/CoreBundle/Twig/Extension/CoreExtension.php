@@ -15,7 +15,6 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Twig\TwigFunction;
 use Zikula\Bundle\CoreBundle\Twig\Runtime\CoreRuntime;
 use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;
 
@@ -25,14 +24,6 @@ class CoreExtension extends AbstractExtension
     {
         return [
             new SwitchTokenParser()
-        ];
-    }
-
-    public function getFunctions()
-    {
-        return [
-            new TwigFunction('array_unset', [CoreRuntime::class, 'arrayUnset']),
-            new TwigFunction('callFunc', [CoreRuntime::class, 'callFunc'])
         ];
     }
 

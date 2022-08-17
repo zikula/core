@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Twig\Runtime;
 
-use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -21,16 +20,6 @@ class CoreRuntime implements RuntimeExtensionInterface
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
-    }
-
-    /**
-     * Delete a key of an array.
-     */
-    public function arrayUnset(array $array, string $key): array
-    {
-        unset($array[$key]);
-
-        return $array;
     }
 
     public function yesNo($string): string
@@ -72,18 +61,5 @@ class CoreRuntime implements RuntimeExtensionInterface
         );
 
         return $string;
-    }
-
-    /**
-     * Call a php callable with parameters.
-     *
-     * @return mixed
-     */
-    public function callFunc(callable $callable, array $parameters = [])
-    {
-        if (function_exists($callable)) {
-            return call_user_func_array($callable, $parameters);
-        }
-        throw new InvalidArgumentException($this->translator->trans('Function does not exist or is not callable.'));
     }
 }

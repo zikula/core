@@ -12,8 +12,6 @@ functions, filters, tags, tests and global variables.
 
 ### General
 
-- array_unset(array, key)
-- callFunc(callable, params = [])
 - hasPermission(component, instance, level)
 - showflashes(params = [])
 - siteName()
@@ -32,11 +30,6 @@ functions, filters, tags, tests and global variables.
 - getModVar(module, name, default = null)
 - getSystemVar(name, default = null)
 - defaultPath(extensionName, type = 'user')
-
-### Events
-
-- dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
-- routeUrl(routeName, routeParameters = [], fragment = null)
 
 ### Admin Interface
 
