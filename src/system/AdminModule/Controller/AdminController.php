@@ -13,21 +13,16 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\AdminModule\Entity\AdminCategoryEntity;
-use Zikula\AdminModule\Form\Type\AdminCategoryType;
 use Zikula\AdminModule\Helper\AdminCategoryHelper;
 use Zikula\AdminModule\Helper\AdminLinksHelper;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
@@ -111,7 +106,7 @@ class AdminController extends AbstractController
             }
 
             $bundleInfo = $adminModule->getMetaData();
-            $menuText = $bundleInfo->getDisplayName();// . ' (' . $adminModule->getName() . ')';
+            $menuText = $bundleInfo->getDisplayName(); // . ' (' . $adminModule->getName() . ')';
 
             try {
                 $menuTextUrl = isset($bundleInfo->getCapabilities()['admin']['route'])

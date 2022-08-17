@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
-use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 

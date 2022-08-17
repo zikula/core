@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
@@ -25,7 +24,6 @@ use Zikula\AdminModule\Helper\UpdateCheckHelper;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
@@ -80,9 +78,9 @@ class AdminInterfaceController extends AbstractController
     private function getCallerInfo(RequestStack $requestStack): array
     {
         $caller = $requestStack->getMainRequest()->attributes->all();
-        //$caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : '';
+        // $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : '';
         $caller['info'] = [];
-        //die('TODO: caller information');
+        // die('TODO: caller information');
 
         return $caller;
     }

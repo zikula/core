@@ -23,9 +23,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * Mailer testing form type class.
- */
 class MailTestType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

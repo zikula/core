@@ -78,9 +78,9 @@ class ExtensionsInterfaceController extends AbstractController
     private function getCallerInfo(RequestStack $requestStack): array
     {
         $caller = $requestStack->getMainRequest()->attributes->all();
-        //$caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : '';
+        // $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : '';
         $caller['info'] = [];
-        //die('TODO: caller information');
+        // die('TODO: caller information');
 
         return $caller;
     }

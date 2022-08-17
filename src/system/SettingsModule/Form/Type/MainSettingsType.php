@@ -31,11 +31,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\ControllerType;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-/**
- * Main settings form type.
- */
 class MainSettingsType extends AbstractType
 {
     use TranslatorTrait;

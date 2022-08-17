@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionStubRepository;
 
 class CapabilityApiTest extends KernelTestCase
 {

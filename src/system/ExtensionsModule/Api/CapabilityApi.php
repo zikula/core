@@ -15,7 +15,6 @@ namespace Zikula\ExtensionsModule\Api;
 
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class CapabilityApi implements CapabilityApiInterface
