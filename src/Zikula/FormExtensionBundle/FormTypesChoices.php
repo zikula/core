@@ -49,22 +49,22 @@ class FormTypesChoices implements ArrayAccess, Iterator
         throw new Exception('Not allowed to unset!');
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         return reset($this->choices);
     }
 
-    public function current()
+    public function current(): mixed
     {
         return current($this->choices);
     }
 
-    public function key()
+    public function key(): mixed
     {
         return key($this->choices);
     }
 
-    public function next()
+    public function next(): void
     {
         return next($this->choices);
     }

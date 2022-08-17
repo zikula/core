@@ -25,8 +25,8 @@
     </div>
 </fieldset>
 
-{% set userAccountDisplayEvent = dispatchEvent('Zikula\\UsersModule\\Event\\UserAccountDisplayEvent', [user]) %}
-{{ userAccountDisplayEvent|raw }}
+{#% set userAccountDisplayEvent = dispatchEvent('Zikula\\UsersModule\\Event\\UserAccountDisplayEvent', [user]) %}
+{{ userAccountDisplayEvent|raw }#}
 
 <fieldset>
     <legend>{% trans %}Registration Status{% endtrans %}</legend>
