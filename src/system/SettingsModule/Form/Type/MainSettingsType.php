@@ -41,17 +41,11 @@ class MainSettingsType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @var ExtensionRepositoryInterface
-     */
-    private $extensionRepository;
-
     public function __construct(
         TranslatorInterface $translator,
-        ExtensionRepositoryInterface $extensionRepository
+        private readonly ExtensionRepositoryInterface $extensionRepository
     ) {
         $this->setTranslator($translator);
-        $this->extensionRepository = $extensionRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

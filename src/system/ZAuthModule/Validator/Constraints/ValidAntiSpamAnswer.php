@@ -20,5 +20,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidAntiSpamAnswer extends Constraint
 {
-    public $message = 'The anti-spam answer is incorrect.';
+    public string $message = 'The anti-spam answer is incorrect.';
 }

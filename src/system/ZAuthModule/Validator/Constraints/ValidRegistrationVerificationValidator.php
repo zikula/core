@@ -25,36 +25,12 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidRegistrationVerificationValidator extends ConstraintValidator
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $userVerificationRepository;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
     public function __construct(
-        TranslatorInterface $translator,
-        UserRepositoryInterface $userRepository,
-        UserVerificationRepositoryInterface $userVerificationRepository,
-        EncoderFactoryInterface $encoderFactory
+        private readonly TranslatorInterface $translator,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserVerificationRepositoryInterface $userVerificationRepository,
+        private readonly EncoderFactoryInterface $encoderFactory
     ) {
-        $this->translator = $translator;
-        $this->userRepository = $userRepository;
-        $this->userVerificationRepository = $userVerificationRepository;
-        $this->encoderFactory = $encoderFactory;
     }
 
     public function validate($data, Constraint $constraint)

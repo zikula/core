@@ -26,29 +26,11 @@ use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 
 class DeleteHelper
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRespository;
-
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        UserRepositoryInterface $userRepository,
-        GroupRepositoryInterface $groupRespository
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly GroupRepositoryInterface $groupRespository
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->userRepository = $userRepository;
-        $this->groupRespository = $groupRespository;
     }
 
     /**

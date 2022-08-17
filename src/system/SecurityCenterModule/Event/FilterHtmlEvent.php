@@ -18,14 +18,8 @@ namespace Zikula\SecurityCenterModule\Event;
  */
 class FilterHtmlEvent
 {
-    /**
-     * @var string
-     */
-    private $htmlContent;
-
-    public function __construct(?string $htmlContent = '')
+    public function __construct(private string $htmlContent = '')
     {
-        $this->htmlContent = $htmlContent;
     }
 
     public function getHtmlContent(): string

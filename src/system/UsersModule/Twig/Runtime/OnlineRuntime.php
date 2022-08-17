@@ -23,21 +23,12 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class OnlineRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var UserSessionRepositoryInterface
-     */
-    private $sessionRepository;
-
-    /**
-     * @var string
-     */
-    private $sessionStorageInFile;
+    private string $sessionStorageInFile;
 
     public function __construct(
-        UserSessionRepositoryInterface $sessionRepository,
+        private readonly UserSessionRepositoryInterface $sessionRepository,
         VariableApiInterface $variableApi
     ) {
-        $this->sessionRepository = $sessionRepository;
         $this->sessionStorageInFile = $variableApi->getSystemVar('sessionstoretofile', 1);
     }
 

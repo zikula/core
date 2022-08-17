@@ -20,14 +20,8 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class LocalizedVariableListener implements EventSubscriberInterface
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    public function __construct(VariableApiInterface $variableApi)
+    public function __construct(private readonly VariableApiInterface $variableApi)
     {
-        $this->variableApi = $variableApi;
     }
 
     public static function getSubscribedEvents()

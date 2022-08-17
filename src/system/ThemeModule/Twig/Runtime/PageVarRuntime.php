@@ -20,22 +20,10 @@ use Zikula\ThemeModule\Engine\ParameterBag;
 
 class PageVarRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var ParameterBag
-     */
-    private $pageVars;
-
     public function __construct(
-        TranslatorInterface $translator,
-        ParameterBag $pageVars
+        private readonly TranslatorInterface $translator,
+        private readonly ParameterBag $pageVars
     ) {
-        $this->translator = $translator;
-        $this->pageVars = $pageVars;
     }
 
     /**

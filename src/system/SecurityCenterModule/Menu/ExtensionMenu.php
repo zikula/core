@@ -21,18 +21,12 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
     public function __construct(
         FactoryInterface $factory,
         PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi
+        private readonly VariableApiInterface $variableApi
     ) {
         parent::__construct($factory, $permissionApi);
-        $this->variableApi = $variableApi;
     }
 
     protected function getAdmin(): ?ItemInterface

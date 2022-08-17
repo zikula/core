@@ -24,14 +24,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class ClickjackProtectionListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private $xFrameOptions;
-
-    public function __construct(string $xFrameOptions)
+    public function __construct(private readonly string $xFrameOptions)
     {
-        $this->xFrameOptions = $xFrameOptions;
     }
 
     public static function getSubscribedEvents()

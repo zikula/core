@@ -26,10 +26,7 @@ namespace Zikula\UsersModule\Event;
  */
 class UserAccountDisplayEvent extends UserEntityEvent
 {
-    /**
-     * @var array
-     */
-    private $contents = [];
+    private array $contents = [];
 
     public function addContent(string $key = null, string $content = ''): void
     {

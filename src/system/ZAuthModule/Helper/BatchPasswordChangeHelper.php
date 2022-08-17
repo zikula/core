@@ -23,29 +23,14 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class BatchPasswordChangeHelper
 {
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRepository;
+    private ObjectManager $manager;
 
     public function __construct(
-        CurrentUserApiInterface $currentUserApi,
+        private readonly CurrentUserApiInterface $currentUserApi,
         ManagerRegistry $managerRegistry,
-        GroupRepositoryInterface $groupRepository
+        private readonly GroupRepositoryInterface $groupRepository
     ) {
-        $this->currentUserApi = $currentUserApi;
         $this->manager = $managerRegistry->getManager();
-        $this->groupRepository = $groupRepository;
     }
 
     public function requirePasswordChangeByGroup(int $groupId): int

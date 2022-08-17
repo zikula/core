@@ -25,27 +25,12 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class AddThemePathsToLoaderListener implements EventSubscriberInterface
 {
-    /**
-     * @var LoaderInterface
-     */
-    private $loader;
-
-    /**
-     * @var Engine
-     */
-    private $themeEngine;
-
-    /**
-     * @var bool completed flag
-     */
-    private $completed = false;
+    private bool $completed = false;
 
     public function __construct(
-        LoaderInterface $loader,
-        Engine $themeEngine
+        private readonly LoaderInterface $loader,
+        private readonly Engine $themeEngine
     ) {
-        $this->loader = $loader;
-        $this->themeEngine = $themeEngine;
     }
 
     public static function getSubscribedEvents()

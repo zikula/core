@@ -21,31 +21,13 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class CurrentUserApi implements CurrentUserApiInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private bool $loggedIn;
 
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $repository;
+    private UserEntity $user;
 
-    /**
-     * @var bool
-     */
-    private $loggedIn;
-
-    /**
-     * @var UserEntity
-     */
-    private $user;
-
-    public function __construct(RequestStack $requestStack, UserRepositoryInterface $repository)
+    public function __construct(private readonly RequestStack $requestStack, private readonly UserRepositoryInterface $repository)
     {
         $this->loggedIn = false;
-        $this->requestStack = $requestStack;
-        $this->repository = $repository;
     }
 
     public function isLoggedIn(): bool

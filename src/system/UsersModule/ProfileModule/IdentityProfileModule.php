@@ -19,20 +19,8 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class IdentityProfileModule implements ProfileModuleInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    public function __construct(UserRepositoryInterface $userRepository, CurrentUserApiInterface $currentUserApi)
+    public function __construct(private readonly UserRepositoryInterface $userRepository, private readonly CurrentUserApiInterface $currentUserApi)
     {
-        $this->userRepository = $userRepository;
-        $this->currentUserApi = $currentUserApi;
     }
 
     public function getDisplayName($userId = null): string

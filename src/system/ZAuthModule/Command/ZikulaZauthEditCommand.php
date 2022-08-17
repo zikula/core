@@ -31,44 +31,14 @@ class ZikulaZauthEditCommand extends Command
 {
     protected static $defaultName = 'zikula:zauth:edit';
 
-    /**
-     * @var AuthenticationMappingRepositoryInterface
-     */
-    private $authenticationMappingRepository;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
     public function __construct(
-        AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
-        UserRepositoryInterface $userRepository,
-        TranslatorInterface $translator,
-        EncoderFactoryInterface $encoderFactory,
-        ValidatorInterface $validator
+        private readonly AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly EncoderFactoryInterface $encoderFactory,
+        private readonly ValidatorInterface $validator
     ) {
         parent::__construct();
-        $this->authenticationMappingRepository = $authenticationMappingRepository;
-        $this->userRepository = $userRepository;
-        $this->translator = $translator;
-        $this->encoderFactory = $encoderFactory;
-        $this->validator = $validator;
     }
 
     protected function configure()

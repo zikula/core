@@ -24,43 +24,13 @@ use Zikula\UsersModule\Constant as UsersConstant;
 
 class ExtensionMenu implements ExtensionMenuInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUser;
-
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
     public function __construct(
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi,
-        CurrentUserApiInterface $currentUserApi,
-        LocaleApiInterface $localeApi
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly VariableApiInterface $variableApi,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly LocaleApiInterface $localeApi
     ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
-        $this->currentUser = $currentUserApi;
-        $this->localeApi = $localeApi;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface

@@ -20,15 +20,10 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class UserEntityChangedEvent extends UserEntityEvent
 {
-    /**
-     * @var UserEntity
-     */
-    private $oldUser;
+    private UserEntity $oldUser;
 
-    public function __construct(
-        UserEntity $user,
-        UserEntity $oldUser
-    ) {
+    public function __construct(UserEntity $user, UserEntity $oldUser)
+    {
         parent::__construct($user);
         $this->oldUser = $oldUser;
     }

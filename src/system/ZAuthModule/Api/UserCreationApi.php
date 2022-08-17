@@ -54,54 +54,18 @@ class UserCreationApi implements UserCreationApiInterface
     private $constraint;
 
     /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
-    /**
-     * @var ManagerRegistry
-     */
-    private $managerRegistry;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
      * @var GroupEntity[]
      */
     private $groups = [];
 
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRepository;
-
     public function __construct(
-        ValidatorInterface $validator,
-        CurrentUserApiInterface $currentUserApi,
-        EncoderFactoryInterface $encoderFactory,
-        ManagerRegistry $managerRegistry,
-        VariableApiInterface $variableApi,
-        GroupRepositoryInterface $groupRepository
+        private readonly ValidatorInterface $validator,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly EncoderFactoryInterface $encoderFactory,
+        private readonly ManagerRegistry $managerRegistry,
+        private readonly VariableApiInterface $variableApi,
+        private readonly GroupRepositoryInterface $groupRepository
     ) {
-        $this->validator = $validator;
-        $this->currentUserApi = $currentUserApi;
-        $this->encoderFactory = $encoderFactory;
-        $this->managerRegistry = $managerRegistry;
-        $this->variableApi = $variableApi;
-        $this->groupRepository = $groupRepository;
         $this->constraint = new Constraints\Collection(['fields' => [
             'uname' => new ValidUname(),
             'pass' => new ValidPassword(),

@@ -24,26 +24,14 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class CreateThemedResponseListener implements EventSubscriberInterface
 {
-    /**
-     * @var Engine
-     */
-    private $themeEngine;
+    private bool $installed;
 
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $debug;
 
-    /**
-     * @var string
-     */
-    private $debug;
-
-    public function __construct(string $installed, string $debug, Engine $themeEngine)
+    public function __construct(string $installed, string $debug, private readonly Engine $themeEngine)
     {
         $this->installed = '0.0.0' !== $installed;
         $this->debug = !empty($debug);
-        $this->themeEngine = $themeEngine;
     }
 
     public static function getSubscribedEvents()

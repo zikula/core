@@ -20,10 +20,7 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class LocaleListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private $defaultLocale;
+    private string $defaultLocale;
 
     public function __construct(
         CurrentUserApiInterface $currentUserApi,

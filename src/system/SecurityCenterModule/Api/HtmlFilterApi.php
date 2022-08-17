@@ -20,29 +20,14 @@ use Zikula\SecurityCenterModule\Event\FilterHtmlEvent;
 
 class HtmlFilterApi implements HtmlFilterApiInterface
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var bool
-     */
-    private $installed;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private bool $installed;
 
     public function __construct(
-        VariableApiInterface $variableApi,
+        private readonly VariableApiInterface $variableApi,
         string $installed,
-        EventDispatcherInterface $eventDispatcher
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
-        $this->variableApi = $variableApi;
         $this->installed = '0.0.0' !== $installed;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function filter($value)

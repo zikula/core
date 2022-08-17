@@ -21,15 +21,9 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class UserEntityEvent
 {
-    /**
-     * @var UserEntity|null
-     */
-    private $user;
+    private ?UserEntity $user;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $date;
+    private  \DateTimeImmutable $date;
 
     public function __construct(?UserEntity $user)
     {

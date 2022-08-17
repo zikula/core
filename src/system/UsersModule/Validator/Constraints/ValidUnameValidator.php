@@ -29,48 +29,18 @@ use Zikula\UsersModule\Constant as UsersConstant;
 
 class ValidUnameValidator extends ConstraintValidator
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
+    private bool $installed;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var boolean
-     */
-    private $installed;
-
-    /**
-     * @var boolean
-     */
-    private $isUpgrading;
+    private bool $isUpgrading;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        TranslatorInterface $translator,
-        ValidatorInterface $validator,
-        PermissionApiInterface $permissionApi,
+        private readonly VariableApiInterface $variableApi,
+        private readonly TranslatorInterface $translator,
+        private readonly ValidatorInterface $validator,
+        private readonly PermissionApiInterface $permissionApi,
         string $installed,
         $isUpgrading // cannot cast to bool because set with expression language
     ) {
-        $this->variableApi = $variableApi;
-        $this->translator = $translator;
-        $this->validator = $validator;
-        $this->permissionApi = $permissionApi;
         $this->installed = '0.0.0' !== $installed;
         $this->isUpgrading = $isUpgrading;
     }

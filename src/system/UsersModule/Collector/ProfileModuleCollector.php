@@ -29,26 +29,13 @@ class ProfileModuleCollector
     /**
      * @var ProfileModuleInterface[] e.g. [<moduleName> => <ServiceObject>]
      */
-    private $profileModules = [];
+    private array $profileModules = [];
 
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var string
-     */
-    private $currentProfileModuleName;
+    private string $currentProfileModuleName;
 
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        CurrentUserApiInterface $currentUserApi,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly CurrentUserApiInterface $currentUserApi,
         VariableApiInterface $variableApi,
         iterable $modules
     ) {

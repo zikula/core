@@ -18,36 +18,17 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidUserFieldsValidator extends ConstraintValidator
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var AuthenticationMappingRepositoryInterface
-     */
-    private $mappingRepository;
-
-    /**
-     * @var UserVerificationRepositoryInterface
-     */
-    private $userVerificationRepository;
-
     public function __construct(
-        TranslatorInterface $translator,
-        AuthenticationMappingRepository $mappingRepository,
-        UserVerificationRepositoryInterface $userVerificationRepository
+        private readonly TranslatorInterface $translator,
+        private readonly AuthenticationMappingRepositoryInterface $mappingRepository,
+        private readonly UserVerificationRepositoryInterface $userVerificationRepository
     ) {
-        $this->translator = $translator;
-        $this->mappingRepository = $mappingRepository;
-        $this->userVerificationRepository = $userVerificationRepository;
     }
 
     public function validate($authenticationMappingEntity, Constraint $constraint)

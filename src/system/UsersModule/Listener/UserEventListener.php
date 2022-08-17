@@ -27,36 +27,12 @@ use Zikula\UsersModule\Event\UserPostLogoutSuccessEvent;
 
 class UserEventListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var string
-     */
-    private $environment;
-
     public function __construct(
-        RequestStack $requestStack,
-        RouterInterface $router,
-        VariableApiInterface $variableApi,
-        string $environment
+        private readonly RequestStack $requestStack,
+        private readonly RouterInterface $router,
+        private readonly VariableApiInterface $variableApi,
+        private readonly string $environment
     ) {
-        $this->requestStack = $requestStack;
-        $this->router = $router;
-        $this->variableApi = $variableApi;
-        $this->environment = $environment;
     }
 
     public static function getSubscribedEvents()

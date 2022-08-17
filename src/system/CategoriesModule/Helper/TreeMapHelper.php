@@ -20,30 +20,12 @@ use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterfa
 
 class TreeMapHelper
 {
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $repository;
+    private int $index;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $doctrine;
+    private int $level;
 
-    /**
-     * @var integer
-     */
-    private $index;
-
-    /**
-     * @var integer
-     */
-    private $level;
-
-    public function __construct(ManagerRegistry $doctrine, CategoryRepositoryInterface $repository)
+    public function __construct(private readonly ManagerRegistry $doctrine, private readonly CategoryRepositoryInterface $repository)
     {
-        $this->doctrine = $doctrine;
-        $this->repository = $repository;
     }
 
     /**

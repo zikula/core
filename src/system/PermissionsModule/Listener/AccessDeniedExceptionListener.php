@@ -24,35 +24,14 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class AccessDeniedExceptionListener implements EventSubscriberInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
-        TranslatorInterface $translator,
-        RouterInterface $router,
-        CurrentUserApiInterface $currentUserApi,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+        private readonly CurrentUserApiInterface $currentUserApi,
         string $installed
     ) {
-        $this->translator = $translator;
-        $this->router = $router;
-        $this->currentUserApi = $currentUserApi;
         $this->installed = '0.0.0' !== $installed;
     }
 

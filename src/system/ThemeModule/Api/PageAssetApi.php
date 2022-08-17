@@ -19,36 +19,12 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 class PageAssetApi implements PageAssetApiInterface
 {
-    /**
-     * @var AssetBag
-     */
-    private $styleSheets;
-
-    /**
-     * @var AssetBag
-     */
-    private $scripts;
-
-    /**
-     * @var AssetBag
-     */
-    private $headers;
-
-    /**
-     * @var AssetBag
-     */
-    private $footers;
-
     public function __construct(
-        AssetBag $styleSheets,
-        AssetBag $scripts,
-        AssetBag $headers,
-        AssetBag $footers
+        private readonly AssetBag $styleSheets,
+        private readonly AssetBag $scripts,
+        private readonly AssetBag $headers,
+        private readonly AssetBag $footers
     ) {
-        $this->styleSheets = $styleSheets;
-        $this->scripts = $scripts;
-        $this->headers = $headers;
-        $this->footers = $footers;
     }
 
     public function add(string $type, string $value, int $weight = AssetBag::WEIGHT_DEFAULT): void

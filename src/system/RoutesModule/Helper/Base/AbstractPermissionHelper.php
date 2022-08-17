@@ -30,36 +30,12 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 abstract class AbstractPermissionHelper
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-    
-    /**
-     * @var PermissionApiInterface
-     */
-    protected $permissionApi;
-    
-    /**
-     * @var CurrentUserApiInterface
-     */
-    protected $currentUserApi;
-    
-    /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepository;
-    
     public function __construct(
-        RequestStack $requestStack,
-        PermissionApiInterface $permissionApi,
-        CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository
+        protected readonly RequestStack $requestStack,
+        protected readonly PermissionApiInterface $permissionApi,
+        protected readonly CurrentUserApiInterface $currentUserApi,
+        protected readonly UserRepositoryInterface $userRepository
     ) {
-        $this->requestStack = $requestStack;
-        $this->permissionApi = $permissionApi;
-        $this->currentUserApi = $currentUserApi;
-        $this->userRepository = $userRepository;
     }
     
     /**

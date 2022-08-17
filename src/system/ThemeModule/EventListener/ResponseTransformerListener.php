@@ -20,14 +20,8 @@ use Zikula\ThemeModule\Engine\ResponseTransformer;
 
 class ResponseTransformerListener implements EventSubscriberInterface
 {
-    /**
-     * @var bool
-     */
-    private $trimWhitespace;
-
-    public function __construct(bool $trimWhitespace = false)
+    public function __construct(private readonly bool $trimWhitespace = false)
     {
-        $this->trimWhitespace = $trimWhitespace;
     }
 
     public static function getSubscribedEvents()

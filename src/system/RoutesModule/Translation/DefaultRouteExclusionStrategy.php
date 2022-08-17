@@ -19,14 +19,8 @@ use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 
 class DefaultRouteExclusionStrategy extends BaseDefaultRouteExclusionStrategy
 {
-    /**
-     * @var ExtractTranslationHelper
-     */
-    private $extractTranslationHelper;
-
-    public function __construct(ExtractTranslationHelper $extractTranslationHelper)
+    public function __construct(private readonly ExtractTranslationHelper $extractTranslationHelper)
     {
-        $this->extractTranslationHelper = $extractTranslationHelper;
     }
 
     public function shouldExcludeRoute($routeName, Route $route)

@@ -20,15 +20,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidEmail extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $message = 'The email "%string%" is invalid.';
+    public string $message = 'The email "%string%" is invalid.';
 
-    /**
-     * @var int
-     */
-    public $excludedUid;
+    public int $excludedUid;
 
     public function getDefaultOption()
     {

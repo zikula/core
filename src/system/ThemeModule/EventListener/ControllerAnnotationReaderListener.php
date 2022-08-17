@@ -26,11 +26,8 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class ControllerAnnotationReaderListener implements EventSubscriberInterface
 {
-    private $themeEngine;
-
-    public function __construct(Engine $themeEngine)
+    public function __construct(private readonly Engine $themeEngine)
     {
-        $this->themeEngine = $themeEngine;
     }
 
     public static function getSubscribedEvents()

@@ -19,14 +19,8 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class AdminModuleHelper
 {
-    /**
-     * @var AdminModuleRepositoryInterface
-     */
-    private $adminModuleRepository;
-
-    public function __construct(AdminModuleRepositoryInterface $adminModuleRepository)
+    public function __construct(private readonly AdminModuleRepositoryInterface $adminModuleRepository)
     {
-        $this->adminModuleRepository = $adminModuleRepository;
     }
 
     public function setAdminModuleCategory(ExtensionEntity $module, int $categoryId): void

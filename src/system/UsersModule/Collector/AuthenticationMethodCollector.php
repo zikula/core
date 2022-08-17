@@ -25,17 +25,17 @@ class AuthenticationMethodCollector
     /**
      * @var AuthenticationMethodInterface[] e.g. ['alias' => ServiceObject]
      */
-    private $authenticationMethods = [];
+    private array $authenticationMethods = [];
 
     /**
      * @var AuthenticationMethodInterface[] e.g. ['alias' => ServiceObject]
      */
-    private $activeAuthenticationMethods = [];
+    private array $activeAuthenticationMethods = [];
 
     /**
      * @var array e.g. ['alias' => bool]
      */
-    private $authenticationMethodsStatus;
+    private array $authenticationMethodsStatus;
 
     public function __construct(VariableApiInterface $variableApi, iterable $methods)
     {

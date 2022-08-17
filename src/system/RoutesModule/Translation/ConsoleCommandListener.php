@@ -21,14 +21,8 @@ use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 
 class ConsoleCommandListener implements EventSubscriberInterface
 {
-    /**
-     * @var ExtractTranslationHelper
-     */
-    private $extractTranslationHelper;
-
-    public function __construct(ExtractTranslationHelper $extractTranslationHelper)
+    public function __construct(private readonly ExtractTranslationHelper $extractTranslationHelper)
     {
-        $this->extractTranslationHelper = $extractTranslationHelper;
     }
 
     public static function getSubscribedEvents()

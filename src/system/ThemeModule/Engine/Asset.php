@@ -40,43 +40,13 @@ use Zikula\ThemeModule\Engine\Exception\AssetNotFoundException;
  */
 class Asset
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var Packages
-     */
-    private $assetPackages;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var Engine
-     */
-    private $themeEngine;
-
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        Packages $assetPackages,
-        RouterInterface $router,
-        Filesystem $fileSystem,
-        Engine $themeEngine
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly Packages $assetPackages,
+        private readonly RouterInterface $router,
+        private readonly Filesystem $fileSystem,
+        private readonly Engine $themeEngine
     ) {
-        $this->kernel = $kernel;
-        $this->assetPackages = $assetPackages;
-        $this->router = $router;
-        $this->fileSystem = $fileSystem;
-        $this->themeEngine = $themeEngine;
     }
 
     /**

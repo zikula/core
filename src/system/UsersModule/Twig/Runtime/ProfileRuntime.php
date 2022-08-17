@@ -23,29 +23,11 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class ProfileRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var ProfileModuleCollector
-     */
-    private $profileModuleCollector;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        ProfileModuleCollector $profileModuleCollector,
-        TranslatorInterface $translator
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly ProfileModuleCollector $profileModuleCollector,
+        private readonly TranslatorInterface $translator
     ) {
-        $this->userRepository = $userRepository;
-        $this->profileModuleCollector = $profileModuleCollector;
-        $this->translator = $translator;
     }
 
     /**

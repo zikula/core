@@ -15,10 +15,7 @@ namespace Zikula\UsersModule\Event;
 
 trait AuthMethodTrait
 {
-    /**
-     * @var string
-     */
-    private $authenticationMethod = '';
+    private string $authenticationMethod = '';
 
     public function getAuthenticationMethod(): string
     {

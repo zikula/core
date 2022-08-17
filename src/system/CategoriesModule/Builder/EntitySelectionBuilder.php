@@ -17,14 +17,8 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class EntitySelectionBuilder
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    public function __construct(ZikulaHttpKernelInterface $kernel)
+    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     /**

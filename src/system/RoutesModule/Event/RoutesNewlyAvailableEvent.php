@@ -15,14 +15,8 @@ namespace Zikula\RoutesModule\Event;
 
 class RoutesNewlyAvailableEvent
 {
-    /**
-     * @var array
-     */
-    private $extensionIds = [];
-
-    public function __construct(array $extensionIds)
+    public function __construct(private readonly array $extensionIds)
     {
-        $this->extensionIds = $extensionIds;
     }
 
     public function getExtensionIds(): array

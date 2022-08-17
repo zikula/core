@@ -20,34 +20,13 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class PurifierHelper
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var CacheDirHelper
-     */
-    private $cacheDirHelper;
-
-    /**
-     * @var string
-     */
-    private $purifierCacheDir;
+    private string $purifierCacheDir;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        VariableApiInterface $variableApi,
-        CacheDirHelper $cacheDirHelper
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly VariableApiInterface $variableApi,
+        private readonly CacheDirHelper $cacheDirHelper
     ) {
-        $this->kernel = $kernel;
-        $this->variableApi = $variableApi;
-        $this->cacheDirHelper = $cacheDirHelper;
         $this->purifierCacheDir = $this->kernel->getCacheDir() . '/purifier';
     }
 

@@ -28,15 +28,8 @@ use Zikula\ThemeModule\Engine\AssetFilter;
  */
 abstract class AbstractThemeListener implements EventSubscriberInterface
 {
-    /**
-     * @var AssetFilter
-     */
-    protected $assetFilter;
-    
-    public function __construct(
-        AssetFilter $assetFilter
-    ) {
-        $this->assetFilter = $assetFilter;
+    public function __construct(protected readonly AssetFilter $assetFilter)
+    {
     }
     
     public static function getSubscribedEvents()

@@ -10,11 +10,6 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    Zikula\MenuModule\Menu\MenuBuilder:
-        tags:
-            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaMenuAdminMenu }
-            - { name: knp_menu.menu_builder, method: createAdminActionsMenu, alias: zikulaMenuAdminActionsMenu }
-
     Zikula\MenuModule\Voter\RequestVoter:
         tags: ['knp_menu.voter']
 

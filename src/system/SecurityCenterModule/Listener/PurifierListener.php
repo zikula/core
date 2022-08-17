@@ -20,36 +20,18 @@ use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 class PurifierListener implements EventSubscriberInterface
 {
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
-    /**
-     * @var bool
-     */
-    private $isUpgrading;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var PurifierHelper
-     */
-    private $purifierHelper;
+    private bool $isUpgrading;
 
     public function __construct(
         string $installed,
         $isUpgrading, // cannot cast to bool because set with expression language
-        VariableApiInterface $variableApi,
-        PurifierHelper $purifierHelper
+        private readonly VariableApiInterface $variableApi,
+        private readonly PurifierHelper $purifierHelper
     ) {
         $this->installed = '0.0.0' !== $installed;
         $this->isUpgrading = $isUpgrading;
-        $this->variableApi = $variableApi;
-        $this->purifierHelper = $purifierHelper;
     }
 
     public static function getSubscribedEvents()

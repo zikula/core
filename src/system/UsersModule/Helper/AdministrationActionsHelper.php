@@ -22,36 +22,12 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class AdministrationActionsHelper
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionsApi;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUser;
-
     public function __construct(
-        PermissionApiInterface $permissionsApi,
-        RouterInterface $router,
-        TranslatorInterface $translator,
-        CurrentUserApiInterface $currentUserApi
+        private readonly PermissionApiInterface $permissionsApi,
+        private readonly RouterInterface $router,
+        private readonly TranslatorInterface $translator,
+        private readonly CurrentUserApiInterface $currentUserApi
     ) {
-        $this->permissionsApi = $permissionsApi;
-        $this->router = $router;
-        $this->translator = $translator;
-        $this->currentUser = $currentUserApi;
     }
 
     public function user(UserEntity $user): array

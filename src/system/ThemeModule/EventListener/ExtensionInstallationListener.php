@@ -32,43 +32,13 @@ use Zikula\ExtensionsModule\Event\ExtensionStateEvent;
  */
 class ExtensionInstallationListener implements EventSubscriberInterface
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    /**
-     * @var bool
-     */
-    private $mergerActive;
-
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
-        CacheClearer $cacheClearer,
-        bool $mergerActive
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator,
+        private readonly CacheClearer $cacheClearer,
+        private readonly bool $mergerActive
     ) {
-        $this->kernel = $kernel;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
-        $this->cacheClearer = $cacheClearer;
-        $this->mergerActive = $mergerActive;
     }
 
     public static function getSubscribedEvents()

@@ -15,20 +15,8 @@ namespace Zikula\ThemeModule\Bridge\Event;
 
 class TwigPreRenderEvent
 {
-    /**
-     * @var string
-     */
-    protected $templateName;
-
-    /**
-     * @var array
-     */
-    protected $parameters;
-
-    public function __construct(string $name, array $parameters = [])
+    public function __construct(protected string $templateName, protected array $parameters = [])
     {
-        $this->templateName = $name;
-        $this->parameters = $parameters;
     }
 
     public function getTemplateName(): string

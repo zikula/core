@@ -19,10 +19,7 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class UserFormPostValidatedEvent extends FormPostValidatedEvent
 {
-    /**
-     * @var UserEntity
-     */
-    private $user;
+    private UserEntity $user;
 
     public function __construct(FormInterface $form, UserEntity $user)
     {

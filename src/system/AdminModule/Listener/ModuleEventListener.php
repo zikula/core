@@ -22,35 +22,14 @@ use Zikula\ExtensionsModule\Event\ExtensionPostInstallEvent;
 
 class ModuleEventListener implements EventSubscriberInterface
 {
-    /**
-     * @var AdminModuleRepositoryInterface
-     */
-    protected $adminModuleRepository;
-
-    /**
-     * @var ExtensionRepositoryInterface
-     */
-    protected $extensionRepository;
-
-    /**
-     * @var VariableApiInterface
-     */
-    protected $variableApi;
-
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
-        AdminModuleRepositoryInterface $adminModuleRepository,
-        ExtensionRepositoryInterface $extensionRepository,
-        VariableApiInterface $variableApi,
+        private readonly AdminModuleRepositoryInterface $adminModuleRepository,
+        private readonly ExtensionRepositoryInterface $extensionRepository,
+        private readonly VariableApiInterface $variableApi,
         string $installed
     ) {
-        $this->adminModuleRepository = $adminModuleRepository;
-        $this->extensionRepository = $extensionRepository;
-        $this->variableApi = $variableApi;
         $this->installed = '0.0.0' !== $installed;
     }
 

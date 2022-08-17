@@ -26,20 +26,8 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidPasswordValidator extends ConstraintValidator
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    public function __construct(VariableApiInterface $variableApi, ValidatorInterface $validator)
+    public function __construct(private readonly VariableApiInterface $variableApi, private readonly ValidatorInterface $validator)
     {
-        $this->variableApi = $variableApi;
-        $this->validator = $validator;
     }
 
     public function validate($value, Constraint $constraint)

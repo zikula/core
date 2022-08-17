@@ -23,33 +23,12 @@ use Zikula\ThemeModule\Engine\Engine;
 
 class BootstrapAssetSetterListener implements EventSubscriberInterface
 {
-    /**
-     * @var AssetBag
-     */
-    private $cssAssetBag;
-
-    /**
-     * @var Asset
-     */
-    private $assetHelper;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    private $themeEngine;
-
     public function __construct(
-        AssetBag $cssAssetBag,
-        Asset $assetHelper,
-        VariableApiInterface $variableApi,
-        Engine $themeEngine
+        private readonly AssetBag $cssAssetBag,
+        private readonly Asset $assetHelper,
+        private readonly VariableApiInterface $variableApi,
+        private readonly Engine $themeEngine
     ) {
-        $this->cssAssetBag = $cssAssetBag;
-        $this->assetHelper = $assetHelper;
-        $this->variableApi = $variableApi;
-        $this->themeEngine = $themeEngine;
     }
 
     public static function getSubscribedEvents()

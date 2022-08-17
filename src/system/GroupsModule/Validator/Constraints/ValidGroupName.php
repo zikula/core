@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidGroupName extends Constraint
 {
-    public $message = 'The fields are invalid.';
+    public string $message = 'The fields are invalid.';
 
     public function getDefaultOption()
     {

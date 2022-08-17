@@ -21,29 +21,11 @@ use Zikula\ThemeModule\Engine\Asset;
 
 class BrandingRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
-     * @var SiteDefinitionInterface
-     */
-    private $site;
-
-    /**
-     * @var Asset
-     */
-    private $assetHelper;
-
     public function __construct(
-        Environment $twig,
-        SiteDefinitionInterface $site,
-        Asset $assetHelper
+        private readonly Environment $twig,
+        private readonly SiteDefinitionInterface $site,
+        private readonly Asset $assetHelper
     ) {
-        $this->twig = $twig;
-        $this->site = $site;
-        $this->assetHelper = $assetHelper;
     }
 
     /**

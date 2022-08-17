@@ -42,8 +42,8 @@ services:
         arguments:
           $headers: '@zikula_core.common.theme.assets_header'
           $footers: '@zikula_core.common.theme.assets_footer'
-          $js: '@Zikula\ThemeModule\Engine\Asset\JsResolver'
-          $css: '@Zikula\ThemeModule\Engine\Asset\CssResolver'
+          $jsResolver: '@Zikula\ThemeModule\Engine\Asset\JsResolver'
+          $cssResolver: '@Zikula\ThemeModule\Engine\Asset\CssResolver'
           $scriptPosition: 'foot'
 
     zikula_core.common.theme.themevars:

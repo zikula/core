@@ -24,55 +24,24 @@ class UpdateCheckHelper
 {
     private const URL_RELEASES = 'https://api.github.com/repos/zikula/core/releases';
 
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
+    private bool $enabled;
 
-    /**
-     * @var bool
-     */
-    private $enabled;
+    private string $currentVersion;
 
-    /**
-     * @var string
-     */
-    private $currentVersion;
+    private int $lastChecked;
 
-    /**
-     * @var int
-     */
-    private $lastChecked;
+    private int $checkInterval;
 
-    /**
-     * @var int
-     */
-    private $checkInterval;
+    private string $updateversion;
 
-    /**
-     * @var string
-     */
-    private $updateversion;
+    private bool $force;
 
-    /**
-     * @var bool
-     */
-    private $force;
+    private bool|array $releases;
 
-    /**
-     * @var bool|array
-     */
-    private $releases;
+    private bool $checked;
 
-    /**
-     * @var bool
-     */
-    private $checked;
-
-    public function __construct(VariableApiInterface $variableApi, RequestStack $requestStack)
+    public function __construct(private readonly VariableApiInterface $variableApi, RequestStack $requestStack)
     {
-        $this->variableApi = $variableApi;
-
         $this->enabled = (bool) $variableApi->getSystemVar('updatecheck');
         $this->currentVersion = ZikulaKernel::VERSION;
         $this->lastChecked = (int) $variableApi->getSystemVar('updatelastchecked');

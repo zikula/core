@@ -24,14 +24,8 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class UserFieldTransformer implements DataTransformerInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(private readonly UserRepositoryInterface $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     /**

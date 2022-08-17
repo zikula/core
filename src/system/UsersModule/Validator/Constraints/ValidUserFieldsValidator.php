@@ -18,7 +18,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -26,22 +25,10 @@ class ValidUserFieldsValidator extends ConstraintValidator
 {
     public const DUP_EMAIL_ALT_AUTH = 'DuplicateEmailOfAlternativeAuthMethod';
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-
     public function __construct(
-        TranslatorInterface $translator,
-        UserRepositoryInterface $userRepository
+        private readonly TranslatorInterface $translator,
+        private readonly UserRepositoryInterface $userRepository
     ) {
-        $this->translator = $translator;
-        $this->userRepository = $userRepository;
     }
 
     public function validate($data, Constraint $constraint)

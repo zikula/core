@@ -18,10 +18,7 @@ namespace Zikula\UsersModule\Event;
  */
 class RedirectableUserEntityEvent extends UserEntityEvent
 {
-    /**
-     * @var string
-     */
-    private $redirectUrl = '';
+    private string $redirectUrl = '';
 
     public function setRedirectUrl(string $redirectUrl): void
     {

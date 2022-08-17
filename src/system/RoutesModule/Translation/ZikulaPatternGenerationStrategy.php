@@ -31,62 +31,17 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
 
     public const STRATEGY_PREFIX_EXCEPT_DEFAULT = 'prefix_except_default';
 
-    /**
-     * @var string
-     */
-    private $strategy;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var string
-     */
-    private $translationDomain;
-
-    /**
-     * @var array
-     */
-    private $locales;
-
-    /**
-     * @var string
-     */
-    private $cacheDir;
-
-    /**
-     * @var string
-     */
-    private $defaultLocale;
-
-    /**
-     * @var array
-     */
-    private $urlMap = [];
+    private array $urlMap = [];
 
     public function __construct(
-        string $strategy,
-        TranslatorInterface $translator,
-        ZikulaHttpKernelInterface $kernel,
-        array $locales,
-        string $cacheDir,
-        string $translationDomain = 'routes',
-        string $defaultLocale = 'en'
+        private readonly string $strategy,
+        private readonly TranslatorInterface $translator,
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly array $locales,
+        private readonly string $cacheDir,
+        private readonly string $translationDomain = 'routes',
+        private readonly string $defaultLocale = 'en'
     ) {
-        $this->strategy = $strategy;
-        $this->translator = $translator;
-        $this->kernel = $kernel;
-        $this->translationDomain = $translationDomain;
-        $this->locales = $locales;
-        $this->cacheDir = $cacheDir;
-        $this->defaultLocale = $defaultLocale;
     }
 
     public function generateI18nPatterns($routeName, Route $route)

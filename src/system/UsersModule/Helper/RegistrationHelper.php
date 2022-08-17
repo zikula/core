@@ -34,44 +34,14 @@ class RegistrationHelper
 {
     use TranslatorTrait;
 
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRepository;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     public function __construct(
-        VariableApiInterface $variableApi,
-        CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository,
-        GroupRepositoryInterface $groupRepository,
-        EventDispatcherInterface $eventDispatcher,
+        private readonly VariableApiInterface $variableApi,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly GroupRepositoryInterface $groupRepository,
+        private readonly EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
     ) {
-        $this->variableApi = $variableApi;
-        $this->currentUserApi = $currentUserApi;
-        $this->userRepository = $userRepository;
-        $this->groupRepository = $groupRepository;
-        $this->eventDispatcher = $eventDispatcher;
         $this->setTranslator($translator);
     }
 

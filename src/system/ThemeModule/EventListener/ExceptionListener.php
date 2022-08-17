@@ -24,22 +24,10 @@ use Twig\Environment;
  */
 class ExceptionListener implements EventSubscriberInterface
 {
-    /**
-     * @var string
-     */
-    private $debug;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
     public function __construct(
-        string $debug,
-        Environment $twig
+        private readonly string $debug,
+        private readonly Environment $twig
     ) {
-        $this->debug = $debug;
-        $this->twig = $twig;
     }
 
     public static function getSubscribedEvents()

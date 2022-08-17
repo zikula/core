@@ -18,15 +18,9 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class GroupUserEvent extends GroupEntityEvent
 {
-    /**
-     * @var \Zikula\UsersModule\Entity\UserEntity
-     */
-    private $user;
-
-    public function __construct(GroupEntity $groupEntity, UserEntity $userEntity)
+    public function __construct(GroupEntity $groupEntity, private readonly UserEntity $userEntity)
     {
         parent::__construct($groupEntity);
-        $this->user = $userEntity;
     }
 
     public function getUser(): UserEntity

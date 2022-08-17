@@ -26,9 +26,8 @@ class ActiveUserPostDeletedEvent extends UserEntityEvent
      * In general, listening extensions should respond the same in both cases - removing all private user data.
      * When converted to ghost, it is acceptable to retain the UID as the source of data if needed, as the UID
      * will continue to remain valid and reference a UserEntity record.
-     * @var bool
      */
-    private $fullDeletion;
+    private bool $fullDeletion;
 
     public function __construct(?UserEntity $user, bool $fullDeletion = false)
     {

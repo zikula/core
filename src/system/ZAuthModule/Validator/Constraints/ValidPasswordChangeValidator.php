@@ -22,29 +22,11 @@ use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositor
 
 class ValidPasswordChangeValidator extends ConstraintValidator
 {
-    /**
-     * @var AuthenticationMappingRepositoryInterface
-     */
-    private $repository;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
     public function __construct(
-        AuthenticationMappingRepositoryInterface $repository,
-        TranslatorInterface $translator,
-        EncoderFactoryInterface $encoderFactory
+        private readonly AuthenticationMappingRepositoryInterface $repository,
+        private readonly TranslatorInterface $translator,
+        private readonly EncoderFactoryInterface $encoderFactory
     ) {
-        $this->repository = $repository;
-        $this->translator = $translator;
-        $this->encoderFactory = $encoderFactory;
     }
 
     public function validate($data, Constraint $constraint)

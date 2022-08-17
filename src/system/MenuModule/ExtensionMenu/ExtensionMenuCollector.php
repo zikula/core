@@ -21,16 +21,10 @@ class ExtensionMenuCollector
     /**
      * @var ExtensionMenuInterface[]
      */
-    private $extensionMenus;
+    private array $extensionMenus;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, iterable $extensionMenus = [])
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher, iterable $extensionMenus = [])
     {
-        $this->eventDispatcher = $eventDispatcher;
         $this->extensionMenus = [];
         foreach ($extensionMenus as $extensionMenu) {
             $this->add($extensionMenu);

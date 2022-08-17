@@ -21,35 +21,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CacheDirHelper
 {
-    /**
-     * @var Filesystem
-     */
-    private $fileSystem;
-
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
-        Filesystem $fileSystem,
-        SessionInterface $session,
-        TranslatorInterface $translator
+        private readonly Filesystem $fileSystem,
+        private readonly SessionInterface $session,
+        private readonly TranslatorInterface $translator
     ) {
-        $this->fileSystem = $fileSystem;
-        $this->session = $session;
-        $this->translator = $translator;
     }
 
-    public function ensureCacheDirectoryExists(
-        string $cacheDirectory,
-        bool $forHtmlPurifier = false
-    ): void {
+    public function ensureCacheDirectoryExists(string $cacheDirectory, bool $forHtmlPurifier = false): void
+    {
         $fs = $this->fileSystem;
 
         try {

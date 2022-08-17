@@ -47,41 +47,16 @@ class PermissionApi implements PermissionApiInterface
     public const UNREGISTERED_USER_GROUP = 0;
 
     /**
-     * @var PermissionRepositoryInterface
+     * Holds the cache of group perms by user
      */
-    private $permRepository;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * holds the cache of group Perms by User
-     * @var array
-     */
-    private $groupPermsByUser = [];
+    private array $groupPermsByUser = [];
 
     public function __construct(
-        PermissionRepositoryInterface $permRepository,
-        UserRepositoryInterface $userRepository,
-        CurrentUserApiInterface $currentUserApi,
-        TranslatorInterface $translator
+        private readonly PermissionRepositoryInterface $permRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly TranslatorInterface $translator
     ) {
-        $this->permRepository = $permRepository;
-        $this->userRepository = $userRepository;
-        $this->currentUserApi = $currentUserApi;
-        $this->translator = $translator;
     }
 
     /**

@@ -17,17 +17,11 @@ use Knp\Menu\ItemInterface;
 
 class ExtensionMenuEvent
 {
-    private $bundleName;
-
-    private $menuType;
-
-    private $menu;
-
-    public function __construct(string $bundleName, string $menuType, ?ItemInterface $menu)
-    {
-        $this->bundleName = $bundleName;
-        $this->menuType = $menuType;
-        $this->menu = $menu;
+    public function __construct(
+        private readonly string $bundleName,
+        private readonly string $menuType,
+        private readonly ?ItemInterface $menu
+    ) {
     }
 
     public function getBundleName(): string

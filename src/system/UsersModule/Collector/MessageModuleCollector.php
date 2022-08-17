@@ -27,12 +27,9 @@ class MessageModuleCollector
     /**
      * @var MessageModuleInterface[] e.g. [<moduleName> => <ServiceObject>]
      */
-    private $messageModules = [];
+    private array $messageModules = [];
 
-    /**
-     * @var string
-     */
-    private $currentMessageModuleName;
+    private string $currentMessageModuleName;
 
     public function __construct(VariableApiInterface $variableApi, iterable $modules)
     {

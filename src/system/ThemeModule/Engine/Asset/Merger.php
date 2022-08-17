@@ -22,57 +22,27 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 class Merger implements MergerInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private string $rootDir;
 
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var string
-     */
-    private $rootDir;
-
-    /**
-     * @var integer
-     */
-    private $lifetime;
-
-    /**
-     * @var boolean
-     */
-    private $minify;
-
-    /**
-     * @var boolean
-     */
-    private $compress;
+    private int $lifetime;
 
     /**
      * @var string[]
      */
-    private $skipFiles;
+    private array $skipFiles;
 
     public function __construct(
-        RouterInterface $router,
-        ZikulaHttpKernelInterface $kernel,
+        private readonly RouterInterface $router,
+        private readonly ZikulaHttpKernelInterface $kernel,
         string $lifetime = '1 day',
-        bool $minify = false,
-        bool $compress = false,
+        private readonly bool $minify = false,
+        private readonly bool $compress = false,
         array $skipFiles = []
     ) {
-        $this->router = $router;
-        $this->kernel = $kernel;
         $publicDir = realpath($kernel->getProjectDir() . '/public');
         $basePath = $router->getContext()->getBaseUrl();
         $this->rootDir = str_replace($basePath, '', $publicDir);
         $this->lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
-        $this->minify = $minify;
-        $this->compress = $compress;
 
         $this->skipFiles = [];
         foreach ($skipFiles as $path) {

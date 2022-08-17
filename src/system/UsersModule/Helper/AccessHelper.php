@@ -24,36 +24,12 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class AccessHelper
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
     public function __construct(
-        RequestStack $requestStack,
-        UserRepositoryInterface $userRepository,
-        PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi
+        private readonly RequestStack $requestStack,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly VariableApiInterface $variableApi
     ) {
-        $this->requestStack = $requestStack;
-        $this->userRepository = $userRepository;
-        $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
     }
 
     public function loginAllowed(UserEntity $user): bool

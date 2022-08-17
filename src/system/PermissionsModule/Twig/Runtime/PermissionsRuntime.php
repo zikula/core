@@ -20,20 +20,8 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class PermissionsRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    public function __construct(TranslatorInterface $translator, PermissionApiInterface $permissionApi)
+    public function __construct(private readonly TranslatorInterface $translator, private readonly PermissionApiInterface $permissionApi)
     {
-        $this->translator = $translator;
-        $this->permissionApi = $permissionApi;
     }
 
     public function hasPermission(string $component, string $instance, string $level): bool

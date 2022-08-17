@@ -22,22 +22,10 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 class ThemeRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var PageAssetApiInterface
-     */
-    private $pageAssetApi;
-
-    /**
-     * @var Asset
-     */
-    private $assetHelper;
-
     public function __construct(
-        PageAssetApiInterface $pageAssetApi,
-        Asset $assetHelper
+        private readonly PageAssetApiInterface $pageAssetApi,
+        private readonly Asset $assetHelper
     ) {
-        $this->pageAssetApi = $pageAssetApi;
-        $this->assetHelper = $assetHelper;
     }
 
     /**

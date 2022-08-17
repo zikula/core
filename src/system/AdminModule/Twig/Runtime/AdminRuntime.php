@@ -20,20 +20,8 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class AdminRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var FragmentHandler
-     */
-    private $handler;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    public function __construct(FragmentHandler $handler, PermissionApiInterface $permissionApi)
+    public function __construct(private readonly FragmentHandler $handler, private readonly PermissionApiInterface $permissionApi)
     {
-        $this->handler = $handler;
-        $this->permissionApi = $permissionApi;
     }
 
     public function adminBreadcrumbs(): string

@@ -25,42 +25,15 @@ use Zikula\ThemeModule\Engine\Asset\ResolverInterface;
  */
 class AssetFilter
 {
-    /**
-     * @var AssetBag
-     */
-    private $headers;
-
-    /**
-     * @var AssetBag
-     */
-    private $footers;
-
-    /**
-     * @var ResolverInterface
-     */
-    private $jsResolver;
-
-    /**
-     * @var ResolverInterface
-     */
-    private $cssResolver;
-
-    /**
-     * @var string
-     */
-    private $scriptPosition;
+    private string $scriptPosition;
 
     public function __construct(
-        AssetBag $headers,
-        AssetBag $footers,
-        ResolverInterface $js,
-        ResolverInterface $css,
+        private readonly AssetBag $headers,
+        private readonly AssetBag $footers,
+        private readonly ResolverInterface $jsResolver,
+        private readonly ResolverInterface $cssResolver,
         string $scriptPosition
     ) {
-        $this->headers = $headers;
-        $this->footers = $footers;
-        $this->jsResolver = $js;
-        $this->cssResolver = $css;
         $this->scriptPosition = isset($scriptPosition) && in_array($scriptPosition, ['head', 'foot']) ? $scriptPosition : 'foot';
     }
 

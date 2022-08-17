@@ -20,20 +20,8 @@ use Zikula\UsersModule\Helper\MailHelper;
 
 class RegistrationEventsListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var MailHelper
-     */
-    private $mailHelper;
-
-    public function __construct(RequestStack $requestStack, MailHelper $mailHelper)
+    public function __construct(private readonly RequestStack $requestStack, private readonly MailHelper $mailHelper)
     {
-        $this->requestStack = $requestStack;
-        $this->mailHelper = $mailHelper;
     }
 
     public static function getSubscribedEvents()

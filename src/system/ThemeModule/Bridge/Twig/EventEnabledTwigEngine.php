@@ -21,10 +21,7 @@ use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
 
 class EventEnabledTwigEngine extends Environment
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * {@inheritdoc}

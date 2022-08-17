@@ -19,14 +19,8 @@ use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInte
 
 class GroupDeletionListener implements EventSubscriberInterface
 {
-    /**
-     * @var PermissionRepositoryInterface
-     */
-    private $permissionRepository;
-
-    public function __construct(PermissionRepositoryInterface $permissionRepository)
+    public function __construct(private readonly PermissionRepositoryInterface $permissionRepository)
     {
-        $this->permissionRepository = $permissionRepository;
     }
 
     public static function getSubscribedEvents()

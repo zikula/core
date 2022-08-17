@@ -25,29 +25,11 @@ use Zikula\UsersModule\Constant as UsersConstant;
 
 class ValidEmailValidator extends ConstraintValidator
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
     public function __construct(
-        VariableApiInterface $variableApi,
-        TranslatorInterface $translator,
-        ValidatorInterface $validator
+        private readonly VariableApiInterface $variableApi,
+        private readonly TranslatorInterface $translator,
+        private readonly ValidatorInterface $validator
     ) {
-        $this->variableApi = $variableApi;
-        $this->translator = $translator;
-        $this->validator = $validator;
     }
 
     public function validate($value, Constraint $constraint)

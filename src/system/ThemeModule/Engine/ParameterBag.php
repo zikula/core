@@ -28,24 +28,10 @@ use function Symfony\Component\String\s;
  */
 class ParameterBag implements IteratorAggregate, Countable
 {
-    /**
-     * @var array
-     */
-    private $parameters;
-
-    /**
-     * Namespace character.
-     *
-     * @var string
-     */
-    private $ns;
-
     public function __construct(
-        array $parameters = [],
-        $namespaceChar = '.'
+        private array $parameters = [],
+        private readonly string $namespaceChar = '.'
     ) {
-        $this->parameters = $parameters;
-        $this->ns = $namespaceChar;
     }
 
     /**
@@ -173,14 +159,14 @@ class ParameterBag implements IteratorAggregate, Countable
     private function &resolvePath(string $key, bool $writeContext = false): array
     {
         $array = &$this->parameters;
-        $key = (0 === mb_strpos($key, $this->ns)) ? mb_substr($key, 1) : $key;
+        $key = (0 === mb_strpos($key, $this->namespaceChar)) ? mb_substr($key, 1) : $key;
 
         // Check if there is anything to do, else return
         if (!$key) {
             return $array;
         }
 
-        $parts = explode($this->ns, $key);
+        $parts = explode($this->namespaceChar, $key);
         if (2 > count($parts)) {
             if (!$writeContext) {
                 return $array;
@@ -214,8 +200,8 @@ class ParameterBag implements IteratorAggregate, Countable
      */
     private function resolveKey(string $key): string
     {
-        if (false !== mb_strpos($key, $this->ns)) {
-            $key = mb_substr($key, mb_strrpos($key, $this->ns) + 1, mb_strlen($key));
+        if (false !== mb_strpos($key, $this->namespaceChar)) {
+            $key = mb_substr($key, mb_strrpos($key, $this->namespaceChar) + 1, mb_strlen($key));
         }
 
         return $key;

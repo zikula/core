@@ -36,10 +36,7 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
      */
     private const REGEX_PATTERN = '/(^|:)\\' . self::ROUTE_ATTRIBUTE_FLAG . '(\w+)/m';
 
-    /**
-     * @var array
-     */
-    private $accessMap = [
+    private array $accessMap = [
         'ACCESS_ADMIN' => 'admin',
         'ACCESS_DELETE' => 'delete',
         'ACCESS_ADD' => 'add',
@@ -50,22 +47,10 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         'ACCESS_OVERVIEW' => 'overview',
     ];
 
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var Reader
-     */
-    private $annotationReader;
-
     public function __construct(
-        PermissionApiInterface $permissionApi,
-        Reader $annotationReader
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly Reader $annotationReader
     ) {
-        $this->permissionApi = $permissionApi;
-        $this->annotationReader = $annotationReader;
     }
 
     public static function getSubscribedEvents()

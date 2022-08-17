@@ -20,22 +20,10 @@ use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 class MenuBuilder
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
     public function __construct(
-        FactoryInterface $factory,
-        VariableApiInterface $variableApi
+        private readonly FactoryInterface $factory,
+        private readonly VariableApiInterface $variableApi
     ) {
-        $this->factory = $factory;
-        $this->variableApi = $variableApi;
     }
 
     public function createAdminActionsMenu(array $options): ItemInterface

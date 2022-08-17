@@ -19,14 +19,8 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
 
 class SchemaHelper
 {
-    /**
-     * @var ExtensionRepositoryInterface
-     */
-    private $extensionRepository;
-
-    public function __construct(ExtensionRepositoryInterface $extensionRepository)
+    public function __construct(private readonly ExtensionRepositoryInterface $extensionRepository)
     {
-        $this->extensionRepository = $extensionRepository;
     }
 
     /**

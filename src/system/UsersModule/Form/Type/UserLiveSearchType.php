@@ -28,14 +28,8 @@ use Zikula\UsersModule\Form\DataTransformer\UserFieldTransformer;
  */
 class UserLiveSearchType extends AbstractType
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepository;
-
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(private readonly UserRepositoryInterface $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

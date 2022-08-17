@@ -20,10 +20,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidUserFields extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $message = 'The fields are invalid.';
+    public string $message = 'The fields are invalid.';
 
     public function getTargets()
     {

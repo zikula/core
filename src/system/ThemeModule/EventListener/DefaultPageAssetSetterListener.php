@@ -27,52 +27,19 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class DefaultPageAssetSetterListener implements EventSubscriberInterface
 {
-    /**
-     * @var AssetBag
-     */
-    private $cssAssetBag;
-
-    /**
-     * @var AssetBag
-     */
-    private $jsAssetBag;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var Asset
-     */
-    private $assetHelper;
-
-    /**
-     * @var Engine
-     */
-    private $themeEngine;
-
-    /**
-     * @var array
-     */
-    private $params;
+    private array $params;
 
     public function __construct(
-        AssetBag $jsAssetBag,
-        AssetBag $cssAssetBag,
-        RouterInterface $router,
-        Asset $assetHelper,
-        Engine $themeEngine,
+        private readonly AssetBag $jsAssetBag,
+        private readonly AssetBag $cssAssetBag,
+        private readonly RouterInterface $router,
+        private readonly Asset $assetHelper,
+        private readonly Engine $themeEngine,
         string $installed,
         string $bootstrapJavascriptPath,
         string $bootstrapStylesheetPath,
         string $fontAwesomePath
     ) {
-        $this->jsAssetBag = $jsAssetBag;
-        $this->cssAssetBag = $cssAssetBag;
-        $this->router = $router;
-        $this->assetHelper = $assetHelper;
-        $this->themeEngine = $themeEngine;
         $this->params = [
             'installed' => '0.0.0' !== $installed,
             'bootstrap_js_path' => $bootstrapJavascriptPath,

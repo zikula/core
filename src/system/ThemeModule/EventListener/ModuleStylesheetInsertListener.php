@@ -22,14 +22,8 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class ModuleStylesheetInsertListener implements EventSubscriberInterface
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    public function __construct(ZikulaHttpKernelInterface $kernel)
+    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     public static function getSubscribedEvents()

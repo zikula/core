@@ -27,50 +27,14 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
 {
-    /**
-     * @var AuthenticationMappingRepositoryInterface
-     */
-    private $mappingRepository;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
     public function __construct(
-        AuthenticationMappingRepositoryInterface $mappingRepository,
-        RequestStack $requestStack,
-        TranslatorInterface $translator,
-        VariableApiInterface $variableApi,
-        ValidatorInterface $validator,
-        EncoderFactoryInterface $encoderFactory
+        private readonly AuthenticationMappingRepositoryInterface $mappingRepository,
+        private readonly RequestStack $requestStack,
+        private readonly TranslatorInterface $translator,
+        private readonly VariableApiInterface $variableApi,
+        private readonly ValidatorInterface $validator,
+        private readonly EncoderFactoryInterface $encoderFactory
     ) {
-        $this->mappingRepository = $mappingRepository;
-        $this->requestStack = $requestStack;
-        $this->translator = $translator;
-        $this->variableApi = $variableApi;
-        $this->validator = $validator;
-        $this->encoderFactory = $encoderFactory;
     }
 
     public function getRegistrationFormClassName(): string

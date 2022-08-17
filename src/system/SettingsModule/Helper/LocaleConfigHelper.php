@@ -20,42 +20,15 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 
 class LocaleConfigHelper
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    /**
-     * @var string
-     */
-    private $defaultLocale;
-
-    /**
-     * @var bool
-     */
-    private $installed;
-
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private bool $installed;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        CacheClearer $cacheClearer,
-        string $projectDir,
-        string $defaultLocale = 'en',
+        private readonly VariableApiInterface $variableApi,
+        private readonly CacheClearer $cacheClearer,
+        private readonly string $projectDir,
+        private readonly string $defaultLocale = 'en',
         string $installed = '0.0.0'
     ) {
-        $this->variableApi = $variableApi;
-        $this->cacheClearer = $cacheClearer;
-        $this->projectDir = $projectDir;
-        $this->defaultLocale = $defaultLocale;
         $this->installed = '0.0.0' !== $installed;
     }
 

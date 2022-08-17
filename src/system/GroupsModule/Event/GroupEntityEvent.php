@@ -21,19 +21,10 @@ use Zikula\GroupsModule\Entity\GroupEntity;
  */
 class GroupEntityEvent
 {
-    /**
-     * @var GroupEntity
-     */
-    private $group;
+    private \DateTimeImmutable $date;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $date;
-
-    public function __construct(GroupEntity $groupEntity)
+    public function __construct(private readonly GroupEntity $groupEntity)
     {
-        $this->group = $groupEntity;
         $this->date = new \DateTimeImmutable('now');
     }
 

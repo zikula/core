@@ -26,36 +26,12 @@ use Zikula\ExtensionsModule\Api\CapabilityApi;
  */
 class CategoryProcessingHelper
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var CategoryRegistryRepositoryInterface
-     */
-    private $categoryRegistryRepository;
-
-    /**
-     * @var CapabilityApiInterface
-     */
-    private $capabilityApi;
-
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ZikulaHttpKernelInterface $kernel,
-        CategoryRegistryRepositoryInterface $categoryRegistryRepository,
-        CapabilityApiInterface $capabilityApi
+        private readonly EntityManagerInterface $entityManager,
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly CategoryRegistryRepositoryInterface $categoryRegistryRepository,
+        private readonly CapabilityApiInterface $capabilityApi
     ) {
-        $this->entityManager = $entityManager;
-        $this->kernel = $kernel;
-        $this->categoryRegistryRepository = $categoryRegistryRepository;
-        $this->capabilityApi = $capabilityApi;
     }
 
     /**

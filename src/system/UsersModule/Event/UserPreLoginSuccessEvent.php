@@ -41,10 +41,7 @@ class UserPreLoginSuccessEvent extends RedirectableUserEntityEvent implements St
     use AuthMethodTrait;
     use StoppableTrait;
 
-    /**
-     * @var array
-     */
-    private $flashes = [];
+    private array $flashes = [];
 
     public function __construct(UserEntity $userEntity, string $authenticationMethod)
     {

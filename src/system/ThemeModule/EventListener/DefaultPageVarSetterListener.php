@@ -27,42 +27,15 @@ use Zikula\ThemeModule\Engine\ParameterBag;
  */
 class DefaultPageVarSetterListener implements EventSubscriberInterface
 {
-    /**
-     * @var SiteDefinitionInterface
-     */
-    private $site;
-
-    /**
-     * @var ParameterBag
-     */
-    private $pageVars;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
-        SiteDefinitionInterface $site,
-        ParameterBag $pageVars,
-        RouterInterface $routerInterface,
-        ZikulaHttpKernelInterface $kernel,
+        private readonly SiteDefinitionInterface $site,
+        private readonly ParameterBag $pageVars,
+        private readonly RouterInterface $router,
+        private readonly ZikulaHttpKernelInterface $kernel,
         string $installed
     ) {
-        $this->site = $site;
-        $this->pageVars = $pageVars;
-        $this->router = $routerInterface;
-        $this->kernel = $kernel;
         $this->installed = '0.0.0' !== $installed;
     }
 

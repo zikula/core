@@ -19,14 +19,8 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class DefaultThemeRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    public function __construct(ZikulaHttpKernelInterface $kernel)
+    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
     {
-        $this->kernel = $kernel;
     }
 
     public function getStyleChoices(): array

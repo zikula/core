@@ -20,22 +20,10 @@ use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 
 class ValidGroupNameValidator extends ConstraintValidator
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRepository;
-
     public function __construct(
-        TranslatorInterface $translator,
-        GroupRepositoryInterface $groupRepository
+        private readonly TranslatorInterface $translator,
+        private readonly GroupRepositoryInterface $groupRepository
     ) {
-        $this->translator = $translator;
-        $this->groupRepository = $groupRepository;
     }
 
     public function validate($data, Constraint $constraint)

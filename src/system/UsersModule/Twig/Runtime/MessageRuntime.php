@@ -21,29 +21,11 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class MessageRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var MessageModuleCollector
-     */
-    private $messageModuleCollector;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        MessageModuleCollector $messageModuleCollector,
-        TranslatorInterface $translator
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly MessageModuleCollector $messageModuleCollector,
+        private readonly TranslatorInterface $translator
     ) {
-        $this->userRepository = $userRepository;
-        $this->messageModuleCollector = $messageModuleCollector;
-        $this->translator = $translator;
     }
 
     /**

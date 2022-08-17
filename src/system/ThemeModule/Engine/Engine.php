@@ -49,68 +49,29 @@ class Engine
 {
     /**
      * The instance of the currently active theme.
-     *
-     * @var AbstractTheme
      */
-    private $activeThemeBundle;
+    private AbstractTheme $activeThemeBundle;
 
     /**
      * Realm is a present value in the theme config determining which page templates to utilize.
-     * @var string
      */
-    private $realm;
+    private string $realm;
 
     /**
-     * AnnotationValue is the value of the active method Theme annotation.
-     * @var string|null
+     * Value of the active method Theme annotation.
      */
-    private $annotationValue;
+    private ?string $annotationValue;
 
-    /**
-     * The requestStack.
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * The doctrine annotation reader service.
-     * @var Reader
-     */
-    private $annotationReader;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var AssetFilter
-     */
-    private $filterService;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
-        RequestStack $requestStack,
-        Reader $annotationReader,
-        ZikulaHttpKernelInterface $kernel,
-        AssetFilter $filter,
-        VariableApiInterface $variableApi,
+        private readonly RequestStack $requestStack,
+        private readonly Reader $annotationReader,
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly AssetFilter $filterService,
+        private readonly VariableApiInterface $variableApi,
         string $installed
     ) {
-        $this->requestStack = $requestStack;
-        $this->annotationReader = $annotationReader;
-        $this->kernel = $kernel;
-        $this->filterService = $filter;
-        $this->variableApi = $variableApi;
         $this->installed = '0.0.0' !== $installed;
     }
 

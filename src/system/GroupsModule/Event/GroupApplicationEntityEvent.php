@@ -21,19 +21,10 @@ use Zikula\GroupsModule\Entity\GroupApplicationEntity;
  */
 class GroupApplicationEntityEvent
 {
-    /**
-     * @var GroupApplicationEntity
-     */
-    private $groupApplication;
+    private \DateTimeImmutable $date;
 
-    /**
-     * @var \DateTimeImmutable
-     */
-    private $date;
-
-    public function __construct(GroupApplicationEntity $groupApplicationEntity)
+    public function __construct(private readonly GroupApplicationEntity $groupApplicationEntity)
     {
-        $this->groupApplication = $groupApplicationEntity;
         $this->date = new \DateTimeImmutable('now');
     }
 

@@ -26,67 +26,27 @@ class LocaleApi implements LocaleApiInterface
 {
     /**
      * Locales with translations present
-     * @var array
      */
-    private $supportedLocales = [];
+    private array $supportedLocales = [];
 
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
+    private bool $installed;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
+    private string $translationPath;
 
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var LocaleConfigHelper
-     */
-    private $localeConfigHelper;
-
-    /**
-     * @var string
-     */
-    private $defaultLocale;
-
-    /**
-     * @var bool
-     */
-    private $installed;
-
-    /**
-     * @var string
-     */
-    private $translationPath;
-
-    /**
-     * @var string
-     */
-    private $sectionKey;
+    private string $sectionKey;
 
     public function __construct(
-        ZikulaHttpKernelInterface $kernel,
-        RequestStack $requestStack,
-        VariableApiInterface $variableApi,
-        LocaleConfigHelper $localeConfigHelper,
-        string $defaultLocale = 'en',
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly RequestStack $requestStack,
+        private readonly VariableApiInterface $variableApi,
+        private readonly LocaleConfigHelper $localeConfigHelper,
+        private readonly string $defaultLocale = 'en',
         string $installed = '0.0.0'
     ) {
         $this->supportedLocales = [
             'withRegions' => [],
             'withoutRegions' => []
         ];
-        $this->kernel = $kernel;
-        $this->requestStack = $requestStack;
-        $this->variableApi = $variableApi;
-        $this->localeConfigHelper = $localeConfigHelper;
-        $this->defaultLocale = $defaultLocale;
         $this->installed = '0.0.0' !== $installed;
         $this->translationPath = $this->kernel->getProjectDir() . '/translations';
     }

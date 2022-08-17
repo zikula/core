@@ -26,22 +26,10 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class TranslationUiListener implements EventSubscriberInterface
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
     public function __construct(
-        PermissionApiInterface $permissionApi,
-        LocaleApiInterface $localeApi
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly LocaleApiInterface $localeApi
     ) {
-        $this->permissionApi = $permissionApi;
-        $this->localeApi = $localeApi;
     }
 
     public static function getSubscribedEvents()

@@ -22,29 +22,14 @@ use Zikula\ThemeModule\Engine\AssetBag;
  */
 class CssResolver implements ResolverInterface
 {
-    /**
-     * @var AssetBag
-     */
-    private $bag;
-
-    /**
-     * @var MergerInterface
-     */
-    private $merger;
-
-    /**
-     * @var bool
-     */
-    private $combine;
+    private bool $combine;
 
     public function __construct(
         string $env,
-        AssetBag $bag,
-        MergerInterface $merger,
+        private readonly AssetBag $bag,
+        private readonly MergerInterface $merger,
         bool $combine = false
     ) {
-        $this->bag = $bag;
-        $this->merger = $merger;
         $this->combine = ('prod' === $env) && $combine;
     }
 

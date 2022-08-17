@@ -26,15 +26,8 @@ class ZikulaUsersImportCommand extends Command
 {
     protected static $defaultName = 'zikula:users:import';
 
-    /**
-     * @var FileIOHelper
-     */
-    private $ioHelper;
-
-    public function __construct(FileIOHelper $ioHelper)
+    public function __construct(private readonly FileIOHelper $ioHelper)
     {
-        $this->ioHelper = $ioHelper;
-
         parent::__construct();
     }
 

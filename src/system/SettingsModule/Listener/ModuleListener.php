@@ -23,36 +23,12 @@ use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class ModuleListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
-        VariableApiInterface $variableApi,
-        RequestStack $requestStack,
-        LocaleApiInterface $localeApi,
-        TranslatorInterface $translator
+        private readonly VariableApiInterface $variableApi,
+        private readonly RequestStack $requestStack,
+        private readonly LocaleApiInterface $localeApi,
+        private readonly TranslatorInterface $translator
     ) {
-        $this->variableApi = $variableApi;
-        $this->requestStack = $requestStack;
-        $this->localeApi = $localeApi;
-        $this->translator = $translator;
     }
 
     public static function getSubscribedEvents()

@@ -21,43 +21,18 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 class AddWebPackAssetsListener implements EventSubscriberInterface
 {
-    /* @var AssetBag */
-    private $cssAssetBag;
-
-    /* @var AssetBag */
-    private $jsAssetBag;
-
-    /* @var EntrypointLookupCollectionInterface */
-    private $lookupCollection;
-
-    /* @var string */
-    private $entryPoint;
-
-    /* @var string */
-    private $entryName;
-
-    /* @var bool */
-    private $installed;
-
-    /* @var string */
-    private $projectDir;
+    private bool $installed;
 
     public function __construct(
-        AssetBag $jsAssetBag,
-        AssetBag $cssAssetBag,
-        EntrypointLookupCollectionInterface $lookupCollection,
+        private readonly AssetBag $jsAssetBag,
+        private readonly AssetBag $cssAssetBag,
+        private readonly EntrypointLookupCollectionInterface $lookupCollection,
         string $installed,
-        string $projectDir,
-        string $entryPoint = '_default',
-        string $entryName = 'app'
+        private readonly string $projectDir,
+        private readonly string $entryPoint = '_default',
+        private readonly string $entryName = 'app'
     ) {
-        $this->jsAssetBag = $jsAssetBag;
-        $this->cssAssetBag = $cssAssetBag;
-        $this->lookupCollection = $lookupCollection;
-        $this->entryPoint = $entryPoint;
-        $this->entryName = $entryName;
         $this->installed = '0.0.0' !== $installed;
-        $this->projectDir = $projectDir;
     }
 
     public static function getSubscribedEvents()

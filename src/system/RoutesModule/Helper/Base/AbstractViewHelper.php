@@ -30,50 +30,14 @@ use Zikula\RoutesModule\Helper\PermissionHelper;
  */
 abstract class AbstractViewHelper
 {
-    /**
-     * @var Environment
-     */
-    protected $twig;
-    
-    /**
-     * @var LoaderInterface
-     */
-    protected $twigLoader;
-    
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-    
-    /**
-     * @var VariableApiInterface
-     */
-    protected $variableApi;
-    
-    /**
-     * @var ControllerHelper
-     */
-    protected $controllerHelper;
-    
-    /**
-     * @var PermissionHelper
-     */
-    protected $permissionHelper;
-    
     public function __construct(
-        Environment $twig,
-        LoaderInterface $twigLoader,
-        RequestStack $requestStack,
-        VariableApiInterface $variableApi,
-        ControllerHelper $controllerHelper,
-        PermissionHelper $permissionHelper
+        protected readonly Environment $twig,
+        protected readonly LoaderInterface $twigLoader,
+        protected readonly RequestStack $requestStack,
+        protected readonly VariableApiInterface $variableApi,
+        protected readonly ControllerHelper $controllerHelper,
+        protected readonly PermissionHelper $permissionHelper
     ) {
-        $this->twig = $twig;
-        $this->twigLoader = $twigLoader;
-        $this->requestStack = $requestStack;
-        $this->variableApi = $variableApi;
-        $this->controllerHelper = $controllerHelper;
-        $this->permissionHelper = $permissionHelper;
     }
     
     /**

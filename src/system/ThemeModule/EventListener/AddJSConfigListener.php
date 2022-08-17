@@ -24,50 +24,17 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class AddJSConfigListener implements EventSubscriberInterface
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
-     * @var AssetBag
-     */
-    private $footers;
-
-    /**
-     * @var string
-     */
-    private $defaultSessionName;
-
-    /**
-     * @var bool
-     */
-    private $installed;
+    private bool $installed;
 
     public function __construct(
         string $installed,
-        VariableApiInterface $variableApi,
-        CurrentUserApiInterface $currentUserApi,
-        Environment $twig,
-        AssetBag $footers,
-        string $defaultSessionName = '_zsid'
+        private readonly VariableApiInterface $variableApi,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly Environment $twig,
+        private readonly AssetBag $footers,
+        private readonly string $defaultSessionName = '_zsid'
     ) {
         $this->installed = '0.0.0' !== $installed;
-        $this->variableApi = $variableApi;
-        $this->currentUserApi = $currentUserApi;
-        $this->twig = $twig;
-        $this->footers = $footers;
-        $this->defaultSessionName = $defaultSessionName;
     }
 
     public static function getSubscribedEvents()
