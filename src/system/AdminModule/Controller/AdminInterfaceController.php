@@ -38,10 +38,10 @@ class AdminInterfaceController extends AbstractController
      *
      * Open the admin container
      */
-    public function header(RequestStack $requestStack): Response
+    public function header(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaAdminModule/AdminInterface/header.html.twig', [
-            'caller' => $this->getCallerInfo($requestStack),
+            'caller' => $this->getCallerInfo($requestStack, $kernel),
         ]);
     }
 
@@ -50,10 +50,10 @@ class AdminInterfaceController extends AbstractController
      *
      * Close the admin container
      */
-    public function footer(RequestStack $requestStack): Response
+    public function footer(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaAdminModule/AdminInterface/footer.html.twig', [
-            'caller' => $this->getCallerInfo($requestStack),
+            'caller' => $this->getCallerInfo($requestStack, $kernel),
             'symfonyVersion' => Kernel::VERSION,
             'phpVersion' => PHP_VERSION
         ]);
@@ -65,9 +65,9 @@ class AdminInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      */
-    public function breadcrumbs(RequestStack $requestStack, AdminCategoryHelper $categoryHelper): Response
+    public function breadcrumbs(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel, AdminCategoryHelper $categoryHelper): Response
     {
-        $caller = $this->getCallerInfo($requestStack);
+        $caller = $this->getCallerInfo($requestStack, $kernel);
         $caller['category'] = $categoryHelper->getCurrentCategory();
 
         return $this->render('@ZikulaAdminModule/AdminInterface/breadCrumbs.html.twig', [
@@ -75,12 +75,10 @@ class AdminInterfaceController extends AbstractController
         ]);
     }
 
-    private function getCallerInfo(RequestStack $requestStack): array
+    private function getCallerInfo(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): array
     {
         $caller = $requestStack->getMainRequest()->attributes->all();
-        // $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : '';
-        $caller['info'] = [];
-        // die('TODO: caller information');
+        $caller['info'] = !empty($caller['_zkModule']) ? $kernel->getBundle($caller['_zkModule'])->getMetaData() : [];
 
         return $caller;
     }
@@ -116,6 +114,7 @@ class AdminInterfaceController extends AbstractController
      */
     public function menu(
         RequestStack $requestStack,
+        ZikulaHttpKernelInterface $kernel,
         RouterInterface $router,
         ExtensionMenuCollector $extensionMenuCollector,
         CapabilityApiInterface $capabilityApi,
@@ -124,8 +123,7 @@ class AdminInterfaceController extends AbstractController
         $mainRequest = $requestStack->getMainRequest();
         $currentRequest = $requestStack->getCurrentRequest();
 
-        // get caller info
-        $caller = $this->getCallerInfo($requestStack);
+        $caller = $this->getCallerInfo($requestStack, $kernel);
         $caller['_zkModule'] = $mainRequest->attributes->get('_zkModule');
         $caller['_zkType'] = $mainRequest->attributes->get('_zkType');
         $caller['_zkFunc'] = $mainRequest->attributes->get('_zkFunc');

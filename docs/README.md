@@ -10,8 +10,6 @@ website and application development. See the [features section](#features-of-zik
 Zikula also features an [MDSD](https://en.wikipedia.org/wiki/Model-driven_engineering) tool for rapid prototyping
 and module development called [ModuleStudio](https://modulestudio.de/en/) or MOST.
 
-Zikula can quickly become a Content Management System utilizing community-driven modules.
-
 ## Some features of Zikula Core system
 
 ### Foundation

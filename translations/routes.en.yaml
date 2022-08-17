@@ -23,14 +23,6 @@ zikulaadminmodule_admininterface_header: /admininterface/header
 zikulaadminmodule_admininterface_menu: /admininterface/menu
 zikulaadminmodule_admininterface_securityanalyzer: /admininterface/securityanalyzer
 zikulaadminmodule_admininterface_updatecheck: /admininterface/updatecheck
-zikulaadminmodule_ajax_addcategory: /ajax/newcategory
-zikulaadminmodule_ajax_changemodulecategory: /ajax/assigncategory
-zikulaadminmodule_ajax_defaultcategory: /ajax/makedefault
-zikulaadminmodule_ajax_deletecategory: /ajax/deletecategory
-zikulaadminmodule_ajax_editcategory: /ajax/editcategory
-zikulaadminmodule_ajax_sortcategories: /ajax/sortcategories
-zikulaadminmodule_ajax_sortmodules: /ajax/sortmodules
-zikulaadminmodule_config_config: /config/config
 zikuladefaulttheme_ajax_changeuserstyle: /ajax/changeUserStyle
 zikulacategoriesmodule_category_list: '/admin/category/list/{id}'
 zikulacategoriesmodule_node_contextmenu: '/admin/category/contextMenu/{action}/{id}'

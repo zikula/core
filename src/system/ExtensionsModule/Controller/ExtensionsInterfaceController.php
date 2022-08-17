@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeModule\Engine\Asset;
 
@@ -32,6 +33,7 @@ class ExtensionsInterfaceController extends AbstractController
      * Module header
      */
     public function header(
+        ZikulaHttpKernelInterface $kernel,
         RequestStack $requestStack,
         Asset $assetHelper
     ): Response {
@@ -39,7 +41,7 @@ class ExtensionsInterfaceController extends AbstractController
         $currentRequest = $requestStack->getCurrentRequest();
 
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig', [
-            'caller' => $this->getCallerInfo($requestStack),
+            'caller' => $this->getCallerInfo($requestStack, $kernel),
             'title' => '' !== $currentRequest->attributes->get('title')
                 ? $currentRequest->attributes->get('title')
                 : ($caller['info']['displayname'] ?? ''),
@@ -56,10 +58,10 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Module footer
      */
-    public function footer(RequestStack $requestStack): Response
+    public function footer(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/footer.html.twig', [
-            'caller' => $this->getCallerInfo($requestStack)
+            'caller' => $this->getCallerInfo($requestStack, $kernel)
         ]);
     }
 
@@ -68,19 +70,17 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      */
-    public function breadcrumbs(RequestStack $requestStack): Response
+    public function breadcrumbs(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/breadcrumbs.html.twig', [
-            'caller' => $this->getCallerInfo($requestStack)
+            'caller' => $this->getCallerInfo($requestStack, $kernel)
         ]);
     }
 
-    private function getCallerInfo(RequestStack $requestStack): array
+    private function getCallerInfo(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): array
     {
         $caller = $requestStack->getMainRequest()->attributes->all();
-        // $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : '';
-        $caller['info'] = [];
-        // die('TODO: caller information');
+        $caller['info'] = !empty($caller['_zkModule']) ? $kernel->getBundle($caller['_zkModule'])->getMetaData() : [];
 
         return $caller;
     }
@@ -92,13 +92,14 @@ class ExtensionsInterfaceController extends AbstractController
      */
     public function links(
         RequestStack $requestStack,
+        ZikulaHttpKernelInterface $kernel,
         ExtensionMenuCollector $extensionMenuCollector
     ): Response {
         /** @var Request $mainRequest */
         $mainRequest = $requestStack->getMainRequest();
         /** @var Request $currentRequest */
         $currentRequest = $requestStack->getCurrentRequest();
-        $caller = $this->getCallerInfo($requestStack);
+        $caller = $this->getCallerInfo($requestStack, $kernel);
         // your own links array
         $links = '' !== $currentRequest->attributes->get('links') ? $currentRequest->attributes->get('links') : '';
         // you can pass module name you want to get links for
