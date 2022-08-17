@@ -16,12 +16,14 @@ namespace Zikula\DefaultTheme\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class MenuBuilder
 {
     public function __construct(
         private readonly FactoryInterface $factory,
-        private readonly PermissionApiInterface $permissionApi
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly CurrentUserApiInterface $currentUserApi
     ) {
     }
 
@@ -48,7 +50,11 @@ class MenuBuilder
         if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             $menu->addChild('Themes', ['route' => 'zikulathememodule_config_config']);
         }
-        $menu->addChild('Log out', ['route' => 'zikulausersmodule_access_logout'])->setAttribute('icon', 'fas fa-sign-out-alt');
+        if (!$this->currentUserApi->isLoggedIn()) {
+            $menu->addChild('Log in', ['route' => 'zikulausersmodule_access_login'])->setAttribute('icon', 'fas fa-sign-in-alt');
+        } else {
+            $menu->addChild('Log out', ['route' => 'zikulausersmodule_access_logout'])->setAttribute('icon', 'fas fa-sign-out-alt');
+        }
 
         return $menu;
     }

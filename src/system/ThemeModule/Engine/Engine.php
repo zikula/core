@@ -60,7 +60,7 @@ class Engine
     /**
      * Value of the active method Theme annotation.
      */
-    private ?string $annotationValue;
+    private ?string $annotationValue = null;
 
     private bool $installed;
 
