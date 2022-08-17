@@ -23,7 +23,7 @@ class UserEntityEvent
 {
     private ?UserEntity $user;
 
-    private  \DateTimeImmutable $date;
+    private \DateTimeImmutable $date;
 
     public function __construct(?UserEntity $user)
     {
