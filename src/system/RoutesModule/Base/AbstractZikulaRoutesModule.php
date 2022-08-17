@@ -16,11 +16,8 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Base;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Module base class.
- */
-abstract class AbstractZikulaRoutesModule extends AbstractCoreModule
+abstract class AbstractZikulaRoutesModule extends AbstractModule
 {
 }

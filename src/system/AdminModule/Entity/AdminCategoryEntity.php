@@ -13,79 +13,41 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
-/**
- * AdminCategory entity class.
- *
- * @ORM\Entity(repositoryClass="Zikula\AdminModule\Entity\Repository\AdminCategoryRepository")
- * @ORM\Table(name="admin_category")
- */
-class AdminCategoryEntity extends EntityAccess
+class AdminCategoryEntity
 {
-    /**
-     * The category id
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
-     */
-    private $cid;
+    private int $cid;
 
     /**
-     * The category name
-     *
-     * @ORM\Column(type="string", length=32)
-     * @Assert\Length(min="1", max="32")
-     * @var string
+     * @Assert\Length(min="1", max="255")
      */
-    private $name;
+    private string $name = '';
 
     /**
-     * The category description
-     *
-     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="1", max="255")
+     */
+    private string $slug = '';
+
+    /**
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
      *     @Assert\Length(min="1", max="255")
      * )
-     * @var string
      */
-    private $description;
+    private string $description = '';
 
     /**
-     * The category icon
-     *
-     * @ORM\Column(type="string", length=50)
      * @Assert\AtLeastOneOf(
      *     @Assert\Blank(),
      *     @Assert\Length(min="1", max="50")
      * )
-     * @var string
      */
-    private $icon;
+    private string $icon = '';
 
-    /**
-     * The sort order of the category
-     *
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $sortorder;
+    private int $sortOrder = 99;
 
-    /**
-     * constructor
-     */
-    public function __construct()
-    {
-        $this->name = '';
-        $this->description = '';
-        $this->icon = '';
-        $this->sortorder = 99;
-    }
+    private bool $default = false;
 
     public function getCid(): ?int
     {
@@ -107,6 +69,18 @@ class AdminCategoryEntity extends EntityAccess
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -135,14 +109,26 @@ class AdminCategoryEntity extends EntityAccess
         return $this;
     }
 
-    public function getSortorder(): int
+    public function getSortOrder(): int
     {
-        return $this->sortorder;
+        return $this->sortOrder;
     }
 
-    public function setSortorder(int $sortorder): self
+    public function setSortOrder(int $sortOrder): self
     {
-        $this->sortorder = $sortorder;
+        $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    public function isDefault(): bool
+    {
+        return $this->default;
+    }
+
+    public function setDefault(bool $default): self
+    {
+        $this->default = $default;
 
         return $this;
     }

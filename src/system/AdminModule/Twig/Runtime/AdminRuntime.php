@@ -64,13 +64,6 @@ class AdminRuntime implements RuntimeExtensionInterface
         return $this->adminMenu($mode, $template);
     }
 
-    public function adminSecurityAnalyzer(): string
-    {
-        $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::securityanalyzer');
-
-        return $this->handler->render($ref) ?? '';
-    }
-
     public function adminUpdateCheck(): string
     {
         $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::updatecheck');

@@ -10,8 +10,6 @@ functions, filters, tags, tests and global variables.
 
 ## Filters
 
-- isCoreExtension
-- notifyFilters(filterEventName)
 - php(func)
 - profileLinkByUserId
 - profileLinkByUserName

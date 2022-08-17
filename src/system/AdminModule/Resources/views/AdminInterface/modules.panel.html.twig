@@ -6,13 +6,13 @@
     <div class="text-left">
         <h2 class="pl-4 pt-1"><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{% trans %}Administration{% endtrans %}"> {% trans %}Administration{% endtrans %}</h2>
         <ul>
-            {% for module in adminMenu %}
-                <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>
-                    <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}">
-                        <i class="{{ module.icon|default('fas fa-layer-group') }} fa-fw fa-lg align-middle text-info"></i> {{ module.menutext|striptags }}
+            {% for item in adminMenu %}
+                <li{% if caller._zkModule == item.moduleName %} class="selected"{% endif %}>
+                    <a href="{{ item.menuTextUrl }}" title="{{ item.menuText|e('html_attr') }}">
+                        <i class="{{ item.icon|default('fas fa-layer-group') }} fa-fw fa-lg align-middle text-info"></i> {{ item.menuText|striptags }}
                     </a>
-                    {% if module.extensionMenu|default %}
-                        {{ knp_menu_render(module.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+                    {% if item.extensionMenu|default %}
+                        {{ knp_menu_render(item.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                     {% endif %}
                 </li>
             {% endfor %}

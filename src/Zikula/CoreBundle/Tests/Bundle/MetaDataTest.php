@@ -43,14 +43,6 @@ class MetaDataTest extends TestCase
     }
 
     /**
-     * @covers MetaData::getShortName
-     */
-    public function testShortName(): void
-    {
-        $this->assertEmpty($this->metaData->getShortName());
-    }
-
-    /**
      * @covers MetaData::getPsr0
      */
     public function testGetPsr0(): void
@@ -96,9 +88,7 @@ class MetaDataTest extends TestCase
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\\AdminModule\\ZikulaAdminModule",
-            "core-compatibility": ">=1.4.2",
-            "short-name": ""
+            "class": "Zikula\\AdminModule\\ZikulaAdminModule"
         }
     }
 }

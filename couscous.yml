@@ -83,9 +83,6 @@ menu:
                 security-center:
                     text: Security center
                     relativeUrl: Configuration/Security/index.html
-                extension-management:
-                    text: Extensions
-                    relativeUrl: Configuration/Extensions/index.html
                 workflows:
                     text: Workflows
                     relativeUrl: Configuration/Workflows/index.html

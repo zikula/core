@@ -44,7 +44,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\ZAuthModule\\ZikulaZAuthModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Zikula Native Authorization",
             "url": "zauth",
             "icon": "fas fa-user-lock",

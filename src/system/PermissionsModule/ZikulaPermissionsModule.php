@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the permissions module.
- */
-class ZikulaPermissionsModule extends AbstractCoreModule
+class ZikulaPermissionsModule extends AbstractModule
 {
 }

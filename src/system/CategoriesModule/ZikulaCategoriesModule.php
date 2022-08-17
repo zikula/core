@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the categories module.
- */
-class ZikulaCategoriesModule extends AbstractCoreModule
+class ZikulaCategoriesModule extends AbstractModule
 {
 }

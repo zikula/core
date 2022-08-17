@@ -42,7 +42,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\SecurityCenterModule\\ZikulaSecurityCenterModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Security Center",
             "url": "securitycenter",
             "icon": "fas fa-shield-alt",

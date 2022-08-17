@@ -48,7 +48,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\UsersModule\\ZikulaUsersModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Users Module",
             "url": "users",
             "icon": "fas fa-users-cog",

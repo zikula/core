@@ -1,1 +1,0 @@
-The schema.composer.json file is a copy from https://github.com/zikula/ExtensionLibrary/blob/master/Schema/schema.composer.json which has been slightly updated for the core.

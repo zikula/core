@@ -32,7 +32,6 @@ use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\ControllerType;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 /**
  * Main settings form type.
@@ -41,10 +40,8 @@ class MainSettingsType extends AbstractType
 {
     use TranslatorTrait;
 
-    public function __construct(
-        TranslatorInterface $translator,
-        private readonly ExtensionRepositoryInterface $extensionRepository
-    ) {
+    public function __construct(TranslatorInterface $translator)
+    {
         $this->setTranslator($translator);
     }
 
@@ -218,16 +215,14 @@ class MainSettingsType extends AbstractType
     }
 
     /**
-     * Prepare an array of module names and displaynames for dropdown usage.
+     * Prepare an array of bundle names and displaynames for dropdown usage.
      */
-    private function formatModuleArrayForSelect(array $modules = []): array
+    private function formatModuleArrayForSelect(array $bundles = []): array
     {
         $return = [];
-        foreach ($modules as $module) {
-            if (!($module instanceof ExtensionEntity)) {
-                $module = $this->extensionRepository->get($module);
-            }
-            $return[$module->getDisplayname()] = $module->getName();
+        foreach ($bundles as $bundleName => $serviceName) {
+            // TODO readd display name (based on Composer meta data)
+            $return[$bundleName] = $bundleName;
         }
         ksort($return);
 

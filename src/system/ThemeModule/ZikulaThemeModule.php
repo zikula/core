@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the theme module.
- */
-class ZikulaThemeModule extends AbstractCoreModule
+class ZikulaThemeModule extends AbstractModule
 {
 }

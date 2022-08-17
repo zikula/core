@@ -1,53 +1,24 @@
 #!/usr/bin/env php
 <?php
+declare(strict_types=1);
 
+use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArgvInput;
+
+if (!is_file(dirname(__DIR__) . '/vendor/autoload_runtime.php')) {
+    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
+}
 
 set_time_limit(0);
 
-$possibleRootDirectories = [
-    __DIR__ . '/../../../../',
-    __DIR__ . '/../'
-];
+require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
-foreach ($possibleRootDirectories as $directory) {
-    $file = $directory . 'vendor/autoload_runtime.php';
-    if (file_exists($file)) {
-        require_once $file;
-        break;
-    }
-}
-
-$getZikulaEnv = function(ArgvInput $input) {
-    $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('APP_ENV') ?: 'dev');
-    // prefer install and upgrade commands default to prod environment
-    $isInstallUpgradeCommand = ((strpos($input->getFirstArgument(), 'zikula:install') !== false)
-        || (strpos($input->getFirstArgument(), 'zikula:upgrade') !== false));
-    $env = $isInstallUpgradeCommand ? 'prod' : $defaultEnv;
-
-    return $env;
-};
-
-$input = new ArgvInput();
-if (null !== $env = $getZikulaEnv($input)) {
-    putenv('APP_ENV=' . $_SERVER['APP_ENV'] = $_ENV['APP_ENV'] = $env);
-}
-
-if ($input->hasParameterOption('--no-debug', true)) {
-    putenv('APP_DEBUG=' . $_SERVER['APP_DEBUG'] = $_ENV['APP_DEBUG'] = '0');
-}
-
-foreach ($possibleRootDirectories as $directory) {
-    $file = $directory . 'config/bootstrap.php';
-    if (file_exists($file)) {
-        require_once $file;
-        break;
-    }
+if (file_exists(dirname(__DIR__) . '/config/bootstrap.php')) {
+    require_once dirname(__DIR__) . '/config/bootstrap.php';
 }
 
 return function (array $context) {
-    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG'], $context['DATABASE_URL']);
+    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 
     return new Application($kernel);
 };

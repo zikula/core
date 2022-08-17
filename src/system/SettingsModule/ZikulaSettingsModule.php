@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the settings module.
- */
-class ZikulaSettingsModule extends AbstractCoreModule
+class ZikulaSettingsModule extends AbstractModule
 {
 }

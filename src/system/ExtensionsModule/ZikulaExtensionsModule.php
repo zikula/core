@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Zikula\ExtensionsModule\DependencyInjection\Compiler\InstallerPass;
 
-class ZikulaExtensionsModule extends AbstractCoreModule
+class ZikulaExtensionsModule extends AbstractModule
 {
     public function build(ContainerBuilder $container)
     {

@@ -46,7 +46,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\SettingsModule\\ZikulaSettingsModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "General settings",
             "url": "settings",
             "icon": "fas fa-tools",

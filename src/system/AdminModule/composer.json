@@ -44,7 +44,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\AdminModule\\ZikulaAdminModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Administration panel",
             "url": "adminpanel",
             "icon": "fas fa-object-group",
@@ -55,8 +54,7 @@
             },
             "securityschema": {
                 "ZikulaAdminModule::": "::",
-                "ZikulaAdminModule:Category:": "Admin Category name::Admin Category ID",
-                "ZikulaAdminModule:adminnavblock:": "Block title::Block ID"
+                "ZikulaAdminModule:Category:": "Admin Category name::"
             }
         }
     }

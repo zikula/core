@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\DefaultTheme;
 
-use Zikula\ExtensionsModule\AbstractCoreTheme;
+use Zikula\ExtensionsModule\AbstractTheme;
 
-class ZikulaDefaultTheme extends AbstractCoreTheme
+class ZikulaDefaultTheme extends AbstractTheme
 {
 }

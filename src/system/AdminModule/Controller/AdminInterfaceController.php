@@ -20,15 +20,12 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\AdminModule\Entity\AdminCategoryEntity;
-use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
-use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
+use Zikula\AdminModule\Helper\AdminCategoryHelper;
 use Zikula\AdminModule\Helper\UpdateCheckHelper;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
@@ -46,7 +43,7 @@ class AdminInterfaceController extends AbstractController
     public function header(RequestStack $requestStack): Response
     {
         return $this->render('@ZikulaAdminModule/AdminInterface/header.html.twig', [
-            'caller' => $requestStack->getMainRequest()->attributes->all()
+            'caller' => $this->getCallerInfo($requestStack),
         ]);
     }
 
@@ -55,15 +52,10 @@ class AdminInterfaceController extends AbstractController
      *
      * Close the admin container
      */
-    public function footer(
-        RequestStack $requestStack,
-        ExtensionRepositoryInterface $extensionRepository
-    ): Response {
-        $caller = $requestStack->getMainRequest()->attributes->all();
-        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
-
+    public function footer(RequestStack $requestStack): Response
+    {
         return $this->render('@ZikulaAdminModule/AdminInterface/footer.html.twig', [
-            'caller' => $caller,
+            'caller' => $this->getCallerInfo($requestStack),
             'symfonyVersion' => Kernel::VERSION,
             'phpVersion' => PHP_VERSION
         ]);
@@ -75,55 +67,24 @@ class AdminInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      */
-    public function breadcrumbs(
-        RequestStack $requestStack,
-        ExtensionRepositoryInterface $extensionRepository,
-        AdminModuleRepositoryInterface $adminModuleRepository,
-        AdminCategoryRepositoryInterface $adminCategoryRepository
-    ): Response {
-        $mainRequest = $requestStack->getMainRequest();
-        $caller = $mainRequest->attributes->all();
-        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
-
-        $requestedCid = $mainRequest->attributes->get('acid');
-        $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
-
-        $categoryId = $defaultCid;
-        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' !== $caller['_zkModule']) {
-            $moduleRelation = $adminModuleRepository->findOneBy(['mid' => $caller['info']['id']]);
-            if (null !== $moduleRelation) {
-                $categoryId = $moduleRelation->getCid();
-            }
-        }
-        $caller['category'] = $adminCategoryRepository->find($categoryId);
+    public function breadcrumbs(RequestStack $requestStack, AdminCategoryHelper $categoryHelper): Response
+    {
+        $caller = $this->getCallerInfo($requestStack);
+        $caller['category'] = $categoryHelper->getCurrentCategory();
 
         return $this->render('@ZikulaAdminModule/AdminInterface/breadCrumbs.html.twig', [
             'caller' => $caller
         ]);
     }
 
-    /**
-     * @Route("/securityanalyzer")
-     * @PermissionCheck("admin")
-     *
-     * Display security analyzer
-     */
-    public function securityanalyzer(
-        Request $request,
-        ZikulaHttpKernelInterface $kernel,
-        VariableApiInterface $variableApi
-    ): Response {
-        $hasSecurityCenter = $kernel->isBundle('ZikulaSecurityCenterModule');
+    private function getCallerInfo(RequestStack $requestStack): array
+    {
+        $caller = $requestStack->getMainRequest()->attributes->all();
+        //$caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : '';
+        $caller['info'] = [];
+        //die('TODO: caller information');
 
-        return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
-            'security' => [
-                'updatecheck' => $variableApi->getSystemVar('updatecheck'),
-                'scactive' => $hasSecurityCenter,
-                // check for outputfilter
-                'useids' => $hasSecurityCenter && 1 === $variableApi->getSystemVar('useids'),
-                'idssoftblock' => $variableApi->getSystemVar('idssoftblock')
-            ]
-        ]);
+        return $caller;
     }
 
     /**
@@ -158,138 +119,101 @@ class AdminInterfaceController extends AbstractController
     public function menu(
         RequestStack $requestStack,
         RouterInterface $router,
-        ExtensionRepositoryInterface $extensionRepository,
         ExtensionMenuCollector $extensionMenuCollector,
         CapabilityApiInterface $capabilityApi,
-        AdminModuleRepositoryInterface $adminModuleRepository,
-        AdminCategoryRepositoryInterface $adminCategoryRepository
+        AdminCategoryHelper $categoryHelper
     ): Response {
         $mainRequest = $requestStack->getMainRequest();
         $currentRequest = $requestStack->getCurrentRequest();
 
         // get caller info
-        $caller = [];
+        $caller = $this->getCallerInfo($requestStack);
         $caller['_zkModule'] = $mainRequest->attributes->get('_zkModule');
         $caller['_zkType'] = $mainRequest->attributes->get('_zkType');
         $caller['_zkFunc'] = $mainRequest->attributes->get('_zkFunc');
         $caller['path'] = $mainRequest->getPathInfo();
-        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
-
-        // category we are in
-        $requestedCid = $mainRequest->attributes->get('acid');
-        $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
-
-        $categoryId = $defaultCid;
-        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' !== $caller['_zkModule']) {
-            $moduleRelation = $adminModuleRepository->findOneBy(['mid' => $caller['info']['id']]);
-            if (null !== $moduleRelation) {
-                $categoryId = $moduleRelation->getCid();
-            }
-        }
-        $caller['category'] = $adminCategoryRepository->find($categoryId);
+        $caller['category'] = $categoryHelper->getCurrentCategory();
 
         // mode requested
         $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';
-        $mode = in_array($mode, ['categories', 'modules']) ? $mode : 'categories';
+        $mode = in_array($mode, ['categories', 'modules'], true) ? $mode : 'categories';
         // template requested
         $template = $currentRequest->attributes->has('template') ? $currentRequest->attributes->get('template') : 'tabs';
-        $template = in_array($template, ['tabs', 'panel']) ? $template : 'tabs';
+        $template = in_array($template, ['tabs', 'panel'], true) ? $template : 'tabs';
 
-        // get admin capable modules
-        $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
+        $categories = $categoryHelper->getCategories();
 
-        // sort modules by displayname
-        $moduleNames = [];
-        foreach ($adminModules as $key => $module) {
-            $moduleNames[$key] = $module['displayname'];
-        }
-        array_multisort($moduleNames, SORT_ASC, $adminModules);
-
-        $moduleCategories = $adminCategoryRepository->getIndexedCollection('cid');
-        $menuModules = [];
-        $menuCategories = [];
-        foreach ($adminModules as $adminModule) {
-            if (!$this->hasPermission($adminModule['name'] . '::', '::', ACCESS_EDIT)) {
+        // category data
+        foreach ($categories as $category) {
+            if (!$this->hasPermission('ZikulaAdminModule:Category:', $category->getName() . '::' . $category->getSlug(), ACCESS_ADMIN)) {
                 continue;
             }
 
-            $categoryAssignment = $adminModuleRepository->findOneBy(['mid' => $adminModule['id']]);
-            if (null !== $categoryAssignment) {
-                $catid = $categoryAssignment->getCid();
-                $order = $categoryAssignment->getSortorder();
-            } else {
-                $catid = $this->getVar('startcategory');
-                $order = 999;
-            }
-
-            $menuText = $adminModule['displayname'];
-
-            // url
-            try {
-                $menuTextUrl = isset($adminModule['capabilities']['admin']['route'])
-                    ? $router->generate($adminModule['capabilities']['admin']['route'])
-                    : '';
-            } catch (RouteNotFoundException $routeNotFoundException) {
-                $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (⚠️ ' . $this->trans('invalid route') . ')';
-            }
-
-            $moduleName = (string) $adminModule['name'];
-            $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
-            if (isset($extensionMenu) && 'modules' === $mode && 'tabs' === $template) {
-                $extensionMenu->setChildrenAttribute('class', 'dropdown-menu');
-            }
-
-            $module = [
-                'menutexturl' => $menuTextUrl,
-                'menutext' => $menuText,
-                'menutexttitle' => $adminModule['description'],
-                'modname' => $adminModule['name'],
-                'order' => $order,
-                'id' => $adminModule['id'],
-                'extensionMenu' => $extensionMenu,
-                'icon' => $adminModule['icon']
-            ];
-
-            $menuModules[$adminModule['name']] = $module;
-
-            // category menu
-            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategories[$catid]['name'] . '::' . $moduleCategories[$catid]['cid'], ACCESS_ADMIN)) {
-                continue;
-            }
-
-            $categorySortOrder = $moduleCategories[$catid]['sortorder'];
-            $menuCategories[$categorySortOrder]['title'] = $moduleCategories[$catid]['name'];
-            $menuCategories[$categorySortOrder]['url'] = $router->generate('zikulaadminmodule_admin_adminpanel', [
-                'acid' => $moduleCategories[$catid]['cid']
-            ]);
-            $menuCategories[$categorySortOrder]['description'] = $moduleCategories[$catid]['description'];
-            $menuCategories[$categorySortOrder]['icon'] = $moduleCategories[$catid]['icon'];
-            $menuCategories[$categorySortOrder]['cid'] = $moduleCategories[$catid]['cid'];
-            $menuCategories[$categorySortOrder]['modules'][$adminModule['name']] = $module;
-        }
-
-        // add empty categories
-        /** @var AdminCategoryEntity[] $moduleCategories */
-        foreach ($moduleCategories as $moduleCategory) {
-            if (array_key_exists($moduleCategory->getSortorder(), $menuCategories)) {
-                continue;
-            }
-            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategory->getName() . '::' . $moduleCategory->getCid(), ACCESS_ADMIN)) {
-                continue;
-            }
-
-            $menuCategories[$moduleCategory->getSortOrder()] = [
-                'title' => $moduleCategory->getName(),
+            $menuCategories[$category->getSortOrder()] = [
+                'title' => $category->getName(),
                 'url' => $router->generate('zikulaadminmodule_admin_adminpanel', [
-                    'acid' => $moduleCategory->getCid()
+                    'acslug' => $category->getSlug()
                 ]),
-                'description' => $moduleCategory->getDescription(),
-                'cid' => $moduleCategory->getCid(),
-                'modules' => []
+                'description' => $category->getDescription(),
+                'slug' => $category->getSlug(),
+                'icon' => $category->getIcon(),
+                'bundles' => []
             ];
         }
         ksort($menuCategories);
+
+        // bundle data
+        // get admin capable modules
+        $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
+        $menuModules = [];
+        foreach ($categories as $category) {
+            foreach ($adminModules as $adminModule) {
+                $bundleName = $adminModule->getName();
+                $bundleNames = $categoryHelper->getBundleAssignments($category);
+                if (!in_array($bundleName, $bundleNames, true)) {
+                    continue;
+                }
+                if (!$this->hasPermission($bundleName . '::', '::', ACCESS_EDIT)) {
+                    continue;
+                }
+
+                $bundleInfo = $adminModule->getMetaData();
+                $menuText = $bundleInfo->getDisplayName();
+                try {
+                    $menuTextUrl = isset($bundleInfo->getCapabilities()['admin']['route'])
+                        ? $router->generate($bundleInfo->getCapabilities()['admin']['route'])
+                        : '';
+                } catch (RouteNotFoundException $routeNotFoundException) {
+                    $menuTextUrl = 'javascript:void(0)';
+                    $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
+                }
+
+                $extensionMenu = $extensionMenuCollector->get($bundleName, ExtensionMenuInterface::TYPE_ADMIN);
+                if (isset($extensionMenu) && 'modules' === $mode && 'tabs' === $template) {
+                    $extensionMenu->setChildrenAttribute('class', 'dropdown-menu');
+                }
+
+                $bundleData = [
+                    'menuTextUrl' => $menuTextUrl,
+                    'menuText' => $menuText,
+                    'menuTextTitle' => $bundleInfo->getDescription(),
+                    'moduleName' => $adminModule->getName(),
+                    'order' => $category->getSortOrder(),
+                    'extensionMenu' => $extensionMenu,
+                    'icon' => $bundleInfo->getIcon(),
+                ];
+
+                $menuModules[$adminModule->getName()] = $bundleData;
+
+                // category menu
+                if (!$this->hasPermission('ZikulaAdminModule:Category:', $category->getName() . '::', ACCESS_ADMIN)) {
+                    continue;
+                }
+
+                $menuCategories[$category->getSortOrder()]['bundles'][$adminModule->getName()] = $bundleData;
+            }
+        }
+
         $fullTemplateName = $mode . '.' . $template;
 
         return $this->render("@ZikulaAdminModule/AdminInterface/${fullTemplateName}.html.twig", [

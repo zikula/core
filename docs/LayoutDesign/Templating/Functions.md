@@ -29,7 +29,6 @@ functions, filters, tags, tests and global variables.
 
 - getModVar(module, name, default = null)
 - getSystemVar(name, default = null)
-- defaultPath(extensionName, type = 'user')
 
 ### Admin Interface
 
@@ -39,8 +38,6 @@ functions, filters, tags, tests and global variables.
 - adminMenu(mode, template)
 - adminPanelMenu(mode)
   - this function is a short-cut to  `adminMenu(mode, 'panel')`
-- adminDeveloperNotices()
-- adminSecurityAnalyzer()
 - adminUpdateCheck()
 
 - moduleHeader(type, title, titlelink, set_page_title, insert_flashes, menufirst, image)

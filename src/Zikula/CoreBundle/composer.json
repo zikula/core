@@ -18,7 +18,6 @@
         "composer/installers": "^2",
 
         "zikula/formextension-bundle": "dev-3.1",
-        "zikula/workflow-bundle": "dev-3.1",
 
         "zikula/admin-module": "dev-3.1",
         "zikula/categories-module": "dev-3.1",

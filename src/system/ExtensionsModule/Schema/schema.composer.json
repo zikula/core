@@ -69,12 +69,10 @@
                 "zikula": {
                     "type": "object",
                     "properties": {
-                        "core-compatibility": {"type": "string"},
                         "class": {"type": "string"},
                         "displayname": {"type": "string"},
                         "url": {"type": "string"},
                         "icon": {"type": "string"},
-                        "oldnames": {"type": "array"},
                         "capabilities": {
                             "type": "object",
                             "additionalProperties": true
@@ -84,7 +82,7 @@
                             "additionalProperties": true
                         }
                     },
-                    "required": ["core-compatibility", "class", "icon"],
+                    "required": ["class", "icon"],
                     "additionalProperties": false
                 }
             },

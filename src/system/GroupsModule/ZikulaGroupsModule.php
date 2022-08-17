@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the groups module.
- */
-class ZikulaGroupsModule extends AbstractCoreModule
+class ZikulaGroupsModule extends AbstractModule
 {
 }

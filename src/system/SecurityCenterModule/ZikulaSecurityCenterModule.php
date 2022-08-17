@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the security center module.
- */
-class ZikulaSecurityCenterModule extends AbstractCoreModule
+class ZikulaSecurityCenterModule extends AbstractModule
 {
 }

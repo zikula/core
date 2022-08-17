@@ -39,7 +39,6 @@
         "zikula": {
             "url": "extensions",
             "class": "Zikula\\ExtensionsModule\\ZikulaExtensionsModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Extensions",
             "icon": "fas fa-plug",
             "capabilities": {

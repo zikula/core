@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the menu module.
- */
-class ZikulaMenuModule extends AbstractCoreModule
+class ZikulaMenuModule extends AbstractModule
 {
 }

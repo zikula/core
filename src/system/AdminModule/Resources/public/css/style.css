@@ -89,35 +89,26 @@ body div.z-admin-content-pagetitle h3 {
 }
 
 /******************************************************************************
-* Styling for status security analyzer, update checker and more
+* Styling for update checker
 ******************************************************************************/
 
-div#z-developernotices strong:hover,
-div#z-developernotices span:hover,
-div#z-securityanalyzer strong:hover,
 div#z-updatechecker strong:hover {
     text-decoration: underline;
     cursor: pointer;
 }
 
-div#z-developernotices a,
-div#z-updatechecker a,
-div#z-securityanalyzer a {
+div#z-updatechecker a {
     color: #444;
     padding: 0;
     margin: 0;
 }
 
-div#z-developernotices a:hover,
-div#z-updatechecker a:hover,
-div#z-securityanalyzer a:hover {
+div#z-updatechecker a:hover {
     color: #000;
     text-decoration: underline;
 }
 
-div#z-developernotices ul,
-div#z-updatechecker ul,
-div#z-securityanalyzer ul {
+div#z-updatechecker ul {
     list-style-position: outside;
     list-style-type: disc;
     margin: 0 1em;
@@ -127,8 +118,6 @@ div#z-securityanalyzer ul {
 /**
  * This centers the close icon.
  */
-div#z-developernotices > i.close,
-div#z-securityanalyzer > i.close,
 div#z-updatechecker > i.close {
    margin-top: -2px;
 }

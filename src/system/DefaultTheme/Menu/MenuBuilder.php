@@ -35,9 +35,6 @@ class MenuBuilder
         if ($this->permissionApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             $menu->addChild('Settings', ['route' => 'zikulasettingsmodule_settings_mainsettings']);
         }
-        if ($this->permissionApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Extensions', ['route' => 'zikulaextensionsmodule_extension_listextensions']);
-        }
         if ($this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             $menu->addChild('Users', ['route' => 'zikulausersmodule_useradministration_listusers']);
         }

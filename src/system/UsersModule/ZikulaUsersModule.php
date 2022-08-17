@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the users module.
- */
-class ZikulaUsersModule extends AbstractCoreModule
+class ZikulaUsersModule extends AbstractModule
 {
 }

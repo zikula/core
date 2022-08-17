@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Installer;
 
-/**
- * Interface ExtensionInstallerInterface
- */
 interface ExtensionInstallerInterface extends InstallerInterface
 {
 }

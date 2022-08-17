@@ -5,11 +5,12 @@
 - BC Breaks:
   - [CoreInstallerBundle] Remove custom installer.
   - [HookBundle] Remove hooks support.
-  - [PageLock] Remove page lock module.
   - [WorkflowBundle] Remove graphical workflow editor.
   - [Blocks] Remove blocks system and pending content.
   - [Mailer] Remove mailer module (keep test mail form, moving it to the Settings module).
+  - [Extensions] Remove additional state-based extension layer in favor of Composer and Flex.
   - [Menu] Remove custom (database-driven) menus.
+  - [PageLock] Remove page lock module.
   - [Routes] Remove custom (database-driven) routes.
   - [Search] Remove search module.
   - [SecurityCenter] Remove PHPIDS in favor of your server's WAF.

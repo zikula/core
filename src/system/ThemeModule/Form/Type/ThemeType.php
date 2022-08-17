@@ -68,7 +68,8 @@ class ThemeType extends AbstractType
         $choices = [];
         if (!empty($themes)) {
             foreach ($themes as $theme) {
-                $choices[$theme['displayname']] = $theme['name'];
+                $themeInfo = $theme->getMetaData();
+                $choices[$themeInfo['displayname']] = $themeInfo['name'];
             }
             natcasesort($choices);
         }

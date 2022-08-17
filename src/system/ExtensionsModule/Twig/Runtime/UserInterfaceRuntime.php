@@ -19,14 +19,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class UserInterfaceRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var FragmentHandler
-     */
-    private $handler;
-
-    public function __construct(FragmentHandler $handler)
+    public function __construct(private readonly FragmentHandler $handler)
     {
-        $this->handler = $handler;
     }
 
     public function moduleFooter(): string

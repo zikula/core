@@ -70,7 +70,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\ThemeModule\\ZikulaThemeModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Theme Module",
             "url": "theme",
             "icon": "fas fa-palette",

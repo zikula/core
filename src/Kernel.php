@@ -12,34 +12,11 @@ declare(strict_types=1);
  */
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Zikula\Bundle\CoreBundle\Helper\PersistedBundleHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class Kernel extends ZikulaKernel
 {
     use MicroKernelTrait;
-
-    private string $databaseUrl;
-
-    public function __construct(string $environment, bool $debug, string $databaseUrl = '')
-    {
-        parent::__construct($environment, $debug);
-
-        $this->databaseUrl = $databaseUrl;
-    }
-
-    public function registerBundles(): iterable
-    {
-        $bundleHelper = new PersistedBundleHelper($this->databaseUrl);
-        $bundles = require $this->getProjectDir() . '/config/bundles.php';
-        $bundleHelper->getPersistedBundles($this, $bundles);
-
-        foreach ($bundles as $class => $envs) {
-            if ($envs[$this->environment] ?? $envs['all'] ?? false) {
-                yield new $class();
-            }
-        }
-    }
 
     public function getProjectDir(): string
     {

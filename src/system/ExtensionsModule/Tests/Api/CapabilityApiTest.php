@@ -13,23 +13,20 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Tests\Api;
 
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionStubRepository;
 
-class CapabilityApiTest extends TestCase
+class CapabilityApiTest extends KernelTestCase
 {
-    /**
-     * @var CapabilityApiInterface
-     */
-    private $api;
+    private CapabilityApiInterface $api;
 
     protected function setUp(): void
     {
-        $repo = new ExtensionStubRepository();
-        $this->api = new CapabilityApi($repo);
+        static::bootKernel();
+        $this->api = new CapabilityApi($this->kernel);
     }
 
     /**

@@ -33,7 +33,6 @@
     },
     "extra": {
         "zikula" : {
-            "core-compatibility": ">=4.0.0",
             "class": "Zikula\\DefaultTheme\\ZikulaDefaultTheme",
             "displayname": "Default Theme",
             "icon": "fas fa-rocket",

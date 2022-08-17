@@ -39,7 +39,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\CategoriesModule\\ZikulaCategoriesModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Categories",
             "url": "categories",
             "icon": "fas fa-sitemap",

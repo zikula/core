@@ -14,25 +14,18 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule;
 
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
-use Zikula\Bundle\CoreBundle\Composer\Scanner;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 
 class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {
     private $entities = [
-        ExtensionEntity::class,
         ExtensionVarEntity::class,
     ];
 
     public function install(): bool
     {
         $this->schemaTool->create($this->entities);
-
-        // populate default data
-        $this->createDefaultData();
-        $this->setVar('itemsperpage', 40);
 
         return true;
     }
@@ -44,7 +37,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
             // 3.7.15 shipped with Core-2.0.15
             // version number reset to 3.0.0 at Core 3.0.0
             case '2.9.9':
-                $this->schemaTool->update([ExtensionEntity::class]);
+                // nothing
         }
 
         return true;
@@ -54,26 +47,5 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
     {
         // Deletion not allowed
         return false;
-    }
-
-    /**
-     * Create the default data for the extensions module.
-     */
-    private function createDefaultData(): void
-    {
-        $scanner = new Scanner();
-        $jsonPath = realpath(__DIR__ . '/composer.json');
-        $jsonContent = $scanner->decode($jsonPath);
-        $metaData = new MetaData($jsonContent);
-        $metaData->setTranslator($this->getTranslator());
-        $meta = $metaData->getFilteredVersionInfoArray();
-        $meta['state'] = Constant::STATE_ACTIVE;
-        unset($meta['dependencies'], $meta['oldnames']);
-
-        $entity = new ExtensionEntity();
-        $entity->merge($meta);
-
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
     }
 }

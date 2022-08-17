@@ -76,7 +76,6 @@ class Scanner
                 return false;
             }
             $json['autoload']['psr-4'][$ns] = $base;
-            $json['extra']['zikula']['short-name'] = s($class)->afterLast('\\')->toString();
             $json['extensionType'] = $this->computeExtensionType($json);
 
             return $json;

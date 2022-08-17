@@ -1,7 +1,7 @@
 <h3>
     <span class="fas fa-list"></span>
-    {% trans %}Module categories list{% endtrans %}
-    {{ pageSetVar('title', 'Module categories list'|trans) }}
+    {% trans %}Extension categories list{% endtrans %}
+    {{ pageSetVar('title', 'Extension categories list'|trans) }}
 </h3>
 <table class="table table-bordered table-striped">
     <colgroup>
@@ -13,35 +13,26 @@
             <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
             <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
             <th id="hIcon" scope="col" class="text-center">{% trans %}Icon{% endtrans %}</th>
-            <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
-        {% for category in paginator.results %}
-            {% set permissionInstance = category.name ~ '::' ~ category.cid %}
+        {% for category in categories %}
+            {% set permissionInstance = category.name ~ '::' %}
             {% if hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_READ') %}
                 {% set accessEdit = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_EDIT') %}
                 {% set accessDelete = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_DELETE') %}
                 <tr>
-                    <th id="category{{ category.cid}}" headers="hName" scope="col">
-                        <a href="{{ path('zikulaadminmodule_admin_adminpanel', { acid: category.cid }) }}">{{ category.name }}</a>
+                    <th id="category{{ category.slug}}" headers="hName" scope="col">
+                        <a href="{{ path('zikulaadminmodule_admin_adminpanel', { acslug: category.slug }) }}">{{ category.name }}</a>
                     </th>
-                    <td headers="category{{ category.cid}} hDescription">
+                    <td headers="category{{ category.slug}} hDescription">
                         {{ category.description|u.truncate(200, '…') }}
                     </td>
-                    <td headers="category{{ category.cid}} hIcon" class="text-center">
+                    <td headers="category{{ category.slug}} hIcon" class="text-center">
                         {% if category.icon %}
                             <i class="{{ category.icon|e('html_attr') }}"></i>
                         {% else %}
                             {% trans %}None{% endtrans %}
-                        {% endif %}
-                    </td>
-                    <td headers="category{{ category.cid}} hActions" class="actions">
-                        {% if accessEdit %}
-                            <a href="{{ path('zikulaadminmodule_admin_modify', {cid: category.cid}) }}" title="{% trans %}Edit{% endtrans %}" class="tooltips fas fa-pencil-alt"></a>
-                        {% endif %}
-                        {% if accessDelete %}
-                            <a href="{{ path('zikulaadminmodule_admin_delete', {cid: category.cid}) }}" title="{% trans %}Delete{% endtrans %}" class="tooltips fas fa-trash-alt"></a>
                         {% endif %}
                     </td>
                 </tr>
@@ -51,4 +42,3 @@
         {% endfor %}
     </tbody>
 </table>
-{{ include(paginator.template) }}

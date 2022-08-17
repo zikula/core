@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the admin module.
- */
-class ZikulaAdminModule extends AbstractCoreModule
+class ZikulaAdminModule extends AbstractModule
 {
 }

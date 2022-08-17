@@ -25,7 +25,6 @@ class AdminExtension extends AbstractExtension
             new TwigFunction('adminHeader', [AdminRuntime::class, 'adminHeader'], ['is_safe' => ['html']]),
             new TwigFunction('adminBreadcrumbs', [AdminRuntime::class, 'adminBreadcrumbs'], ['is_safe' => ['html']]),
             new TwigFunction('adminUpdateCheck', [AdminRuntime::class, 'adminUpdateCheck'], ['is_safe' => ['html']]),
-            new TwigFunction('adminSecurityAnalyzer', [AdminRuntime::class, 'adminSecurityAnalyzer'], ['is_safe' => ['html']]),
             new TwigFunction('adminMenu', [AdminRuntime::class, 'adminMenu'], ['is_safe' => ['html']]),
             new TwigFunction('adminPanelMenu', [AdminRuntime::class, 'adminPanelMenu'], ['is_safe' => ['html']]),
             new TwigFunction('adminFooter', [AdminRuntime::class, 'adminFooter'], ['is_safe' => ['html']])

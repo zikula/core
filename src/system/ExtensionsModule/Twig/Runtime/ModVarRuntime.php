@@ -20,22 +20,10 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class ModVarRuntime implements RuntimeExtensionInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
     public function __construct(
-        TranslatorInterface $translator,
-        VariableApiInterface $variableApi
+        private readonly TranslatorInterface $translator,
+        private readonly VariableApiInterface $variableApi
     ) {
-        $this->translator = $translator;
-        $this->variableApi = $variableApi;
     }
 
     public function getModVar(string $module, string $name, $default = null)

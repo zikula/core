@@ -6,71 +6,24 @@
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {% for category in adminMenu %}
-            <li class="nav-item dropdown droppable nowrap" data-catid="{{ category.cid }}">
-                <a href="#" class="nav-link dropdown-toggle{% if caller.category.cid == category.cid %} active{% endif %}" data-toggle="dropdown"><span class="fas fa-arrows-alt admintabs-lock"></span>
+            <li class="nav-item dropdown nowrap" data-slug="{{ category.slug }}">
+                <a href="#" class="nav-link dropdown-toggle{% if caller.category.slug == category.slug %} active{% endif %}" data-toggle="dropdown"><span class="fas fa-arrows-alt admintabs-lock"></span>
                     <span>
                         <i class="text-muted fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i> {{ category.title }}
                     </span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item admintabs-lock admintabs-makedefault{% if caller.category.cid == category.cid %} d-none{% endif %}">
-                        <a href="#"><span class="fas fa-fw fa-asterisk"></span> {% trans %}Make default category{% endtrans %}</a>
-                    </li>
-                    <li class="dropdown-item admintabs-lock admintabs-edit" data-toggle="modal"
-                        data-target="#admintabs-rename-category-modal">
-                        <a href="#"><span class="fas fa-fw fa-pencil-alt"></span> {% trans %}Edit category{% endtrans %}</a>
-                    </li>
-                    <li class="dropdown-item admintabs-lock admintabs-delete">
-                        <a href="#"><span class="fas fa-fw fa-trash-alt fa-red"></span> {% trans %}Delete category{% endtrans %}</a>
-                    </li>
-                    <li class="dropdown-divider admintabs-lock"></li>
                     <li class="dropdown-item">
                         <a href="{{ category.url }}"><span class="fas fa-fw fa-th-large fa-bluelight"></span> {% trans %}Overview{% endtrans %}</a>
                     </li>
-                    {% if category.modules|length > 0 %}
+                    {% if category.bundles|length > 0 %}
                         <li class="dropdown-divider"></li>
-                        {% for item in category.modules %}
-                            <li class="dropdown-item"><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><i class="{{ item.icon|default('fas fa-layer-group')|raw }} fa-fw align-middle"></i> {{ item.menutext }}</a></li>
+                        {% for item in category.bundles %}
+                            <li class="dropdown-item"><a href="{{ item.menuTextUrl }}" title="{{ item.menuText|e('html_attr') }}"><i class="{{ item.icon|default('fas fa-layer-group')|raw }} fa-fw align-middle"></i> {{ item.menuText }}</a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>
             </li>
         {% endfor %}
-        <li id="admintabs-locker" class="nav-item ml-auto">
-            <a href="#" title="{% trans %}Lock/Unlock editing{% endtrans %}" data-placement="top" class="nav-link tooltips tooltips-bottom">
-                <span class="fas fa-fw fa-lock"></span>
-            </a>
-        </li>
-        <li class="nav-item admintabs-add admintabs-lock">
-            <a href="{{ path('zikulaadminmodule_admin_create') }}" title="{% trans %}New module category{% endtrans %}"
-               class="nav-link tooltips tooltips-bottom" data-placement="top"><span class="fas fa-plus"></span>
-            </a>
-            <div id="admintabs-add-popover" class="d-none">
-                <div class="input-group">
-                    <input type="text" name="name" class="admintabs-add-name form-control" />
-                    <div class="input-group-append">
-                        <span class="input-group-text fas fa-times fa-red" style="cursor: pointer"></span>
-                        <span class="input-group-text fas fa-check fa-green" style="cursor: pointer"></span>
-                    </div>
-                </div>
-            </div>
-        </li>
     </ul>
-</div>
-<div class="modal fade" id="admintabs-rename-category-modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{% trans %}Rename category{% endtrans %}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            </div>
-            <div class="modal-body">
-                <input/>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}Save changes{% endtrans %}</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
-            </div>
-        </div>
-    </div>
 </div>

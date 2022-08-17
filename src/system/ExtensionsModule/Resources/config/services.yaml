@@ -11,23 +11,10 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    Zikula\ExtensionsModule\Helper\:
-        resource: '../../Helper/*'
-        lazy: true
-
     Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface: '@Zikula\ExtensionsModule\Api\CapabilityApi'
     Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface: '@Zikula\ExtensionsModule\Api\VariableApi'
-    Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository'
     Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository'
 
     # public because AbstractTheme and others access this using container
     Zikula\ExtensionsModule\Api\VariableApi:
         public: true
-
-    # public because AbstractExtension accesses this using container
-    Zikula\ExtensionsModule\Helper\MetaDataHelper:
-        public: true
-
-    Zikula\ExtensionsModule\Menu\MenuBuilder:
-        tags:
-            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaExtensionsAdminMenu }

@@ -38,16 +38,6 @@ class ExtensionMenu extends AbstractExtensionMenu
                 'route' => 'zikulaadminmodule_admin_view',
             ])->setAttribute('icon', 'fas fa-list');
         }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('Create new module category', [
-                'route' => 'zikulaadminmodule_admin_create',
-            ])->setAttribute('icon', 'fas fa-plus');
-        }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('Settings', [
-                'route' => 'zikulaadminmodule_config_config',
-            ])->setAttribute('icon', 'fas fa-wrench');
-        }
 
         return 0 === $menu->count() ? null : $menu;
     }

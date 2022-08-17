@@ -20,17 +20,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Form\Type\ThemeType;
 
 /**
- * Class ThemeController
- *
  * @Route("/config")
  * @PermissionCheck("admin")
  */
@@ -45,15 +43,15 @@ class ConfigController extends AbstractController
         Request $request,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer,
-        ExtensionRepositoryInterface $extensionRepository
+        ZikulaHttpKernelInterface $kernel
     ) {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->in("type", [MetaData::TYPE_THEME, MetaData::TYPE_SYSTEM_THEME]))
-            ->andWhere(Criteria::expr()->eq('state', Constant::STATE_ACTIVE));
-        $themes = $extensionRepository->matching($criteria)->toArray();
-        foreach ($themes as $k => $theme) {
-            if (!isset($theme['capabilities']['admin']['theme']) || (false === $theme['capabilities']['admin']['theme'])) {
-                unset($themes[$k]);
+        $themes = $kernel->getThemes();
+        foreach ($themes as $theme) {
+            $metaData = $theme->getMetaData();
+            foreach ($metaData as $k => $themeInfo) {
+                if (!isset($themeInfo['capabilities']['admin']['theme']) || (false === $themeInfo['capabilities']['admin']['theme'])) {
+                    unset($themes[$k]);
+                }
             }
         }
         $dataValues = [

@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
-use Zikula\ExtensionsModule\Helper\MetaDataHelper;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
@@ -122,7 +121,7 @@ abstract class AbstractExtension extends Bundle
         }
     }
 
-    public function getMetaData(bool $applyDynamicSettings = true): MetaData
+    public function getMetaData(): MetaData
     {
         $scanner = new Scanner();
         $jsonPath = $this->getPath() . '/composer.json';
@@ -130,9 +129,6 @@ abstract class AbstractExtension extends Bundle
         $metaData = new MetaData($jsonContent);
         if (!empty($this->container) && $this->container->has('translator')) {
             $metaData->setTranslator($this->container->get('translator'));
-        }
-        if (!empty($this->container) && $this->container->has(MetaDataHelper::class) && $applyDynamicSettings) {
-            $metaData = $this->container->get(MetaDataHelper::class)->setDynamicMetaData($metaData);
         }
 
         return $metaData;

@@ -18,7 +18,7 @@ use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+//use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 class SiteDefinition implements SiteDefinitionInterface
@@ -29,7 +29,7 @@ class SiteDefinition implements SiteDefinitionInterface
         private TranslatorInterface $translator,
         private readonly RequestStack $requestStack,
         private readonly VariableApiInterface $variableApi,
-        private readonly ExtensionRepositoryInterface $extensionRepository,
+        //private readonly ExtensionRepositoryInterface $extensionRepository,
         private readonly ParameterBag $pageVars
     ) {
         $this->setTranslator($translator);
@@ -55,7 +55,7 @@ class SiteDefinition implements SiteDefinitionInterface
                 [$title, $this->getName()],
                 $titleScheme
             );
-
+        /** TODO remove or replace
             $moduleDisplayName = '';
             $request = $this->requestStack->getCurrentRequest();
             if (null !== $request && null !== $request->attributes->get('_controller')) {
@@ -69,6 +69,7 @@ class SiteDefinition implements SiteDefinitionInterface
                 }
             }
             $title = str_replace('%modulename%', $moduleDisplayName, $title);
+        */
         }
 
         return $title;

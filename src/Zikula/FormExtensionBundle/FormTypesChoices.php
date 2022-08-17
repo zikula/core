@@ -51,7 +51,7 @@ class FormTypesChoices implements ArrayAccess, Iterator
 
     public function rewind(): void
     {
-        return reset($this->choices);
+        reset($this->choices);
     }
 
     public function current(): mixed
@@ -66,7 +66,7 @@ class FormTypesChoices implements ArrayAccess, Iterator
 
     public function next(): void
     {
-        return next($this->choices);
+        next($this->choices);
     }
 
     public function valid(): bool

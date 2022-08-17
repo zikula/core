@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Installer;
 
-/**
- * Interface InstallerInterface
- */
 interface InstallerInterface
 {
     public function install(): bool;

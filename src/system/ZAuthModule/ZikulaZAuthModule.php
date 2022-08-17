@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule;
 
-use Zikula\ExtensionsModule\AbstractCoreModule;
+use Zikula\ExtensionsModule\AbstractModule;
 
-/**
- * Base module definition for the zauth module.
- */
-class ZikulaZAuthModule extends AbstractCoreModule
+class ZikulaZAuthModule extends AbstractModule
 {
 }

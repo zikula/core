@@ -4,24 +4,24 @@
 <a href="#zikula-admin-hiddenpanel-menu"><i class="fas fa-bars" title="{% trans %}Show administration panel{% endtrans %}"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu" class="d-none">
     <div class="text-left">
-        <h2><i class="fas fa-object-group fa-fw"></i> {% trans %}Administration{% endtrans %}</h2>
+        <h2 class="pl-4 pt-1"><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{% trans %}Administration{% endtrans %}"> {% trans %}Administration{% endtrans %}</h2>
         <ul>
             {% for category in adminMenu %}
-                <li{% if caller.category.cid == category.cid %} class="selected"{% endif %}>
+                <li{% if caller.category.slug == category.slug %} class="selected"{% endif %}>
                     <a href="{{ category.url }}">
                         <i class="fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i>
                         {{ category.title|safeHtml }}
                     </a>
-                    {% if category.modules|length > 0 %}
+                    {% if category.bundles|length > 0 %}
                         <ul class="text-left">
-                            {% for module in category.modules %}
-                                <li{% if caller.path == module.menutexturl %} class="selected"{% endif %}>
-                                    <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}">
-                                        <i class="{{ module.icon|default('fas fa-layer-group') }} fa-fw fa-2x align-middle text-info"></i>
-                                        {{ module.menutext }}
+                            {% for item in category.bundles %}
+                                <li{% if caller.path == item.menuTextUrl %} class="selected"{% endif %}>
+                                    <a href="{{ item.menuTextUrl }}" title="{{ item.menuText|e('html_attr') }}">
+                                        <i class="{{ item.icon|default('fas fa-layer-group') }} fa-fw fa-2x align-middle text-info"></i>
+                                        {{ item.menuText }}
                                     </a>
-                                    {% if module.extensionMenu|default %}
-                                        {{ knp_menu_render(module.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+                                    {% if item.extensionMenu|default %}
+                                        {{ knp_menu_render(item.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                                     {% endif %}
                                 </li>
                             {% endfor %}

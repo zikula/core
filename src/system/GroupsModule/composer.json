@@ -38,7 +38,6 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\GroupsModule\\ZikulaGroupsModule",
-            "core-compatibility": ">=4.0.0",
             "displayname": "Groups",
             "url": "groups",
             "icon": "fas fa-users",

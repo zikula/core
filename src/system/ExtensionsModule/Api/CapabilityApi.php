@@ -13,32 +13,25 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Api;
 
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class CapabilityApi implements CapabilityApiInterface
 {
     /**
-     * @var ExtensionRepository
+     * @var ExtensionEntity[]
      */
-    private $extensionRepository;
+    private array $extensionsByCapability = [];
 
     /**
      * @var ExtensionEntity[]
      */
-    private $extensionsByCapability = [];
+    private array $extensionsByName = [];
 
-    /**
-     * @var ExtensionEntity[]
-     */
-    private $extensionsByName = [];
-
-    public function __construct(ExtensionRepositoryInterface $extensionRepository)
+    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
     {
-        $this->extensionRepository = $extensionRepository;
     }
 
     /**
@@ -46,13 +39,12 @@ class CapabilityApi implements CapabilityApiInterface
      */
     private function load(): void
     {
-        $extensions = $this->extensionRepository->findBy(['state' => Constant::STATE_ACTIVE]);
-        /** @var ExtensionEntity $extension */
+        $extensions = $this->kernel->getModules();
         foreach ($extensions as $extension) {
-            foreach ($extension->getCapabilities() as $capability => $definition) {
+            foreach ($extension->getMetaData()->getCapabilities() as $capability => $definition) {
                 $this->extensionsByCapability[$capability][] = $extension;
             }
-            $this->extensionsByName[$extension->getName()] = $extension;
+            $this->extensionsByName[$extension->getMetaData()->getName()] = $extension;
         }
     }
 
@@ -65,12 +57,16 @@ class CapabilityApi implements CapabilityApiInterface
         return !empty($this->extensionsByCapability[$capability]) ? $this->extensionsByCapability[$capability] : [];
     }
 
-    public function isCapable(string $extensionName, string $requestedCapability)
+    public function isCapable(string $extensionName, string $requestedCapability): bool
     {
-        if (empty($this->extensionsByName[$extensionName])) {
-            $this->extensionsByName[$extensionName] = $this->extensionRepository->findOneBy(['name' => $extensionName]);
+        if (empty($this->extensionsByName)) {
+            $this->load();
         }
-        $capabilities = $this->extensionsByName[$extensionName]->getCapabilities();
+        if (!array_key_exists($extensionName, $this->extensionsByName)) {
+            return false;
+        }
+
+        $capabilities = $this->extensionsByName[$extensionName]->getMetaData()->getCapabilities();
 
         return array_key_exists($requestedCapability, $capabilities)
             ? $capabilities[$requestedCapability]
@@ -79,8 +75,11 @@ class CapabilityApi implements CapabilityApiInterface
 
     public function getCapabilitiesOf(string $extensionName): array
     {
-        if (empty($this->extensionsByName[$extensionName])) {
-            $this->extensionsByName[$extensionName] = $this->extensionRepository->findOneBy(['name' => $extensionName]);
+        if (empty($this->extensionsByName)) {
+            $this->load();
+        }
+        if (!array_key_exists($extensionName, $this->extensionsByName)) {
+            return [];
         }
 
         return $this->extensionsByName[$extensionName]->getCapabilities();

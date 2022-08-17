@@ -40,12 +40,6 @@ class MetaData implements ArrayAccess
 
     public const SYSTEM_TYPE_THEME = 'zikula-system-theme';
 
-    public const DEPENDENCY_REQUIRED = 1;
-
-    public const DEPENDENCY_RECOMMENDED = 2;
-
-    public const DEPENDENCY_CONFLICTS = 3;
-
     private string $name;
 
     private string $version;
@@ -53,10 +47,6 @@ class MetaData implements ArrayAccess
     private string $description;
 
     private string $type;
-
-    private array $dependencies;
-
-    private string $shortName;
 
     private string $class;
 
@@ -68,8 +58,6 @@ class MetaData implements ArrayAccess
 
     private string $url;
 
-    private array $oldNames;
-
     private string $icon;
 
     private array $capabilities;
@@ -78,27 +66,21 @@ class MetaData implements ArrayAccess
 
     private int $extensionType;
 
-    private ?string $coreCompatibility;
-
     public function __construct(array $json = [])
     {
         $this->name = $json['name'];
         $this->version = $json['version'] ?? '';
         $this->description = $json['description'] ?? '';
         $this->type = $json['type'];
-        $this->dependencies = $this->formatDependencies($json);
-        $this->shortName = $json['extra']['zikula']['short-name'];
         $this->class = $json['extra']['zikula']['class'];
         $this->namespace = s($this->class)->beforeLast('\\', true)->toString();
         $this->autoload = $json['autoload'];
         $this->displayName = $json['extra']['zikula']['displayname'] ?? '';
         $this->url = $json['extra']['zikula']['url'] ?? '';
-        $this->oldNames = $json['extra']['zikula']['oldnames'] ?? [];
         $this->icon = $json['extra']['zikula']['icon'] ?? '';
         $this->capabilities = $json['extra']['zikula']['capabilities'] ?? [];
         $this->securitySchema = $json['extra']['zikula']['securityschema'] ?? [];
         $this->extensionType = $json['extensionType'] ?? self::TYPE_MODULE;
-        $this->coreCompatibility = $json['extra']['zikula']['core-compatibility'] ?? null;
     }
 
     public function getName(): string
@@ -109,11 +91,6 @@ class MetaData implements ArrayAccess
     public function getVersion(): string
     {
         return $this->version;
-    }
-
-    public function getShortName(): string
-    {
-        return $this->shortName;
     }
 
     public function getPsr0(): array
@@ -160,11 +137,6 @@ class MetaData implements ArrayAccess
         $this->description = $description;
     }
 
-    public function getDependencies(): array
-    {
-        return $this->dependencies;
-    }
-
     public function getDisplayName(): string
     {
         $this->confirmTranslator();
@@ -196,11 +168,6 @@ class MetaData implements ArrayAccess
         $this->url = $url;
     }
 
-    public function getOldNames(): array
-    {
-        return $this->oldNames;
-    }
-
     public function getIcon(): string
     {
         return $this->icon;
@@ -226,78 +193,11 @@ class MetaData implements ArrayAccess
         return $this->extensionType;
     }
 
-    public function getCoreCompatibility(): ?string
-    {
-        return $this->coreCompatibility;
-    }
-
-    private function formatDependencies(array $json = []): array
-    {
-        $dependencies = [];
-        if (!empty($json['require'])) {
-            foreach ($json['require'] as $package => $version) {
-                $dependencies[] = [
-                    'modname' => $package,
-                    'minversion' => $version,
-                    'maxversion' => $version,
-                    'status' => self::DEPENDENCY_REQUIRED
-                ];
-            }
-        } else {
-            $dependencies[] = [
-                'modname' => 'zikula/core',
-                'minversion' => '>=1.4.1 <4.0.0',
-                'maxversion' => '>=1.4.1 <4.0.0',
-                'status' => self::DEPENDENCY_REQUIRED
-            ];
-        }
-        if (!empty($json['suggest'])) {
-            foreach ($json['suggest'] as $package => $reason) {
-                if (mb_strpos($package, ':')) {
-                    list($name, $version) = explode(':', $package, 2);
-                } else {
-                    $name = $package;
-                    $version = '-1';
-                }
-                $dependencies[] = [
-                    'modname' => $name,
-                    'minversion' => $version,
-                    'maxversion' => $version,
-                    'reason' => $reason,
-                    'status' => self::DEPENDENCY_RECOMMENDED
-                ];
-            }
-        }
-
-        return $dependencies;
-    }
-
     private function confirmTranslator(): void
     {
         if (!isset($this->translator)) {
             throw new PreconditionRequiredHttpException(sprintf('The translator property is not set correctly in %s', __CLASS__));
         }
-    }
-
-    /**
-     * Module MetaData as array
-     */
-    public function getFilteredVersionInfoArray(): array
-    {
-        return [
-            'name' => $this->getShortName(),
-            'type' => $this->getExtensionType(),
-            'displayname' => $this->getDisplayName(),
-            'oldnames' => $this->getOldNames(),
-            'icon' => $this->getIcon(),
-            'description' => $this->getDescription(),
-            'version' => $this->getVersion(),
-            'url' => $this->getUrl(),
-            'capabilities' => $this->getCapabilities(),
-            'securityschema' => $this->getSecuritySchema(),
-            'dependencies' => $this->getDependencies(),
-            'coreCompatibility' => $this->getCoreCompatibility()
-        ];
     }
 
     public function offsetExists($offset): bool

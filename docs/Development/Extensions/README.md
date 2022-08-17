@@ -11,7 +11,3 @@ currentMenu: dev-extensions
 ## Capabilities
 
 - [CapabilityApi](CapabilityApi.md)
-
-## Misc
-
-- [Provide help docs](ExtensionDocs.md)

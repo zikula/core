@@ -13,31 +13,31 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Helper;
 
-use Zikula\ExtensionsModule\Constant;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\AbstractExtension;
 
 class SchemaHelper
 {
-    public function __construct(private readonly ExtensionRepositoryInterface $extensionRepository)
+    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
     {
     }
 
     /**
      * Get the security schema for each registered extension.
-     * Optionally filter by active status.
      */
-    public function getAllSchema(bool $activeOnly = false): array
+    public function getAllSchema(): array
     {
         $criteria = $activeOnly ? ['state' => Constant::STATE_ACTIVE] : [];
-        /** @var ExtensionEntity[] $extensions */
-        $extensions = $this->extensionRepository->findBy($criteria);
+        $bundles = $this->kernel->getBundles();
         $schema = [];
-        foreach ($extensions as $extension) {
-            if (null === $extension->getSecurityschema()) {
+        foreach ($bundles as $bundle) {
+            if (!($bundle instanceof AbstractExtension)) {
                 continue;
             }
-            $schema = array_merge($schema, $extension->getSecurityschema());
+            if (null === ($bundleSchema = $bundle->getMetaData()->getSecurityschema())) {
+                continue;
+            }
+            $schema = array_merge($schema, $bundleSchema);
         }
         uksort($schema, 'strnatcasecmp');
 

@@ -32,50 +32,20 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     use ExtensionVariablesTrait;
     use TranslatorTrait;
 
-    /**
-     * @var string the extension name
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var AbstractExtension
-     */
-    protected $extension;
-
-    /**
-     * @var ManagerRegistry
-     */
-    protected $managerRegistry;
-
-    /**
-     * @var ObjectManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var SchemaHelper
-     */
-    protected $schemaTool;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
+    protected ObjectManager $entityManager;
 
     public function __construct(
-        AbstractExtension $extension,
-        ManagerRegistry $managerRegistry,
-        SchemaHelper $schemaTool,
-        RequestStack $requestStack,
+        protected readonly AbstractExtension $extension,
+        protected readonly ManagerRegistry $managerRegistry,
+        protected readonly SchemaHelper $schemaTool,
+        protected readonly RequestStack $requestStack,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
     ) {
-        $this->extension = $extension;
         $this->name = $extension->getName();
-        $this->managerRegistry = $managerRegistry;
         $this->entityManager = $managerRegistry->getManager();
-        $this->schemaTool = $schemaTool;
-        $this->requestStack = $requestStack;
         $this->setTranslator($translator);
         $this->extensionName = $this->name; // ExtensionVariablesTrait
         $this->variableApi = $variableApi; // ExtensionVariablesTrait
