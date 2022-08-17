@@ -17,7 +17,7 @@ use Composer\Semver\Semver;
 use RuntimeException;
 use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
@@ -77,9 +77,9 @@ class BundleSyncHelper
     private $composerValidationHelper;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    protected $session;
+    protected $requestStack;
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
@@ -90,7 +90,7 @@ class BundleSyncHelper
         ExtensionStateHelper $extensionStateHelper,
         BundlesSchemaHelper $bundlesSchemaHelper,
         ComposerValidationHelper $composerValidationHelper,
-        SessionInterface $session
+        RequestStack $requestStack
     ) {
         $this->kernel = $kernel;
         $this->extensionRepository = $extensionRepository;
@@ -100,7 +100,7 @@ class BundleSyncHelper
         $this->extensionStateHelper = $extensionStateHelper;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->composerValidationHelper = $composerValidationHelper;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -111,8 +111,9 @@ class BundleSyncHelper
         // sync the extensions directory and the bundles table
         $this->bundlesSchemaHelper->load();
         $scanner = $this->bundlesSchemaHelper->getScanner();
+        $session = $this->requestStack->getCurrentRequest()->getSession();
         foreach ($scanner->getInvalid() as $invalidName) {
-            $this->session->getFlashBag()->add(
+            $session->getFlashBag()->add(
                 'warning',
                 $this->translator->trans(
                     'WARNING: %extension% has an invalid composer.json file which could not be decoded.',
@@ -146,7 +147,7 @@ class BundleSyncHelper
                     $bundles[$bundle->getName()] = $bundleVersionArray;
                     $bundles[$bundle->getName()]['oldnames'] = $bundleVersionArray['oldnames'] ?? '';
                 } else {
-                    $this->session->getFlashBag()->add(
+                    $session->getFlashBag()->add(
                         'error',
                         $this->translator->trans(
                             'Cannot load %extension% because the composer file is invalid.',
@@ -154,7 +155,7 @@ class BundleSyncHelper
                         )
                     );
                     foreach ($this->composerValidationHelper->getErrors() as $error) {
-                        $this->session->getFlashBag()->add('error', $error);
+                        $session->getFlashBag()->add('error', $error);
                     }
                 }
             }

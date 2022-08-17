@@ -15,7 +15,7 @@ namespace Zikula\SecurityCenterModule\Helper;
 
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,7 +23,7 @@ class CacheDirHelper
 {
     public function __construct(
         private readonly Filesystem $fileSystem,
-        private readonly SessionInterface $session,
+        private readonly RequestStack $requestStack,
         private readonly TranslatorInterface $translator
     ) {
     }
@@ -46,7 +46,8 @@ class CacheDirHelper
                 $fs->mkdir($cacheDirectory);
             }
         } catch (IOExceptionInterface $exception) {
-            $this->session->getFlashBag()->add(
+            $session = $this->requestStack->getCurrentRequest()->getSession();
+            $session->getFlashBag()->add(
                 'error',
                 $this->translator->trans(
                     'An error occurred while creating cache directory at %path%',
