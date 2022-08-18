@@ -1,10 +1,8 @@
-DefaultTheme
-============
+# DefaultThemeBundle
 
 This is a read-only repository.
 
-Resources
----------
+## Resources
 
   * [Report issues](https://github.com/zikula/default/issues) and
     [send Pull Requests](https://github.com/zikula/default/pulls)

@@ -3,13 +3,12 @@
 ## 4.0.0 (unreleased)
 
 - BC Breaks:
-  - [CoreInstallerBundle] Remove custom installer.
-  - [HookBundle] Remove hooks support.
-  - [WorkflowBundle] Remove graphical workflow editor.
   - [Blocks] Remove blocks system and pending content.
-  - [Groups] Remove group applications.
+  - [CoreInstaller] Remove custom installer.
   - [Mailer] Remove mailer module (keep test mail form, moving it to the Settings module).
   - [Extensions] Remove additional state-based extension layer in favor of Composer and Flex.
+  - [Groups] Remove group applications.
+  - [Hook] Remove hooks support.
   - [Menu] Remove custom (database-driven) menus.
   - [PageLock] Remove page lock module.
   - [Routes] Remove custom (database-driven) routes.
@@ -17,6 +16,7 @@
   - [SecurityCenter] Remove PHPIDS in favor of your server's WAF.
   - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`.
   - [Theme] Remove old `BootstrapTheme` in favor of `DefaultTheme`.
+  - [Workflow] Remove graphical workflow editor.
   - [ZAuth] Remove deprecated `PasswordApi`.
 
 - Fixes:

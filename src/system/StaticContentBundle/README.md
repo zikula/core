@@ -1,4 +1,6 @@
-# StaticContent
+# StaticContentBundle
+
+This is a read-only repository.
 
 ## Display static content simply.
 

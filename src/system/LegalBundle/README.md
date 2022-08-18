@@ -1,4 +1,6 @@
-## Legal
+# LegalBundle
+
+This is a read-only repository.
 
 This bundle provides a site with the ability to manage and display legal information such as terms of use
 and privacy policies. It also allows the site to require that these policies be accepted during registration

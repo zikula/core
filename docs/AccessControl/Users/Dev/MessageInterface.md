@@ -3,8 +3,8 @@ currentMenu: users
 ---
 # Message interface
 
-Modules that want the Core to identify the module as Message-capable must provide a class which implements
-`\Zikula\UsersModule\MessageModule\MessageModuleInterface`.
+Bundles that want the Core to identify the bundle as Message-capable must provide a class which implements
+`\Zikula\UsersBundle\MessageBundle\MessageBundleInterface`.
 
 This interface requires:
 

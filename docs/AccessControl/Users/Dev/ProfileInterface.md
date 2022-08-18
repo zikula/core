@@ -3,14 +3,14 @@ currentMenu: users
 ---
 # Profile interface
 
-Modules that want the Core to identify the module as Profile-capable must provide a class which implements
-`\Zikula\UsersModule\ProfileModule\ProfileModuleInterface`.
+Bundles that want the Core to identify the bundle as Profile-capable must provide a class which implements
+`\Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface`.
 
 This interface requires:
 
 ```php
 /**
- * Display a module-defined user display name (e.g. set by the user) or display the uname as defined by the UserModule
+ * Display a bundle-defined user display name (e.g. set by the user) or display the uname as defined by the UserModule
  * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
  *
  * @param int|string $userId The user's id or name

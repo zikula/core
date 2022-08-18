@@ -1,10 +1,8 @@
-ThemeModule
-===========
+# ThemeBundle
 
 This is a read-only repository.
 
-Resources
----------
+## Resources
 
   * [Report issues](https://github.com/zikula/core/issues) and
     [send Pull Requests](https://github.com/zikula/core/pulls)

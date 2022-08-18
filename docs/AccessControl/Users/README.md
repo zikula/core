@@ -53,9 +53,13 @@ options are available: **full** deletion or **ghost** deletion.
 In both cases, the username is added to the list of 'illegal' usernames for the future to prevent impersonating deleted users.
 Additionally, the user cannot be reinstated.
 
-## User profiles
+## Further related bundles
 
-TBD
+Legal
+: Provides website TOS/AUP, privacy policy, and other legal documents.
+
+Profile
+: User profile extension and avatar management.
 
 ## Importing users from a CSV file
 

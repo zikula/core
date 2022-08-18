@@ -3,10 +3,8 @@ currentMenu: content-pages
 ---
 # Static Pages
 
-### New in Core 3.1.0
+Zikula includes a `StaticContentBundle` providing means for very basic **template-driven** static content.
 
-Zikula now includes the StaticContentModule as a Value-Added extension in Core-3.1.0.
-With this, basic **template-driven** static content is easily implemented in Zikula.
 Simply create a template with the needed content in `/templates/p/` like `/templates/p/apple.html.twig`.
 Then direct your browser to `/p/apple` and the template will be displayed.
 
