@@ -38,7 +38,7 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
     private array $labels = [];
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\Length(min: 0, max: 255, allowEmptyString: false)]
+    #[Assert\Length(min: 1, max: 255)]
     private string $formType = '';
 
     #[ORM\Column]
