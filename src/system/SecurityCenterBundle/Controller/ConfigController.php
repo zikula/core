@@ -32,7 +32,6 @@ use Zikula\SecurityCenterBundle\Constant;
 use Zikula\SecurityCenterBundle\Form\Type\ConfigType;
 use Zikula\SecurityCenterBundle\Helper\HtmlTagsHelper;
 use Zikula\SecurityCenterBundle\Helper\PurifierHelper;
-use Zikula\SecurityCenterBundle\ZikulaSecurityCenterModule;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Helper\AccessHelper;
 
@@ -50,7 +49,6 @@ class ConfigController extends AbstractController
      * @return array|RedirectResponse
      */
     public function config(
-        ZikulaSecurityCenterModule $securityCenterModule,
         Request $request,
         RouterInterface $router,
         VariableApiInterface $variableApi,

@@ -102,5 +102,5 @@
     {{ form_end(mailForm) }}
 </div>
 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-    {{ pageAddAsset('javascript', zasset('@ZikulaUsers:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersBundle:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
 {% endif %}

@@ -52,4 +52,4 @@ services:
     Symfony\Component\HttpKernel\Fragment\FragmentHandler: '@fragment.handler'
 
     Michelf\:
-        resource: '../../../../../vendor/michelf/php-markdown/Michelf/*'
+        resource: '../../../../../../vendor/michelf/php-markdown/Michelf/*'

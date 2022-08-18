@@ -52,7 +52,7 @@ class AdministrationActionsHelper
                 'icon' => 'pencil-alt',
             ];
         }
-        $isCurrentUser = $this->currentUser->get('uid') === $user->getUid();
+        $isCurrentUser = $this->currentUserApi->get('uid') === $user->getUid();
         if (!$isCurrentUser && $hasDeletePermissionToUser && $user->getUid() > UsersConstant::USER_ID_ADMIN) {
             $actions['delete'] = [
                 'url' => $this->router->generate('zikulausersbundle_useradministration_delete', ['user' => $user->getUid()]),

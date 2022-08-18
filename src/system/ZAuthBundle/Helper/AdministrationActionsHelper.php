@@ -40,7 +40,7 @@ class AdministrationActionsHelper
             return $actions;
         }
         /** @var UserVerificationEntity $userVerification */
-        $userVerification = $this->verificationRepository->findOneBy([
+        $userVerification = $this->userVerificationRepository->findOneBy([
             'uid' => $mapping->getUid(),
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL
         ]);
