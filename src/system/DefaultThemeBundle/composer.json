@@ -1,0 +1,49 @@
+{
+    "name": "zikula/default-theme-bundle",
+    "version": "3.1.0",
+    "description": "Bootstrap based theme",
+    "type": "symfony-bundle",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "https://ziku.la/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\DefaultThemeBundle\\": "" }
+    },
+    "require": {
+        "php": "^8.1",
+        "symfony/config": "^5.4",
+        "symfony/dependency-injection": "^5.4",
+        "symfony/event-dispatcher": "^5.4",
+        "symfony/form": "^5.4",
+        "symfony/http-foundation": "^5.4",
+        "symfony/http-kernel": "^5.4",
+        "symfony/routing": "^5.4",
+        "symfony/yaml": "^5.4",
+
+        "zikula/core-bundle": "dev-3.1",
+        "zikula/extensions-bundle": "dev-3.1",
+        "zikula/permissions-bundle": "dev-3.1",
+        "zikula/theme-bundle": "dev-3.1",
+
+        "thomaspark/bootswatch": "^4"
+    },
+    "extra": {
+        "zikula" : {
+            "class": "Zikula\\DefaultThemeBundle\\ZikulaDefaultThemeBundle",
+            "displayname": "Default Theme",
+            "icon": "fas fa-rocket",
+            "capabilities": {
+                "user": {
+                    "theme": true
+                },
+                "admin": {
+                    "theme": true
+                }
+            }
+        }
+    }
+}

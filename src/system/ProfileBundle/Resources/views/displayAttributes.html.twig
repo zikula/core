@@ -1,0 +1,41 @@
+{% if getModVar('ZikulaProfileModule', 'viewregdate', 1) == 1 and user.registrationDate != '1970-01-01 00:00:00' %}
+    <div class="row">
+        <div class="col-md-3 text-right">
+            <strong>{% trans %}Registration date{% endtrans %}</strong>
+        </div>
+        <div class="col-md-9">
+            <span>{{ user.registrationDate|format_date('medium')|default('&nbsp;') }}</span>
+        </div>
+    </div>
+{% endif %}
+{% for property in activeProperties|filter(p => 'AvatarType' != p.formType|split('\\')|last) %}
+    {% for attribute in user.attributes|filter(a => a.value is not empty and a.name == prefix ~ ':' ~ property.id) %}
+        <div class="row">
+            <div class="col-md-3 text-right">
+                <strong>{{ property.label(app.request.locale|default('en')) }}</strong>
+            </div>
+            <div class="col-md-9">
+                {% set formType = property.formType|split('\\')|last %}
+                {% if 'UrlType' == formType and ('http://' in attribute.value or 'https://' in attribute.value) %}
+                    <span><a href="{{ attribute.value|e('html_attr') }}" title="{% trans %}Visit this page'{% endtrans %}|e('html_attr')">{{ attribute.value }}</a></span>
+                {% elseif 'CountryType' == formType %}
+                    <span>{{ attribute.value|country_name }}</span>
+                {% elseif 'CurrencyType' == formType %}
+                    <span>{{ attribute.value|currency_name }}</span>
+                {% elseif 'LanguageType' == formType %}
+                    <span>{{ attribute.value|language_name }}</span>
+                {% elseif 'LocaleType' == formType %}
+                    <span>{{ attribute.value|locale_name }}</span>
+                {% elseif 'TimezoneType' == formType %}
+                    <span>{{ attribute.value|timezone_name }}</span>
+                {% else %}
+                    <span>{{ property|zikulaprofilebundle_formatPropertyForDisplay(attribute) }}</span>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}
+{# you can distinguish different pages using the context variable like this:
+{% if context|default == 'profile' %}
+{% elseif context|default == 'hook' %}
+{% endif %#}

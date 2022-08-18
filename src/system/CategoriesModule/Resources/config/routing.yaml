@@ -1,3 +1,0 @@
-zikulacategoriesmodule:
-    resource: "@ZikulaCategoriesModule/Controller"
-    type:     annotation

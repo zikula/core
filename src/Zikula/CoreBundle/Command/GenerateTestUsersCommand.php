@@ -22,8 +22,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use function Symfony\Component\String\s;
-use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\ZAuthModule\ZAuthConstant;
+use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\ZAuthBundle\ZAuthConstant;
 
 class GenerateTestUsersCommand extends Command
 {

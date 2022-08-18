@@ -1,0 +1,20 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\SettingsBundle\ZikulaSettingsBundle'
+            $defaultLocale: '%locale%'
+            $installed: '%env(ZIKULA_INSTALLED)%'
+            $projectDir: '%kernel.project_dir%'
+
+    Zikula\SettingsBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface: '@Zikula\SettingsBundle\Api\LocaleApi'
+
+    Zikula\SettingsBundle\SettingsModuleInstaller:
+        arguments:
+            $locale: '%locale%'

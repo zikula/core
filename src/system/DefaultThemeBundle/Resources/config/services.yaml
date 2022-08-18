@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\DefaultThemeBundle\ZikulaDefaultThemeBundle'
+
+    Zikula\DefaultThemeBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\DefaultThemeBundle\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaDefaultThemeAdminMenu }
+
+    Zikula\DefaultThemeBundle\Listener\BootstrapAssetSetterListener:
+        arguments:
+            $cssAssetBag: '@zikula_core.common.theme.assets_css'

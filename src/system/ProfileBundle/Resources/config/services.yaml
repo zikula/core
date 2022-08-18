@@ -1,0 +1,35 @@
+parameters:
+    zikula_profile_module.property_prefix: 'zpmpp'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\ProfileBundle\ZikulaProfileBundle'
+            $prefix: '%zikula_profile_module.property_prefix%'
+            $projectDir: '%kernel.project_dir%'
+
+    Zikula\ProfileBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\ProfileBundle\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\ProfileBundle\Repository\PropertyRepositoryInterface: '@Zikula\ProfileBundle\Repository\PropertyRepository'
+
+    Zikula\ProfileBundle\ProfileModuleInstaller:
+        $prefix: '%zikula_profile_module.property_prefix%'
+
+    Zikula\ProfileBundle\Listener\AttributeNameTranslationListener:
+        arguments:
+            $locale: '%locale%'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    Zikula\ProfileBundle\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaProfileAdminMenu }

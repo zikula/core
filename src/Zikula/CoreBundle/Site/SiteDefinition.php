@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ThemeModule\Engine\ParameterBag;
+use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\ThemeBundle\Engine\ParameterBag;
 
 class SiteDefinition implements SiteDefinitionInterface
 {

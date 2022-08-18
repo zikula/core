@@ -1,3 +1,0 @@
-zikulagroupsmodule:
-    resource: "@ZikulaGroupsModule/Controller"
-    type:     annotation

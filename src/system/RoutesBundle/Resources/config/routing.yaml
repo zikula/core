@@ -1,0 +1,5 @@
+zikularoutesbundle:
+    # define routing support for these controllers
+    resource: "@ZikulaRoutesBundle/Controller"
+    # enable support for defining routes by annotations
+    type: annotation

@@ -76,24 +76,11 @@ class Scanner
                 return false;
             }
             $json['autoload']['psr-4'][$ns] = $base;
-            $json['extensionType'] = $this->computeExtensionType($json);
 
             return $json;
         }
 
         return false;
-    }
-
-    private function computeExtensionType(array $json): int
-    {
-        $types = [
-            MetaData::EXTENSION_TYPE_THEME => MetaData::TYPE_THEME,
-            MetaData::EXTENSION_TYPE_MODULE => MetaData::TYPE_MODULE,
-            MetaData::SYSTEM_TYPE_THEME => MetaData::TYPE_SYSTEM_THEME,
-            MetaData::SYSTEM_TYPE_MODULE => MetaData::TYPE_SYSTEM_MODULE,
-        ];
-
-        return $types[$json['type']];
     }
 
     public function getExtensionsMetaData(): array

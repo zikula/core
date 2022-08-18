@@ -1,0 +1,52 @@
+{
+  "name": "zikula/foomodule-bundle",
+  "version": "2.0.0-beta",
+  "description": "A foo module.",
+  "type": "zikula-bundle",
+  "license": ["MIT", "LGPL"],
+  "authors": [
+    {
+      "name": "Zikula Team",
+      "homepage": "https://ziku.la/",
+      "email": "admin@example.com",
+      "role": "lead"
+    },
+    {
+      "name": "Zikula B Team",
+      "homepage": "https://ziku.la/",
+      "email": "admin@example.com",
+      "role": "minion"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Zikula\\FooBundle\\": "" }
+  },
+  "require": {
+    "php": "^8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "suggest": {
+    "barmodule": "^1.0"
+  },
+  "extra": {
+    "zikula": {
+      "class": "Zikula\\FooBundle\\ZikulaFooModule",
+      "displayname": "FooModule",
+      "url": "foo",
+      "icon": "fas fa-database",
+      "capabilities": {
+        "admin": {
+            "route": "zikulafoobundle_bar_index"
+        },
+        "user": {
+            "route": "zikulafoobundle_foo_index"
+        }
+      },
+      "securityschema": {
+        "ZikulaFooModule::": "::"
+      }
+    }
+  }
+}

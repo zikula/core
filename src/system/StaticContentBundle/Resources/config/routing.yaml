@@ -1,0 +1,3 @@
+zikulastaticcontentbundle:
+    resource: "@ZikulaStaticContentBundle/Controller"
+    type:     annotation

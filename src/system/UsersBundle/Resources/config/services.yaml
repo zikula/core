@@ -1,0 +1,32 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\UsersBundle\ZikulaUsersBundle'
+            $installed: '%env(ZIKULA_INSTALLED)%'
+            $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
+
+    Zikula\UsersBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\UsersBundle\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface: '@Zikula\UsersBundle\Api\CurrentUserApi'
+    Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface: '@Zikula\UsersBundle\Repository\UserAttributeRepository'
+    Zikula\UsersBundle\Repository\UserRepositoryInterface: '@Zikula\UsersBundle\Repository\UserRepository'
+    Zikula\UsersBundle\Repository\UserSessionRepositoryInterface: '@Zikula\UsersBundle\Repository\UserSessionRepository'
+
+    # public because this is often required as part of Doctrine listeners
+    # which need to access this using container because CurrentUserApi
+    # depends on entities as well
+    Zikula\UsersBundle\Api\CurrentUserApi:
+        public: true
+
+    Zikula\UsersBundle\Listener\UserEventListener:
+        arguments:
+          $environment: '%env(APP_ENV)%'

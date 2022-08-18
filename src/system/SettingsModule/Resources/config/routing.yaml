@@ -1,3 +1,0 @@
-zikulasettingsmodule:
-    resource: "@ZikulaSettingsModule/Controller"
-    type:     annotation

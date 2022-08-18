@@ -9,5 +9,3 @@ currentMenu: groups
   - `Zikula\GroupsModule\Event\GroupPostDeletedEvent`
   - `Zikula\GroupsModule\Event\GroupPostUserAddedEvent`
   - `Zikula\GroupsModule\Event\GroupPostUserRemovedEvent`
-  - `Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent`
-  - `Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent`

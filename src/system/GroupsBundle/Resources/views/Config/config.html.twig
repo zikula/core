@@ -1,0 +1,22 @@
+<h3>
+    <span class="fas fa-wrench"></span>
+    {% trans %}Settings{% endtrans %}
+    {{ pageSetVar('title', 'Group settings'|trans) }}
+</h3>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{% trans %}General settings{% endtrans %}</legend>
+    {{ form_row(form.itemsperpage) }}
+    {{ form_row(form.defaultgroup) }}
+    {{ form_row(form.hideclosed) }}
+    {{ form_row(form.hidePrivate) }}
+</fieldset>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+</div>
+{{ form_end(form) }}

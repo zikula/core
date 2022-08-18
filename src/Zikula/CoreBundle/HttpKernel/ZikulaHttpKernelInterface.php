@@ -17,8 +17,8 @@ use InvalidArgumentException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\RebootableInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Zikula\ExtensionsModule\AbstractModule;
-use Zikula\ExtensionsModule\AbstractTheme;
+use Zikula\ExtensionsBundle\AbstractModule;
+use Zikula\ExtensionsBundle\AbstractTheme;
 
 interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface, RebootableInterface
 {
@@ -55,6 +55,4 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
     public function setAutoloader(callable $autoloader): void;
 
     public function getAutoloader(): object;
-
-    public function isClassInBundle(string $class): bool;
 }

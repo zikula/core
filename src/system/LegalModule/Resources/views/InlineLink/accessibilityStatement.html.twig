@@ -1,5 +1,0 @@
-{% set policyUrl = getModVar(constant('Zikula\\LegalModule\\Constant::MODNAME'), constant('Zikula\\LegalModule\\Constant::MODVAR_ACCESSIBILITY_URL')) %}
-{% if policyUrl == '' %}
-    {% set policyUrl = path('zikulalegalmodule_user_accessibilitystatement') %}
-{% endif %}
-<a class="legal_inlinelink_accessibilitystatement" href="{{ policyUrl|e('html_attr') }}" target="{{ target|e('html_attr') }}">{% trans %}Accessibility statement{% endtrans %}</a>

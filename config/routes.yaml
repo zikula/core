@@ -8,4 +8,4 @@
 
 Routing:
     resource: .
-    type: zikularoutesmodule
+    type: zikularoutesbundle

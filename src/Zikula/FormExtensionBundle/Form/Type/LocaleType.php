@@ -17,11 +17,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
+use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 
-/**
- * Locale form type.
- */
 class LocaleType extends AbstractType
 {
     public function __construct(private readonly LocaleApiInterface $localeApi)

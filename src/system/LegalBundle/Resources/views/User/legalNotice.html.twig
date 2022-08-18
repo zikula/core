@@ -1,0 +1,2 @@
+{{ moduleHeader('user', 'Legal notice for %s%'|trans({ '%s%': siteName() }), '', true, true) }}
+{{ include('@ZikulaLegal/' ~ app.request.locale ~ '/legalNotice.html.twig') }}

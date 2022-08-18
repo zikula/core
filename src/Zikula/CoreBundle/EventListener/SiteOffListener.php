@@ -21,9 +21,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 
 class SiteOffListener implements EventSubscriberInterface
 {
@@ -66,8 +66,8 @@ class SiteOffListener implements EventSubscriberInterface
         } catch (Exception) {
             return;
         }
-        if ('zikulausersmodule_access_login' === $routeInfo['_route']
-        || 'zikulathememodule_combinedasset_asset' === $routeInfo['_route']) {
+        if ('zikulausersbundle_access_login' === $routeInfo['_route']
+        || 'zikulathemebundle_combinedasset_asset' === $routeInfo['_route']) {
             return;
         }
         if ($response instanceof PlainResponse

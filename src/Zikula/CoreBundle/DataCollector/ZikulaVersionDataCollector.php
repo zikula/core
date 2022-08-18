@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ThemeModule\Engine\Engine;
+use Zikula\ThemeBundle\Engine\Engine;
 
 class ZikulaVersionDataCollector extends DataCollector
 {

@@ -1,0 +1,3 @@
+zikulazauthbundle:
+    resource: "@ZikulaZAuthBundle/Controller"
+    type:     annotation

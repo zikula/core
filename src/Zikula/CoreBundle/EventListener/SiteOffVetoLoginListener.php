@@ -17,9 +17,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
+use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersBundle\Event\UserPreLoginSuccessEvent;
 
 class SiteOffVetoLoginListener implements EventSubscriberInterface
 {

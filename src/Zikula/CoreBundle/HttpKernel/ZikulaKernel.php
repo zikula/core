@@ -18,23 +18,23 @@ use InvalidArgumentException;
 use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Zikula\AdminModule\ZikulaAdminModule;
-use Zikula\CategoriesModule\ZikulaCategoriesModule;
-use Zikula\DefaultTheme\ZikulaDefaultTheme;
-use Zikula\ExtensionsModule\AbstractExtension;
-use Zikula\ExtensionsModule\AbstractModule;
-use Zikula\ExtensionsModule\AbstractTheme;
-use Zikula\ExtensionsModule\ZikulaExtensionsModule;
-use Zikula\GroupsModule\ZikulaGroupsModule;
-use Zikula\MenuModule\ZikulaMenuModule;
-use Zikula\PermissionsModule\ZikulaPermissionsModule;
-use Zikula\RoutesModule\ZikulaRoutesModule;
-use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
-use Zikula\SettingsModule\ZikulaSettingsModule;
-use Zikula\ThemeModule\EventListener\AddJSConfigListener;
-use Zikula\ThemeModule\ZikulaThemeModule;
-use Zikula\UsersModule\ZikulaUsersModule;
-use Zikula\ZAuthModule\ZikulaZAuthModule;
+use Zikula\AdminBundle\ZikulaAdminBundle;
+use Zikula\CategoriesBundle\ZikulaCategoriesBundle;
+use Zikula\DefaultThemeBundle\ZikulaDefaultThemeBundle;
+use Zikula\ExtensionsBundle\AbstractExtension;
+use Zikula\ExtensionsBundle\AbstractModule;
+use Zikula\ExtensionsBundle\AbstractTheme;
+use Zikula\ExtensionsBundle\ZikulaExtensionsBundle;
+use Zikula\GroupsBundle\ZikulaGroupsBundle;
+use Zikula\MenuBundle\ZikulaMenuBundle;
+use Zikula\PermissionsBundle\ZikulaPermissionsBundle;
+use Zikula\RoutesBundle\ZikulaRoutesBundle;
+use Zikula\SecurityCenterBundle\ZikulaSecurityCenterBundle;
+use Zikula\SettingsBundle\ZikulaSettingsBundle;
+use Zikula\ThemeBundle\EventListener\AddJSConfigListener;
+use Zikula\ThemeBundle\ZikulaThemeBundle;
+use Zikula\UsersBundle\ZikulaUsersBundle;
+use Zikula\ZAuthBundle\ZikulaZAuthBundle;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);
@@ -66,19 +66,22 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * @var array
      */
     public static $coreExtension = [
-        'ZikulaAdminModule' => ZikulaAdminModule::class,
-        'ZikulaCategoriesModule' => ZikulaCategoriesModule::class,
-        'ZikulaExtensionsModule' => ZikulaExtensionsModule::class,
-        'ZikulaGroupsModule' => ZikulaGroupsModule::class,
-        'ZikulaMenuModule' => ZikulaMenuModule::class,
-        'ZikulaPermissionsModule' => ZikulaPermissionsModule::class,
-        'ZikulaRoutesModule' => ZikulaRoutesModule::class,
-        'ZikulaSecurityCenterModule' => ZikulaSecurityCenterModule::class,
-        'ZikulaSettingsModule' => ZikulaSettingsModule::class,
-        'ZikulaThemeModule' => ZikulaThemeModule::class,
-        'ZikulaUsersModule' => ZikulaUsersModule::class,
-        'ZikulaZAuthModule' => ZikulaZAuthModule::class,
-        'ZikulaDefaultTheme' => ZikulaDefaultTheme::class,
+        'ZikulaAdminBundle' => ZikulaAdminBundle::class,
+        'ZikulaCategoriesBundle' => ZikulaCategoriesBundle::class,
+        'ZikulaDefaultThemeBundle' => ZikulaDefaultThemeBundle::class,
+        'ZikulaExtensionsBundle' => ZikulaExtensionsBundle::class,
+        'ZikulaGroupsBundle' => ZikulaGroupsBundle::class,
+        'ZikulaLegalBundle' => ZikulaLegalBundle::class,
+        'ZikulaMenuBundle' => ZikulaMenuBundle::class,
+        'ZikulaPermissionsBundle' => ZikulaPermissionsBundle::class,
+        'ZikulaProfileBundle' => ZikulaProfileBundle::class,
+        'ZikulaRoutesBundle' => ZikulaRoutesBundle::class,
+        'ZikulaSecurityCenterBundle' => ZikulaSecurityCenterBundle::class,
+        'ZikulaSettingsBundle' => ZikulaSettingsBundle::class,
+        'ZikulaStaticContentBundle' => ZikulaStaticContentBundle::class,
+        'ZikulaThemeBundle' => ZikulaThemeBundle::class,
+        'ZikulaUsersBundle' => ZikulaUsersBundle::class,
+        'ZikulaZAuthBundle' => ZikulaZAuthBundle::class,
     ];
 
     private array $modules = [];
@@ -195,17 +198,5 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
 
         return $this->autoloader;
-    }
-
-    public function isClassInBundle(string $class): bool
-    {
-        /* @var BundleInterface $bundle */
-        foreach ($this->getBundles() as $bundle) {
-            if (0 === mb_strpos($class, $bundle->getNamespace())) {
-                return $bundle instanceof AbstractExtension;
-            }
-        }
-
-        return false;
     }
 }

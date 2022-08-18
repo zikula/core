@@ -1,0 +1,15 @@
+{% trans_default_domain 'mail' %}
+{{ include('@ZikulaUsers/Email/header.txt.twig') }}
+{% trans with {'%sub%': siteName()} %}A message from %sub%...{% endtrans %}
+
+{% trans with {'%email%': user.email, '%site%': siteName(), '%url%': url('home')} %}Recently, this e-mail address ('%email') was used to request an account on '%site%' (%url%).{% endtrans %}
+{% trans %}The information that was registered is as follows:{% endtrans %}
+
+{% trans %}User name{% endtrans %}: {{ user.uname }}
+
+{% trans %}Thank you for your application for a new account. At this time we are unable to approve your application.{% endtrans %}
+
+{% if reason is not empty %}
+    {{ reason }}
+{% endif %}
+{{ include('@ZikulaUsers/Email/footer.txt.twig') }}

@@ -1,0 +1,5 @@
+{% if extensionMenu|default %}
+    <div class="pb-3">
+        {{ knp_menu_render(extensionMenu, {template: '@ZikulaMenu/Override/bootstrap_fontawesome.html.twig'}) }}
+    </div>
+{% endif %}

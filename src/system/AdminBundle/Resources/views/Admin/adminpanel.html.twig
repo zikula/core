@@ -1,0 +1,36 @@
+<h2>
+    <i class="fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i>
+    {{ category.name }}
+</h2>
+{{ pageSetVar('title', category.name ~ ' - ' ~ category.description) }}
+<div class="z-admincategorydescription">{{ category.description }}</div>
+{% if adminLinks is not empty %}
+    <ul id="modulelist">
+        {% for adminLink in adminLinks %}
+        <li>
+            {# module icon #}
+            <a title="{{ adminLink.menuTextTitle|e('html_attr') }}" href="{{ adminLink.menuTextUrl|e('html_attr') }}"><i class="fa-fw {{ adminLink.adminIcon|default('fas fa-layer-group') }} fa-4x" title="{{ adminLink.menuText|e('html_attr') }}"></i></a>
+            <div>
+                {# movable icon #}
+                <span title="{% trans %}Drag and drop into a new module category{% endtrans %}" class="tooltips fas fa-arrows-alt admintabs-lock"></span>
+                {# module title #}
+                <a title="{{ adminLink.menuTextTitle|e('html_attr') }}" href="{{ adminLink.menuTextUrl|e('html_attr') }}">{{ adminLink.menuText }}</a>
+                {# dropdown with quick links #}
+                {% if adminLink.extensionMenu|default %}
+                    <div class="dropdown d-inline">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{% trans %}Functions{% endtrans %}"></a>
+                        {% if adminLink.extensionMenu|default %}
+                            {{ knp_menu_render(adminLink.extensionMenu, {template: '@ZikulaMenu/Override/bootstrap_fontawesome.html.twig'}) }}
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {# module description #}
+                <p class="text-muted">{{ adminLink.menuTextTitle }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="clearfix"></div>
+{% else %}
+    <p class="bold text-center">{% trans %}There are currently no modules in this category.{% endtrans %}</p>
+{% endif %}

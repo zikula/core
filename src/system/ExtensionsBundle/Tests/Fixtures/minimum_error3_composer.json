@@ -1,0 +1,22 @@
+{
+  "name": "zikula/foo-bundle",
+  "description": "A foo module.",
+  "type": "zikula-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zikula Team"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Zikula\\FooBundle\\": "" }
+  },
+  "require": {
+    "php": "^8.0"
+  },
+  "extra": {
+    "zikula": {
+      "class": "Zikula\\SpecBundle\\ZikulaFooModule"
+    }
+  }
+}

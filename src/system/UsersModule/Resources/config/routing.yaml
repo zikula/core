@@ -1,3 +1,0 @@
-zikulausersmodule:
-    resource: "@ZikulaUsersModule/Controller"
-    type:     annotation

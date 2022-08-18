@@ -7,12 +7,8 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Zikula\\Bundle\\": [
-                "src/Zikula/"
-            ],
-            "Zikula\\": [
-                "src/system/"
-            ]
+            "Zikula\\Bundle\\": "src/Zikula/",
+            "Zikula\\": "src/system/"
         },
         "files": [
             "src/Kernel.php"
@@ -35,7 +31,6 @@
         "components/jquery": "^3",
         "components/jqueryui": "^1",
         "composer/composer": "^2",
-        "composer/installers": "^2",
         "composer/semver": "^3",
         "dimsemenov/magnific-popup": "^1",
         "doctrine/doctrine-bundle": "^2",
@@ -114,40 +109,33 @@
         "symfony/symfony": "*"
     },
     "replace": {
-        "paragonie/random_compat": "2.*",
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php74": "*",
         "symfony/polyfill-php73": "*",
         "symfony/polyfill-php72": "*",
-        "symfony/polyfill-php71": "*",
-        "symfony/polyfill-php70": "*",
-        "symfony/polyfill-php56": "*",
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
         "zikula/core-bundle": "self.version",
         "zikula/coreinstaller-bundle": "self.version",
         "zikula/formextension-bundle": "self.version",
         "zikula/workflow-bundle": "self.version",
-        "zikula/admin-module": "self.version",
-        "zikula/blocks-module": "self.version",
-        "zikula/categories-module": "self.version",
-        "zikula/extensions-module": "self.version",
-        "zikula/groups-module": "self.version",
-        "zikula/mailer-module": "self.version",
-        "zikula/menu-module": "self.version",
-        "zikula/permissions-module": "self.version",
-        "zikula/routes-module": "self.version",
-        "zikula/search-module": "self.version",
-        "zikula/securitycenter-module": "self.version",
-        "zikula/settings-module": "self.version",
-        "zikula/theme-module": "self.version",
-        "zikula/users-module": "self.version",
-        "zikula/zauth-module": "self.version",
-        "zikula/atom-theme": "self.version",
-        "zikula/bootstrap-theme": "self.version",
-        "zikula/default-theme": "self.version",
-        "zikula/printer-theme": "self.version",
-        "zikula/rss-theme": "self.version"
+        "zikula/admin-bundle": "self.version",
+        "zikula/categories-bundle": "self.version",
+        "zikula/extensions-bundle": "self.version",
+        "zikula/groups-bundle": "self.version",
+        "zikula/legal-bundle": "self.version",
+        "zikula/menu-bundle": "self.version",
+        "zikula/permissions-bundle": "self.version",
+        "zikula/profile-bundle": "self.version",
+        "zikula/routes-bundle": "self.version",
+        "zikula/securitycenter-bundle": "self.version",
+        "zikula/settings-bundle": "self.version",
+        "zikula/staticcontent-bundle": "self.version",
+        "zikula/theme-bundle": "self.version",
+        "zikula/users-bundle": "self.version",
+        "zikula/zauth-bundle": "self.version",
+        "zikula/default-theme-bundle": "self.version"
     },
     "scripts": {
         "post-install-cmd": [
@@ -165,7 +153,7 @@
         },
         "zikula-scripts": [
             "composer dump-autoload",
-            "Zikula\\ExtensionsModule\\Composer\\ManuallyInstallAssets::install"
+            "Zikula\\ExtensionsBundle\\Composer\\ManuallyInstallAssets::install"
         ]
     },
     "repositories": [
@@ -193,10 +181,6 @@
             "component"
         ],
         "installer-paths": {
-            "src/extensions/{$vendor}/{$name}": [
-                "type:zikula-module",
-                "type:zikula-theme"
-            ],
             "public/{$name}/": [
                 "type:component"
             ]

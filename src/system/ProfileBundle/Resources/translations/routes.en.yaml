@@ -1,0 +1,10 @@
+zikulaprofilebundle_config_config: /config/config
+zikulaprofilebundle_members_list: '/members/list/{page}'
+zikulaprofilebundle_members_recent: '/members/recent/{page}'
+zikulaprofilebundle_members_online: '/members/online/{page}'
+zikulaprofilebundle_profile_display: '/display/{uid}'
+zikulaprofilebundle_profile_edit: '/edit/{uid}'
+zikulaprofilebundle_property_list: /property/list
+zikulaprofilebundle_property_edit: '/property/edit/{id}'
+zikulaprofilebundle_property_delete: '/property/delete/{id}'
+zikulaprofilebundle_userblock_edit: /usersblock

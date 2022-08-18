@@ -42,10 +42,10 @@ class Configurator
     /** @var string[] */
     private array $configurablePackages = [
         'core' => 'Zikula\Bundle\CoreBundle\DependencyInjection\Configuration',
-        'zikula_security_center' => 'Zikula\SecurityCenterModule\DependencyInjection\Configuration',
-        'zikula_theme' => 'Zikula\ThemeModule\DependencyInjection\Configuration',
-        'zikula_routes' => 'Zikula\RoutesModule\DependencyInjection\Configuration',
-        'zikula_settings' => 'Zikula\SettingsModule\DependencyInjection\Configuration'
+        'zikula_security_center' => 'Zikula\SecurityCenterBundle\DependencyInjection\Configuration',
+        'zikula_theme' => 'Zikula\ThemeBundle\DependencyInjection\Configuration',
+        'zikula_routes' => 'Zikula\RoutesBundle\DependencyInjection\Configuration',
+        'zikula_settings' => 'Zikula\SettingsBundle\DependencyInjection\Configuration'
     ];
 
     public function __construct(string $projectDir)
@@ -100,10 +100,7 @@ class Configurator
     {
         $processor = new Processor();
 
-        return $processor->processConfiguration(
-            $configuration,
-            $config
-        );
+        return $processor->processConfiguration($configuration, $config);
     }
 
     /**

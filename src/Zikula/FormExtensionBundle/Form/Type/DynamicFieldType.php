@@ -55,8 +55,8 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\FormOptionsArrayT
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\MoneyFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\RegexibleFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
-use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
-use Zikula\ThemeModule\Engine\Asset;
+use Zikula\ThemeBundle\Api\ApiInterface\PageAssetApiInterface;
+use Zikula\ThemeBundle\Engine\Asset;
 
 /**
  * Form type providing a dynamic selection of field type and field options.

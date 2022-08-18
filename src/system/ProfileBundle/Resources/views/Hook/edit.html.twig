@@ -1,0 +1,8 @@
+<fieldset>
+    <legend>{% trans %}Profile{% endtrans %}</legend>
+    {% for element in form.zikulaprofilebundle_editprofile %}
+        {{ form_row(element) }}
+    {% endfor %}
+    <input type="hidden" id="avatarPath" value="{{ getModVar(constant('Zikula\\UsersBundle\\Constant::MODNAME'), constant('Zikula\\ProfileBundle\\ProfileConstant::MODVAR_AVATAR_IMAGE_PATH'), constant('Zikula\\ProfileBundle\\ProfileConstant::DEFAULT_AVATAR_IMAGE_PATH')) }}" />
+</fieldset>
+{{ pageAddAsset('javascript', zasset('@ZikulaProfileBundle:js/ZikulaProfileModule.Avatar.Edit.js')) }}

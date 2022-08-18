@@ -1,0 +1,39 @@
+{{ pageSetVar('title', 'Property list'|trans) }}
+<h3><i class="fas fa-list"></i> {% trans %}Property list{% endtrans %}</h3>
+<table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cWeight" />
+        <col id="cId" />
+        <col id="cLabel" />
+        <col id="cFormType" />
+        <col id="cActive" />
+        <col id="cActions" />
+    </colgroup>
+    <thead>
+    <tr>
+        <th id="hWeight" scope="col">{% trans %}Weight{% endtrans %}</th>
+        <th id="hId" scope="col">{% trans %}ID{% endtrans %}</th>
+        <th id="hLabel" scope="col">{% trans %}Label{% endtrans %}</th>
+        <th id="hFormType" scope="col">{% trans %}Form Type{% endtrans %}</th>
+        <th id="hActive" scope="col">{% trans %}Active{% endtrans %}</th>
+        <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for property in properties %}
+        <tr>
+            <td headers="hWeight">{{ property.weight}}</td>
+            <td headers="hId">{{ property.id}}</td>
+            <td headers="hLabel">{{ property.label(app.request.locale|default('en')) }}</td>
+            <td headers="hFormType">{{ property.formType|split('\\')|last }}</td>
+            <td headers="hActive">{{ property.active|yesNo }}</td>
+            <td headers="hActions" class="actions">
+                <a href="{{ path('zikulaprofilebundle_property_edit', {id: property.id}) }}" title="{{ 'Edit property'|trans|e('html_attr') }}"><i class="fas fa-pencil-alt fa-fw"></i></a>
+                <a href="{{ path('zikulaprofilebundle_property_delete', {id: property.id}) }}" title="{{ 'Delete property'|trans|e('html_attr') }}"><i class="fas fa-trash-alt fa-fw"></i></a>
+            </td>
+        </tr>
+    {% else %}
+        <tr class="table-info"><td colspan="6" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>

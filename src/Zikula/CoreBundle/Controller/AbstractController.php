@@ -22,10 +22,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Throwable;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\ExtensionsModule\AbstractExtension;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\ExtensionVariablesTrait;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\ExtensionsBundle\AbstractExtension;
+use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsBundle\ExtensionVariablesTrait;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 abstract class AbstractController extends BaseController
 {

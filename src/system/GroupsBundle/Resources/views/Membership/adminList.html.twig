@@ -1,0 +1,71 @@
+<h3>
+    <span class="fas fa-users"></span>
+    {% trans %}Group membership{% endtrans %} ({{ group.name }})
+    {{ pageSetVar('title', 'Group membership'|trans) }}
+</h3>
+<table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cUserId" />
+        <col id="cUserName" />
+        <col id="cEmail" />
+        <col id="cActions" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th id="hUserId" scope="col">{% trans %}User ID{% endtrans %}</th>
+            <th id="hUserName" scope="col">{% trans %}User name{% endtrans %}</th>
+            <th id="hEmail" scope="col">{% trans %}Email{% endtrans %}</th>
+            <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in group.users %}
+            <tr>
+                <td headers="hUserId">{{ user.uid }}</td>
+                <td headers="hUserName">{{ user.uname }}</td>
+                <td headers="hEmail">{{ user.email }}</td>
+                <td headers="hActions" class="text-right">
+                    {% if user.uid != currentUser.uid %}
+                        <a href="{{ path('zikulagroupsbundle_membership_remove', {gid: group.gid, uid: user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{% trans %}Remove user from group{% endtrans %}"><span class="fas fa-lg fa-user-times"></span></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="table table-borderedempty"><td colspan="4">{% trans %}No users found.{% endtrans %}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{#{ include(paginator.template) }#}
+
+<h3><i class="fas fa-user-plus"></i> {% trans %}Add user to this group{% endtrans %}</h3>
+<h4>{% trans %}Seach by username{% endtrans %}</h4>
+<div id="user-search-container" class="form d-none">
+    <div class="input-group">
+        <input placeholder="{% trans %}Search{% endtrans %}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulagroupsbundle_membership_getusersbyfragmentastable" data-route-params='{"gid": "{{ group.gid }}"}' />
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="fas fa-times pointer" id="user-search-discard"></i></span>
+        </div>
+    </div>
+</div>
+<p id="user-search-min-char" class="d-none">{% trans %}Please enter at least 3 characters{% endtrans %}</p>
+
+{# This table is for ajax search results and is hidden until needed and populated then with the results. #}
+<table id="user-search-list" class="table table-bordered table-striped d-none">
+    <colgroup>
+        <col id="cUserId" />
+        <col id="cUserName" />
+        <col id="cEmail" />
+        <col id="cActions" />
+    </colgroup>
+    <thead>
+    <tr>
+        <th id="hUserId" scope="col">{% trans %}User ID{% endtrans %}</th>
+        <th id="hUserName" scope="col">{% trans %}User name{% endtrans %}</th>
+        <th id="hEmail" scope="col">{% trans %}Email{% endtrans %}</th>
+        <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+{{ pageAddAsset('javascript', zasset('@ZikulaUsersBundle:js/Zikula.Users.Admin.View.js')) }}

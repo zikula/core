@@ -1,0 +1,27 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\GroupsBundle\ZikulaGroupsBundle'
+
+    Zikula\GroupsBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\GroupsBundle\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\GroupsBundle\Repository\GroupRepositoryInterface: '@Zikula\GroupsBundle\Repository\GroupRepository'
+
+    Zikula\GroupsBundle\Repository\GroupRepository:
+        public: true # used in GroupsModuleInstaller from the container
+        calls:
+            - setTranslator: ['@Symfony\Contracts\Translation\TranslatorInterface']
+
+    Zikula\GroupsBundle\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaGroupsAdminMenu }
+            - { name: knp_menu.menu_builder, method: createUserMenu, alias: zikulaGroupsUserMenu }

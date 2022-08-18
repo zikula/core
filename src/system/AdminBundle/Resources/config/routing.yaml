@@ -1,0 +1,3 @@
+zikulaadminbundle:
+    resource: "@ZikulaAdminBundle/Controller"
+    type:     annotation

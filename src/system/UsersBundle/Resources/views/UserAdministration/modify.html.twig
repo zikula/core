@@ -1,0 +1,59 @@
+<h3>
+    <span class="fas fa-plus"></span>
+    {% trans with {'%uname': form.vars.value.uname} %}Edit user account of %uname{% endtrans %}
+    {{ pageSetVar('title', 'Edit user account'|trans) }}
+</h3>
+<p class="alert alert-warning">{% trans %}The items that are marked with an asterisk ('*') are required entries.{% endtrans %}</p>
+{% if form.vars.value.uid == currentUser.uid %}
+    <p class="alert alert-danger">{% trans %}WARNING: You appear to be editing your OWN account. You will not be able to modify active status, some group memberships or delete yourself.{% endtrans %}</p>
+{% endif %}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{% trans %}Account information{% endtrans %}</legend>
+    {{ form_row(form.activated) }}
+    <p class="alert alert-info col-md-9 offset-md-3">{% trans %}Setting a user theme is no longer available.{% endtrans %}</p>
+</fieldset>
+<fieldset>
+    <legend>{% trans %}Group membership{% endtrans %}</legend>
+    <table class="table table-bordered table-striped">
+        <colgroup>
+            <col id="cGroup" />
+            <col id="cMember" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hGroup" scope="col">{% trans %}Group{% endtrans %}</th>
+                <th id="hMember" scope="col">{% trans %}Member{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for group in form.groups %}
+            <tr>
+                <td headers="hGroup">{{ group.vars.label }}</td>
+                <td headers="hMember">{{ form_widget(group) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</fieldset>
+{% for template in additionalTemplates %}
+    {{ include(template.view, template.params, ignore_missing = true) }}
+{% endfor %}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.submit) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+</div>
+<fieldset>
+    <legend>
+        <i class="fas fa-cog"></i> {% trans with {'%s': form.vars.value.uname} %}Other actions for %s{% endtrans %}
+    </legend>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <a class="btn btn-danger" href="{{ path('zikulausersbundle_useradministration_delete', {'user': form.vars.value.uid}) }}"><i class="fas fa-trash-alt"></i> {% trans %}Delete user account{% endtrans %}</a>
+        </div>
+    </div>
+</fieldset>
+{{ form_end(form) }}

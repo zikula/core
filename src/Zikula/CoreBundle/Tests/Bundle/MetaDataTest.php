@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Tests\Bundle;
 
 use PHPUnit\Framework\TestCase;
-use Zikula\AdminModule\ZikulaAdminModule;
+use Zikula\AdminBundle\ZikulaAdminBundle;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 
 class MetaDataTest extends TestCase
@@ -39,7 +39,7 @@ class MetaDataTest extends TestCase
      */
     public function testGetName(): void
     {
-        $this->assertEquals('zikula/admin-module', $this->metaData->getName());
+        $this->assertEquals('zikula/admin-bundle', $this->metaData->getName());
     }
 
     /**
@@ -55,7 +55,7 @@ class MetaDataTest extends TestCase
      */
     public function testGetClass(): void
     {
-        $this->assertEquals(ZikulaAdminModule::class, $this->metaData->getClass());
+        $this->assertEquals(ZikulaAdminBundle::class, $this->metaData->getClass());
     }
 
     /**
@@ -63,16 +63,16 @@ class MetaDataTest extends TestCase
      */
     public function testGetNamespace(): void
     {
-        $this->assertEquals('Zikula\\AdminModule\\', $this->metaData->getNamespace());
+        $this->assertEquals('Zikula\\AdminBundle\\', $this->metaData->getNamespace());
     }
 
     private function getJson(): array
     {
         $json = <<<'EOF'
 {
-    "name": "zikula/admin-module",
-    "description": "Backend Administration Module",
-    "type": "zikula-module",
+    "name": "zikula/admin-bundle",
+    "description": "Backend administration interface",
+    "type": "symfony-bundle",
     "license": "LGPL-3.0+-or-later",
     "authors": [
         {
@@ -81,14 +81,14 @@ class MetaDataTest extends TestCase
         }
     ],
     "autoload": {
-        "psr-0": { "Zikula\\AdminModule\\": "" }
+        "psr-0": { "Zikula\\AdminBundle\\": "" }
     },
     "require": {
         "php": ">5.4.1"
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\\AdminModule\\ZikulaAdminModule"
+            "class": "Zikula\\AdminBundle\\ZikulaAdminBundle"
         }
     }
 }

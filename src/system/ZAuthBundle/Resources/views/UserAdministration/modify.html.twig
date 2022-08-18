@@ -1,0 +1,41 @@
+<h3>
+    <span class="fas fa-plus"></span>
+    {% trans with {'%uname': form.vars.value.uname} %}Edit user account of %uname{% endtrans %}
+    {{ pageSetVar('title', 'Edit user account'|trans) }}
+</h3>
+
+<p class="alert alert-warning">{% trans %}The items that are marked with an asterisk ('*') are required entries.{% endtrans %}</p>
+{% if form.vars.value.uid == currentUser.uid %}
+    <p class="alert alert-danger">{% trans %}WARNING: You appear to be editing your OWN account.{% endtrans %}</p>
+{% endif %}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{% trans %}Account information{% endtrans %}</legend>
+    {{ form_row(form.uname) }}
+    {{ form_row(form.email) }}
+</fieldset>
+<fieldset>
+    <legend>{% trans %}Log-in information{% endtrans %}</legend>
+    {{ form_row(form.setpass, {attr: {'data-toggle': 'collapse', 'data-target': '#' ~ form.setpass.vars.id ~ '_wrap'}}) }}
+    <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} show {% endif %}">
+        {{ include('@ZikulaZAuth/Authentication/PasswordGenerator.html.twig') }}
+        {{ form_row(form.pass) }}
+    </div>
+</fieldset>
+{% for template in additionalTemplates %}
+    {{ include(template.view, template.params, ignore_missing = true) }}
+{% endfor %}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.submit) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+</div>
+{{ form_end(form) }}
+<div id="setPassIdentifiers" data-setpassid="{{ form.setpass.vars.id }}" data-passid="{{ form.pass.vars.id }}"></div>
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuth:js/Zikula.ZAuth.UserAdmin.js')) }}
+{% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthBundle\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuth:js/pwstrength-bootstrap.min.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuth:js/Zikula.ZAuth.PWStrength.Init.js')) }}
+{% endif %}

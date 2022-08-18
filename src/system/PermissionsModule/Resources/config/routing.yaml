@@ -1,3 +1,0 @@
-zikulapermissionsmodule:
-    resource: "@ZikulaPermissionsModule/Controller"
-    type:     annotation

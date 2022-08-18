@@ -1,0 +1,24 @@
+{% trans_default_domain 'mail' %}
+{{ include('@ZikulaUsers/Email/header.txt.twig')|nl2br }}
+{% if not user.isApproved %}
+    {% set heading = 'New registration pending approval'|trans %}
+{% elseif not isVerified %}
+    {% set heading = 'New registration pending e-mail verification'|trans %}
+{% else %}
+    {% set heading = 'New user activated'|trans %}
+{% endif %}
+<h3>{{ heading }}</h3>
+
+<p>
+{% set siteLink = '<a href="%1$s">%2$s</a>'|replace({'%1$s': url('home'), '%2$s': siteName()}) %}
+{% if not user.isApproved %}
+    {% trans with {'%sub%': siteLink} %}A new user account has been created but not yet activated on %sub%.{% endtrans %}
+{% else %}
+    {% trans with {'%sub%': siteLink} %}A new user account has been activated on %sub%.{% endtrans %}
+{% endif %}
+{% if createdByAdmin %}{% trans %}It was created by an administrator or sub-administrator.{% endtrans %}{% endif %}
+{% trans %}The account details are as follows:{% endtrans %}
+</p>
+
+<p>{% trans %}User name{% endtrans %}: '{{ user.uname }}'</p>
+{{ include('@ZikulaUsers/Email/footer.txt.twig')|nl2br }}

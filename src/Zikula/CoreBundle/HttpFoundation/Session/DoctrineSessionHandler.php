@@ -17,10 +17,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Contracts\Service\Attribute\Required;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\UserSessionEntity;
-use Zikula\UsersModule\Repository\UserSessionRepositoryInterface;
+use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersBundle\Constant;
+use Zikula\UsersBundle\Entity\UserSessionEntity;
+use Zikula\UsersBundle\Repository\UserSessionRepositoryInterface;
 
 class DoctrineSessionHandler extends AbstractSessionHandler
 {

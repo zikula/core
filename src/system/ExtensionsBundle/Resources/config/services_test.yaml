@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\ExtensionsBundle\Tests\Api\Fixtures\ExtensionVarStubRepository:
+        public: true
+
+    Zikula\ExtensionsBundle\Repository\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsBundle\Tests\Api\Fixtures\ExtensionVarStubRepository'

@@ -1,0 +1,3 @@
+zikulasecuritycenterbundle:
+    resource: "@ZikulaSecurityCenterBundle/Controller"
+    type:     annotation

@@ -1,0 +1,3 @@
+zikulacategoriesbundle:
+    resource: "@ZikulaCategoriesBundle/Controller"
+    type:     annotation

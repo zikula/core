@@ -16,7 +16,7 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 
 class OutputCompressionListener implements EventSubscriberInterface
 {

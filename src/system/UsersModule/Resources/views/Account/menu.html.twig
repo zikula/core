@@ -1,7 +1,0 @@
-{{ moduleHeader('user', 'My account'|trans, '', true, true) }}
-
-{% for menu in accountMenus|default %}
-    {{ knp_menu_render(menu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
-{% endfor %}
-
-{{ moduleFooter() }}

@@ -7,6 +7,7 @@
   - [HookBundle] Remove hooks support.
   - [WorkflowBundle] Remove graphical workflow editor.
   - [Blocks] Remove blocks system and pending content.
+  - [Groups] Remove group applications.
   - [Mailer] Remove mailer module (keep test mail form, moving it to the Settings module).
   - [Extensions] Remove additional state-based extension layer in favor of Composer and Flex.
   - [Menu] Remove custom (database-driven) menus.
@@ -22,6 +23,9 @@
   - none yet
 
 - Features:
+  - [General] Minimum PHP version is now 8.1 instead of 7.2.5.
+  - [General] Zikula uses Composer/Flex and bundles instead of modules.
+  - [General] Use PHP 8 attributes as well as other features (like constructor property promotion) where appropriate.
   - [Legal] Add `Legal` module to monorepo.
   - [Profile] Add `Profile` module to monorepo.
   - [Settings] Utilize rate limiter component for test email functionality.

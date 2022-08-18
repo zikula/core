@@ -4,7 +4,7 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     encoders:
-        Zikula\ZAuthModule\Entity\AuthenticationMappingEntity:
+        Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity:
             algorithm: auto
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:

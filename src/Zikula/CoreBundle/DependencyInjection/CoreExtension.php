@@ -41,9 +41,8 @@ class CoreExtension extends Extension implements PrependExtensionInterface
 
         $this->addAnnotatedClassesToCompile([
             MainController::class,
-            'Zikula\\*Module\\Controller\\',
-            'Zikula\\*Theme\\Controller\\',
-            'Zikula\\*Module\\Entity\\',
+            'Zikula\\*Bundle\\Controller\\',
+            'Zikula\\*Bundle\\Entity\\',
         ]);
     }
 
@@ -57,10 +56,10 @@ class CoreExtension extends Extension implements PrependExtensionInterface
         // modules may define their workflows in: <bundlePath>/Resources/workflows/
         $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
         foreach ($bundleMetaData as $bundleName => $metaData) {
-            if (!s($bundleName)->endsWith('Module')) {
+            // TODO recheck
+            /*if (!s($bundleName)->endsWith('Module')) {
                 continue;
-            }
-
+            }*/
             $workflowPath = $metaData['path'] . '/Resources/workflows';
             if (!file_exists($workflowPath)) {
                 continue;

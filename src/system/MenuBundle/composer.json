@@ -1,0 +1,48 @@
+{
+    "name": "zikula/menu-bundle",
+    "version": "4.0.0-dev",
+    "description": "Menu management",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula",
+            "homepage": "https://ziku.la/"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\MenuBundle\\": "" }
+    },
+    "require": {
+        "php": "^8.1",
+        "symfony/config": "^5.4",
+        "symfony/contracts": "^2",
+        "symfony/dependency-injection": "^5.4",
+        "symfony/event-dispatcher": "^5.4",
+        "symfony/http-foundation": "^5.4",
+        "symfony/http-kernel": "^5.4",
+        "symfony/finder": "^5.4",
+        "symfony/form": "^5.4",
+        "symfony/routing": "^5.4",
+        "symfony/string": "^5.4",
+        "symfony/validator": "^5.4",
+
+        "zikula/core-bundle": "dev-3.1",
+        "zikula/extensions-bundle": "dev-3.1",
+        "zikula/permissions-bundle": "dev-3.1",
+        "zikula/theme-bundle": "dev-3.1",
+
+        "knplabs/knp-menu-bundle": "^3"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\MenuBundle\\ZikulaMenuBundle",
+            "displayname": "Menu Module",
+            "url": "menu",
+            "icon": "fas fa-compass",
+            "securityschema": {
+                "ZikulaMenuModule::": "::"
+            }
+        }
+    }
+}

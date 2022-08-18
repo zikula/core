@@ -166,7 +166,7 @@ col-md-9
 {% endblock %}
 
 {# user live search input widget #}
-{% block zikulausersmodule_userlivesearch_widget %}
+{% block zikulausersbundle_userlivesearch_widget %}
     <div id="{{ id }}LiveSearch" class="autocomplete-user d-none">
         <i class="fas fa-search" title="{% trans %}Search user{% endtrans %}"></i>
         <noscript><p>{% trans %}This function requires JavaScript activated!{% endtrans %}</p></noscript>
@@ -182,13 +182,13 @@ col-md-9
         <small class="form-text text-muted"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="d-none">{% trans %}Reset to empty value{% endtrans %}</a></small>
     {% endif %}
     {% if value and not inline_usage %}
-        {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_ADMIN') %}
-            <small class="form-text text-muted"><a href="{{ path('zikulausersmodule_useradministration_modify', { 'user': value }) }}" title="{% trans %}Switch to users administration{% endtrans %}">{% trans %}Manage user{% endtrans %}</a></small>
+        {% if hasPermission('ZikulaUsersBundle::', '::', 'ACCESS_ADMIN') %}
+            <small class="form-text text-muted"><a href="{{ path('zikulausersbundle_useradministration_modify', { 'user': value }) }}" title="{% trans %}Switch to users administration{% endtrans %}">{% trans %}Manage user{% endtrans %}</a></small>
         {% endif %}
     {% endif %}
     {# load required assets: jQuery UI + custom search code #}
     {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
-    {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
-    {{ pageAddAsset('stylesheet', zasset('@ZikulaUsersModule:css/livesearch.css')) }}
-    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.LiveSearch.js')) }}
+    {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeBundle\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
+    {{ pageAddAsset('stylesheet', zasset('@ZikulaUsersBundle:css/livesearch.css')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersBundle:js/Zikula.Users.LiveSearch.js')) }}
 {% endblock %}

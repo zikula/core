@@ -1,3 +1,0 @@
-zikulasecuritycentermodule:
-    resource: "@ZikulaSecurityCenterModule/Controller"
-    type:     annotation

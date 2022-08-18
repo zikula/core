@@ -24,22 +24,6 @@ class MetaData implements ArrayAccess
 {
     use TranslatorTrait;
 
-    public const TYPE_MODULE = 2;
-
-    public const TYPE_SYSTEM_MODULE = 3;
-
-    public const TYPE_THEME = 4;
-
-    public const TYPE_SYSTEM_THEME = 5;
-
-    public const EXTENSION_TYPE_MODULE = 'zikula-module';
-
-    public const EXTENSION_TYPE_THEME = 'zikula-theme';
-
-    public const SYSTEM_TYPE_MODULE = 'zikula-system-module';
-
-    public const SYSTEM_TYPE_THEME = 'zikula-system-theme';
-
     private string $name;
 
     private string $version;
@@ -64,8 +48,6 @@ class MetaData implements ArrayAccess
 
     private array $securitySchema;
 
-    private int $extensionType;
-
     public function __construct(array $json = [])
     {
         $this->name = $json['name'];
@@ -80,7 +62,6 @@ class MetaData implements ArrayAccess
         $this->icon = $json['extra']['zikula']['icon'] ?? '';
         $this->capabilities = $json['extra']['zikula']['capabilities'] ?? [];
         $this->securitySchema = $json['extra']['zikula']['securityschema'] ?? [];
-        $this->extensionType = $json['extensionType'] ?? self::TYPE_MODULE;
     }
 
     public function getName(): string
@@ -186,11 +167,6 @@ class MetaData implements ArrayAccess
     public function getSecuritySchema(): array
     {
         return $this->securitySchema;
-    }
-
-    public function getExtensionType(): int
-    {
-        return $this->extensionType;
     }
 
     private function confirmTranslator(): void

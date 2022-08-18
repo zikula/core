@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\CategoriesBundle\ZikulaCategoriesBundle'
+
+    Zikula\CategoriesBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\CategoriesBundle\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\CategoriesBundle\Api\ApiInterface\CategoryPermissionApiInterface: '@Zikula\CategoriesBundle\Api\CategoryPermissionApi'
+    Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface: '@Zikula\CategoriesBundle\Repository\CategoryRegistryRepository'
+    Zikula\CategoriesBundle\Repository\CategoryRepositoryInterface: '@Zikula\CategoriesBundle\Repository\CategoryRepository'

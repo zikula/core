@@ -1,0 +1,30 @@
+{% set templateTitle = 'Site policies'|trans %}
+{{ pageSetVar('title', templateTitle) }}
+<h2>{{ templateTitle }}</h2>
+{{ showflashes() }}
+
+{% if login %}
+    <div class="alert alert-danger">
+        {% trans %}In order to log in you must accept this site\'s policies. If you have accepted the site\'s policies in the past, then they have been updated and we ask that you review the changes.{% endtrans %}
+        <hr />
+        {% trans %}If you leave this page without successfully accepting the policies, then you will not be logged in.{% endtrans %}
+    </div>
+{% endif %}
+
+<form id="legal_user_acceptpolicies" action="{{ path('zikulalegalbundle_user_acceptpolicies') }}" method="post">
+    <div>
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            {{ form_row(form.acceptedpolicies_policies) }}
+            {{ include('@ZikulaLegal/Include/acceptPolicies.html.twig') }}
+        </fieldset>
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
+	            {{ form_widget(form.submit) }}
+	            <a class="btn btn-danger" href="{{ path('home') }}" title="{% trans %}Cancel{% endtrans %}">{% trans %}Cancel and logout{% endtrans %}</a>
+	        </div>
+	    </div>
+        {{ form_end(form) }}
+    </div>
+</form>

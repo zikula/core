@@ -23,11 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\String\UnicodeString;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\ThemeModule\Engine\Annotation\Theme as ThemeAnnotation;
+use Zikula\ThemeBundle\Engine\Annotation\Theme as ThemeAnnotation;
 
-/**
- * Controller form type.
- */
 class ControllerType extends AbstractType
 {
     private array $controllerChoices = [];
