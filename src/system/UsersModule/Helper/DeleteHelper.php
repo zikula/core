@@ -17,12 +17,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\GroupsModule\Constant;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class DeleteHelper
 {

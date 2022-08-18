@@ -17,50 +17,30 @@ use InvalidArgumentException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
+use Zikula\ExtensionsModule\Repository\ExtensionVarRepositoryInterface;
 
 /**
- * Class VariableApi
- *
- * This class manages the storage and retrieval of extension variables
+ * This class manages the storage and retrieval of extension variables.
  */
 class VariableApi implements VariableApiInterface
 {
     public const CONFIG = 'ZConfig';
 
-    /**
-     * @var bool
-     */
-    private $isInitialized = false;
+    private bool $isInitialized = false;
 
     /**
-     * @var boolean Site is installed or not
+     * Site is installed or not
      */
-    private $installed;
+    private bool $installed;
 
-    /**
-     * @var ExtensionVarRepositoryInterface
-     */
-    private $repository;
-
-    /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var array
-     */
-    private $variables;
+    private array $variables;
 
     public function __construct(
         string $installed,
-        ExtensionVarRepositoryInterface $repository,
-        ZikulaHttpKernelInterface $kernel
+        private readonly ExtensionVarRepositoryInterface $repository,
+        private readonly ZikulaHttpKernelInterface $kernel
     ) {
         $this->installed = '0.0.0' !== $installed;
-        $this->repository = $repository;
-        $this->kernel = $kernel;
     }
 
     /**

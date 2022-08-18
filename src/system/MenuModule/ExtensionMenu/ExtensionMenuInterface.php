@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Zikula\MenuModule\ExtensionMenu;
 
 use Knp\Menu\ItemInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
+#[Autoconfigure(tags: ['zikula.extension_menu'])]
 interface ExtensionMenuInterface
 {
     public const TYPE_ADMIN = 'admin';

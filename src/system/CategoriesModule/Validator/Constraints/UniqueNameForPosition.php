@@ -15,6 +15,7 @@ namespace Zikula\CategoriesModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+#[\Attribute]
 class UniqueNameForPosition extends Constraint
 {
     public function getTargets()

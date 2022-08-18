@@ -19,30 +19,22 @@ class AdminCategoryEntity
 {
     private int $cid;
 
-    /**
-     * @Assert\Length(min="1", max="255")
-     */
+    #[Assert\Length(min: 1, max: 255)]
     private string $name = '';
 
-    /**
-     * @Assert\Length(min="1", max="255")
-     */
+    #[Assert\Length(min: 1, max: 255)]
     private string $slug = '';
 
-    /**
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="255")
-     * )
-     */
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 255)
+    ])]
     private string $description = '';
 
-    /**
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="50")
-     * )
-     */
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 50)
+    ])]
     private string $icon = '';
 
     private int $sortOrder = 99;

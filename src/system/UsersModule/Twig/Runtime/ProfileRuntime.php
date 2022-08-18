@@ -18,8 +18,8 @@ use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\UsersModule\Collector\ProfileModuleCollector;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class ProfileRuntime implements RuntimeExtensionInterface
 {

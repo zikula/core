@@ -15,9 +15,7 @@ namespace Zikula\UsersModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidUserFields extends Constraint
 {
     public string $message = 'The fields are invalid.';

@@ -19,8 +19,8 @@ use Zikula\Bundle\CoreBundle\HttpFoundation\Session\ZikulaSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class AccessHelper
 {

@@ -15,9 +15,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidRegistrationVerification extends Constraint
 {
     public string $message = 'The fields are invalid.';

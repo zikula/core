@@ -13,46 +13,32 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\ExtensionsModule\Repository\ExtensionVarRepository;
 
-/**
- * Extension var registry.
- *
- * @ORM\Entity(repositoryClass="Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository")
- * @ORM\Table(name="module_vars")
- */
+#[ORM\Entity(repositoryClass: ExtensionVarRepository::class)]
+#[ORM\Table(name: 'module_vars')]
 class ExtensionVarEntity extends EntityAccess
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="1", max="64")
-     * @var string
-     */
-    private $modname;
+    #[ORM\Column(length: 64)]
+    #[Assert\Length(min: 1, max: 64)]
+    private string $modname;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     * @Assert\Length(min="1", max="64")
-     * @var string
-     */
-    private $name;
+    #[ORM\Column(length: 64)]
+    #[Assert\Length(min: 1, max: 64)]
+    private string $name;
 
-    /**
-     * @ORM\Column(type="text", length=512)
-     * @Assert\Length(min="1", max="512")
-     * @var string
-     */
-    private $value;
+    #[ORM\Column(type: Types::TEXT, length: 512)]
+    #[Assert\Length(min: 1, max: 512)]
+    private string $value;
 
     public function getId(): ?int
     {

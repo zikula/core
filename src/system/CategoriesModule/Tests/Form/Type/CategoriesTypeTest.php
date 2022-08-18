@@ -31,9 +31,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
+use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
+use Zikula\CategoriesModule\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity;
 use Zikula\CategoriesModule\Tests\Fixtures\CategorizableType;
 use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
@@ -43,15 +43,9 @@ use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
  */
 class CategoriesTypeTest extends TypeTestCase
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
+    private EntityManager $em;
 
-    /**
-     * @var ManagerRegistry
-     */
-    private $emRegistry;
+    private ManagerRegistry $emRegistry;
 
     protected function setUp(): void
     {
@@ -434,7 +428,7 @@ class CategoriesTypeTest extends TypeTestCase
 
     protected function generateCategories(DateTime $now): void
     {
-        /** @var CategoryRepository $repository */
+        /** @var CategoryRepositoryInterface $repository */
         $repository = $this->emRegistry->getRepository(CategoryEntity::class);
 
         // root

@@ -15,51 +15,21 @@ namespace Zikula\GroupsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupApplicationRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRepository;
-
-    /**
-     * @var GroupApplicationRepository
-     */
-    private $groupApplicationRepository;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUser;
-
     public function __construct(
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi,
-        GroupRepositoryInterface $groupRepository,
-        GroupApplicationRepository $groupApplicationRepository,
-        CurrentUserApiInterface $currentUserApi
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly GroupRepositoryInterface $groupRepository,
+        private readonly GroupApplicationRepositoryInterface $groupApplicationRepository,
+        private readonly CurrentUserApiInterface $currentUserApi
     ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
-        $this->groupRepository = $groupRepository;
-        $this->groupApplicationRepository = $groupApplicationRepository;
-        $this->currentUser = $currentUserApi;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface

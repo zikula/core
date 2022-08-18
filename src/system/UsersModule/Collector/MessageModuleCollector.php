@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Collector;
 
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SettingsModule\SettingsConstant;
 use Zikula\UsersModule\MessageModule\IdentityMessageModule;
@@ -31,8 +32,11 @@ class MessageModuleCollector
 
     private string $currentMessageModuleName;
 
-    public function __construct(VariableApiInterface $variableApi, iterable $modules)
-    {
+    public function __construct(
+        VariableApiInterface $variableApi,
+        #[TaggedIterator('zikula.message_module')]
+        iterable $modules
+    ) {
         $this->currentMessageModuleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
         foreach ($modules as $module) {
             $this->add($module);

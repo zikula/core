@@ -90,7 +90,7 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
     private function getAnnotationValueFromController(array $controller): ?object
     {
         [$controller, $method] = $controller;
-        $controllerClassName = get_class($controller);
+        $controllerClassName = $controller::class;
         $reflectionClass = new \ReflectionClass($controllerClassName);
         if (!($controller instanceof AbstractController)) {
             return null;

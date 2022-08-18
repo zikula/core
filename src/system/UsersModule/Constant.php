@@ -71,6 +71,13 @@ class Constant
      */
     public const ACTIVATED_PENDING_DELETE = 16384;
 
+    public const ACTIVATED_OPTIONS = [
+        self::ACTIVATED_ACTIVE,
+        self::ACTIVATED_INACTIVE,
+        self::ACTIVATED_PENDING_DELETE,
+        self::ACTIVATED_PENDING_REG
+    ];
+
     /**
      * Default salt delimeter character.
      */

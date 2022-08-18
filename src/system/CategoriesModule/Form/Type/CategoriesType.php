@@ -23,39 +23,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
+use Zikula\CategoriesModule\Repository\CategoryRegistryRepositoryInterface;
+use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener;
 
-/**
- * Class CategoriesType
- */
 class CategoriesType extends AbstractType
 {
-    /**
-     * @var CategoryRegistryRepositoryInterface
-     */
-    private $categoryRegistryRepository;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
     public function __construct(
-        CategoryRegistryRepositoryInterface $categoryRegistryRepository,
-        RequestStack $requestStack,
-        EntityManagerInterface $entityManager
+        private readonly CategoryRegistryRepositoryInterface $categoryRegistryRepository,
+        private readonly RequestStack $requestStack,
+        private readonly EntityManagerInterface $entityManager
     ) {
-        $this->categoryRegistryRepository = $categoryRegistryRepository;
-        $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -71,7 +50,7 @@ class CategoriesType extends AbstractType
         /** @var CategoryRegistryEntity[] $registries */
         foreach ($registries as $registry) {
             $baseCategory = $registry->getCategory();
-            $queryBuilderClosure = static function (CategoryRepository $repo) use ($baseCategory, $options) {
+            $queryBuilderClosure = static function (CategoryRepositoryInterface $repo) use ($baseCategory, $options) {
                 return $repo->getChildrenQueryBuilder($baseCategory, $options['direct']);
             };
             $choiceLabelClosure = static function (CategoryEntity $category) use ($baseCategory, $locale) {

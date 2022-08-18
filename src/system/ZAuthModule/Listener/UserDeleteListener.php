@@ -17,8 +17,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\UsersModule\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\UserEntityEvent;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\Repository\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Repository\UserVerificationRepositoryInterface;
 
 class UserDeleteListener implements EventSubscriberInterface
 {

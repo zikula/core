@@ -15,6 +15,7 @@ namespace Zikula\MenuModule\ExtensionMenu;
 
 use Knp\Menu\ItemInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class ExtensionMenuCollector
 {
@@ -23,8 +24,11 @@ class ExtensionMenuCollector
      */
     private array $extensionMenus;
 
-    public function __construct(private readonly EventDispatcherInterface $eventDispatcher, iterable $extensionMenus = [])
-    {
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        #[TaggedIterator('zikula.extension_menu')]
+        iterable $extensionMenus = []
+    ) {
         $this->extensionMenus = [];
         foreach ($extensionMenus as $extensionMenu) {
             $this->add($extensionMenu);

@@ -15,5 +15,5 @@ services:
         lazy: true
 
     Zikula\CategoriesModule\Api\ApiInterface\CategoryPermissionApiInterface: '@Zikula\CategoriesModule\Api\CategoryPermissionApi'
-    Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface: '@Zikula\CategoriesModule\Entity\Repository\CategoryRegistryRepository'
-    Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface: '@Zikula\CategoriesModule\Entity\Repository\CategoryRepository'
+    Zikula\CategoriesModule\Repository\CategoryRegistryRepositoryInterface: '@Zikula\CategoriesModule\Repository\CategoryRegistryRepository'
+    Zikula\CategoriesModule\Repository\CategoryRepositoryInterface: '@Zikula\CategoriesModule\Repository\CategoryRepository'

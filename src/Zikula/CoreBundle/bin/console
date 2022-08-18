@@ -2,19 +2,28 @@
 <?php
 declare(strict_types=1);
 
-use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
-if (!is_file(dirname(__DIR__) . '/vendor/autoload_runtime.php')) {
-    throw new LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
+
+$possibleRootDirectories = [
+    __DIR__ . '/../../../../',
+    __DIR__ . '/../'
+];
+
+foreach ($possibleRootDirectories as $directory) {
+    $file = $directory . 'vendor/autoload_runtime.php';
+    if (file_exists($file)) {
+        require_once $file;
+        break;
+    }
 }
 
-set_time_limit(0);
-
-require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
-
-if (file_exists(dirname(__DIR__) . '/config/bootstrap.php')) {
-    require_once dirname(__DIR__) . '/config/bootstrap.php';
+foreach ($possibleRootDirectories as $directory) {
+    $file = $directory . 'config/bootstrap.php';
+    if (file_exists($file)) {
+        require_once $file;
+        break;
+    }
 }
 
 return function (array $context) {

@@ -19,170 +19,99 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\CategoriesModule\Repository\CategoryRepository;
 use Zikula\CategoriesModule\Traits\StandardFieldsTrait;
 
-/**
- * Category entity.
- *
- * @Gedmo\Tree(type="nested")
- * @ORM\Entity(repositoryClass="Zikula\CategoriesModule\Entity\Repository\CategoryRepository")
- * @ORM\Table(name="categories_category",indexes={@ORM\Index(name="idx_categories_is_leaf",columns={"is_leaf"}),
- *                                                @ORM\Index(name="idx_categories_status",columns={"status"})})
- */
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[ORM\Table(name: 'categories_category')]
+#[
+    ORM\Index(fields: ['leaf'], name: 'idx_categories_is_leaf')
+]
+#[Gedmo\Tree(type: 'nested')]
 class CategoryEntity extends EntityAccess
 {
     use StandardFieldsTrait;
 
-    /**
-     * The id of the category
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
+    private int $id;
 
-    /**
-     * @Gedmo\TreeLeft
-     * @ORM\Column(name="lft", type="integer")
-     * @var int
-     */
-    private $lft;
+    #[ORM\Column]
+    #[Gedmo\TreeLeft]
+    private int $lft;
 
-    /**
-     * @Gedmo\TreeLevel
-     * @ORM\Column(name="lvl", type="integer")
-     * @var int
-     */
-    private $lvl;
+    #[ORM\Column]
+    #[Gedmo\TreeLevel]
+    private int $lvl;
 
-    /**
-     * @Gedmo\TreeRight
-     * @ORM\Column(name="rgt", type="integer")
-     * @var int
-     */
-    private $rgt;
+    #[ORM\Column]
+    #[Gedmo\TreeRight]
+    private int $rgt;
 
-    /**
-     * @Gedmo\TreeRoot
-     * @ORM\ManyToOne(targetEntity="CategoryEntity")
-     * @ORM\JoinColumn(name="tree_root", referencedColumnName="id", onDelete="CASCADE")
-     * @var self
-     */
-    private $root;
+    #[ORM\ManyToOne(targetEntity: CategoryEntity::class)]
+    #[ORM\JoinColumn(name: 'tree_root', onDelete: 'CASCADE')]
+    #[Gedmo\TreeRoot]
+    private self $root;
 
-    /**
-     * The parent id of the category
-     *
-     * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @var self
-     */
-    private $parent;
+    #[ORM\ManyToOne(targetEntity: CategoryEntity::class, inversedBy: 'children')]
+    #[ORM\JoinColumn(name: 'parent_id')]
+    #[Gedmo\TreeParent]
+    private self $parent;
 
-    /**
-     * Any children of this category
-     *
-     * @ORM\OneToMany(targetEntity="CategoryEntity", mappedBy="parent")
-     * @ORM\OrderBy({"lft" = "ASC"})
-     * @var ArrayCollection
-     */
-    private $children;
+    #[ORM\OneToMany(targetEntity: CategoryEntity::class, mappedBy: 'parent')]
+    #[ORM\OrderBy(['lft' => 'ASC'])]
+    /** @var CategoryEntity[] */
+    private Collection $children;
 
     /**
      * Is the category locked?
-     *
-     * @ORM\Column(type="boolean", name="is_locked")
-     * @var boolean
      */
-    private $locked;
+    #[ORM\Column(name: 'is_locked')]
+    private bool $locked;
 
     /**
      * Is this a leaf category?
-     *
-     * @ORM\Column(type="boolean", name="is_leaf")
-     * @var boolean
      */
-    private $leaf;
+    #[ORM\Column(name: 'is_leaf')]
+    private bool $leaf;
 
-    /**
-     * The name of the category
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="1", max="255")
-     * @var string
-     */
-    private $name;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 1, max: 255)]
+    private string $name;
 
-    /**
-     * The value of the category
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="255")
-     * )
-     * @var string
-     */
-    private $value;
+    #[ORM\Column(length: 255)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 255)
+    ])]
+    private string $value;
 
-    /**
-     * The display name for the category
-     *
-     * @ORM\Column(type="array", name="display_name")
-     * @var array
-     */
-    private $displayName;
+    #[ORM\Column(name: 'display_name')]
+    private array $displayName;
 
-    /**
-     * The display description for the category
-     *
-     * @ORM\Column(type="array", name="display_desc")
-     * @var array
-     */
-    private $displayDesc;
+    #[ORM\Column(name: 'display_desc')]
+    private array $displayDesc;
 
-    /**
-     * The status of the category
-     *
-     * @ORM\Column(type="string", length=1)
-     * @Assert\Length(min="1", max="1")
-     * @var string
-     */
-    private $status;
+    #[ORM\Column(length: 1)]
+    #[Assert\Length(min: 1, max: 1)]
+    private string $status;
 
-    /**
-     * The category icon
-     *
-     * @ORM\Column(type="string", length=50)
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="50")
-     * )
-     * @var string
-     */
-    private $icon;
+    #[ORM\Column(length: 50)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 50)
+    ])]
+    private string $icon;
 
-    /**
-     * Any attributes of this category
-     *
-     * @ORM\OneToMany(targetEntity="CategoryAttributeEntity",
-     *                mappedBy="category",
-     *                cascade={"all"},
-     *                orphanRemoval=true,
-     *                indexBy="name")
-     */
-    private $attributes;
+    #[ORM\OneToMany(targetEntity: CategoryAttributeEntity::class, mappedBy: 'category', cascade: ['all'], orphanRemoval: true, indexBy: 'name')]
+    /** @var CategoryAttributeEntity[] */
+    private Collection $attributes;
 
-    /**
-     * constructor
-     */
     public function __construct(array $locales = [])
     {
-        $this->locked = false; //  was 0
-        $this->leaf = false; // was 0
+        $this->locked = false;
+        $this->leaf = false;
         $this->name = '';
         $this->value = '';
         $values = [];
@@ -284,7 +213,7 @@ class CategoryEntity extends EntityAccess
     /**
      * @return array|string the category display name(s)
      */
-    public function getDisplayName(string $lang = null)
+    public function getDisplayName(string $lang = null): array|string
     {
         if (!empty($lang)) {
             return $this->displayName[$lang] ?? $this->displayName['en'] ?? $this->name;
@@ -303,7 +232,7 @@ class CategoryEntity extends EntityAccess
     /**
      * @return array|string the category display description
      */
-    public function getDisplayDesc(string $lang = null)
+    public function getDisplayDesc(string $lang = null): array|string
     {
         if (!empty($lang)) {
             return $this->displayDesc[$lang] ?? $this->displayDesc['en'] ?? '';

@@ -13,59 +13,41 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\GroupsModule\Repository\GroupApplicationRepository;
 use Zikula\UsersModule\Entity\UserEntity;
 
-/**
- * GroupApplication entity class.
- *
- * @ORM\Entity(repositoryClass="Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository")
- * @ORM\Table(name="groups_application")
- */
+#[ORM\Entity(repositoryClass: GroupApplicationRepository::class)]
+#[ORM\Table(name: 'groups_application')]
 class GroupApplicationEntity extends EntityAccess
 {
-    /**
-     * id of the group application
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
-     */
-    private $app_id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $app_id;
 
-    /**
-     * user id of the applicant
-     * This is a unidirectional relationship with UserEntity
-     * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
-     * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
-     */
-    private $user;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'uid', referencedColumnName: 'uid')]
+    private UserEntity $user;
 
-    /**
-     * group id for the application
-     * This is a bidirectional relationship with GroupEntity
-     * @ORM\ManyToOne(targetEntity="Zikula\GroupsModule\Entity\GroupEntity", inversedBy="applications")
-     * @ORM\JoinColumn(name="gid", referencedColumnName="gid")
-     */
-    private $group;
+    #[ORM\ManyToOne(inversedBy: 'applications')]
+    #[ORM\JoinColumn(name: 'gid', referencedColumnName: 'gid')]
+    private GroupEntity $group;
 
     /**
      * Details of the application
      *
-     * @ORM\Column(type="text")
-     * @var string
      */
-    private $application;
+    #[ORM\Column(type: Types::TEXT)]
+    private string $application;
 
     /**
      * Status of the application
-     *
-     * @ORM\Column(type="smallint")
-     * @var int
      */
-    private $status;
+    #[ORM\Column(type: TYPES::SMALLINT)]
+    private int $status;
 
     public function __construct()
     {

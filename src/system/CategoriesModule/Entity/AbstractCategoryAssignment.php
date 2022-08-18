@@ -18,31 +18,21 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * Base class of many-to-many association between any entity and Category.
- *
- * @ORM\MappedSuperclass
  */
+#[ORM\MappedSuperclass]
 abstract class AbstractCategoryAssignment extends EntityAccess
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
-     * @var int
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="integer", name="registryId")
-     * @var int
-     */
-    private $categoryRegistryId;
+    #[ORM\Column(name: 'registryId')]
+    private int $categoryRegistryId;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Zikula\CategoriesModule\Entity\CategoryEntity")
-     * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
-     * @var CategoryEntity
-     */
-    private $category;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'categoryId')]
+    private CategoryEntity $category;
 
     abstract public function getEntity();
 

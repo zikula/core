@@ -33,7 +33,7 @@ class CheckPermissionAnnotationTest extends AbstractPermissionTestCase
      */
     private function invokeMethod(ControllerPermissionCheckAnnotationReaderListener $listener, string $methodName, array $parameters = [])
     {
-        $reflection = new \ReflectionClass(get_class($listener));
+        $reflection = new \ReflectionClass($listener::class);
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

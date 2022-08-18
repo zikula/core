@@ -19,18 +19,12 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 
 class BatchForcePasswordChangeType extends AbstractType
 {
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRepository;
-
-    public function __construct(GroupRepositoryInterface $groupRepository)
+    public function __construct(private readonly GroupRepositoryInterface $groupRepository)
     {
-        $this->groupRepository = $groupRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

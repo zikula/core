@@ -23,18 +23,18 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Event\GroupApplicationPostCreatedEvent;
 use Zikula\GroupsModule\Event\GroupApplicationPostProcessedEvent;
 use Zikula\GroupsModule\Event\GroupPostUserAddedEvent;
 use Zikula\GroupsModule\Form\Type\ManageApplicationType;
 use Zikula\GroupsModule\Form\Type\MembershipApplicationType;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Repository\GroupApplicationRepositoryInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * @Route("/application")
@@ -112,7 +112,7 @@ class ApplicationController extends AbstractController
         GroupEntity $group,
         ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
-        GroupApplicationRepository $applicationRepository,
+        GroupApplicationRepositoryInterface $applicationRepository,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
     ) {

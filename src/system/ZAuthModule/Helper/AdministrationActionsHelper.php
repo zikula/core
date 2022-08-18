@@ -16,10 +16,10 @@ namespace Zikula\ZAuthModule\Helper;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class AdministrationActionsHelper

@@ -17,27 +17,15 @@ services:
         lazy: true
 
     Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface: '@Zikula\UsersModule\Api\CurrentUserApi'
-    Zikula\UsersModule\Entity\RepositoryInterface\UserAttributeRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserAttributeRepository'
-    Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserRepository'
-    Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserSessionRepository'
+    Zikula\UsersModule\Repository\UserAttributeRepositoryInterface: '@Zikula\UsersModule\Repository\UserAttributeRepository'
+    Zikula\UsersModule\Repository\UserRepositoryInterface: '@Zikula\UsersModule\Repository\UserRepository'
+    Zikula\UsersModule\Repository\UserSessionRepositoryInterface: '@Zikula\UsersModule\Repository\UserSessionRepository'
 
     # public because this is often required as part of Doctrine listeners
     # which need to access this using container because CurrentUserApi
     # depends on entities as well
     Zikula\UsersModule\Api\CurrentUserApi:
         public: true
-
-    Zikula\UsersModule\Collector\AuthenticationMethodCollector:
-        arguments:
-          $methods: !tagged_iterator zikula.authentication_method
-
-    Zikula\UsersModule\Collector\MessageModuleCollector:
-        arguments:
-          $modules: !tagged_iterator zikula.message_module
-
-    Zikula\UsersModule\Collector\ProfileModuleCollector:
-        arguments:
-          $modules: !tagged_iterator zikula.profile_module
 
     Zikula\UsersModule\Listener\UserEventListener:
         arguments:

@@ -20,18 +20,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
-use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\PermissionsModule\Form\Type\FilterListType;
 use Zikula\PermissionsModule\Form\Type\PermissionCheckType;
 use Zikula\PermissionsModule\Form\Type\PermissionType;
 use Zikula\PermissionsModule\Helper\SchemaHelper;
+use Zikula\PermissionsModule\Repository\PermissionRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * @PermissionCheck("admin")

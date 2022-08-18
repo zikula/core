@@ -19,67 +19,46 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersModule\Validator\Constraints as UsersAssert;
 use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
+use Zikula\ZAuthModule\Repository\AuthenticationMappingRepository;
 
-/**
- * @ORM\Entity(repositoryClass="Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository")
- * @ORM\Table(name="zauth_authentication_mapping")
- * @ZAuthAssert\ValidUserFields()
- */
+#[ORM\Entity(repositoryClass: AuthenticationMappingRepository::class)]
+#[ORM\Table(name: 'zauth_authentication_mapping')]
+#[ZAuthAssert\ValidUserFields]
 class AuthenticationMappingEntity extends EntityAccess implements UserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(min="1", max="255")
-     * @var string
-     */
-    private $method;
+    #[ORM\Column]
+    #[Assert\Length(min: 1, max: 255)]
+    private string $method;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $uid;
+    #[ORM\Column]
+    private int $uid;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(min="1", max="255")
-     * @UsersAssert\ValidUname()
-     * @var string
-     */
-    private $uname;
+    #[ORM\Column]
+    #[UsersAssert\ValidUname]
+    #[Assert\Length(min: 1, max: 255)]
+    private string $uname;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(min="1", max="255")
-     * @UsersAssert\ValidEmail()
-     * @var string
-     */
-    private $email;
+    #[ORM\Column]
+    #[UsersAssert\ValidEmail]
+    #[Assert\Length(min: 1, max: 255)]
+    private string $email;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @var bool
-     */
-    private $verifiedEmail;
+    #[ORM\Column]
+    private bool $verifiedEmail;
 
     /**
      * Password: User's password for logging in.
      * This value is salted and hashed.
-     *
-     * @ORM\Column(type="string")
-     * @Assert\Length(min="1", max="255")
-     * @ZAuthAssert\ValidPassword()
-     * @var string
      */
-    private $pass;
+    #[ORM\Column]
+    #[Assert\Length(min: 1, max: 255)]
+    #[ZAuthAssert\ValidPassword()]
+    private string $pass;
 
     public function getId(): ?int
     {

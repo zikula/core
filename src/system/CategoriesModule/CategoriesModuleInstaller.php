@@ -23,8 +23,8 @@ use Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Helper\TreeMapHelper;
+use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
 use Zikula\ExtensionsModule\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
@@ -33,11 +33,6 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 class CategoriesModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
     private $entities = [
         CategoryEntity::class,
         CategoryAttributeEntity::class,
@@ -45,7 +40,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     ];
 
     public function __construct(
-        LocaleApiInterface $localeApi,
+        private readonly LocaleApiInterface $localeApi,
         AbstractExtension $extension,
         ManagerRegistry $managerRegistry,
         SchemaHelper $schemaTool,
@@ -53,7 +48,6 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
     ) {
-        $this->localeApi = $localeApi;
         parent::__construct($extension, $managerRegistry, $schemaTool, $requestStack, $translator, $variableApi);
     }
 

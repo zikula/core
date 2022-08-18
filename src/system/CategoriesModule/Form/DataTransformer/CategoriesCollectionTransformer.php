@@ -20,25 +20,13 @@ use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 
-/**
- * Class CategoriesCollectionTransformer
- */
 class CategoriesCollectionTransformer implements DataTransformerInterface
 {
-    /**
-     * @var string
-     */
-    private $entityCategoryClass;
+    private string $entityCategoryClass;
 
-    /**
-     * @var bool
-     */
-    private $multiple;
+    private bool $multiple;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(array $options)
     {
@@ -84,7 +72,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         foreach ($value as $categoryAssignmentEntity) {
             $registryKey = 'registry_' . $categoryAssignmentEntity->getCategoryRegistryId();
             $category = $categoryAssignmentEntity->getCategory();
-            if (false !== mb_strpos(get_class($category), 'DoctrineProxy')) {
+            if (false !== mb_strpos($category::class, 'DoctrineProxy')) {
                 $category = $this->entityManager->find(CategoryEntity::class, $category->getId());
             }
 

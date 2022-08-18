@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
- * User field transformer class.
- *
  * This data transformer treats user fields.
  */
 class UserFieldTransformer implements DataTransformerInterface

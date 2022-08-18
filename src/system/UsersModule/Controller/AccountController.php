@@ -30,12 +30,12 @@ use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersModule\Form\Type\ChangeLanguageType;
 use Zikula\UsersModule\Helper\DeleteHelper;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * @Route("/account")

@@ -26,7 +26,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class DeletePendingRegistrationsListener implements EventSubscriberInterface

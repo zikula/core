@@ -32,14 +32,8 @@ use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
  */
 class CreateGroupType extends AbstractType
 {
-    /**
-     * @var CommonHelper
-     */
-    private $groupsCommon;
-
-    public function __construct(CommonHelper $commonHelper)
+    public function __construct(private readonly CommonHelper $commonHelper)
     {
-        $this->groupsCommon = $commonHelper;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

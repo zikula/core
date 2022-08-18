@@ -30,14 +30,8 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class AdminModifyUserType extends AbstractType
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    public function __construct(VariableApiInterface $variableApi)
+    public function __construct(private readonly VariableApiInterface $variableApi)
     {
-        $this->variableApi = $variableApi;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

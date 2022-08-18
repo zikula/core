@@ -33,7 +33,6 @@ use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
@@ -42,8 +41,8 @@ use Zikula\UsersModule\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersModule\Event\RegistrationPostSuccessEvent;
 use Zikula\UsersModule\Helper\MailHelper as UsersMailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\AdminCreatedUserType;
 use Zikula\ZAuthModule\Form\Type\AdminModifyUserType;
 use Zikula\ZAuthModule\Form\Type\BatchForcePasswordChangeType;
@@ -54,11 +53,10 @@ use Zikula\ZAuthModule\Helper\BatchPasswordChangeHelper;
 use Zikula\ZAuthModule\Helper\LostPasswordVerificationHelper;
 use Zikula\ZAuthModule\Helper\MailHelper;
 use Zikula\ZAuthModule\Helper\RegistrationVerificationHelper;
+use Zikula\ZAuthModule\Repository\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
- * Class UserAdministrationController
- *
  * @Route("/admin")
  */
 class UserAdministrationController extends AbstractController

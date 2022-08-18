@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\UsersModule\Collector\ProfileModuleCollector;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * @Route("/livesearch")

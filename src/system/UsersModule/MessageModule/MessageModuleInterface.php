@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\MessageModule;
 
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-/**
- * Interface MessageModuleInterface
- */
+#[Autoconfigure(tags: ['zikula.message_module'])]
 interface MessageModuleInterface
 {
     /**

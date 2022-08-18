@@ -21,72 +21,24 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Repository\GroupApplicationRepositoryInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class MenuBuilder
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var GroupApplicationRepository
-     */
-    private $groupApplicationRepository;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
     public function __construct(
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi,
-        RequestStack $requestStack,
-        CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository,
-        GroupApplicationRepository $groupApplicationRepository,
-        RouterInterface $router
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly VariableApiInterface $variableApi,
+        private readonly RequestStack $requestStack,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly GroupApplicationRepositoryInterface $groupApplicationRepository,
+        private readonly RouterInterface $router
     ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
-        $this->requestStack = $requestStack;
-        $this->currentUserApi = $currentUserApi;
-        $this->userRepository = $userRepository;
-        $this->groupApplicationRepository = $groupApplicationRepository;
-        $this->router = $router;
     }
 
     public function createAdminMenu(array $options): ItemInterface

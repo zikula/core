@@ -16,90 +16,50 @@ namespace Zikula\PermissionsModule\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\PermissionsModule\Repository\PermissionRepository;
 
-/**
- * Permission entity class.
- *
- * @ORM\Entity(repositoryClass="Zikula\PermissionsModule\Entity\Repository\PermissionRepository")
- * @ORM\Table(name="group_perms")
- */
+#[ORM\Entity(repositoryClass: PermissionRepository::class)]
+#[ORM\Table(name: 'group_perms')]
 class PermissionEntity extends EntityAccess
 {
-    /**
-     * permission rule id
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
-     */
-    private $pid;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $pid;
 
-    /**
-     * group id for the rule
-     *
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $gid;
+    #[ORM\Column]
+    private int $gid;
 
-    /**
-     * the place of the rule in the sequence
-     *
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $sequence;
+    #[ORM\Column]
+    private int $sequence;
 
-    /**
-     * the component part of the rule
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="1", max="255")
-     * @var string
-     */
-    private $component;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 1, max: 255)]
+    private string $component;
 
-    /**
-     * the instance part of the rule
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="1", max="255")
-     * @var string
-     */
-    private $instance;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 1, max: 255)]
+    private string $instance;
 
-    /**
-     * the access level of the rule
-     *
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $level;
+    #[ORM\Column]
+    private int $level;
 
-    /**
-     * optional comment
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="255")
-     * )
-     * @var string
-     */
-    private $comment;
+    #[ORM\Column(length: 255)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 255)
+    ])]
+    private string $comment;
 
     /**
      * optional colour (Bootstrap contextual class)
-     *
-     * @ORM\Column(type="string", length=10)
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="10")
-     * )
-     * @var string
      */
-    private $colour;
+    #[ORM\Column(length: 10)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 10)
+    ])]
+    private string $colour;
 
     public function __construct()
     {

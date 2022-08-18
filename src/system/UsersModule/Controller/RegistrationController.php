@@ -29,7 +29,6 @@ use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationM
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersModule\Event\EditUserFormPostValidatedEvent;
@@ -39,11 +38,10 @@ use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormExce
 use Zikula\UsersModule\Form\Type\RegistrationType\DefaultRegistrationType;
 use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 use Zikula\UsersModule\Validator\Constraints\ValidUserFieldsValidator;
 
 /**
- * Class RegistrationController
- *
  * @Route("")
  */
 class RegistrationController extends AbstractController

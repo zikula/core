@@ -18,16 +18,13 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\GroupsModule\Constant as GroupsConstant;
-use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
+use Zikula\PermissionsModule\Repository\PermissionRepositoryInterface;
 use Zikula\PermissionsModule\Tests\Api\Fixtures\StubPermissionRepository;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
-/**
- * @
- */
 class AbstractPermissionTestCase extends TestCase
 {
     /**
@@ -35,30 +32,15 @@ class AbstractPermissionTestCase extends TestCase
      */
     public const RANDOM_USER_ID = 99;
 
-    /**
-     * @var PermissionRepositoryInterface
-     */
-    protected $permRepo;
+    protected PermissionRepositoryInterface $permRepo;
 
-    /**
-     * @var UserEntity
-     */
-    protected $user;
+    protected UserEntity $user;
 
-    /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepo;
+    protected UserRepositoryInterface $userRepo;
 
-    /**
-     * @var CurrentUserApiInterface
-     */
-    protected $currentUserApi;
+    protected CurrentUserApiInterface $currentUserApi;
 
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     protected function setUp(): void
     {

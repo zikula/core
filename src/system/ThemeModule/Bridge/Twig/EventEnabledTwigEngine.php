@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Bridge\Twig;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 use Twig\Environment;
 use Twig\Error\Error as TwigError;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
@@ -45,9 +46,7 @@ class EventEnabledTwigEngine extends Environment
         return $postEvent->getContent();
     }
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;

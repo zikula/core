@@ -16,14 +16,11 @@ namespace Zikula\PermissionsModule\Tests\Api\Fixtures;
 use Zikula\GroupsModule\Constant;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
-use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
+use Zikula\PermissionsModule\Repository\PermissionRepositoryInterface;
 
 class StubPermissionRepository implements PermissionRepositoryInterface
 {
-    /**
-     * @var array
-     */
-    private $entities;
+    private array $entities;
 
     public function __construct()
     {

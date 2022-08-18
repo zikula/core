@@ -27,23 +27,21 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\GroupsModule\Event\GroupPostUserAddedEvent;
 use Zikula\GroupsModule\Event\GroupPostUserRemovedEvent;
 use Zikula\GroupsModule\Form\Type\RemoveUserType;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
+use Zikula\UsersModule\Repository\UserSessionRepositoryInterface;
 
 /**
  * @Route("/membership")
- *
- * Administrative controllers for the groups module
  */
 class MembershipController extends AbstractController
 {

@@ -15,9 +15,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidPassword extends Constraint
 {
     public string $message = 'The password "%string%" is invalid.';

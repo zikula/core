@@ -38,7 +38,6 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersModule\Event\DeleteUserFormPostCreatedEvent;
@@ -56,10 +55,9 @@ use Zikula\UsersModule\Helper\AdministrationActionsHelper;
 use Zikula\UsersModule\Helper\DeleteHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
- * Class UserAdministrationController
- *
  * @Route("/admin")
  */
 class UserAdministrationController extends AbstractController

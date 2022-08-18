@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
-use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\PermissionsModule\Form\Type\ConfigType;
+use Zikula\PermissionsModule\Repository\PermissionRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**

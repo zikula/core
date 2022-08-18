@@ -18,8 +18,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\Repository\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class ValidUserFieldsValidator extends ConstraintValidator

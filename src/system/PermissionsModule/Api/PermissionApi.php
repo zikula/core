@@ -16,11 +16,11 @@ namespace Zikula\PermissionsModule\Api;
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
+use Zikula\PermissionsModule\Repository\PermissionRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * Class PermissionApi

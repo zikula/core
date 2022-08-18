@@ -25,7 +25,6 @@ use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationM
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersModule\Event\LoginFormPostValidatedEvent;
@@ -36,6 +35,7 @@ use Zikula\UsersModule\Event\UserPreLoginSuccessEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
 use Zikula\UsersModule\Helper\AccessHelper;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class AccessController extends AbstractController
 {

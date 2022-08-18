@@ -16,72 +16,42 @@ namespace Zikula\CategoriesModule\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\CategoriesModule\Repository\CategoryRegistryRepository;
 use Zikula\CategoriesModule\Traits\StandardFieldsTrait;
 
-/**
- * Category registry entity.
- *
- * @ORM\Entity(repositoryClass="Zikula\CategoriesModule\Entity\Repository\CategoryRegistryRepository")
- * @ORM\Table(name="categories_registry",indexes={@ORM\Index(name="idx_categories_registry",columns={"modname","entityname"})})
- */
+#[ORM\Entity(repositoryClass: CategoryRegistryRepository::class)]
+#[ORM\Table(name: 'categories_registry')]
+#[
+    ORM\Index(fields: ['modname', 'entityname'], name: 'idx_categories_registry')
+]
 class CategoryRegistryEntity extends EntityAccess
 {
     use StandardFieldsTrait;
 
-    /**
-     * The id of the registry entry
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private int $id;
 
-    /**
-     * The module name owning this entry
-     *
-     * @ORM\Column(type="string", length=60)
-     * @Assert\Length(min="1", max="60")
-     * @var string
-     */
-    private $modname;
+    #[ORM\Column(length: 60)]
+    #[Assert\Length(min: 1, max: 60)]
+    private string $modname;
 
-    /**
-     * The name of the entity
-     *
-     * @ORM\Column(type="string", length=60)
-     * @Assert\Length(min="1", max="60")
-     * @var string
-     */
-    private $entityname;
+    #[ORM\Column(length: 60)]
+    #[Assert\Length(min: 1, max: 60)]
+    private string $entityname;
 
-    /**
-     * The property of the entity
-     *
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="1", max="255")
-     * @var string
-     */
-    private $property;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 1, max: 255)]
+    private string $property;
 
-    /**
-     * The category to map this entity to
-     *
-     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="attributes")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     * @var CategoryEntity
-     */
-    private $category;
+    #[ORM\ManyToOne(inversedBy: 'attributes')]
+    #[ORM\JoinColumn(name: 'category_id')]
+    private CategoryEntity $category;
 
-    /**
-     * The status of the entity
-     *
-     * @ORM\Column(type="string", length=1, name="obj_status")
-     * @Assert\Length(min="1", max="1")
-     * @var string
-     */
-    protected $status = 'A';
+    #[ORM\Column(name: 'obj_status', length: 1)]
+    #[Assert\Length(min: 1, max: 1)]
+    protected string $status = 'A';
 
     public function getId(): ?int
     {

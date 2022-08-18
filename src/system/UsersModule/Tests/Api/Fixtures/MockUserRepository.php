@@ -17,15 +17,12 @@ use DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class MockUserRepository implements UserRepositoryInterface
 {
-    /**
-     * @var array
-     */
-    private $users = [];
+    private array $users = [];
 
     public function __construct()
     {

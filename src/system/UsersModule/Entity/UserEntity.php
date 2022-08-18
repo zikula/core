@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Entity;
 
 use DateTime;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,50 +23,42 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Repository\UserRepository;
 use Zikula\UsersModule\Validator\Constraints as ZikulaAssert;
 
 /**
- * User entity class.
- *
- * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserRepository")
- * @ORM\Table(name="users",indexes={@ORM\Index(name="uname",columns={"uname"}), @ORM\Index(name="email",columns={"email"})})
- *
- * @ZikulaAssert\ValidUserFields()
- *
  * Main Users table.
  * Stores core information about each user account.
  */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'users')]
+#[
+    ORM\Index(fields: ['uname'], name: 'uname'),
+    ORM\Index(fields: ['email'], name: 'email')
+]
+#[ZikulaAssert\ValidUserFields]
 class UserEntity extends EntityAccess
 {
-    /**
-     * User ID: Primary user identifier
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
-     */
-    private $uid;
+     #[ORM\Id]
+     #[ORM\Column]
+     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $uid;
 
     /**
      * User Name: Primary user display name.
-     *
-     * @ORM\Column(type="string", length=25)
-     * @Assert\Length(min="1", max="25")
-     * @ZikulaAssert\ValidUname()
-     * @var string
      */
-    private $uname;
+    #[ORM\Column(length: 25)]
+    #[Assert\Length(min: 1, max: 25)]
+    #[ZikulaAssert\ValidUname]
+    private string $uname;
 
     /**
      * E-mail Address: For user notifications.
-     *
-     * @ORM\Column(type="string", length=60)
-     * @Assert\Length(min="1", max="60")
-     * @ZikulaAssert\ValidEmail()
-     * @var string
      */
-    private $email;
+    #[ORM\Column(length: 60)]
+    #[Assert\Length(min: 1, max: 60)]
+    #[ZikulaAssert\ValidEmail]
+    private string $email;
 
     /**
      * Account State: The user's current state, see \Zikula\UsersModule\Constant::ACTIVATED_* for defined constants.
@@ -75,12 +69,10 @@ class UserEntity extends EntityAccess
      * When this deletion happens, it will be assumed by the system that no external module has yet interacted with the user account record,
      * because its state never progressed beyond its pending state, and therefore normal events may not be triggered
      * (although it is possible that events regarding the pending account may be triggered).
-     *
-     * @Assert\Choice(callback = "getActivatedValues")
-     * @ORM\Column(type="smallint")
-     * @var int
      */
-    private $activated;
+    #[Assert\Choice(choices: UsersConstant::ACTIVATED_OPTIONS)]
+    #[ORM\Column(type: Types::SMALLINT)]
+    private int $activated;
 
     /**
      * Account Approved Date/Time: The date and time the user's registration request was approved through the moderation process.
@@ -91,23 +83,17 @@ class UserEntity extends EntityAccess
      * Use of date/time functions in SQL queries should be avoided if at all possible. PHP functions using UTC as the base time zone should be used instead.
      * If SQL date/time functions must be used, then care should be taken to ensure that either the function is time zone neutral,
      * or that the function and its relationship to time zone settings is completely understood.
-     *
-     * @ORM\Column(type="utcdatetime", name="approved_date")
-     * @Assert\Type("\DateTimeInterface")
-     * @var DateTime
      */
-    private $approvedDate;
+    #[ORM\Column(name: 'approved_date', type: 'utcdatetime')]
+    private DateTimeInterface $approvedDate;
 
     /**
      * The uid of the user account that approved the request to register a new account.
      * If this is the same as the user account's uid, then moderation was not in use at the time the request for a new account was made.
      * If this is -1, the the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
-     *
-     * @ORM\Column(type="integer", name="approved_by")
-     * @Assert\Type(type="integer")
-     * @var int
      */
-    private $approvedBy;
+    #[ORM\Column(name: 'approved_by')]
+    private int $approvedBy;
 
     /**
      * Registration Date/Time: Date/time the user account was registered.
@@ -120,76 +106,54 @@ class UserEntity extends EntityAccess
      * then this will be the date and time the user made the registration request UNTIL the registration process is complete, and then it is updated as above.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time.
      * See WARNING under approvedDate above.
-     *
-     * @ORM\Column(type="utcdatetime", name="user_regdate")
-     * @Assert\Type("\DateTimeInterface")
-     * @var DateTime
      */
-    private $registrationDate;
+    #[ORM\Column(name: 'user_regdate', type: 'utcdatetime')]
+    private DateTimeInterface $registrationDate;
 
     /**
      * Last Login Date/Time: Date/time user last successfully logged into the site.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time.
      * See WARNING under approvedDate above.
-     *
-     * @ORM\Column(type="utcdatetime", name="lastlogin")
-     * @Assert\Type("\DateTimeInterface")
-     * @var DateTime
      */
-    private $lastLogin;
+    #[ORM\Column(name: 'lastlogin', type: 'utcdatetime')]
+    private DateTimeInterface $lastLogin;
 
     /**
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
      * Optional, if blank then the system default timezone should be used. [FUTURE USE]
-     *
-     * @ORM\Column(type="string", length=30)
-     * @Assert\Type(type="string")
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="30")
-     * )
-     * @var string
      */
-    private $tz;
+    #[ORM\Column(length: 30)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 30)
+    ])]
+    private string $tz;
 
     /**
      * The user's chosen locale for i18n purposes, as defined by gettext, POSIX, and the Common Locale Data Repository;
      * Optional, if blank then the system default locale should be used.
-     *
-     * @Assert\Type(type="string")
-     * @ORM\Column(type="string", length=5)
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="5")
-     * )
-     * @var string
      */
-    private $locale;
+    #[ORM\Column(length: 5)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 5)
+    ])]
+    private string $locale;
 
     /**
      * Additional attributes of this user
-     *
-     * @ORM\OneToMany(targetEntity="UserAttributeEntity",
-     *                mappedBy="user",
-     *                cascade={"all"},
-     *                orphanRemoval=true,
-     *                indexBy="name"
-     * )
      */
-    private $attributes;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAttributeEntity::class, cascade: ['all'], orphanRemoval: true, indexBy: 'name')]
+    private Collection $attributes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Zikula\GroupsModule\Entity\GroupEntity", inversedBy="users", indexBy="gid")
-     * @ORM\JoinTable(name="group_membership",
-     *      joinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid")}
-     * )
-     */
-    private $groups;
 
-    /**
-     * constructor
-     */
+    #[ORM\ManyToMany(targetEntity: GroupEntity::class, inversedBy: 'users', indexBy: 'gid')]
+    #[ORM\JoinTable(name: 'group_membership')]
+    #[ORM\JoinColumn(name: 'uid', referencedColumnName: 'uid')]
+    #[ORM\InverseJoinColumn(name: 'gid', referencedColumnName: 'gid')]
+    /** @var GroupEntity[] */
+    private Collection $groups;
+
     public function __construct()
     {
         $this->uname = '';
@@ -260,17 +224,14 @@ class UserEntity extends EntityAccess
         return $this;
     }
 
-    public function getApprovedDate(): DateTime
+    public function getApprovedDate(): DateTimeInterface
     {
         return $this->approvedDate;
     }
 
-    /**
-     * @param string|DateTime $approvedDate the user's approved date
-     */
-    public function setApprovedDate($approvedDate): self
+    public function setApprovedDate(string|DateTimeInterface $approvedDate): self
     {
-        if ($approvedDate instanceof DateTime) {
+        if ($approvedDate instanceof DateTimeInterface) {
             $this->approvedDate = $approvedDate;
         } else {
             $this->approvedDate = new DateTime($approvedDate);
@@ -296,17 +257,14 @@ class UserEntity extends EntityAccess
         return 0 !== $this->approvedBy;
     }
 
-    public function getRegistrationDate(): DateTime
+    public function getRegistrationDate(): DateTimeInterface
     {
         return $this->registrationDate;
     }
 
-    /**
-     * @param string|DateTime $registrationDate the user's regdate
-     */
-    public function setRegistrationDate($registrationDate): self
+    public function setRegistrationDate(string|DateTimeInterface $registrationDate): self
     {
-        if ($registrationDate instanceof DateTime) {
+        if ($registrationDate instanceof DateTimeInterface) {
             $this->registrationDate = $registrationDate;
         } else {
             $this->registrationDate = new DateTime($registrationDate);
@@ -315,17 +273,14 @@ class UserEntity extends EntityAccess
         return $this;
     }
 
-    public function getLastLogin(): DateTime
+    public function getLastLogin(): DateTimeInterface
     {
         return $this->lastLogin;
     }
 
-    /**
-     * @param string DateTime $lastLogin the user's last login
-     */
-    public function setLastLogin($lastLogin): self
+    public function setLastLogin(string|DateTimeInterface $lastLogin): self
     {
-        if ($lastLogin instanceof DateTime) {
+        if ($lastLogin instanceof DateTimeInterface) {
             $this->lastLogin = $lastLogin;
         } else {
             $this->lastLogin = new DateTime($lastLogin);
@@ -415,10 +370,6 @@ class UserEntity extends EntityAccess
         return $this;
     }
 
-    /**
-     * UserEntity is the 'Owning side'
-     * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
-     */
     public function addGroup(GroupEntity $group): self
     {
         $group->addUser($this);
@@ -444,18 +395,5 @@ class UserEntity extends EntityAccess
         $this->groups->clear();
 
         return $this;
-    }
-
-    /**
-     * Callback function used to validate the activated value.
-     */
-    public static function getActivatedValues(): array
-    {
-        return [
-            UsersConstant::ACTIVATED_ACTIVE,
-            UsersConstant::ACTIVATED_INACTIVE,
-            UsersConstant::ACTIVATED_PENDING_DELETE,
-            UsersConstant::ACTIVATED_PENDING_REG
-        ];
     }
 }

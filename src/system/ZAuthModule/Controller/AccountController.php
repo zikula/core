@@ -29,12 +29,10 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\AccessHelper;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\Form\Type\ChangeEmailType;
 use Zikula\ZAuthModule\Form\Type\ChangePasswordType;
@@ -42,6 +40,8 @@ use Zikula\ZAuthModule\Form\Type\LostPasswordType;
 use Zikula\ZAuthModule\Form\Type\LostUserNameType;
 use Zikula\ZAuthModule\Helper\LostPasswordVerificationHelper;
 use Zikula\ZAuthModule\Helper\MailHelper;
+use Zikula\ZAuthModule\Repository\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**

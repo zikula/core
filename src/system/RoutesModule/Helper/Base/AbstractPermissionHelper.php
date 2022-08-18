@@ -22,8 +22,8 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * Permission helper base class.

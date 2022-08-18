@@ -20,13 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
 use Zikula\CategoriesModule\Form\Type\CategoryTreeType;
+use Zikula\CategoriesModule\Repository\CategoryRepository;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
- * Controller for handling categories.
- *
  * @Route("/admin/category")
  */
 class CategoryController extends AbstractController

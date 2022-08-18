@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -39,14 +39,14 @@ class UserCreationApi implements UserCreationApiInterface
      *
      * @var UserEntity[]
      */
-    private $users = [];
+    private array $users = [];
 
     /**
      * array of created ZAuth mappings
      *
      * @var AuthenticationMappingEntity[]
      */
-    private $mappings = [];
+    private array $mappings = [];
 
     /**
      * @var Constraints\Collection
@@ -56,7 +56,7 @@ class UserCreationApi implements UserCreationApiInterface
     /**
      * @var GroupEntity[]
      */
-    private $groups = [];
+    private array $groups = [];
 
     public function __construct(
         private readonly ValidatorInterface $validator,

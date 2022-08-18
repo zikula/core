@@ -15,9 +15,7 @@ namespace Zikula\ZAuthModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidAntiSpamAnswer extends Constraint
 {
     public string $message = 'The anti-spam answer is incorrect.';

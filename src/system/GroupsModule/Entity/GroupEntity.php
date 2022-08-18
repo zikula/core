@@ -15,89 +15,52 @@ namespace Zikula\GroupsModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\GroupsModule\Repository\GroupRepository;
 use Zikula\UsersModule\Entity\UserEntity;
 
-/**
- * Group entity class.
- *
- * @ORM\Entity(repositoryClass="Zikula\GroupsModule\Entity\Repository\GroupRepository")
- * @ORM\Table(name="groups_group")
- */
+#[ORM\Entity(repositoryClass: GroupRepository::class)]
+#[ORM\Table(name: 'groups_group')]
 class GroupEntity extends EntityAccess
 {
-    /**
-     * group id
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
-     */
-    private $gid;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $gid;
 
-    /**
-     * group name
-     *
-     * @ORM\Column(type="string", length=190, unique=true)
-     * @Assert\Length(min="1", max="190")
-     * @var string
-     */
-    private $name;
+    #[ORM\Column(length: 190, unique: true)]
+    #[Assert\Length(min: 1, max: 190)]
+    private string $name;
 
-    /**
-     * group type
-     *
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    private $gtype;
+    #[ORM\Column(type: Types::SMALLINT)]
+    private int $gtype;
 
-    /**
-     * group description
-     *
-     * @ORM\Column(type="string", length=200)
-     * @Assert\Length(min="1", max="200")
-     * @var string
-     */
-    private $description;
+    #[ORM\Column(length: 200)]
+    #[Assert\Length(min: 1, max: 200)]
+    private string $description;
 
-    /**
-     * state of the group
-     *
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    private $state;
+    #[ORM\Column(type: Types::SMALLINT)]
+    private int $state;
 
-    /**
-     * maximum membership count
-     *
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    private $nbumax;
+    // maximum membership count
+    #[ORM\Column]
+    private int $nbumax;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Zikula\UsersModule\Entity\UserEntity", mappedBy="groups", indexBy="uid")
-     * @ORM\JoinTable(name="group_membership",
-     *      joinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")}
-     *      )
-     * @ORM\OrderBy({"uname" = "ASC"})
-     */
-    private $users;
+    #[ORM\ManyToMany(targetEntity: UserEntity::class, mappedBy: 'groups', indexBy: 'uid')]
+    #[ORM\JoinTable(name: 'group_membership')]
+    #[ORM\JoinColumn(name: 'gid', referencedColumnName: 'gid', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'uid', referencedColumnName: 'uid')]
+    #[ORM\OrderBy(['uname' => 'ASC'])]
+    /** @var UserEntity[] */
+    private Collection $users;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Zikula\GroupsModule\Entity\GroupApplicationEntity", mappedBy="group")
-     */
-    private $applications;
+    #[ORM\OneToMany(targetEntity: GroupApplicationEntity::class, mappedBy: 'group')]
+    /** @var GroupApplicationEntity[] */
+    private Collection $applications;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
         $this->name = '';

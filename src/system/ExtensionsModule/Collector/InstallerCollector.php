@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Collector;
 
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 
 class InstallerCollector
@@ -20,16 +21,21 @@ class InstallerCollector
     /**
      * @var ExtensionInstallerInterface[]
      */
-    private $installers;
+    private array $installers = [];
 
-    public function __construct()
+    public function __construct(
+        #[TaggedIterator('zikula.extension_installer')]
+        iterable $installers
+    )
     {
-        $this->installers = [];
+        foreach ($installers as $installer) {
+            $this->add($installer);
+        }
     }
 
     public function add(ExtensionInstallerInterface $installer): void
     {
-        $this->installers[get_class($installer)] = $installer;
+        $this->installers[$installer::class] = $installer;
     }
 
     public function has(string $id): bool

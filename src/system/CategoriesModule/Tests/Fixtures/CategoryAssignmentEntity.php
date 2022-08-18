@@ -16,16 +16,13 @@ namespace Zikula\CategoriesModule\Tests\Fixtures;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class CategoryAssignmentEntity extends AbstractCategoryAssignment
 {
-    /**
-     * @ORM\ManyToOne(targetEntity="CategorizableEntity", inversedBy="categoryAssignments")
-     * @ORM\JoinColumn(name="entityId", referencedColumnName="id")
-     */
-    private $entity;
+
+    #[ORM\ManyToOne(inversedBy: 'categoryAssignments')]
+    #[ORM\JoinColumn(name: 'entityId')]
+    private CategorizableEntity $entity;
 
     public function getEntity(): CategorizableEntity
     {

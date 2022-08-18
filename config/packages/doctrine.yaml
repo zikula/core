@@ -15,27 +15,30 @@ doctrine:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:
                 auto_mapping: true
+                #metadata_cache_driver: array
+                #query_cache_driver: array
+                #result_cache_driver: array
                 mappings:
                     gedmo_translatable:
-                        type: annotation
+                        type: attribute
                         prefix: Gedmo\Translatable\Entity
                         dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Translatable/Entity'
                         alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_translator:
-                        type: annotation
+                        type: attribute
                         prefix: Gedmo\Translator\Entity
                         dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Translator/Entity'
                         alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_loggable:
-                        type: annotation
+                        type: attribute
                         prefix: Gedmo\Loggable\Entity
                         dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Loggable/Entity'
                         alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_tree:
-                        type: annotation
+                        type: attribute
                         prefix: Gedmo\Tree\Entity
                         dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping

@@ -16,18 +16,12 @@ namespace Zikula\CategoriesModule\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
+use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
 
 class CategoryTreeTransformer implements DataTransformerInterface
 {
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
-
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private readonly CategoryRepositoryInterface $categoryRepository)
     {
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**

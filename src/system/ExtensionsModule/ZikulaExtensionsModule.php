@@ -13,15 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zikula\ExtensionsModule\DependencyInjection\Compiler\InstallerPass;
-
 class ZikulaExtensionsModule extends AbstractModule
 {
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-        $container->addCompilerPass(new InstallerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 30);
-    }
 }

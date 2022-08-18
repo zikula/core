@@ -33,9 +33,6 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
 
-/**
- * CategoryType form type class.
- */
 class CategoryType extends AbstractType
 {
     use TranslatorTrait;

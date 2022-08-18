@@ -5,7 +5,6 @@
 !/bin/console
 /config/packages/core.yaml
 /config/packages/zikula*.yaml
-!/config/dynamic/default.yaml
 *.phpunit.result.cache
 /public/*
 !/public/index.php
@@ -19,8 +18,6 @@
 /src/extensions/*
 !src/extensions/.gitignore
 src/.preload.php
-!/tests/test_dbs/*.sql
-/src/Zikula/CoreBundle/Tests/Functional/cache/
 /templates/
 !/templates/bundles/TranslationBundle/WebUI/base.html.twig
 /translations/*
@@ -53,8 +50,3 @@ src/.preload.php
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###

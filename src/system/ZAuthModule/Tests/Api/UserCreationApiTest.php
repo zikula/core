@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -33,10 +33,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class UserCreationApiTest extends KernelTestCase
 {
-    /**
-     * @var UserCreationApiInterface
-     */
-    private $api;
+    private UserCreationApiInterface $api;
 
     protected function setUp(): void
     {

@@ -7,4 +7,4 @@ services:
     Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionVarStubRepository:
         public: true
 
-    Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionVarStubRepository'
+    Zikula\ExtensionsModule\Repository\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionVarStubRepository'

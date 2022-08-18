@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\ProfileModule;
 
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class IdentityProfileModule implements ProfileModuleInterface
 {

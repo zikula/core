@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserSessionEntity;
+use Zikula\UsersModule\Repository\UserSessionRepositoryInterface;
 
 class DoctrineSessionHandler extends AbstractSessionHandler
 {

@@ -18,7 +18,6 @@ use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-// use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 class SiteDefinition implements SiteDefinitionInterface
@@ -29,7 +28,6 @@ class SiteDefinition implements SiteDefinitionInterface
         private TranslatorInterface $translator,
         private readonly RequestStack $requestStack,
         private readonly VariableApiInterface $variableApi,
-        // private readonly ExtensionRepositoryInterface $extensionRepository,
         private readonly ParameterBag $pageVars
     ) {
         $this->setTranslator($translator);

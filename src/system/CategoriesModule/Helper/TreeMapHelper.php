@@ -16,7 +16,7 @@ namespace Zikula\CategoriesModule\Helper;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
+use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
 
 class TreeMapHelper
 {

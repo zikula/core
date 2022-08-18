@@ -14,26 +14,19 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Tests\Fixtures;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class CategorizableEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $id;
 
-    /**
-     * @ORM\OneToMany(targetEntity="CategoryAssignmentEntity",
-     *                mappedBy="entity", cascade={"remove", "persist"},
-     *                orphanRemoval=true, fetch="EAGER")
-     */
-    private $categoryAssignments;
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: CategoryAssignmentEntity::class, cascade: ['persist', 'remove'], orphanRemoval: true, fetch: 'EAGER')]
+    private Collection $categoryAssignments;
 
     public function __construct()
     {

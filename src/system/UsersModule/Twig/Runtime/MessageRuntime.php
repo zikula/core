@@ -16,8 +16,8 @@ namespace Zikula\UsersModule\Twig\Runtime;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\UsersModule\Collector\MessageModuleCollector;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class MessageRuntime implements RuntimeExtensionInterface
 {

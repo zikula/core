@@ -16,24 +16,12 @@ namespace Zikula\CategoriesModule\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
+use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
 
 class UniqueNameForPositionValidator extends ConstraintValidator
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
-
-    public function __construct(TranslatorInterface $translator, CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private readonly TranslatorInterface $translator, private readonly CategoryRepositoryInterface $categoryRepository)
     {
-        $this->translator = $translator;
-        $this->categoryRepository = $categoryRepository;
     }
 
     public function validate($category, Constraint $constraint)

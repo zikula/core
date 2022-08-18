@@ -34,10 +34,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationType extends AbstractType
 {
-    /**
-     * @var array
-     */
-    private $zAuthModVars;
+    private array $zAuthModVars;
 
     public function __construct(VariableApiInterface $variableApi)
     {

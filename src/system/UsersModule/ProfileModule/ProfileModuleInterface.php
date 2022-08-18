@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\ProfileModule;
 
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-/**
- * Interface ProfileModuleInterface
- */
+#[Autoconfigure(tags: ['zikula.profile_module'])]
 interface ProfileModuleInterface
 {
     /**

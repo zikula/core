@@ -14,88 +14,71 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Entity;
 
 use DateTime;
+use DateTimeInterface;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\ZAuthModule\Repository\UserVerificationRepository;
 
 /**
- * UserVerification entity class.
- *
- * We use annotations to define the entity mappings to database (see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/basic-mapping.html).
- *
- * @ORM\Entity(repositoryClass="Zikula\ZAuthModule\Entity\Repository\UserVerificationRepository")
- * @ORM\Table(name="users_verifychg")
- *
  * Account-change verification table.
  * Holds a one-time use, expirable verification code used when a user needs to change his email address,
  * reset his password and has not answered any security questions,
  * or when a new user is registering with the site for the first time.
  */
+#[ORM\Entity(repositoryClass: UserVerificationRepository::class)]
+#[ORM\Table(name: 'users_verifychg')]
 class UserVerificationEntity extends EntityAccess
 {
     /**
      * ID: Primary ID of the verification record. Not related to the uid.
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
      */
-    private $id;
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int $id;
 
     /**
      * Change type: a code indicating what type of change action created this record.
-     *
-     * @ORM\Column(type="smallint")
-     * @var int
      */
-    private $changetype;
+    #[ORM\Column(type: Types::SMALLINT)]
+    private int $changetype;
 
     /**
      * User ID: Primary ID of the user record to which this verification record is related. Foreign key to users table.
-     *
-     * @ORM\Column(type="integer")
-     * @var int
      */
-    private $uid;
+    #[ORM\Column]
+    private int $uid;
 
     /**
      * New e-mail address: If the change type indicates that this verification record was created as a result of a user changing his e-mail address,
      * then this field holds the new address temporarily until the verification is complete.
      * Only after the verification code is received back from the user (thus, verifying the new e-mail address) is the new e-mail address saved to the user's account record.
-     *
-     * @ORM\Column(type="string", length=60)
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="60")
-     * )
-     * @var string
      */
-    private $newemail;
+    #[ORM\Column(length: 60)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 60)
+    ])]
+    private string $newemail;
 
     /**
      * Verification Code: The verification code last sent to the user to verify the requested action, as a salted hash of the value sent.
-     *
-     * @ORM\Column(type="string", length=138)
-     * @Assert\AtLeastOneOf(
-     *     @Assert\Blank(),
-     *     @Assert\Length(min="1", max="138")
-     * )
-     * @var string
      */
-    private $verifycode;
+    #[ORM\Column(length: 138)]
+    #[Assert\AtLeastOneOf([
+        new Assert\Blank(),
+        new Assert\Length(min: 1, max: 138)
+    ])]
+    private string $verifycode;
 
     /**
      * Date/Time created: The date and time the verification record was created, as a UTC date/time, used to expire the record.
-     *
-     * @ORM\Column(type="datetime", name="created_dt")
-     * @var DateTime
      */
-    private $createdDate;
+    #[ORM\Column(name: 'created_dt', type: Types::DATETIME_MUTABLE)]
+    private DateTimeInterface $createdDate;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
         $this->changetype = 0;
@@ -165,17 +148,14 @@ class UserVerificationEntity extends EntityAccess
         return $this;
     }
 
-    public function getCreatedDate(): DateTime
+    public function getCreatedDate(): DateTimeInterface
     {
         return $this->createdDate;
     }
 
-    /**
-     * @param string|DateTime $createdDate the user verification's created date
-     */
-    public function setCreatedDate($createdDate): self
+    public function setCreatedDate(string|DateTimeInterface $createdDate): self
     {
-        if ($createdDate instanceof DateTime) {
+        if ($createdDate instanceof DateTimeInterface) {
             $this->createdDate = $createdDate;
         } else {
             $this->createdDate = new DateTime($createdDate);

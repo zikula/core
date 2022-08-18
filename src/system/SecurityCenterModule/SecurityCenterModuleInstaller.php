@@ -46,10 +46,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 
     public function install(): bool
     {
-        // Set up an initial value for a module variable.
-        $this->setVar('itemsperpage', 10);
-
-        // We use config vars for the rest of the configuration as config vars
         $this->setSystemVar('updatecheck', 1);
         $this->setSystemVar('updatefrequency', 7);
         $this->setSystemVar('updatelastchecked', 0);

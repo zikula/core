@@ -14,16 +14,14 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Collector;
 
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SettingsModule\SettingsConstant;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\ProfileModule\IdentityProfileModule;
 use Zikula\UsersModule\ProfileModule\ProfileModuleInterface;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
-/**
- * Class ProfileModuleCollector
- */
 class ProfileModuleCollector
 {
     /**
@@ -37,6 +35,7 @@ class ProfileModuleCollector
         private readonly UserRepositoryInterface $userRepository,
         private readonly CurrentUserApiInterface $currentUserApi,
         VariableApiInterface $variableApi,
+        #[TaggedIterator('zikula.profile_module')]
         iterable $modules
     ) {
         $this->userRepository = $userRepository;

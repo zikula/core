@@ -23,20 +23,18 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\VerifyRegistrationType;
+use Zikula\ZAuthModule\Repository\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
- * Class RegistrationController
- *
  * @Route("")
  */
 class RegistrationController extends AbstractController

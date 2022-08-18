@@ -15,9 +15,7 @@ namespace Zikula\UsersModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidEmail extends Constraint
 {
     public string $message = 'The email "%string%" is invalid.';

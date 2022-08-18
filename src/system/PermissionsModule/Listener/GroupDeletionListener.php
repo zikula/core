@@ -15,7 +15,7 @@ namespace Zikula\PermissionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\GroupsModule\Event\GroupPreDeletedEvent;
-use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
+use Zikula\PermissionsModule\Repository\PermissionRepositoryInterface;
 
 class GroupDeletionListener implements EventSubscriberInterface
 {

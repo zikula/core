@@ -15,9 +15,7 @@ namespace Zikula\GroupsModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidGroupName extends Constraint
 {
     public string $message = 'The fields are invalid.';

@@ -15,14 +15,11 @@ namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
+use Zikula\ExtensionsModule\Repository\ExtensionVarRepositoryInterface;
 
 class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
 {
-    /**
-     * @var array
-     */
-    private $entities;
+    private array $entities;
 
     public function __construct()
     {

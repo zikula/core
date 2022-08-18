@@ -17,7 +17,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zikula\ExtensionsModule\Installer\ExtensionInstallerInterface;
 
 class ZikulaExtensionsExtension extends Extension
 {
@@ -29,9 +28,5 @@ class ZikulaExtensionsExtension extends Extension
         if ('test' === $env) {
             $loader->load('services_test.yaml');
         }
-
-        $container->registerForAutoconfiguration(ExtensionInstallerInterface::class)
-            ->addTag('zikula.extension_installer')
-        ;
     }
 }

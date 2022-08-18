@@ -13,47 +13,31 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
- * CategoryAttribute entity class.
- *
- * @ORM\Entity
- * @ORM\Table(name="categories_attributes")
- *
  * Category attributes table.
  * Stores extra information about each category.
  */
+#[ORM\Entity]
+#[ORM\Table(name: 'categories_attributes')]
 class CategoryAttributeEntity extends EntityAccess
 {
-    /**
-     * The id of the category the attribute belongs to
-     *
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="attributes")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     */
-    private $category;
+     #[ORM\Id]
+     #[ORM\ManyToOne(inversedBy: 'attributes')]
+     #[ORM\JoinColumn(name: 'category_id')]
+    private CategoryEntity $category;
 
-    /**
-     * The name of the attribute
-     *
-     * @ORM\Id
-     * @ORM\Column(type="string", length=80)
-     * @Assert\Length(min="1", max="80")
-     * @var string
-     */
-    private $name;
+    #[ORM\Id]
+    #[ORM\Column(length: 80)]
+    #[Assert\Length(min: 1, max: 80)]
+    private string $name;
 
-    /**
-     * The value of the attribute
-     *
-     * @ORM\Column(type="text")
-     * @var string
-     */
-    private $value;
+    #[ORM\Column(type: Types::TEXT)]
+    private string $value;
 
     public function getCategory(): CategoryEntity
     {

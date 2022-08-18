@@ -20,15 +20,15 @@ use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersModule\Event\ActiveUserPreCreatedEvent;
 use Zikula\UsersModule\Event\RegistrationPostApprovedEvent;
 use Zikula\UsersModule\Event\RegistrationPostCreatedEvent;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 class RegistrationHelper
 {

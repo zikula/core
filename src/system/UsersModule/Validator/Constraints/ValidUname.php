@@ -15,9 +15,7 @@ namespace Zikula\UsersModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute]
 class ValidUname extends Constraint
 {
     public string $message = 'The uname "%string%" is invalid.';

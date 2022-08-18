@@ -13,55 +13,37 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\UsersModule\Repository\UserAttributeRepository;
 
 /**
- * UserAttribute entity class.
- *
- * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserAttributeRepository")
- * @ORM\Table(name="users_attributes")
- *
  * User attributes table.
  * Stores extra information about each user account.
  */
+#[ORM\Entity(repositoryClass: UserAttributeRepository::class)]
+#[ORM\Table(name: 'users_attributes')]
 class UserAttributeEntity extends EntityAccess
 {
-    /**
-     * user id to which the attribute belongs
-     *
-     * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="attributes")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
-     * @var int
-     */
-    private $user;
+    #[ORM\Id]
+    #[ORM\ManyToOne(targetEntity: UserEntity::class, inversedBy: 'attributes')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uid', onDelete: 'CASCADE')]
+    private int $user;
 
-    /**
-     * the name of the attribute
-     *
-     * @ORM\Id
-     * @ORM\Column(type="string", length=80)
-     * @Assert\Length(min="1", max="80")
-     * @var string
-     */
-    private $name;
+    #[ORM\Id]
+    #[ORM\Column(length: 80)]
+    #[Assert\Length(min: 1, max: 80)]
+    private string $name;
 
-    /**
-     * the value for the attribute
-     *
-     * @ORM\Column(type="text")
-     * @var string
-     */
+    #[ORM\Column(type: Types::TEXT)]
     private $value;
 
     /**
      * non-persisted property
-     *
-     * @var string
      */
-    private $extra;
+    private string $extra;
 
     /**
      * @param mixed $value
@@ -101,20 +83,14 @@ class UserAttributeEntity extends EntityAccess
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value): self
+    public function setValue(mixed $value): self
     {
         $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setAttribute(string $name, $value): self
+    public function setAttribute(string $name, mixed $value): self
     {
         $this->setName($name);
         $this->setValue($value);

@@ -21,8 +21,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\RegistrationType;
+use Zikula\ZAuthModule\Repository\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface

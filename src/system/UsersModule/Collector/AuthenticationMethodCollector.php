@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Collector;
 
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
 
@@ -37,8 +38,11 @@ class AuthenticationMethodCollector
      */
     private array $authenticationMethodsStatus;
 
-    public function __construct(VariableApiInterface $variableApi, iterable $methods)
-    {
+    public function __construct(
+        VariableApiInterface $variableApi,
+        #[TaggedIterator('zikula.authentication_method')]
+        iterable $methods
+    ) {
         $this->authenticationMethodsStatus = $variableApi->getSystemVar('authenticationMethodsStatus', []);
         foreach ($methods as $method) {
             $this->add($method);

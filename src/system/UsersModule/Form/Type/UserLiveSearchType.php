@@ -20,8 +20,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Form\DataTransformer\UserFieldTransformer;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * Form type providing auto completion based search for user names.

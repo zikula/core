@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\AuthenticationMethodInterface;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+
+#[Autoconfigure(tags: ['zikula.authentication_method'])]
 interface AuthenticationMethodInterface
 {
     /**

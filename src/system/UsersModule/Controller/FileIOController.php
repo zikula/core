@@ -22,9 +22,9 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Form\Type\ExportUsersType;
+use Zikula\UsersModule\Repository\UserRepositoryInterface;
 
 /**
  * @Route("/fileIO")

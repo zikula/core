@@ -15,7 +15,7 @@ services:
         lazy: true
 
     Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface: '@Zikula\PermissionsModule\Api\PermissionApi'
-    Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface: '@Zikula\PermissionsModule\Entity\Repository\PermissionRepository'
+    Zikula\PermissionsModule\Repository\PermissionRepositoryInterface: '@Zikula\PermissionsModule\Repository\PermissionRepository'
 
     Zikula\PermissionsModule\Menu\MenuBuilder:
         tags:

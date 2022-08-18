@@ -23,8 +23,6 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupEntity;
-use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
-use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\GroupsModule\Event\GroupPostCreatedEvent;
 use Zikula\GroupsModule\Event\GroupPostDeletedEvent;
 use Zikula\GroupsModule\Event\GroupPostUpdatedEvent;
@@ -32,6 +30,8 @@ use Zikula\GroupsModule\Event\GroupPreDeletedEvent;
 use Zikula\GroupsModule\Form\Type\CreateGroupType;
 use Zikula\GroupsModule\Form\Type\EditGroupType;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\GroupsModule\Repository\GroupApplicationRepositoryInterface;
+use Zikula\GroupsModule\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -75,7 +75,7 @@ class GroupController extends AbstractController
      */
     public function adminList(
         GroupRepositoryInterface $groupRepository,
-        GroupApplicationRepository $applicationRepository,
+        GroupApplicationRepositoryInterface $applicationRepository,
         int $page = 1
     ): array {
         $pageSize = $this->getVar('itemsperpage', 25);

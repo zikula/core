@@ -28,7 +28,7 @@ class PermissionApiTest extends AbstractPermissionTestCase
      */
     private function invokeMethod(PermissionApiInterface $api, string $methodName, array $parameters = [])
     {
-        $reflection = new \ReflectionClass(get_class($api));
+        $reflection = new \ReflectionClass($api::class);
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 

@@ -20,24 +20,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
 use Zikula\CategoriesModule\Form\Type\CategoryType;
 use Zikula\CategoriesModule\Helper\CategoryProcessingHelper;
+use Zikula\CategoriesModule\Repository\CategoryRepository;
 use Zikula\PermissionsModule\Annotation\PermissionCheck;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
- * Class NodeController
- *
  * @Route("/admin/category")
  * @PermissionCheck("admin")
  */
 class NodeController extends AbstractController
 {
-    /**
-     * @var string
-     */
-    private $domTreeNodePrefix = 'node_';
+    private string $domTreeNodePrefix = 'node_';
 
     /**
      * @Route("/contextMenu/{action}/{id}", options={"expose"=true}, defaults={"id" = null})

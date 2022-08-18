@@ -16,8 +16,8 @@ namespace Zikula\ZAuthModule\Helper;
 use Exception;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
+use Zikula\ZAuthModule\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class LostPasswordVerificationHelper
@@ -25,12 +25,12 @@ class LostPasswordVerificationHelper
     /**
      * Concatenation delimiter
      */
-    private $delimiter = '#';
+    private string $delimiter = '#';
 
     /**
      * Amount of encoding iterations
      */
-    private $iterations = 3;
+    private int $iterations = 3;
 
     public function __construct(
         private readonly UserVerificationRepositoryInterface $userVerificationRepository,

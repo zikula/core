@@ -25,20 +25,8 @@ use Translation\Extractor\Annotation\Ignore;
 
 class EmailLoginType extends AbstractType
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function __construct(RouterInterface $router, TranslatorInterface $translator)
+    public function __construct(private readonly RouterInterface $router, private readonly TranslatorInterface $translator)
     {
-        $this->router = $router;
-        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

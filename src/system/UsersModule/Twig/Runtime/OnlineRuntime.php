@@ -18,8 +18,8 @@ use Doctrine\Common\Collections\Criteria;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Constant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Repository\UserSessionRepositoryInterface;
 
 class OnlineRuntime implements RuntimeExtensionInterface
 {

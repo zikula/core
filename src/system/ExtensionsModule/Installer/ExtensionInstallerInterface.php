@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Installer;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+
+#[Autoconfigure(tags: ['zikula.extension_installer'])]
 interface ExtensionInstallerInterface extends InstallerInterface
 {
 }
