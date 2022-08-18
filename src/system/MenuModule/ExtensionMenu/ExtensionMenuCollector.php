@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\MenuModule\ExtensionMenu;
 
 use Knp\Menu\ItemInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ExtensionMenuCollector
 {

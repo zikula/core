@@ -26,8 +26,7 @@ class InstallerCollector
     public function __construct(
         #[TaggedIterator('zikula.extension_installer')]
         iterable $installers
-    )
-    {
+    ) {
         foreach ($installers as $installer) {
             $this->add($installer);
         }

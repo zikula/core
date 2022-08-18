@@ -23,10 +23,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\CategoriesModule\Repository\CategoryRegistryRepositoryInterface;
-use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener;
+use Zikula\CategoriesModule\Repository\CategoryRegistryRepositoryInterface;
+use Zikula\CategoriesModule\Repository\CategoryRepositoryInterface;
 
 class CategoriesType extends AbstractType
 {

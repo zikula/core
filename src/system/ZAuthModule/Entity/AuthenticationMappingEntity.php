@@ -18,8 +18,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersModule\Validator\Constraints as UsersAssert;
-use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
 use Zikula\ZAuthModule\Repository\AuthenticationMappingRepository;
+use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
 
 #[ORM\Entity(repositoryClass: AuthenticationMappingRepository::class)]
 #[ORM\Table(name: 'zauth_authentication_mapping')]

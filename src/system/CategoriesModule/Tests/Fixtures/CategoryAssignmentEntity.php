@@ -19,7 +19,6 @@ use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 #[ORM\Entity]
 class CategoryAssignmentEntity extends AbstractCategoryAssignment
 {
-
     #[ORM\ManyToOne(inversedBy: 'categoryAssignments')]
     #[ORM\JoinColumn(name: 'entityId')]
     private CategorizableEntity $entity;

@@ -15,9 +15,9 @@ namespace Zikula\UsersModule\Entity;
 
 use DateTime;
 use DateTimeInterface;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
@@ -39,9 +39,9 @@ use Zikula\UsersModule\Validator\Constraints as ZikulaAssert;
 #[ZikulaAssert\ValidUserFields]
 class UserEntity extends EntityAccess
 {
-     #[ORM\Id]
-     #[ORM\Column]
-     #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private int $uid;
 
     /**
@@ -145,7 +145,6 @@ class UserEntity extends EntityAccess
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAttributeEntity::class, cascade: ['all'], orphanRemoval: true, indexBy: 'name')]
     private Collection $attributes;
-
 
     #[ORM\ManyToMany(targetEntity: GroupEntity::class, inversedBy: 'users', indexBy: 'gid')]
     #[ORM\JoinTable(name: 'group_membership')]

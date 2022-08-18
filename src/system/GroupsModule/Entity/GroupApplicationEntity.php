@@ -38,7 +38,6 @@ class GroupApplicationEntity extends EntityAccess
 
     /**
      * Details of the application
-     *
      */
     #[ORM\Column(type: Types::TEXT)]
     private string $application;

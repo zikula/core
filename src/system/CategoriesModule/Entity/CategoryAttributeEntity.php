@@ -26,9 +26,9 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 #[ORM\Table(name: 'categories_attributes')]
 class CategoryAttributeEntity extends EntityAccess
 {
-     #[ORM\Id]
-     #[ORM\ManyToOne(inversedBy: 'attributes')]
-     #[ORM\JoinColumn(name: 'category_id')]
+    #[ORM\Id]
+    #[ORM\ManyToOne(inversedBy: 'attributes')]
+    #[ORM\JoinColumn(name: 'category_id')]
     private CategoryEntity $category;
 
     #[ORM\Id]
