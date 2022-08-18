@@ -24,15 +24,7 @@
             "url": "static",
             "securityschema": {
                 "ZikulaStaticContentModule::": "::",
-                "ZikulaStaticContentModule::name": "::name",
-                "fincludeblock::": "Block title::",
-                "HTMLblock::": "Block title::",
-                "HTMLblock::bid": "::bid",
-                "Textblock::": "Block title::",
-                "Textblock::bid": "::bid",
-                "xsltblock::": "Block title::",
-                "Templateblock::": "Block title::",
-                "Templateblock::bid": "::bid"
+                "ZikulaStaticContentModule::name": "::name"
             },
             "capabilities": {
             }

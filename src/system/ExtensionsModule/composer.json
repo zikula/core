@@ -42,9 +42,6 @@
             "displayname": "Extensions",
             "icon": "fas fa-plug",
             "capabilities": {
-                "admin": {
-                    "route": "zikulaextensionsmodule_extension_listextensions"
-                }
             },
             "securityschema": {
                 "ZikulaExtensionsModule::": "::",
