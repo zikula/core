@@ -74,9 +74,8 @@ rm -rf "${PACKAGE_PATH}/var/cache/"*
 mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/cache/"
 
 echo "Clearing log directory..."
-#    mv "${PACKAGE_PATH}/var/log/.htaccess" "${PACKAGE_PATH}/var/"
-    rm -rf "${PACKAGE_PATH}/var/log/"*
-#    mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/log/"
+mkdir -p "${PACKAGE_PATH}/var/log"
+rm -rf "${PACKAGE_PATH}/var/log/"*
 
 echo "Setting directory permissions..."
 chmod -R 0777 "${PACKAGE_PATH}/config"
