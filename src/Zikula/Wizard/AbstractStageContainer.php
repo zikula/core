@@ -15,7 +15,7 @@ namespace Zikula\Component\Wizard;
 
 abstract class AbstractStageContainer implements StageContainerInterface
 {
-    private $stages;
+    private array $stages;
 
     /**
      * @param StageInterface[] $stages

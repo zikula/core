@@ -36,10 +36,10 @@ $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
 </tr>
 ```
 
+Additional shortcut methods are available:
 
-Additional shortcut methods are available: 
-  - `$sortableColumns->addColumns()`
-  - `$sortableColumns->setOrderByFromRequest()`
+- `$sortableColumns->addColumns()`
+- `$sortableColumns->setOrderByFromRequest()`
 
 ```php
 $sortableColumns->addColumns([new Column('pageid'), new Column('title'), new Column('cr_date')]);

@@ -3,14 +3,11 @@ currentMenu: dev-misc
 ---
 # Misc
 
-## Integration
-
-- [Pending Content](PendingContent.md)
-
 ## Specific services and helpers
 
 - [Cache clearer](CacheClearer.md)
 - [Sortable Columns](SortableColumns.md)
+- [Wizard](Wizard.md)
 
 ## Recipes for recurring tasks
 

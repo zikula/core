@@ -22,8 +22,8 @@ use Symfony\Component\Yaml\Parser as YamlParser;
  */
 class YamlFileLoader extends FileLoader
 {
-    private $yamlParser;
-    private $content;
+    private YamlParser $yamlParser;
+    private array $content;
 
     /**
      * {@inheritdoc}
@@ -74,7 +74,6 @@ class YamlFileLoader extends FileLoader
      * Validates a YAML file.
      *
      * @param mixed $content
-     * @return array
      *
      * @throws InvalidArgumentException When service file is not valid
      */

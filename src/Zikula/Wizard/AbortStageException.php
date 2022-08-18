@@ -18,6 +18,7 @@ declare(strict_types=1);
 
 namespace Zikula\Component\Wizard;
 
-class AbortStageException extends \Exception {
+class AbortStageException extends \Exception
+{
 
 }

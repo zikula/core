@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-/**
- * Copyright Zikula.
+/*
+ * This file is part of the Zikula package.
  *
- * This work is contributed to the Zikula under one or more
- * Contributor Agreements and licensed to You under the following license:
+ * Copyright Zikula - https://ziku.la/
  *
- * @license MIT.
- * @package Zikula
- * @author Craig Heydenburg
- *
- * Please see the LICENSE file distributed with this source code for further
- * information regarding copyright and licensing.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Zikula\Component\Wizard;
