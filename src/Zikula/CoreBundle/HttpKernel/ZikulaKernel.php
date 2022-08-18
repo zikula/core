@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\ErrorHandler\DebugClassLoader;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Zikula\AdminBundle\ZikulaAdminBundle;
 use Zikula\CategoriesBundle\ZikulaCategoriesBundle;

@@ -22,7 +22,6 @@ use Zikula\ThemeBundle\Engine\Asset\JsResolver;
 use Zikula\ThemeBundle\Engine\Asset\Merger;
 use Zikula\ThemeBundle\Engine\AssetFilter;
 use Zikula\ThemeBundle\EventListener\DefaultPageAssetSetterListener;
-use Zikula\ThemeBundle\EventListener\ExtensionInstallationListener;
 use Zikula\ThemeBundle\EventListener\ResponseTransformerListener;
 
 class ZikulaThemeExtension extends Extension

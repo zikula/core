@@ -43,7 +43,7 @@ disabled:
 
 finder:
   not-path:
-    - src/system/RoutesModule
-    - src/system/CategoriesModule/Entity
+    - src/system/RoutesBundle
+    - src/system/CategoriesBundle/Entity
   not-name:
     - "bundles.php"

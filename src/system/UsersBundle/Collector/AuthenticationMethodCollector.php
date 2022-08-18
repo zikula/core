@@ -49,7 +49,7 @@ class AuthenticationMethodCollector
     /**
      * Add a method to the collection.
      */
-    public function add(/*AuthenticationMethodInterface*/ $method): void
+    public function add(/* AuthenticationMethodInterface */ $method): void
     {
         $alias = $method->getAlias();
         if (isset($this->authenticationMethods[$alias])) {

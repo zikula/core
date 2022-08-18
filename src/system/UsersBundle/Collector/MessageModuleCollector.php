@@ -43,7 +43,7 @@ class MessageModuleCollector
     /**
      * Add a service to the collection.
      */
-    public function add(/*MessageModuleInterface*/ $service): void
+    public function add(/* MessageModuleInterface */ $service): void
     {
         $moduleName = $service->getBundleName();
         if ('ZikulaUsersBundle' === $moduleName) {

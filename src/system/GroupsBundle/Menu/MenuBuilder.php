@@ -97,7 +97,7 @@ class MenuBuilder
                     'route' => 'zikulagroupsbundle_membership_leave',
                     'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fas fa-user-times text-danger');
-            //} elseif (CommonHelper::GTYPE_PRIVATE === $group->getGtype()) {
+            // } elseif (CommonHelper::GTYPE_PRIVATE === $group->getGtype()) {
             } elseif (CommonHelper::STATE_CLOSED !== $group->getState()) {
                 $menu->addChild('Join group', [
                     'route' => 'zikulagroupsbundle_membership_join',

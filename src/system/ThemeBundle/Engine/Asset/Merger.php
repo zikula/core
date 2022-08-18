@@ -16,10 +16,9 @@ namespace Zikula\ThemeBundle\Engine\Asset;
 use DateTime;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Routing\RouterInterface;
+use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeBundle\Engine\AssetBag;
-
-use function Symfony\Component\String\s;
 
 class Merger implements MergerInterface
 {

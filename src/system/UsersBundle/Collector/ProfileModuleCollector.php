@@ -47,7 +47,7 @@ class ProfileModuleCollector
     /**
      * Add a service to the collection.
      */
-    public function add(/*ProfileModuleInterface*/ $service): void
+    public function add(/* ProfileModuleInterface */ $service): void
     {
         $moduleName = $service->getBundleName();
         if ('ZikulaUsersBundle' === $moduleName) {

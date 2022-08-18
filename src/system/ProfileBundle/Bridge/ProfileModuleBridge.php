@@ -16,6 +16,7 @@ namespace Zikula\ProfileBundle\Bridge;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use function Symfony\Component\String\s;
 use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\ProfileConstant;
@@ -24,8 +25,6 @@ use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\ProfileBundle\ProfileModuleInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
-
-use function Symfony\Component\String\s;
 
 class ProfileModuleBridge implements ProfileModuleInterface
 {
