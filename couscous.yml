@@ -149,9 +149,6 @@ menu:
                 dev-extensions:
                     text: Extension services
                     relativeUrl: Development/Extensions/index.html
-                dev-hooks:
-                    text: Hooks
-                    relativeUrl: Development/Hooks/index.html
                 dev-misc:
                     text: Misc
                     relativeUrl: Development/Misc/index.html
