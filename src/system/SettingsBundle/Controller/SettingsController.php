@@ -27,8 +27,8 @@ use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsBundle\Form\Type\LocaleSettingsType;
 use Zikula\SettingsBundle\Form\Type\MainSettingsType;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
-use Zikula\UsersBundle\Collector\MessageModuleCollector;
-use Zikula\UsersBundle\Collector\ProfileModuleCollector;
+use Zikula\UsersBundle\Collector\MessageBundleCollector;
+use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 
 /**
  * @Route("")
@@ -47,14 +47,14 @@ class SettingsController extends AbstractController
         Request $request,
         LocaleApiInterface $localeApi,
         VariableApiInterface $variableApi,
-        ProfileModuleCollector $profileModuleCollector,
-        MessageModuleCollector $messageModuleCollector
+        ProfileBundleCollector $profileBundleCollector,
+        MessageBundleCollector $messageBundleCollector
     ) {
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
 
-        $profileModules = $profileModuleCollector->getKeys();
-        $messageModules = $messageModuleCollector->getKeys();
+        $profileBundles = $profileBundleCollector->getKeys();
+        $messageBundles = $messageBundleCollector->getKeys();
 
         $variables = $variableApi->getAll(VariableApi::CONFIG);
         $variables['UseCompression'] = (bool) $variables['UseCompression'];
@@ -63,8 +63,8 @@ class SettingsController extends AbstractController
             $variables,
             [
                 'languages' => $installedLanguageNames,
-                'profileModules' => $profileModules,
-                'messageModules' => $messageModules
+                'profileBundles' => $profileBundles,
+                'messageBundles' => $messageBundles
             ]
         );
         $form->handleRequest($request);

@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\ProfileModule;
+namespace Zikula\UsersBundle\ProfileBundle;
 
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-#[Autoconfigure(tags: ['zikula.profile_module'])]
-interface ProfileModuleInterface
+#[Autoconfigure(tags: ['zikula.profile_bundle'])]
+interface ProfileBundleInterface
 {
     /**
-     * Display a module-defined user display name (e.g. set by the user) or display the uname as defined by the UserModule
+     * Display a bundle-defined user display name (e.g. set by the user) or display the uname as defined by the UserBundle
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
      *
      * @param int|string $userId The user's id or name

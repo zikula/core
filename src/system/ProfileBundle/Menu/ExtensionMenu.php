@@ -21,7 +21,7 @@ use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsBundle\SettingsConstant;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Collector\MessageModuleCollector;
+use Zikula\UsersBundle\Collector\MessageBundleCollector;
 use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
@@ -33,7 +33,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         private readonly ZikulaHttpKernelInterface $kernel,
         private readonly VariableApiInterface $variableApi,
         private readonly CurrentUserApiInterface $currentUserApi,
-        private readonly MessageModuleCollector $messageModuleCollector
+        private readonly MessageBundleCollector $messageBundleCollector
     ) {
     }
 
@@ -111,12 +111,12 @@ class ExtensionMenu implements ExtensionMenuInterface
                 }
             }
 
-            $messageModule = $this->variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
-            if (null !== $messageModule && '' !== $messageModule && $this->kernel->isBundle($messageModule)
-                && $this->permissionApi->hasPermission($messageModule . '::', '::', ACCESS_READ)
+            $messageBundle = $this->variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_BUNDLE, '');
+            if (null !== $messageBundle && '' !== $messageBundle && $this->kernel->isBundle($messageBundle)
+                && $this->permissionApi->hasPermission($messageBundle . '::', '::', ACCESS_READ)
             ) {
                 $menu->addChild('Messages', [
-                    'uri' => $this->messageModuleCollector->getSelected()->getInboxUrl(),
+                    'uri' => $this->messageBundleCollector->getSelected()->getInboxUrl(),
                 ])->setAttribute('icon', 'fas fa-envelope');
             }
         }
@@ -155,8 +155,8 @@ class ExtensionMenu implements ExtensionMenuInterface
     {
         $menu = $this->factory->createItem('profileAccountMenu');
         // do not show any account links if Profile is not the Profile manager
-        $profileModule = $this->variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
-        if ($profileModule !== $this->getBundleName()) {
+        $profileBundle = $this->variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_BUNDLE, '');
+        if ($profileBundle !== $this->getBundleName()) {
             return null;
         }
 

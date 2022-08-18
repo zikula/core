@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\MessageModule;
+namespace Zikula\UsersBundle\MessageBundle;
 
-class IdentityMessageModule implements MessageModuleInterface
+class IdentityMessageBundle implements MessageBundleInterface
 {
     public function getInboxUrl($userId = null): string
     {

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\MessageModule;
+namespace Zikula\UsersBundle\MessageBundle;
 
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
-#[Autoconfigure(tags: ['zikula.message_module'])]
-interface MessageModuleInterface
+#[Autoconfigure(tags: ['zikula.message_bundle'])]
+interface MessageBundleInterface
 {
     /**
      * Get the url to a user's inbox.

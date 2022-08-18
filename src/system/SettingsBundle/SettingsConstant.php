@@ -15,7 +15,7 @@ namespace Zikula\SettingsBundle;
 
 class SettingsConstant
 {
-    public const SYSTEM_VAR_PROFILE_MODULE = 'profilemodule';
+    public const SYSTEM_VAR_PROFILE_BUNDLE = 'profileBundle';
 
-    public const SYSTEM_VAR_MESSAGE_MODULE = 'messagemodule';
+    public const SYSTEM_VAR_MESSAGE_BUNDLE = 'messageBundle';
 }

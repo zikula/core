@@ -23,10 +23,10 @@ use Zikula\ProfileBundle\ProfileConstant;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
-use Zikula\UsersBundle\ProfileBundle\ProfileModuleInterface;
+use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
-class ProfileModuleBridge implements ProfileModuleInterface
+class ProfileBundleBridge implements ProfileBundleInterface
 {
     public function __construct(
         private readonly RouterInterface $router,
@@ -162,6 +162,6 @@ class ProfileModuleBridge implements ProfileModuleInterface
 
     public function getBundleName(): string
     {
-        return 'ZikulaProfileModule';
+        return 'ZikulaProfileBundle';
     }
 }

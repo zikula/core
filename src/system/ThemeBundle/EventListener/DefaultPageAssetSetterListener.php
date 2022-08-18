@@ -86,7 +86,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addJquery(): void
     {
         $jsConfigFile = 'js/ZikulaThemeModule.JSConfig.js';
-        $jsConfigPath = $this->assetHelper->resolve('modules/zikulatheme/' . $jsConfigFile);
+        $jsConfigPath = $this->assetHelper->resolve('bundles/zikulatheme/' . $jsConfigFile);
         if ($this->params['installed'] && null !== $this->themeEngine->getTheme()) {
             $jsConfigPath = $this->assetHelper->resolve('@ZikulaThemeBundle:' . $jsConfigFile);
         }

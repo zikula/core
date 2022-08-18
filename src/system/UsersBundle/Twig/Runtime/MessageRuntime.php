@@ -15,7 +15,7 @@ namespace Zikula\UsersBundle\Twig\Runtime;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
-use Zikula\UsersBundle\Collector\MessageModuleCollector;
+use Zikula\UsersBundle\Collector\MessageBundleCollector;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
@@ -23,7 +23,7 @@ class MessageRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
-        private readonly MessageModuleCollector $messageModuleCollector,
+        private readonly MessageBundleCollector $messageBundleCollector,
         private readonly TranslatorInterface $translator
     ) {
     }
@@ -39,7 +39,7 @@ class MessageRuntime implements RuntimeExtensionInterface
         string $text = '',
         string $class = ''
     ): string {
-        $url = $this->messageModuleCollector->getSelected()->getInboxUrl($userId);
+        $url = $this->messageBundleCollector->getSelected()->getInboxUrl($userId);
         if ($urlOnly) {
             return $url;
         }
@@ -60,7 +60,7 @@ class MessageRuntime implements RuntimeExtensionInterface
         string $text = '',
         string $class = ''
     ): string {
-        $url = $this->messageModuleCollector->getSelected()->getSendMessageUrl($userId);
+        $url = $this->messageBundleCollector->getSelected()->getSendMessageUrl($userId);
         if ($urlOnly) {
             return $url;
         }
@@ -82,10 +82,8 @@ class MessageRuntime implements RuntimeExtensionInterface
      *
      * @param int|string $userId The user's id or name
      */
-    public function messageCount(
-        $userId = null,
-        bool $unreadOnly = false
-    ): int {
-        return $this->messageModuleCollector->getSelected()->getMessageCount($userId, $unreadOnly);
+    public function messageCount($userId = null, bool $unreadOnly = false): int
+    {
+        return $this->messageBundleCollector->getSelected()->getMessageCount($userId, $unreadOnly);
     }
 }

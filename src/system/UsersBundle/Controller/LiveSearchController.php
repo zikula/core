@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\UsersBundle\Collector\ProfileModuleCollector;
+use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 /**
@@ -35,19 +35,19 @@ class LiveSearchController extends AbstractController
     public function getUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
-        ProfileModuleCollector $profileModuleCollector
+        ProfileBundleCollector $profileBundleCollector
     ): JsonResponse {
         $fragment = $request->query->get('fragment', '');
         $results = $userRepository->searchActiveUser(['operator' => 'like', 'operand' => '%' . $fragment . '%']);
 
-        $profileModule = $profileModuleCollector->getSelected();
+        $profileBundle = $profileBundleCollector->getSelected();
 
         $resultItems = [];
         if (count($results) > 0) {
             foreach ($results as $result) {
-                $avatar = $profileModule->getAvatar($result->getUid(), ['rating' => 'g']);
+                $avatar = $profileBundle->getAvatar($result->getUid(), ['rating' => 'g']);
                 if (!$avatar) {
-                    $avatar = '<img src="' . $request->getSchemeAndHttpHost() . $request->getBasePath() . '/modules/zikulausers/images/user.png" alt="user" />';
+                    $avatar = '<img src="' . $request->getSchemeAndHttpHost() . $request->getBasePath() . '/bundles/zikulausers/images/user.png" alt="user" />';
                 }
                 $resultItems[] = [
                     'uid' => $result->getUid(),

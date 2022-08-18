@@ -84,8 +84,8 @@
         <p class="alert alert-warning">{% trans %}Notice: The PHP Zlib extension is not enabled on your host. This setting will not do anything in this case.{% endtrans %}</p>
     </div>
     {% endif %}
-    {{ form_row(form.profilemodule) }}
-    {{ form_row(form.messagemodule) }}
+    {{ form_row(form.profileBundle) }}
+    {{ form_row(form.messageBundle) }}
     {{ form_row(form.ajaxtimeout) }}
     <div class="col-md-9 offset-md-3">
         <small class="form-text text-muted">{% trans %}Notice: Increase this value if mobile appliances experience problems with using the site.{% endtrans %} ({% trans %}default 5000 = 5 seconds{% endtrans %})</small>

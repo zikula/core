@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
-use Zikula\UsersBundle\Collector\ProfileModuleCollector;
+use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
@@ -25,7 +25,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly UserRepositoryInterface $userRepository,
-        private readonly ProfileModuleCollector $profileModuleCollector,
+        private readonly ProfileBundleCollector $profileBundleCollector,
         private readonly TranslatorInterface $translator
     ) {
     }
@@ -37,7 +37,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
      */
     public function getUserAvatar($userId = 0, array $parameters = []): string
     {
-        return $this->profileModuleCollector->getSelected()->getAvatar($userId, $parameters);
+        return $this->profileBundleCollector->getSelected()->getAvatar($userId, $parameters);
     }
 
     /**
@@ -116,7 +116,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
             return $userId . $userName; // one or the other is empty
         }
 
-        $userDisplayName = $this->profileModuleCollector->getSelected()->getDisplayName($user->getUid());
+        $userDisplayName = $this->profileBundleCollector->getSelected()->getDisplayName($user->getUid());
         if (!$userDisplayName) {
             $userDisplayName = $user->getUname();
         }
@@ -133,7 +133,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }
-        $href = $this->profileModuleCollector->getSelected()->getProfileUrl($user->getUid());
+        $href = $this->profileBundleCollector->getSelected()->getProfileUrl($user->getUid());
         if ('#' === $href) {
             return $userDisplayName;
         }

@@ -104,16 +104,16 @@ class MainSettingsType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
-            ->add('profilemodule', ChoiceType::class, [
-                'label' => 'Module used for managing user profiles',
-                'choices' => /** @Ignore */ $this->formatModuleArrayForSelect($options['profileModules']),
-                'placeholder' => 'No profile module',
+            ->add('profileBundle', ChoiceType::class, [
+                'label' => 'Bundle used for managing user profiles',
+                'choices' => /** @Ignore */ $this->formatBundleArrayForSelect($options['profileBundles']),
+                'placeholder' => 'No profile bundle',
                 'required' => false
             ])
-            ->add('messagemodule', ChoiceType::class, [
-                'label' => 'Module used for private messaging',
-                'choices' => /** @Ignore */ $this->formatModuleArrayForSelect($options['messageModules']),
-                'placeholder' => 'No message module',
+            ->add('messageBundle', ChoiceType::class, [
+                'label' => 'Bundle used for private messaging',
+                'choices' => /** @Ignore */ $this->formatBundleArrayForSelect($options['messageBundles']),
+                'placeholder' => 'No message bundle',
                 'required' => false
             ])
             ->add('ajaxtimeout', IntegerType::class, [
@@ -182,8 +182,8 @@ class MainSettingsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'profileModules' => [],
-            'messageModules' => [],
+            'profileBundles' => [],
+            'messageBundles' => [],
             'languages' => [],
             'constraints' => [
                 new Callback(['callback' => [$this, 'validatePermalinkSettings']])
@@ -213,10 +213,10 @@ class MainSettingsType extends AbstractType
     /**
      * Prepare an array of bundle names and displaynames for dropdown usage.
      */
-    private function formatModuleArrayForSelect(array $bundles = []): array
+    private function formatBundleArrayForSelect(array $bundles = []): array
     {
         $return = [];
-        foreach ($bundles as $bundleName => $serviceName) {
+        foreach ($bundles as $bundleName) {
             // TODO readd display name (based on Composer meta data)
             $return[$bundleName] = $bundleName;
         }

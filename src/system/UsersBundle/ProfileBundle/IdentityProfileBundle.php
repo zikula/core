@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\ProfileModule;
+namespace Zikula\UsersBundle\ProfileBundle;
 
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
-class IdentityProfileModule implements ProfileModuleInterface
+class IdentityProfileBundle implements ProfileBundleInterface
 {
     public function __construct(private readonly UserRepositoryInterface $userRepository, private readonly CurrentUserApiInterface $currentUserApi)
     {
