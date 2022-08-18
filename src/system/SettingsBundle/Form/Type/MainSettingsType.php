@@ -99,6 +99,11 @@ class MainSettingsType extends AbstractType
                 'label' => 'Reason for disabling site',
                 'required' => false
             ])
+            ->add('enableMailLogging', CheckboxType::class, [
+                'label' => 'Enable mail logging',
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
+            ])
             ->add('UseCompression', CheckboxType::class, [
                 'label' => 'Activate compression',
                 'label_attr' => ['class' => 'switch-custom'],

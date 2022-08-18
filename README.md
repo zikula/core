@@ -8,8 +8,6 @@ Zikula Core is an Application Framework which extends Symfony 5.x and includes t
 
 Zikula also features an [MDSD](https://en.wikipedia.org/wiki/Model-driven_engineering) tool for rapid prototyping and module development called [ModuleStudio](https://modulestudio.de/en/) or MOST.
 
-Zikula can quickly become a Content Management System utilizing community-driven modules.
-
 For more information visit [ziku.la](https://ziku.la/).
 
 ## Documentation

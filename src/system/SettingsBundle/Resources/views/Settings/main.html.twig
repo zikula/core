@@ -92,6 +92,10 @@
     </div>
 </fieldset>
 <fieldset>
+    <legend>{% trans %}Mail settings{% endtrans %}</legend>
+    {{ form_row(form.enableMailLogging) }}
+</fieldset>
+<fieldset>
     <legend>{% trans %}Permalinks settings{% endtrans %}</legend>
     <p class="alert alert-warning">{% trans %}Notice: The following settings will rewrite your permalinks. Sometimes, international characters like 'ñ' and 'ß' may be re-encoded by your browser. Although this is technically the correct action, it may not be aesthetically pleasing.  These settings allow you to replace those characters, using a pair of comma-separated lists. The two fields below should resemble the examples provided: The first element of 'List to search for' will replace the first element in the 'List to replace with' and so on. In the example below, 'À' would be replace with 'A', and 'Á' with 'A'. If you do not want to use this feature, leave both fields blank.{% endtrans %}</p>
     {{ form_row(form.permasearch) }}
