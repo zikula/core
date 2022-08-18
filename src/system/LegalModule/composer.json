@@ -1,0 +1,45 @@
+{
+    "name": "zikula/legal-module",
+    "version": "3.2.11",
+    "description": "Provides an interface for managing the site's legal documents.",
+    "type": "zikula-system-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula Development Team",
+            "homepage": "https://ziku.la"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\LegalModule\\": "" }
+    },
+    "require": {
+        "php": "^8.1"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\LegalModule\\ZikulaLegalModule",
+            "displayname": "Legal",
+            "url": "legal",
+            "icon": "fas fa-gavel",
+            "capabilities": {
+                "admin": {
+                    "route": "zikulalegalmodule_config_config"
+                },
+                "user": {
+                    "route": "zikulalegalmodule_user_termsofuse"
+                }
+            },
+            "securityschema": {
+                "ZikulaLegalModule::": "::",
+                "ZikulaLegalModule::legalNotice": "::",
+                "ZikulaLegalModule::termsOfUse": "::",
+                "ZikulaLegalModule::privacyPolicy": "::",
+                "ZikulaLegalModule::agePolicy": "::",
+                "ZikulaLegalModule::accessibilityStatement": "::",
+                "ZikulaLegalModule::cancellationRightPolicy": "::",
+                "ZikulaLegalModule::tradeConditions": "::"
+            }
+        }
+    }
+}

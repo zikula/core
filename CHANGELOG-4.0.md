@@ -22,4 +22,9 @@
   - none yet
 
 - Features:
-  - [Mailer] Utilize rate limiter component for test email functionality.
+  - [Legal] Add `Legal` module to monorepo.
+  - [Profile] Add `Profile` module to monorepo.
+  - [Settings] Utilize rate limiter component for test email functionality.
+  - [SortableColumns] Add `SortableColumns` component to monorepo.
+  - [StaticContent] Add `StaticContent` module to monorepo.
+  - [Wizard] Add `Wizard` component to monorepo.

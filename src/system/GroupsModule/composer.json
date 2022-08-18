@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\GroupsModule\\": "" }
     },
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "symfony/config": "^5.4",
         "symfony/contracts": "^2",
         "symfony/dependency-injection": "^5.4",

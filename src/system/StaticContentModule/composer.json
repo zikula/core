@@ -1,0 +1,41 @@
+{
+    "name": "zikula/staticcontent-module",
+    "version": "1.0.6",
+    "description": "Display static content simply.",
+    "type": "zikula-system-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula Team"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": { "Zikula\\StaticContentModule\\": "" }
+    },
+    "require": {
+        "php": "^8.1"
+    },
+    "extra": {
+        "zikula" : {
+            "class": "Zikula\\StaticContentModule\\ZikulaStaticContentModule",
+            "displayname": "Static Content",
+            "icon": "fas fa-file-alt",
+            "url": "static",
+            "securityschema": {
+                "ZikulaStaticContentModule::": "::",
+                "ZikulaStaticContentModule::name": "::name",
+                "fincludeblock::": "Block title::",
+                "HTMLblock::": "Block title::",
+                "HTMLblock::bid": "::bid",
+                "Textblock::": "Block title::",
+                "Textblock::bid": "::bid",
+                "xsltblock::": "Block title::",
+                "Templateblock::": "Block title::",
+                "Templateblock::bid": "::bid"
+            },
+            "capabilities": {
+            }
+        }
+    }
+}

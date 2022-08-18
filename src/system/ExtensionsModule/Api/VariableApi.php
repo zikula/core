@@ -117,7 +117,7 @@ class VariableApi implements VariableApiInterface
         }
 
         if (isset($this->variables[$extensionName]) && array_key_exists($variableName, $this->variables[$extensionName])) {
-            return $this->variables[$extensionName][$variableName];
+            return $this->variables[$extensionName][$variableName] ?? $default;
         }
 
         return $default;

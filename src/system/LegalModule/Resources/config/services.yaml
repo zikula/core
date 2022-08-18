@@ -1,0 +1,23 @@
+parameters:
+    euwarning.stylesheet: null
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\LegalModule\ZikulaLegalModule'
+            $twigLoader: '@twig.loader'
+
+    Zikula\LegalModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\LegalModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\LegalModule\Listener\EuCookieWarningInjectorListener:
+        arguments:
+          $stylesheetOverride: '%euwarning.stylesheet%'

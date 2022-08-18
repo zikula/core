@@ -1,0 +1,32 @@
+{
+    "name": "zikula/sortable-columns",
+    "description": "SortableColumns is a zikula component to help manage data table column headings that can be clicked to sort the data",
+    "keywords": ["symfony", "columns", "sortable"],
+    "type": "library",
+    "homepage": "https://ziku.la",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula Team",
+            "homepage": "https://ziku.la"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\Component\\SortableColumns\\": "" }
+    },
+    "autoload-dev": {
+        "psr-4" : {
+            "Zikula\\Component\\SortableColumns\\Tests\\" : "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "symfony/routing": "^5",
+        "symfony/http-foundation": "^5",
+        "doctrine/common": "^3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "symfony/phpunit-bridge": "^5"
+    }
+}

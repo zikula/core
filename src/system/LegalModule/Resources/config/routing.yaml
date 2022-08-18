@@ -1,0 +1,5 @@
+zikulalegalmodule:
+    # define routing support for these controllers
+    resource: "@ZikulaLegalModule/Controller"
+    # enable support for defining routes by annotations
+    type: annotation

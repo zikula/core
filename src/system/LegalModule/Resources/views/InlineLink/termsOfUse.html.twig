@@ -1,0 +1,5 @@
+{% set policyUrl = getModVar(constant('Zikula\\LegalModule\\Constant::MODNAME'), constant('Zikula\\LegalModule\\Constant::MODVAR_TERMS_URL')) %}
+{% if policyUrl == '' %}
+    {% set policyUrl = path('zikulalegalmodule_user_termsofuse') %}
+{% endif %}
+<a class="legal_inlinelink_termsofuse" href="{{ policyUrl|e('html_attr') }}" target="{{ target|e('html_attr') }}">{% trans %}Terms of use{% endtrans %}</a>

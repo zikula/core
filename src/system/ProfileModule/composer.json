@@ -1,0 +1,43 @@
+{
+    "name": "zikula/profile-module",
+    "version": "3.1.18",
+    "description": "User profiles and member list",
+    "type": "zikula-system-module",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Zikula Development Team",
+            "homepage": "https://ziku.la"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\ProfileModule\\": "" }
+    },
+    "require": {
+        "php": "^8.1"
+    },
+    "extra": {
+        "zikula": {
+            "class": "Zikula\\ProfileModule\\ZikulaProfileModule",
+            "displayname": "Profile",
+            "url": "profile",
+            "icon": "fas fa-id-card",
+            "capabilities": {
+                "admin": {
+                    "route": "zikulaprofilemodule_property_listproperties"
+                },
+                "user": {
+                    "route": "zikulaprofilemodule_profile_display"
+                }
+            },
+            "securityschema": {
+                "ZikulaProfileModule::": "::",
+                "ZikulaProfileModule::view": "::",
+                "ZikulaProfileModule::item": "PropertyId::",
+                "ZikulaProfileModule:Members:": "::",
+                "ZikulaProfileModule:Members:recent": "::",
+                "ZikulaProfileModule:Members:online": "::"
+            }
+        }
+    }
+}

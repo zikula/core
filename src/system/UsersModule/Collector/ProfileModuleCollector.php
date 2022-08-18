@@ -38,8 +38,6 @@ class ProfileModuleCollector
         #[TaggedIterator('zikula.profile_module')]
         iterable $modules
     ) {
-        $this->userRepository = $userRepository;
-        $this->currentUserApi = $currentUserApi;
         $this->currentProfileModuleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
         foreach ($modules as $module) {
             $this->add($module);

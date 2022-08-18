@@ -853,13 +853,7 @@
     "zikula/profile-module": {
         "version": "dev-master"
     },
-    "zikula/sortable-columns": {
-        "version": "1.0.0"
-    },
     "zikula/staticcontent-module": {
         "version": "1.0.2"
-    },
-    "zikula/wizard": {
-        "version": "3.1.1"
     }
 }

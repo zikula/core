@@ -105,12 +105,7 @@
         "twig/markdown-extra": "^3",
         "twig/string-extra": "^3",
         "vakata/jstree": "^3",
-        "willdurand/js-translation-bundle": "^5",
-        "zikula/legal-module": "^3",
-        "zikula/profile-module": "^3",
-        "zikula/sortable-columns": "dev-main",
-        "zikula/staticcontent-module": "^1",
-        "zikula/wizard": "^3"
+        "willdurand/js-translation-bundle": "^5"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^6"

@@ -7,12 +7,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Craig Heydenburg",
-            "email": "info@ziku.la"
+            "name": "Zikula Team",
+            "homepage": "https://ziku.la"
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "symfony/contracts": "^2",
         "symfony/form": "^5.4",
         "symfony/framework-bundle": "^5.4",

@@ -1,0 +1,3 @@
+zikulaprofilemodule:
+    resource: "@ZikulaProfileModule/Controller"
+    type:     annotation

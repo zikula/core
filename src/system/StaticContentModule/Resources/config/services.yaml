@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $extension: '@Zikula\StaticContentModule\ZikulaStaticContentModule'
+
+    Zikula\StaticContentModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    # Controllers must be public
+    Zikula\StaticContentModule\Controller\StaticController:
+        public: true

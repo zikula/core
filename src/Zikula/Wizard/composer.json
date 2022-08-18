@@ -1,0 +1,26 @@
+{
+    "name": "zikula/wizard",
+    "description": "Wizard for multi-stage interaction including Symfony Forms",
+    "keywords": ["symfony2", "wizard", "forms", "step", "stage"],
+    "type": "library",
+    "homepage": "https://ziku.la",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zikula Team",
+            "homepage": "https://ziku.la"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Zikula\\Component\\Wizard\\": "" }
+    },
+    "require": {
+        "php": "^8.1",
+        "symfony/config": "^5",
+        "symfony/dependency-injection": "^5",
+        "symfony/filesystem": "^5",
+        "symfony/form": "^5",
+        "symfony/http-foundation": "^5",
+        "symfony/yaml": "^5"
+    }
+}

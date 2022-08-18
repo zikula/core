@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-9 offset-md-3">
+        <p id="acceptpolicies_policies_info">{% trans from 'zikulalegalmodule' %}Please click on the following links to read the corresponding documents.{% endtrans %}</p>
+        <ul>
+        {% if activePolicies.termsOfUse|default and not acceptedPolicies.termsOfUse|default %}
+            {% set policyUrl = getModVar(constant('Zikula\\LegalModule\\Constant::MODNAME'), constant('Zikula\\LegalModule\\Constant::MODVAR_TERMS_URL')) %}
+            {% if policyUrl == '' %}
+                {% set policyUrl = path('zikulalegalmodule_user_termsofuse') %}
+            {% endif %}
+            {% set policyName = 'Terms of use'|trans([], 'zikulalegalmodule') %}
+            <li><a class="policy-link" data-toggle="modal" data-target="#modal-terms-of-use" href="{{ policyUrl }}">{{ policyName }}</a></li>
+        {% endif %}
+        {% if activePolicies.privacyPolicy|default and not acceptedPolicies.privacyPolicy|default %}
+            {% set policyUrl = getModVar(constant('Zikula\\LegalModule\\Constant::MODNAME'), constant('Zikula\\LegalModule\\Constant::MODVAR_PRIVACY_URL')) %}
+            {% if policyUrl == '' %}
+                {% set policyUrl = path('zikulalegalmodule_user_privacypolicy') %}
+            {% endif %}
+            {% set policyName = 'Privacy policy'|trans([], 'zikulalegalmodule') %}
+            <li><a class="policy-link" data-toggle="modal" data-target="#modal-privacy-policy" href="{{ policyUrl }}">{{ policyName }}</a></li>
+        {% endif %}
+        {% if activePolicies.agePolicy|default and not acceptedPolicies.agePolicy|default %}
+            <li>{% trans with { '%s%': getModVar(constant('Zikula\\LegalModule\\Constant::MODNAME'), constant('Zikula\\LegalModule\\Constant::MODVAR_MINIMUM_AGE'), 13) } from 'zikulalegalmodule' %}You need to be %s% years of age or older, in accordance with our minimum age requirement.{% endtrans %}</li>
+        {% endif %}
+        {% if activePolicies.tradeConditions|default and not acceptedPolicies.tradeConditions|default %}
+            {% set policyUrl = getModVar(constant('Zikula\\LegalModule\\Constant::MODNAME'), constant('Zikula\\LegalModule\\Constant::MODVAR_TRADECONDITIONS_URL')) %}
+            {% if policyUrl == '' %}
+                {% set policyUrl = path('zikulalegalmodule_user_tradeconditions') %}
+            {% endif %}
+            {% set policyName = 'General terms and conditions of trade'|trans([], 'zikulalegalmodule') %}
+            <li><a class="policy-link" data-toggle="modal" data-target="#modal-general-terms-and-conditions-of-trade" href="{{ policyUrl }}">{{ policyName }}</a></li>
+        {% endif %}
+        {% if activePolicies.cancellationRightPolicy|default and not acceptedPolicies.cancellationRightPolicy|default %}
+            {% set policyUrl = getModVar(constant('Zikula\\LegalModule\\Constant::MODNAME'), constant('Zikula\\LegalModule\\Constant::MODVAR_CANCELLATIONRIGHTPOLICY_URL')) %}
+            {% if policyUrl == '' %}
+                {% set policyUrl = path('zikulalegalmodule_user_cancellationrightpolicy') %}
+            {% endif %}
+            {% set policyName = 'Cancellation right policy'|trans([], 'zikulalegalmodule') %}
+            <li><a class="policy-link" data-toggle="modal" data-target="#modal-cancellation-right-policy" href="{{ policyUrl }}">{{ policyName }}</a></li>
+        {% endif %}
+        </ul>
+    </div>
+</div>
+<div class="modal fade" id="modal-policy" tabindex="-1" role="dialog" aria-labelledby="modal-title-policy" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-policy-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-policy-body"><i class="fas fa-spin fa-cog fa-2x"></i></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{ pageAddAsset('javascript', zasset('@ZikulaLegalModule:js/ZikulaLegalModule.User.AcceptPolicies.js')) }}

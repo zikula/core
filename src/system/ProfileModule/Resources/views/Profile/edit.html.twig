@@ -1,0 +1,20 @@
+{{ moduleHeader('user', 'Edit profile'|trans, true, true) }}
+<h3>
+    <span class="fas fa-pencil-alt"></span>
+    {% trans %}Edit profile{% endtrans %}
+</h3>
+
+{{ form_start(form) }}
+{% for element in form|filter(e => e.vars.name not in ['save', 'cancel']) %}
+    {{ form_row(element) }}
+{% endfor %}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+    <input type="hidden" id="avatarPath" value="{{ getModVar(constant('Zikula\\UsersModule\\Constant::MODNAME'), constant('Zikula\\ProfileModule\\ProfileConstant::MODVAR_AVATAR_IMAGE_PATH'), constant('Zikula\\ProfileModule\\ProfileConstant::DEFAULT_AVATAR_IMAGE_PATH')) }}" />
+    <input type="hidden" id="gravatarUrl" value="{{ gravatarUrl|e('html_attr') }}" />
+</div>
+{{ form_end(form) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaProfileModule:js/ZikulaProfileModule.Avatar.Edit.js')) }}
