@@ -26,17 +26,12 @@ COPY_FILES=(
 )
 
 echo "Create required directories..."
-#if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
-#    echo "Copying sources to package directory..."
-#    cp -r "${SOURCE_PATH}/src/" "${PACKAGE_PATH}"
-#else # Zikula 3
-    echo "Copying sources to package directory..."
-    # prevent copying sub directory into itself
-    cp -r . /tmp/ZKTEMP
-    mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
-    # exclude . and ..
-    mv /tmp/ZKTEMP/{*,.[^.]*} "${PACKAGE_PATH}"
-#fi
+echo "Copying sources to package directory..."
+# prevent copying sub directory into itself
+cp -r . /tmp/ZKTEMP
+mkdir -p "${PACKAGE_PATH}" "${ARCHIVE_PATH}"
+# exclude . and ..
+mv /tmp/ZKTEMP/{*,.[^.]*} "${PACKAGE_PATH}"
 
 cd "${PACKAGE_PATH}"
 
@@ -66,16 +61,12 @@ echo "Purging tests from vendors..."
 ${PHP_BUILD} build:purge_vendors "${PACKAGE_PATH}/vendor"
 
 echo "Creating translation files..."
-#if [ "$BRANCH_NAME" = "2.0" ]; then # Zikula 2
-#    php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract template --output-format=po --output-dir="${PACKAGE_PATH}/app/Resources/translations" --enable-extractor=jms_i18n_routing --dir="${PACKAGE_PATH}/system" --dir="${PACKAGE_PATH}/lib/Zikula/Bundle"
-##else # Zikula 3
-    #php bin/console zikula:translation:updateconfig
-    #cd var/cache
-    #rm -rf dev prod
-    #cd ../..
-    #php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract zikula en
-    #php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" zikula:translation:keytovalue
-#fi
+#php bin/console zikula:translation:updateconfig
+#cd var/cache
+#rm -rf dev prod
+#cd ../..
+#php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract zikula en
+#php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" zikula:translation:keytovalue
 
 echo "Clearing cache directory..."
 mv "${PACKAGE_PATH}/var/cache/.htaccess" "${PACKAGE_PATH}/var/"
@@ -83,15 +74,9 @@ rm -rf "${PACKAGE_PATH}/var/cache/"*
 mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/cache/"
 
 echo "Clearing log directory..."
-if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
 #    mv "${PACKAGE_PATH}/var/log/.htaccess" "${PACKAGE_PATH}/var/"
     rm -rf "${PACKAGE_PATH}/var/log/"*
 #    mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/log/"
-else # Zikula 2
-    mv "${PACKAGE_PATH}/var/logs/.htaccess" "${PACKAGE_PATH}/var/"
-    rm -rf "${PACKAGE_PATH}/var/logs/"*
-    mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/logs/"
-fi
 
 echo "Setting directory permissions..."
 chmod -R 0777 "${PACKAGE_PATH}/config"
