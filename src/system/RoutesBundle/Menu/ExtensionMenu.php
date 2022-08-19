@@ -16,7 +16,6 @@ namespace Zikula\RoutesBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
-use Zikula\RoutesBundle\Helper\ControllerHelper;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface
