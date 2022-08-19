@@ -7,7 +7,6 @@ enabled:
   - combine_consecutive_unsets
   - concat_with_spaces
   - declare_strict_types
-  - escape_implicit_backslashes
   - explicit_indirect_variable
   - explicit_string_variable
   - mb_str_functions
@@ -24,7 +23,6 @@ enabled:
 
 disabled:
   - concat_without_spaces
-  - escape_implicit_backslashes
   - function_declaration
   - native_constant_invocation_symfony
   - native_function_invocation_symfony
