@@ -11,38 +11,29 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\RoutesBundle\Listener;
+namespace Zikula\SettingsBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\RoutesBundle\Event\RoutesNewlyAvailableEvent;
-use Zikula\RoutesBundle\Helper\RouteDumperHelper;
+use Zikula\SettingsBundle\Event\RoutesNewlyAvailableEvent;
+use Zikula\SettingsBundle\Helper\RouteDumperHelper;
 
-/**
- * Event handler implementation class for module installer events.
- */
 class InstallerListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
-    {
-        return [
-            RoutesNewlyAvailableEvent::class => ['newRoutesAvail', 5]
-        ];
-    }
-
     public function __construct(
         private readonly RouteDumperHelper $routeDumperHelper,
         private readonly RequestStack $requestStack
     ) {
     }
 
-    public function newRoutesAvail(RoutesNewlyAvailableEvent $event): void
+    public static function getSubscribedEvents()
     {
-        // reload **all** JS routes
-        $this->updateJsRoutes();
+        return [
+            RoutesNewlyAvailableEvent::class => ['newRoutesAvailable', 5]
+        ];
     }
 
-    private function updateJsRoutes(): void
+    public function newRoutesAvailable(RoutesNewlyAvailableEvent $event): void
     {
         $errors = $this->routeDumperHelper->dumpJsRoutes();
         if ('' === $errors) {

@@ -26,8 +26,6 @@
         "zikula/menu-bundle": "dev-3.1",
         "zikula/permissions-bundle": "dev-3.1",
         "zikula/profile-bundle": "dev-3.1",
-        "zikula/routes-bundle": "dev-3.1",
-        "zikula/search-bundle": "dev-3.1",
         "zikula/securitycenter-bundle": "dev-3.1",
         "zikula/settings-bundle": "dev-3.1",
         "zikula/staticcontent-bundle": "dev-3.1",

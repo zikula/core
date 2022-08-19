@@ -11,36 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\RoutesBundle\Controller;
+namespace Zikula\Settings\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\RoutesBundle\Helper\RouteDumperHelper;
+use Zikula\SettingsBundle\Helper\RouteDumperHelper;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/config")
+ * @Route("/route")
  * @PermissionCheck("admin")
  */
-class ConfigController extends AbstractController
+class RouteController extends AbstractController
 {
-    /**
-     * @Route("/config")
-     * @Theme("admin")
-     */
-    public function config(): Response
-    {
-        return new Response('<h3>Settings</h3><p>Nothing to do here.</p>');
-    }
-
     /**
      * Dumps the routes exposed to javascript.
      *
-     * @Route("/update/dump",
-     *        name = "zikularoutesbundle_config_dumpjsroutes",
+     * @Route("/dump",
+     *        name = "zikulasettingsbundle_route_dumpjsroutes",
      *        methods = {"GET"}
      * )
      * @Theme("admin")
@@ -58,9 +49,9 @@ class ConfigController extends AbstractController
         if ('' === $result) {
             $this->addFlash('status', $this->trans('Done! Exposed JS Routes dumped to %path%.', ['%path%' => 'public/js/fos_js_routes.js']));
         } else {
-            $this->addFlash('error', $this->trans('Error! There was an error dumping exposed JS Routes: %result%', ['%result%' => $result]));
+            $this->addFlash('error', $this->trans('Error! There was an error dumping exposed JS routes: %result%', ['%result%' => $result]));
         }
 
-        return $this->redirectToRoute('zikularoutesbundle_config_config');
+        return $this->redirectToRoute('zikulasettingsbundle_settings_mainsettings');
     }
 }

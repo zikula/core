@@ -90,6 +90,13 @@ class ExtensionMenu implements ExtensionMenuInterface
             }
         }
 
+        $menu->addChild('Dump JS routes', [
+            'route' => 'zikulasettingsbundle_route_dumpjsroutes',
+        ])
+            ->setAttribute('icon', 'fas fa-file')
+            ->setLinkAttribute('title', 'Dump exposed JS routes to file')
+        ;
+
         $menu->addChild('Test mail settings', [
             'route' => 'zikulasettingsbundle_mail_test',
         ])->setAttribute('icon', 'fas fa-envelope');

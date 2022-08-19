@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\RoutesBundle\Helper;
+namespace Zikula\SettingsBundle\Helper;
 
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use RuntimeException;

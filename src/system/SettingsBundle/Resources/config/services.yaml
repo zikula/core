@@ -13,6 +13,14 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
+    Zikula\SettingsBundle\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\SettingsBundle\Helper\RouteDumperHelper:
+        arguments:
+            $dumpCommand: '@fos_js_routing.dump_command'
+
     Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface: '@Zikula\SettingsBundle\Api\LocaleApi'
 
     Zikula\SettingsBundle\SettingsModuleInstaller:

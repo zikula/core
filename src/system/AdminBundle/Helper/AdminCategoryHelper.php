@@ -117,7 +117,7 @@ class AdminCategoryHelper
     public function getBundleAssignments(AdminCategoryEntity $category): array
     {
         return match ($category->getSlug()) {
-            'system' => ['ZikulaExtensionsBundle', 'ZikulaRoutesBundle', 'ZikulaSettingsBundle'],
+            'system' => ['ZikulaSettingsBundle'],
             'layout' => ['ZikulaAdminBundle', 'ZikulaDefaultThemeBundle', 'ZikulaMenuBundle', 'ZikulaThemeBundle'],
             'users' => ['ZikulaGroupsBundle', 'ZikulaLegalBundle', 'ZikulaPermissionsBundle', 'ZikulaProfileBundle', 'ZikulaUsersBundle', 'ZikulaZAuthBundle'],
             'content' => ['ZikulaStaticContentBundle'],
