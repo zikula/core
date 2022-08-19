@@ -38,12 +38,6 @@ class ZikulaSettingsExtension extends Extension implements PrependExtensionInter
                 'active_locales' => $zikulaSettingsConfig['locales']
             ]);
         }
-        if (isset($container->getExtensions()['jms_i18n_routing'])) {
-            $container->prependExtensionConfig('jms_i18n_routing', [
-                'default_locale' => $zikulaSettingsConfig['locale'],
-                'locales' => $zikulaSettingsConfig['locales']
-            ]);
-        }
         if (isset($container->getExtensions()['translation'])) {
             $container->prependExtensionConfig('translation', [
                 'locales' => $zikulaSettingsConfig['locales'],

@@ -13,39 +13,37 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesBundle\Menu;
 
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\RoutesBundle\Menu\Base\AbstractExtensionMenu;
+use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\RoutesBundle\Helper\ControllerHelper;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
-class ExtensionMenu extends AbstractExtensionMenu
+class ExtensionMenu implements ExtensionMenuInterface
 {
+    public function __construct(
+        protected readonly FactoryInterface $factory,
+        protected readonly PermissionApiInterface $permissionApi
+    ) {
+    }
+
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
     {
+        $permLevel = self::TYPE_ADMIN === $type ? ACCESS_ADMIN : ACCESS_READ;
         if (self::TYPE_ADMIN !== $type) {
-            return parent::get($type);
+            return null;
         }
 
-        if (!$this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
+        if (!$this->permissionApi->hasPermission('ZikulaRoutesBundle::', '::', $permLevel)) {
             return null;
         }
 
         $menu = $this->factory->createItem('zikularoutesmodule' . ucfirst($type) . 'Menu');
-        $menu->addChild('Reload routes', [
-            'route' => 'zikularoutesbundle_update_reload',
-        ])
-            ->setAttribute('icon', 'fas fa-sync-alt')
-            ->setLinkAttribute('title', 'Reload routes')
-        ;
-        $menu->addChild('Reload multilingual routing settings', [
-            'route' => 'zikularoutesbundle_update_renew',
-        ])
-            ->setAttribute('icon', 'fas fa-sync-alt')
-            ->setLinkAttribute('title', 'Reload multilingual routing settings')
-        ;
-        $menu->addChild('Dump exposed js routes to file', [
-            'route' => 'zikularoutesbundle_update_dumpjsroutes',
+        $menu->addChild('Dump JS routes', [
+            'route' => 'zikularoutesbundle_config_dumpjsroutes',
         ])
             ->setAttribute('icon', 'fas fa-file')
-            ->setLinkAttribute('title', 'Dump exposed js routes to file')
+            ->setLinkAttribute('title', 'Dump exposed JS routes to file')
         ;
 
         $menu->addChild('Configuration', [
@@ -56,5 +54,10 @@ class ExtensionMenu extends AbstractExtensionMenu
         ;
 
         return 0 === $menu->count() ? null : $menu;
+    }
+
+    public function getBundleName(): string
+    {
+        return 'ZikulaRoutesBundle';
     }
 }

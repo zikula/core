@@ -37,8 +37,7 @@ class CacheClearer
         private readonly ExposedRoutesExtractorInterface $fosJsRoutesExtractor,
         private readonly string $cacheDir,
         private readonly string $kernelContainerClass,
-        string $installed,
-        private readonly array $routingLocales = []
+        string $installed
     ) {
         $this->logger = $zikulaLogger;
         $this->installed = '0.0.0' !== $installed;
@@ -114,10 +113,7 @@ class CacheClearer
         if ($this->installed) {
             // avoid accessing FOS extractor before/during installation
             // because this requires request context
-
-            foreach ($this->routingLocales as $locale) {
-                $fosJsRoutingFiles[] = $this->fosJsRoutesExtractor->getCachePath($locale);
-            }
+            $fosJsRoutingFiles[] = $this->fosJsRoutesExtractor->getCachePath();
         }
 
         $cacheFolder = $this->cacheDir . DIRECTORY_SEPARATOR;

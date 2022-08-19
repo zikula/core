@@ -75,7 +75,7 @@ EOF
                 $bundleDir = $foundBundle->getPath();
                 $transPaths = [is_dir($bundleDir . '/Resources/translations') ? $bundleDir . '/Resources/translations' : $bundleDir . '/translations'];
                 $currentName = $foundBundle->getName();
-            } catch (\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException) {
                 // such a bundle does not exist, so treat the argument as path
                 $path = $input->getArgument('bundle');
                 $transPaths = [$path . '/translations'];

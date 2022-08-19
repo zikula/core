@@ -85,7 +85,7 @@ For example:
 If the PR is not ready to be merged, you may prefix with `[WIP]`. This allows feedback to come in while perfecting the PR and let's the maintainers know the PR is not ready for merge. If the PR is simply in RFC stage, prefix with `[RFC]`:
 
 ```shell
-[WIP][AdminModule] Added js drag and drop to menus
+[WIP][AdminBundle] Added js drag and drop to menus
 ```
 
 All pull requests must have the following template in the description dialog box:

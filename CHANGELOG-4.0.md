@@ -11,7 +11,7 @@
   - [Hook] Remove hooks support.
   - [Menu] Remove custom (database-driven) menus.
   - [PageLock] Remove page lock module.
-  - [Routes] Remove custom (database-driven) routes.
+  - [Routes] Remove custom routes system.
   - [Search] Remove search module.
   - [SecurityCenter] Remove PHPIDS in favor of your server's WAF.
   - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`.

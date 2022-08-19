@@ -43,7 +43,7 @@ Whenever you complete a ticket you must record a summary of the complete change 
 If your changes include some BC breaks which make upgrades necessary for site admins or extension developers please add these to the documentation. Usually there is some UPGRADING or refactoring document available for this. These summary documents are not meant as end user documentation, but something we can construct documentation from. There are two classes of entry: end-user, and extension-developer. It should contain specific things a user must do as a consequence of the changes you made.
 
 If aimed at a user then something like: `"Delete the entire folder system/Profile"`.
-If aimed at a module developer, `"Change all template occurrences of <!--[ and ]--> to { and }"`.
+If aimed at a bundle developer, `"Change all template occurrences of <!--[ and ]--> to { and }"`.
 
 The `CHANGELOG` and `UPGRADING` docs can be found in the root folder or the `docs/` folder of the codebase.
 

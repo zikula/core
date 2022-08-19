@@ -22,35 +22,50 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\RoutesBundle\Helper\PermissionHelper;
+use Zikula\PermissionsBundle\Annotation\PermissionCheck;
+use Zikula\RoutesBundle\Helper\RouteDumperHelper;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
- * Config controller implementation class.
- *
  * @Route("/config")
+ * @PermissionCheck("admin")
  */
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config",
-     *        methods = {"GET", "POST"}
+     * @Route("/config")
+     * @Theme("admin")
+     */
+    public function config(): Response
+    {
+        return new Response('<h3>Settings</h3><p>Nothing to do here.</p>');
+    }
+
+   /**
+     * Dumps the routes exposed to javascript.
+     *
+     * @Route("/update/dump",
+     *        name = "zikularoutesbundle_config_dumpjsroutes",
+     *        methods = {"GET"}
      * )
      * @Theme("admin")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function config(
-        Request $request,
-        PermissionHelper $permissionHelper,
-        LoggerInterface $logger,
-        CurrentUserApiInterface $currentUserApi
-    ): Response {
+    public function dumpJsRoutes(RouteDumperHelper $routeDumperHelper): Response
+    {
         if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        
-        return new Response('<h3>Settings</h3><p>Nothing to do here.</p>');
+
+        $result = $routeDumperHelper->dumpJsRoutes();
+
+        if ('' === $result) {
+            $this->addFlash('status', $this->trans('Done! Exposed JS Routes dumped to %path%.', ['%path%' => 'public/js/fos_js_routes.js']));
+        } else {
+            $this->addFlash('error', $this->trans('Error! There was an error dumping exposed JS Routes: %result%', ['%result%' => $result]));
+        }
+
+        return $this->redirectToRoute('zikularoutesbundle_config_config');
     }
 }

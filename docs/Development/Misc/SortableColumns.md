@@ -14,7 +14,7 @@ use Zikula\Component\SortableColumns\SortableColumns;
 $orderBy = $request->query->get('orderby', 'pageid');
 $currentSortDirection = $request->query->get('sdir', Column::DIRECTION_DESCENDING);
 
-$sortableColumns = new SortableColumns($this->get('router'), 'zikulapagesmodule_admin_index', 'orderby', 'sdir');
+$sortableColumns = new SortableColumns($this->get('router'), 'zikulapagesbundle_admin_index', 'orderby', 'sdir');
 $sortableColumns->addColumn(new Column('pageid')); // first added is automatically the default
 $sortableColumns->addColumn(new Column('title'));
 $sortableColumns->addColumn(new Column('cr_date'));

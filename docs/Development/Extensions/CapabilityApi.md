@@ -3,8 +3,8 @@ currentMenu: dev-extensions
 ---
 # CapabilityApi
 
-Interface: `\Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface`.  
-Class: `\Zikula\ExtensionsModule\Api\CapabilityApi`.
+Interface: `\Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface`.  
+Class: `\Zikula\ExtensionsBundle\Api\CapabilityApi`.
 
 This class defines and tests for the capabilities of an extension.
 
@@ -36,7 +36,7 @@ The class is fully tested.
 
 ## CapabilityApiInterface
 
-classname: `\Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface`.
+classname: `\Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface`.
 
 This interface defines several constants for use in the Core and Extensions. The **strings** should be used
 when defining the capabilities array in an extension's `composer.json` file.
@@ -60,14 +60,14 @@ extra": {
         "url": "
         "capabilities": {
             "admin": {
-                "route": "acmefoomodule_admin_index",
+                "route": "acmefoobundle_admin_index",
                 "icon": "fas fa-rocket"
             },
             "user": {
-                "route": "acmefoomodule_user_index"
+                "route": "acmefoobundle_user_index"
             },
             "categorizable": {
-                "entities": ["Acme\\FooModule\\Entity\\FooEntity", "Acme\\FooModule\\Entity\\BarEntity"]
+                "entities": ["Acme\\FooBundle\\Entity\\FooEntity", "Acme\\FooBundle\\Entity\\BarEntity"]
             }
         }
     }

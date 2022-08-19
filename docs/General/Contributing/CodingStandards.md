@@ -3,7 +3,7 @@ currentMenu: contributing
 ---
 # Coding Standards
 
-When contributing to any Zikula Project, you must follow the these standards.  Zikula's standards follow `PSR-1`, `PSR-2` and `PSR-4` as a base with specific additions (not covered by the PSRs). These standards are recommended module development to maintain consistency across all code. Existing code can be easily reformatted in most IDEs or using the `PHP-CS-Fixer` utility.
+When contributing to any Zikula Project, you must follow the these standards.  Zikula's standards follow `PSR-1`, `PSR-2` and `PSR-4` as a base with specific additions (not covered by the PSRs). These standards are recommended bundle development to maintain consistency across all code. Existing code can be easily reformatted in most IDEs or using the `PHP-CS-Fixer` utility.
 
 Please configure your IDE/editor to comply with these standards by default to reduce accidental error.
 

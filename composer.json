@@ -43,7 +43,6 @@
         "friendsofsymfony/jsrouting-bundle": "^3",
         "ircmaxell/random-lib": "^1",
         "itsjavi/fontawesome-iconpicker": "^3",
-        "jms/i18n-routing-bundle": "dev-master",
         "justinrainbow/json-schema": "^5",
         "knplabs/knp-menu-bundle": "^3",
         "league/commonmark": "^2",

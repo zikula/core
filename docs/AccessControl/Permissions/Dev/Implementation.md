@@ -11,16 +11,15 @@ The following example shows how this is done:
 
 ```yaml
 {
-    "name": "acme/person-module",
+    "name": "acme/person-bundle",
     ...
     "extra": {
         "zikula": {
             ...
             "securityschema": {
-                "AcmePersonModule::": "::",
-                "AcmePersonModule:SomeBlock:": "Block title::",
-                "AcmePersonModule:Person:": "Person ID::",
-                "AcmePersonModule:Address:": "Address ID::",
+                "AcmePersonBundle::": "::",
+                "AcmePersonBundle:Person:": "Person ID::",
+                "AcmePersonBundle:Address:": "Address ID::",
                 ...
             }
         }
@@ -45,9 +44,9 @@ The `Zikula\Bundle\CoreBundle\Controller\AbstractController\AbstractController` 
 The following code shows a possible example how to use this in a controller method:
 
 ```php
-namespace Acme\PersonModule\Controller;
+namespace Acme\PersonBundle\Controller;
 
-use Acme\PersonModule\Entity\PersonEntity;
+use Acme\PersonBundle\Entity\PersonEntity;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -58,7 +57,7 @@ class PersonController extends AbstractController
     /**
      * @Route("/admin/edit/{personid}", requirements={"personid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("@AcmePersonModule/Person/edit.html.twig")
+     * @Template("@AcmePerson/Person/edit.html.twig")
      *
      * Modify a person.
      *
@@ -69,7 +68,7 @@ class PersonController extends AbstractController
         Request $request,
         PersonEntity $person
     ) {
-        if (!$this->hasPermission('AcmePersonModule::', $person->getId() . '::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('AcmePersonBundle::', $person->getId() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -83,27 +82,21 @@ class PersonController extends AbstractController
 Of course the [PermissionApi](PermissionApi.md) can also be injected as a service into any class if desired.
 
 ```php
-namespace Acme\PersonModule\Helper;
+namespace Acme\PersonBundle\Helper;
 
-use Acme\PersonModule\Entity\PersonEntity;
+use Acme\PersonBundle\Entity\PersonEntity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 class MyService
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    public function __construct(PermissionApiInterface $permissionApi)
+    public function __construct(private readonly PermissionApiInterface $permissionApi)
     {
-        $this->permissionApi = $permissionApi;
     }
 
     public function processPerson(PersonEntity $person)
     {
-        if (!$this->permissionApi->hasPermission('AcmePersonModule::', $person->getId() . '::', ACCESS_EDIT)) {
+        if (!$this->permissionApi->hasPermission('AcmePersonBundle::', $person->getId() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
     }
@@ -117,25 +110,23 @@ Controllers may also use a [PermissionCheck Annotation](PermissionCheckAnnotatio
 The controller example from above would look like this then:
 
 ```php
-namespace Acme\PersonModule\Controller;
+namespace Acme\PersonBundle\Controller;
 
-use Acme\PersonModule\Entity\PersonEntity;
+use Acme\PersonBundle\Entity\PersonEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\PermissionsModule\Annotation\PermissionCheck;
+use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 class PersonController extends AbstractController
 {
     /**
      * @Route("/admin/edit/{personid}", requirements={"personid" = "^[1-9]\d*$"})
-     * @PermissionCheck({"$_zkModule::", "$personid::", "edit"})
+     * @PermissionCheck({"AcmePersonBundle::", "$personid::", "edit"})
      * @Theme("admin")
-     * @Template("@AcmePersonModule/Person/edit.html.twig")
+     * @Template("@AcmePersonBundle/Person/edit.html.twig")
      */
-    public function editAction(
-        Request $request,
-        PersonEntity $person
-    ) {
+    public function editAction(Request $request, PersonEntity $person)
+    {
         // ...
     }
 }
@@ -148,12 +139,12 @@ It is also possible to use the annotation on class-level. But it is not allowed 
 Example for a class-level use case:
 
 ```php
-namespace Acme\PersonModule\Controller;
+namespace Acme\PersonBundle\Controller;
 
-use Acme\PersonModule\Entity\PersonEntity;
+use Acme\PersonBundle\Entity\PersonEntity;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\PermissionsModule\Annotation\PermissionCheck;
+use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 /**
  * @PermissionCheck("admin")
@@ -181,7 +172,7 @@ You can use `hasPermission` inside templates similarly as in PHP. The only diffe
 Example:
 
 ```twig
-{% if hasPermission('AcmePersonModule::', person.id ~ '::', 'ACCESS_READ') %}
+{% if hasPermission('AcmePersonBundle::', person.id ~ '::', 'ACCESS_READ') %}
     <h3>{{ person.name }}</h3>
 {% endif %}
 ```
@@ -202,7 +193,7 @@ The permissions system does not have a default way to express ownerships. The re
 
 Common approaches for handling such requirements are for example:
 
-- Use a separate permission component, like `AcmeRecipesModule:Own:(Ingredients|Recipes)`.
+- Use a separate permission component, like `AcmeRecipesBundle:Own:(Ingredients|Recipes)`.
 - Do a comparison of the current user's ID with the owner ID.
 - Use dedicated configuration options, for example user group selectors, to store a group ID which may do additional things (independent of permissions).
 - Combine these steps.

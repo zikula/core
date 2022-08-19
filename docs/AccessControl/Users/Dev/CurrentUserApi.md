@@ -3,8 +3,8 @@ currentMenu: users
 ---
 # CurrentUserApi
 
-Interface: `\Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface`.  
-Class: `\Zikula\UsersModule\Api\CurrentUserApi`.
+Interface: `\Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface`.  
+Class: `\Zikula\UsersBundle\Api\CurrentUserApi`.
 
 The CurrentUserApi can be used to obtain the properties of the user operating at runtime. Any property of the UserEntity
 is available. For example, to obtain the User id (`uid`) of the current user:
@@ -17,7 +17,7 @@ Or to check if the current user is logged in:
 
 ```php
 if ($this->currentUserApi->isLoggedIn()) {
-    return $this->redirectToRoute('zikulausersmodule_account_menu');
+    return $this->redirectToRoute('zikulausersbundle_account_menu');
 }
 ```
 

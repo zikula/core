@@ -15,7 +15,6 @@ to take these steps as outlined in the docs.
 
 - [ExtensionMenu](Dev/ExtensionMenu.md)
 - [Hard coded menus](Dev/HardCodedMenus.md)
-- [Menu events](Dev/MenuEvents.md)
 
 ## External resources
 

@@ -36,13 +36,13 @@ var myText = Translator.trans('Foo bar baz', {}, 'special_domain');
 In this case, the extractor will export these strings to its own translation file:
 
 ```
-/MyModule/Resources/translations/special_domain.yaml
+/MyBundle/Resources/translations/special_domain.yaml
 ```
 
 Then, your extension **must** manually include each of these files in the required template like so:
 
 ```twig
-{{ pageAddAsset('javascript', url('bazinga_jstranslation_js', {domain: 'special_domain'}), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JS_TRANSLATIONS')) }}
+{{ pageAddAsset('javascript', url('bazinga_jstranslation_js', {domain: 'special_domain'}), constant('Zikula\\ThemeBundle\\Engine\\AssetBag::WEIGHT_JS_TRANSLATIONS')) }}
 ```
 
 ## JavaScripts in Twig templates

@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeBundle\Engine\Asset;
 use Zikula\ThemeBundle\Engine\AssetBag;
 use Zikula\ThemeBundle\Engine\Engine;
@@ -30,6 +31,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private array $params;
 
     public function __construct(
+        private readonly ZikulaHttpKernelInterface $kernel,
         private readonly AssetBag $jsAssetBag,
         private readonly AssetBag $cssAssetBag,
         private readonly RouterInterface $router,
@@ -72,7 +74,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             $this->assetHelper->resolve($this->params['bootstrap_js_path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
             $this->assetHelper->resolve('bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
         ]);
-        $this->addFosJsRouting($event->getRequest()->getLocale());
+        $this->addFosJsRouting();
         $this->addJsTranslation();
 
         // add default stylesheets to cssAssetBag
@@ -98,9 +100,13 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         ]);
     }
 
-    private function addFosJsRouting(string $locale): void
+    private function addFosJsRouting(): void
     {
-        $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
+        if ('prod' === $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
+            $routeScript = $this->assetHelper->resolve('js/fos_js_routes.js');
+        } else {
+            $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
+        }
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
             $routeScript => AssetBag::WEIGHT_ROUTES_JS

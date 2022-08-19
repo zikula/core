@@ -24,17 +24,17 @@ php bin/console translation:extract zikula en
 
 Note `zikula` is the name of our configuration.
 
-Examples for a module or a theme:
+Examples for a bundle:
 
 ```shell
-php bin/console translation:extract -b AcmeFooModule extension
-php bin/console translation:extract --bundle AcmeFooModule extension en
-php bin/console translation:extract -b AcmeFooModule acmefoomodule
-php bin/console translation:extract --bundle AcmeFooModule acmefoomodule en
+php bin/console translation:extract -b AcmeFooBundle extension
+php bin/console translation:extract --bundle AcmeFooBundle extension en
+php bin/console translation:extract -b AcmeFooBundle acmefoobundle
+php bin/console translation:extract --bundle AcmeFooBundle acmefoobundle en
 
 # or with more memory:
-php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooModule extension
-php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooModule acmefoomodule en
+php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooBundle extension
+php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooBundle acmefoobundle en
 ```
 
 You can always check the status of your translation using the `translation:status` command.
@@ -56,7 +56,7 @@ You can also use an additional command `zikula:translation:keytovalue` to fix de
 
 ```shell
 php -dmemory_limit=2G bin/console zikula:translation:keytovalue
-php -dmemory_limit=2G bin/console zikula:translation:keytovalue AcmeFooModule
+php -dmemory_limit=2G bin/console zikula:translation:keytovalue AcmeFooBundle
 ```
 
 ## Translation annotations
@@ -108,9 +108,9 @@ Examples:
 ```php
 echo $this->translator->trans(/** @Ignore */$description);
 
-$builder->add('modulecategory' . $module['name'], ChoiceType::class, [
+$builder->add('bundlecategory' . $bundle['name'], ChoiceType::class, [
     /** @Ignore */
-    'label' => $module['displayname'],
+    'label' => $bundle['displayname'],
     'empty_data' => null,
     'choices' => /** @Ignore */$options['categories']
 ]);

@@ -5,7 +5,3 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-
-Routing:
-    resource: .
-    type: zikularoutesbundle

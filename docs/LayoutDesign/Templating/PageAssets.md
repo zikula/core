@@ -27,7 +27,7 @@ $this->get('zikula_core.common.theme.assets_js')
 In a template, it would be done like this:
 
 ```twig
-{{ pageAddAsset('javascript', zasset('@AcmeFooModule:js/myscript.js')) }}
+{{ pageAddAsset('javascript', zasset('@AcmeFooBundle:js/myscript.js')) }}
 ```
 
 ## Weights
@@ -38,12 +38,12 @@ above since no weight is set. To set the weight for an asset, add it like this:
 
 ```php
 $this->get('zikula_core.common.theme.assets_js')->add([
-    $request->getBasePath() . '/modules/acmefoo/mysript.js' => 200
+    $request->getBasePath() . '/bundles/acmefoo/mysript.js' => 200
 ]);
 ```
 
 ```twig
-{{ pageAddAsset('javascript', zasset('@AcmeFooModule:js/myscript.js'), 200) }}
+{{ pageAddAsset('javascript', zasset('@AcmeFooBundle:js/myscript.js'), 200) }}
 ```
 
 Weights utilized by core assets are listed below.

@@ -8,7 +8,7 @@ The action method of any controller can alter the theme through the use of annot
 This annotation is used in a controller method like so: 
 
 ```php
-use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 // …
 
@@ -22,4 +22,4 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 Possible values are:
 
 - "admin"
-- any valid theme name (e.g. "ZikulaDefaultTheme")
+- any valid theme bundle name (e.g. "ZikulaDefaultThemeBundle")

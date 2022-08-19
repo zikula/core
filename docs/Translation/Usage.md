@@ -12,7 +12,7 @@ Service is pre-configured to automatically detect current locale, domain is by d
 
 ### AbstractController
 
-Zikula Translator is automatically added in AbstractController and you can access it in your module controller using:
+Zikula Translator is automatically added in AbstractController and you can access it in your bundle controller using:
 
 ```php
 $this->translator
@@ -48,8 +48,8 @@ $this->__f('Hello %userName%', ['%userName%' => 'Mark Smith'])      // old
 $this->trans('Hello %userName%', ['%userName%' => 'Mark Smith'])    // new
 
 // 3. With explicit domain
-$this->__('Hello', 'acmefoomodule')             // old
-$this->trans('Hello', [], 'acmefoomodule')      // new
+$this->__('Hello', 'acmefoobundle')             // old
+$this->trans('Hello', [], 'acmefoobundle')      // new
 ```
 
 You can still use `Zikula\Bundle\CoreBundle\Translation\TranslatorTrait`, but it has only one method left now:
@@ -111,8 +111,8 @@ Old: {{ __f('Hello %userName%', {'%userName%': 'Mark Smith'}) }}
 New: {% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
 
 3. With explicit domain and locale
-Old: {{ __('Hello', 'acmefoomodule', 'fr') }}
-New: {% trans with {} from 'acmefoomodule' into 'fr' %}Hello{% endtrans %} or {{ 'Hello'|trans({}, 'acmefoomodule', 'fr' }}
+Old: {{ __('Hello', 'acmefoobundle', 'fr') }}
+New: {% trans with {} from 'acmefoobundle' into 'fr' %}Hello{% endtrans %} or {{ 'Hello'|trans({}, 'acmefoobundle', 'fr' }}
 ```
 
 See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.

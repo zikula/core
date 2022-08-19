@@ -9,4 +9,3 @@ So if you would like to contribute new translations or updates for existing ones
 
 - <https://github.com/zikula/core> for the Zikula Core
 - the appropriate repository for any extensions
-- for example: <https://github.com/zikula-modules/Content/> for the Content module

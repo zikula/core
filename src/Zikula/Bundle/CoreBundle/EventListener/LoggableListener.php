@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Gedmo\Loggable\LoggableListener;
+use Gedmo\Loggable\LoggableListener as Loggable;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -21,14 +21,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
- * Loggable listener to provide the current user name
+ * Loggable listener to provide the current user name.
  */
-class LoggerListener
+class LoggableListener
 {
     private bool $installed;
 
     public function __construct(
-        private readonly LoggableListener $loggableListener,
+        private readonly Loggable $loggableListener,
         private readonly TranslatorInterface $translator,
         private readonly CurrentUserApiInterface $currentUserApi,
         string $installed

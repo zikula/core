@@ -14,7 +14,6 @@ return [
     Zikula\Bundle\CoreBundle\CoreBundle::class => ['all' => true],
     Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle::class => ['all' => true],
     Zikula\SettingsBundle\ZikulaSettingsBundle::class => ['all' => true],
-    JMS\I18nRoutingBundle\JMSI18nRoutingBundle::class => ['all' => true],
     Zikula\RoutesBundle\ZikulaRoutesBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle::class => ['all' => true],

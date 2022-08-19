@@ -44,7 +44,6 @@ class Configurator
         'core' => 'Zikula\Bundle\CoreBundle\DependencyInjection\Configuration',
         'zikula_security_center' => 'Zikula\SecurityCenterBundle\DependencyInjection\Configuration',
         'zikula_theme' => 'Zikula\ThemeBundle\DependencyInjection\Configuration',
-        'zikula_routes' => 'Zikula\RoutesBundle\DependencyInjection\Configuration',
         'zikula_settings' => 'Zikula\SettingsBundle\DependencyInjection\Configuration'
     ];
 

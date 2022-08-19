@@ -12,4 +12,4 @@ The trait implemented by `\Zikula\Bundle\CoreBundle\Translator\TranslatorTrait` 
 In your constructor, you are required to call the `setTranslator()` method and set the `$translator` property.
 Typically this will be set to the `'translator'` service.
 
-See `\Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller` for usage example.
+See `\Zikula\ExtensionsBundle\Installer\AbstractExtensionInstaller` for usage example.
