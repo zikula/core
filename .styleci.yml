@@ -24,6 +24,7 @@ enabled:
 
 disabled:
   - concat_without_spaces
+  - escape_implicit_backslashes
   - function_declaration
   - native_constant_invocation_symfony
   - native_function_invocation_symfony
