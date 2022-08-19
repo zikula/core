@@ -5,7 +5,6 @@
 {% block content %}
     <div class="zikularoutesmodule-config">
         {% form_theme form with [
-            '@ZikulaRoutes/Form/bootstrap_4.html.twig',
             '@ZikulaFormExtension/Form/form_div_layout.html.twig'
         ] only %}
         {{ form_start(form) }}
