@@ -40,10 +40,9 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 class AccessController extends AbstractController
 {
     /**
-     * @Route("/login", options={"zkNoBundlePrefix"=1})
-     *
      * @throws InvalidAuthenticationMethodLoginFormException
      */
+    #[Route('/login', name: 'zikulausersbundle_access_login')]
     public function login(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -178,9 +177,7 @@ class AccessController extends AbstractController
         return !empty($returnUrl) ? $this->redirect($this->sanitizeReturnUrl($request, $returnUrl)) : $this->redirectToRoute('home');
     }
 
-    /**
-     * @Route("/logout/{returnUrl}", options={"zkNoBundlePrefix"=1})
-     */
+    #[Route('/logout/{returnUrl}', name: 'zikulausersbundle_access_logout')]
     public function logout(
         Request $request,
         CurrentUserApiInterface $currentUserApi,

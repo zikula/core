@@ -57,17 +57,15 @@ use Zikula\UsersBundle\Helper\MailHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
-/**
- * @Route("/admin")
- */
+#[Route('/users/admin')]
 class UserAdministrationController extends AbstractController
 {
     /**
-     * @Route("/list/{sort}/{sortdir}/{letter}/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaUsers/UserAdministration/list.html.twig")
      */
+    #[Route('/list/{sort}/{sortdir}/{letter}/{page}', name: 'zikulausersbundle_useradministration_listusers', methods: ['GET'], requirements: ['page' => '\d+'])]
     public function listUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -113,9 +111,8 @@ class UserAdministrationController extends AbstractController
     /**
      * Called from UsersBundle/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
-     *
-     * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true, "i18n"=false})
      */
+    #[Route('/getusersbyfragmentastable', name: 'zikulausersbundle_useradministration_getusersbyfragmentastable', methods: ['POST'], options: ['expose' => true])]
     public function getUsersByFragmentAsTable(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -128,7 +125,7 @@ class UserAdministrationController extends AbstractController
         $filter = [
             'activated' => ['operator' => 'notIn', 'operand' => [
                 UsersConstant::ACTIVATED_PENDING_REG,
-                UsersConstant::ACTIVATED_PENDING_DELETE
+                UsersConstant::ACTIVATED_PENDING_DELETE,
             ]],
             'uname' => ['operator' => 'like', 'operand' => "${fragment}%"]
         ];
@@ -136,18 +133,18 @@ class UserAdministrationController extends AbstractController
 
         return $this->render('@ZikulaUsers/UserAdministration/userlist.html.twig', [
             'users' => $users,
-            'actionsHelper' => $actionsHelper
+            'actionsHelper' => $actionsHelper,
         ], new PlainResponse());
     }
 
     /**
-     * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("@ZikulaUsers/UserAdministration/modify.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the user record
      */
+    #[Route('/user/modify/{user}', name: 'zikulausersbundle_useradministration_modify', requirements: ['user' => '^[1-9]\d*$'])]
     public function modify(
         Request $request,
         UserEntity $user,
@@ -198,13 +195,13 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/approve/{user}/{force}", requirements={"user" = "^[1-9]\d*$"})
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaUsers/UserAdministration/approve.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/user/approve/{user}/{force}', name: 'zikulausersbundle_useradministration_approve', requirements: ['user' => '^[1-9]\d*$'])]
     public function approve(
         Request $request,
         UserEntity $user,
@@ -262,13 +259,13 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @PermissionCheck("delete")
      * @Theme("admin")
      * @Template("@ZikulaUsers/UserAdministration/delete.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/delete/{user}', name: 'zikulausersbundle_useradministration_delete', requirements: ['user' => '^[1-9]\d*$'])]
     public function delete(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -344,13 +341,13 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/search")
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaUsers/UserAdministration/search.html.twig")
      *
      * @return array|Response
      */
+    #[Route('/search', name: 'zikulausersbundle_useradministration_search')]
     public function search(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -377,9 +374,9 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/mail")
      * @PermissionCheck({"$_zkModule::MailUsers", "::", "comment"})
      */
+    #[Route('/mail', name: 'zikulausersbundle_useradministration_mailusers')]
     public function mailUsers(
         Request $request,
         UserRepositoryInterface $userRepository,

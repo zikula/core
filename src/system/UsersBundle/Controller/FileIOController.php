@@ -27,18 +27,18 @@ use Zikula\UsersBundle\Form\Type\ExportUsersType;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 /**
- * @Route("/fileIO")
  * @PermissionCheck("admin")
  */
+#[Route('/users/fileIO')]
 class FileIOController extends AbstractController
 {
     /**
-     * @Route("/export")
      * @Theme("admin")
      * @Template("@ZikulaUsersBundle/FileIO/export.html.twig")
      *
      * @return array|StreamedResponse
      */
+    #[Route('/export', name: 'zikulausersbundle_fileio_export')]
     public function export(Request $request, UserRepositoryInterface $userRepository)
     {
         $form = $this->createForm(ExportUsersType::class, []);
@@ -93,7 +93,7 @@ class FileIOController extends AbstractController
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 }

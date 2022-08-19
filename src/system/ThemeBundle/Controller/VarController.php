@@ -31,12 +31,12 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 /**
  * @PermissionCheck("admin")
  */
+#[Route('/theme')]
 class VarController extends AbstractController
 {
     /**
      * Configure a theme's variables based on provided YAML definitions for each field.
      *
-     * @Route("/admin/var/{themeName}")
      * @Theme("admin")
      * @Template("@ZikulaTheme/Var/var.html.twig")
      *
@@ -44,6 +44,7 @@ class VarController extends AbstractController
      *
      * @throws InvalidArgumentException if theme type is not twig-based
      */
+    #[Route('/admin/var/{themeName}', name: 'zikulathemebundle_var_variables')]
     public function variables(
         Request $request,
         VariableApiInterface $variableApi,
@@ -76,7 +77,7 @@ class VarController extends AbstractController
 
         return [
             'themeName' => $themeName,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
@@ -89,22 +90,22 @@ class VarController extends AbstractController
                 'label' => $this->trans('Save'),
                 'icon' => 'fa-check fa-lg',
                 'attr' => [
-                    'class' => 'btn btn-success'
-                ]
+                    'class' => 'btn btn-success',
+                ],
             ])
             ->add('toDefault', SubmitType::class, [
                 'label' => $this->trans('Set to defaults'),
                 'icon' => 'fa-refresh fa-lg',
                 'attr' => [
-                    'class' => 'btn btn-primary'
-                ]
+                    'class' => 'btn btn-primary',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times fa-lg',
                 'attr' => [
-                    'class' => 'btn btn-danger'
-                ]
+                    'class' => 'btn btn-danger',
+                ],
             ])
         ;
 

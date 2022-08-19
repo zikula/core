@@ -31,13 +31,8 @@ class MainController
     /**
      * This controller action is designed for the "/" route (home).
      * The route definition is set in `CoreBundle/Resources/config/routing.xml`
-     *
-     * @Route(
-     *     "/",
-     *     name="home",
-     *     condition="request == null or request.query.get('module') == ''"
-     * )
      */
+    #[Route('/', name: 'home', condition: "request == null or request.query.get('module') == ''")]
     public function home(Request $request): Response
     {
         $startPageInfo = $this->variableApi->getSystemVar('startController');

@@ -26,18 +26,18 @@ use Zikula\ZAuthBundle\Form\Type\ImportUserType;
 use Zikula\ZAuthBundle\Helper\FileIOHelper;
 
 /**
- * @Route("/fileIO")
  * @PermissionCheck("admin")
  */
+#[Route('/zauth/fileIO')]
 class FileIOController extends AbstractController
 {
     /**
-     * @Route("/import")
      * @Theme("admin")
      * @Template("@ZikulaZAuth/FileIO/import.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/import', name: 'zikulazauthbundle_fileio_import')]
     public function import(
         Request $request,
         VariableApiInterface $variableApi,
@@ -68,7 +68,7 @@ class FileIOController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'defaultGroupName' => null !== $groupEntity ? $groupEntity->getName() : ''
+            'defaultGroupName' => null !== $groupEntity ? $groupEntity->getName() : '',
         ];
     }
 }

@@ -21,16 +21,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
+#[Route('/theme')]
 class CombinedAssetController extends AbstractController
 {
-    /**
-     * @Route("/combined_asset/{type}/{key}", options={"i18n"=false})
-     */
-    public function asset(
-        ZikulaHttpKernelInterface $kernel,
-        string $type,
-        string $key
-    ): Response {
+    #[Route('/combined_asset/{type}/{key}', name: 'zikulathemebundle_combinedasset_asset')]
+    public function asset(ZikulaHttpKernelInterface $kernel, string $type, string $key): Response
+    {
         $lifetimeInSeconds = abs(date_format(new DateTime($this->getParameter('zikula_asset_manager.lifetime')), 'U')) - (new DateTime())->getTimestamp();
         $cacheService = new FilesystemAdapter(
             'combined_assets',

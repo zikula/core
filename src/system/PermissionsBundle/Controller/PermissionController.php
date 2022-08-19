@@ -36,15 +36,14 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 /**
  * @PermissionCheck("admin")
  */
+#[Route('/permissions')]
 class PermissionController extends AbstractController
 {
     /**
-     * @Route("/list")
      * @Theme("admin")
      * @Template("@ZikulaPermissions/Permission/list.html.twig")
-     *
-     * View permissions.
      */
+    #[Route('/list', name: 'zikulapermissionsbundle_permission_listpermissions')]
     public function listPermissions(
         GroupRepositoryInterface $groupsRepository,
         PermissionRepositoryInterface $permissionRepository,
@@ -79,9 +78,7 @@ class PermissionController extends AbstractController
         ];
     }
 
-    /**
-     * @Route("/edit/{pid}", options={"expose"=true})
-     */
+    #[Route('/edit/{pid}', name: 'zikulapermissionsbundle_permission_edit', options: ['expose' => true])]
     public function edit(
         Request $request,
         GroupRepositoryInterface $groupsRepository,
@@ -137,10 +134,9 @@ class PermissionController extends AbstractController
     }
 
     /**
-     * @Route("/change-order", methods = {"POST"}, options={"expose"=true})
-     *
      * Change the order of a permission rule.
      */
+    #[Route('/change-order', name: 'zikulapermissionsbundle_permission_changeorder', methods: ['POST'], options: ['expose' => true])]
     public function changeOrder(
         Request $request,
         ManagerRegistry $doctrine,
@@ -158,13 +154,10 @@ class PermissionController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{pid}", methods = {"POST"}, options={"expose"=true})
-     *
-     * Delete a permission.
-     *
-     * @throws FatalError Thrown if the requested permission rule is the default admin rule
-     *                           or if the permission rule couldn't be deleted
+     * @throws RuntimeException Thrown if the requested permission rule is the default admin rule
+     *                          or if the permission rule couldn't be deleted
      */
+    #[Route('/delete/{pid}', name: 'zikulapermissionsbundle_permission_delete', methods: ['POST'], options: ['expose' => true])]
     public function delete(
         PermissionEntity $permissionEntity,
         ManagerRegistry $doctrine,
@@ -191,10 +184,9 @@ class PermissionController extends AbstractController
     }
 
     /**
-     * @Route("/test", methods = {"POST"}, options={"expose"=true})
-     *
      * Test a permission rule for a given username.
      */
+    #[Route('/test', name: 'zikulapermissionsbundle_permission_test', methods: ['POST'], options: ['expose' => true])]
     public function test(
         Request $request,
         PermissionApiInterface $permissionApi,

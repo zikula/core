@@ -26,16 +26,14 @@ use Zikula\SettingsBundle\SettingsConstant;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\Repository\UserSessionRepositoryInterface;
 
-/**
- * @Route("/members")
- */
+#[Route('/profile/members')]
 class MembersController extends AbstractController
 {
     /**
-     * @Route("/list/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck({"$_zkModule:Members:", "::", "read"})
      * @Template("@ZikulaProfile/Members/list.html.twig")
      */
+    #[Route('/list/{page}', name: 'zikulaprofilebundle_members_listmembers', methods: ['GET'], requirements: ['page' => '\d+'])]
     public function listMembers(
         Request $request,
         PropertyRepositoryInterface $propertyRepository,
@@ -84,12 +82,12 @@ class MembersController extends AbstractController
     }
 
     /**
-     * @Route("/recent/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck({"$_zkModule:Members:recent", "::", "read"})
      * @Template("@ZikulaProfile/Members/recent.html.twig")
      *
      * Displays last X registered users.
      */
+    #[Route('/recent/{page}', name: 'zikulaprofilebundle_members_recent', methods: ['GET'], requirements: ['page' => '\d+'])]
     public function recent(
         PropertyRepositoryInterface $propertyRepository,
         UserRepositoryInterface $userRepository,
@@ -109,12 +107,12 @@ class MembersController extends AbstractController
     }
 
     /**
-     * @Route("/online/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck({"$_zkModule:Members:online", "::", "read"})
      * @Template("@ZikulaProfile/Members/online.html.twig")
      *
      * View users online.
      */
+    #[Route('/online/{page}', name: 'zikulaprofilebundle_members_recent', methods: ['GET'], requirements: ['page' => '\d+'])]
     public function online(
         PropertyRepositoryInterface $propertyRepository,
         UserRepositoryInterface $userRepository,
@@ -140,7 +138,7 @@ class MembersController extends AbstractController
     {
         $activeMinutes = $this->getVar('activeminutes');
         $activeSince = new DateTime();
-        $activeSince->modify("-${activeMinutes} minutes");
+        $activeSince->modify('-' . $activeMinutes . ' minutes');
 
         return $userSessionRepository->getUsersSince($activeSince);
     }

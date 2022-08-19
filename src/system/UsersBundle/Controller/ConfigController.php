@@ -30,16 +30,16 @@ use Zikula\UsersBundle\Form\Type\ConfigType\AuthenticationMethodsType;
 use Zikula\UsersBundle\Form\Type\ConfigType\ConfigType;
 
 /**
- * @Route("/admin")
  * @PermissionCheck("admin")
  */
+#[Route('/users')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaUsersBundle/Config/config.html.twig")
      */
+    #[Route('/config', name: 'zikulausersbundle_config_config')]
     public function config(
         Request $request,
         EventDispatcherInterface $eventDispatcher
@@ -58,17 +58,17 @@ class ConfigController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'UC' => new UsersConstant()
+            'UC' => new UsersConstant(),
         ];
     }
 
     /**
-     * @Route("/config/authentication-methods")
      * @Theme("admin")
      * @Template("@ZikulaUsersBundle/Config/authenticationMethods.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/config/authentication-methods', name: 'zikulausersbundle_config_authenticationmethods')]
     public function authenticationMethods(
         Request $request,
         VariableApiInterface $variableApi,
@@ -124,7 +124,7 @@ class ConfigController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'methods' => $allMethods
+            'methods' => $allMethods,
         ];
     }
 }

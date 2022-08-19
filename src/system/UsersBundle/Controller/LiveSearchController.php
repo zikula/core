@@ -21,17 +21,15 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
-/**
- * @Route("/livesearch")
- */
+#[Route('/users/livesearch')]
 class LiveSearchController extends AbstractController
 {
     /**
      * Retrieves a list of users for a given search term (fragment).
      *
-     * @Route("/getUsers", methods = {"GET"}, options={"expose"=true})
      * @PermissionCheck({"$_zkModule::LiveSearch", "::", "edit"})
      */
+    #[Route('/getUsers', name: 'zikulausersbundle_livesearch_getusers', methods: ['GET'], options: ['expose' => true])]
     public function getUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -52,12 +50,11 @@ class LiveSearchController extends AbstractController
                 $resultItems[] = [
                     'uid' => $result->getUid(),
                     'uname' => $result->getUname(),
-                    'avatar' => $avatar
+                    'avatar' => $avatar,
                 ];
             }
         }
 
-        // return response
         return new JsonResponse($resultItems);
     }
 }

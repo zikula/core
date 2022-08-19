@@ -1,0 +1,2 @@
+zikula_static_content:
+    resource: "@ZikulaStaticContentBundle/Resources/config/routing.yaml"

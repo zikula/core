@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Settings\Controller;
+namespace Zikula\SettingsBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,22 +22,19 @@ use Zikula\SettingsBundle\Helper\RouteDumperHelper;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/route")
  * @PermissionCheck("admin")
  */
+#[Route('/settings')]
 class RouteController extends AbstractController
 {
     /**
      * Dumps the routes exposed to javascript.
      *
-     * @Route("/dump",
-     *        name = "zikulasettingsbundle_route_dumpjsroutes",
-     *        methods = {"GET"}
-     * )
      * @Theme("admin")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
+    #[Route('/dump-routes', name: 'zikulasettingsbundle_route_dumpjsroutes', methods: ['GET'])]
     public function dumpJsRoutes(RouteDumperHelper $routeDumperHelper): Response
     {
         if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {

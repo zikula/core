@@ -29,13 +29,12 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/registry")
  * @PermissionCheck("admin")
  */
+#[Route('/categories/admin/registry')]
 class RegistryController extends AbstractController
 {
     /**
-     * @Route("/edit/{id}", requirements={"id" = "^[1-9]\d*$"}, defaults={"id" = null})
      * @Theme("admin")
      * @Template("@ZikulaCategories/Registry/edit.html.twig")
      *
@@ -43,6 +42,7 @@ class RegistryController extends AbstractController
      *
      * @return array|RedirectResponse
      */
+    #[Route('/edit/{id}', name: 'zikulacategoriesbundle_registry_edit', requirements: ['id' => "^[1-9]\d*$"], defaults: ['id' => null])]
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -89,7 +89,6 @@ class RegistryController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("@ZikulaCategories/Registry/delete.html.twig")
      *
@@ -97,6 +96,7 @@ class RegistryController extends AbstractController
      *
      * @return array|RedirectResponse
      */
+    #[Route('/delete/{id}', name: 'zikulacategoriesbundle_registry_delete', requirements: ['id' => "^[1-9]\d*$"])]
     public function delete(
         Request $request,
         EntityManagerInterface $entityManager,

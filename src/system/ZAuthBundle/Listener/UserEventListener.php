@@ -29,7 +29,7 @@ class UserEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            UserPreLoginSuccessEvent::class => ['forcedPasswordChange']
+            UserPreLoginSuccessEvent::class => ['forcedPasswordChange'],
         ];
     }
 

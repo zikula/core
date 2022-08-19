@@ -26,16 +26,16 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\ThemeBundle\Form\Type\ThemeType;
 
 /**
- * @Route("/config")
  * @PermissionCheck("admin")
  */
+#[Route('/theme')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaTheme/Config/config.html.twig")
      */
+    #[Route('/config', name: 'zikulathemebundle_config_config')]
     public function config(
         Request $request,
         VariableApiInterface $variableApi,
@@ -81,7 +81,7 @@ class ConfigController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'themes' => $themes
+            'themes' => $themes,
         ];
     }
 }

@@ -41,21 +41,17 @@ use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\Validator\Constraints\ValidUserFieldsValidator;
 
-/**
- * @Route("")
- */
 class RegistrationController extends AbstractController
 {
     /**
      * Display the registration form.
-     *
-     * @Route("/register", methods = {"GET", "POST"}, options={"zkNoBundlePrefix"=1})
      *
      * @return Response|RedirectResponse
      *
      * @throws InvalidAuthenticationMethodRegistrationFormException
      * @throws Exception
      */
+    #[Route('/register', name: 'zikulausersbundle_registration_register', methods: ['GET', 'POST'])]
     public function register(
         Request $request,
         CurrentUserApiInterface $currentUserApi,

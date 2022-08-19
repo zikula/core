@@ -40,18 +40,18 @@ use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\Repository\UserSessionRepositoryInterface;
 
-/**
- * @Route("/membership")
- */
+#[Route('/groups/membership')]
 class MembershipController extends AbstractController
 {
     /**
-     * @Route("/list/{gid}/{letter}/{page}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "page" = "\d+"})
      * @PermissionCheck({"$_zkModule::memberslist", "::", "overview"})
      * @Template("@ZikulaGroups/Membership/list.html.twig")
      *
      * Display all members of a group to a user.
      */
+    #[Route('/list/{gid}/{letter}/{page}', name: 'zikulagroupsbundle_membership_listmemberships', methods: ['GET'],
+        requirements: ['gid' => "^[1-9]\d*$", 'letter' => "[a-zA-Z]|\*", 'page' => "\d+"])
+    ]
     public function listMemberships(
         GroupEntity $group,
         VariableApiInterface $variableApi,
@@ -73,13 +73,15 @@ class MembershipController extends AbstractController
     }
 
     /**
-     * @Route("/admin/list/{gid}/{letter}/{page}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "page" = "\d+"})
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
      * @Template("@ZikulaGroups/Membership/adminList.html.twig")
      *
      * Display all members of a group to an admin.
      */
+    #[Route('/admin/list/{gid}/{letter}/{page}', name: 'zikulagroupsbundle_membership_adminlist', methods: ['GET'],
+        requirements: ['gid' => "^[1-9]\d*$", 'letter' => "[a-zA-Z]|\*", 'page' => "\d+"])
+    ]
     public function adminList(
         GroupEntity $group,
         string $letter = '*',
@@ -91,13 +93,13 @@ class MembershipController extends AbstractController
     }
 
     /**
-     * @Route("/admin/add/{uid}/{gid}/{token}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      *
      * Add user to a group.
      *
      * @throws AccessDeniedException Thrown if the CSRF token is invalid
      */
+    #[Route('/admin/add/{uid}/{gid}/{token}', name: 'zikulagroupsbundle_membership_add', requirements: ['gid' => "^[1-9]\d*$", 'uid' => "^[1-9]\d*$"])]
     public function add(
         UserEntity $userEntity,
         GroupEntity $group,
@@ -123,13 +125,13 @@ class MembershipController extends AbstractController
     }
 
     /**
-     * @Route("/join/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @PermissionCheck("overview")
      *
      * Process request by the current user to join a group
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
+    #[Route('/join/{gid}', name: 'zikulagroupsbundle_membership_join', requirements: ['gid' => "^[1-9]\d*$"])]
     public function join(
         GroupEntity $group,
         ManagerRegistry $doctrine,
@@ -164,7 +166,6 @@ class MembershipController extends AbstractController
     }
 
     /**
-     * @Route("/admin/remove/{gid}/{uid}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
      * @Template("@ZikulaGroups/Membership/remove.html.twig")
@@ -175,6 +176,7 @@ class MembershipController extends AbstractController
      *
      * @throws InvalidArgumentException
      */
+    #[Route('/admin/remove/{gid}/{uid}}', name: 'zikulagroupsbundle_membership_remove', requirements: ['gid' => "^[1-9]\d*$", 'uid' => "^[1-9]\d*$"])]
     public function remove(
         Request $request,
         ManagerRegistry $doctrine,
@@ -227,13 +229,13 @@ class MembershipController extends AbstractController
     }
 
     /**
-     * @Route("/leave/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @PermissionCheck("overview")
      *
      * Process request by current user to leave a group
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
+    #[Route('/leave/{gid}', name: 'zikulagroupsbundle_membership_leave', requirements: ['gid' => "^[1-9]\d*$"])]
     public function leave(
         GroupEntity $group,
         ManagerRegistry $doctrine,
@@ -256,11 +258,10 @@ class MembershipController extends AbstractController
     }
 
     /**
-     * @Route("/admin/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true})
-     *
      * Called from UsersBundle/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
      */
+    #[Route('/admin/getusersbyfragmentastable', name: 'zikulagroupsbundle_membership_getusersbyfragmentastable', methods: ['POST'], options: ['expose' => true])]
     public function getUsersByFragmentAsTable(
         Request $request,
         UserRepositoryInterface $userRepository

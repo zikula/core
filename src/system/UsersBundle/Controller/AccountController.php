@@ -38,17 +38,17 @@ use Zikula\UsersBundle\Helper\DeleteHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 /**
- * @Route("/account")
  * @PermissionCheck("read")
  */
+#[Route('/account')]
 class AccountController extends AbstractController
 {
     /**
-     * @Route("")
      * @Template("@ZikulaUsersBundle/Account/menu.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
+    #[Route('', name: 'zikulausersbundle_account_menu')]
     public function menu(
         ExtensionMenuCollector $extensionMenuCollector,
         VariableApiInterface $variableApi
@@ -72,13 +72,13 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @Route("/change-language")
      * @Template("@ZikulaUsersBundle/Account/changeLanguage.html.twig")
      *
      * @return array|RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
+    #[Route('/change-language', name: 'zikulausersbundle_account_changelanguage')]
     public function changeLanguage(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -88,7 +88,7 @@ class AccountController extends AbstractController
             throw new AccessDeniedException();
         }
         $form = $this->createForm(ChangeLanguageType::class, [
-            'locale' => $currentUserApi->get('locale')
+            'locale' => $currentUserApi->get('locale'),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -114,18 +114,18 @@ class AccountController extends AbstractController
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/delete")
      * @Template("@ZikulaUsersBundle/Account/delete.html.twig")
      *
      * @return array|RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
+    #[Route('/delete', name: 'zikulausersbundle_account_deletemyaccount')]
     public function deleteMyAccount(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -171,7 +171,7 @@ class AccountController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : []
+            'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : [],
         ];
     }
 }

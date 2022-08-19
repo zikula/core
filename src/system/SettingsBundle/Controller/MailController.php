@@ -31,18 +31,18 @@ use Zikula\SettingsBundle\Form\Type\MailTestType;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/mail")
  * @PermissionCheck("admin")
  */
+#[Route('/settings')]
 class MailController extends AbstractController
 {
     /**
-     * @Route("/test")
      * @Theme("admin")
      * @Template("@ZikulaSettings/Mail/test.html.twig")
      *
      * This function displays a form to send a test mail.
      */
+    #[Route('/mail/test', name: 'zikulasettingsbundle_mail_test')]
     public function test(
         Request $request,
         VariableApiInterface $variableApi,

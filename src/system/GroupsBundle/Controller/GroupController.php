@@ -34,15 +34,16 @@ use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
+#[Route('/groups')]
 class GroupController extends AbstractController
 {
     /**
-     * @Route("/list/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("overview")
      * @Template("@ZikulaGroups/Group/list.html.twig")
      *
      * View a list of all groups (user view).
      */
+    #[Route('/list/{page}', name: 'zikulagroupsbundle_group_listgroups', methods: ['GET'], requirements: ['page' => '\d+'])]
     public function listGroups(GroupRepositoryInterface $groupRepository, int $page = 1): array
     {
         $pageSize = $this->getVar('itemsperpage', 25);
@@ -65,17 +66,15 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/admin/list/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaGroups/Group/adminList.html.twig")
      *
      * View a list of all groups (admin view).
      */
-    public function adminList(
-        GroupRepositoryInterface $groupRepository,
-        int $page = 1
-    ): array {
+    #[Route('/admin/list/{page}', name: 'zikulagroupsbundle_group_adminlist', methods: ['GET'], requirements: ['page' => '\d+'])]
+    public function adminList(GroupRepositoryInterface $groupRepository, int $page = 1): array
+    {
         $pageSize = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
 
@@ -91,13 +90,13 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/admin/create")
      * @PermissionCheck("add")
      * @Theme("admin")
      * @Template("@ZikulaGroups/Group/create.html.twig")
      *
      * Display a form to add a new group.
      */
+    #[Route('/admin/create', name: 'zikulagroupsbundle_group_create')]
     public function create(
         Request $request,
         ManagerRegistry $doctrine,
@@ -125,13 +124,13 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
      * @Template("@ZikulaGroups/Group/edit.html.twig")
      *
      * Modify a group.
      */
+    #[Route('/admin/edit/{gid}', name: 'zikulagroupsbundle_group_edit', requirements: ['gid' => "^[1-9]\d*$"])]
     public function edit(
         Request $request,
         ManagerRegistry $doctrine,
@@ -161,13 +160,13 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/admin/remove/{gid}", requirements={"gid"="\d+"})
      * @PermissionCheck({"$_zkModule::", "$gid::", "delete"})
      * @Theme("admin")
      * @Template("@ZikulaGroups/Group/remove.html.twig")
      *
      * Deletes a group.
      */
+    #[Route('/admin/remove/{gid}', name: 'zikulagroupsbundle_group_remove', requirements: ['gid' => "\d+"])]
     public function remove(
         Request $request,
         ManagerRegistry $doctrine,

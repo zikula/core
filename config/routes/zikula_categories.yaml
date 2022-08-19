@@ -1,0 +1,2 @@
+zikula_categories:
+    resource: "@ZikulaCategoriesBundle/Resources/config/routing.yaml"

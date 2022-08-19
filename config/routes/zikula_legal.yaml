@@ -1,0 +1,2 @@
+zikula_legal:
+    resource: "@ZikulaLegalBundle/Resources/config/routing.yaml"

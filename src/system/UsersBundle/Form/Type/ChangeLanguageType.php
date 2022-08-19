@@ -26,17 +26,17 @@ class ChangeLanguageType extends AbstractType
             ->add('locale', LocaleType::class, [
                 'label' => 'Choose language',
                 'placeholder' => 'Site default',
-                'required' => false
+                'required' => false,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
                 'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-secondary']
+                'attr' => ['class' => 'btn btn-secondary'],
             ])
         ;
     }

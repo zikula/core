@@ -27,16 +27,14 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 
 /**
- * @Route("/admin/category")
  * @PermissionCheck("admin")
  */
+#[Route('/categories/admin/category')]
 class NodeController extends AbstractController
 {
     private string $domTreeNodePrefix = 'node_';
 
-    /**
-     * @Route("/contextMenu/{action}/{id}", options={"expose"=true}, defaults={"id" = null})
-     */
+    #[Route('/contextMenu/{action}/{id}', name: 'zikulacategoriesbundle_node_contextmenu', defaults: ['id' => null], options: ['expose' => true])]
     public function contextMenu(
         Request $request,
         ManagerRegistry $doctrine,
@@ -189,8 +187,8 @@ class NodeController extends AbstractController
 
     /**
      * Ajax function for use on drag and drop of nodes.
-     * @Route("/move", options={"expose"=true})
      */
+    #[Route('/move', name: 'zikulacategoriesbundle_node_move', options: ['expose' => true])]
     public function move(
         Request $request,
         ManagerRegistry $doctrine,

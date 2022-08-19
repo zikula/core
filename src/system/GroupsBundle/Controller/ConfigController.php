@@ -24,18 +24,18 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/config")
  * @PermissionCheck("admin")
  */
+#[Route('/groups')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaGroups/Config/config.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/config', name: 'zikulagroupsbundle_config_config')]
     public function config(Request $request, GroupRepositoryInterface $groupRepository)
     {
         // build a groups array suitable for the form choices

@@ -27,32 +27,30 @@ use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/property")
  * @PermissionCheck("edit")
  */
+#[Route('/profile/property')]
 class PropertyController extends AbstractController
 {
     /**
-     * @Route("/list")
      * @Theme("admin")
      * @Template("@ZikulaProfile/Property/list.html.twig")
      */
+    #[Route('/list', name: 'zikulaprofilebundle_property_listproperties')]
     public function listProperties(PropertyRepositoryInterface $propertyRepository): array
     {
-        $properties = $propertyRepository->findBy([], ['weight' => 'ASC']);
-
         return [
-            'properties' => $properties
+            'properties' => $propertyRepository->findBy([], ['weight' => 'ASC']),
         ];
     }
 
     /**
-     * @Route("/edit/{id}", defaults={"id" = null})
      * @Theme("admin")
      * @Template("@ZikulaProfile/Property/edit.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/edit/{id}', name: 'zikulaprofilebundle_property_edit', defaults: ['id' => null])]
     public function edit(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity = null)
     {
         if (!isset($propertyEntity)) {
@@ -80,12 +78,12 @@ class PropertyController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}")
      * @Theme("admin")
      * @Template("@ZikulaProfile/Property/delete.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/delete/{id}', name: 'zikulaprofilebundle_property_delete')]
     public function delete(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity)
     {
         $form = $this->createForm(DeletionType::class, $propertyEntity);

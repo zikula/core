@@ -21,23 +21,17 @@ use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
-/**
- * @Route("/ajax")
- */
+#[Route('/default-theme/ajax')]
 class AjaxController extends AbstractController
 {
-    /**
-     * @Route("/changeUserStyle", methods = {"POST"}, options={"expose"=true})
-     */
-    public function changeUserStyle(
-        Request $request,
-        ZikulaHttpKernelInterface $kernel
-    ): JsonResponse {
+    #[Route('/changeUserStyle', name: 'zikuladefaultthemebundle_ajax_changeuserstyle', methods: ['POST'], options: ['expose' => true])]
+    public function changeUserStyle(Request $request, ZikulaHttpKernelInterface $kernel): JsonResponse
+    {
         if (!$request->isXmlHttpRequest()) {
             return $this->json($this->trans('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
 
-        $themeBundle = $kernel->getBundle('ZikulaDefaultTheme');
+        $themeBundle = $kernel->getBundle('ZikulaDefaultThemeBundle');
         $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yaml';
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
         $availableStyles = $variableDefinitions['theme_style']['options']['choices'];

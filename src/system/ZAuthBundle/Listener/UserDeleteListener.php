@@ -31,12 +31,8 @@ class UserDeleteListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ActiveUserPostDeletedEvent::class => [
-                'deleteUser'
-            ],
-            RegistrationPostDeletedEvent::class => [
-                'deleteUser'
-            ]
+            ActiveUserPostDeletedEvent::class => ['deleteUser'],
+            RegistrationPostDeletedEvent::class => ['deleteUser'],
         ];
     }
 

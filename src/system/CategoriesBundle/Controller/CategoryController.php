@@ -22,17 +22,18 @@ use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
 use Zikula\CategoriesBundle\Form\Type\CategoryTreeType;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
+use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/admin/category")
+ * @PermissionCheck("admin")
  */
+#[Route('/categories/admin/category')]
 class CategoryController extends AbstractController
 {
     private $domTreeNodePrefix = 'node_';
 
     /**
-     * @Route("/list/{id}", requirements={"category" = "^[1-9]\d*$"}, defaults={"id" = 1})
      * @Theme("admin")
      * @Template("@ZikulaCategories/Category/list.html.twig")
      *
@@ -40,6 +41,7 @@ class CategoryController extends AbstractController
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
+    #[Route('/list/{id}', name: 'zikulacategoriesbundle_category_listcategories', requirements: ['category' => "^[1-9]\d*$"], defaults: ['id' => 1])]
     public function listCategories(
         Request $request,
         ManagerRegistry $doctrine,

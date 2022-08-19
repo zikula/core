@@ -25,20 +25,18 @@ use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * Class ConfigController
- *
- * @Route("/config")
  * @PermissionCheck("admin")
  */
+#[Route('/permissions')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaPermissions/Config/config.html.twig")
      *
      * @return array|Response
      */
+    #[Route('/config', name: 'zikulapermissionsbundle_config_config')]
     public function config(
         Request $request,
         VariableApiInterface $variableApi,

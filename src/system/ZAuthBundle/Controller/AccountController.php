@@ -44,17 +44,15 @@ use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
-/**
- * @Route("/account")
- */
+#[Route('/account')]
 class AccountController extends AbstractController
 {
     /**
-     * @Route("/lost-user-name")
      * @Template("@ZikulaZAuth/Account/lostUserName.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/lost-user-name', name: 'zikulazauthbundle_account_lostusername')]
     public function lostUserName(
         Request $request,
         RouterInterface $router,
@@ -102,16 +100,16 @@ class AccountController extends AbstractController
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/lost-password")
      * @Template("@ZikulaZAuth/Account/lostPassword.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/lost-password', name: 'zikulazauthbundle_account_lostpassword')]
     public function lostPassword(
         Request $request,
         RouterInterface $router,
@@ -199,16 +197,16 @@ class AccountController extends AbstractController
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/lost-password/reset")
      * @Template("@ZikulaZAuth/Account/lostPasswordReset.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/lost-password/reset', name: 'zikulazauthbundle_account_lostpasswordreset')]
     public function lostPasswordReset(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -291,17 +289,17 @@ class AccountController extends AbstractController
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/change-email")
      * @Template("@ZikulaZAuth/Account/changeEmail.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user is not logged in
      */
+    #[Route('/change-email', name: 'zikulazauthbundle_account_changeemail')]
     public function changeEmail(
         Request $request,
         RouterInterface $router,
@@ -339,15 +337,14 @@ class AccountController extends AbstractController
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * @Route("/change-email-confirm/{code}")
-     *
      * @throws AccessDeniedException Thrown if the user is not logged in
      */
+    #[Route('/change-email-confirm/{code}', name: 'zikulazauthbundle_account_confirmchangedemail')]
     public function confirmChangedEmail(
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
@@ -401,11 +398,11 @@ class AccountController extends AbstractController
     }
 
     /**
-     * @Route("/change-password")
      * @Template("@ZikulaZAuth/Account/changePassword.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/change-password', name: 'zikulazauthbundle_account_changepassword')]
     public function changePassword(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -462,7 +459,7 @@ class AccountController extends AbstractController
 
         return [
             'login' => $login,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 }

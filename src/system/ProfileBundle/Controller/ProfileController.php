@@ -30,13 +30,14 @@ use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
+#[Route('/profile')]
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/display/{uid}", requirements={"uid" = "\d+"}, defaults={"uid" = null})
      * @PermissionCheck({"$_zkModule::view", "::", "read"})
      * @Template("@ZikulaProfile/Profile/display.html.twig")
      */
+    #[Route('/display/{uid}', name: 'zikulaprofilebundle_profile_display', requirements: ['uid' => '\d+'], defaults: ['uid' => null])]
     public function display(
         PropertyRepositoryInterface $propertyRepository,
         CurrentUserApiInterface $currentUserApi,
@@ -55,11 +56,11 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{uid}", requirements={"uid" = "\d+"}, defaults={"uid" = null})
      * @Template("@ZikulaProfile/Profile/edit.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/edit/{uid}', name: 'zikulaprofilebundle_profile_edit', requirements: ['uid' => '\d+'], defaults: ['uid' => null])]
     public function edit(
         Request $request,
         ManagerRegistry $doctrine,

@@ -49,7 +49,7 @@ class DeletePendingRegistrationsListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::TERMINATE => ['delete'],
-            RegistrationPostDeletedEvent::class => ['sendEmail']
+            RegistrationPostDeletedEvent::class => ['sendEmail'],
         ];
     }
 

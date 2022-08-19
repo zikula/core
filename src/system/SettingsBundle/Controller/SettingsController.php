@@ -30,18 +30,18 @@ use Zikula\UsersBundle\Collector\MessageBundleCollector;
 use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 
 /**
- * @Route("")
  * @PermissionCheck("admin")
  */
+#[Route('/settings')]
 class SettingsController extends AbstractController
 {
     /**
-     * @Route("")
      * @Theme("admin")
      * @Template("@ZikulaSettings/Settings/main.html.twig")
      *
      * Settings for entire site.
      */
+    #[Route('', name: 'zikulasettingsbundle_settings_mainsettings')]
     public function mainSettings(
         Request $request,
         LocaleApiInterface $localeApi,
@@ -89,12 +89,12 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/locale", options={"i18n"=false})
      * @Theme("admin")
      * @Template("@ZikulaSettings/Settings/locale.html.twig")
      *
      * Locale settings for entire site.
      */
+    #[Route('/locale', name: 'zikulasettingsbundle_settings_localesettings')]
     public function localeSettings(
         Request $request,
         LocaleApiInterface $localeApi,
@@ -148,12 +148,12 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/phpinfo")
      * @Theme("admin")
      * @Template("@ZikulaSettings/Settings/phpinfo.html.twig")
      *
      * Displays the content of {@see phpinfo()}.
      */
+    #[Route('/phpinfo', name: 'zikulasettingsbundle_settings_phpinfo', methods: ['GET'])]
     public function phpinfo(): array
     {
         ob_start();
@@ -171,15 +171,13 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @Route("/toggleeditinplace")
      * @Theme("admin")
      *
      * Toggles the "Edit in place" translation functionality.
      */
-    public function toggleEditInPlace(
-        Request $request,
-        EditInPlaceActivator $activator
-    ): RedirectResponse {
+    #[Route('/toggleeditinplace', name: 'zikulasettingsbundle_settings_toggleeditinplace')]
+    public function toggleEditInPlace(Request $request, EditInPlaceActivator $activator): RedirectResponse
+    {
         if ($request->hasSession() && ($session = $request->getSession())) {
             if ($session->has(EditInPlaceActivator::KEY)) {
                 $activator->deactivate();

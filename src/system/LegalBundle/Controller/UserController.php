@@ -33,14 +33,14 @@ use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Helper\AccessHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
+#[Route('/legal')]
 class UserController extends AbstractController
 {
     /**
-     * @Route("")
-     *
      * Legal module main user function.
      * Redirects to the Terms of Use legal document.
      */
+    #[Route('', name: 'zikulalegalbundle_user_index', methods: ['GET'])]
     public function index(RouterInterface $router): RedirectResponse
     {
         $url = $this->getVar(LegalConstant::MODVAR_TERMS_URL, '');
@@ -52,12 +52,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/legalnotice")
-     *
      * Display Legal notice.
      *
      * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
      */
+    #[Route('/legalnotice', name: 'zikulalegalbundle_user_legalnotice', methods: ['GET'])]
     public function legalNotice(): Response
     {
         $doc = $this->renderDocument('legalNotice', LegalConstant::MODVAR_LEGALNOTICE_ACTIVE, LegalConstant::MODVAR_LEGALNOTICE_URL);
@@ -66,12 +65,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/termsofuse")
-     *
      * Display Terms of Use
      *
      * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
      */
+    #[Route('/termsofuse', name: 'zikulalegalbundle_user_termsofuse', methods: ['GET'])]
     public function termsOfUse(): Response
     {
         $doc = $this->renderDocument('termsOfUse', LegalConstant::MODVAR_TERMS_ACTIVE, LegalConstant::MODVAR_TERMS_URL);
@@ -80,12 +78,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/privacypolicy")
-     *
      * Display Privacy Policy
      *
      * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
      */
+    #[Route('/privacypolicy', name: 'zikulalegalbundle_user_privacypolicy', methods: ['GET'])]
     public function privacyPolicy(): Response
     {
         $doc = $this->renderDocument('privacyPolicy', LegalConstant::MODVAR_PRIVACY_ACTIVE, LegalConstant::MODVAR_PRIVACY_URL);
@@ -94,12 +91,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/accessibilitystatement")
-     *
      * Display Accessibility statement
      *
      * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
      */
+    #[Route('/accessibilitystatement', name: 'zikulalegalbundle_user_accessibilitystatement', methods: ['GET'])]
     public function accessibilityStatement(): Response
     {
         $doc = $this->renderDocument('accessibilityStatement', LegalConstant::MODVAR_ACCESSIBILITY_ACTIVE, LegalConstant::MODVAR_ACCESSIBILITY_URL);
@@ -108,12 +104,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/cancellationrightpolicy")
-     *
      * Display Cancellation right policy
      *
      * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
      */
+    #[Route('/cancellationrightpolicy', name: 'zikulalegalbundle_user_cancellationrightpolicy', methods: ['GET'])]
     public function cancellationRightPolicy(): Response
     {
         $doc = $this->renderDocument('cancellationRightPolicy', LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_ACTIVE, LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_URL);
@@ -122,12 +117,11 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/tradeconditions")
-     *
      * Display Trade conditions
      *
      * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
      */
+    #[Route('/tradeconditions', name: 'zikulalegalbundle_user_tradeconditions', methods: ['GET'])]
     public function tradeConditions(): Response
     {
         $doc = $this->renderDocument('tradeConditions', LegalConstant::MODVAR_TRADECONDITIONS_ACTIVE, LegalConstant::MODVAR_TRADECONDITIONS_URL);
@@ -171,12 +165,12 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/acceptpolicies")
      * @Template("@ZikulaLegal/User/acceptPolicies.html.twig")
      *
      * @return Response|array
      * @throws Exception
      */
+    #[Route('/acceptpolicies', name: 'zikulalegalbundle_user_acceptpolicies')]
     public function acceptPolicies(
         Request $request,
         ManagerRegistry $doctrine,

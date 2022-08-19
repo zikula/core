@@ -47,19 +47,6 @@ abstract class AbstractController extends BaseController
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $variableApi; // for ExtensionVariablesTrait
         $this->setTranslator($translator);
-        $this->boot($extension);
-    }
-
-    /**
-     * Boot the controller.
-     */
-    protected function boot(AbstractExtension $extension): void
-    {
-        // load optional bootstrap
-        $bootstrap = $extension->getPath() . '/bootstrap.php';
-        if (file_exists($bootstrap)) {
-            include_once $bootstrap;
-        }
     }
 
     /**

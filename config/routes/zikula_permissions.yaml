@@ -1,0 +1,2 @@
+zikula_permissions:
+    resource: "@ZikulaPermissionsBundle/Resources/config/routing.yaml"

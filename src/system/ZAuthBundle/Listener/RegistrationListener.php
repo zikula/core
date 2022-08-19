@@ -41,15 +41,9 @@ class RegistrationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ActiveUserPreCreatedEvent::class => [
-                'vetoFullUserCreate'
-            ],
-            RegistrationPostSuccessEvent::class => [
-                'sendEmailVerificationEmail'
-            ],
-            RegistrationPostApprovedEvent::class => [
-                'forceRegistrationApproval'
-            ]
+            ActiveUserPreCreatedEvent::class => ['vetoFullUserCreate'],
+            RegistrationPostSuccessEvent::class => ['sendEmailVerificationEmail'],
+            RegistrationPostApprovedEvent::class => ['forceRegistrationApproval'],
         ];
     }
 

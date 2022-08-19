@@ -26,16 +26,16 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Constant as UsersConstant;
 
 /**
- * @Route("/config")
  * @PermissionCheck("admin")
  */
+#[Route('/profile')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaProfile/Config/config.html.twig")
      */
+    #[Route('/config', name: 'zikulaprofilebundle_config_config')]
     public function config(
         Request $request,
         ZikulaHttpKernelInterface $kernel,

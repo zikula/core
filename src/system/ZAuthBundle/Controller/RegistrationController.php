@@ -34,13 +34,9 @@ use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidRegistrationVerification;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
-/**
- * @Route("")
- */
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/verify-registration/{uname}/{verifycode}")
      * @Template("@ZikulaZAuth/Registration/verify.html.twig")
      *
      * Render and process a registration e-mail verification code.
@@ -55,6 +51,7 @@ class RegistrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
+    #[Route('/verify-registration/{uname}/{verifycode}', name: 'zikulazauthbundle_registration_verify')]
     public function verify(
         Request $request,
         ValidatorInterface $validator,

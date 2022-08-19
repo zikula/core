@@ -1,0 +1,2 @@
+zikula_groups:
+    resource: "@ZikulaGroupsBundle/Resources/config/routing.yaml"

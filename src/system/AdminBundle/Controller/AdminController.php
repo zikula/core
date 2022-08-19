@@ -31,29 +31,24 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
  * Administrative controllers for the admin module
- * NOTE: intentionally no class level route setting here
  */
+#[Route('/admin')]
 class AdminController extends AbstractController
 {
-    /**
-     * @Route("")
-     *
-     * The main administration function.
-     */
+    #[Route('', name: 'zikulaadminbundle_admin_index')]
     public function index(): RedirectResponse
     {
-        // Security check will be done in view()
         return $this->redirectToRoute('zikulaadminbundle_admin_view');
     }
 
     /**
-     * @Route("/categories", methods = {"GET"})
      * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaAdmin/Admin/view.html.twig")
      *
      * Views all admin categories.
      */
+    #[Route('/categories', name: 'zikulaadminbundle_admin_view', methods: ['GET'])]
     public function view(AdminCategoryHelper $categoryHelper): array
     {
         return [
@@ -62,7 +57,6 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/panel/{acslug}", methods = {"GET"})
      * @PermissionCheck("edit")
      * @Theme("admin")
      * @Template("@ZikulaAdmin/Admin/adminpanel.html.twig")
@@ -72,6 +66,7 @@ class AdminController extends AbstractController
      * @return array|Response
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
+    #[Route('/panel/{acslug}', name: 'zikulaadminbundle_admin_adminpanel', methods: ['GET'])]
     public function adminpanel(
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
@@ -140,11 +135,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/categorymenu/{acslug}", methods = {"GET"})
      * @Theme("admin")
      *
      * Displays main category menu.
      */
+    #[Route('/categorymenu/{acslug}', name: 'zikulaadminbundle_admin_categorymenu', methods: ['GET'])]
     public function categorymenu(
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,

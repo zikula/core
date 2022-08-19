@@ -23,16 +23,16 @@ use Zikula\ZAuthBundle\Form\Type\ConfigType;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 /**
- * @Route("/admin")
  * @PermissionCheck("admin")
  */
+#[Route('/zauth')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaZAuth/Config/config.html.twig")
      */
+    #[Route('/config', name: 'zikulazauthbundle_config_config')]
     public function config(Request $request): array
     {
         $form = $this->createForm(ConfigType::class, $this->getVars());
@@ -49,7 +49,7 @@ class ConfigController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'ZAC' => new ZAuthConstant()
+            'ZAC' => new ZAuthConstant(),
         ];
     }
 }

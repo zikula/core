@@ -26,18 +26,18 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
- * @Route("/config")
  * @PermissionCheck("admin")
  */
+#[Route('/legal')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Template("@ZikulaLegal/Config/config.html.twig")
      * @Theme("admin")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/config', name: 'zikulalegalbundle_config_config')]
     public function config(
         Request $request,
         GroupRepositoryInterface $groupRepository,
@@ -103,7 +103,7 @@ class ConfigController extends AbstractController
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 }

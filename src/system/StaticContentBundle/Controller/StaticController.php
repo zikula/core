@@ -28,9 +28,7 @@ final class StaticController
     ) {
     }
 
-    /**
-     * @Route("/p/{name}", methods = {"GET"}, options={"zkNoBundlePrefix"=1}, requirements={"name" = "[^&/?*:;{}\\]+"})
-     */
+    #[Route('/p/{name}', name: 'zikulastaticcontentbundle_static_view', methods: ['GET'], requirements: ['name' => "[^&/?*:;{}\\]+"])]
     public function view(string $name): Response
     {
         if (!$this->permissionApi->hasPermission('ZikulaStaticContentModule::name', '::' . $name, ACCESS_OVERVIEW)) {

@@ -56,17 +56,15 @@ use Zikula\ZAuthBundle\Helper\RegistrationVerificationHelper;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
-/**
- * @Route("/admin")
- */
+#[Route('/zauth/admin')]
 class UserAdministrationController extends AbstractController
 {
     /**
-     * @Route("/list/{sort}/{sortdir}/{letter}/{page}", methods = {"GET"}, requirements={"page" = "\d+"})
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaZAuth/UserAdministration/list.html.twig")
      */
+    #[Route('/list/{sort}/{sortdir}/{letter}/{page}', name: 'zikulazauthbundle_useradministration_listmappings', methods: ['GET'], requirements: ['page' => '\d+'])]
     public function listMappings(
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -110,9 +108,8 @@ class UserAdministrationController extends AbstractController
     /**
      * Called from UsersBundle/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
-     *
-     * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true, "i18n"=false})
      */
+    #[Route('/getusersbyfragmentastable', name: 'zikulazauthbundle_useradministration_getusersbyfragmentastable', methods: ['POST'], options: ['expose' => true])]
     public function getUsersByFragmentAsTable(
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -129,18 +126,18 @@ class UserAdministrationController extends AbstractController
 
         return $this->render('@ZikulaZAuth/UserAdministration/userlist.html.twig', [
             'mappings' => $mappings->getResults(),
-            'actionsHelper' => $actionsHelper
+            'actionsHelper' => $actionsHelper,
         ], new PlainResponse());
     }
 
     /**
-     * @Route("/user/create")
      * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaZAuth/UserAdministration/create.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/user/create', name: 'zikulazauthbundle_useradministration_create')]
     public function create(
         Request $request,
         VariableApiInterface $variableApi,
@@ -215,18 +212,18 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : []
+            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : [],
         ];
     }
 
     /**
-     * @Route("/user/modify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("@ZikulaZAuth/UserAdministration/modify.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the mapping record
      */
+    #[Route('/user/modify/{mapping}', name: 'zikulazauthbundle_useradministration_modify', requirements: ['mapping' => '^[1-9]\d*$'])]
     public function modify(
         Request $request,
         AuthenticationMappingEntity $mapping,
@@ -282,18 +279,18 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : []
+            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : [],
         ];
     }
 
     /**
-     * @Route("/verify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @PermissionCheck("moderate")
      * @Theme("admin")
      * @Template("@ZikulaZAuth/UserAdministration/verify.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/verify/{mapping}', name: 'zikulazauthbundle_useradministration_verify', requirements: ['mapping' => '^[1-9]\d*$'])]
     public function verify(
         Request $request,
         AuthenticationMappingEntity $mapping,
@@ -325,15 +322,14 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'mapping' => $mapping
+            'mapping' => $mapping,
         ];
     }
 
     /**
-     * @Route("/send-confirmation/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
-     *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the mapping record
      */
+    #[Route('/send-confirmation/{mapping}', name: 'zikulazauthbundle_useradministration_sendconfirmation', requirements: ['mapping' => '^[1-9]\d*$'])]
     public function sendConfirmation(
         AuthenticationMappingEntity $mapping,
         LostPasswordVerificationHelper $lostPasswordVerificationHelper,
@@ -348,7 +344,7 @@ class UserAdministrationController extends AbstractController
             'uname' => $mapping->getUname(),
             'validDays' => $changePasswordExpireDays,
             'lostPasswordId' => $lostPasswordId,
-            'requestedByAdmin' => true
+            'requestedByAdmin' => true,
         ]);
         if ($mailSent) {
             $this->addFlash('status', $this->trans('Done! The password recovery verification link for %userName% has been sent via e-mail.', ['%userName%' => $mapping->getUname()]));
@@ -358,10 +354,9 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/send-username/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
-     *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the mapping record
      */
+    #[Route('/send-username/{mapping}', name: 'zikulazauthbundle_useradministration_sendusername', requirements: ['mapping' => '^[1-9]\d*$'])]
     public function sendUserName(
         AuthenticationMappingEntity $mapping,
         MailHelper $mailHelper
@@ -382,7 +377,6 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/toggle-password-change/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("@ZikulaZAuth/UserAdministration/togglePasswordChange.html.twig")
      *
@@ -391,6 +385,7 @@ class UserAdministrationController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
      */
+    #[Route('/toggle-password-change/{user}', name: 'zikulazauthbundle_useradministration_togglepasswordchange', requirements: ['user' => '^[1-9]\d*$'])]
     public function togglePasswordChange(Request $request, ManagerRegistry $doctrine, UserEntity $user)
     {
         if (!$this->hasPermission('ZikulaZAuthModule', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
@@ -427,18 +422,18 @@ class UserAdministrationController extends AbstractController
         return [
             'form' => $form->createView(),
             'mustChangePass' => $mustChangePass,
-            'user' => $user
+            'user' => $user,
         ];
     }
 
     /**
-     * @Route("/batch-force-password-change")
      * @PermissionCheck("admin")
      * @Theme("admin")
      * @Template("@ZikulaZAuth/UserAdministration/batchForcePasswordChange.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/batch-force-password-change', name: 'zikulazauthbundle_useradministration_batchforcepasswordchange')]
     public function batchForcePasswordChange(
         BatchPasswordChangeHelper $batchPasswordChangeHelper,
         Request $request

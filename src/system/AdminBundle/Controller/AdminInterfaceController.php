@@ -28,16 +28,13 @@ use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
-/**
- * @Route("/admininterface")
- */
+#[Route('/admin/interface')]
 class AdminInterfaceController extends AbstractController
 {
     /**
-     * @Route("/header")
-     *
      * Open the admin container
      */
+    #[Route('/header', name: 'zikulaadminbundle_admininterface_header')]
     public function header(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaAdmin/AdminInterface/header.html.twig', [
@@ -46,10 +43,9 @@ class AdminInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/footer")
-     *
      * Close the admin container
      */
+    #[Route('/footer', name: 'zikulaadminbundle_admininterface_footer')]
     public function footer(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaAdmin/AdminInterface/footer.html.twig', [
@@ -60,11 +56,11 @@ class AdminInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/breadcrumbs", methods = {"GET"})
      * @PermissionCheck("admin")
      *
      * Admin breadcrumbs
      */
+    #[Route('/breadcrumbs', name: 'zikulaadminbundle_admininterface_breadcrumbs', methods: ['GET'])]
     public function breadcrumbs(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel, AdminCategoryHelper $categoryHelper): Response
     {
         $caller = $this->getCallerInfo($requestStack, $kernel);
@@ -84,11 +80,11 @@ class AdminInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/updatecheck")
      * @PermissionCheck("admin")
      *
      * Display update check
      */
+    #[Route('/updatecheck', name: 'zikulaadminbundle_admininterface_updatecheck', methods: ['GET'])]
     public function updatecheck(
         RequestStack $requestStack,
         ZikulaHttpKernelInterface $kernel,
@@ -107,11 +103,11 @@ class AdminInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/menu")
      * @PermissionCheck("admin")
      *
      * Display admin menu
      */
+    #[Route('/menu', name: 'zikulaadminbundle_admininterface_menu', methods: ['GET'])]
     public function menu(
         RequestStack $requestStack,
         ZikulaHttpKernelInterface $kernel,
@@ -212,7 +208,7 @@ class AdminInterfaceController extends AbstractController
 
         $fullTemplateName = $mode . '.' . $template;
 
-        return $this->render("@ZikulaAdmin/AdminInterface/${fullTemplateName}.html.twig", [
+        return $this->render('@ZikulaAdmin/AdminInterface/' . $fullTemplateName . '.html.twig', [
             'adminMenu' => ('categories' === $mode) ? $menuCategories : $menuModules,
             'mode' => $mode,
             'caller' => $caller

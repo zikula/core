@@ -36,18 +36,18 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Helper\AccessHelper;
 
 /**
- * @Route("/config")
  * @PermissionCheck("admin")
  */
+#[Route('/security/config')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenter/Config/config.html.twig")
      *
      * @return array|RedirectResponse
      */
+    #[Route('/config', name: 'zikulasecuritycenterbundle_config_config')]
     public function config(
         Request $request,
         RouterInterface $router,
@@ -175,7 +175,6 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * @Route("/purifierconfig/{reset}")
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenter/Config/purifierconfig.html.twig")
      *
@@ -183,6 +182,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
+    #[Route('/purifierconfig/{reset}', name: 'zikulasecuritycenterbundle_config_purifierconfig')]
     public function purifierconfig(
         Request $request,
         PurifierHelper $purifierHelper,
@@ -379,7 +379,6 @@ class ConfigController extends AbstractController
     }
 
     /**
-     * @Route("/allowedhtml")
      * @Theme("admin")
      * @Template("@ZikulaSecurityCenter/Config/allowedhtml.html.twig")
      *
@@ -387,6 +386,7 @@ class ConfigController extends AbstractController
      *
      * @return array|RedirectResponse
      */
+    #[Route('/allowedhtml', name: 'zikulasecuritycenterbundle_config_allowedhtml')]
     public function allowedhtml(
         Request $request,
         RouterInterface $router,

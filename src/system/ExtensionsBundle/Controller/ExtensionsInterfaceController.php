@@ -22,16 +22,13 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeBundle\Engine\Asset;
 
-/**
- * @Route("/extensionsinterface")
- */
+#[Route('/extensions/interface')]
 class ExtensionsInterfaceController extends AbstractController
 {
     /**
-     * @Route("/header")
-     *
-     * Module header
+     * Extension header
      */
+    #[Route('/header', name: 'zikulaextensionsbundle_extensionsinterface_header')]
     public function header(
         ZikulaHttpKernelInterface $kernel,
         RequestStack $requestStack,
@@ -54,10 +51,9 @@ class ExtensionsInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/footer")
-     *
-     * Module footer
+     * Extension footer
      */
+    #[Route('/footer', name: 'zikulaextensionsbundle_extensionsinterface_footer')]
     public function footer(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaExtensions/ExtensionsInterface/footer.html.twig', [
@@ -66,10 +62,9 @@ class ExtensionsInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/breadcrumbs", methods = {"GET"})
-     *
-     * Admin breadcrumbs
+     * Beadcrumbs
      */
+    #[Route('/breadcrumbs', name: 'zikulaextensionsbundle_extensionsinterface_breadcrumbs', methods: ['GET'])]
     public function breadcrumbs(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel): Response
     {
         return $this->render('@ZikulaExtensions/ExtensionsInterface/breadcrumbs.html.twig', [
@@ -85,11 +80,7 @@ class ExtensionsInterfaceController extends AbstractController
         return $caller;
     }
 
-    /**
-     * @Route("/links")
-     *
-     * Open the admin container
-     */
+    #[Route('/links', name: 'zikulaextensionsbundle_extensionsinterface_links', methods: ['GET'])]
     public function links(
         RequestStack $requestStack,
         ZikulaHttpKernelInterface $kernel,

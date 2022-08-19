@@ -1,0 +1,2 @@
+zikula_theme:
+    resource: "@ZikulaThemeBundle/Resources/config/routing.yaml"
