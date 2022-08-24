@@ -36,7 +36,7 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 class MailController extends AbstractController
 {
     public function __construct(
-        SiteDefinitionInterface $site,
+        private readonly SiteDefinitionInterface $site,
         private readonly bool $mailLoggingEnabled
     ) {
     }
@@ -104,8 +104,8 @@ class MailController extends AbstractController
     private function getDataValues(): array
     {
         $parameters = [];
-        $parameters['sitename'] = $site->getName();
-        $parameters['adminmail'] = $site->getAdminMail();
+        $parameters['sitename'] = $this->site->getName();
+        $parameters['adminmail'] = $this->site->getAdminMail();
 
         $parameters['fromName'] = $parameters['sitename'];
         $parameters['fromAddress'] = $parameters['adminmail'];
