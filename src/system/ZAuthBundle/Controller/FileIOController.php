@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;

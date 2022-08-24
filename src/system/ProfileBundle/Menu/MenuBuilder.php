@@ -17,7 +17,6 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\UsersConstant;
 
 class MenuBuilder
 {

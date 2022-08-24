@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsBundle\Controller;
 
-use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

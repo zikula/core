@@ -20,7 +20,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
 use Zikula\ExtensionsBundle\Initializer\BundleInitializerInterface;
-use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;

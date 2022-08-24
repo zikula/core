@@ -25,7 +25,6 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidRegistrationVerification;
-use Zikula\ZAuthBundle\ZAuthConstant;
 
 class VerifyRegistrationType extends AbstractType
 {

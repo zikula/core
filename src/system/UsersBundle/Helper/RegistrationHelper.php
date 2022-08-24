@@ -18,7 +18,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;

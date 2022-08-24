@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 

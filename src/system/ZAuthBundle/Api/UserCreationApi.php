@@ -114,7 +114,7 @@ class UserCreationApi implements UserCreationApiInterface
         $userEntity = new UserEntity();
         foreach ($userArray as $fieldName => $fieldValue) {
             $setter = 'set' . ucfirst($fieldName);
-            $userEntity->$setter($fieldValue);
+            $userEntity->{$setter}($fieldValue);
         }
         $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
         $userEntity->setRegistrationDate($nowUTC);

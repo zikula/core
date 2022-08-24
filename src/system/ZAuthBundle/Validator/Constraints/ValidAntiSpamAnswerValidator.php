@@ -20,7 +20,6 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ValidAntiSpamAnswerValidator extends ConstraintValidator
 {

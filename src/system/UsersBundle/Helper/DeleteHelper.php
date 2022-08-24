@@ -18,11 +18,11 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
-use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersBundle\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class DeleteHelper
 {
