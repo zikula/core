@@ -15,7 +15,6 @@ namespace Zikula\LegalBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\LegalBundle\LegalConstant;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 

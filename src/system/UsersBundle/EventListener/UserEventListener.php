@@ -21,7 +21,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Event\UserPostLoginSuccessEvent;
 use Zikula\UsersBundle\Event\UserPostLogoutSuccessEvent;
-use Zikula\UsersBundle\UsersConstant;
 
 class UserEventListener implements EventSubscriberInterface
 {

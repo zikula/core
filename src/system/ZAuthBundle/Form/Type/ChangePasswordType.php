@@ -23,7 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPasswordChange;
-use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ChangePasswordType extends AbstractType
 {

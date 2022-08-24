@@ -28,7 +28,6 @@ use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
-use Zikula\UsersBundle\UsersConstant;
 
 class MailHelper
 {

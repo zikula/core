@@ -19,7 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
-use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ZAuthDuplicatePassType extends AbstractType
 {

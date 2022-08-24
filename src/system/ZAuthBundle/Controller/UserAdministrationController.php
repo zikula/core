@@ -181,7 +181,7 @@ class UserAdministrationController extends AbstractController
                 $user = new UserEntity();
                 foreach ($userData as $fieldName => $fieldValue) {
                     $setter = 'set' . ucfirst($fieldName);
-                    $user->$setter($fieldValue);
+                    $user->{$setter}($fieldValue);
                 }
                 $user->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
                 $registrationHelper->registerNewUser($user);
@@ -274,7 +274,7 @@ class UserAdministrationController extends AbstractController
                 $user = $userRepository->find($mapping->getUid());
                 foreach ($userData as $fieldName => $fieldValue) {
                     $setter = 'set' . ucfirst($fieldName);
-                    $user->$setter($fieldValue);
+                    $user->{$setter}($fieldValue);
                 }
                 $userRepository->persistAndFlush($user);
 

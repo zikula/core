@@ -19,7 +19,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Zikula\GroupsBundle\Controller\GroupController;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
-use Zikula\GroupsBundle\Menu\MenuBuilder;
 
 class ZikulaGroupsExtension extends Extension
 {

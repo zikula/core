@@ -60,7 +60,6 @@ EOT
 
         $bundle->getInitializer()->init();
 
-
         return Command::SUCCESS;
     }
 }

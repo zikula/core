@@ -21,7 +21,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ValidPasswordValidator extends ConstraintValidator
 {

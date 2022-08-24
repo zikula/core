@@ -19,7 +19,6 @@ use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
-use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface

@@ -25,7 +25,6 @@ use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
 use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidUserFields;
-use Zikula\ZAuthBundle\ZAuthConstant;
 
 class AdminModifyUserType extends AbstractType
 {
