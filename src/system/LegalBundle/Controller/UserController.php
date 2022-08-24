@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\LegalBundle\Form\Type\AcceptPoliciesType;
 use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
 use Zikula\LegalBundle\LegalConstant;
@@ -36,8 +37,11 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 #[Route('/legal')]
 class UserController extends AbstractController
 {
-    public function __construct(private readonly PermissionApiInterface $permissionApi, private readonly array $legalConfig)
-    {
+    public function __construct(
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly SiteDefinitionInterface $site,
+        private readonly array $legalConfig
+    ) {
     }
 
     /**
@@ -142,7 +146,9 @@ class UserController extends AbstractController
             return $this->redirect($customUrl);
         }
 
-        return $this->render('@ZikulaLegal/User/' . $documentName . '.html.twig');
+        return $this->render('@ZikulaLegal/User/' . $documentName . '.html.twig', [
+            'adminMail' => $this->site->getAdminMail(),
+        ]);
     }
 
     #[Route('/acceptpolicies', name: 'zikulalegalbundle_user_acceptpolicies')]
