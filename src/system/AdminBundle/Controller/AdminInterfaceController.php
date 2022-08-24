@@ -13,24 +13,29 @@ declare(strict_types=1);
 
 namespace Zikula\AdminBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\AdminBundle\Helper\AdminCategoryHelper;
-use Zikula\AdminBundle\Helper\UpdateCheckHelper;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 #[Route('/admin/interface')]
 class AdminInterfaceController extends AbstractController
 {
+    public function __construct(private readonly PermissionApiInterface $permissionApi, private readonly TranslatorInterface $translator)
+    {
+    }
+
     /**
      * Open the admin container
      */
@@ -82,29 +87,6 @@ class AdminInterfaceController extends AbstractController
     /**
      * @PermissionCheck("admin")
      *
-     * Display update check
-     */
-    #[Route('/updatecheck', name: 'zikulaadminbundle_admininterface_updatecheck', methods: ['GET'])]
-    public function updatecheck(
-        RequestStack $requestStack,
-        ZikulaHttpKernelInterface $kernel,
-        UpdateCheckHelper $updateCheckHelper
-    ): Response {
-        $mainRequest = $requestStack->getMainRequest();
-
-        return $this->render('@ZikulaAdmin/AdminInterface/updateCheck.html.twig', [
-            'mode' => $kernel->getEnvironment(),
-            'caller' => [
-                '_route' => $mainRequest->attributes->get('_route'),
-                '_route_params' => $mainRequest->attributes->get('_route_params')
-            ],
-            'updateCheckHelper' => $updateCheckHelper
-        ]);
-    }
-
-    /**
-     * @PermissionCheck("admin")
-     *
      * Display admin menu
      */
     #[Route('/menu', name: 'zikulaadminbundle_admininterface_menu', methods: ['GET'])]
@@ -137,7 +119,7 @@ class AdminInterfaceController extends AbstractController
 
         // category data
         foreach ($categories as $category) {
-            if (!$this->hasPermission('ZikulaAdminModule:Category:', $category->getName() . '::' . $category->getSlug(), ACCESS_ADMIN)) {
+            if (!$this->permissionApi->hasPermission('ZikulaAdminBundle:Category:', $category->getName() . '::' . $category->getSlug(), ACCESS_ADMIN)) {
                 continue;
             }
 
@@ -155,21 +137,21 @@ class AdminInterfaceController extends AbstractController
         ksort($menuCategories);
 
         // bundle data
-        // get admin capable modules
-        $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
-        $menuModules = [];
+        // get admin capable bundles
+        $adminBundles = $capabilityApi->getExtensionsCapableOf('admin');
+        $menuBundles = [];
         foreach ($categories as $category) {
-            foreach ($adminModules as $adminModule) {
-                $bundleName = $adminModule->getName();
+            foreach ($adminBundles as $adminBundle) {
+                $bundleName = $adminBundle->getName();
                 $bundleNames = $categoryHelper->getBundleAssignments($category);
                 if (!in_array($bundleName, $bundleNames, true)) {
                     continue;
                 }
-                if (!$this->hasPermission($bundleName . '::', '::', ACCESS_EDIT)) {
+                if (!$this->permissionApi->hasPermission($bundleName . '::', '::', ACCESS_EDIT)) {
                     continue;
                 }
 
-                $bundleInfo = $adminModule->getMetaData();
+                $bundleInfo = $adminBundle->getMetaData();
                 $menuText = $bundleInfo->getDisplayName();
                 try {
                     $menuTextUrl = isset($bundleInfo->getCapabilities()['admin']['route'])
@@ -177,7 +159,7 @@ class AdminInterfaceController extends AbstractController
                         : '';
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
-                    $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
+                    $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->translator->trans('invalid route') . ')';
                 }
 
                 $extensionMenu = $extensionMenuCollector->get($bundleName, ExtensionMenuInterface::TYPE_ADMIN);
@@ -189,27 +171,27 @@ class AdminInterfaceController extends AbstractController
                     'menuTextUrl' => $menuTextUrl,
                     'menuText' => $menuText,
                     'menuTextTitle' => $bundleInfo->getDescription(),
-                    'moduleName' => $adminModule->getName(),
+                    'bundleName' => $adminBundle->getName(),
                     'order' => $category->getSortOrder(),
                     'extensionMenu' => $extensionMenu,
                     'icon' => $bundleInfo->getIcon(),
                 ];
 
-                $menuModules[$adminModule->getName()] = $bundleData;
+                $menuBundles[$adminBundle->getName()] = $bundleData;
 
                 // category menu
-                if (!$this->hasPermission('ZikulaAdminModule:Category:', $category->getName() . '::', ACCESS_ADMIN)) {
+                if (!$this->permissionApi->hasPermission('ZikulaAdminBundle:Category:', $category->getName() . '::', ACCESS_ADMIN)) {
                     continue;
                 }
 
-                $menuCategories[$category->getSortOrder()]['bundles'][$adminModule->getName()] = $bundleData;
+                $menuCategories[$category->getSortOrder()]['bundles'][$adminBundle->getName()] = $bundleData;
             }
         }
 
         $fullTemplateName = $mode . '.' . $template;
 
         return $this->render('@ZikulaAdmin/AdminInterface/' . $fullTemplateName . '.html.twig', [
-            'adminMenu' => ('categories' === $mode) ? $menuCategories : $menuModules,
+            'adminMenu' => ('categories' === $mode) ? $menuCategories : $menuBundles,
             'mode' => $mode,
             'caller' => $caller
         ]);

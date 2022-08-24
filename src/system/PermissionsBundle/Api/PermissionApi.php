@@ -18,13 +18,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 /**
- * Class PermissionApi
- *
  * This class is used to determine whether a user has rights (or permissions) to a given component. Rights are granted
  * or denied from the Permissions module User Interface. Components/Extensions must declare their Permission structure in
  * their `composer.json` file.
@@ -67,7 +65,7 @@ class PermissionApi implements PermissionApiInterface
         if (!isset($user)) {
             $user = (int) $this->currentUserApi->get('uid');
         }
-        $user = !$user ? Constant::USER_ID_ANONYMOUS : $user;
+        $user = !$user ? UsersConstant::USER_ID_ANONYMOUS : $user;
         if (!isset($this->groupPermsByUser[$user]) || false === $this->groupPermsByUser[$user]) {
             $this->setGroupPermsForUser($user);
         }
@@ -95,7 +93,7 @@ class PermissionApi implements PermissionApiInterface
         }
 
         $defaultGids = [self::ALL_GROUPS];
-        if (Constant::USER_ID_ANONYMOUS === $user) {
+        if (UsersConstant::USER_ID_ANONYMOUS === $user) {
             $defaultGids[] = self::UNREGISTERED_USER_GROUP; // Unregistered GID
         }
         $allGroups = array_merge_recursive($defaultGids, $foundGids);

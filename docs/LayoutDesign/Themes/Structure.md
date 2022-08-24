@@ -26,8 +26,6 @@ SpecTheme/
         translations/
             messages+intl-icu.en.yaml
         views/
-            Block/
-                block.html.twig
             Body/
                 2col.html.twig
             Include/

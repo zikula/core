@@ -19,13 +19,12 @@ use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\GroupsBundle\Constant as GroupsConstant;
 use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\Api\ApiInterface\UserCreationApiInterface;
 use Zikula\ZAuthBundle\Api\UserCreationApi;
 use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
@@ -50,8 +49,6 @@ class UserCreationApiTest extends KernelTestCase
         $encoder = $this->createPasswordEncoder();
         $encoderFactory = $this->createEncoderFactory($encoder);
         $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $variableApi = $this->createMock(VariableApiInterface::class);
-        $variableApi->method('get')->willReturn(ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         $groupRepository = $this->createMock(GroupRepositoryInterface::class);
         $groupRepository->method('findAllAndIndexBy')->willReturn($this->createGroups());
         $this->api = new UserCreationApi(
@@ -59,8 +56,8 @@ class UserCreationApiTest extends KernelTestCase
             $currentUserApi,
             $encoderFactory,
             $managerRegistry,
-            $variableApi,
-            $groupRepository
+            $groupRepository,
+            true
         );
     }
 
@@ -94,7 +91,7 @@ class UserCreationApiTest extends KernelTestCase
         $this->api->createUser([
             'uname' => 'foo',
             'email' => 'foo@bar.com',
-            'pass' => '12345678'
+            'pass' => '12345678',
         ]);
 
         $users = $this->api->getCreatedUsers();

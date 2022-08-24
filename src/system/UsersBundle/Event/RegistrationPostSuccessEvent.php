@@ -16,11 +16,11 @@ namespace Zikula\UsersBundle\Event;
 /**
  * Occurs after a user has successfully registered a new account in the system. It will follow either a
  * `RegistrationPostCreatedEvent`, or a `ActiveUserPostCreatedEvent`, depending on the result of the registration process, the
- * information provided by the user, and several configuration options set in the Users module. The resultant record
+ * information provided by the user, and several configuration options set in the Users bundle. The resultant record
  * might be a fully activated user record, or it might be a registration record pending approval, e-mail
  * verification, or both.
  *
- * If the registration record is a fully activated user, and the Users module is configured for automatic log-in,
+ * If the registration record is a fully activated user, and the Users bundle is configured for automatic log-in,
  * then the system's next step (without any interaction from the user) will be the log-in process. All the customary
  * events that might fire during the log-in process could be fired at this point, including (but not limited to)
  * `Zikula\UsersBundle\Event\UserPreLoginSuccessEvent` (which might result in the user having to perform some action
@@ -52,7 +52,7 @@ namespace Zikula\UsersBundle\Event;
  * The URL specified on this event, as mentioned previously, is passed to the log-in process as the default redirect URL, and
  * therefore is offered on the `UserPostLoginSuccessEvent` event as the default. Any handler of that event, however, has
  * the opportunity to change the redirect URL offered. A handler can reliably predict
- * whether the user will be directed into the log-in process automatically by inspecting the Users module variable
+ * whether the user will be directed into the log-in process automatically by inspecting the Users bundle variable
  * `Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN` (which evaluates to `'reg_autologin'`), and by inspecting the `'activated'`
  * status of the registration or user object received.
  *

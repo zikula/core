@@ -69,15 +69,15 @@ EOF
         }
         $currentName = 'default directory';
         // Override with provided Bundle info (this section copied from symfony's translation:update command)
-        if (null !== $input->getArgument('bundle')) {
+        if (null !== ($bundle = $input->getArgument('bundle'))) {
             try {
-                $foundBundle = $kernel->getBundle($input->getArgument('bundle'));
+                $foundBundle = $kernel->getBundle($bundle);
                 $bundleDir = $foundBundle->getPath();
                 $transPaths = [is_dir($bundleDir . '/Resources/translations') ? $bundleDir . '/Resources/translations' : $bundleDir . '/translations'];
                 $currentName = $foundBundle->getName();
             } catch (\InvalidArgumentException) {
                 // such a bundle does not exist, so treat the argument as path
-                $path = $input->getArgument('bundle');
+                $path = $bundle;
                 $transPaths = [$path . '/translations'];
                 if (!is_dir($transPaths[0]) && !isset($transPaths[1])) {
                     throw new InvalidArgumentException(sprintf('"%s" is neither an enabled bundle nor a directory.', $transPaths[0]));

@@ -15,36 +15,17 @@ namespace Zikula\LegalBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\LegalBundle\Constant as LegalConstant;
+use Zikula\LegalBundle\LegalConstant;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
     public function __construct(
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly array $legalConfig
     ) {
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
@@ -82,32 +63,32 @@ class ExtensionMenu implements ExtensionMenuInterface
     private function getUser(): ?ItemInterface
     {
         $menu = $this->factory->createItem('legalUserMenu');
+        $policies = $this->legalConfig['policies'];
 
-        if ($this->variableApi->get(LegalConstant::MODNAME, LegalConstant::MODVAR_LEGALNOTICE_ACTIVE)) {
-            $menu->addChild('Legal notice', $this->getMenuOptions(LegalConstant::MODVAR_LEGALNOTICE_URL, 'legalnotice'));
+        if ($policies['legal_notice']['enabled']) {
+            $menu->addChild('Legal notice', $this->getMenuOptions('legalnotice', $policies['legal_notice']['custom_url']));
         }
-        if ($this->variableApi->get(LegalConstant::MODNAME, LegalConstant::MODVAR_TERMS_ACTIVE)) {
-            $menu->addChild('Terms of use', $this->getMenuOptions(LegalConstant::MODVAR_TERMS_URL, 'termsofuse'));
+        if ($policies['privacy_policy']['enabled']) {
+            $menu->addChild('Privacy policy', $this->getMenuOptions('privacypolicy', $policies['privacy_policy']['custom_url']));
         }
-        if ($this->variableApi->get(LegalConstant::MODNAME, LegalConstant::MODVAR_PRIVACY_ACTIVE)) {
-            $menu->addChild('Privacy policy', $this->getMenuOptions(LegalConstant::MODVAR_PRIVACY_URL, 'privacypolicy'));
+        if ($policies['terms_of_use']['enabled']) {
+            $menu->addChild('Terms of use', $this->getMenuOptions('termsofuse', $policies['terms_of_use']['custom_url']));
         }
-        if ($this->variableApi->get(LegalConstant::MODNAME, LegalConstant::MODVAR_TRADECONDITIONS_ACTIVE)) {
-            $menu->addChild('Trade conditions', $this->getMenuOptions(LegalConstant::MODVAR_TRADECONDITIONS_URL, 'tradeconditions'));
+        if ($policies['trade_conditions']['enabled']) {
+            $menu->addChild('Trade conditions', $this->getMenuOptions('tradeconditions', $policies['trade_conditions']['custom_url']));
         }
-        if ($this->variableApi->get(LegalConstant::MODNAME, LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_ACTIVE)) {
-            $menu->addChild('Cancellation right policy', $this->getMenuOptions(LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_URL, 'cancellationrightpolicy'));
+        if ($policies['cancellation_right_policy']['enabled']) {
+            $menu->addChild('Cancellation right policy', $this->getMenuOptions('cancellationrightpolicy', $policies['cancellation_right_policy']['custom_url']));
         }
-        if ($this->variableApi->get(LegalConstant::MODNAME, LegalConstant::MODVAR_ACCESSIBILITY_ACTIVE)) {
-            $menu->addChild('Accessibility statement', $this->getMenuOptions(LegalConstant::MODVAR_ACCESSIBILITY_URL, 'accessibilitystatement'));
+        if ($policies['accessibility']['enabled']) {
+            $menu->addChild('Accessibility statement', $this->getMenuOptions('accessibilitystatement', $policies['accessibility']['custom_url']));
         }
 
         return 0 === $menu->count() ? null : $menu;
     }
 
-    private function getMenuOptions(string $urlVar, string $defaultRoute): array
+    private function getMenuOptions(string $defaultRoute, ?string $customUrl): array
     {
-        $customUrl = $this->variableApi->get(LegalConstant::MODNAME, $urlVar, '');
         if (null !== $customUrl && '' !== $customUrl) {
             return ['uri' => $customUrl];
         }

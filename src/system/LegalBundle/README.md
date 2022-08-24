@@ -8,25 +8,23 @@ and/or log-in.
 
 This bundle also supports a simplistic age verification during registration.
 
-See Resources/docs/CHANGELOG.markdown for version history information (*currently a bit outdated*).
-
 ### Supported Policies, statements, and registration requirements
 
- * Age check
-   * Check performed during registration, if active.
- * Terms of use
-   * User acceptance is required during registration, if active.
-   * User acceptance is required during log-in, if active and not accepted during registration.
+ * Legal Notice
+   * User acceptance is not required.
  * Privacy
    * User acceptance is required during registration, if active.
    * User acceptance is required during log-in, if active and not accepted during registration.
- * Accessibility Statement
-   * User acceptance is not required.
- * Legal Notice
-   * User acceptance is not required.
- * Cancellation Rights Policy
+ * Terms of use
    * User acceptance is required during registration, if active.
    * User acceptance is required during log-in, if active and not accepted during registration.
  * Trade Conditions
    * User acceptance is required during registration, if active.
    * User acceptance is required during log-in, if active and not accepted during registration.
+ * Cancellation Rights Policy
+   * User acceptance is required during registration, if active.
+   * User acceptance is required during log-in, if active and not accepted during registration.
+ * Accessibility Statement
+   * User acceptance is not required.
+ * Age check
+   * Check performed during registration, if active.

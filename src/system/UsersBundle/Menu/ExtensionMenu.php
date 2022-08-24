@@ -15,21 +15,22 @@ namespace Zikula\UsersBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\UsersBundle\Helper\RegistrationHelper;
+use Zikula\UsersBundle\UsersConstant;
 
 class ExtensionMenu implements ExtensionMenuInterface
 {
     public function __construct(
         private readonly FactoryInterface $factory,
         private readonly PermissionApiInterface $permissionApi,
-        private readonly VariableApiInterface $variableApi,
         private readonly CurrentUserApiInterface $currentUserApi,
-        private readonly LocaleApiInterface $localeApi
+        private readonly LocaleApiInterface $localeApi,
+        private readonly RegistrationHelper $registrationHelper,
+        private readonly bool $allowSelfDeletion
     ) {
     }
 
@@ -55,16 +56,6 @@ class ExtensionMenu implements ExtensionMenuInterface
             $menu->addChild('Users list', [
                 'route' => 'zikulausersbundle_useradministration_listusers',
             ])->setAttribute('icon', 'fas fa-list');
-        }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Settings', [
-                'route' => 'zikulausersbundle_config_config',
-            ])->setAttribute('icon', 'fas fa-wrench');
-            $menu->addChild('Authentication methods', [
-                'route' => 'zikulausersbundle_config_authenticationmethods',
-            ])->setAttribute('icon', 'fas fa-lock');
-        }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
             $menu->addChild('Export users', [
                 'route' => 'zikulausersbundle_fileio_export',
             ])->setAttribute('icon', 'fas fa-download');
@@ -84,14 +75,14 @@ class ExtensionMenu implements ExtensionMenuInterface
                 'label' => 'I would like to login',
                 'route' => 'zikulausersbundle_access_login',
             ])->setAttribute('icon', 'fas fa-sign-in-alt');
-            if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
+            if ($this->registrationHelper->isRegistrationEnabled()) {
                 $menu->addChild('New account', [
                     'label' => 'I would like to create a new account',
                     'route' => 'zikulausersbundle_registration_register',
                 ])->setAttribute('icon', 'fas fa-plus');
             }
         } else {
-            if ($this->variableApi->getSystemVar('multilingual')) {
+            if ($this->localeApi->multilingual()) {
                 $locales = $this->localeApi->getSupportedLocales();
                 if (count($locales) > 1) {
                     $menu->addChild('Language switcher', [
@@ -99,7 +90,7 @@ class ExtensionMenu implements ExtensionMenuInterface
                     ])->setAttribute('icon', 'fas fa-language');
                 }
             }
-            if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_ALLOW_USER_SELF_DELETE, UsersConstant::DEFAULT_ALLOW_USER_SELF_DELETE)) {
+            if ($this->allowSelfDeletion) {
                 if (UsersConstant::USER_ID_ADMIN !== $this->currentUser->get('uid')) {
                     $menu->addChild('Delete my account', [
                         'route' => 'zikulausersbundle_account_deletemyaccount',
@@ -124,7 +115,7 @@ class ExtensionMenu implements ExtensionMenuInterface
             $menu->addChild('Help', [
                 'route' => 'zikulausersbundle_account_menu',
             ])->setAttribute('icon', 'text-danger fas fa-ambulance');
-            if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
+            if ($this->registrationHelper->isRegistrationEnabled()) {
                 $menu->addChild('New account', [
                     'route' => 'zikulausersbundle_registration_register',
                 ])->setAttribute('icon', 'fas fa-plus');

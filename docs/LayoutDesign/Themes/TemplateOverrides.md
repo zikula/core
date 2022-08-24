@@ -5,14 +5,14 @@ currentMenu: themes
 
 ## Theme resource overrides
 
-Placed within the theme `Resources` directory under the target FQ module name.
+Placed within the theme `Resources` directory under the target FQ bundle name.
 
 ```
 Resources/
     config/
     public/
     views/
-    ZikulaSpecModule/
+    ZikulaSpecBundle/
         public/
             css/
                 style.css
@@ -30,4 +30,4 @@ Symfony has a system in place to override Resources of any bundle. See
 
 ## Override references
 
-- See `\Zikula\ThemeModule\EventListener\AddThemePathsToLoaderListener::addThemePaths`
+- See `\Zikula\ThemeBundle\EventListener\AddThemePathsToLoaderListener::addThemePaths`

@@ -27,7 +27,7 @@
                     "route": "zikulalegalbundle_config_config"
                 },
                 "user": {
-                    "route": "zikulalegalbundle_user_termsofuse"
+                    "route": "zikulalegalbundle_user_legalnotice"
                 }
             },
             "securityschema": {

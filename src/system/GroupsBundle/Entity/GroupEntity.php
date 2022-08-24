@@ -18,13 +18,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\GroupsBundle\Repository\GroupRepository;
 use Zikula\UsersBundle\Entity\UserEntity;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: 'groups_group')]
-class GroupEntity extends EntityAccess
+class GroupEntity
 {
     #[ORM\Id]
     #[ORM\Column]

@@ -24,7 +24,6 @@ Please see the [Official JSON Schema](https://getcomposer.org/doc/04-schema.md) 
 - require: (required) object defining bundle dependencies
 - extra: (required) the zikula object with required keys
   - zikula: (required)
-    - core-compatibility: (required) a [version compatibility string](https://getcomposer.org/doc/01-basic-usage.md#package-versions) defining core compatibility
     - class: (required) the fully qualified name of the Bundle class
     - displayname: (required) the common name for the bundle (translatable)
     - icon: full fontawesome css class

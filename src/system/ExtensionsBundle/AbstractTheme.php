@@ -17,7 +17,6 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
-use Zikula\ExtensionsBundle\Api\VariableApi;
 use Zikula\UsersBundle\Api\CurrentUserApi;
 
 abstract class AbstractTheme extends AbstractExtension
@@ -43,7 +42,7 @@ abstract class AbstractTheme extends AbstractExtension
 
         $this->config = Yaml::parse(file_get_contents($configPath));
         if (!isset($this->config['master'])) {
-            throw new InvalidConfigurationException('Core-2.0 themes must have a defined master realm.');
+            throw new InvalidConfigurationException('Themes must have a defined master realm.');
         }
     }
 
@@ -53,11 +52,11 @@ abstract class AbstractTheme extends AbstractExtension
     public function generateThemedResponse(
         string $realm,
         Response $response,
-        string $moduleName = null
+        string $bundleName = null
     ): Response {
         $template = $this->config[$realm]['page'];
         $classes = 'home' === $realm ? 'z-homepage' : '';
-        $classes .= (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
+        $classes .= (empty($classes) ? '' : ' ') . (isset($bundleName) ? 'z-module-' . $bundleName : '');
 
         /* @var Environment $twig */
         $twig = $this->getContainer()->get('twig');
@@ -102,34 +101,14 @@ abstract class AbstractTheme extends AbstractExtension
     }
 
     /**
-     * Get the theme variables from both the DB and the YAML file.
+     * Get theme variables from variables.yaml.
      */
     public function getThemeVars(): array
     {
-        $variableApi = $this->container->get(VariableApi::class);
-        $dbVars = $variableApi->getAll($this->name);
-        if (empty($dbVars) && !is_array($dbVars)) {
-            $dbVars = [];
-        }
-        $defaultVars = $this->getDefaultThemeVars();
-        $combinedVars = array_merge($defaultVars, $dbVars);
-        if (array_keys($dbVars) !== array_keys($combinedVars)) {
-            // First load of file or vars have been added to the YAML file.
-            $variableApi->setAll($this->name, $combinedVars);
-        }
-
-        return $combinedVars;
-    }
-
-    /**
-     * Get the default values from variables.yaml.
-     */
-    public function getDefaultThemeVars(): array
-    {
-        $defaultVars = [];
+        $vars = [];
         $themeVarsPath = $this->getConfigPath() . '/variables.yaml';
         if (!file_exists($themeVarsPath)) {
-            return $defaultVars;
+            return $vars;
         }
 
         $yamlVars = Yaml::parse(file_get_contents($themeVarsPath));
@@ -137,9 +116,9 @@ abstract class AbstractTheme extends AbstractExtension
             $yamlVars = [];
         }
         foreach ($yamlVars as $name => $definition) {
-            $defaultVars[$name] = $definition['default_value'];
+            $vars[$name] = $definition['default_value'];
         }
 
-        return $defaultVars;
+        return $vars;
     }
 }

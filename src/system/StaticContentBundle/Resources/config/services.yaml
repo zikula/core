@@ -3,8 +3,6 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $extension: '@Zikula\StaticContentBundle\ZikulaStaticContentBundle'
 
     Zikula\StaticContentBundle\:
         resource: '../../*'

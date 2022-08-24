@@ -22,9 +22,9 @@ namespace Zikula\Bundle\FormExtensionBundle\Event;
  * the form display e.g.
  *   {{ form_start(form) }}
  *   ...
- *   {{ for template in eventVariable.templates }}
+ *   {% for template in eventVariable.templates %}
  *       {{ include(template.view, template.params, ignore_missing = true) }}
- *   {{ endfor }}
+ *   {% endfor %}
  *   ...
  *   {{ form_end(form) }}
  *

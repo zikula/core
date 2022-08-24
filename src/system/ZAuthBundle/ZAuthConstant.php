@@ -16,51 +16,6 @@ namespace Zikula\ZAuthBundle;
 class ZAuthConstant
 {
     /**
-     * Module variable key for the minimum password length.
-     */
-    public const MODVAR_PASSWORD_MINIMUM_LENGTH = 'minpass';
-
-    /**
-     * Default value for the minimum password length.
-     */
-    public const DEFAULT_PASSWORD_MINIMUM_LENGTH = 8;
-
-    /**
-     * Actual minimal length for all passwords.
-     */
-    public const PASSWORD_MINIMUM_LENGTH = 5;
-
-    /**
-     * Module variable key for the flag indicating whether the password strength meter should be enabled or not.
-     */
-    public const MODVAR_PASSWORD_STRENGTH_METER_ENABLED = 'use_password_strength_meter';
-
-    /**
-     * Default value for the flag indicating whether the password strength meter should be enabled or not.
-     */
-    public const DEFAULT_PASSWORD_STRENGTH_METER_ENABLED = false;
-
-    /**
-     * Module variable key for non compromised password
-     */
-    public const MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD = 'non_compromised_password';
-
-    /**
-     * default value for non compromised password
-     */
-    public const DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD = false;
-
-    /**
-     * Module variable key for the status of requirement for email verification.
-     */
-    public const MODVAR_EMAIL_VERIFICATION_REQUIRED = 'email_verification_required';
-
-    /**
-     * Default value for the status of requirement for email verification.
-     */
-    public const DEFAULT_EMAIL_VERIFICATION_REQUIRED = true;
-
-    /**
      * The string identifying that a user can user either the native_uname or native_email authentication methods.
      */
     public const AUTHENTICATION_METHOD_EITHER = 'native_either';
@@ -74,46 +29,6 @@ class ZAuthConstant
      * The string identifying that a user can user the native_email authentication method.
      */
     public const AUTHENTICATION_METHOD_EMAIL = 'native_email';
-
-    /**
-     * Module variable key for the number of days before a change of e-mail request is canceled.
-     */
-    public const MODVAR_EXPIRE_DAYS_CHANGE_EMAIL = 'chgemail_expiredays';
-
-    /**
-     * Default value for the number of days before a change of e-mail request is canceled.
-     */
-    public const DEFAULT_EXPIRE_DAYS_CHANGE_EMAIL = 0;
-
-    /**
-     * Module variable key for the number of days before a change of password request is canceled.
-     */
-    public const MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD = 'chgpass_expiredays';
-
-    /**
-     * Default value for the number of days before a change of password request is canceled.
-     */
-    public const DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD = 0;
-
-    /**
-     * Module variable key for the number of days until a new registration expires if the e-mail address is not verified.
-     */
-    public const MODVAR_EXPIRE_DAYS_REGISTRATION = 'reg_expiredays';
-
-    /**
-     * Default value for the number of days until a new registration expires if the e-mail address is not verified.
-     */
-    public const DEFAULT_EXPIRE_DAYS_REGISTRATION = 0;
-
-    /**
-     * Module variable key for the anti-spam registration question answer text.
-     */
-    public const MODVAR_REGISTRATION_ANTISPAM_ANSWER = 'reg_answer';
-
-    /**
-     * Module variable key for the anti-spam registration question text.
-     */
-    public const MODVAR_REGISTRATION_ANTISPAM_QUESTION = 'reg_question';
 
     /**
      * An indicator for the change verification table that the record represents a change of password request.
@@ -137,12 +52,7 @@ class ZAuthConstant
     public const REQUIRE_PASSWORD_CHANGE_KEY = '_Users_mustChangePassword';
 
     /**
-     * Module variable key for the number of items (e.g., records) to display per list "page."
+     * Key used for storing email verification state in session.
      */
-    public const MODVAR_ITEMS_PER_PAGE = 'itemsperpage';
-
-    /**
-     * Default value for the number of items (e.g., records) to display per list "page."
-     */
-    public const DEFAULT_ITEMS_PER_PAGE = 25;
+    public const SESSION_EMAIL_VERIFICATION_STATE = 'email_verification_state';
 }

@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthBundle\Form\Type\RegistrationType;
@@ -30,10 +29,10 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     public function __construct(
         private readonly AuthenticationMappingRepositoryInterface $mappingRepository,
         private readonly RequestStack $requestStack,
-        private readonly VariableApiInterface $variableApi,
         private readonly ValidatorInterface $validator,
         protected readonly TranslatorInterface $translator,
-        private readonly EncoderFactoryInterface $encoderFactory
+        private readonly EncoderFactoryInterface $encoderFactory,
+        private readonly bool $mailVerificationRequired
     ) {
     }
 
@@ -129,11 +128,11 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
 
         $mapping->setMethod($this->getAlias());
 
-        $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
+        $userMustVerify = $this->mailVerificationRequired;
         $request = $this->requestStack->getCurrentRequest();
         if ($request->hasSession() && ($session = $request->getSession())) {
-            $userMustVerify = $session->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
-                ? 'Y' === $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+            $userMustVerify = $session->has(ZAuthConstant::SESSION_EMAIL_VERIFICATION_STATE)
+                ? 'Y' === $session->get(ZAuthConstant::SESSION_EMAIL_VERIFICATION_STATE)
                 : $userMustVerify;
         }
 

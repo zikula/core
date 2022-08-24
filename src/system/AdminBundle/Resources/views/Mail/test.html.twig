@@ -1,0 +1,32 @@
+<h3>
+    <span class="fas fa-envelope"></span>
+    {% trans %}Test mailer settings{% endtrans %}
+    {{ pageSetVar('title', 'Test mailer settings'|trans) }}
+</h3>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+
+<fieldset>
+    <legend>{% trans %}Settings test{% endtrans %}</legend>
+    {{ form_row(form.fromName) }}
+    {{ form_row(form.fromAddress) }}
+    {{ form_row(form.toName) }}
+    {{ form_row(form.toAddress) }}
+    {{ form_row(form.subject) }}
+    {{ form_row(form.messageType) }}
+    <div data-switch="zikulaadminbundle_mailtest[messageType]" data-switch-value="html,multipart">
+        {{ form_row(form.bodyHtml) }}
+    </div>
+    <div data-switch="zikulaadminbundle_mailtest[messageType]" data-switch-value="text,multipart">
+        {{ form_row(form.bodyText) }}
+    </div>
+</fieldset>
+
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.test) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+</div>
+{{ form_end(form) }}

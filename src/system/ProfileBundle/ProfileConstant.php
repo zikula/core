@@ -30,34 +30,4 @@ class ProfileConstant
      * The name of the attribute to obtain a realname. requires prefix + ':'
      */
     public const ATTRIBUTE_NAME_DISPLAY_NAME = 'realname';
-
-    /**
-     * Module variable key for the avatar image path.
-     */
-    public const MODVAR_AVATAR_IMAGE_PATH = 'avatarpath';
-
-    /**
-     * Default value for the avatar image path.
-     */
-    public const DEFAULT_AVATAR_IMAGE_PATH = 'public/uploads/avatar';
-
-    /**
-     * Module variable key for the flag indicating whether gravatars are allowed or not.
-     */
-    public const MODVAR_GRAVATARS_ENABLED = 'allowgravatars';
-
-    /**
-     * Default value for the flag indicating whether gravatars are allowed or not.
-     */
-    public const DEFAULT_GRAVATARS_ENABLED = true;
-
-    /**
-     * Module variable key for the file name containing the generic gravatar image.
-     */
-    public const MODVAR_GRAVATAR_IMAGE = 'gravatarimage';
-
-    /**
-     * Default value for the file name containing the generic gravatar image.
-     */
-    public const DEFAULT_GRAVATAR_IMAGE = 'gravatar.jpg';
 }

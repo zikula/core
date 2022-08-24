@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
 use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\UsersBundle\Constant;
+use Zikula\UsersBundle\UsersConstant;
 
 class SearchUserType extends AbstractType
 {
@@ -33,22 +33,22 @@ class SearchUserType extends AbstractType
             ->add('uname', TextType::class, [
                 'label' => 'User name',
                 'required' => false,
-                'input_group' => ['left' => '%', 'right' => '%']
+                'input_group' => ['left' => '%', 'right' => '%'],
             ])
             ->add('email', TextType::class, [
                 'label' => 'Email address',
                 'required' => false,
-                'input_group' => ['left' => '%', 'right' => '%']
+                'input_group' => ['left' => '%', 'right' => '%'],
             ])
             ->add('activated', ChoiceType::class, [
                 'label' => 'User status',
                 'required' => false,
                 'choices' => [
-                    'pending' => Constant::ACTIVATED_PENDING_REG,
-                    'active' => Constant::ACTIVATED_ACTIVE,
-                    'inactive' => Constant::ACTIVATED_INACTIVE,
-                    'marked for deletion' => Constant::ACTIVATED_PENDING_DELETE
-                ]
+                    'pending' => UsersConstant::ACTIVATED_PENDING_REG,
+                    'active' => UsersConstant::ACTIVATED_ACTIVE,
+                    'inactive' => UsersConstant::ACTIVATED_INACTIVE,
+                    'marked for deletion' => UsersConstant::ACTIVATED_PENDING_DELETE,
+                ],
             ])
             ->add('groups', EntityType::class, [
                 'class' => GroupEntity::class,
@@ -56,7 +56,7 @@ class SearchUserType extends AbstractType
                 'multiple' => true,
                 'placeholder' => 'Any group',
                 'label' => 'Group membership',
-                'required' => false
+                'required' => false,
             ])
             ->add('registered_after', DateType::class, [
                 'required' => false,
@@ -65,8 +65,8 @@ class SearchUserType extends AbstractType
                 'placeholder' => [
                     'year' => /** @Translate */ 'Year',
                     'month' => /** @Translate */ 'Month',
-                    'day' => /** @Translate */ 'Day'
-                ]
+                    'day' => /** @Translate */ 'Day',
+                ],
             ])
             ->add('registered_before', DateType::class, [
                 'label' => 'Registration date before',
@@ -76,19 +76,19 @@ class SearchUserType extends AbstractType
                 'placeholder' => [
                     'year' => /** @Translate */ 'Year',
                     'month' => /** @Translate */ 'Month',
-                    'day' => /** @Translate */ 'Day'
-                ]
+                    'day' => /** @Translate */ 'Day',
+                ],
             ])
             ->add('search', SubmitType::class, [
                 'label' => 'Search',
                 'icon' => 'fa-search',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }

@@ -13,21 +13,19 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Helper\AccessHelper;
 use Zikula\UsersBundle\Helper\MailHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\Form\Type\VerifyRegistrationType;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
@@ -36,9 +34,13 @@ use Zikula\ZAuthBundle\ZAuthConstant;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(
+        private readonly int $minimumPasswordLength,
+        private readonly bool $usePasswordStrengthMeter
+    ) {
+    }
+
     /**
-     * @Template("@ZikulaZAuth/Registration/verify.html.twig")
-     *
      * Render and process a registration e-mail verification code.
      *
      * This function will render and display to the user a form allowing him to enter
@@ -47,15 +49,12 @@ class RegistrationController extends AbstractController
      * then he is prompted for it at this time. This function also processes the results of
      * that form, setting the registration record to verified (if appropriate), saving the password
      * (if provided) and if the registration record is also approved (or does not require it)
-     * then a new user account is created
-     *
-     * @return array|RedirectResponse
+     * then a new user account is created.
      */
     #[Route('/verify-registration/{uname}/{verifycode}', name: 'zikulazauthbundle_registration_verify')]
     public function verify(
         Request $request,
         ValidatorInterface $validator,
-        VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -66,17 +65,20 @@ class RegistrationController extends AbstractController
         MailHelper $mailHelper,
         string $uname = null,
         string $verifycode = null
-    ) {
+    ): Response {
         if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersbundle_account_menu');
         }
 
         $setPass = false;
         $codeValidationErrors = $validator->validate(
-            ['uname' => $uname, 'verifycode' => $verifycode],
+            [
+                'uname' => $uname,
+                'verifycode' => $verifycode,
+            ],
             new ValidRegistrationVerification()
         );
-        if (count($codeValidationErrors) > 0) {
+        if (0 < count($codeValidationErrors)) {
             $this->addFlash('warning', 'The code provided is invalid or this user has never registered or has fully completed registration.');
 
             return $this->redirectToRoute('zikulausersbundle_account_menu');
@@ -92,10 +94,10 @@ class RegistrationController extends AbstractController
         }
         $form = $this->createForm(VerifyRegistrationType::class, [
             'uname' => $uname,
-            'verifycode' => $verifycode
+            'verifycode' => $verifycode,
         ], [
-            'minimumPasswordLength' => $this->getVar(ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
-            'setpass' => $setPass
+            'minimumPasswordLength' => $this->minimumPasswordLength,
+            'setpass' => $setPass,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,7 +111,7 @@ class RegistrationController extends AbstractController
             $authenticationMappingRepository->persistAndFlush($mapping);
             $registrationHelper->registerNewUser($userEntity);
             $userVerificationRepository->resetVerifyChgFor($userEntity->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL);
-            $adminNotificationEmail = $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
+            $adminNotificationEmail = $registrationHelper->getNotificationEmail();
 
             switch ($userEntity->getActivated()) {
                 case UsersConstant::ACTIVATED_PENDING_REG:
@@ -140,9 +142,9 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return [
+        return $this->render('@ZikulaZAuth/Registration/verify.html.twig', [
             'form' => $form->createView(),
-            'modvars' => $this->getVars()
-        ];
+            'usePasswordStrengthMeter' => $this->usePasswordStrengthMeter,
+        ]);
     }
 }

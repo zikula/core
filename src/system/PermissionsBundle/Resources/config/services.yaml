@@ -3,8 +3,6 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $extension: '@Zikula\PermissionsBundle\ZikulaPermissionsBundle'
 
     Zikula\PermissionsBundle\:
         resource: '../../*'
@@ -15,14 +13,15 @@ services:
         lazy: true
 
     Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface: '@Zikula\PermissionsBundle\Api\PermissionApi'
-    Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface: '@Zikula\PermissionsBundle\Repository\PermissionRepository'
+
+    Zikula\PermissionsBundle\EventListener\AccessDeniedExceptionListener:
+        arguments:
+            $installed: '%env(ZIKULA_INSTALLED)%'
+        tags:
+            - { name: monolog.logger, channel: request }
 
     Zikula\PermissionsBundle\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminActionsMenu, alias: zikulaPermissionsAdminActionsMenu }
 
-    Zikula\PermissionsBundle\Listener\AccessDeniedExceptionListener:
-        arguments:
-            $installed: '%env(ZIKULA_INSTALLED)%'
-        tags:
-            - { name: monolog.logger, channel: request }
+    Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface: '@Zikula\PermissionsBundle\Repository\PermissionRepository'

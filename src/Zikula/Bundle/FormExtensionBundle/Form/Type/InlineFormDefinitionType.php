@@ -63,7 +63,7 @@ class InlineFormDefinitionType extends AbstractType
         $resolver->setDefaults([
             'constraints' => [],
             'mapped' => false,
-            'dynamicFieldsContainer' => null
+            'dynamicFieldsContainer' => null,
         ]);
     }
 }

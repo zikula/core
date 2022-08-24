@@ -13,13 +13,6 @@
     {{ include(template.view, template.params, ignore_missing = true) }}
 {% endfor %}
 
-{% set regQuestion = getModVar('ZikulaUsersModule', 'reg_question', '') %}
-{% if regQuestion is not empty %}
-    <fieldset>
-        <legend>{% trans %}Answer the security question{% endtrans %}</legend>
-        {{ form_row(form.antispamanswer) }}
-    </fieldset>
-{% endif %}
 <div class="form-group row">
     <div class="col-md-9 offset-md-3">
         {{ form_widget(form.submit) }}

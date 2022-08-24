@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 
 class LocaleType extends AbstractType
 {
@@ -34,7 +34,7 @@ class LocaleType extends AbstractType
             'label' => 'Locale',
             'required' => false,
             'placeholder' => 'All',
-            'attr' => ['class' => 'locale-switcher-block']
+            'attr' => ['class' => 'locale-switcher-block'],
         ]);
     }
 

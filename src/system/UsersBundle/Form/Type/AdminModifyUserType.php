@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\UsersBundle\Constant;
+use Zikula\UsersBundle\UsersConstant;
 
 class AdminModifyUserType extends AbstractType
 {
@@ -28,11 +28,11 @@ class AdminModifyUserType extends AbstractType
         $builder
             ->add('activated', ChoiceType::class, [
                 'choices' => [
-                    'Active' => Constant::ACTIVATED_ACTIVE,
-                    'Inactive' => Constant::ACTIVATED_INACTIVE,
-                    'Pending' => Constant::ACTIVATED_PENDING_REG
+                    'Active' => UsersConstant::ACTIVATED_ACTIVE,
+                    'Inactive' => UsersConstant::ACTIVATED_INACTIVE,
+                    'Pending' => UsersConstant::ACTIVATED_PENDING_REG,
                 ],
-                'label' => 'User status'
+                'label' => 'User status',
             ])
             ->add('groups', EntityType::class, [
                 'class' => GroupEntity::class,
@@ -44,12 +44,12 @@ class AdminModifyUserType extends AbstractType
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }

@@ -49,17 +49,17 @@ class LostPasswordType extends AbstractType
                     'type' => PasswordType::class,
                     'first_options' => [
                         'label' => 'Create new password',
-                        'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
+                        'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
                     ],
                     'second_options' => [
                         'label' => 'Repeat new password',
-                        'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
+                        'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
                     ],
                     'invalid_message' => 'The passwords must match!',
                     'constraints' => [
                         new NotNull(),
-                        new ValidPassword()
-                    ]
+                        new ValidPassword(),
+                    ],
                 ])
             ;
         }
@@ -68,8 +68,8 @@ class LostPasswordType extends AbstractType
                 'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
         ;
     }

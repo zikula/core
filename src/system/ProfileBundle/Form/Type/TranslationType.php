@@ -17,18 +17,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 
 class TranslationType extends AbstractType
 {
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    public function __construct(LocaleApiInterface $localeApi)
+    public function __construct(private readonly LocaleApiInterface $localeApi)
     {
-        $this->localeApi = $localeApi;
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)

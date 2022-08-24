@@ -13,8 +13,8 @@
         {{ form_widget(form.save) }}
         {{ form_widget(form.cancel) }}
     </div>
-    <input type="hidden" id="avatarPath" value="{{ getModVar(constant('Zikula\\UsersBundle\\Constant::MODNAME'), constant('Zikula\\ProfileBundle\\ProfileConstant::MODVAR_AVATAR_IMAGE_PATH'), constant('Zikula\\ProfileBundle\\ProfileConstant::DEFAULT_AVATAR_IMAGE_PATH')) }}" />
+    <input type="hidden" id="avatarPath" value="{{ imagePath|e('html_attr') }}" />
     <input type="hidden" id="gravatarUrl" value="{{ gravatarUrl|e('html_attr') }}" />
 </div>
 {{ form_end(form) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaProfileBundle:js/ZikulaProfileModule.Avatar.Edit.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaProfileBundle:js/ZikulaProfileBundle.Avatar.Edit.js')) }}

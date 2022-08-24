@@ -34,7 +34,7 @@ This annotation is used in a Controller Action Method OR Controller Class in one
     You can also use `$_zkBundle` as the extension name if preferred, e.g. `@PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})`.  
     You can also use the access alias if preferred, e.g. `@PermissionCheck({"$_zkModule::", "$gid::", "edit"})`.
 
-### Please note: You cannot use @PermissionCheck() in *both* the Class and the Method. This will produce an AnnotationException.
+### Please note: You cannot use @PermissionCheck() in *both* the class and the method. This will produce an `AnnotationException`.
 
 ---
 
@@ -47,14 +47,14 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 // ...
 
 /**
- * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
  * @PermissionCheck({"ZikulaGroupsBundle", "$gid::", "edit"})
  * @Theme("admin")
  * @Template("@ZikulaGroups/Group/edit.html.twig")
  *
  * Modify a group.
  */
-public function editAction(
+#[Route('/admin/edit/{gid}', name: 'zikulagroupsbundle_group_edit', requirements: ['gid' => "^[1-9]\d*$"])]
+public function edit(
     Request $request,
     GroupEntity $groupEntity,
     EventDispatcherInterface $eventDispatcher
@@ -68,17 +68,18 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 // ...
 
 /**
- * Class ThemeController
- *
- * @Route("/config")
  * @PermissionCheck("admin")
  */
+#[Route('/theme')]
 class ConfigController extends AbstractController
 {
     /**
-     * @Route("/config")
      * @Theme("admin")
      * @Template("@ZikulaTheme/Config/config.html.twig")
      */
-    public function configAction() { ... }
+    #[Route('/config', name: 'zikulathemebundle_config_config')]
+    public function config()
+    {
+      // ...
+    }
 ```

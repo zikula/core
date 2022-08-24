@@ -9,31 +9,7 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{% trans %}Legal document types{% endtrans %}</legend>
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_LEGALNOTICE_ACTIVE'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_TERMS_ACTIVE'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_PRIVACY_ACTIVE'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_TRADECONDITIONS_ACTIVE'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_CANCELLATIONRIGHTPOLICY_ACTIVE'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_ACCESSIBILITY_ACTIVE'))) }}
-</fieldset>
-<fieldset>
-    <legend>{% trans %}Custom urls{% endtrans %}</legend>
-    <p>{% trans %}The following fields allow to reference any custom url. As soon as an url is given it will be used instead of the normal Legal templates. So you can now use any page you want for displaying and managing your legal data.{% endtrans %}</p>
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_LEGALNOTICE_URL'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_TERMS_URL'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_PRIVACY_URL'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_TRADECONDITIONS_URL'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_CANCELLATIONRIGHTPOLICY_URL'))) }}
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_ACCESSIBILITY_URL'))) }}
-</fieldset>
-<fieldset>
-    <legend>{% trans %}Compliance{% endtrans %}</legend>
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_EUCOOKIE'))) }}
-</fieldset>
-<fieldset>
-    <legend>{% trans %}Further settings{% endtrans %}</legend>
-    {{ form_row(attribute(form, constant('Zikula\\LegalBundle\\Constant::MODVAR_MINIMUM_AGE'))) }}
+    <legend>{% trans %}Reset agreement{% endtrans %}</legend>
     {{ form_row(form.resetagreement) }}
 </fieldset>
 <div class="form-group">

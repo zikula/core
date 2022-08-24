@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Controller;
 
 use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,12 +24,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\EditUserFormPostValidatedEvent;
@@ -39,10 +39,20 @@ use Zikula\UsersBundle\Form\Type\RegistrationType\DefaultRegistrationType;
 use Zikula\UsersBundle\Helper\AccessHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Validator\Constraints\ValidUserFieldsValidator;
 
 class RegistrationController extends AbstractController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly bool $registrationRequiresApproval,
+        private readonly ?string $registrationDisabledReason,
+        private readonly bool $useAutoLogin,
+        private readonly ?string $illegalUserAgents
+    ) {
+    }
+
     /**
      * Display the registration form.
      *
@@ -66,8 +76,10 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('zikulausersbundle_account_menu');
         }
         // Check if registration is enabled
-        if (!$this->getVar(UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED)) {
-            return $this->render('@ZikulaUsers/Registration/registration_disabled.html.twig');
+        if (!$registrationHelper->isRegistrationEnabled()) {
+            return $this->render('@ZikulaUsers/Registration/registration_disabled.html.twig', [
+                'reason' => $this->registrationDisabledReason,
+            ]);
         }
         $this->throwExceptionForBannedUserAgents($request);
 
@@ -76,10 +88,10 @@ class RegistrationController extends AbstractController
         // Display the authentication method selector if required
         $selectedMethod = null !== $session ? $session->get('authenticationMethod') : '';
         $selectedMethod = $request->query->get('authenticationMethod', $selectedMethod);
-        if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
+        if (empty($selectedMethod) && 1 < count($authenticationMethodCollector->getActiveKeys())) {
             return $this->render('@ZikulaUsers/Access/authenticationMethodSelector.html.twig', [
                 'collector' => $authenticationMethodCollector,
-                'path' => 'zikulausersbundle_registration_register'
+                'path' => 'zikulausersbundle_registration_register',
             ]);
         }
         if (empty($selectedMethod) && 1 === count($authenticationMethodCollector->getActiveKeys())) {
@@ -183,14 +195,13 @@ class RegistrationController extends AbstractController
 
                 // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
                 $canLogIn = UsersConstant::ACTIVATED_ACTIVE === $userEntity->getActivated();
-                $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
-                $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
+                $this->generateRegistrationFlashMessage($userEntity->getActivated(), $this->useAutoLogin);
 
                 // Notify that we are completing a registration session.
                 $eventDispatcher->dispatch($event = new RegistrationPostSuccessEvent($userEntity));
                 $redirectUrl = $event->getRedirectUrl();
 
-                if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
+                if ($this->useAutoLogin && $accessHelper->loginAllowed($userEntity)) {
                     $accessHelper->login($userEntity);
 
                     return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
@@ -211,12 +222,13 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
+        $templateName = $authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface
             ? $authenticationMethod->getRegistrationTemplateName()
             : '@ZikulaUsersBundle\Registration\defaultRegister.html.twig';
 
         return $this->render($templateName, [
             'form' => $form->createView(),
+            'registrationRequiresApproval' => $this->registrationRequiresApproval,
             'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : []
         ]);
     }
@@ -230,14 +242,14 @@ class RegistrationController extends AbstractController
     {
         // Check for illegal user agents trying to register.
         $userAgent = $request->server->get('HTTP_USER_AGENT', '');
-        $illegalUserAgents = $this->getVar(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, '') ?? '';
+        $illegalUserAgents = $this->illegalUserAgents ?? '';
         // Convert the comma-separated list into a regexp pattern.
         $pattern = ['/^(\s*,\s*)+/D', '/\b(\s*,\s*)+\b/D', '/(\s*,\s*)+$/D'];
         $replace = ['', '|', ''];
         $illegalUserAgents = preg_replace($pattern, $replace, preg_quote($illegalUserAgents, '/'));
         // Check for emptiness here, in case there were just spaces and commas in the original string.
         if (!empty($illegalUserAgents) && preg_match("/^({$illegalUserAgents})/iD", $userAgent)) {
-            throw new AccessDeniedException($this->trans('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
+            throw new AccessDeniedException($this->translator->trans('Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'));
         }
     }
 

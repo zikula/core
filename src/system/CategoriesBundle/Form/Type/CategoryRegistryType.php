@@ -30,31 +30,24 @@ use Zikula\CategoriesBundle\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
 
 /**
- * Class CategoryRegistryType
  * @see https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
  */
 class CategoryRegistryType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @var EntitySelectionBuilder
-     */
-    private $entitySelectionBuilder;
-
-    public function __construct(TranslatorInterface $translator, EntitySelectionBuilder $entitySelectionBuilder)
+    public function __construct(TranslatorInterface $translator, private readonly EntitySelectionBuilder $entitySelectionBuilder)
     {
         $this->setTranslator($translator);
-        $this->entitySelectionBuilder = $entitySelectionBuilder;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('modname', ChoiceType::class, [
-                'label' => 'Module',
-                'choices' => /** @Ignore */ $options['categorizableModules'],
-                'placeholder' => 'Select module'
+                'label' => 'Bundle',
+                'choices' => /** @Ignore */ $options['categorizableBundles'],
+                'placeholder' => 'Select bundle'
             ])
             ->add('property', TextType::class, [
                 'label' => 'Property name',
@@ -114,7 +107,7 @@ class CategoryRegistryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'categorizableModules' => []
+            'categorizableBundles' => []
         ]);
     }
 }

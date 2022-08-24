@@ -21,9 +21,9 @@ use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserAttributeEntity;
 use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\UsersConstant;
 
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {

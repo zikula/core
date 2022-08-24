@@ -27,8 +27,6 @@ use Zikula\ExtensionsBundle\ZikulaExtensionsBundle;
 use Zikula\GroupsBundle\ZikulaGroupsBundle;
 use Zikula\MenuBundle\ZikulaMenuBundle;
 use Zikula\PermissionsBundle\ZikulaPermissionsBundle;
-use Zikula\SecurityCenterBundle\ZikulaSecurityCenterBundle;
-use Zikula\SettingsBundle\ZikulaSettingsBundle;
 use Zikula\ThemeBundle\EventListener\AddJSConfigListener;
 use Zikula\ThemeBundle\ZikulaThemeBundle;
 use Zikula\UsersBundle\ZikulaUsersBundle;
@@ -73,8 +71,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         'ZikulaMenuBundle' => ZikulaMenuBundle::class,
         'ZikulaPermissionsBundle' => ZikulaPermissionsBundle::class,
         'ZikulaProfileBundle' => ZikulaProfileBundle::class,
-        'ZikulaSecurityCenterBundle' => ZikulaSecurityCenterBundle::class,
-        'ZikulaSettingsBundle' => ZikulaSettingsBundle::class,
         'ZikulaStaticContentBundle' => ZikulaStaticContentBundle::class,
         'ZikulaThemeBundle' => ZikulaThemeBundle::class,
         'ZikulaUsersBundle' => ZikulaUsersBundle::class,

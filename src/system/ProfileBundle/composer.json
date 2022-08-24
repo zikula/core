@@ -14,7 +14,9 @@
         "psr-4": { "Zikula\\ProfileBundle\\": "" }
     },
     "require": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "symfony/maker-bundle": "^1"
     },
     "extra": {
         "zikula": {
@@ -33,10 +35,7 @@
             "securityschema": {
                 "ZikulaProfileModule::": "::",
                 "ZikulaProfileModule::view": "::",
-                "ZikulaProfileModule::item": "PropertyId::",
-                "ZikulaProfileModule:Members:": "::",
-                "ZikulaProfileModule:Members:recent": "::",
-                "ZikulaProfileModule:Members:online": "::"
+                "ZikulaProfileModule::item": "PropertyId::"
             }
         }
     }

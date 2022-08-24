@@ -29,16 +29,16 @@ class DeletionType extends AbstractType
                 'label' => 'Delete',
                 'icon' => 'fa-trash-alt',
                 'attr' => [
-                    'class' => 'btn-danger'
-                ]
+                    'class' => 'btn-danger',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
                 'validate' => false,
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn-secondary'
-                ]
+                    'class' => 'btn-secondary',
+                ],
             ])
         ;
     }

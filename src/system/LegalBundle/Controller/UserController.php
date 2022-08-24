@@ -17,17 +17,17 @@ use DateTime;
 use DateTimeZone;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\LegalBundle\Constant as LegalConstant;
 use Zikula\LegalBundle\Form\Type\AcceptPoliciesType;
 use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
+use Zikula\LegalBundle\LegalConstant;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Helper\AccessHelper;
@@ -36,19 +36,18 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 #[Route('/legal')]
 class UserController extends AbstractController
 {
+    public function __construct(private readonly PermissionApiInterface $permissionApi, private readonly array $legalConfig)
+    {
+    }
+
     /**
-     * Legal module main user function.
+     * Main user function.
      * Redirects to the Terms of Use legal document.
      */
     #[Route('', name: 'zikulalegalbundle_user_index', methods: ['GET'])]
     public function index(RouterInterface $router): RedirectResponse
     {
-        $url = $this->getVar(LegalConstant::MODVAR_TERMS_URL, '');
-        if (empty($url)) {
-            $url = $router->generate('zikulalegalbundle_user_termsofuse');
-        }
-
-        return new RedirectResponse($url);
+        return $this->redirectToRoute('zikulalegalbundle_user_legalnotice');
     }
 
     /**
@@ -59,22 +58,7 @@ class UserController extends AbstractController
     #[Route('/legalnotice', name: 'zikulalegalbundle_user_legalnotice', methods: ['GET'])]
     public function legalNotice(): Response
     {
-        $doc = $this->renderDocument('legalNotice', LegalConstant::MODVAR_LEGALNOTICE_ACTIVE, LegalConstant::MODVAR_LEGALNOTICE_URL);
-
-        return new Response($doc);
-    }
-
-    /**
-     * Display Terms of Use
-     *
-     * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
-     */
-    #[Route('/termsofuse', name: 'zikulalegalbundle_user_termsofuse', methods: ['GET'])]
-    public function termsOfUse(): Response
-    {
-        $doc = $this->renderDocument('termsOfUse', LegalConstant::MODVAR_TERMS_ACTIVE, LegalConstant::MODVAR_TERMS_URL);
-
-        return new Response($doc);
+        return $this->renderDocument('legalNotice', 'legal_notice');
     }
 
     /**
@@ -85,9 +69,18 @@ class UserController extends AbstractController
     #[Route('/privacypolicy', name: 'zikulalegalbundle_user_privacypolicy', methods: ['GET'])]
     public function privacyPolicy(): Response
     {
-        $doc = $this->renderDocument('privacyPolicy', LegalConstant::MODVAR_PRIVACY_ACTIVE, LegalConstant::MODVAR_PRIVACY_URL);
+        return $this->renderDocument('privacyPolicy', 'privacy_policy');
+    }
 
-        return new Response($doc);
+    /**
+     * Display Terms of Use
+     *
+     * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
+     */
+    #[Route('/termsofuse', name: 'zikulalegalbundle_user_termsofuse', methods: ['GET'])]
+    public function termsOfUse(): Response
+    {
+        return $this->renderDocument('termsOfUse', 'terms_of_use');
     }
 
     /**
@@ -98,22 +91,7 @@ class UserController extends AbstractController
     #[Route('/accessibilitystatement', name: 'zikulalegalbundle_user_accessibilitystatement', methods: ['GET'])]
     public function accessibilityStatement(): Response
     {
-        $doc = $this->renderDocument('accessibilityStatement', LegalConstant::MODVAR_ACCESSIBILITY_ACTIVE, LegalConstant::MODVAR_ACCESSIBILITY_URL);
-
-        return new Response($doc);
-    }
-
-    /**
-     * Display Cancellation right policy
-     *
-     * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
-     */
-    #[Route('/cancellationrightpolicy', name: 'zikulalegalbundle_user_cancellationrightpolicy', methods: ['GET'])]
-    public function cancellationRightPolicy(): Response
-    {
-        $doc = $this->renderDocument('cancellationRightPolicy', LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_ACTIVE, LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_URL);
-
-        return new Response($doc);
+        return $this->renderDocument('accessibilityStatement', 'accessibility');
     }
 
     /**
@@ -124,52 +102,49 @@ class UserController extends AbstractController
     #[Route('/tradeconditions', name: 'zikulalegalbundle_user_tradeconditions', methods: ['GET'])]
     public function tradeConditions(): Response
     {
-        $doc = $this->renderDocument('tradeConditions', LegalConstant::MODVAR_TRADECONDITIONS_ACTIVE, LegalConstant::MODVAR_TRADECONDITIONS_URL);
+        return $this->renderDocument('tradeConditions', 'trade_conditions');
+    }
 
-        return new Response($doc);
+    /**
+     * Display Cancellation right policy
+     *
+     * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
+     */
+    #[Route('/cancellationrightpolicy', name: 'zikulalegalbundle_user_cancellationrightpolicy', methods: ['GET'])]
+    public function cancellationRightPolicy(): Response
+    {
+        return $this->renderDocument('cancellationRightPolicy', 'cancellation_right_policy');
     }
 
     /**
      * Render and display the specified legal document, or redirect to the specified custom URL if it exists.
      *
-     * If a custom URL for the legal document exists, as specified by the module variable identified by $customUrlKey, then
+     * If a custom URL for the legal document exists, as specified by the bundle configuration, then
      * this function will redirect the user to that URL.
      *
-     * If no custom URL exists, then this function will render and return the appropriate template for the legal document, as
-     * specified by $documentName. If the legal document
+     * If no custom URL exists, then this function will render and return the appropriate template for the legal document.
      *
      * @throws AccessDeniedException Thrown if the user does not have the appropriate access level for the function
-     *
-     * @return RedirectResponse|string HTML output string
      */
-    private function renderDocument(string $documentName, string $activeFlagKey, string $customUrlKey)
+    private function renderDocument(string $documentName, string $policyConfigKey): Response
     {
-        if (!$this->hasPermission(LegalConstant::MODNAME . '::' . $documentName, '::', ACCESS_OVERVIEW)) {
+        if (!$this->permissionApi->hasPermission('ZikulaLegalBundle::' . $documentName, '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
 
-        if (!$this->getVar($activeFlagKey)) {
-            // intentionally return non-Response
-            return $this->renderView('@ZikulaLegal/User/policyNotActive.html.twig');
+        $policyConfig = $this->legalConfig['policies'][$policyConfigKey];
+        if (!$policyConfig['enabled']) {
+            return $this->render('@ZikulaLegal/User/policyNotActive.html.twig');
         }
 
-        $customUrl = $this->getVar($customUrlKey, '');
+        $customUrl = $policyConfig['custom_url'] ?: null;
         if (!empty($customUrl)) {
             return $this->redirect($customUrl);
         }
 
-        $view = $this->renderView('@ZikulaLegal/User/' . $documentName . '.html.twig');
-
-        // intentionally return non-Response
-        return $view;
+        return $this->render('@ZikulaLegal/User/' . $documentName . '.html.twig');
     }
 
-    /**
-     * @Template("@ZikulaLegal/User/acceptPolicies.html.twig")
-     *
-     * @return Response|array
-     * @throws Exception
-     */
     #[Route('/acceptpolicies', name: 'zikulalegalbundle_user_acceptpolicies')]
     public function acceptPolicies(
         Request $request,
@@ -178,7 +153,7 @@ class UserController extends AbstractController
         UserRepositoryInterface $userRepository,
         AccessHelper $accessHelper,
         AcceptPoliciesHelper $acceptPoliciesHelper
-    ) {
+    ): Response {
         // Retrieve and delete any session variables being sent in by the log-in process before we give the function a chance to
         // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
         $uid = null;
@@ -229,11 +204,11 @@ class UserController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return [
+        return $this->render('@ZikulaLegal/User/acceptPolicies.html.twig', [
             'login' => $login,
             'form' => $form->createView(),
             'activePolicies' => $acceptPoliciesHelper->getActivePolicies(),
             'acceptedPolicies' => $acceptPoliciesHelper->getAcceptedPolicies($uid),
-        ];
+        ]);
     }
 }

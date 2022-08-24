@@ -35,7 +35,7 @@
 {{ form_end(form) }}
 <div id="setPassIdentifiers" data-setpassid="{{ form.setpass.vars.id }}" data-passid="{{ form.pass.vars.id }}"></div>
 {{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/Zikula.ZAuth.UserAdmin.js')) }}
-{% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthBundle\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
-{{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/pwstrength-bootstrap.min.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/Zikula.ZAuth.PWStrength.Init.js')) }}
+{% if usePasswordStrengthMeter %}
+    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/pwstrength-bootstrap.min.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/Zikula.ZAuth.PWStrength.Init.js')) }}
 {% endif %}

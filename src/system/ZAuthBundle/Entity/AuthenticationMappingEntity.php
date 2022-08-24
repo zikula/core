@@ -16,7 +16,6 @@ namespace Zikula\ZAuthBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersBundle\Validator\Constraints as UsersAssert;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepository;
 use Zikula\ZAuthBundle\Validator\Constraints as ZAuthAssert;
@@ -24,7 +23,7 @@ use Zikula\ZAuthBundle\Validator\Constraints as ZAuthAssert;
 #[ORM\Entity(repositoryClass: AuthenticationMappingRepository::class)]
 #[ORM\Table(name: 'zauth_authentication_mapping')]
 #[ZAuthAssert\ValidUserFields]
-class AuthenticationMappingEntity extends EntityAccess implements UserInterface
+class AuthenticationMappingEntity implements UserInterface
 {
     #[ORM\Id]
     #[ORM\Column]

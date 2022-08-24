@@ -48,7 +48,7 @@ use Doctrine\Common\Annotations\Annotation;
  *
  * Please note: You cannot use @PermissionCheck() in *both* the Class and the Method. This will produce an AnnotationException.
  *
- * @see \Zikula\PermissionsBundle\Listener\ControllerPermissionCheckAnnotationReaderListener
+ * @see \Zikula\PermissionsBundle\EventListener\ControllerPermissionCheckAnnotationReaderListener
  */
 class PermissionCheck extends Annotation
 {

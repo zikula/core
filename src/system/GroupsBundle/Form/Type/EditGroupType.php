@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\GroupsBundle\Helper\CommonHelper;
+use Zikula\GroupsBundle\Helper\TranslationHelper;
 use Zikula\GroupsBundle\Validator\Constraints\ValidGroupName;
 
 /**
@@ -33,45 +33,45 @@ use Zikula\GroupsBundle\Validator\Constraints\ValidGroupName;
  */
 class EditGroupType extends AbstractType
 {
-    public function __construct(private readonly CommonHelper $commonHelper)
+    public function __construct(private readonly TranslationHelper $translationHelper)
     {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $typeChoices = array_flip($this->groupsCommon->gtypeLabels());
-        $stateChoices = array_flip($this->groupsCommon->stateLabels());
+        $typeChoices = array_flip($this->translationHelper->gtypeLabels());
+        $stateChoices = array_flip($this->translationHelper->stateLabels());
 
         $builder
             ->add('gid', HiddenType::class)
             ->add('name', TextType::class, [
                 'label' => 'Name',
                 'attr' => [
-                    'maxlength' => 30
+                    'maxlength' => 30,
                 ],
                 'constraints' => [
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('gtype', ChoiceType::class, [
                 'label' => 'Type',
                 'choices' => /** @Ignore */ $typeChoices,
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
             ])
             ->add('state', ChoiceType::class, [
                 'label' => 'State',
                 'choices' => /** @Ignore */ $stateChoices,
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
             ])
             ->add('nbumax', IntegerType::class, [
                 'label' => 'Maximum membership',
                 'attr' => [
                     'maxlength' => 10,
-                    'min' => 0
+                    'min' => 0,
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -80,12 +80,12 @@ class EditGroupType extends AbstractType
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }
@@ -100,8 +100,8 @@ class EditGroupType extends AbstractType
         $resolver->setDefaults([
             'data_class' => GroupEntity::class,
             'constraints' => [
-                new ValidGroupName()
-            ]
+                new ValidGroupName(),
+            ],
         ]);
     }
 }

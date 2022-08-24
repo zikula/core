@@ -13,10 +13,9 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 // …
 
 /**
- * @Route("/view")
  * @Theme("admin")
- * @return Response
  */
+#[Route('/view')
 ```
 
 Possible values are:

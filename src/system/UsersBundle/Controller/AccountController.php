@@ -14,28 +14,28 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Controller;
 
 use Locale;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Event\DeleteUserFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersBundle\Form\Type\ChangeLanguageType;
 use Zikula\UsersBundle\Helper\DeleteHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 /**
  * @PermissionCheck("read")
@@ -43,19 +43,21 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 #[Route('/account')]
 class AccountController extends AbstractController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly bool $displayGraphics,
+        private readonly bool $allowSelfDeletion
+    ) {
+    }
+
     /**
-     * @Template("@ZikulaUsersBundle/Account/menu.html.twig")
-     *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     #[Route('', name: 'zikulausersbundle_account_menu')]
-    public function menu(
-        ExtensionMenuCollector $extensionMenuCollector,
-        VariableApiInterface $variableApi
-    ): array {
+    public function menu(ExtensionMenuCollector $extensionMenuCollector): Response
+    {
         $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
         $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
-        $displayIcon = $variableApi->get('ZikulaUsersModule', Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS);
 
         foreach ($accountMenus as $accountMenu) {
             /** @var \Knp\Menu\ItemInterface $accountMenu */
@@ -63,27 +65,26 @@ class AccountController extends AbstractController
             foreach ($accountMenu->getChildren() as $child) {
                 $child->setAttribute('class', 'list-group-item');
                 $icon = $child->getAttribute('icon');
-                $icon = $displayIcon ? $icon . ' fa-fw fa-2x' : null;
+                $icon = $this->displayGraphics ? $icon . ' fa-fw fa-2x' : null;
                 $child->setAttribute('icon', $icon);
             }
         }
 
-        return ['accountMenus' => $accountMenus];
+        return $this->render('@ZikulaUsersBundle/Account/menu.html.twig', [
+            'accountMenus' => $accountMenus,
+        ]);
     }
 
     /**
-     * @Template("@ZikulaUsersBundle/Account/changeLanguage.html.twig")
-     *
-     * @return array|RedirectResponse
-     *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     #[Route('/change-language', name: 'zikulausersbundle_account_changelanguage')]
     public function changeLanguage(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository
-    ) {
+        UserRepositoryInterface $userRepository,
+        LocaleApiInterface $localeApi
+    ): Response {
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException();
         }
@@ -105,7 +106,7 @@ class AccountController extends AbstractController
                 }
                 Locale::setDefault($locale);
                 $langText = Languages::getName($locale);
-                $this->addFlash('success', $this->trans('Language changed to %lang%', ['%lang%' => $langText], 'messages', $locale));
+                $this->addFlash('success', $this->translator->trans('Language changed to %lang%', ['%lang%' => $langText], 'messages', $locale));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
             }
@@ -113,16 +114,13 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersbundle_account_menu', ['_locale' => $locale]);
         }
 
-        return [
+        return $this->render('@ZikulaUsersBundle/Account/changeLanguage.html.twig', [
             'form' => $form->createView(),
-        ];
+            'multilingual' => $localeApi->multilingual(),
+        ]);
     }
 
     /**
-     * @Template("@ZikulaUsersBundle/Account/delete.html.twig")
-     *
-     * @return array|RedirectResponse
-     *
      * @throws AccessDeniedException Thrown if the user isn't logged in
      */
     #[Route('/delete', name: 'zikulausersbundle_account_deletemyaccount')]
@@ -132,11 +130,11 @@ class AccountController extends AbstractController
         UserRepositoryInterface $userRepository,
         EventDispatcherInterface $eventDispatcher,
         DeleteHelper $deleteHelper
-    ) {
+    ): Response {
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException();
         }
-        if (!$this->getVar(UsersConstant::MODVAR_ALLOW_USER_SELF_DELETE, UsersConstant::DEFAULT_ALLOW_USER_SELF_DELETE)) {
+        if (!$this->allowSelfDeletion) {
             $this->addFlash('error', 'Self deletion is disabled by the site administrator.');
 
             return $this->redirectToRoute('zikulausersbundle_account_menu');
@@ -169,9 +167,9 @@ class AccountController extends AbstractController
             }
         }
 
-        return [
+        return $this->render('@ZikulaUsersBundle/Account/delete.html.twig', [
             'form' => $form->createView(),
             'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : [],
-        ];
+        ]);
     }
 }

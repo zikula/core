@@ -18,13 +18,12 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\GroupsBundle\Constant as GroupsConstant;
 use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
 use Zikula\ZAuthBundle\Api\ApiInterface\UserCreationApiInterface;
@@ -63,8 +62,8 @@ class UserCreationApi implements UserCreationApiInterface
         private readonly CurrentUserApiInterface $currentUserApi,
         private readonly EncoderFactoryInterface $encoderFactory,
         private readonly ManagerRegistry $managerRegistry,
-        private readonly VariableApiInterface $variableApi,
-        private readonly GroupRepositoryInterface $groupRepository
+        private readonly GroupRepositoryInterface $groupRepository,
+        private readonly bool $mailVerificationRequired
     ) {
         $this->constraint = new Constraints\Collection(['fields' => [
             'uname' => new ValidUname(),
@@ -113,7 +112,10 @@ class UserCreationApi implements UserCreationApiInterface
         $userArray['activated'] = isset($userArray['activated']) ? empty($userArray['activated']) ? UsersConstant::ACTIVATED_PENDING_REG : 1 : 1;
 
         $userEntity = new UserEntity();
-        $userEntity->merge($userArray);
+        foreach ($userArray as $fieldName => $fieldValue) {
+            $setter = 'set' . ucfirst($fieldName);
+            $userEntity->$setter($fieldValue);
+        }
         $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
         $userEntity->setRegistrationDate($nowUTC);
         $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
@@ -141,8 +143,7 @@ class UserCreationApi implements UserCreationApiInterface
         $mapping->setEmail($userEntity->getEmail());
         $mapping->setPass($this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->encodePassword($pass, null));
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
-        $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
-        $mapping->setVerifiedEmail(!$userMustVerify);
+        $mapping->setVerifiedEmail(!$this->mailVerificationRequired);
         $this->mappings[$hash] = $mapping;
     }
 

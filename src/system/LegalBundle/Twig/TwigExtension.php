@@ -13,47 +13,52 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Twig;
 
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\Loader\LoaderInterface;
 use Twig\TwigFunction;
 
-/**
- * Twig extension class.
- */
 class TwigExtension extends AbstractExtension
 {
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    /**
-     * @var LoaderInterface
-     */
-    protected $twigLoader;
-
-    public function __construct(Environment $twig, LoaderInterface $twigLoader)
-    {
-        $this->twig = $twig;
-        $this->twigLoader = $twigLoader;
+    public function __construct(
+        private readonly RouterInterface $router,
+        private readonly Environment $twig,
+        private readonly LoaderInterface $twigLoader,
+        private readonly array $legalConfig
+    ) {
     }
 
-    /**
-     * Returns a list of custom Twig functions.
-     *
-     * @return array
-     */
     public function getFunctions()
     {
         return [
+            new TwigFunction('zikulalegalbundle_getUrl', [$this, 'getUrl']),
             new TwigFunction('zikulalegalbundle_inlineLink', [$this, 'inlineLink'], ['is_safe' => ['html']]),
+            new TwigFunction('zikulalegalbundle_minimumAge', [$this, 'getMinimumAge']),
         ];
     }
 
     /**
-     * The zikulalegalbundle_inlineLink function displays a single inline user link of a
-     * specific policy for the Legal module.
+     * Returns the link to a specific policy for the Legal bundle.
+     *
+     * Example
+     *     {{ zikulalegalbundle_getUrl('termsOfUse') }}
+     */
+    public function getUrl(string $policy = ''): string
+    {
+        // see https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-snake-case
+        $policyConfigName = mb_strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $policy));
+        if ('accessibility_statement' === $policyConfigName) {
+            $policyConfigName = 'accessibility';
+        }
+        $policyConfig = $this->legalConfig['policies'][$policyConfigName];
+        $policyUrl = $policyConfig['custom_url'] ?: $this->router->generate('zikulalegalbundle_user_' . mb_strtolower($policy));
+
+        return $policyUrl;
+    }
+
+    /**
+     * Displays a single inline user link of a specific policy for the Legal bundle.
      *
      * Example
      *     {{ zikulalegalbundle_inlineLink('termsOfUse') }}
@@ -71,7 +76,8 @@ class TwigExtension extends AbstractExtension
     {
         $templatePath = '@ZikulaLegal/InlineLink/';
         $templateParameters = [
-            'target' => $target
+            'policyUrl' => $this->getUrl($policy),
+            'target' => $target,
         ];
 
         if (!empty($policy)) {
@@ -82,5 +88,16 @@ class TwigExtension extends AbstractExtension
         }
 
         return $this->twig->render($templatePath . 'notFound.html.twig', $templateParameters);
+    }
+
+    /**
+     * Returns the minimum age for the age policy.
+     *
+     * Example
+     *     {{ zikulalegalbundle_minimumAge() }}
+     */
+    public function getMinimumAge(): int
+    {
+        return $this->legalConfig['minimum_age'];
     }
 }

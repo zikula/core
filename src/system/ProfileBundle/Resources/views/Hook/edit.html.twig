@@ -3,6 +3,6 @@
     {% for element in form.zikulaprofilebundle_editprofile %}
         {{ form_row(element) }}
     {% endfor %}
-    <input type="hidden" id="avatarPath" value="{{ getModVar(constant('Zikula\\UsersBundle\\Constant::MODNAME'), constant('Zikula\\ProfileBundle\\ProfileConstant::MODVAR_AVATAR_IMAGE_PATH'), constant('Zikula\\ProfileBundle\\ProfileConstant::DEFAULT_AVATAR_IMAGE_PATH')) }}" />
+    <input type="hidden" id="avatarPath" value="{{ imagePath|e('html_attr') }}" />
 </fieldset>
-{{ pageAddAsset('javascript', zasset('@ZikulaProfileBundle:js/ZikulaProfileModule.Avatar.Edit.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaProfileBundle:js/ZikulaProfileBundle.Avatar.Edit.js')) }}

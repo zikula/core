@@ -1,5 +1,1 @@
-{% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_PRIVACY_URL')) %}
-{% if policyUrl == '' %}
-    {% set policyUrl = path('zikulalegalbundle_user_privacypolicy') %}
-{% endif %}
 <a class="legal_inlinelink_privacypolicy" href="{{ policyUrl|e('html_attr') }}" target="{{ target|e('html_attr') }}">{% trans %}Privacy policy{% endtrans %}</a>

@@ -15,9 +15,6 @@ namespace Zikula\UsersBundle\Collector;
 
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\SettingsBundle\SettingsConstant;
-use Zikula\UsersBundle\MessageBundle\IdentityMessageBundle;
 use Zikula\UsersBundle\MessageBundle\MessageBundleInterface;
 
 class MessageBundleCollector
@@ -27,14 +24,11 @@ class MessageBundleCollector
      */
     private array $messageBundles = [];
 
-    private string $currentMessageBundleName;
-
     public function __construct(
-        VariableApiInterface $variableApi,
         #[TaggedIterator('zikula.message_bundle')]
-        iterable $bundles
+        iterable $bundles,
+        private readonly ?string $currentMessageBundleName
     ) {
-        $this->currentMessageBundleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_BUNDLE, '');
         foreach ($bundles as $bundle) {
             $this->add($bundle);
         }
@@ -87,6 +81,11 @@ class MessageBundleCollector
             return $this->messageBundles[$this->currentMessageBundleName];
         }
 
-        return new IdentityMessageBundle();
+        return $this->messageBundles['ZikulaUsersBundle'];
+    }
+
+    public function getSelectedName(): string
+    {
+        return $this->currentMessageBundleName;
     }
 }

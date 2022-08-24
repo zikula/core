@@ -3,8 +3,6 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $extension: '@Zikula\GroupsBundle\ZikulaGroupsBundle'
 
     Zikula\GroupsBundle\:
         resource: '../../*'
@@ -15,11 +13,6 @@ services:
         lazy: true
 
     Zikula\GroupsBundle\Repository\GroupRepositoryInterface: '@Zikula\GroupsBundle\Repository\GroupRepository'
-
-    Zikula\GroupsBundle\Repository\GroupRepository:
-        public: true # used in GroupsModuleInstaller from the container
-        calls:
-            - setTranslator: ['@Symfony\Contracts\Translation\TranslatorInterface']
 
     Zikula\GroupsBundle\Menu\MenuBuilder:
         tags:

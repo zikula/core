@@ -16,34 +16,23 @@ namespace Zikula\ProfileBundle\Helper;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 
 class UploadHelper
 {
     /**
      * List of allowed file extensions
-     * @var array
      */
-    private $imageExtensions;
+    private array $imageExtensions;
 
-    /**
-     * @var array
-     */
-    private $modVars;
-
-    /**
-     * @var string
-     */
-    private $avatarPath;
+    private string $avatarPath;
 
     public function __construct(
-        VariableApiInterface $variableApi,
-        string $projectDir
+        private readonly array $uploadConfig,
+        string $projectDir,
+        string $imagePath
     ) {
         $this->imageExtensions = ['gif', 'jpeg', 'jpg', 'png'];
-        $this->modVars = $variableApi->getAll('ZikulaProfileModule');
-        $this->avatarPath = $projectDir . '/' . $variableApi->get(UsersConstant::MODNAME, 'avatarpath', 'public/uploads/avatar');
+        $this->avatarPath = $projectDir . '/' . $imagePath;
     }
 
     /**
@@ -51,7 +40,7 @@ class UploadHelper
      */
     public function handleUpload(UploadedFile $file, int $userId = 0): string
     {
-        $allowUploads = isset($this->modVars['allowUploads']) && true === (bool) $this->modVars['allowUploads'];
+        $allowUploads = $this->uploadConfig['enabled'];
         if (!$allowUploads) {
             return '';
         }
@@ -66,10 +55,11 @@ class UploadHelper
             return '';
         }
 
+        $shrinkImages = $this->uploadConfig['shrink_large_images'];
         $filePath = $file->getRealPath();
 
         // check for file size limit
-        if (!$this->modVars['shrinkLargeImages'] && filesize($filePath) > $this->modVars['maxSize']) {
+        if (!$shrinkImages && filesize($filePath) > $this->uploadConfig['max_size']) {
             unlink($filePath);
 
             return '';
@@ -93,9 +83,9 @@ class UploadHelper
         }
 
         // check for image dimensions limit
-        $isTooLarge = $imageInfo[0] > $this->modVars['maxWidth'] || $imageInfo[1] > $this->modVars['maxHeight'];
+        $isTooLarge = $imageInfo[0] > $this->uploadConfig['max_width'] || $imageInfo[1] > $this->uploadConfig['max_height'];
 
-        if ($isTooLarge && !$this->modVars['shrinkLargeImages']) {
+        if ($isTooLarge && !$shrinkImages) {
             unlink($filePath);
 
             return '';
@@ -116,11 +106,10 @@ class UploadHelper
 
         $file->move($this->avatarPath, $avatarFileName);
 
-        if ($isTooLarge && $this->modVars['shrinkLargeImages']) {
-            // resize the image
+        if ($isTooLarge && $shrinkImages) {
             $imagine = new Imagine();
             $image = $imagine->open($avatarFilePath);
-            $image->resize(new Box($this->modVars['maxWidth'], $this->modVars['maxHeight']))
+            $image->resize(new Box($this->uploadConfig['max_width'], $this->uploadConfig['max_height']))
                   ->save($avatarFilePath);
         }
 

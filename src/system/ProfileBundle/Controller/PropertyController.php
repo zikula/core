@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Zikula\ProfileBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ProfileBundle\Entity\PropertyEntity;
@@ -34,24 +33,20 @@ class PropertyController extends AbstractController
 {
     /**
      * @Theme("admin")
-     * @Template("@ZikulaProfile/Property/list.html.twig")
      */
     #[Route('/list', name: 'zikulaprofilebundle_property_listproperties')]
-    public function listProperties(PropertyRepositoryInterface $propertyRepository): array
+    public function listProperties(PropertyRepositoryInterface $propertyRepository): Response
     {
-        return [
+        return $this->render('@ZikulaProfile/Property/list.html.twig', [
             'properties' => $propertyRepository->findBy([], ['weight' => 'ASC']),
-        ];
+        ]);
     }
 
     /**
      * @Theme("admin")
-     * @Template("@ZikulaProfile/Property/edit.html.twig")
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/edit/{id}', name: 'zikulaprofilebundle_property_edit', defaults: ['id' => null])]
-    public function edit(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity = null)
+    public function edit(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity = null): Response
     {
         if (!isset($propertyEntity)) {
             $propertyEntity = new PropertyEntity();
@@ -63,28 +58,25 @@ class PropertyController extends AbstractController
                 $propertyEntity = $form->getData();
                 $doctrine->getManager()->persist($propertyEntity);
                 $doctrine->getManager()->flush();
-                $this->addFlash('success', $this->trans('Property saved.'));
+                $this->addFlash('success', 'Property saved.');
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('info', $this->trans('Operation cancelled.'));
+                $this->addFlash('info', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaprofilebundle_property_listproperties');
         }
 
-        return [
-            'form' => $form->createView()
-        ];
+        return $this->render('@ZikulaProfile/Property/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
      * @Theme("admin")
-     * @Template("@ZikulaProfile/Property/delete.html.twig")
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/delete/{id}', name: 'zikulaprofilebundle_property_delete')]
-    public function delete(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity)
+    public function delete(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity): Response
     {
         $form = $this->createForm(DeletionType::class, $propertyEntity);
         $form->handleRequest($request);
@@ -93,18 +85,18 @@ class PropertyController extends AbstractController
                 $propertyEntity = $form->getData();
                 $doctrine->getManager()->remove($propertyEntity);
                 $doctrine->getManager()->flush();
-                $this->addFlash('success', $this->trans('Property removed.'));
+                $this->addFlash('success', 'Property removed.');
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('info', $this->trans('Operation cancelled.'));
+                $this->addFlash('info', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaprofilebundle_property_listproperties');
         }
 
-        return [
+        return $this->render('@ZikulaProfile/Property/delete.html.twig', [
             'id' => $propertyEntity->getId(),
-            'form' => $form->createView()
-        ];
+            'form' => $form->createView(),
+        ]);
     }
 }

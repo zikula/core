@@ -13,11 +13,26 @@ declare(strict_types=1);
 
 namespace Zikula\AdminBundle\Menu;
 
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\MenuBundle\ExtensionMenu\AbstractExtensionMenu;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
+use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
-class ExtensionMenu extends AbstractExtensionMenu
+class ExtensionMenu implements ExtensionMenuInterface
 {
+    public function __construct(
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly RequestStack $requestStack,
+        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly LocaleApiInterface $localeApi
+    ) {
+    }
+
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
     {
         if (self::TYPE_ADMIN === $type) {
@@ -33,11 +48,54 @@ class ExtensionMenu extends AbstractExtensionMenu
     protected function getAdmin(): ?ItemInterface
     {
         $menu = $this->factory->createItem('adminAdminMenu');
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-            $menu->addChild('Module categories list', [
-                'route' => 'zikulaadminbundle_admin_view',
-            ])->setAttribute('icon', 'fas fa-list');
+        if (!$this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
+            return 0 === $menu->count() ? null : $menu;
         }
+
+        $menu->addChild('Bundle categories list', [
+            'route' => 'zikulaadminbundle_admin_view',
+        ])->setAttribute('icon', 'fas fa-list');
+
+        if ($this->localeApi->multilingual()) {
+            $menu->addChild('Localization', [
+                'uri' => '#'
+            ])
+                ->setAttribute('icon', 'fas fa-globe')
+                ->setAttribute('dropdown', true)
+            ;
+
+            if ('dev' === $this->kernel->getEnvironment()) {
+                $request = $this->requestStack->getCurrentRequest();
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    if ($session->has(EditInPlaceActivator::KEY)) {
+                        $menu['Localization']->addChild('Disable edit in place', [
+                            'route' => 'zikulaadminbundle_localization_toggleeditinplace',
+                        ])->setAttribute('icon', 'fas fa-ban');
+                    } else {
+                        $menu['Localization']->addChild('Enable edit in place', [
+                            'route' => 'zikulaadminbundle_localization_toggleeditinplace',
+                        ])
+                            ->setAttribute('icon', 'fas fa-user-edit')
+                            ->setLinkAttribute('title', 'Edit translations directly in the context of a page')
+                        ;
+                    }
+                }
+                $menu['Localization']->addChild('Translation UI', [
+                    'route' => 'translation_index',
+                ])
+                    ->setAttribute('icon', 'fas fa-language')
+                    ->setLinkAttribute('title', 'Web interface to add, edit and remove translations')
+                ;
+            }
+        }
+
+        $menu->addChild('Test mail settings', [
+            'route' => 'zikulaadminbundle_mail_test',
+        ])->setAttribute('icon', 'fas fa-envelope');
+
+        $menu->addChild('PHP configuration', [
+            'route' => 'zikulaadminbundle_admin_phpinfo',
+        ])->setAttribute('icon', 'fas fa-info-circle');
 
         return 0 === $menu->count() ? null : $menu;
     }

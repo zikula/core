@@ -18,45 +18,34 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 
 class AvatarType extends AbstractType
 {
-    /**
-     * @var array
-     */
-    private $modVars;
-
-    /**
-     * @var string
-     */
-    private $avatarPath;
+    private string $avatarPath;
 
     public function __construct(
-        VariableApiInterface $variableApi,
+        private readonly array $avatarConfig,
         string $projectDir
     ) {
-        $this->modVars = $variableApi->getAll('ZikulaProfileModule');
-        $this->avatarPath = $projectDir . '/' . $variableApi->get(UsersConstant::MODNAME, 'avatarpath', 'public/uploads/avatar');
+        $this->avatarPath = $projectDir . '/' . $avatarConfig['image_path'];
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $defaults = [
-            'required' => false
+            'required' => false,
         ];
 
         if (!$this->allowUploads()) {
             // choice mode
             $choices = [
                 'Blank' => 'blank.jpg',
-                'Gravatar' => 'gravatar.jpg',
+                'Gravatar' => $this->avatarConfig['default_image'],
             ];
 
             if (file_exists($this->avatarPath)) {
                 $finder = new Finder();
-                $finder->files()->in($this->avatarPath)->notName('blank.jpg')->notName('gravatar.jpg')->sortByName();
+                $finder->files()->in($this->avatarPath)->notName('blank.jpg')->notName($this->avatarConfig['default_image'])->sortByName();
 
                 foreach ($finder as $file) {
                     $fileName = $file->getFilename();
@@ -67,24 +56,25 @@ class AvatarType extends AbstractType
             $defaults = array_merge($defaults, [
                 'choices' => $choices,
                 'attr' => [
-                    'class' => 'avatar-selector'
+                    'class' => 'avatar-selector',
                 ],
-                'placeholder' => false
+                'placeholder' => false,
             ]);
         } else {
             // upload mode
+            $uploadSettings = $this->avatarConfig['uploads'];
             $defaults['data_class'] = null; // allow string values instead of File objects
 
             $defaults['help'] = [
                 'Possible extensions: %extensions%',
                 'Max. file size: %maxSize% bytes',
-                'Max. dimensions: %maxWidth%x%maxHeight% pixels'
+                'Max. dimensions: %maxWidth%x%maxHeight% pixels',
             ];
             $defaults['help_translation_parameters'] = [
                 '%extensions%' => implode(', ', ['gif', 'jpeg', 'jpg', 'png']),
-                '%maxSize%' => $this->modVars['maxSize'],
-                '%maxWidth%' => $this->modVars['maxWidth'],
-                '%maxHeight%' => $this->modVars['maxHeight']
+                '%maxSize%' => $uploadSettings['max_size'],
+                '%maxWidth%' => $uploadSettings['max_width'],
+                '%maxHeight%' => $uploadSettings['max_height'],
             ];
         }
 
@@ -106,7 +96,7 @@ class AvatarType extends AbstractType
      */
     private function allowUploads(): bool
     {
-        $allowUploads = isset($this->modVars['allowUploads']) && true === (bool) $this->modVars['allowUploads'];
+        $allowUploads = $this->avatarConfig['uploads']['enabled'];
         if (!$allowUploads) {
             return false;
         }

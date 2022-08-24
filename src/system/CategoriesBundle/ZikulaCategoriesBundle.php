@@ -13,8 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle;
 
+use Zikula\CategoriesBundle\Initializer\CategoriesInitializer;
 use Zikula\ExtensionsBundle\AbstractModule;
+use Zikula\ExtensionsBundle\Initializer\BundleInitializerInterface;
+use Zikula\ExtensionsBundle\Initializer\InitializableBundleInterface;
 
-class ZikulaCategoriesBundle extends AbstractModule
+class ZikulaCategoriesBundle extends AbstractModule implements InitializableBundleInterface
 {
+    public function getInitializer(): BundleInitializerInterface
+    {
+        return $this->container->get(CategoriesInitializer::class);
+    }
 }

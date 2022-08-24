@@ -8,7 +8,7 @@ The `utcdatetime` column type forces the DateTime instance to be stored in UTC t
 Use like:
 
 ```
-* @ORM\Column(type="utcdatetime")
+#[ORM\Column(type: 'utcdatetime')]
 ```
 
 Refs: [Working with DateTime Instances](http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html).

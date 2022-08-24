@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeBundle\Engine\AssetBag;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 
@@ -28,11 +27,9 @@ class AddJSConfigListener implements EventSubscriberInterface
 
     public function __construct(
         string $installed,
-        private readonly VariableApiInterface $variableApi,
         private readonly CurrentUserApiInterface $currentUserApi,
         private readonly Environment $twig,
-        private readonly AssetBag $footers,
-        private readonly string $defaultSessionName = '_zsid'
+        private readonly AssetBag $footers
     ) {
         $this->installed = '0.0.0' !== $installed;
     }
@@ -62,17 +59,15 @@ class AddJSConfigListener implements EventSubscriberInterface
 
         $config = [
             'entrypoint' => ZikulaKernel::FRONT_CONTROLLER,
-            'baseURL' => $event->getRequest()->getSchemeAndHttpHost() . '/',
-            'baseURI' => $event->getRequest()->getBasePath(),
-            'ajaxtimeout' => (int) $this->variableApi->getSystemVar('ajaxtimeout', 5000),
-            'lang' => $event->getRequest()->getLocale(),
-            'sessionName' => isset($session) ? $session->getName() : $this->defaultSessionName,
-            'uid' => (int) $this->currentUserApi->get('uid')
+            'baseURL' => $request->getSchemeAndHttpHost() . '/',
+            'baseURI' => $request->getBasePath(),
+            'lang' => $request->getLocale(),
+            'uid' => (int) $this->currentUserApi->get('uid'),
         ];
 
         $config = array_map('htmlspecialchars', $config);
         $content = $this->twig->render('@ZikulaTheme/Engine/JSConfig.html.twig', [
-            'config' => $config
+            'config' => $config,
         ]);
         $this->footers->add([$content => 0]);
     }

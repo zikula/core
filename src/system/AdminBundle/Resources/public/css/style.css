@@ -89,40 +89,6 @@ body div.z-admin-content-pagetitle h3 {
 }
 
 /******************************************************************************
-* Styling for update checker
-******************************************************************************/
-
-div#z-updatechecker strong:hover {
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-div#z-updatechecker a {
-    color: #444;
-    padding: 0;
-    margin: 0;
-}
-
-div#z-updatechecker a:hover {
-    color: #000;
-    text-decoration: underline;
-}
-
-div#z-updatechecker ul {
-    list-style-position: outside;
-    list-style-type: disc;
-    margin: 0 1em;
-    padding: 0 1em;
-}
-
-/**
- * This centers the close icon.
- */
-div#z-updatechecker > i.close {
-   margin-top: -2px;
-}
-
-/******************************************************************************
 * Admin category description
 ******************************************************************************/
 
@@ -253,4 +219,18 @@ div.z-admincategorydescription {
     #modulelist > li {
         width: 33%;
     }
+}
+
+#phpinfo table {
+    table-layout: fixed;
+}
+#phpinfo table td {
+    word-wrap: break-word;
+}
+#phpinfo td.e {
+    font-weight: bold;
+}
+#phpinfo a > img {
+    float: left;
+    margin-right: 20px;
 }

@@ -15,12 +15,7 @@ namespace Zikula\UsersBundle\Collector;
 
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\SettingsBundle\SettingsConstant;
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\ProfileBundle\IdentityProfileBundle;
 use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
-use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 class ProfileBundleCollector
 {
@@ -29,16 +24,11 @@ class ProfileBundleCollector
      */
     private array $profileBundles = [];
 
-    private string $currentProfileBundleName;
-
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly CurrentUserApiInterface $currentUserApi,
-        VariableApiInterface $variableApi,
         #[TaggedIterator('zikula.profile_bundle')]
-        iterable $bundles
+        iterable $bundles,
+        private readonly ?string $currentProfileBundleName
     ) {
-        $this->currentProfileBundleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_BUNDLE, '');
         foreach ($bundles as $bundle) {
             $this->add($bundle);
         }
@@ -91,6 +81,11 @@ class ProfileBundleCollector
             return $this->profileBundles[$this->currentProfileBundleName];
         }
 
-        return new IdentityProfileBundle($this->userRepository, $this->currentUserApi);
+        return $this->profileBundles['ZikulaUsersBundle'];
+    }
+
+    public function getSelectedName(): string
+    {
+        return $this->currentProfileBundleName;
     }
 }

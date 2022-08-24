@@ -18,13 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 
 class MainController
 {
     public function __construct(
         protected readonly ZikulaHttpKernelInterface $kernel,
-        protected readonly VariableApiInterface $variableApi
+        protected readonly SiteDefinitionInterface $siteDefinition
     ) {
     }
 
@@ -35,7 +35,7 @@ class MainController
     #[Route('/', name: 'home', condition: "request == null or request.query.get('module') == ''")]
     public function home(Request $request): Response
     {
-        $startPageInfo = $this->variableApi->getSystemVar('startController');
+        $startPageInfo = $this->siteDefinition->getStartController();
         if (!is_array($startPageInfo) || !isset($startPageInfo['controller']) || empty($startPageInfo['controller'])) {
             return new Response(''); // home page is static
         }

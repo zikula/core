@@ -15,14 +15,14 @@ namespace Zikula\PermissionsBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsBundle\Entity\PermissionEntity;
 
 class MenuBuilder
 {
     public function __construct(
         private readonly FactoryInterface $factory,
-        private readonly VariableApiInterface $variableApi
+        private readonly bool $lockAdminRule,
+        private readonly int $adminRuleId
     ) {
     }
 
@@ -30,8 +30,7 @@ class MenuBuilder
     {
         /** @var PermissionEntity $permission */
         $permission = $options['permission'];
-        $lockAdmin = $this->variableApi->get('ZikulaPermissionsModule', 'lockadmin', 1);
-        $adminPermId = $this->variableApi->get('ZikulaPermissionsModule', 'adminid', 1);
+
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
         $menu->addChild('Insert permission rule before this one', [
@@ -41,7 +40,7 @@ class MenuBuilder
             ->setLinkAttributes(['class' => 'create-new-permission insertBefore pointer tooltips'])
         ;
 
-        if (!$lockAdmin || $adminPermId !== $permission->getPid()) {
+        if (!$this->lockAdminRule || $this->adminRuleId !== $permission->getPid()) {
             $menu->addChild('Edit this permission rule', [
                 'uri' => '#'
             ])

@@ -18,7 +18,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
 use Zikula\CategoriesBundle\Traits\StandardFieldsTrait;
 
@@ -28,7 +27,7 @@ use Zikula\CategoriesBundle\Traits\StandardFieldsTrait;
     ORM\Index(fields: ['leaf'], name: 'idx_categories_is_leaf')
 ]
 #[Gedmo\Tree(type: 'nested')]
-class CategoryEntity extends EntityAccess
+class CategoryEntity
 {
     use StandardFieldsTrait;
 
@@ -143,7 +142,7 @@ class CategoryEntity extends EntityAccess
         return $this->parent;
     }
 
-    public function setParent(self $parent = null): self
+    public function setParent(?self $parent = null): self
     {
         $this->parent = $parent;
 
@@ -307,11 +306,10 @@ class CategoryEntity extends EntityAccess
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
-            $attribute = new CategoryAttributeEntity();
-            $attribute->setCategory($this);
-            $attribute->setName($name);
-            $attribute->setValue($value);
-            $this->attributes[$name] = $attribute;
+            $this->attributes[$name] = (new CategoryAttributeEntity())
+                ->setCategory($this)
+                ->setName($name)
+                ->setValue($value);
         }
 
         return $this;

@@ -81,7 +81,7 @@
     </div>
 </fieldset>
 {{ form_end(permissionCheckForm) }}
-<div id="adminPermissionParameters" data-adminid="{{ adminId }}" data-locked="{{ lockadmin }}"></div>
+<div id="adminPermissionParameters" data-adminid="{{ adminRuleId }}" data-locked="{{ lockAdminRule ? 1 : 0 }}"></div>
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">

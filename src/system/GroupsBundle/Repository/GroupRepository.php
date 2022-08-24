@@ -23,19 +23,9 @@ use Zikula\PermissionsBundle\Api\PermissionApi;
 
 class GroupRepository extends ServiceEntityRepository implements GroupRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private readonly TranslatorInterface $translator)
     {
         parent::__construct($registry, GroupEntity::class);
-    }
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
     }
 
     public function countGroups(int $groupType = null, int $excludedState = null): int

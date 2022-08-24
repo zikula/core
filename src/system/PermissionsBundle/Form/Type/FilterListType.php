@@ -29,29 +29,29 @@ class FilterListType extends AbstractType
                 'label' => 'Filter group',
                 'choices' => /** @Ignore */ array_flip($options['groupChoices']),
                 'attr' => [
-                    'class' => 'form-control-sm'
-                ]
+                    'class' => 'form-control-sm',
+                ],
             ])
             ->add('filterComponent', ChoiceType::class, [
                 'label' => 'Filter component',
                 'choices' => /** @Ignore */ $options['componentChoices'],
                 'attr' => [
-                    'class' => 'form-control-sm'
-                ]
+                    'class' => 'form-control-sm',
+                ],
             ])
             ->add('filterColour', ChoiceType::class, [
                 'label' => 'Filter colour',
                 'choices' => /** @Ignore */ $options['colourChoices'],
                 'attr' => [
-                    'class' => 'form-control-sm'
-                ]
+                    'class' => 'form-control-sm',
+                ],
             ])
             ->add('reset', ButtonType::class, [
                 'label' => 'Reset',
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn-secondary btn-sm'
-                ]
+                    'class' => 'btn-secondary btn-sm',
+                ],
             ])
         ;
     }
@@ -65,11 +65,11 @@ class FilterListType extends AbstractType
     {
         $resolver->setDefaults([
             'attr' => [
-                'class' => 'form-inline'
+                'class' => 'form-inline',
             ],
             'groupChoices' => [],
             'componentChoices' => [],
-            'colourChoices' => []
+            'colourChoices' => [],
         ]);
     }
 }

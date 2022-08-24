@@ -25,11 +25,6 @@ functions, filters, tags, tests and global variables.
 - pageSetVar(name, value)
 - zasset(path)
 
-### Extensions and Variables
-
-- getModVar(module, name, default = null)
-- getSystemVar(name, default = null)
-
 ### Admin Interface
 
 - adminHeader()
@@ -52,10 +47,6 @@ functions, filters, tags, tests and global variables.
 - messageInboxLink($uid = null, $urlOnly = false, $text = '', $class = '')
 - messageSendLink($uid = null, $urlOnly = false, $text = '', $class = '') (filter)
 - messageCount($uid = null, $unreadOnly = false)
-
-#### Online state
-
-- onlineSince(UserEntity $userEntity = null, $minutes = 10) (filter)
 
 #### Profiles
 

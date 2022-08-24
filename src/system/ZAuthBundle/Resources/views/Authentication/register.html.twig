@@ -5,9 +5,9 @@
     {% trans %}During your visits, we recommended that you set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly (or may not function at all) if cookies are disabled.{% endtrans %}
 </p>
 
-{% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthBundle\\ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED')) %}
+{% if mailVerificationRequired() %}
     <p class="alert alert-info">{% trans %}Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below.{% endtrans %}
-{% elseif getModVar('ZikulaUsersModule', constant('Zikula\\UsersBundle\\Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED')) %}
+{% elseif registrationRequiresApproval %}
     <p class="alert alert-info">{% trans %}Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below.{% endtrans %}</p>
 {% endif %}
 
@@ -39,11 +39,11 @@
         {{ include(template.view, template.params, ignore_missing = true) }}
     {% endfor %}
 
-    {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthBundle\\ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION')) is not empty %}
-    <fieldset>
-        <legend>{% trans %}Answer the security question{% endtrans %}</legend>
-        {{ form_row(form.antispamanswer) }}
-    </fieldset>
+    {% if form.antispamanswer is defined %}
+        <fieldset>
+            <legend>{% trans %}Answer the security question{% endtrans %}</legend>
+            {{ form_row(form.antispamanswer) }}
+        </fieldset>
     {% endif %}
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
@@ -53,7 +53,7 @@
         </div>
     </div>
 {{ form_end(form) }}
-{% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthBundle\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
-    {{ pageAddAsset('javascript', zasset('@ZikulaZAuth:js/pwstrength-bootstrap.min.js')) }}
-    {{ pageAddAsset('javascript', zasset('@ZikulaZAuth:js/Zikula.ZAuth.PWStrength.Init.js')) }}
+{% if usePasswordStrengthMeter %}
+    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/pwstrength-bootstrap.min.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/Zikula.ZAuth.PWStrength.Init.js')) }}
 {% endif %}

@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Zikula\CategoriesBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
 use Zikula\CategoriesBundle\Form\Type\CategoryType;
 use Zikula\CategoriesBundle\Helper\CategoryProcessingHelper;
@@ -34,6 +35,10 @@ class NodeController extends AbstractController
 {
     private string $domTreeNodePrefix = 'node_';
 
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     #[Route('/contextMenu/{action}/{id}', name: 'zikulacategoriesbundle_node_contextmenu', defaults: ['id' => null], options: ['expose' => true])]
     public function contextMenu(
         Request $request,
@@ -45,7 +50,7 @@ class NodeController extends AbstractController
         CategoryEntity $category = null
     ): JsonResponse {
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
-            return $this->json($this->trans('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->translator->trans('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
         $mode = $request->request->get('mode', 'edit');
 
@@ -58,7 +63,7 @@ class NodeController extends AbstractController
                 $newCategory->setName($category->getName() . 'copy');
                 $displayNames = [];
                 foreach ($newCategory->getDisplayName() as $locale => $displayName) {
-                    $displayNames[$locale] = $displayName . ' ' . $this->trans('copy');
+                    $displayNames[$locale] = $displayName . ' ' . $this->translator->trans('copy');
                 }
                 $newCategory->setDisplayName($displayNames);
                 $action = 'edit';

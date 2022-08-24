@@ -23,9 +23,7 @@ currentMenu: themes
 
 ## For developers
 
-- [Theme class](Dev/ThemeClass.md)
 - [Theme composer file](Dev/ComposerFile.md)
-- [Dependency injection](Dev/DependencyInjection.md)
 - [Theme annotation](Dev/ThemeAnnotation.md)
 - [Twig render events](Dev/TwigRenderEvents.md)
 - [Site definition](../../Configuration/Settings/Dev/SiteDefinition.md)

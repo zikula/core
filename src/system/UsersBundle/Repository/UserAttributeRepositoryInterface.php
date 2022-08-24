@@ -15,16 +15,13 @@ namespace Zikula\UsersBundle\Repository;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\UsersBundle\Constant;
+use Zikula\UsersBundle\UsersConstant;
 
 interface UserAttributeRepositoryInterface extends ObjectRepository, Selectable
 {
-    /**
-     * @return mixed
-     */
     public function setEmptyValueWhereAttributeNameIn(
         array $attributeNames,
         array $users = [],
-        array $forbiddenUsers = [Constant::USER_ID_ADMIN, Constant::USER_ID_ANONYMOUS]
-    );
+        array $forbiddenUsers = [UsersConstant::USER_ID_ADMIN, UsersConstant::USER_ID_ANONYMOUS]
+    ): mixed;
 }

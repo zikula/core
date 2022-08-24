@@ -46,7 +46,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             'installed' => '0.0.0' !== $installed,
             'bootstrap_js_path' => $bootstrapJavascriptPath,
             'bootstrap_css_path' => $bootstrapStylesheetPath,
-            'font_awesome_path' => $fontAwesomePath
+            'font_awesome_path' => $fontAwesomePath,
         ];
     }
 
@@ -87,7 +87,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJquery(): void
     {
-        $jsConfigFile = 'js/ZikulaThemeModule.JSConfig.js';
+        $jsConfigFile = 'js/ZikulaThemeBundle.JSConfig.js';
         $jsConfigPath = $this->assetHelper->resolve('bundles/zikulatheme/' . $jsConfigFile);
         if ($this->params['installed'] && null !== $this->themeEngine->getTheme()) {
             $jsConfigPath = $this->assetHelper->resolve('@ZikulaThemeBundle:' . $jsConfigFile);
@@ -96,7 +96,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('jquery/jquery.min.js') => AssetBag::WEIGHT_JQUERY,
             $jsConfigPath => AssetBag::WEIGHT_JQUERY + 1,
-            $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 2
         ]);
     }
 
@@ -109,7 +108,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         }
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
-            $routeScript => AssetBag::WEIGHT_ROUTES_JS
+            $routeScript => AssetBag::WEIGHT_ROUTES_JS,
         ]);
     }
 
@@ -133,7 +132,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         }
 
         $this->cssAssetBag->add([
-            $this->assetHelper->resolve($bootstrapPath) => 0
+            $this->assetHelper->resolve($bootstrapPath) => 0,
         ]);
     }
 }

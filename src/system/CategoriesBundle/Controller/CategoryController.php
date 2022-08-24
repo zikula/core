@@ -14,15 +14,17 @@ declare(strict_types=1);
 namespace Zikula\CategoriesBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
 use Zikula\CategoriesBundle\Form\Type\CategoryTreeType;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 /**
@@ -31,11 +33,14 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 #[Route('/categories/admin/category')]
 class CategoryController extends AbstractController
 {
-    private $domTreeNodePrefix = 'node_';
+    private string $domTreeNodePrefix = 'node_';
+
+    public function __construct(private readonly TranslatorInterface $translator, private readonly PermissionApiInterface $permissionApi)
+    {
+    }
 
     /**
      * @Theme("admin")
-     * @Template("@ZikulaCategories/Category/list.html.twig")
      *
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
@@ -47,9 +52,9 @@ class CategoryController extends AbstractController
         ManagerRegistry $doctrine,
         CategoryEntity $category,
         CategoryRepository $categoryRepository
-    ): array {
-        if (!$this->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)
-            || !$this->hasPermission('ZikulaCategoriesModule::category', 'ID::' . $category->getId(), ACCESS_EDIT)) {
+    ): Response {
+        if (!$this->permissionApi->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)
+            || !$this->permissionApi->hasPermission('ZikulaCategoriesModule::category', 'ID::' . $category->getId(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -62,15 +67,15 @@ class CategoryController extends AbstractController
         );
         $form = $this->createFormBuilder()
             ->add('category', CategoryTreeType::class, [
-                'label' => $this->trans('New parent'),
+                'label' => $this->translator->trans('New parent'),
                 'includeLeaf' => false,
             ])->getForm();
 
-        return [
+        return $this->render('@ZikulaCategories/Category/list.html.twig', [
             'category' => $category,
             'tree' => $tree,
-            'categorySelector' => $form->createView()
-        ];
+            'categorySelector' => $form->createView(),
+        ]);
     }
 
     private function getNodeOptions(Request $request): array
@@ -108,14 +113,14 @@ class CategoryController extends AbstractController
     private function createTitleAttribute(array $node, string $displayName, string $locale): string
     {
         $title = [];
-        $title[] = $this->trans('ID') . ': ' . $node['id'];
-        $title[] = $this->trans('Name') . ': ' . $node['name'];
-        $title[] = $this->trans('Display name') . ': ' . $displayName;
-        $title[] = $this->trans('Description') . ': ' . ($node['displayDesc'][$locale] ?? '');
-        $title[] = $this->trans('Value') . ': ' . $node['value'];
-        $title[] = $this->trans('Active') . ': ' . ('A' === $node['status'] ? 'Yes' : 'No');
-        $title[] = $this->trans('Leaf') . ': ' . ($node['leaf'] ? 'Yes' : 'No');
-        $title[] = $this->trans('Locked') . ': ' . ($node['locked'] ? 'Yes' : 'No');
+        $title[] = $this->translator->trans('ID') . ': ' . $node['id'];
+        $title[] = $this->translator->trans('Name') . ': ' . $node['name'];
+        $title[] = $this->translator->trans('Display name') . ': ' . $displayName;
+        $title[] = $this->translator->trans('Description') . ': ' . ($node['displayDesc'][$locale] ?? '');
+        $title[] = $this->translator->trans('Value') . ': ' . $node['value'];
+        $title[] = $this->translator->trans('Active') . ': ' . ('A' === $node['status'] ? 'Yes' : 'No');
+        $title[] = $this->translator->trans('Leaf') . ': ' . ($node['leaf'] ? 'Yes' : 'No');
+        $title[] = $this->translator->trans('Locked') . ': ' . ($node['locked'] ? 'Yes' : 'No');
 
         return htmlspecialchars(implode('<br />', $title));
     }

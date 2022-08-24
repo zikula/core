@@ -16,17 +16,9 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Zikula\Bundle\CoreBundle\Twig\Runtime\CoreRuntime;
-use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;
 
 class CoreExtension extends AbstractExtension
 {
-    public function getTokenParsers()
-    {
-        return [
-            new SwitchTokenParser()
-        ];
-    }
-
     public function getFilters()
     {
         return [

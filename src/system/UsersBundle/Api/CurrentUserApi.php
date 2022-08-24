@@ -15,9 +15,9 @@ namespace Zikula\UsersBundle\Api;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class CurrentUserApi implements CurrentUserApiInterface
 {
@@ -35,7 +35,7 @@ class CurrentUserApi implements CurrentUserApiInterface
         if (!isset($this->user)) {
             $this->setUser();
         }
-        if (isset($this->user) && $this->user->getUid() > Constant::USER_ID_ANONYMOUS) {
+        if (isset($this->user) && $this->user->getUid() > UsersConstant::USER_ID_ANONYMOUS) {
             $this->loggedIn = true;
         }
 
@@ -75,13 +75,13 @@ class CurrentUserApi implements CurrentUserApiInterface
 
     /**
      * Get the uid from the session and create a user from the repository.
-     * Default to Constant::USER_ID_ANONYMOUS
+     * Default to UsersConstant::USER_ID_ANONYMOUS
      */
     private function setUser(): void
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
-            $userId = $session->get('uid', Constant::USER_ID_ANONYMOUS);
+            $userId = $session->get('uid', UsersConstant::USER_ID_ANONYMOUS);
             $this->user = $this->repository->find($userId);
         }
     }

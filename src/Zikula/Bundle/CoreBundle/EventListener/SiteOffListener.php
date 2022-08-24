@@ -21,40 +21,36 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 
 class SiteOffListener implements EventSubscriberInterface
 {
-    private bool $installed;
-
     public function __construct(
-        private readonly VariableApiInterface $variableApi,
         private readonly PermissionApiInterface $permissionApi,
         private readonly CurrentUserApiInterface $currentUserApi,
         private readonly Environment $twig,
         private readonly RouterInterface $router,
-        string $installed
+        private readonly bool $maintenanceModeEnabled,
+        private readonly ?string $maintenanceReason
     ) {
-        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => [
-                ['onKernelRequestSiteOff', 110] // priority set high to catch request before other subscribers
-            ],
+            // priority set high to catch request before other subscribers
+            KernelEvents::REQUEST => ['onKernelRequestSiteOff', 110],
         ];
     }
 
     public function onKernelRequestSiteOff(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$this->maintenanceModeEnabled) {
             return;
         }
-        if (!$this->installed) {
+
+        if (!$event->isMasterRequest()) {
             return;
         }
 
@@ -66,8 +62,10 @@ class SiteOffListener implements EventSubscriberInterface
         } catch (Exception) {
             return;
         }
-        if ('zikulausersbundle_access_login' === $routeInfo['_route']
-        || 'zikulathemebundle_combinedasset_asset' === $routeInfo['_route']) {
+        if (
+            'zikulausersbundle_access_login' === $routeInfo['_route']
+            || 'zikulathemebundle_combinedasset_asset' === $routeInfo['_route']
+        ) {
             return;
         }
         if ($response instanceof PlainResponse
@@ -76,22 +74,23 @@ class SiteOffListener implements EventSubscriberInterface
             return;
         }
 
-        $siteOff = (bool) $this->variableApi->getSystemVar('siteoff');
-        $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
-
-        // Check for site closed
-        if ($siteOff && !$hasAdminPerms) {
-            $hasOnlyOverviewAccess = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW);
-            if ($hasOnlyOverviewAccess && $request->hasSession() && null !== $request->getSession() && $this->currentUserApi->isLoggedIn()) {
-                $request->getSession()->invalidate(); // logout
-            }
-            $response = new PlainResponse();
-            $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
-            $response->setStatusCode(503);
-            $content = $this->twig->render('CoreBundle:System:siteoff.html.twig');
-            $response->setContent($content);
-            $event->setResponse($response);
-            $event->stopPropagation();
+        $hasAdminPermissions = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
+        if ($hasAdminPermissions) {
+            return;
         }
+
+        $hasOnlyOverviewAccess = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW);
+        if ($hasOnlyOverviewAccess && $request->hasSession() && null !== $request->getSession() && $this->currentUserApi->isLoggedIn()) {
+            $request->getSession()->invalidate(); // logout
+        }
+        $response = new PlainResponse();
+        $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
+        $response->setStatusCode(503);
+        $content = $this->twig->render('CoreBundle:System:siteoff.html.twig', [
+            'reason' => $this->maintenanceReason,
+        ]);
+        $response->setContent($content);
+        $event->setResponse($response);
+        $event->stopPropagation();
     }
 }

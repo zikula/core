@@ -1,5 +1,1 @@
-{% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_LEGALNOTICE_URL')) %}
-{% if policyUrl == '' %}
-    {% set policyUrl = path('zikulalegalbundle_user_legalnotice') %}
-{% endif %}
 <a class="legal_inlinelink_legalnotice" href="{{ policyUrl|e('html_attr') }}" target="{{ target|e('html_attr') }}">{% trans %}Legal notice{% endtrans %}</a>

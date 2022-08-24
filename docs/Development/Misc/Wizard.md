@@ -41,7 +41,6 @@ Stages may optionally implement:
 The Wizard can be halted in the `isNecessary()` method by throwing an `AbortStageException`. The message of which is
 available for retrieval using `$wizard->getWarning()`.
 
-
 ## Stage Definition File
 
 The stage definition file is a simple yaml file. The first key `stages:` is required and then each stage should be
@@ -50,7 +49,6 @@ stage as set in its Stage class. The `class` property should be the fully-qualif
 `order` property should be an integer identifying the sequential order of the stage. Optionally, a stage can be
 identified with a `default` property which should be set to true. This stage will be used by the wizard if no stage
 argument is provided.
-
 
 ### Sample stages.yml
 
@@ -73,7 +71,6 @@ stages:
         class: Acme\Bundle\DemoBundle\Stage\NonStage
         order: 99
 ```
-
 
 ### Sample Controller
 
@@ -102,7 +99,7 @@ class MyController
     /**
      * define route = 'index/{stage}'
      */
-    public function indexAction(Request $request, $stage)
+    public function index(Request $request, $stage): Response
     {
         // begin the wizard
         $wizard = new Wizard($this->stageContainer, realpath(__DIR__ . '/../Resources/config/stages.yml'));

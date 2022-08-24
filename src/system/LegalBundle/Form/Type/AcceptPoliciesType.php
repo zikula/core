@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
-use Zikula\LegalBundle\Constant;
+use Zikula\LegalBundle\LegalConstant;
 
 class AcceptPoliciesType extends AbstractType
 {
@@ -52,6 +52,6 @@ class AcceptPoliciesType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return Constant::FORM_BLOCK_PREFIX;
+        return LegalConstant::FORM_BLOCK_PREFIX;
     }
 }

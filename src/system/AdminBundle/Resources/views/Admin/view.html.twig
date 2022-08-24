@@ -18,9 +18,9 @@
     <tbody>
         {% for category in categories %}
             {% set permissionInstance = category.name ~ '::' %}
-            {% if hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_READ') %}
-                {% set accessEdit = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_EDIT') %}
-                {% set accessDelete = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_DELETE') %}
+            {% if hasPermission('ZikulaAdminBundle::', permissionInstance, 'ACCESS_READ') %}
+                {% set accessEdit = hasPermission('ZikulaAdminBundle::', permissionInstance, 'ACCESS_EDIT') %}
+                {% set accessDelete = hasPermission('ZikulaAdminBundle::', permissionInstance, 'ACCESS_DELETE') %}
                 <tr>
                     <th id="category{{ category.slug}}" headers="hName" scope="col">
                         <a href="{{ path('zikulaadminbundle_admin_adminpanel', { acslug: category.slug }) }}">{{ category.name }}</a>

@@ -67,6 +67,7 @@ class RegistrationVerificationHelper
         if ($codeSent) {
             return $userVerificationEntity->getCreatedDate();
         }
+
         $this->userVerificationRepository->removeAndFlush($userVerificationEntity);
 
         return false;

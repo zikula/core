@@ -20,13 +20,15 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ValidAntiSpamAnswerValidator extends ConstraintValidator
 {
-    public function __construct(private readonly VariableApiInterface $variableApi, private readonly TranslatorInterface $translator, private readonly ValidatorInterface $validator)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly ValidatorInterface $validator,
+        private readonly string $antiSpamAnswer
+    ) {
     }
 
     public function validate($value, Constraint $constraint)
@@ -34,12 +36,12 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
         if (!$constraint instanceof ValidAntiSpamAnswer) {
             throw new UnexpectedTypeException($constraint, ValidAntiSpamAnswer::class);
         }
-        $correctAnswer = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, '');
+        $correctAnswer = $this->antiSpamAnswer;
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
             new EqualTo([
                 'value' => $correctAnswer,
-                'message' => $this->translator->trans('You did not provide the correct answer for the security question. Try %answer%!', ['%answer%' => $correctAnswer], 'validators')
+                'message' => $this->translator->trans('You did not provide the correct answer for the security question. Try %answer%!', ['%answer%' => $correctAnswer], 'validators'),
             ])
         ]);
         if (0 < count($errors)) {

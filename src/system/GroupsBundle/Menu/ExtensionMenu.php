@@ -58,11 +58,6 @@ class ExtensionMenu implements ExtensionMenuInterface
                 'route' => 'zikulagroupsbundle_group_create',
             ])->setAttribute('icon', 'fas fa-plus');
         }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Settings', [
-                'route' => 'zikulagroupsbundle_config_config',
-            ])->setAttribute('icon', 'fas fa-wrench');
-        }
 
         return 0 === $menu->count() ? null : $menu;
     }

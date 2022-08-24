@@ -21,7 +21,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
 use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
@@ -30,7 +29,7 @@ use Zikula\ZAuthBundle\ZAuthConstant;
 
 class AdminModifyUserType extends AbstractType
 {
-    public function __construct(private readonly VariableApiInterface $variableApi)
+    public function __construct(private readonly int $minimumPasswordLength)
     {
     }
 
@@ -90,10 +89,10 @@ class AdminModifyUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
+            'minimumPasswordLength' => $this->minimumPasswordLength,
             'constraints' => [
-                new ValidUserFields()
-            ]
+                new ValidUserFields(),
+            ],
         ]);
     }
 }

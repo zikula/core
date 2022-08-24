@@ -15,13 +15,12 @@ namespace Zikula\GroupsBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\GroupsBundle\Repository\GroupApplicationRepository;
 use Zikula\UsersBundle\Entity\UserEntity;
 
 #[ORM\Entity(repositoryClass: GroupApplicationRepository::class)]
 #[ORM\Table(name: 'groups_application')]
-class GroupApplicationEntity extends EntityAccess
+class GroupApplicationEntity
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -40,28 +39,22 @@ class GroupApplicationEntity extends EntityAccess
      * Details of the application
      */
     #[ORM\Column(type: Types::TEXT)]
-    private string $application;
+    private string $application = '';
 
     /**
      * Status of the application
      */
     #[ORM\Column(type: TYPES::SMALLINT)]
-    private int $status;
-
-    public function __construct()
-    {
-        $this->application = '';
-        $this->status = 0;
-    }
+    private int $status = 0;
 
     public function getAppId(): ?int
     {
         return $this->app_id;
     }
 
-    public function setAppId(int $app_id): self
+    public function setAppId(int $appId): self
     {
-        $this->app_id = $app_id;
+        $this->app_id = $appId;
 
         return $this;
     }

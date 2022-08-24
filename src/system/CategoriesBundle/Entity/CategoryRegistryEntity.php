@@ -15,16 +15,15 @@ namespace Zikula\CategoriesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepository;
 use Zikula\CategoriesBundle\Traits\StandardFieldsTrait;
 
 #[ORM\Entity(repositoryClass: CategoryRegistryRepository::class)]
 #[ORM\Table(name: 'categories_registry')]
 #[
-    ORM\Index(fields: ['modname', 'entityname'], name: 'idx_categories_registry')
+    ORM\Index(fields: ['bundleName', 'entityName'], name: 'idx_categories_registry')
 ]
-class CategoryRegistryEntity extends EntityAccess
+class CategoryRegistryEntity
 {
     use StandardFieldsTrait;
 
@@ -35,11 +34,11 @@ class CategoryRegistryEntity extends EntityAccess
 
     #[ORM\Column(length: 60)]
     #[Assert\Length(min: 1, max: 60)]
-    private string $modname;
+    private string $bundleName;
 
     #[ORM\Column(length: 60)]
     #[Assert\Length(min: 1, max: 60)]
-    private string $entityname;
+    private string $entityName;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 1, max: 255)]
@@ -65,26 +64,26 @@ class CategoryRegistryEntity extends EntityAccess
         return $this;
     }
 
-    public function getModname(): ?string
+    public function getBundleName(): ?string
     {
-        return $this->modname;
+        return $this->bundleName;
     }
 
-    public function setModname(string $modname): self
+    public function setBundleName(string $bundleName): self
     {
-        $this->modname = $modname;
+        $this->bundleName = $bundleName;
 
         return $this;
     }
 
-    public function getEntityname(): ?string
+    public function getEntityName(): ?string
     {
-        return $this->entityname;
+        return $this->entityName;
     }
 
-    public function setEntityname(string $entityname): self
+    public function setEntityName(string $entityName): self
     {
-        $this->entityname = $entityname;
+        $this->entityName = $entityName;
 
         return $this;
     }

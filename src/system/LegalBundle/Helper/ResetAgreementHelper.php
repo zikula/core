@@ -16,7 +16,7 @@ namespace Zikula\LegalBundle\Helper;
 use Exception;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
-use Zikula\LegalBundle\Constant as LegalConstant;
+use Zikula\LegalBundle\LegalConstant;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface;
 
@@ -25,29 +25,11 @@ use Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface;
  */
 class ResetAgreementHelper
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var UserAttributeRepositoryInterface
-     */
-    private $userAttributeRepository;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    private $groupRepository;
-
     public function __construct(
-        PermissionApiInterface $permissionApi,
-        UserAttributeRepositoryInterface $attributeRepository,
-        GroupRepositoryInterface $groupRepository
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly UserAttributeRepositoryInterface $attributeRepository,
+        private readonly GroupRepositoryInterface $groupRepository
     ) {
-        $this->permissionApi = $permissionApi;
-        $this->userAttributeRepository = $attributeRepository;
-        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -58,7 +40,7 @@ class ResetAgreementHelper
      */
     public function reset(int $groupId): bool
     {
-        if (!$this->permissionApi->hasPermission(LegalConstant::MODNAME . '::', '::', ACCESS_ADMIN)) {
+        if (!$this->permissionApi->hasPermission('ZikulaLegalBundle::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
         if (!is_numeric($groupId) || $groupId < 0) {
@@ -66,11 +48,11 @@ class ResetAgreementHelper
         }
 
         $attributeNames = [
-            LegalConstant::ATTRIBUTE_TERMSOFUSE_ACCEPTED,
             LegalConstant::ATTRIBUTE_PRIVACYPOLICY_ACCEPTED,
-            LegalConstant::ATTRIBUTE_AGEPOLICY_CONFIRMED,
+            LegalConstant::ATTRIBUTE_TERMSOFUSE_ACCEPTED,
+            LegalConstant::ATTRIBUTE_TRADECONDITIONS_ACCEPTED,
             LegalConstant::ATTRIBUTE_CANCELLATIONRIGHTPOLICY_ACCEPTED,
-            LegalConstant::ATTRIBUTE_TRADECONDITIONS_ACCEPTED
+            LegalConstant::ATTRIBUTE_AGEPOLICY_CONFIRMED,
         ];
 
         $members = [];

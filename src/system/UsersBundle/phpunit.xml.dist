@@ -11,7 +11,7 @@
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
     <testsuites>
-        <testsuite name="Zikula Users Module Test Suite">
+        <testsuite name="Zikula Users Bundle Test Suite">
             <directory>./Tests/</directory>
         </testsuite>
     </testsuites>

@@ -32,8 +32,8 @@ class MenuBuilder
         $menu = $this->factory->createItem('defaultThemeAdminMenu');
         $menu->setChildrenAttribute('class', 'navbar-nav');
         $menu->addChild('Home', ['route' => 'home']);
-        if ($this->permissionApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Settings', ['route' => 'zikulasettingsbundle_settings_mainsettings']);
+        if ($this->permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_MODERATE)) {
+            $menu->addChild('Admin area', ['route' => 'zikulaadminbundle_admin_view']);
         }
         if ($this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             $menu->addChild('Users', ['route' => 'zikulausersbundle_useradministration_listusers']);

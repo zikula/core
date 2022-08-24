@@ -16,7 +16,6 @@ namespace Zikula\UsersBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\UsersBundle\Repository\UserAttributeRepository;
 
 /**
@@ -25,7 +24,7 @@ use Zikula\UsersBundle\Repository\UserAttributeRepository;
  */
 #[ORM\Entity(repositoryClass: UserAttributeRepository::class)]
 #[ORM\Table(name: 'users_attributes')]
-class UserAttributeEntity extends EntityAccess
+class UserAttributeEntity
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'attributes')]

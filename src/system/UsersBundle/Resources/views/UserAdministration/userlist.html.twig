@@ -3,12 +3,12 @@
         <td headers="hUserName">{{ user.uname }}</td>
         <td headers="hId">{{ user.uid }}</td>
         <td headers="hRegistrationDate">
-            {% if user.uid != constant('Zikula\\UsersBundle\\Constant::USER_ID_ANONYMOUS') %}
+            {% if user.uid != constant('Zikula\\UsersBundle\\UsersConstant::USER_ID_ANONYMOUS') %}
                 {{ user.registrationDate|format_datetime('medium', 'short') }}
             {% endif %}
         </td>
         <td headers="hLastLogin">
-            {% if user.uid != constant('Zikula\\UsersBundle\\Constant::USER_ID_ANONYMOUS') %}
+            {% if user.uid != constant('Zikula\\UsersBundle\\UsersConstant::USER_ID_ANONYMOUS') %}
                 {{ user.lastLogin|format_datetime('medium', 'short') }}
             {% endif %}
         </td>
@@ -24,8 +24,8 @@
             {{ _self.userStatus(user.activated) }}
         </td>
         <td headers="hActions" class="actions">
-            {% if user.uid == constant('Zikula\\UsersBundle\\Constant::USER_ID_ANONYMOUS') %}
-                <a href="{{ path('zikulagroupsbundle_group_adminlist') }}"><span class="badge badge-info tooltips" title="{% trans %}This user cannot be edited. Group memberships can be edited in the groups module. Click here.{% endtrans %}">{% trans %}Edit?{% endtrans %}</span></a>
+            {% if user.uid == constant('Zikula\\UsersBundle\\UsersConstant::USER_ID_ANONYMOUS') %}
+                <a href="{{ path('zikulagroupsbundle_group_adminlist') }}"><span class="badge badge-info tooltips" title="{% trans %}This user cannot be edited. Group memberships can be edited in the groups bundle. Click here.{% endtrans %}">{% trans %}Edit?{% endtrans %}</span></a>
             {% endif %}
             {% for action in actionsHelper.user(user) %}
                 <a class="fas fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
@@ -42,20 +42,15 @@
 {% endmacro %}
 
 {% macro userStatus(status) %}
-    {% switch status %}
-    {% case constant('Zikula\\UsersBundle\\Constant::ACTIVATED_ACTIVE') %}
+    {% if status == constant('Zikula\\UsersBundle\\UsersConstant::ACTIVATED_ACTIVE') %}
         <span class="badge badge-success">{% trans %}Active{% endtrans %}</span>
-    {% break %}
-    {% case constant('Zikula\\UsersBundle\\Constant::ACTIVATED_INACTIVE') %}
+    {% elseif status == constant('Zikula\\UsersBundle\\UsersConstant::ACTIVATED_INACTIVE') %}
         <span class="badge badge-dark">{% trans %}Inactive{% endtrans %}</span>
-    {% break %}
-    {% case constant('Zikula\\UsersBundle\\Constant::ACTIVATED_PENDING_REG') %}
+    {% elseif status == constant('Zikula\\UsersBundle\\UsersConstant::ACTIVATED_PENDING_REG') %}
         <span class="badge badge-primary">{% trans %}Pending{% endtrans %}</span>
-    {% break %}
-    {% case constant('Zikula\\UsersBundle\\Constant::ACTIVATED_PENDING_DELETE') %}
+    {% elseif status == constant('Zikula\\UsersBundle\\UsersConstant::ACTIVATED_PENDING_DELETE') %}
         <span class="badge badge-warning">{% trans %}Marked for deletion{% endtrans %}</span>
-    {% break %}
-    {% default %}
+    {% else %}
         <span class="badge badge-danger">{% trans %}Status unknown{% endtrans %}</span>
-    {% endswitch %}
+    {% endif %}
 {% endmacro %}

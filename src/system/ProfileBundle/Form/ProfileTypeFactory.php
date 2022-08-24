@@ -25,36 +25,12 @@ use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;
 
 class ProfileTypeFactory
 {
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @var PropertyRepositoryInterface
-     */
-    private $propertyRepository;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var string
-     */
-    private $prefix;
-
     public function __construct(
-        FormFactoryInterface $formFactory,
-        PropertyRepositoryInterface $propertyRepository,
-        TranslatorInterface $translator,
-        string $prefix
+        private readonly FormFactoryInterface $formFactory,
+        private readonly PropertyRepositoryInterface $propertyRepository,
+        private readonly TranslatorInterface $translator,
+        private readonly string $prefix
     ) {
-        $this->formFactory = $formFactory;
-        $this->propertyRepository = $propertyRepository;
-        $this->translator = $translator;
-        $this->prefix = $prefix;
     }
 
     public function createForm(PersistentCollection $attributes, bool $includeButtons = true): FormInterface
@@ -69,12 +45,12 @@ class ProfileTypeFactory
         $formBuilder = $this->formFactory->createNamedBuilder(ProfileConstant::FORM_BLOCK_PREFIX, FormType::class, $attributeValues, [
             'auto_initialize' => false,
             'error_bubbling' => true,
-            'mapped' => false
+            'mapped' => false,
         ]);
         $formBuilder->add('dynamicFields', InlineFormDefinitionType::class, [
             'dynamicFieldsContainer' => $this->propertyRepository,
             'label' => false,
-            'inherit_data' => true
+            'inherit_data' => true,
         ]);
 
         if ($includeButtons) {
@@ -82,12 +58,12 @@ class ProfileTypeFactory
                 'label' => $this->translator->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ]);
             $formBuilder->add('cancel', SubmitType::class, [
                 'label' => $this->translator->trans('Cancel'),
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ]);
         }
 

@@ -1,3 +1,9 @@
+{% if not intl_installed|default(false) %}
+    <p class="alert alert-danger">
+        {% set args = {'%ext%': '<code>INTL</code>'|raw, '%locale%': '<code>EN</code>'|raw} %}
+        {% trans with args %}WARNING: The PHP Extension %ext% is not loaded. All functions using this will default to %locale%. Seek assistance from your provider to install.{% endtrans %}
+    </p>
+{% endif %}
 <h2>
     <i class="fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i>
     {{ category.name }}

@@ -1,0 +1,19 @@
+// Copyright Zikula, licensed MIT.
+
+if (typeof(Zikula) == 'undefined') {
+    var Zikula = {};
+}
+
+// defaults
+Zikula.Config = {
+    "entrypoint": "index.php",
+    "baseURL": "http:\/\/localhost\/",
+    "baseURI": "",
+    "lang": "en",
+    "uid": "1"
+};
+
+// site-specific override
+if (jQuery('#zkJsConfig').length > 0) {
+    Zikula.Config = jQuery('#zkJsConfig').data('parameters');
+}

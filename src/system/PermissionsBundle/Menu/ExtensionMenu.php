@@ -43,14 +43,6 @@ class ExtensionMenu extends AbstractExtensionMenu
             ->setLinkAttribute('class', 'view-instance-info')
             ->setAttribute('icon', 'fas fa-info')
         ;
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Settings', [
-                'route' => 'zikulapermissionsbundle_config_config',
-            ])
-                ->setLinkAttribute('id', 'permissions_modifyconfig')
-                ->setAttribute('icon', 'fas fa-wrench')
-            ;
-        }
 
         return 0 === $menu->count() ? null : $menu;
     }

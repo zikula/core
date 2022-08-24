@@ -16,36 +16,45 @@ namespace Zikula\GroupsBundle\Controller;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\GroupsBundle\Event\GroupPostUserAddedEvent;
 use Zikula\GroupsBundle\Event\GroupPostUserRemovedEvent;
 use Zikula\GroupsBundle\Form\Type\RemoveUserType;
-use Zikula\GroupsBundle\Helper\CommonHelper;
+use Zikula\GroupsBundle\Helper\TranslationHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
-use Zikula\UsersBundle\Repository\UserSessionRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 #[Route('/groups/membership')]
 class MembershipController extends AbstractController
 {
+    use TranslatorTrait;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly TranslationHelper $translationHelper
+    ) {
+        $this->setTranslator($translator);
+    }
+
     /**
      * @PermissionCheck({"$_zkModule::memberslist", "::", "overview"})
-     * @Template("@ZikulaGroups/Membership/list.html.twig")
      *
      * Display all members of a group to a user.
      */
@@ -54,28 +63,20 @@ class MembershipController extends AbstractController
     ]
     public function listMemberships(
         GroupEntity $group,
-        VariableApiInterface $variableApi,
-        UserSessionRepositoryInterface $userSessionRepository,
         string $letter = '*',
         int $page = 1
-    ): array {
-        $groupsCommon = new CommonHelper($this->getTranslator());
-        $inactiveLimit = $variableApi->getSystemVar('secinactivemins');
-        $dateTime = new DateTime();
-        $dateTime->modify('-' . $inactiveLimit . 'minutes');
-
-        return [
+    ): Response {
+        return $this->render('@ZikulaGroups/Membership/list.html.twig', [
             'group' => $group,
-            'groupTypes' => $groupsCommon->gtypeLabels(),
-            'states' => $groupsCommon->stateLabels(),
-            'usersOnline' => $userSessionRepository->getUsersSince($dateTime)
-        ];
+            'groupTypes' => $this->translationHelper->gtypeLabels(),
+            'states' => $this->translationHelper->stateLabels(),
+            'usersOnline' => [], // TODO re-implement if needed
+        ]);
     }
 
     /**
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
-     * @Template("@ZikulaGroups/Membership/adminList.html.twig")
      *
      * Display all members of a group to an admin.
      */
@@ -86,10 +87,10 @@ class MembershipController extends AbstractController
         GroupEntity $group,
         string $letter = '*',
         int $page = 1
-    ): array {
-        return [
-            'group' => $group
-        ];
+    ): Response {
+        return $this->render('@ZikulaGroups/Membership/adminList.html.twig', [
+            'group' => $group,
+        ]);
     }
 
     /**
@@ -144,9 +145,9 @@ class MembershipController extends AbstractController
         }
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
-        $groupTypeIsPrivate = CommonHelper::GTYPE_PRIVATE === $group->getGtype();
-        $groupTypeIsCore = CommonHelper::GTYPE_CORE === $group->getGtype();
-        $groupStateIsClosed = CommonHelper::STATE_CLOSED === $group->getState();
+        $groupTypeIsPrivate = GroupsConstant::GTYPE_PRIVATE === $group->getGtype();
+        $groupTypeIsCore = GroupsConstant::GTYPE_CORE === $group->getGtype();
+        $groupStateIsClosed = GroupsConstant::STATE_CLOSED === $group->getState();
         $groupCountIsLimit = 0 < $group->getNbumax() && $group->getUsers()->count() > $group->getNbumax();
         $alreadyGroupMember = $group->getUsers()->contains($userEntity);
         if ($groupTypeIsPrivate || $groupTypeIsCore || $groupStateIsClosed || $groupCountIsLimit || $alreadyGroupMember) {
@@ -168,11 +169,8 @@ class MembershipController extends AbstractController
     /**
      * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
      * @Theme("admin")
-     * @Template("@ZikulaGroups/Membership/remove.html.twig")
      *
      * Remove a user from a group.
-     *
-     * @return array|Response
      *
      * @throws InvalidArgumentException
      */
@@ -185,13 +183,13 @@ class MembershipController extends AbstractController
         UserRepositoryInterface $userRepository,
         int $gid = 0,
         int $uid = 0
-    ) {
+    ): Response {
         if ($request->isMethod(Request::METHOD_POST)) {
             $postVars = $request->request->get('zikulagroupsbundle_removeuser');
             $gid = $postVars['gid'] ?? 0;
             $uid = $postVars['uid'] ?? 0;
         }
-        if ($gid < 1 || $uid < 1) {
+        if (1 > $gid || 1 > $uid) {
             throw new InvalidArgumentException($this->trans('Invalid Group ID or User ID.'));
         }
         $group = $groupRepository->find($gid);
@@ -205,7 +203,7 @@ class MembershipController extends AbstractController
 
         $form = $this->createForm(RemoveUserType::class, [
             'gid' => $gid,
-            'uid' => $uid
+            'uid' => $uid,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -221,11 +219,11 @@ class MembershipController extends AbstractController
             return $this->redirectToRoute('zikulagroupsbundle_membership_adminlist', ['gid' => $group->getGid()]);
         }
 
-        return [
+        return $this->render('@ZikulaGroups/Membership/remove.html.twig', [
             'form' => $form->createView(),
             'group' => $group,
-            'uname' => $user->getUname()
-        ];
+            'uname' => $user->getUname(),
+        ]);
     }
 
     /**
@@ -251,7 +249,7 @@ class MembershipController extends AbstractController
         $userEntity->removeGroup($group);
         $doctrine->getManager()->flush();
         $this->addFlash('success', $this->trans('Left the "%groupName%" group', ['%groupName%' => $group->getName()]));
-        // Let other modules know that we have updated a group.
+        // let other bundles know that we have updated a group.
         $eventDispatcher->dispatch(new GroupPostUserRemovedEvent($group, $userEntity));
 
         return $this->redirectToRoute('zikulagroupsbundle_group_listgroups');
@@ -266,14 +264,14 @@ class MembershipController extends AbstractController
         Request $request,
         UserRepositoryInterface $userRepository
     ): Response {
-        if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_EDIT)) {
+        if (!$this->permissionApi->hasPermission('ZikulaGroupsodule', '::', ACCESS_EDIT)) {
             return new PlainResponse('');
         }
         $fragment = $request->request->get('fragment');
         $filter = [
             'activated' => ['operator' => 'notIn', 'operand' => [
                 UsersConstant::ACTIVATED_PENDING_REG,
-                UsersConstant::ACTIVATED_PENDING_DELETE
+                UsersConstant::ACTIVATED_PENDING_DELETE,
             ]],
             'uname' => ['operator' => 'like', 'operand' => "${fragment}%"]
         ];
@@ -281,7 +279,7 @@ class MembershipController extends AbstractController
 
         return $this->render('@ZikulaGroupsBundle/Membership/userlist.html.twig', [
             'users' => $users,
-            'gid' => $request->query->get('gid')
+            'gid' => $request->query->get('gid'),
         ], new PlainResponse());
     }
 

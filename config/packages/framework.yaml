@@ -4,6 +4,27 @@ framework:
     #csrf_protection: true
     http_method_override: false
 
+    default_locale: en
+    #enabled_locales: [en, de]
+    set_locale_from_accept_language: true
+    set_content_language_from_locale: true
+
+    # Enables session support. Note that the session will ONLY be started if you read or write from it.
+    # Remove or comment this section to explicitly disable session support.
+    session:
+        enabled: true
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        use_cookies: true
+        cookie_lifetime: 21600 # 6 hours
+        cookie_secure: true # do not change to false, otherwise Keycloak will not work (see below)
+        # 'strict' and 'lax' do not work with Keycloak because of samesite policy
+        # see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+        cookie_samesite: none
+        cookie_httponly: true
+        gc_divisor: 100
+        gc_probability: 5 #/ 5% chance to gc
+        gc_maxlifetime: 43200 # 12 hours
+
     assets:
         #base_path: '%router.request_context.base_url%'
         base_path: ''
@@ -24,4 +45,5 @@ when@test:
     framework:
         test: true
         session:
+            handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
             storage_factory_id: session.storage.factory.mock_file

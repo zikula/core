@@ -7,7 +7,6 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $extension: '@Zikula\ProfileBundle\ZikulaProfileBundle'
             $prefix: '%zikula_profile_module.property_prefix%'
             $projectDir: '%kernel.project_dir%'
 
@@ -19,17 +18,14 @@ services:
         resource: '../../Helper/*'
         lazy: true
 
-    Zikula\ProfileBundle\Repository\PropertyRepositoryInterface: '@Zikula\ProfileBundle\Repository\PropertyRepository'
-
-    Zikula\ProfileBundle\ProfileModuleInstaller:
-        $prefix: '%zikula_profile_module.property_prefix%'
-
-    Zikula\ProfileBundle\Listener\AttributeNameTranslationListener:
+    Zikula\ProfileBundle\EventListener\AttributeNameTranslationListener:
         arguments:
-            $locale: '%locale%'
+            $locale: '%kernel.default_locale%'
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
     Zikula\ProfileBundle\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaProfileAdminMenu }
+
+    Zikula\ProfileBundle\Repository\PropertyRepositoryInterface: '@Zikula\ProfileBundle\Repository\PropertyRepository'

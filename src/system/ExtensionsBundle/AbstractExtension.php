@@ -27,40 +27,13 @@ use Zikula\ThemeBundle\Engine\AssetBag;
 
 abstract class AbstractExtension extends Bundle
 {
-    public function getInstallerClass(): string
-    {
-        $ns = $this->getNamespace();
-        $installerName = s($ns)->afterLast('\\')->append('Installer');
-        $class = $ns . '\\' . $installerName->toString();
-
-        return $class;
-    }
-
-    public function getRoutingConfig(): string
-    {
-        return '@' . $this->name . '/Resources/config/routing.yaml';
-    }
-
-    /**
-     * Gets the translation path.
-     */
-    public function getLocalePath(): string
-    {
-        return $this->getPath() . '/Resources/locale';
-    }
-
-    public function getViewsPath(): string
-    {
-        return $this->getPath() . '/Resources/views';
-    }
-
     public function getConfigPath(): string
     {
         return $this->getPath() . '/Resources/config';
     }
 
     /**
-     * Get the asset path relative to /public e.g. /modules/acmefoo.
+     * Get the asset path relative to /public e.g. /bundles/acmefoo.
      */
     public function getRelativeAssetPath(): string
     {

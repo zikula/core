@@ -15,20 +15,17 @@ namespace Zikula\UsersBundle\Helper;
 
 use DateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\Bundle\CoreBundle\HttpFoundation\Session\ZikulaSessionStorage;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class AccessHelper
 {
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly UserRepositoryInterface $userRepository,
-        private readonly PermissionApiInterface $permissionApi,
-        private readonly VariableApiInterface $variableApi
+        private readonly PermissionApiInterface $permissionApi
     ) {
     }
 
@@ -71,12 +68,9 @@ class AccessHelper
     {
         $user->setLastlogin(new DateTime());
         $this->userRepository->persistAndFlush($user);
-        $lifetime = 0;
-        if ($rememberMe && ZikulaSessionStorage::SECURITY_LEVEL_HIGH !== $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM)) {
-            $lifetime = 2 * 365 * 24 * 60 * 60; // two years
-        }
         $request = $this->requestStack->getCurrentRequest();
         if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
+            $lifetime = 7 * 24 * 60 * 60; // 7 days
             $session->migrate(true, $lifetime);
             $session->set('uid', $user->getUid());
             if ($rememberMe) {

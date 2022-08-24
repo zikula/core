@@ -20,10 +20,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Repository\UserRepository;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Validator\Constraints as ZikulaAssert;
 
 /**
@@ -37,7 +36,7 @@ use Zikula\UsersBundle\Validator\Constraints as ZikulaAssert;
     ORM\Index(fields: ['email'], name: 'email')
 ]
 #[ZikulaAssert\ValidUserFields]
-class UserEntity extends EntityAccess
+class UserEntity
 {
     #[ORM\Id]
     #[ORM\Column]

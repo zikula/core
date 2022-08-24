@@ -18,13 +18,12 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ZAuthDuplicatePassType extends AbstractType
 {
-    public function __construct(private readonly VariableApiInterface $variableApi)
+    public function __construct(private readonly int $minimumPasswordLength)
     {
     }
 
@@ -38,25 +37,25 @@ class ZAuthDuplicatePassType extends AbstractType
                         'class' => 'pwstrength',
                         'data-uname-id' => $options['dataUnameId'],
                         'minlength' => $options['minimumPasswordLength'],
-                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}',
                     ],
                     'required' => false,
                     'label' => 'Create new password',
                     'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
                     'help' => 'Minimum password length: %amount% characters.',
                     'help_translation_parameters' => [
-                        '%amount%' => $options['minimumPasswordLength']
-                    ]
+                        '%amount%' => $options['minimumPasswordLength'],
+                    ],
                 ],
                 'second_options' => [
                     'required' => false,
                     'label' => 'Repeat new password',
-                    'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
+                    'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
                 ],
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [
-                    new ValidPassword()
-                ]
+                    new ValidPassword(),
+                ],
             ])
         ;
     }
@@ -71,7 +70,7 @@ class ZAuthDuplicatePassType extends AbstractType
         $resolver->setDefaults([
             'inherit_data' => true,
             'dataUnameId' => '',
-            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
+            'minimumPasswordLength' => $this->minimumPasswordLength,
         ]);
     }
 }

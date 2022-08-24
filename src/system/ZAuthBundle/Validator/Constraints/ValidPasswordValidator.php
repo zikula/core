@@ -21,13 +21,15 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ValidPasswordValidator extends ConstraintValidator
 {
-    public function __construct(private readonly VariableApiInterface $variableApi, private readonly ValidatorInterface $validator)
-    {
+    public function __construct(
+        private readonly ValidatorInterface $validator,
+        private readonly bool $requireNonCompromisedPassword,
+        private readonly int $minimumPasswordLength
+    ) {
     }
 
     public function validate($value, Constraint $constraint)
@@ -43,15 +45,15 @@ class ValidPasswordValidator extends ConstraintValidator
         $validators = [
             new Type('string'),
             new Length([
-                'min' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH)
+                'min' => $this->minimumPasswordLength,
             ])
         ];
-        if ($this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_REQUIRE_NON_COMPROMISED_PASSWORD, ZAuthConstant::DEFAULT_REQUIRE_UNCOMPROMISED_PASSWORD)) {
+        if ($this->requireNonCompromisedPassword) {
             $validators[] = new NotCompromisedPassword();
         }
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, $validators);
-        if (count($errors) > 0) {
+        if (0 < count($errors)) {
             foreach ($errors as $error) {
                 // this method forces the error to appear at the form input location instead of at the top of the form
                 $this->context->buildViolation($error->getMessage())->addViolation();

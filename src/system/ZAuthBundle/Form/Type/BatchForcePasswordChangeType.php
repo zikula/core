@@ -35,18 +35,18 @@ class BatchForcePasswordChangeType extends AbstractType
                 'required' => true,
                 'choices' => /** @Ignore */ $this->getChoices(),
                 'help' => 'Old passwords are pre-Core3 passwords which are less secure. <strong>The current user will not be affected</strong>.',
-                'help_html' => true
+                'help_html' => true,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }

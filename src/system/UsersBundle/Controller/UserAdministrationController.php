@@ -15,7 +15,7 @@ namespace Zikula\UsersBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,20 +24,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Desc;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\GroupsBundle\Constant;
+use Zikula\GroupsBundle\GroupsConstant;
+use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersBundle\Event\DeleteUserFormPostCreatedEvent;
@@ -56,14 +56,22 @@ use Zikula\UsersBundle\Helper\DeleteHelper;
 use Zikula\UsersBundle\Helper\MailHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 #[Route('/users/admin')]
 class UserAdministrationController extends AbstractController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly DefaultHelper $defaultHelper,
+        private readonly int $itemsPerPage
+    ) {
+    }
+
     /**
      * @PermissionCheck("moderate")
      * @Theme("admin")
-     * @Template("@ZikulaUsers/UserAdministration/list.html.twig")
      */
     #[Route('/list/{sort}/{sortdir}/{letter}/{page}', name: 'zikulausersbundle_useradministration_listusers', methods: ['GET'], requirements: ['page' => '\d+'])]
     public function listUsers(
@@ -76,7 +84,7 @@ class UserAdministrationController extends AbstractController
         string $sortdir = 'DESC',
         string $letter = 'all',
         int $page = 1
-    ): array {
+    ): Response {
         $sortableColumns = new SortableColumns($router, 'zikulausersbundle_useradministration_listusers', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid'), new Column('registrationDate'), new Column('lastLogin'), new Column('activated')]);
         $sortableColumns->setOrderByFromRequest($request);
@@ -89,8 +97,7 @@ class UserAdministrationController extends AbstractController
         if (!empty($letter) && 'all' !== $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
-        $pageSize = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
-        $paginator = $userRepository->paginatedQuery($filter, [$sort => $sortdir], 'and', $page, $pageSize);
+        $paginator = $userRepository->paginatedQuery($filter, [$sort => $sortdir], 'and', $page, $this->itemsPerPage);
         $paginator->setRoute('zikulausersbundle_useradministration_listusers');
         $routeParameters = [
             'sort' => $sort,
@@ -99,13 +106,13 @@ class UserAdministrationController extends AbstractController
         ];
         $paginator->setRouteParameters($routeParameters);
 
-        return [
+        return $this->render('@ZikulaUsers/UserAdministration/list.html.twig', [
             'sort' => $sortableColumns->generateSortableColumns(),
             'actionsHelper' => $actionsHelper,
             'authMethodCollector' => $authenticationMethodCollector,
             'alpha' => new AlphaFilter('zikulausersbundle_useradministration_listusers', $routeParameters, $letter),
-            'paginator' => $paginator
-        ];
+            'paginator' => $paginator,
+        ]);
     }
 
     /**
@@ -118,7 +125,7 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         AdministrationActionsHelper $actionsHelper
     ): Response {
-        if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
+        if (!$this->permissionApi->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             return new PlainResponse('');
         }
         $fragment = $request->request->get('fragment');
@@ -139,9 +146,7 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Theme("admin")
-     * @Template("@ZikulaUsers/UserAdministration/modify.html.twig")
      *
-     * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the user record
      */
     #[Route('/user/modify/{user}', name: 'zikulausersbundle_useradministration_modify', requirements: ['user' => '^[1-9]\d*$'])]
@@ -150,10 +155,9 @@ class UserAdministrationController extends AbstractController
         UserEntity $user,
         ManagerRegistry $doctrine,
         CurrentUserApiInterface $currentUserApi,
-        VariableApiInterface $variableApi,
         EventDispatcherInterface $eventDispatcher
-    ) {
-        if (!$this->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT)) {
+    ): Response {
+        if (!$this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         if (UsersConstant::USER_ID_ANONYMOUS === $user->getUid()) {
@@ -169,7 +173,7 @@ class UserAdministrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
-                $this->checkSelf($currentUserApi, $variableApi, $user, $originalUser->getGroups()->toArray());
+                $this->checkSelf($currentUserApi, $user, $originalUser->getGroups()->toArray());
 
                 $eventDispatcher->dispatch(new EditUserFormPostValidatedEvent($form, $user));
 
@@ -188,18 +192,15 @@ class UserAdministrationController extends AbstractController
             return $this->redirectToRoute('zikulausersbundle_useradministration_listusers');
         }
 
-        return [
+        return $this->render('@ZikulaUsers/UserAdministration/modify.html.twig', [
             'form' => $form->createView(),
-            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : []
-        ];
+            'additionalTemplates' => isset($editUserFormPostCreatedEvent) ? $editUserFormPostCreatedEvent->getTemplates() : [],
+        ]);
     }
 
     /**
      * @PermissionCheck("moderate")
      * @Theme("admin")
-     * @Template("@ZikulaUsers/UserAdministration/approve.html.twig")
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/user/approve/{user}/{force}', name: 'zikulausersbundle_useradministration_approve', requirements: ['user' => '^[1-9]\d*$'])]
     public function approve(
@@ -208,24 +209,24 @@ class UserAdministrationController extends AbstractController
         RegistrationHelper $registrationHelper,
         MailHelper $mailHelper,
         bool $force = false
-    ) {
-        $forceVerification = $this->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
+    ): Response {
+        $forceVerification = $this->permissionApi->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
         $form = $this->createForm(ApproveRegistrationConfirmationType::class, [
             'user' => $user->getUid(),
             'force' => $forceVerification
         ], [
-            'buttonLabel' => $this->trans('Approve')
+            'buttonLabel' => $this->translator->trans('Approve')
         ]);
         $redirectToRoute = 'zikulausersbundle_useradministration_listusers';
 
         if (!$forceVerification) {
             if ($user->isApproved()) {
-                $this->addFlash('error', $this->trans('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
+                $this->addFlash('error', $this->translator->trans('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
 
                 return $this->redirectToRoute($redirectToRoute);
             }
-            if (!$user->isApproved() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-                $this->addFlash('error', $this->trans('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
+            if (!$user->isApproved() && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+                $this->addFlash('error', $this->translator->trans('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
 
                 return $this->redirectToRoute($redirectToRoute);
             }
@@ -244,7 +245,7 @@ class UserAdministrationController extends AbstractController
                 if ($notificationErrors) {
                     $this->addFlash('error', implode('<br />', $notificationErrors));
                 }
-                $this->addFlash('status', $this->trans('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
+                $this->addFlash('status', $this->translator->trans('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
             }
@@ -252,18 +253,15 @@ class UserAdministrationController extends AbstractController
             return $this->redirectToRoute($redirectToRoute);
         }
 
-        return [
+        return $this->render('@ZikulaUsers/UserAdministration/approve.html.twig', [
             'form' => $form->createView(),
-            'user' => $user
-        ];
+            'user' => $user,
+        ]);
     }
 
     /**
      * @PermissionCheck("delete")
      * @Theme("admin")
-     * @Template("@ZikulaUsers/UserAdministration/delete.html.twig")
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/delete/{user}', name: 'zikulausersbundle_useradministration_delete', requirements: ['user' => '^[1-9]\d*$'])]
     public function delete(
@@ -273,7 +271,7 @@ class UserAdministrationController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         DeleteHelper $deleteHelper,
         UserEntity $user = null
-    ) {
+    ): Response {
         $uids = [];
         if (!isset($user) && Request::METHOD_POST === $request->getMethod() && $request->request->has('zikulausersbundle_delete')) {
             $deletionData = $request->request->get('zikulausersbundle_delete');
@@ -308,7 +306,7 @@ class UserAdministrationController extends AbstractController
             foreach ($userIds as $k => $uid) {
                 if (in_array($uid, [UsersConstant::USER_ID_ANONYMOUS, UsersConstant::USER_ID_ADMIN, $currentUserApi->get('uid')], true)) {
                     unset($userIds[$k]);
-                    $this->addFlash('danger', $this->trans('You are not allowed to delete user id %uid%', ['%uid%' => $uid]));
+                    $this->addFlash('danger', $this->translator->trans('You are not allowed to delete user id %uid%', ['%uid%' => $uid]));
                     continue;
                 }
             }
@@ -322,7 +320,7 @@ class UserAdministrationController extends AbstractController
                 $this->addFlash(
                     'success',
                     /** @Desc("{count, plural,\n  one   {User deleted!}\n  other {# users deleted!}\n}") */
-                    $this->getTranslator()->trans(
+                    $this->translator->trans(
                         'plural_n.users.deleted',
                         ['%count%' => count($deletedUsers)]
                     )
@@ -333,27 +331,23 @@ class UserAdministrationController extends AbstractController
         }
         $users = $userRepository->findByUids($uids);
 
-        return [
+        return $this->render('@ZikulaUsers/UserAdministration/delete.html.twig', [
             'users' => $users,
             'form' => $deleteConfirmationForm->createView(),
-            'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : []
-        ];
+            'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : [],
+        ]);
     }
 
     /**
      * @PermissionCheck("moderate")
      * @Theme("admin")
-     * @Template("@ZikulaUsers/UserAdministration/search.html.twig")
-     *
-     * @return array|Response
      */
     #[Route('/search', name: 'zikulausersbundle_useradministration_search')]
     public function search(
         Request $request,
         UserRepositoryInterface $userRepository,
-        VariableApiInterface $variableApi,
         SiteDefinitionInterface $site
-    ) {
+    ): Response {
         $form = $this->createForm(SearchUserType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -364,13 +358,13 @@ class UserAdministrationController extends AbstractController
 
             return $this->render('@ZikulaUsers/UserAdministration/searchResults.html.twig', [
                 'resultsForm' => $resultsForm->createView(),
-                'mailForm' => $this->buildMailForm($variableApi, $site)->createView()
+                'mailForm' => $this->buildMailForm($site)->createView()
             ]);
         }
 
-        return [
-            'form' => $form->createView()
-        ];
+        return $this->render('@ZikulaUsers/UserAdministration/search.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -380,17 +374,16 @@ class UserAdministrationController extends AbstractController
     public function mailUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
-        VariableApiInterface $variableApi,
         MailHelper $mailHelper,
         SiteDefinitionInterface $site
     ): RedirectResponse {
-        $mailForm = $this->buildMailForm($variableApi, $site);
+        $mailForm = $this->buildMailForm($site);
         $mailForm->handleRequest($request);
         if ($mailForm->isSubmitted() && $mailForm->isValid()) {
             $data = $mailForm->getData();
             $users = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => explode(',', $data['userIds'])]]);
             if (empty($users)) {
-                throw new InvalidArgumentException($this->trans('No users found.'));
+                throw new InvalidArgumentException($this->translator->trans('No users found.'));
             }
             if ($mailHelper->mailUsers($users, $data)) {
                 $this->addFlash('success', 'Done! Mail sent.');
@@ -404,15 +397,13 @@ class UserAdministrationController extends AbstractController
         return $this->redirectToRoute('zikulausersbundle_useradministration_search');
     }
 
-    private function buildMailForm(
-        VariableApiInterface $variableApi,
-        SiteDefinitionInterface $site
-    ): FormInterface {
+    private function buildMailForm(SiteDefinitionInterface $site): FormInterface
+    {
         return $this->createForm(MailType::class, [
             'from' => $site->getName(),
-            'replyto' => $variableApi->getSystemVar('adminmail'),
+            'replyto' => $site->getAdminMail(),
             'format' => 'text',
-            'batchsize' => 100
+            'batchsize' => 100,
         ], [
             'action' => $this->generateUrl('zikulausersbundle_useradministration_mailusers')
         ]);
@@ -423,7 +414,6 @@ class UserAdministrationController extends AbstractController
      */
     private function checkSelf(
         CurrentUserApiInterface $currentUserApi,
-        VariableApiInterface $variableApi,
         UserEntity $userBeingModified,
         array $originalGroups = []
     ): void {
@@ -438,15 +428,15 @@ class UserAdministrationController extends AbstractController
             $userBeingModified->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         }
         // current user not allowed to remove self from default group
-        $defaultGroup = $variableApi->get('ZikulaGroupsModule', 'defaultgroup', 1);
-        if (!$userBeingModified->getGroups()->containsKey($defaultGroup)) {
+        $defaultGroupId = $this->defaultHelper->getDefaultGroupId();
+        if (!$userBeingModified->getGroups()->containsKey($defaultGroupId)) {
             $this->addFlash('info', 'You are not allowed to remove yourself from the default group.');
-            $userBeingModified->getGroups()->add($originalGroups[$defaultGroup]);
+            $userBeingModified->getGroups()->add($originalGroups[$defaultGroupId]);
         }
         // current user not allowed to remove self from admin group if currently a member
-        if (isset($originalGroups[Constant::GROUP_ID_ADMIN]) && !$userBeingModified->getGroups()->containsKey(Constant::GROUP_ID_ADMIN)) {
+        if (isset($originalGroups[GroupsConstant::GROUP_ID_ADMIN]) && !$userBeingModified->getGroups()->containsKey(GroupsConstant::GROUP_ID_ADMIN)) {
             $this->addFlash('info', 'You are not allowed to remove yourself from the primary administrator group.');
-            $userBeingModified->getGroups()->add($originalGroups[Constant::GROUP_ID_ADMIN]);
+            $userBeingModified->getGroups()->add($originalGroups[GroupsConstant::GROUP_ID_ADMIN]);
         }
     }
 }

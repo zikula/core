@@ -4,10 +4,7 @@
     <input type="hidden" id="acceptpolicies_csrftoken" name="acceptpolicies_csrftoken" value="{{ csrfToken }}" />
     <input type="hidden" id="acceptpolicies_uid" name="acceptedpolicies_uid" value="{{ policiesUid }}" />
     {% if activePolicies.termsOfUse and viewablePolicies.termsOfUse %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_TERMS_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_termsofuse') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('termsOfUse') %}
         {% set policyName = 'Terms of use'|trans %}
         {% set policyLink = '<a class="policy-link" data-toggle="modal" data-target="#modal-terms-of-use" href="' ~ policyUrl ~ '">' ~ policyName ~ '</a>' %}
         <div class="form-group{% if fieldErrors.termsofuse|default %} has-error{% endif %}">
@@ -16,7 +13,7 @@
             {% if editablePolicies.termsOfUse %}
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_termsofuse_yes" name="acceptedpolicies_termsofuse" required="required"{% if acceptedPolicies.termsOfUse %} checked="checked"{% endif %} value="1" class="custom-control-input" />
-                    <label for="acceptpolicies_termsofuse_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink })|safeHtml }}</label>
+                    <label for="acceptpolicies_termsofuse_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink }) }}</label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_termsofuse_no" name="acceptedpolicies_termsofuse" required="required"{% if not acceptedPolicies.termsOfUse %} checked="checked"{% endif %} value="0" class="custom-control-input" />
@@ -32,10 +29,7 @@
         </div>
     {% endif %}
     {% if activePolicies.privacyPolicy and viewablePolicies.privacyPolicy %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_PRIVACY_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_privacypolicy') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('privacyPolicy') %}
         {% set policyName = 'Privacy policy'|trans %}
         {% set policyLink = '<a class="policy-link" data-toggle="modal" data-target="#modal-privacy-policy" href="' ~ policyUrl ~ '">' ~ policyName ~ '</a>' %}
         <div class="form-group{% if fieldErrors.privacypolicy|default %} has-error{% endif %}">
@@ -44,7 +38,7 @@
             {% if editablePolicies.privacyPolicy %}
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_privacypolicy_yes" name="acceptedpolicies_privacypolicy" required="required"{% if acceptedPolicies.privacyPolicy %} checked="checked"{% endif %} value="1" class="custom-control-input" />
-                    <label class="custom-control-label" for="acceptpolicies_privacypolicy_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink })|safeHtml }}</label>
+                    <label class="custom-control-label" for="acceptpolicies_privacypolicy_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink }) }}</label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_privacypolicy_no" name="acceptedpolicies_privacypolicy" required="required"{% if not acceptedPolicies.privacyPolicy %} checked="checked"{% endif %} value="0" class="custom-control-input" />
@@ -66,7 +60,7 @@
             {% if editablePolicies.agePolicy %}
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_agepolicy_yes" name="acceptedpolicies_agepolicy" required="required"{% if acceptedPolicies.agePolicy %} checked="checked"{% endif %} value="1" class="custom-control-input" />
-                    <label class="custom-control-label" for="acceptpolicies_agepolicy_yes">{% trans with { '%s%': getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_MINIMUM_AGE'), 13) } %}Confirmed minimum age requirement (%s% years of age) met.{% endtrans %}</label>
+                    <label class="custom-control-label" for="acceptpolicies_agepolicy_yes">{% trans with { '%s%': zikulalegalbundle_minimumAge() } %}Confirmed minimum age requirement (%s% years of age) met.{% endtrans %}</label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_agepolicy_no" name="acceptedpolicies_agepolicy" required="required"{% if not acceptedPolicies.agePolicy %} checked="checked"{% endif %} value="0" class="custom-control-input" />
@@ -76,16 +70,13 @@
                     {{ fieldErrors.agepolicy|default }}
                 </p>
             {% else %}
-                <span class="form-control-static">{{ acceptedPolicies.agePolicy ? 'Confirmed minimum age requirement (%s% years of age) met.'|trans({ '%s%': getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_MINIMUM_AGE'), 13) }) : 'Minimum age requirement not confirmed.'|trans }}</span>
+                <span class="form-control-static">{{ acceptedPolicies.agePolicy ? 'Confirmed minimum age requirement (%s% years of age) met.'|trans({ '%s%': zikulalegalbundle_minimumAge() }) : 'Minimum age requirement not confirmed.'|trans }}</span>
             {% endif %}
             </div>
         </div>
     {% endif %}
     {% if activePolicies.tradeConditions and viewablePolicies.tradeConditions %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_TRADECONDITIONS_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_tradeconditions') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('tradeConditions') %}
         {% set policyName = 'General terms and conditions of trade'|trans %}
         {% set policyLink = '<a class="policy-link" data-toggle="modal" data-target="#modal-general-terms-and-conditions-of-trade" href="' ~ policyUrl ~ '">' ~ policyName ~ '</a>' %}
         <div class="form-group{% if fieldErrors.tradeconditions|default %} has-error{% endif %}">
@@ -94,7 +85,7 @@
             {% if editablePolicies.tradeConditions %}
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_tradeconditions_yes" name="acceptedpolicies_tradeconditions" required="required"{% if acceptedPolicies.tradeConditions %} checked="checked"{% endif %} value="1" class="custom-control-input" />
-                    <label class="custom-control-label" for="acceptpolicies_tradeconditions_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink })|safeHtml }}</label>
+                    <label class="custom-control-label" for="acceptpolicies_tradeconditions_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink }) }}</label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_tradeconditions_no" name="acceptedpolicies_tradeconditions" required="required"{% if not acceptedPolicies.tradeConditions %} checked="checked"{% endif %} value="0" class="custom-control-input" />
@@ -110,10 +101,7 @@
         </div>
     {% endif %}
     {% if activePolicies.cancellationRightPolicy and viewablePolicies.cancellationRightPolicy %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_CANCELLATIONRIGHTPOLICY_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_cancellationrightpolicy') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('cancellationRightPolicy') %}
         {% set policyName = 'Cancellation right policy'|trans %}
         {% set policyLink = '<a class="policy-link" data-toggle="modal" data-target="#modal-cancellation-right-policy" href="' ~ policyUrl ~ '">' ~ policyName ~ '</a>' %}
         <div class="form-group{% if fieldErrors.cancellationrightpolicy|default %} has-error{% endif %}">
@@ -122,7 +110,7 @@
             {% if editablePolicies.cancellationRightPolicy %}
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_cancellationrightpolicy_yes" name="acceptedpolicies_cancellationrightpolicy" required="required"{% if acceptedPolicies.cancellationRightPolicy %} checked="checked"{% endif %} value="1" class="custom-control-input" />
-                    <label class="custom-control-label" for="acceptpolicies_cancellationrightpolicy_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink })|safeHtml }}</label>
+                    <label class="custom-control-label" for="acceptpolicies_cancellationrightpolicy_yes">{{ '%s% accepted.'|trans({ '%s%': policyLink }) }}</label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" id="acceptpolicies_cancellationrightpolicy_no" name="acceptedpolicies_cancellationrightpolicy" required="required"{% if not acceptedPolicies.cancellationRightPolicy %} checked="checked"{% endif %} value="0" class="custom-control-input" />
@@ -153,4 +141,4 @@
         </div>
     </div>
 </div>
-{{ pageAddAsset('javascript', zasset('@ZikulaLegalBundle:js/ZikulaLegalModule.User.AcceptPolicies.js')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaLegalBundle:js/ZikulaLegalBundle.User.AcceptPolicies.js')) }}

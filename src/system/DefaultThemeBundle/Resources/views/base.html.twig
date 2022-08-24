@@ -62,7 +62,7 @@
                 <footer>
                     {% set localeSwitcher = localeSwitcher() %}
                     {% set hasLocaleSwitcher = localeSwitcher != '' %}
-                    {% set hasStyleSwitcher = getModVar('ZikulaDefaultTheme', 'allow_style_change', false) == true %}
+                    {% set hasStyleSwitcher = themevars.allow_style_change == true %}
 
                     {% block footerSwitcherSection %}
                         {% if hasLocaleSwitcher or hasStyleSwitcher %}
@@ -77,7 +77,7 @@
                             {% block styleswitcher %}
                                 {% if hasStyleSwitcher %}
                                     {% set currentStyle = app.request.hasSession ? app.request.session.get('currentBootstrapStyle', '') : '' %}
-                                    {% set currentStyle = currentStyle ? currentStyle : getModVar('ZikulaDefaultTheme', 'theme_style', 'cerulean') %}
+                                    {% set currentStyle = currentStyle ? currentStyle : themevars.theme_style %}
                                     <form id="themeStyleSwitcher" class="form-inline float-right">
                                         <label for="themeStyle" class="mr-2"><i class="fa fa-palette"></i>&nbsp;{% trans %}Change style{% endtrans %}</label>
                                         <select id="themeStyle" name="themeStyle" class="custom-select">

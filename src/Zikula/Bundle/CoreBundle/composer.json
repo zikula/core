@@ -26,8 +26,6 @@
         "zikula/menu-bundle": "dev-3.1",
         "zikula/permissions-bundle": "dev-3.1",
         "zikula/profile-bundle": "dev-3.1",
-        "zikula/securitycenter-bundle": "dev-3.1",
-        "zikula/settings-bundle": "dev-3.1",
         "zikula/staticcontent-bundle": "dev-3.1",
         "zikula/theme-bundle": "dev-3.1",
         "zikula/users-bundle": "dev-3.1",
@@ -46,7 +44,6 @@
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
 
-        "sensio/framework-extra-bundle": "^6",
         "symfony/browser-kit": "^5.4",
         "symfony/debug-bundle": "^5.4",
         "symfony/doctrine-bridge": "^5.4",
@@ -65,7 +62,14 @@
         "doctrine/doctrine-bundle": "^2",
         "doctrine/orm": "^2",
         "stof/doctrine-extensions-bundle": "^1",
-        "liip/imagine-bundle": "^2"
+        "liip/imagine-bundle": "^2",
+
+        "willdurand/js-translation-bundle": "^5",
+        "friendsofsymfony/jsrouting-bundle": "^3",
+
+        "php-translation/extractor": "^2",
+        "php-translation/symfony-bundle": "^0",
+        "php-translation/symfony-storage": "^2"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreBundle\\": "" }

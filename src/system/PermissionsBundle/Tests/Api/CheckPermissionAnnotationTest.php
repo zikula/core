@@ -18,7 +18,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\PermissionApi;
-use Zikula\PermissionsBundle\Listener\ControllerPermissionCheckAnnotationReaderListener;
+use Zikula\PermissionsBundle\EventListener\ControllerPermissionCheckAnnotationReaderListener;
 use Zikula\PermissionsBundle\Tests\Api\Fixtures\BarController;
 use Zikula\PermissionsBundle\Tests\Api\Fixtures\FailController;
 use Zikula\PermissionsBundle\Tests\Api\Fixtures\FooController;

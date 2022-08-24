@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\UsersBundle\Constant;
+use Zikula\UsersBundle\UsersConstant;
 
 /**
  * Class BlameListener overrides Stof\DoctrineExtensionsBundle\EventListener\BlameListener
@@ -48,13 +48,13 @@ class BlameListener implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         try {
-            $uid = Constant::USER_ID_ANONYMOUS;
+            $uid = UsersConstant::USER_ID_ANONYMOUS;
             if (!$this->installed) {
-                $uid = Constant::USER_ID_ADMIN;
+                $uid = UsersConstant::USER_ID_ADMIN;
             } else {
                 $request = $this->requestStack->getCurrentRequest();
                 if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
-                    $uid = $this->session->isStarted() ? $this->session->get('uid', Constant::USER_ID_ANONYMOUS) : $uid;
+                    $uid = $this->session->isStarted() ? $this->session->get('uid', UsersConstant::USER_ID_ANONYMOUS) : $uid;
                 }
             }
             $user = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid);

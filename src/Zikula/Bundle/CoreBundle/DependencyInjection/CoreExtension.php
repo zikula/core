@@ -22,7 +22,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function Symfony\Component\String\s;
+use Zikula\Bundle\CoreBundle\Api\LocaleApi;
 use Zikula\Bundle\CoreBundle\Controller\MainController;
+use Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener;
+use Zikula\Bundle\CoreBundle\EventListener\SiteOffListener;
+use Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener;
+use Zikula\Bundle\CoreBundle\Site\SiteDefinition;
 
 class CoreExtension extends Extension implements PrependExtensionInterface
 {
@@ -31,14 +36,33 @@ class CoreExtension extends Extension implements PrependExtensionInterface
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('session.yaml');
         $loader->load('services.yaml');
         $loader->load('translation.yaml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        $container->setParameter('datadir', $config['datadir']);
 
+        $container->setParameter('data_directory', $config['datadir']);
+
+        $container->getDefinition(ClickjackProtectionListener::class)
+            ->setArgument('$xFrameOptions', $config['x_frame_options']);
+
+        $container->getDefinition(SiteOffListener::class)
+            ->setArgument('$maintenanceModeEnabled', $config['maintenance_mode']['enabled'])
+            ->setArgument('$maintenanceReason', $config['maintenance_mode']['reason']);
+        $container->getDefinition(SiteOffVetoLoginListener::class)
+            ->setArgument('$maintenanceModeEnabled', $config['maintenance_mode']['enabled']);
+
+        $container->setParameter('enable_mail_logging', $config['enable_mail_logging']);
+
+        $container->getDefinition(LocaleApi::class)
+            ->setArgument('$multiLingualEnabled', $config['multilingual']);
+
+        $container->getDefinition(SiteDefinition::class)
+            ->setArgument('$siteData', $config['site_data']);
+
+        // hint which classes contain annotations so they are compiled when generating
+        // the application cache to improve the overall performance
         $this->addAnnotatedClassesToCompile([
             MainController::class,
             'Zikula\\*Bundle\\Controller\\',
@@ -53,10 +77,10 @@ class CoreExtension extends Extension implements PrependExtensionInterface
 
     public function prepend(ContainerBuilder $container)
     {
-        // modules may define their workflows in: <bundlePath>/Resources/workflows/
+        // bundles may define their workflows in: <bundlePath>/Resources/workflows/
         $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
         foreach ($bundleMetaData as $bundleName => $metaData) {
-            // TODO recheck
+            // TODO still needed/wanted? could check for AbstractModule
             /*if (!s($bundleName)->endsWith('Module')) {
                 continue;
             }*/

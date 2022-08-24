@@ -31,11 +31,7 @@
         "symfony/twig-bundle": "^5.4",
         "symfony/webpack-encore-bundle": "^1",
         "symfony/yaml": "^5.4",
-        "twig/cssinliner-extra": "^3",
-        "twig/html-extra": "^3",
-        "twig/inky-extra": "^3",
         "twig/intl-extra": "^3",
-        "twig/markdown-extra": "^3",
         "twig/string-extra": "^3",
         "twig/extra-bundle": "^3",
 
@@ -50,11 +46,6 @@
         "zikula/rss-theme": "dev-3.1",
         "zikula/printer-theme": "dev-3.1",
         "zikula/atom-theme": "dev-3.1",
-
-        "erusev/parsedown": "^2",
-        "league/commonmark": "^2",
-        "league/html-to-markdown": "^5",
-        "michelf/php-markdown": "^1",
 
         "oro/twig-inspector": "^1",
 
@@ -77,6 +68,9 @@
                 "admin": {
                     "route": "zikulathemebundle_config_config"
                 }
+            },
+            "securityschema": {
+                "LocaleSwitcher::": "::"
             }
         }
     }

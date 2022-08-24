@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
-use Zikula\LegalBundle\Constant as LegalConstant;
 use Zikula\LegalBundle\Form\Type\ConfigType;
 use Zikula\LegalBundle\Helper\ResetAgreementHelper;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
@@ -31,62 +30,41 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 #[Route('/legal')]
 class ConfigController extends AbstractController
 {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     /**
-     * @Template("@ZikulaLegal/Config/config.html.twig")
      * @Theme("admin")
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/config', name: 'zikulalegalbundle_config_config')]
     public function config(
         Request $request,
         GroupRepositoryInterface $groupRepository,
         ResetAgreementHelper $resetAgreementHelper
-    ) {
-        $booleanVars = [
-            LegalConstant::MODVAR_LEGALNOTICE_ACTIVE,
-            LegalConstant::MODVAR_TERMS_ACTIVE,
-            LegalConstant::MODVAR_PRIVACY_ACTIVE,
-            LegalConstant::MODVAR_TRADECONDITIONS_ACTIVE,
-            LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_ACTIVE,
-            LegalConstant::MODVAR_ACCESSIBILITY_ACTIVE,
-        ];
-
-        $dataValues = $this->getVars();
-        foreach ($booleanVars as $booleanVar) {
-            $dataValues[$booleanVar] = (bool) $dataValues[$booleanVar];
-        }
-
+    ): Response {
         // build choices for user group selector
         $groupChoices = [
-            $this->trans('All users') => 0,
+            $this->translator->trans('All users') => 0,
         ];
-
-        // get all user groups
         $groups = $groupRepository->findAll();
         foreach ($groups as $group) {
             $groupChoices[$group->getName()] = $group->getGid();
         }
 
-        $form = $this->createForm(ConfigType::class, $dataValues, [
+        $form = $this->createForm(ConfigType::class, [], [
             'groupChoices' => $groupChoices,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
-                foreach ($booleanVars as $booleanVar) {
-                    $formData[$booleanVar] = (true === $formData[$booleanVar] ? 1 : 0);
-                }
 
                 $resetAgreementGroupId = -1;
                 if (isset($formData['resetagreement'])) {
                     $resetAgreementGroupId = $formData['resetagreement'];
                     unset($formData['resetagreement']);
                 }
-
-                // save modvars
-                $this->setVars($formData);
 
                 if (-1 !== $resetAgreementGroupId) {
                     $resetAgreementHelper->reset($resetAgreementGroupId);
@@ -102,8 +80,8 @@ class ConfigController extends AbstractController
             return $this->redirectToRoute('zikulalegalbundle_config_config');
         }
 
-        return [
+        return $this->render('@ZikulaLegal/Config/config.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 }

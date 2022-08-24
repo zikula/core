@@ -15,49 +15,24 @@ namespace Zikula\LegalBundle\Helper;
 
 use DateTime;
 use DateTimeZone;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\LegalBundle\Constant as LegalConstant;
+use Zikula\LegalBundle\LegalConstant;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 /**
  * Helper class to process acceptance of policies.
  */
 class AcceptPoliciesHelper
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    /**
-     * @var CurrentUserApiInterface
-     */
-    private $currentUserApi;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    private $userRepository;
-
-    /**
-     * @var array
-     */
-    private $moduleVars;
-
     public function __construct(
-        PermissionApiInterface $permissionApi,
-        CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository,
-        VariableApiInterface $variableApi
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly array $legalConfig
     ) {
-        $this->permissionApi = $permissionApi;
-        $this->currentUserApi = $currentUserApi;
-        $this->userRepository = $userRepository;
-        $this->moduleVars = $variableApi->getAll('ZikulaLegalModule');
     }
 
     /**
@@ -67,33 +42,29 @@ class AcceptPoliciesHelper
      */
     public function getActivePolicies(): array
     {
-        $termsOfUseActive = $this->moduleVars[LegalConstant::MODVAR_TERMS_ACTIVE] ?? false;
-        $privacyPolicyActive = $this->moduleVars[LegalConstant::MODVAR_PRIVACY_ACTIVE] ?? false;
-        $agePolicyActive = isset($this->moduleVars[LegalConstant::MODVAR_MINIMUM_AGE]) ? 0 !== $this->moduleVars[LegalConstant::MODVAR_MINIMUM_AGE] : 0;
-        $cancellationRightPolicyActive = $this->moduleVars[LegalConstant::MODVAR_CANCELLATIONRIGHTPOLICY_ACTIVE] ?? false;
-        $tradeConditionsActive = $this->moduleVars[LegalConstant::MODVAR_TRADECONDITIONS_ACTIVE] ?? false;
+        $policies = $this->legalConfig['policies'];
 
         return [
-            'termsOfUse'              => $termsOfUseActive,
-            'privacyPolicy'           => $privacyPolicyActive,
-            'agePolicy'               => $agePolicyActive,
-            'cancellationRightPolicy' => $cancellationRightPolicyActive,
-            'tradeConditions'         => $tradeConditionsActive,
+            'privacyPolicy'           => $policies['privacy_policy']['enabled'],
+            'termsOfUse'              => $policies['terms_of_use']['enabled'],
+            'tradeConditions'         => $policies['trade_conditions']['enabled'],
+            'cancellationRightPolicy' => $policies['cancellation_right_policy']['enabled'],
+            'agePolicy'               => 0 !== $this->legalConfig['minimum_age'],
         ];
     }
 
     /**
      * Helper method to determine acceptance / confirmation states for current user.
      */
-    private function determineAcceptanceState(int $uid = null, string $modVarName = ''): ?string
+    private function determineAcceptanceState(int $uid = null, string $attributeName = ''): ?string
     {
         $acceptanceState = null;
 
         if (null !== $uid && !empty($uid) && is_numeric($uid) && $uid > 0) {
-            if ($uid > Constant::USER_ID_ADMIN) {
+            if ($uid > UsersConstant::USER_ID_ADMIN) {
                 /** @var UserEntity $user */
                 $user = $this->userRepository->find($uid);
-                $acceptanceState = $user->getAttributes()->containsKey($modVarName) ? $user->getAttributeValue($modVarName) : null;
+                $acceptanceState = $user->getAttributes()->containsKey($attributeName) ? $user->getAttributeValue($attributeName) : null;
             } else {
                 // The special users (uid == UsersConstant::USER_ID_ADMIN or UsersConstant::USER_ID_ANONYMOUS) have always accepted all policies.
                 $now = new \DateTime('now', new DateTimeZone('UTC'));
@@ -130,11 +101,11 @@ class AcceptPoliciesHelper
         $tradeConditionsAccepted = $tradeConditionsAcceptedDate ? $tradeConditionsAcceptedDate <= $now : false;
 
         return [
-            'termsOfUse'              => $termsOfUseAccepted,
             'privacyPolicy'           => $privacyPolicyAccepted,
-            'agePolicy'               => $agePolicyConfirmed,
-            'cancellationRightPolicy' => $cancellationRightPolicyAccepted,
+            'termsOfUse'              => $termsOfUseAccepted,
             'tradeConditions'         => $tradeConditionsAccepted,
+            'cancellationRightPolicy' => $cancellationRightPolicyAccepted,
+            'agePolicy'               => $agePolicyConfirmed,
         ];
     }
 
@@ -150,11 +121,11 @@ class AcceptPoliciesHelper
         $isCurrentUser = null !== $userId && $userId === $currentUid;
 
         return [
-            'termsOfUse'              => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalModule::termsOfUse', '::', ACCESS_MODERATE),
-            'privacyPolicy'           => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalModule::privacyPolicy', '::', ACCESS_MODERATE),
-            'agePolicy'               => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalModule::agePolicy', '::', ACCESS_MODERATE),
-            'cancellationRightPolicy' => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalModule::cancellationRightPolicy', '::', ACCESS_MODERATE),
-            'tradeConditions'         => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalModule::tradeConditions', '::', ACCESS_MODERATE),
+            'privacyPolicy'           => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::privacyPolicy', '::', ACCESS_MODERATE),
+            'termsOfUse'              => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::termsOfUse', '::', ACCESS_MODERATE),
+            'tradeConditions'         => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::tradeConditions', '::', ACCESS_MODERATE),
+            'cancellationRightPolicy' => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::cancellationRightPolicy', '::', ACCESS_MODERATE),
+            'agePolicy'               => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::agePolicy', '::', ACCESS_MODERATE),
         ];
     }
 
@@ -167,11 +138,11 @@ class AcceptPoliciesHelper
     public function getEditablePolicies(): array
     {
         return [
-            'termsOfUse'              => $this->permissionApi->hasPermission('ZikulaLegalModule::termsOfUse', '::', ACCESS_EDIT),
-            'privacyPolicy'           => $this->permissionApi->hasPermission('ZikulaLegalModule::privacyPolicy', '::', ACCESS_EDIT),
-            'agePolicy'               => $this->permissionApi->hasPermission('ZikulaLegalModule::agePolicy', '::', ACCESS_EDIT),
-            'cancellationRightPolicy' => $this->permissionApi->hasPermission('ZikulaLegalModule::cancellationRightPolicy', '::', ACCESS_EDIT),
-            'tradeConditions'         => $this->permissionApi->hasPermission('ZikulaLegalModule::tradeConditions', '::', ACCESS_EDIT),
+            'privacyPolicy'           => $this->permissionApi->hasPermission('ZikulaLegalBundle::privacyPolicy', '::', ACCESS_EDIT),
+            'termsOfUse'              => $this->permissionApi->hasPermission('ZikulaLegalBundle::termsOfUse', '::', ACCESS_EDIT),
+            'tradeConditions'         => $this->permissionApi->hasPermission('ZikulaLegalBundle::tradeConditions', '::', ACCESS_EDIT),
+            'cancellationRightPolicy' => $this->permissionApi->hasPermission('ZikulaLegalBundle::cancellationRightPolicy', '::', ACCESS_EDIT),
+            'agePolicy'               => $this->permissionApi->hasPermission('ZikulaLegalBundle::agePolicy', '::', ACCESS_EDIT),
         ];
     }
 }

@@ -14,7 +14,14 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle;
 
 use Zikula\ExtensionsBundle\AbstractModule;
+use Zikula\ExtensionsBundle\Initializer\BundleInitializerInterface;
+use Zikula\ExtensionsBundle\Initializer\InitializableBundleInterface;
+use Zikula\UsersBundle\Initializer\UsersInitializer;
 
-class ZikulaUsersBundle extends AbstractModule
+class ZikulaUsersBundle extends AbstractModule implements InitializableBundleInterface
 {
+    public function getInitializer(): BundleInitializerInterface
+    {
+        return $this->container->get(UsersInitializer::class);
+    }
 }

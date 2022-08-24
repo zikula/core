@@ -5,7 +5,6 @@ services:
         public: false
         bind:
             $installed: '%env(ZIKULA_INSTALLED)%'
-            $projectDir: '%kernel.project_dir%'
 
     # alias interface to doctrine service
     Doctrine\Persistence\ManagerRegistry: '@doctrine'
@@ -13,6 +12,8 @@ services:
     Zikula\Bundle\CoreBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface: '@Zikula\Bundle\CoreBundle\Api\LocaleApi'
 
     Zikula\Bundle\CoreBundle\Controller\:
         resource: '../../Controller/*Controller.php'
@@ -37,6 +38,10 @@ services:
         arguments:
           $blameableListener: '@stof_doctrine_extensions.listener.blameable'
 
+    Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener:
+        arguments:
+            $xFrameOptions: 'SAMEORIGIN'
+
     Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener:
         lazy: true
 
@@ -46,9 +51,7 @@ services:
 
     Zikula\Bundle\CoreBundle\Site\SiteDefinition:
         arguments:
+          $defaultLocale: '%kernel.default_locale%'
           $pageVars: '@zikula_core.common.theme.pagevars'
 
     Symfony\Component\HttpKernel\Fragment\FragmentHandler: '@fragment.handler'
-
-    Michelf\:
-        resource: '../../../../../../vendor/michelf/php-markdown/Michelf/*'

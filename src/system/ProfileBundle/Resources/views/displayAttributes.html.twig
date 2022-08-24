@@ -1,4 +1,4 @@
-{% if getModVar('ZikulaProfileModule', 'viewregdate', 1) == 1 and user.registrationDate != '1970-01-01 00:00:00' %}
+{% if displayRegistrationDate and user.registrationDate != '1970-01-01 00:00:00' %}
     <div class="row">
         <div class="col-md-3 text-right">
             <strong>{% trans %}Registration date{% endtrans %}</strong>

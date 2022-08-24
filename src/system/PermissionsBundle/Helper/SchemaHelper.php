@@ -27,7 +27,7 @@ class SchemaHelper
      */
     public function getAllSchema(): array
     {
-        $criteria = []; // $activeOnly ? ['state' => Constant::STATE_ACTIVE] : [];
+        $criteria = []; // $activeOnly ? ['state' => ExtensionsConstant::STATE_ACTIVE] : [];
         $bundles = $this->kernel->getBundles();
         $schema = [];
         foreach ($bundles as $bundle) {

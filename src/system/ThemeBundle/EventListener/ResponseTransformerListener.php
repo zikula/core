@@ -20,7 +20,7 @@ use Zikula\ThemeBundle\Engine\ResponseTransformer;
 
 class ResponseTransformerListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly bool $trimWhitespace = false)
+    public function __construct(private readonly ResponseTransformer $responseTransformer, private readonly bool $trimWhitespace = false)
     {
     }
 
@@ -39,11 +39,12 @@ class ResponseTransformerListener implements EventSubscriberInterface
             return;
         }
 
-        $response = $event->getResponse();
-        if ($this->trimWhitespace) {
-            $responseTransformer = new ResponseTransformer();
-            $responseTransformer->trimWhitespace($response);
+        if (!$this->trimWhitespace) {
+            return;
         }
+
+        $response = $event->getResponse();
+        $this->responseTransformer->trimWhitespace($response);
         $event->setResponse($response);
     }
 }

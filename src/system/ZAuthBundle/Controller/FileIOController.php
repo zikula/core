@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\GroupsBundle\GroupsConstant;
+use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
@@ -31,19 +32,22 @@ use Zikula\ZAuthBundle\Helper\FileIOHelper;
 #[Route('/zauth/fileIO')]
 class FileIOController extends AbstractController
 {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly DefaultHelper $defaultHelper,
+        private readonly int $minimumPasswordLength
+    ) {
+    }
+
     /**
      * @Theme("admin")
-     * @Template("@ZikulaZAuth/FileIO/import.html.twig")
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/import', name: 'zikulazauthbundle_fileio_import')]
     public function import(
         Request $request,
-        VariableApiInterface $variableApi,
         GroupRepositoryInterface $groupRepository,
         FileIOHelper $ioHelper
-    ) {
+    ): Response {
         $form = $this->createForm(ImportUserType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -52,7 +56,7 @@ class FileIOController extends AbstractController
                 $importErrors = $ioHelper->importUsersFromFile($data['file'], $data['delimiter']);
                 if (empty($importErrors)) {
                     $createdUsers = $ioHelper->getCreatedUsers();
-                    $this->addFlash('status', $this->trans('Done! %count% users imported.', ['%count%' => count($createdUsers)]));
+                    $this->addFlash('status', $this->translator->trans('Done! %count% users imported.', ['%count%' => count($createdUsers)]));
                 } else {
                     $this->addFlash('error', $importErrors);
                 }
@@ -63,12 +67,12 @@ class FileIOController extends AbstractController
             $this->redirectToRoute('zikulazauthbundle_useradministration_listmappings');
         }
 
-        $defaultGroupId = $variableApi->get('ZikulaGroupsModule', 'defaultgroup');
-        $groupEntity = $groupRepository->find($defaultGroupId);
+        $group = $groupRepository->find($this->defaultHelper->getDefaultGroupId());
 
-        return [
+        return $this->render('@ZikulaZAuth/FileIO/import.html.twig', [
             'form' => $form->createView(),
-            'defaultGroupName' => null !== $groupEntity ? $groupEntity->getName() : '',
-        ];
+            'defaultGroupName' => null !== $group ? $group->getName() : '',
+            'minimumPasswordLength' => $this->minimumPasswordLength,
+        ]);
     }
 }

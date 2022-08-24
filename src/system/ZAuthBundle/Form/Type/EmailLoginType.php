@@ -35,26 +35,26 @@ class EmailLoginType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'Email address',
-                'input_group' => ['left' => '<i class="fas fa-fw fa-at"></i>']
+                'input_group' => ['left' => '<i class="fas fa-fw fa-at"></i>'],
             ])
             ->add('pass', PasswordType::class, [
                 'label' => 'Password',
                 /** @Ignore */
                 'help' => '<a href="' . $this->router->generate('zikulazauthbundle_account_lostpassword') . '">' . $forgotPassword . '</a>',
                 'help_html' => true,
-                'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>']
+                'input_group' => ['left' => '<i class="fas fa-fw fa-key"></i>'],
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Remember me',
-                'label_attr' => ['class' => 'switch-custom']
+                'label_attr' => ['class' => 'switch-custom'],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Login',
                 'icon' => 'fa-angle-double-right',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
         ;
     }

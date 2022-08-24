@@ -17,14 +17,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\Bundle\FormExtensionBundle\DynamicFieldInterface;
 use Zikula\ProfileBundle\Repository\PropertyRepository;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 #[ORM\Table(name: 'user_property')]
 #[UniqueEntity('id')]
-class PropertyEntity extends EntityAccess implements DynamicFieldInterface
+class PropertyEntity implements DynamicFieldInterface
 {
     /**
      * Note this value is NOT auto-generated and must be manually created!
@@ -56,9 +55,11 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
         return $this->id;
     }
 
-    public function setId(string $id): void
+    public function setId(string $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -85,9 +86,11 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
     /**
      * @param string[] $labels
      */
-    public function setLabels(array $labels): void
+    public function setLabels(array $labels): self
     {
         $this->labels = $labels;
+
+        return $this;
     }
 
     public function getFormType(): string
@@ -95,9 +98,11 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
         return $this->formType;
     }
 
-    public function setFormType(string $formType): void
+    public function setFormType(string $formType): self
     {
         $this->formType = $formType;
+
+        return $this;
     }
 
     public function getFormOptions(): array
@@ -109,9 +114,11 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
         return $this->formOptions;
     }
 
-    public function setFormOptions(array $formOptions): void
+    public function setFormOptions(array $formOptions): self
     {
         $this->formOptions = $formOptions;
+
+        return $this;
     }
 
     public function getFieldInfo(): array
@@ -122,10 +129,10 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
         ];
     }
 
-    public function setFieldInfo(array $fieldInfo): void
+    public function setFieldInfo(array $fieldInfo): self
     {
-        $this->setFormType($fieldInfo['formType']);
-        $this->setFormOptions($fieldInfo['formOptions']);
+        return $this->setFormType($fieldInfo['formType'])
+            ->setFormOptions($fieldInfo['formOptions']);
     }
 
     public function getWeight(): int
@@ -133,19 +140,25 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
         return $this->weight;
     }
 
-    public function setWeight(int $weight): void
+    public function setWeight(int $weight): self
     {
         $this->weight = $weight;
+
+        return $this;
     }
 
-    public function incrementWeight(): void
+    public function incrementWeight(): self
     {
         $this->weight++;
+
+        return $this;
     }
 
-    public function decrementWeight(): void
+    public function decrementWeight(): self
     {
         $this->weight--;
+
+        return $this;
     }
 
     public function getActive(): bool
@@ -153,9 +166,11 @@ class PropertyEntity extends EntityAccess implements DynamicFieldInterface
         return $this->active;
     }
 
-    public function setActive(bool $active): void
+    public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
     }
 
     public function __toString(): string

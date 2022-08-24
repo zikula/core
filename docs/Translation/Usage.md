@@ -7,52 +7,23 @@ currentMenu: translation
 
 ### Translator service
 
-The translator service can be obtained from container using `translator` or better be injected.
+The translator service can be injected using `Symfony\Contracts\Translation\TranslatorInterface`.
 Service is pre-configured to automatically detect current locale, domain is by default set to `'messages'`.
 
-### AbstractController
-
-Zikula Translator is automatically added in AbstractController and you can access it in your bundle controller using:
+Some simple examples for how to use it in PHP files:
 
 ```php
-$this->translator
-```
-
-Translation example
-
-```php
-$translated = $this->translator->trans('Hello World');
-```
-
-When using `\Zikula\Bundle\CoreBundle\Translation\TranslatorTrait` also a shortcut method becomes available:
-
-```php
-$translated = $this->trans('Page');
-```
-
-### Convert translations in PHP from earlier versions
-
-Some examples for how to convert translations in PHP files:
-
-```php
-// import
-use Zikula\Common\Translator\TranslatorInterface;       // old
-use Symfony\Contracts\Translation\TranslatorInterface;  // new
-
 // 1. Simple:
-$this->__('Hello')      // old
-$this->trans('Hello')   // new
+$this->translator->trans('Hello')
 
 // 2. With simple substitution parameters
-$this->__f('Hello %userName%', ['%userName%' => 'Mark Smith'])      // old
-$this->trans('Hello %userName%', ['%userName%' => 'Mark Smith'])    // new
+$this->translator->trans('Hello %userName%', ['%userName%' => 'Mark Smith'])
 
 // 3. With explicit domain
-$this->__('Hello', 'acmefoobundle')             // old
-$this->trans('Hello', [], 'acmefoobundle')      // new
+$this->translator->trans('Hello', [], 'acmefoobundle')
 ```
 
-You can still use `Zikula\Bundle\CoreBundle\Translation\TranslatorTrait`, but it has only one method left now:
+You can also use `Zikula\Bundle\CoreBundle\Translation\TranslatorTrait`, which allows to use `$this->trans()` instead:
 
 ```php
 public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
@@ -99,20 +70,17 @@ For translations in Twig Zikula uses native Symfony Twig trans functionality ([d
 
 ### Convert translations in Twig from earlier versions
 
-Some examples for how to convert translations in templates:
+Some examples for how to use translations in templates:
 
 ```twig
 1. Simple:
-Old: {{ __('Hello') }}
-New: {% trans %}Hello{% endtrans %} or {{ 'Hello'|trans }}
+{% trans %}Hello{% endtrans %} or {{ 'Hello'|trans }}
 
 2. With simple substitution parameters
-Old: {{ __f('Hello %userName%', {'%userName%': 'Mark Smith'}) }}
-New: {% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
+{% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
 
 3. With explicit domain and locale
-Old: {{ __('Hello', 'acmefoobundle', 'fr') }}
-New: {% trans with {} from 'acmefoobundle' into 'fr' %}Hello{% endtrans %} or {{ 'Hello'|trans({}, 'acmefoobundle', 'fr' }}
+{% trans with {} from 'acmefoobundle' into 'fr' %}Hello{% endtrans %} or {{ 'Hello'|trans({}, 'acmefoobundle', 'fr' }}
 ```
 
 See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.

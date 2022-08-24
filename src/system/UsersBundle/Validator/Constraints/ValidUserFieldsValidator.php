@@ -17,9 +17,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class ValidUserFieldsValidator extends ConstraintValidator
 {
@@ -47,7 +47,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
 
     private function validateUniqueUname(string $uname, ?int $uid = null): void
     {
-        if ($this->userRepository->countDuplicateUnames($uname, $uid) > 0) {
+        if (0 < $this->userRepository->countDuplicateUnames($uname, $uid)) {
             $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $uname], 'validators'))
                 ->atPath('uname')
                 ->addViolation();
@@ -58,7 +58,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
     {
         $authMethod = $data->getAttributeValue(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY);
         $existing = $this->userRepository->getByEmailAndAuthMethod($data['email'], $authMethod);
-        if (count($existing) > 0) {
+        if (0 < count($existing)) {
             $this->context->buildViolation($this->translator->trans('This email is in use by another authentication method. Please login with that method instead.', [], 'validators'))
                 ->atPath('email')
                 ->setCode(self::DUP_EMAIL_ALT_AUTH)

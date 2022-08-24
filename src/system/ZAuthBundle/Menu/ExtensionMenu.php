@@ -15,11 +15,11 @@ namespace Zikula\ZAuthBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\UsersBundle\Helper\RegistrationHelper;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface
@@ -27,9 +27,9 @@ class ExtensionMenu implements ExtensionMenuInterface
     public function __construct(
         private readonly FactoryInterface $factory,
         private readonly PermissionApiInterface $permissionApi,
-        private readonly VariableApiInterface $variableApi,
         private readonly CurrentUserApiInterface $currentUserApi,
-        private readonly AuthenticationMappingRepositoryInterface $mappingRepository
+        private readonly AuthenticationMappingRepositoryInterface $mappingRepository,
+        private readonly RegistrationHelper $registrationHelper
     ) {
     }
 
@@ -53,11 +53,7 @@ class ExtensionMenu implements ExtensionMenuInterface
                 'route' => 'zikulazauthbundle_useradministration_listmappings',
             ])->setAttribute('icon', 'fas fa-list');
         }
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
-            $createUserAccessLevel = ACCESS_ADD;
-        } else {
-            $createUserAccessLevel = ACCESS_ADMIN;
-        }
+        $createUserAccessLevel = $this->registrationHelper->isRegistrationEnabled() ? ACCESS_ADD : ACCESS_ADMIN;
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', $createUserAccessLevel)) {
             $menu->addChild('New users', [
                 'route' => 'zikulazauthbundle_useradministration_create',
@@ -71,9 +67,6 @@ class ExtensionMenu implements ExtensionMenuInterface
             ]);
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Settings', [
-                'route' => 'zikulazauthbundle_config_config',
-            ])->setAttribute('icon', 'fas fa-wrench');
             $menu->addChild('Batch password change', [
                 'route' => 'zikulazauthbundle_useradministration_batchforcepasswordchange',
             ])->setAttribute('icon', 'fas fa-lock');

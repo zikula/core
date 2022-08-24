@@ -20,15 +20,14 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\UsersBundle\UsersConstant;
 
 class ValidEmailValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly VariableApiInterface $variableApi,
         private readonly TranslatorInterface $translator,
-        private readonly ValidatorInterface $validator
+        private readonly ValidatorInterface $validator,
+        private readonly ?string $illegalDomains
     ) {
     }
 
@@ -42,9 +41,9 @@ class ValidEmailValidator extends ConstraintValidator
         }
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
-            new Email()
+            new Email(),
         ]);
-        if (count($errors) > 0) {
+        if (0 < count($errors)) {
             foreach ($errors as $error) {
                 // this method forces the error to appear at the form input location instead of at the top of the form
                 $this->context->buildViolation($error->getMessage())->addViolation();
@@ -52,7 +51,7 @@ class ValidEmailValidator extends ConstraintValidator
         }
 
         // ensure legal domain
-        $illegalDomains = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, '') ?? '';
+        $illegalDomains = $this->illegalDomains ?? '';
         $pattern = ['/^((\s*,)*\s*)+/D', '/\b(\s*,\s*)+\b/D', '/((\s*,)*\s*)+$/D'];
         $replace = ['', '|', ''];
         $illegalDomains = preg_replace($pattern, $replace, preg_quote($illegalDomains, '/'));

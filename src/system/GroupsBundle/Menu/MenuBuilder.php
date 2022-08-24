@@ -18,10 +18,10 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\GroupsBundle\Constant;
 use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\GroupsBundle\Helper\CommonHelper;
+use Zikula\GroupsBundle\Helper\DefaultHelper;
+use Zikula\GroupsBundle\Helper\TranslationHelper;
+use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
@@ -31,17 +31,16 @@ class MenuBuilder
     public function __construct(
         private readonly FactoryInterface $factory,
         private readonly PermissionApiInterface $permissionApi,
-        private readonly VariableApiInterface $variableApi,
         private readonly RequestStack $requestStack,
         private readonly CurrentUserApiInterface $currentUserApi,
         private readonly UserRepositoryInterface $userRepository,
-        private readonly RouterInterface $router
+        private readonly RouterInterface $router,
+        private readonly DefaultHelper $defaultHelper
     ) {
     }
 
     public function createAdminMenu(array $options): ItemInterface
     {
-        $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
         /** @var GroupEntity $group */
         $group = $options['group'];
         $gid = $group->getGid();
@@ -52,9 +51,9 @@ class MenuBuilder
             'route' => 'zikulagroupsbundle_group_edit',
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fas fa-pencil-alt');
-        if (Constant::GROUP_ID_ADMIN !== $gid
-            && $defaultGroup !== $gid
-            && $this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
+        if (GroupsConstant::GROUP_ID_ADMIN !== $gid
+            && $this->defaultHelper->getDefaultGroupId() !== $gid
+            && $this->permissionApi->hasPermission('ZikulaGroupsBundle::', $gid . '::', ACCESS_DELETE)) {
             $menu->addChild('Delete group', [
                 'route' => 'zikulagroupsbundle_group_remove',
                 'routeParameters' => $routeParams,
@@ -82,9 +81,9 @@ class MenuBuilder
         }
 
         if ('zikulagroupsbundle_membership_list' !== $requestAttributes['_route']
-            && $this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
-            && (CommonHelper::GTYPE_PUBLIC === $group->getGtype()
-                || (CommonHelper::GTYPE_PRIVATE === $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
+            && $this->permissionApi->hasPermission('ZikulaGroupsBundle::', $gid . '::', ACCESS_READ)
+            && (GroupsConstant::GTYPE_PUBLIC === $group->getGtype()
+                || (GroupsConstant::GTYPE_PRIVATE === $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
         ) {
             $menu->addChild('View membership of group', [
                 'route' => 'zikulagroupsbundle_membership_list',
@@ -97,8 +96,8 @@ class MenuBuilder
                     'route' => 'zikulagroupsbundle_membership_leave',
                     'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fas fa-user-times text-danger');
-            // } elseif (CommonHelper::GTYPE_PRIVATE === $group->getGtype()) {
-            } elseif (CommonHelper::STATE_CLOSED !== $group->getState()) {
+            // } elseif (GroupsConstant::GTYPE_PRIVATE === $group->getGtype()) {
+            } elseif (GroupsConstant::STATE_CLOSED !== $group->getState()) {
                 $menu->addChild('Join group', [
                     'route' => 'zikulagroupsbundle_membership_join',
                     'routeParameters' => ['gid' => $gid],

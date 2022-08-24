@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;

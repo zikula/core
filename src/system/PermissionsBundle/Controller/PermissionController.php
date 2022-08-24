@@ -15,11 +15,13 @@ namespace Zikula\PermissionsBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use RuntimeException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
@@ -30,8 +32,8 @@ use Zikula\PermissionsBundle\Form\Type\PermissionType;
 use Zikula\PermissionsBundle\Helper\SchemaHelper;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
-use Zikula\UsersBundle\Constant;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 /**
  * @PermissionCheck("admin")
@@ -39,9 +41,20 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 #[Route('/permissions')]
 class PermissionController extends AbstractController
 {
+    use TranslatorTrait;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly bool $lockAdminRule,
+        private readonly int $adminRuleId,
+        private readonly bool $enableFiltering
+    ) {
+        $this->setTranslator($translator);
+    }
+
     /**
      * @Theme("admin")
-     * @Template("@ZikulaPermissions/Permission/list.html.twig")
      */
     #[Route('/list', name: 'zikulapermissionsbundle_permission_listpermissions')]
     public function listPermissions(
@@ -49,7 +62,7 @@ class PermissionController extends AbstractController
         PermissionRepositoryInterface $permissionRepository,
         PermissionApiInterface $permissionApi,
         SchemaHelper $schemaHelper
-    ): array {
+    ): Response {
         $groups = $groupsRepository->getGroupNamesById();
         $permissions = $permissionRepository->getFilteredPermissions();
         $components = [$this->trans('All components') => '-1'] + $permissionRepository->getAllComponents();
@@ -59,23 +72,23 @@ class PermissionController extends AbstractController
         $filterForm = $this->createForm(FilterListType::class, [], [
             'groupChoices' => $groups,
             'componentChoices' => $components,
-            'colourChoices' => $colours
+            'colourChoices' => $colours,
         ]);
         $permissionCheckForm = $this->createForm(PermissionCheckType::class, [], [
-            'permissionLevels' => $permissionLevels
+            'permissionLevels' => $permissionLevels,
         ]);
 
-        return [
+        return $this->render('@ZikulaPermissions/Permission/list.html.twig', [
             'filterForm' => $filterForm->createView(),
             'permissionCheckForm' => $permissionCheckForm->createView(),
             'permissionLevels' => $permissionLevels,
             'permissions' => $permissions,
             'groups' => $groups,
-            'lockadmin' => $this->getVar('lockadmin', 1) ? 1 : 0,
-            'adminId' => $this->getVar('adminid', 1),
+            'lockAdminRule' => $this->lockAdminRule,
+            'adminRuleId' => $this->adminRuleId,
             'schema' => $schemaHelper->getAllSchema(),
-            'enableFilter' => (bool) $this->getVar('filter', 1)
-        ];
+            'enableFilter' => $this->enableFiltering,
+        ]);
     }
 
     #[Route('/edit/{pid}', name: 'zikulapermissionsbundle_permission_edit', options: ['expose' => true])]
@@ -116,8 +129,8 @@ class PermissionController extends AbstractController
                 'permission' => $permissionEntity,
                 'groups' => $groupNames,
                 'permissionLevels' => $accessLevelNames,
-                'lockadmin' => $this->getVar('lockadmin', 1) ? 1 : 0,
-                'adminId' => $this->getVar('adminid', 1)
+                'lockAdminRule' => $this->lockAdminRule,
+                'adminRuleId' => $this->adminRuleId,
             ]) : null;
 
             return $this->json([
@@ -125,10 +138,9 @@ class PermissionController extends AbstractController
                 'row' => $row
             ]);
         }
-        $templateParameters = [
-            'form' => $form->createView()
-        ];
-        $view = $this->renderView('@ZikulaPermissions/Permission/permission.html.twig', $templateParameters);
+        $view = $this->renderView('@ZikulaPermissions/Permission/permission.html.twig', [
+            'form' => $form->createView(),
+        ]);
 
         return $this->json(['view' => $view]);
     }
@@ -172,13 +184,13 @@ class PermissionController extends AbstractController
             throw new RuntimeException($this->trans('Notice: You cannot delete the main administration permission rule.'));
         }
 
+        if ($this->lockAdminRule && $permissionEntity->getPid() === $this->adminRuleId) {
+            throw new RuntimeException($this->trans('Notice: You cannot delete the locked administration permission rule.'));
+        }
+
         $doctrine->getManager()->remove($permissionEntity);
         $doctrine->getManager()->flush();
         $permissionRepository->reSequence();
-        if ($permissionEntity->getPid() === $this->getVar('adminid')) {
-            $this->setVar('adminid', 0);
-            $this->setVar('lockadmin', false);
-        }
 
         return $this->json(['pid' => $permissionEntity->getPid()]);
     }
@@ -203,16 +215,16 @@ class PermissionController extends AbstractController
             $user = $userRepository->findOneBy(['uname' => $data['user']]);
             $uid = isset($user) ? $user->getUid() : false;
         } else {
-            $uid = Constant::USER_ID_ANONYMOUS;
+            $uid = UsersConstant::USER_ID_ANONYMOUS;
         }
 
         if (false === $uid) {
             $result .= '<span class="text-danger">' . $this->trans('unknown user.') . '</span>';
         } else {
-            $granted = $this->hasPermission($data['component'], $data['instance'], $data['level'], $uid);
+            $granted = $this->permissionApi->hasPermission($data['component'], $data['instance'], $data['level'], $uid);
 
             $result .= '<span class="' . ($granted ? 'text-success' : 'text-danger') . '">';
-            $result .= Constant::USER_ID_ANONYMOUS < $uid && isset($user) ? $user->getUname() : $this->trans('unregistered user');
+            $result .= UsersConstant::USER_ID_ANONYMOUS < $uid && isset($user) ? $user->getUname() : $this->trans('unregistered user');
             $result .= ': ';
             if ($granted) {
                 $result .= $this->trans('permission granted.');

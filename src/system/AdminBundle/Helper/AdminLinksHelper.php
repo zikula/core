@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\AdminBundle\Helper;
 
 /**
- * Helper function to sort modules.
+ * Helper function to sort bundles.
  */
 class AdminLinksHelper
 {
@@ -22,7 +22,7 @@ class AdminLinksHelper
     {
         usort($adminLinks, function (array $a, array $b) {
             if ((int) $a['order'] === (int) $b['order']) {
-                return strcmp($a['moduleName'], $b['moduleName']);
+                return strcmp($a['bundleName'], $b['bundleName']);
             }
             if ((int) $a['order'] > (int) $b['order']) {
                 return 1;

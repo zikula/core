@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Controller;
 
 use LogicException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Constant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\LoginFormPostValidatedEvent;
@@ -35,10 +35,16 @@ use Zikula\UsersBundle\Event\UserPreLoginSuccessEvent;
 use Zikula\UsersBundle\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersBundle\Form\Type\DefaultLoginType;
 use Zikula\UsersBundle\Helper\AccessHelper;
+use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class AccessController extends AbstractController
 {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     /**
      * @throws InvalidAuthenticationMethodLoginFormException
      */
@@ -49,7 +55,8 @@ class AccessController extends AbstractController
         UserRepositoryInterface $userRepository,
         AuthenticationMethodCollector $authenticationMethodCollector,
         AccessHelper $accessHelper,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        RegistrationHelper $registrationHelper
     ): Response {
         if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersbundle_account_menu');
@@ -104,12 +111,13 @@ class AccessController extends AbstractController
                     'loginHeader' => $loginHeader,
                     'loginFooter' => $loginFooter,
                     'form' => $form->createView(),
-                    'additionalTemplates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
+                    'additionalTemplates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : [],
+                    'registrationEnabled' => $registrationHelper->isRegistrationEnabled(),
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             // provide temp value for uid until form gives real value.
-            $uid = Request::METHOD_POST === $request->getMethod() ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
+            $uid = Request::METHOD_POST === $request->getMethod() ? UsersConstant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
             $hasListeners = $eventDispatcher->hasListeners(LoginFormPostCreatedEvent::class);
             if ($hasListeners) {
                 $form = $this->createForm(DefaultLoginType::class, ['uid' => $uid]);
@@ -131,7 +139,7 @@ class AccessController extends AbstractController
                 }
             }
         } else {
-            throw new LogicException($this->trans('Invalid authentication method.'));
+            throw new LogicException($this->translator->trans('Invalid authentication method.'));
         }
         $user = null;
         if (isset($uid)) {

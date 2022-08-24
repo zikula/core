@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ProfileBundle\Twig;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Zikula\ProfileBundle\Entity\PropertyEntity;
@@ -46,7 +47,7 @@ class TwigExtension extends AbstractExtension
             return $value;
         }
 
-        if ('Symfony\Component\Form\Extension\Core\Type\ChoiceType' !== $property['formType']) {
+        if (ChoiceType::class !== $property['formType']) {
             return $value;
         }
 

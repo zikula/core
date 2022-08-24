@@ -19,7 +19,7 @@
 ## 1.6.0
 
 - Requires at least Zikula core version 1.3.0.
-- Implements listeners for hook-like UI events published by the Users module. 
+- Implements listeners for hook-like UI events published by the Users bundle.
   These event listeners allow Profile to inject the appropriate UI code into views
   and forms in the Users module where the display or editing of Profile information
   is appropriate.

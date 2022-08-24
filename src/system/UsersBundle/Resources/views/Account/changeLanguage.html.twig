@@ -1,4 +1,4 @@
-{% if getModVar('ZConfig', 'multilingual') %}
+{% if multilingual %}
     {{ moduleHeader('user', 'Language switcher'|trans, '', true) }}
     <fieldset>
         {{ form_start(form) }}
@@ -13,5 +13,5 @@
         {{ form_end(form) }}
     </fieldset>
 {% else %}
-    <p class="alert alert-danger">{% trans %}Multilingual features are deactivated.{% endtrans %}</p>
+    <p class="alert alert-warning">{% trans %}Multilingual features are deactivated.{% endtrans %}</p>
 {% endif %}

@@ -24,8 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidAntiSpamAnswer;
@@ -34,11 +33,8 @@ use Zikula\ZAuthBundle\ZAuthConstant;
 
 class RegistrationType extends AbstractType
 {
-    private array $zAuthModVars;
-
-    public function __construct(VariableApiInterface $variableApi)
+    public function __construct(private readonly int $minimumPasswordLength, private readonly ?string $antiSpamQuestion)
     {
-        $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -48,7 +44,7 @@ class RegistrationType extends AbstractType
                 'label' => 'User name',
                 'help' => 'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.',
                 'attr' => [
-                    'maxlength' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH
+                    'maxlength' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH,
                 ],
                 'constraints' => [
                     new ValidUname(),
@@ -61,7 +57,7 @@ class RegistrationType extends AbstractType
                     'help' => 'You will use your e-mail address to identify yourself when you log in.',
                 ],
                 'second_options' => [
-                    'label' => 'Repeat email'
+                    'label' => 'Repeat email',
                 ],
                 'invalid_message' => 'The emails must match!',
                 'constraints' => [
@@ -75,16 +71,16 @@ class RegistrationType extends AbstractType
                         'class' => 'pwstrength',
                         'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
                         'minlength' => $options['minimumPasswordLength'],
-                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}',
                     ],
                     'label' => 'Password',
                     'help' => 'Minimum password length: %amount% characters. Longer passwords are more secure.',
                     'help_translation_parameters' => [
-                        '%amount%' => $options['minimumPasswordLength']
-                    ]
+                        '%amount%' => $options['minimumPasswordLength'],
+                    ],
                 ],
                 'second_options' => [
-                    'label' => 'Repeat password'
+                    'label' => 'Repeat password',
                 ],
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [
@@ -132,7 +128,7 @@ class RegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'minimumPasswordLength' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH] ?? ZAuthConstant::PASSWORD_MINIMUM_LENGTH,
-            'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION] ?? ''
+            'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION] ?? '',
         ]);
     }
 }

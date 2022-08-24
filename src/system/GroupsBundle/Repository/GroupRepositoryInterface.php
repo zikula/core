@@ -20,8 +20,6 @@ use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 
 interface GroupRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function setTranslator(TranslatorInterface $translator): void;
-
     /**
      * Returns the amount of groups.
      */

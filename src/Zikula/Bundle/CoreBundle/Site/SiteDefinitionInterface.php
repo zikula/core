@@ -28,4 +28,8 @@ interface SiteDefinitionInterface
     public function getMobileLogoPath(): ?string;
 
     public function getIconPath(): ?string;
+
+    public function getStartController(): ?array;
+
+    public function getAdminMail(): ?string;
 }

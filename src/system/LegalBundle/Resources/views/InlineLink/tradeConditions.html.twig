@@ -1,5 +1,1 @@
-{% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_TRADECONDITIONS_URL')) %}
-{% if policyUrl == '' %}
-    {% set policyUrl = path('zikulalegalbundle_user_tradeconditions') %}
-{% endif %}
 <a class="legal_inlinelink_tradeconditions" href="{{ policyUrl|e('html_attr') }}" target="{{ target|e('html_attr') }}">{% trans %}General terms and conditions of trade{% endtrans %}</a>

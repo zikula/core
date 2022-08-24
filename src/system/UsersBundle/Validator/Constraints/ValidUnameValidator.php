@@ -23,26 +23,17 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\UsersBundle\UsersConstant;
 
 class ValidUnameValidator extends ConstraintValidator
 {
-    private bool $installed;
-
-    private bool $isUpgrading;
-
     public function __construct(
-        private readonly VariableApiInterface $variableApi,
         private readonly TranslatorInterface $translator,
         private readonly ValidatorInterface $validator,
         private readonly PermissionApiInterface $permissionApi,
-        string $installed,
-        $isUpgrading // cannot cast to bool because set with expression language
+        private readonly ?string $illegalUserNames
     ) {
-        $this->installed = '0.0.0' !== $installed;
-        $this->isUpgrading = $isUpgrading;
     }
 
     public function validate($value, Constraint $constraint)
@@ -59,28 +50,22 @@ class ValidUnameValidator extends ConstraintValidator
             new Type('string'),
             new Length([
                 'min' => 1,
-                'max' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH
+                'max' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH,
             ]),
             new Regex([
                 'pattern' => '/^' . UsersConstant::UNAME_VALIDATION_PATTERN . '$/uD',
-                'message' => $this->translator->trans('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.', [], 'validators')
-            ])
+                'message' => $this->translator->trans('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.', [], 'validators'),
+            ]),
         ]);
-        if (count($errors) > 0) {
+        if (0 < count($errors)) {
             foreach ($errors as $error) {
                 // this method forces the error to appear at the form input location instead of at the top of the form
                 $this->context->buildViolation($error->getMessage())->addViolation();
             }
         }
 
-        if (!$this->installed || $this->isUpgrading || 'cli' === PHP_SAPI) {
-            // avoid calling permission api in installer
-            // also for the user migration we explicitly want to exclude the "reserved name" check
-            return;
-        }
-
         // ensure not reserved/illegal (unless performed by Admin)
-        $illegalUserNames = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, '');
+        $illegalUserNames = $this->illegalUserNames ?? '';
         if (!empty($illegalUserNames) && !$this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_ADMIN)) {
             $pattern = ['/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D'];
             $replace = ['', '|', ''];

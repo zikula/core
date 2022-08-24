@@ -17,13 +17,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\GroupsBundle\Constant as GroupsConstant;
+use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 use Zikula\PermissionsBundle\Tests\Api\Fixtures\StubPermissionRepository;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class AbstractPermissionTestCase extends TestCase
 {
@@ -61,7 +61,7 @@ class AbstractPermissionTestCase extends TestCase
                 // getGroups returns [gid => $group, gid => $group, ...]
                 if (in_array(self::RANDOM_USER_ID, $uids, true)) {
                     $groups = new ArrayCollection([GroupsConstant::GROUP_ID_USERS => []]);
-                } elseif (in_array(Constant::USER_ID_ADMIN, $uids, true)) {
+                } elseif (in_array(UsersConstant::USER_ID_ADMIN, $uids, true)) {
                     $groups = new ArrayCollection([GroupsConstant::GROUP_ID_USERS => [], GroupsConstant::GROUP_ID_ADMIN => []]);
                 }
                 $this->user

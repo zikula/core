@@ -19,7 +19,7 @@
     </div>
 </div>
 {{ form_end(form) }}
-{% if modvars.use_password_strength_meter and form.pass|default %}
-{{ pageAddAsset('javascript', zasset('@ZikulaZAuth:js/pwstrength-bootstrap.min.js')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaZAuth:js/Zikula.ZAuth.PWStrength.Init.js')) }}
+{% if usePasswordStrengthMeter and form.pass|default %}
+    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/pwstrength-bootstrap.min.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthBundle:js/Zikula.ZAuth.PWStrength.Init.js')) }}
 {% endif %}

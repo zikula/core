@@ -53,7 +53,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
             ->setParameter('uname', $userName);
         // when updating an existing User, the existing Uid must be excluded.
         if (null !== $authenticationMappingEntity->getUid()) {
-            $qb->andWhere('m.uid <> :excludedUid')
+            $qb->andWhere('m.uid != :excludedUid')
                 ->setParameter('excludedUid', $authenticationMappingEntity->getUid());
         }
 

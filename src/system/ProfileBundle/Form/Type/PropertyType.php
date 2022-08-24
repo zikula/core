@@ -24,20 +24,14 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicFieldType;
 use Zikula\ProfileBundle\Entity\PropertyEntity;
-use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 
 class PropertyType extends AbstractType
 {
-    /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    public function __construct(LocaleApiInterface $localeApi)
+    public function __construct(private readonly LocaleApiInterface $localeApi)
     {
-        $this->localeApi = $localeApi;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -46,35 +40,35 @@ class PropertyType extends AbstractType
             ->add('id', TextType::class, [
                 'label' => 'Id',
                 'help' => 'Unique, simple string. No spaces. a-z, 0-9, _ and -',
-                'alert' => ['Once used, do not change the ID value or all profiles will lose their connection!' => 'warning']
+                'alert' => ['Once used, do not change the ID value or all profiles will lose their connection!' => 'warning'],
             ])
             ->add('labels', CollectionType::class, [
                 'label' => 'Translated labels',
-                'entry_type' => TranslationType::class
+                'entry_type' => TranslationType::class,
             ])
             ->add('fieldInfo', DynamicFieldType::class, [
-                'label' => false
+                'label' => false,
             ])
             ->add('active', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Active',
-                'label_attr' => ['class' => 'switch-custom']
+                'label_attr' => ['class' => 'switch-custom'],
             ])
             ->add('weight', IntegerType::class, [
                 'label' => 'Weight',
                 'constraints' => [new GreaterThan(0)],
-                'empty_data' => 100
+                'empty_data' => 100,
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Save',
                 'icon'  => 'fa-check',
                 'attr'  => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon'  => 'fa-times'
+                'icon'  => 'fa-times',
             ])
         ;
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -99,7 +93,7 @@ class PropertyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PropertyEntity::class
+            'data_class' => PropertyEntity::class,
         ]);
     }
 }

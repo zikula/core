@@ -16,13 +16,12 @@ namespace Zikula\ProfileBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\SettingsBundle\SettingsConstant;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Collector\MessageBundleCollector;
-use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\UsersBundle\Collector\ProfileBundleCollector;
+use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ExtensionMenu implements ExtensionMenuInterface
@@ -31,9 +30,9 @@ class ExtensionMenu implements ExtensionMenuInterface
         private readonly FactoryInterface $factory,
         private readonly PermissionApiInterface $permissionApi,
         private readonly ZikulaHttpKernelInterface $kernel,
-        private readonly VariableApiInterface $variableApi,
         private readonly CurrentUserApiInterface $currentUserApi,
-        private readonly MessageBundleCollector $messageBundleCollector
+        private readonly MessageBundleCollector $messageBundleCollector,
+        private readonly ProfileBundleCollector $profileBundleCollector
     ) {
     }
 
@@ -60,11 +59,6 @@ class ExtensionMenu implements ExtensionMenuInterface
                 'route' => 'zikulaprofilebundle_property_edit',
             ])->setAttribute('icon', 'fas fa-plus');
         }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Settings', [
-                'route' => 'zikulaprofilebundle_config_config',
-            ])->setAttribute('icon', 'fas fa-wrench');
-        }
 
         return 0 === $menu->count() ? null : $menu;
     }
@@ -72,80 +66,55 @@ class ExtensionMenu implements ExtensionMenuInterface
     private function getUser(): ?ItemInterface
     {
         $menu = $this->factory->createItem('profileUserMenu');
-        if ($this->currentUserApi->isLoggedIn()) {
-            if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_READ)) {
-                $menu->addChild('Account menu', [
-                    'route' => 'zikulausersbundle_account_menu',
-                ])->setAttribute('icon', 'fas fa-user-circle');
-            }
+        if (!$this->currentUserApi->isLoggedIn()) {
+            return 0 === $menu->count() ? null : $menu;
+        }
 
-            if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-                $menu->addChild('Profile', [
-                    'route' => 'zikulaprofilebundle_profile_display',
-                ])->setAttribute('icon', 'fas fa-user');
+        if ($this->permissionApi->hasPermission('ZikulaUsersBundle::', '::', ACCESS_READ)) {
+            $menu->addChild('Account menu', [
+                'route' => 'zikulausersbundle_account_menu',
+            ])->setAttribute('icon', 'fas fa-user-circle');
+        }
 
-                $menu['Profile']->addChild('Display profile', [
-                    'route' => 'zikulaprofilebundle_profile_display',
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
+            $menu->addChild('Profile', [
+                'route' => 'zikulaprofilebundle_profile_display',
+            ])->setAttribute('icon', 'fas fa-user');
+
+            $menu['Profile']->addChild('Display profile', [
+                'route' => 'zikulaprofilebundle_profile_display',
+            ]);
+            $menu['Profile']->addChild('Edit profile', [
+                'route' => 'zikulaprofilebundle_profile_edit',
+            ]);
+
+            $attributes = $this->currentUserApi->get('attributes');
+            $authMethod = $attributes->offsetExists(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)
+                ? $attributes->get(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)->getValue()
+                : ZAuthConstant::AUTHENTICATION_METHOD_UNAME
+            ;
+            $zauthMethods = [
+                ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
+                ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
+                ZAuthConstant::AUTHENTICATION_METHOD_EMAIL,
+            ];
+            if (in_array($authMethod, $zauthMethods, true)) {
+                $menu['Profile']->addChild('Change email address', [
+                    'route' => 'zikulazauthbundle_account_changeemail',
                 ]);
-                $menu['Profile']->addChild('Edit profile', [
-                    'route' => 'zikulaprofilebundle_profile_edit',
+                $menu['Profile']->addChild('Change password', [
+                    'route' => 'zikulazauthbundle_account_changepassword',
                 ]);
-
-                $attributes = $this->currentUserApi->get('attributes');
-                $authMethod = $attributes->offsetExists(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)
-                    ? $attributes->get(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)->getValue()
-                    : ZAuthConstant::AUTHENTICATION_METHOD_UNAME
-                ;
-                $zauthMethods = [
-                    ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
-                    ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
-                    ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
-                ];
-                if (in_array($authMethod, $zauthMethods)) {
-                    $menu['Profile']->addChild('Change email address', [
-                        'route' => 'zikulazauthbundle_account_changeemail',
-                    ]);
-                    $menu['Profile']->addChild('Change password', [
-                        'route' => 'zikulazauthbundle_account_changepassword',
-                    ]);
-                }
-            }
-
-            $messageBundle = $this->variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_BUNDLE, '');
-            if (null !== $messageBundle && '' !== $messageBundle && $this->kernel->isBundle($messageBundle)
-                && $this->permissionApi->hasPermission($messageBundle . '::', '::', ACCESS_READ)
-            ) {
-                $menu->addChild('Messages', [
-                    'uri' => $this->messageBundleCollector->getSelected()->getInboxUrl(),
-                ])->setAttribute('icon', 'fas fa-envelope');
             }
         }
 
-        $component = $this->getBundleName() . ':Members:';
-        if ($this->permissionApi->hasPermission($component, '::', ACCESS_READ)) {
-            $menu->addChild('Members', [
-                'route' => 'zikulaprofilebundle_members_listmembers',
-            ])
-                ->setAttribute('icon', 'fas fa-users')
-                ->setAttribute('dropdown', true)
-            ;
-
-            if ($this->permissionApi->hasPermission($component, '::', ACCESS_READ)) {
-                $menu['Members']->addChild('Members list', [
-                    'route' => 'zikulaprofilebundle_members_listmembers',
-                ])->setAttribute('icon', 'fas fa-user-friends');
-            }
-            if ($this->permissionApi->hasPermission($component . 'recent', '::', ACCESS_READ)) {
-                $menu['Members']->addChild('Last %s%% registered users', [
-                    'route' => 'zikulaprofilebundle_members_recent',
-                ])->setExtra('translation_params', ['%s%%' => $this->variableApi->get($this->getBundleName(), 'recentmembersitemsperpage', 10)])
-                    ->setAttribute('icon', 'fas fa-door-open');
-            }
-            if ($this->permissionApi->hasPermission($component . 'online', '::', ACCESS_READ)) {
-                $menu['Members']->addChild('Users online', [
-                    'route' => 'zikulaprofilebundle_members_online',
-                ])->setAttribute('icon', 'fas fa-user-check');
-            }
+        $messageBundle = $this->messageBundleCollector->getSelectedName();
+        if (null !== $messageBundle && '' !== $messageBundle && $this->kernel->isBundle($messageBundle)
+            && $this->permissionApi->hasPermission($messageBundle . '::', '::', ACCESS_READ)
+        ) {
+            $menu->addChild('Messages', [
+                'uri' => $this->messageBundleCollector->getSelected()->getInboxUrl(),
+            ])->setAttribute('icon', 'fas fa-envelope');
         }
 
         return 0 === $menu->count() ? null : $menu;
@@ -155,8 +124,7 @@ class ExtensionMenu implements ExtensionMenuInterface
     {
         $menu = $this->factory->createItem('profileAccountMenu');
         // do not show any account links if Profile is not the Profile manager
-        $profileBundle = $this->variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_BUNDLE, '');
-        if ($profileBundle !== $this->getBundleName()) {
+        if ($this->profileBundleCollector->getSelectedName() !== $this->getBundleName()) {
             return null;
         }
 
@@ -168,12 +136,6 @@ class ExtensionMenu implements ExtensionMenuInterface
             'route' => 'zikulaprofilebundle_profile_display',
             'routeParameters' => ['uid' => $this->currentUserApi->get('uid')]
         ])->setAttribute('icon', 'fas fa-user');
-
-        if ($this->permissionApi->hasPermission($this->getBundleName() . ':Members:', '::', ACCESS_READ)) {
-            $menu->addChild('Registered users', [
-                'route' => 'zikulaprofilebundle_members_listmembers',
-            ])->setAttribute('icon', 'fas fa-user-friends');
-        }
 
         return 0 === $menu->count() ? null : $menu;
     }

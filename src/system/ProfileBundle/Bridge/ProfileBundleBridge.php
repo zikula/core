@@ -17,11 +17,9 @@ use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use function Symfony\Component\String\s;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\ProfileConstant;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
@@ -31,12 +29,14 @@ class ProfileBundleBridge implements ProfileBundleInterface
     public function __construct(
         private readonly RouterInterface $router,
         private readonly RequestStack $requestStack,
-        private readonly VariableApiInterface $variableApi,
         private readonly CurrentUserApiInterface $currentUser,
         private readonly UserRepositoryInterface $userRepository,
         private readonly GravatarHelper $gravatarHelper,
         private readonly string $projectDir,
-        private readonly string $prefix
+        private readonly string $prefix,
+        private readonly string $avatarImagePath,
+        private readonly string $avatarDefaultImage,
+        private readonly bool $gravatarEnabled
     ) {
     }
 
@@ -72,23 +72,20 @@ class ProfileBundleBridge implements ProfileBundleInterface
             throw new InvalidArgumentException('Invalid UID provided');
         }
 
-        $gravatarImage = $this->variableApi->get(UsersConstant::MODNAME, ProfileConstant::MODVAR_GRAVATAR_IMAGE, ProfileConstant::DEFAULT_GRAVATAR_IMAGE);
-        $avatarPath = $this->variableApi->get(UsersConstant::MODNAME, ProfileConstant::MODVAR_AVATAR_IMAGE_PATH, ProfileConstant::DEFAULT_AVATAR_IMAGE_PATH);
-        $allowGravatars = (bool) $this->variableApi->get(UsersConstant::MODNAME, ProfileConstant::MODVAR_GRAVATARS_ENABLED, ProfileConstant::DEFAULT_GRAVATARS_ENABLED);
-
+        $avatarPath = $this->avatarImagePath;
         $userAttributes = $userEntity->getAttributes();
         $key = $this->prefix . ':avatar';
-        $avatar = $userAttributes[$key] ? $userAttributes[$key]->getValue() : $gravatarImage;
+        $avatar = $userAttributes[$key] ? $userAttributes[$key]->getValue() : $this->avatarDefaultImage;
 
         $avatarUrl = '';
         if (!in_array($avatar, ['blank.gif', 'blank.jpg'], true)) {
-            if (isset($avatar) && !empty($avatar) && $avatar !== $gravatarImage && file_exists($this->projectDir . '/' . $avatarPath . '/' . $avatar)) {
+            if (isset($avatar) && !empty($avatar) && $avatar !== $this->avatarDefaultImage && file_exists($this->projectDir . '/' . $avatarPath . '/' . $avatar)) {
                 $request = $this->requestStack->getCurrentRequest();
                 if (null !== $request) {
                     $avatarPath = s($avatarPath)->after('public/')->toString();
                     $avatarUrl = $request->getSchemeAndHttpHost() . $request->getBasePath() . '/' . $avatarPath . '/' . $avatar;
                 }
-            } elseif (true === $allowGravatars) {
+            } elseif (true === $this->gravatarEnabled) {
                 $parameters = $this->squareSize($parameters);
                 $avatarUrl = $this->gravatarHelper->getGravatarUrl($userEntity->getEmail(), $parameters);
             }

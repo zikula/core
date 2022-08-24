@@ -1,2 +1,0 @@
-zikula_security_center:
-    resource: "@ZikulaSecurityCenterBundle/Resources/config/routing.yaml"

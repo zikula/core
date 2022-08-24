@@ -15,12 +15,11 @@ namespace Zikula\PermissionsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\PermissionsBundle\Repository\PermissionRepository;
 
 #[ORM\Entity(repositoryClass: PermissionRepository::class)]
 #[ORM\Table(name: 'group_perms')]
-class PermissionEntity extends EntityAccess
+class PermissionEntity
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -28,28 +27,28 @@ class PermissionEntity extends EntityAccess
     private int $pid;
 
     #[ORM\Column]
-    private int $gid;
+    private int $gid = 0;
 
     #[ORM\Column]
-    private int $sequence;
+    private int $sequence = 0;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 1, max: 255)]
-    private string $component;
+    private string $component = '';
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 1, max: 255)]
-    private string $instance;
+    private string $instance = '';
 
     #[ORM\Column]
-    private int $level;
+    private int $level = 0;
 
     #[ORM\Column(length: 255)]
     #[Assert\AtLeastOneOf([
         new Assert\Blank(),
         new Assert\Length(min: 1, max: 255)
     ])]
-    private string $comment;
+    private string $comment = '';
 
     /**
      * optional colour (Bootstrap contextual class)
@@ -59,18 +58,7 @@ class PermissionEntity extends EntityAccess
         new Assert\Blank(),
         new Assert\Length(min: 1, max: 10)
     ])]
-    private string $colour;
-
-    public function __construct()
-    {
-        $this->gid = 0;
-        $this->sequence = 0;
-        $this->component = '';
-        $this->instance = '';
-        $this->level = 0;
-        $this->comment = '';
-        $this->colour = '';
-    }
+    private string $colour = '';
 
     public function getPid(): ?int
     {

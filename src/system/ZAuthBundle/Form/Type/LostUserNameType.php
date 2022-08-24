@@ -31,8 +31,8 @@ class LostUserNameType extends AbstractType
                 'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
         ;
     }

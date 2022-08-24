@@ -4,7 +4,7 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $extension: '@Zikula\ZAuthBundle\ZikulaZAuthBundle'
+            $mailLoggingEnabled: '%enable_mail_logging%'
 
     Zikula\ZAuthBundle\:
         resource: '../../*'

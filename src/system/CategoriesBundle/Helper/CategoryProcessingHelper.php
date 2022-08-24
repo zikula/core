@@ -21,9 +21,6 @@ use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
 use Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsBundle\Api\CapabilityApi;
 
-/**
- * Category processing helper functions for the categories module.
- */
 class CategoryProcessingHelper
 {
     public function __construct(

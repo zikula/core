@@ -25,33 +25,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class MailHelper
 {
-    private string $registrationNotifyEmail;
-
-    private string $adminEmail;
-
-    private bool $mailLoggingEnabled;
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly Environment $twig,
-        VariableApiInterface $variableApi,
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
         private readonly PermissionApiInterface $permissionApi,
         private readonly AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
-        private readonly SiteDefinitionInterface $site
+        private readonly SiteDefinitionInterface $site,
+        private readonly ?string $registrationNotificationEmail,
+        private readonly bool $mailLoggingEnabled
     ) {
-        $this->registrationNotifyEmail = $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
-        $this->adminEmail = $variableApi->getSystemVar('adminmail');
-        $this->mailLoggingEnabled = (bool) $variableApi->getSystemVar('enableMailLogging', false);
     }
 
     /**
@@ -89,12 +80,12 @@ class MailHelper
             }
         }
         if ($adminNotification) {
-            // mail notify email to inform admin about registration
-            if (!empty($this->registrationNotifyEmail)) {
+            // send notification email to inform admin about registration
+            if (!empty($this->registrationNotificationEmail)) {
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
                 $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
 
-                $mailSent = $this->sendNotification($this->registrationNotifyEmail, 'regadminnotify', $rendererArgs);
+                $mailSent = $this->sendNotification($this->registrationNotificationEmail, 'regadminnotify', $rendererArgs);
                 if (!$mailSent) {
                     $mailErrors[] = $this->translator->trans('Warning! The notification email for the new registration could not be sent.', [], 'mail');
                 }
@@ -141,13 +132,13 @@ class MailHelper
             }
         }
         if ($adminNotification) {
-            // mail notify email to inform admin about registration
-            if (!empty($this->registrationNotifyEmail)) {
+            // send notification email to inform admin about registration
+            if (!empty($this->registrationNotificationEmail)) {
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
                 $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
 
                 $subject = $this->translator->trans('New registration: %userName%', ['%userName%' => $userEntity->getUname()]);
-                $mailSent = $this->sendNotification($this->registrationNotifyEmail, 'regadminnotify', $rendererArgs, $subject);
+                $mailSent = $this->sendNotification($this->registrationNotificationEmail, 'regadminnotify', $rendererArgs, $subject);
                 if (!$mailSent) {
                     $mailErrors[] = $this->translator->trans('Warning! The notification email for the newly created user could not be sent.', [], 'mail');
                 }
@@ -252,10 +243,8 @@ class MailHelper
             $subject = $this->generateEmailSubject($notificationType, $templateArgs);
         }
 
-        $siteName = $this->site->getName();
-
         $email = (new Email())
-            ->from(new Address($this->adminEmail, $siteName))
+            ->from(new Address($this->site->getAdminMail(), $this->site->getName()))
             ->to($toAddress)
             ->subject($subject)
             ->text($textBody)

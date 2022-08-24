@@ -53,36 +53,18 @@ menu:
                 install:
                     text: Installation
                     relativeUrl: Setup/installation.html
-                upgrade:
-                    text: Upgrade 2 to 3
-                    relativeUrl: Setup/upgrade.html
-                upgrade3to3:
-                    text: Upgrade 3 to 3
-                    relativeUrl: Setup/upgradefrom3to3.x.x.html
                 production:
                     text: Deployment
                     relativeUrl: Setup/production.html
         configuration:
             name: Configuration
             items:
-                bundle-config:
-                    text: Bundle config
-                    relativeUrl: Configuration/BundleConfig/index.html
                 main-settings:
                     text: Main settings
                     relativeUrl: Configuration/Settings/index.html
                 localisation:
                     text: Localisation
                     relativeUrl: Configuration/Localisation/index.html
-                mailer:
-                    text: Mailer
-                    relativeUrl: Configuration/Mailer/index.html
-                admin-panel:
-                    text: Admin panel
-                    relativeUrl: Configuration/AdminPanel/index.html
-                security-center:
-                    text: Security center
-                    relativeUrl: Configuration/Security/index.html
                 workflows:
                     text: Workflows
                     relativeUrl: Configuration/Workflows/index.html
@@ -92,6 +74,9 @@ menu:
                 content-pages:
                     text: Static pages
                     relativeUrl: Content/pages.html
+                categories:
+                    text: Categories
+                    relativeUrl: Content/Categories/index.html
         access-control:
             name: Access Control
             items:
@@ -128,15 +113,6 @@ menu:
                 translation:
                     text: Overview
                     relativeUrl: Translation/index.html
-        integration:
-            name: Integration
-            items:
-                categories:
-                    text: Categories
-                    relativeUrl: Integration/Categories/index.html
-                search:
-                    text: Search
-                    relativeUrl: Integration/Search/index.html
         development:
             name: Extension Development
             items:

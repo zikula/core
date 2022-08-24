@@ -34,7 +34,7 @@ class AdminCategoryHelper
             [
                 'name' => $this->translator->trans('System'),
                 'slug' => 'system',
-                'description' => $this->translator->trans('Core modules at the heart of operation of the site.'),
+                'description' => $this->translator->trans('Core bundles at the heart of operation of the site.'),
                 'icon' => 'fas fa-cogs',
                 'sortOrder' => 0,
                 'default' => false,
@@ -50,7 +50,7 @@ class AdminCategoryHelper
             [
                 'name' => $this->translator->trans('Users'),
                 'slug' => 'users',
-                'description' => $this->translator->trans('Modules for controlling user membership, access rights and profiles.'),
+                'description' => $this->translator->trans('Bundles for controlling user membership, access rights and profiles.'),
                 'icon' => 'fas fa-users-cog',
                 'sortOrder' => 2,
                 'default' => false,
@@ -58,7 +58,7 @@ class AdminCategoryHelper
             [
                 'name' => $this->translator->trans('Content'),
                 'slug' => 'content',
-                'description' => $this->translator->trans('Modules for providing content to your users.'),
+                'description' => $this->translator->trans('Bundles for providing content to your users.'),
                 'icon' => 'fas fa-file-contract',
                 'sortOrder' => 3,
                 'default' => true,
@@ -66,19 +66,11 @@ class AdminCategoryHelper
             [
                 'name' => $this->translator->trans('Uncategorized'),
                 'slug' => 'uncategorized',
-                'description' => $this->translator->trans('Newly-installed or uncategorized modules.'),
+                'description' => $this->translator->trans('Newly-installed or uncategorized bundles.'),
                 'icon' => 'fas fa-cubes',
                 'sortOrder' => 4,
                 'default' => false,
             ],
-            [
-                'name' => $this->translator->trans('Security'),
-                'slug' => 'security',
-                'description' => $this->translator->trans('Modules for managing the site\'s security.'),
-                'icon' => 'fas fa-shield-alt',
-                'sortOrder' => 5,
-                'default' => false,
-            ]
         ];
 
         $result = [];
@@ -117,12 +109,11 @@ class AdminCategoryHelper
     public function getBundleAssignments(AdminCategoryEntity $category): array
     {
         return match ($category->getSlug()) {
-            'system' => ['ZikulaSettingsBundle'],
-            'layout' => ['ZikulaAdminBundle', 'ZikulaDefaultThemeBundle', 'ZikulaMenuBundle', 'ZikulaThemeBundle'],
+            'system' => ['ZikulaAdminBundle'],
+            'layout' => ['ZikulaDefaultThemeBundle', 'ZikulaMenuBundle', 'ZikulaThemeBundle'],
             'users' => ['ZikulaGroupsBundle', 'ZikulaLegalBundle', 'ZikulaPermissionsBundle', 'ZikulaProfileBundle', 'ZikulaUsersBundle', 'ZikulaZAuthBundle'],
             'content' => ['ZikulaStaticContentBundle'],
             'uncategorized' => [],
-            'security' => ['ZikulaSecurityCenterBundle'],
         };
     }
 }

@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Zikula\CategoriesBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesBundle\Form\Type\CategoryRegistryType;
@@ -36,11 +35,8 @@ class RegistryController extends AbstractController
 {
     /**
      * @Theme("admin")
-     * @Template("@ZikulaCategories/Registry/edit.html.twig")
      *
      * Creates or edits a category registry.
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/edit/{id}', name: 'zikulacategoriesbundle_registry_edit', requirements: ['id' => "^[1-9]\d*$"], defaults: ['id' => null])]
     public function edit(
@@ -49,7 +45,7 @@ class RegistryController extends AbstractController
         CapabilityApiInterface $capabilityApi,
         CategoryRegistryRepositoryInterface $registryRepository,
         CategoryRegistryEntity $registryEntity = null
-    ) {
+    ): Response {
         if (null === $registryEntity) {
             $registryEntity = new CategoryRegistryEntity();
         }
@@ -70,10 +66,10 @@ class RegistryController extends AbstractController
             return $this->redirectToRoute('zikulacategoriesbundle_registry_edit');
         }
 
-        return [
+        return $this->render('@ZikulaCategories/Registry/edit.html.twig', [
             'form' => $form->createView(),
-            'registries' => $registryRepository->findAll()
-        ];
+            'registries' => $registryRepository->findAll(),
+        ]);
     }
 
     private function getCategorizableModules(CapabilityApiInterface $capabilityApi): array
@@ -90,18 +86,15 @@ class RegistryController extends AbstractController
 
     /**
      * @Theme("admin")
-     * @Template("@ZikulaCategories/Registry/delete.html.twig")
      *
      * Deletes a category registry.
-     *
-     * @return array|RedirectResponse
      */
     #[Route('/delete/{id}', name: 'zikulacategoriesbundle_registry_delete', requirements: ['id' => "^[1-9]\d*$"])]
     public function delete(
         Request $request,
         EntityManagerInterface $entityManager,
         CategoryRegistryEntity $registry
-    ) {
+    ): Response {
         $form = $this->createForm(DeletionType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -116,9 +109,9 @@ class RegistryController extends AbstractController
             return $this->redirectToRoute('zikulacategoriesbundle_registry_edit');
         }
 
-        return [
+        return $this->render('@ZikulaCategories/Registry/delete.html.twig', [
             'form' => $form->createView(),
-            'registry' => $registry
-        ];
+            'registry' => $registry,
+        ]);
     }
 }

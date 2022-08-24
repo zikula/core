@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace Zikula\CategoriesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * Base class of many-to-many association between any entity and Category.
  */
 #[ORM\MappedSuperclass]
-abstract class AbstractCategoryAssignment extends EntityAccess
+abstract class AbstractCategoryAssignment
 {
     #[ORM\Id]
     #[ORM\Column]

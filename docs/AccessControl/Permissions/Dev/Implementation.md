@@ -37,25 +37,21 @@ Typically required permissions are checked for using the [PermissionApi](Permiss
 
 ### In controllers
 
-The `Zikula\Bundle\CoreBundle\Controller\AbstractController\AbstractController` class provides a shortcut method:
-
-- `hasPermission(string $component = null, string $instance = null, int $level = null, int $user = null): bool`
-
 The following code shows a possible example how to use this in a controller method:
 
 ```php
 namespace Acme\PersonBundle\Controller;
 
 use Acme\PersonBundle\Entity\PersonEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 class PersonController extends AbstractController
 {
     /**
-     * @Route("/admin/edit/{personid}", requirements={"personid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("@AcmePerson/Person/edit.html.twig")
      *
@@ -64,11 +60,13 @@ class PersonController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't permissions to edit the person
      */
-    public function editAction(
+    #[Route('/admin/edit/{personid}', name: 'acmepersonbundle_person_edit', requirements: ['personid' => "^[1-9]\d*$"])]
+    public function edit(
         Request $request,
-        PersonEntity $person
+        PersonEntity $person,
+        PermissionApiInterface $permissionApi
     ) {
-        if (!$this->hasPermission('AcmePersonBundle::', $person->getId() . '::', ACCESS_EDIT)) {
+        if (!$permissionApi->hasPermission('AcmePersonBundle::', $person->getId() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -113,19 +111,19 @@ The controller example from above would look like this then:
 namespace Acme\PersonBundle\Controller;
 
 use Acme\PersonBundle\Entity\PersonEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 class PersonController extends AbstractController
 {
     /**
-     * @Route("/admin/edit/{personid}", requirements={"personid" = "^[1-9]\d*$"})
      * @PermissionCheck({"AcmePersonBundle::", "$personid::", "edit"})
      * @Theme("admin")
      * @Template("@AcmePersonBundle/Person/edit.html.twig")
      */
-    public function editAction(Request $request, PersonEntity $person)
+    #[Route('/admin/edit/{personid}', name: 'acmepersonbundle_person_edit', requirements: ['personid' => "^[1-9]\d*$"])]
+    public function edit(Request $request, PersonEntity $person)
     {
         // ...
     }
@@ -142,8 +140,8 @@ Example for a class-level use case:
 namespace Acme\PersonBundle\Controller;
 
 use Acme\PersonBundle\Entity\PersonEntity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 /**
@@ -151,12 +149,12 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
  */
 class ConfigController extends AbstractController
 {
-    public function someAction(Request $request)
+    public function doSomething(Request $request)
     {
         // ...
     }
 
-    public function otherAction(Request $request)
+    public function somethingElse(Request $request)
     {
         // ...
     }
@@ -183,7 +181,7 @@ Example:
 
 By default permission checks are always executed for the current user. Internally the [PermissionApi](PermissionApi.md) uses the [CurrentUserApi](../../Users/Dev/CurrentUserApi.md) for that.
 
-In order to explicitly perform a permission check for a specific user, it is possible to assign the corresponding user ID as the fourth parameter for the `hasPermission()` method of both `AbstractController` and `PermissionApi`.
+In order to explicitly perform a permission check for a specific user, it is possible to assign the corresponding user ID as the fourth parameter for the `hasPermission()` method of `PermissionApi`.
 
 Note the annotation-based checks are always done for the current user.
 

@@ -17,32 +17,45 @@ use DateTime;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
-use Zikula\GroupsBundle\Constant;
 use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\GroupsConstant;
+use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersBundle\Event\ActiveUserPreCreatedEvent;
 use Zikula\UsersBundle\Event\RegistrationPostApprovedEvent;
 use Zikula\UsersBundle\Event\RegistrationPostCreatedEvent;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use Zikula\UsersBundle\UsersConstant;
 
 class RegistrationHelper
 {
     use TranslatorTrait;
 
     public function __construct(
-        private readonly VariableApiInterface $variableApi,
         private readonly CurrentUserApiInterface $currentUserApi,
         private readonly UserRepositoryInterface $userRepository,
         private readonly GroupRepositoryInterface $groupRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator
+        private readonly DefaultHelper $defaultHelper,
+        TranslatorInterface $translator,
+        private readonly bool $registrationEnabled,
+        private readonly bool $registrationRequiresApproval,
+        private readonly ?string $registrationNotificationEmail
     ) {
         $this->setTranslator($translator);
+    }
+
+    public function isRegistrationEnabled(): bool
+    {
+        return $this->registrationEnabled;
+    }
+
+    public function getNotificationEmail(): ?string
+    {
+        return $this->registrationNotificationEmail;
     }
 
     /**
@@ -50,7 +63,7 @@ class RegistrationHelper
      */
     public function registerNewUser(UserEntity $userEntity): void
     {
-        $adminApprovalRequired = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
+        $adminApprovalRequired = $this->registrationRequiresApproval;
         if (null === $userEntity->getUid()) {
             $userEntity->setRegistrationDate(new DateTime());
         }
@@ -71,7 +84,7 @@ class RegistrationHelper
             $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
 
             // Add user to default group
-            $defaultGroupId = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup', Constant::GROUP_ID_USERS);
+            $defaultGroupId = $this->defaultHelper->getDefaultGroupId();
             if (!$userEntity->getGroups()->containsKey($defaultGroupId)) {
                 /** @var GroupEntity $defaultGroupEntity */
                 $defaultGroupEntity = $this->groupRepository->find($defaultGroupId);

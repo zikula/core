@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsBundle\AbstractTheme;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme as ThemeAnnotation;
 
 /**
@@ -69,7 +68,8 @@ class Engine
         private readonly Reader $annotationReader,
         private readonly ZikulaHttpKernelInterface $kernel,
         private readonly AssetFilter $filterService,
-        private readonly VariableApiInterface $variableApi,
+        private readonly string $defaultTheme,
+        private readonly ?string $adminTheme,
         string $installed
     ) {
         $this->installed = '0.0.0' !== $installed;
@@ -140,7 +140,7 @@ class Engine
             $this->annotationValue = $themeAnnotation->value;
             switch ($themeAnnotation->value) {
                 case 'admin':
-                    $newThemeName = $this->variableApi->get('ZikulaAdminModule', 'admintheme', '');
+                    $newThemeName = $this->adminTheme;
                     break;
                 default:
                     $newThemeName = $themeAnnotation->value;
@@ -171,7 +171,7 @@ class Engine
     }
 
     /**
-     * Find the realm in the theme.yaml that matches the given path, route or module.
+     * Find the realm in the theme.yaml that matches the given path, route or bundle.
      * Four 'alias' realms may be defined and do not require a pattern:
      *  1) 'master' (required) this is the default realm. any non-matching value will utilize the master realm
      *  2) 'home' (optional) will be used when the route matches `home` (or previewing a theme)
@@ -180,7 +180,7 @@ class Engine
      * Uses regex to find the FIRST match to a pattern to one of three possible request attribute values.
      *  1) path   e.g. /pages/display/welcome-to-pages-content-manager
      *  2) route  e.g. zikulapagesbundle_user_display
-     *  3) module e.g. zikulapagesmodule (case insensitive)
+     *  3) bundle e.g. zikulapagesbundle (case insensitive)
      */
     private function setMatchingRealm(): void
     {
@@ -196,8 +196,7 @@ class Engine
         $request = $this->requestStack->getMainRequest();
         if (null !== $request) {
             $requestAttributes = $request->attributes->all();
-            if (isset($requestAttributes['_route'])
-                && (in_array($requestAttributes['_route'], ['home', 'zikulaextensionsbundle_extension_preview'], true))) {
+            if (isset($requestAttributes['_route']) && 'home' === $requestAttributes['_route']) {
                 $this->realm = 'home';
 
                 return;
@@ -245,7 +244,7 @@ class Engine
      */
     public function setActiveTheme(string $newThemeName = null, $annotation = ''): void
     {
-        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme', 'ZikulaDefaultThemeBundle');
+        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->defaultTheme;
 
         if (!empty($annotation)) {
             $this->annotationValue = $annotation;

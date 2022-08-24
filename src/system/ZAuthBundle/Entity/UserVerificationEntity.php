@@ -18,7 +18,6 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepository;
 
 /**
@@ -29,7 +28,7 @@ use Zikula\ZAuthBundle\Repository\UserVerificationRepository;
  */
 #[ORM\Entity(repositoryClass: UserVerificationRepository::class)]
 #[ORM\Table(name: 'users_verifychg')]
-class UserVerificationEntity extends EntityAccess
+class UserVerificationEntity
 {
     /**
      * ID: Primary ID of the verification record. Not related to the uid.

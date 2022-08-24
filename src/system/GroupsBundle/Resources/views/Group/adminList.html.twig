@@ -55,9 +55,9 @@
             </td>
             <td headers="hName" id="groupname_{{ group.gid }}">
                 {{ group.name }}
-                {% if group.gid == defaultGroup %}
+                {% if group.gid == defaultGroupId %}
                 *
-                {% elseif group.gid == constant('Zikula\\GroupsBundle\\Constant::GROUP_ID_ADMIN') %}
+                {% elseif group.gid == constant('Zikula\\GroupsBundle\\GroupsConstant::GROUP_ID_ADMIN') %}
                 **
                 {% endif %}
             </td>

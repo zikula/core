@@ -17,30 +17,24 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Event\UserPreLoginSuccessEvent;
 
 class SiteOffVetoLoginListener implements EventSubscriberInterface
 {
-    private bool $siteOff;
-
     public function __construct(
-        VariableApiInterface $variableApi,
         private readonly PermissionApiInterface $permissionApi,
         private readonly TranslatorInterface $translator,
         private readonly RouterInterface $router,
-        private readonly RequestStack $requestStack
+        private readonly RequestStack $requestStack,
+        private readonly bool $maintenanceModeEnabled
     ) {
-        $this->siteOff = $variableApi->getSystemVar('siteoff') ? true : false;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            UserPreLoginSuccessEvent::class => [
-                ['vetoNonAdminsOnSiteOff']
-            ]
+            UserPreLoginSuccessEvent::class => ['vetoNonAdminsOnSiteOff'],
         ];
     }
 
@@ -49,9 +43,10 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
      */
     public function vetoNonAdminsOnSiteOff(UserPreLoginSuccessEvent $event): void
     {
-        if (!$this->siteOff) {
+        if (!$this->maintenanceModeEnabled) {
             return;
         }
+
         $user = $event->getUser();
         if (!$this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, $user->getUid())) {
             $event->stopPropagation();

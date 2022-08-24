@@ -1,11 +1,17 @@
 translation:
-    locales: ["en"]
+    locales: [en]
     edit_in_place:
         enabled: false
-        config_name: app
+        config_name: zikula
     configs:
         app:
             dirs: ["%kernel.project_dir%/templates", "%kernel.project_dir%/src"]
             output_dir: "%kernel.project_dir%/translations"
             excluded_names: ["*TestCase.php", "*Test.php"]
             excluded_dirs: [cache, data, logs]
+        zikula:
+            dirs: ["%kernel.project_dir%/templates", "%kernel.project_dir%/src/system", "%kernel.project_dir%/src/Zikula"]
+            output_dir: "%kernel.project_dir%/translations"
+            excluded_names: ["*TestCase.php", "*Test.php"]
+            excluded_dirs: [cache, data, logs, vendor]
+            output_format: yml

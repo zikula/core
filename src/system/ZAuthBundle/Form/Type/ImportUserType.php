@@ -28,7 +28,7 @@ class ImportUserType extends AbstractType
             ->add('file', FileType::class, [
                 'label' => 'CSV file (Max. %maxSize%)',
                 'label_translation_parameters' => [
-                    '%maxSize%' => ini_get('post_max_size')
+                    '%maxSize%' => ini_get('post_max_size'),
                 ],
                 'help' => 'The file must be utf8 encoded',
                 'constraints' => [
@@ -43,8 +43,8 @@ class ImportUserType extends AbstractType
                             'application/vnd.msexcel',
                             'text/anytext',
                             'application/octet-stream',
-                            'application/txt'
-                        ]
+                            'application/txt',
+                        ],
                     ])
                 ]
             ])
@@ -53,19 +53,19 @@ class ImportUserType extends AbstractType
                 'choices' => [
                     ',' => ',',
                     ';' => ';',
-                    ':' => ':'
-                ]
+                    ':' => ':',
+                ],
             ])
             ->add('upload', SubmitType::class, [
                 'label' => 'Upload',
                 'icon' => 'fa-upload',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }

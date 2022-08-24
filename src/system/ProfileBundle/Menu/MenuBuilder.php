@@ -16,32 +16,16 @@ namespace Zikula\ProfileBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\Constant as UsersConstant;
+use Zikula\UsersBundle\UsersConstant;
 
 class MenuBuilder
 {
-    use TranslatorTrait;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
     public function __construct(
-        TranslatorInterface $translator,
-        FactoryInterface $factory,
-        PermissionApiInterface $permissionApi
+        private readonly TranslatorInterface $translator,
+        private readonly FactoryInterface $factory,
+        private readonly PermissionApiInterface $permissionApi
     ) {
-        $this->setTranslator($translator);
-        $this->factory = $factory;
-        $this->permissionApi = $permissionApi;
     }
 
     public function createAdminMenu(array $options): ItemInterface
@@ -49,14 +33,14 @@ class MenuBuilder
         $user = $options['user'];
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_EDIT)) {
-            $menu->addChild($this->trans('Edit "%name"', ['%name' => $user->getUname()]), [
+        if ($this->permissionApi->hasPermission('ZikulaUsersBundle::', '::', ACCESS_EDIT)) {
+            $menu->addChild($this->translator->trans('Edit "%name"', ['%name' => $user->getUname()]), [
                 'route' => 'zikulausersbundle_useradministration_modify',
                 'routeParameters' => ['user' => $user->getUid()],
             ])->setAttribute('icon', 'fas fa-pencil-alt');
         }
-        if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_DELETE)) {
-            $menu->addChild($this->trans('Delete "%name"', ['%name' => $user->getUname()]), [
+        if ($this->permissionApi->hasPermission('ZikulaUsersBundle::', '::', ACCESS_DELETE)) {
+            $menu->addChild($this->translator->trans('Delete "%name"', ['%name' => $user->getUname()]), [
                 'route' => 'zikulausersbundle_useradministration_delete',
                 'routeParameters' => ['user' => $user->getUid()],
             ])->setAttribute('icon', 'fas fa-trash-alt');

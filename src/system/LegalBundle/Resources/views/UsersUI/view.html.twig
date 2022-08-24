@@ -1,10 +1,7 @@
 <fieldset>
     <legend>{% trans %}Site policies{% endtrans %}</legend>
     {% if activePolicies.termsOfUse and viewablePolicies.termsOfUse %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_TERMS_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_termsofuse') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('termsOfUse') %}
         {% set policyName = 'Terms of use'|trans %}
         {% set policyLink = '<a class="legal_popup" href="' ~ policyUrl ~ '" target="_blank">' ~ policyName ~ '</a>' %}
         <div class="form-group row">
@@ -15,10 +12,7 @@
         </div>
     {% endif %}
     {% if activePolicies.privacyPolicy and viewablePolicies.privacyPolicy %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_PRIVACY_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_privacypolicy') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('privacyPolicy') %}
         {% set policyName = 'Privacy policy'|trans %}
         {% set policyLink = '<a class="legal_popup" href="' ~ policyUrl ~ '" target="_blank">' ~ policyName ~ '</a>' %}
         <div class="form-group">
@@ -32,15 +26,12 @@
         <div class="form-group">
             <label class="col-md-3 col-form-label">{% trans %}Minimum age{% endtrans %}</label>
             <div class="col-md-9">
-                <span class="form-control-plaintext">{% if acceptedPolicies.agePolicy %}{% trans with { '%s%': getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_MINIMUM_AGE'), 13) } %}Confirmed minimum age requirement (%s% years of age) met.{% endtrans %}{% else %}{% trans %}Minimum age requirement not confirmed.{% endtrans %}{% endif %}</span>
+                <span class="form-control-plaintext">{% if acceptedPolicies.agePolicy %}{% trans with { '%s%': zikulalegalbundle_minimumAge() } %}Confirmed minimum age requirement (%s% years of age) met.{% endtrans %}{% else %}{% trans %}Minimum age requirement not confirmed.{% endtrans %}{% endif %}</span>
             </div>
         </div>
     {% endif %}
     {% if activePolicies.tradeConditions and viewablePolicies.tradeConditions %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_TRADECONDITIONS_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_tradeconditions') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('tradeConditions') %}
         {% set policyName = 'General terms and conditions of trade'|trans %}
         {% set policyLink = '<a class="legal_popup" href="' ~ policyUrl ~ '" target="_blank">' ~ policyName ~ '</a>' %}
         <div class="form-group">
@@ -51,10 +42,7 @@
         </div>
     {% endif %}
     {% if activePolicies.cancellationRightPolicy and viewablePolicies.cancellationRightPolicy %}
-        {% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_CANCELLATIONRIGHTPOLICY_URL')) %}
-        {% if policyUrl == '' %}
-            {% set policyUrl = path('zikulalegalbundle_user_cancellationrightpolicy') %}
-        {% endif %}
+        {% set policyUrl = zikulalegalbundle_getUrl('cancellationRightPolicy') %}
         {% set policyName = 'Cancellation right policy'|trans %}
         {% set policyLink = '<a class="legal_popup" href="' ~ policyUrl ~ '" target="_blank">' ~ policyName ~ '</a>' %}
         <div class="form-group">

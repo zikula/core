@@ -3,7 +3,7 @@ currentMenu: install
 ---
 # Production
 
-In an ideal situation, you would test your installation of Zikula in a local (developmet) environment before
+In an ideal situation, you would test your installation of Zikula in a local (development) environment before
 moving the entire site into "production". This process is called _deployment_. 
 
 Symfony provides documentation for this process [here](https://symfony.com/doc/current/deployment.html). 

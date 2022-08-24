@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Controller;
 
 use DateTime;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
@@ -34,9 +34,6 @@ class FileIOController extends AbstractController
 {
     /**
      * @Theme("admin")
-     * @Template("@ZikulaUsersBundle/FileIO/export.html.twig")
-     *
-     * @return array|StreamedResponse
      */
     #[Route('/export', name: 'zikulausersbundle_fileio_export')]
     public function export(Request $request, UserRepositoryInterface $userRepository)
@@ -92,8 +89,8 @@ class FileIOController extends AbstractController
             }
         }
 
-        return [
+        return $this->render('@ZikulaUsersBundle/FileIO/export.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 }

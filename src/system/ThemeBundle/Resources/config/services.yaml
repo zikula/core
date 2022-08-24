@@ -4,7 +4,6 @@ services:
         autoconfigure: true
         public: false
         bind:
-            $extension: '@Zikula\ThemeBundle\ZikulaThemeBundle'
             $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\ThemeBundle\:
@@ -125,7 +124,6 @@ services:
     Zikula\ThemeBundle\EventListener\AddJSConfigListener:
         arguments:
           $footers: '@zikula_core.common.theme.assets_footer'
-          $defaultSessionName: '%zikula.session.name%'
 
     Zikula\ThemeBundle\EventListener\AddWebPackAssetsListener:
         arguments:

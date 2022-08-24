@@ -40,7 +40,7 @@ class CategoriesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $registries = $this->categoryRegistryRepository->findBy([
-            'modname' => $options['module'],
+            'modname' => $options['bundle'],
             'entityname' => $options['entity']
         ]);
 
@@ -96,14 +96,14 @@ class CategoriesType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['entityCategoryClass', 'module', 'entity']);
+        $resolver->setRequired(['entityCategoryClass', 'bundle', 'entity']);
         $resolver->setDefined(['attr', 'multiple', 'expanded', 'direct', 'required', 'em']);
         $resolver->setDefaults([
             'attr' => [],
             'multiple' => false,
             'expanded' => false,
             'direct' => true,
-            'module' => '',
+            'bundle' => '',
             'entity' => '',
             'entityCategoryClass' => '',
             'em' => null,
@@ -115,7 +115,7 @@ class CategoriesType extends AbstractType
         $resolver->setAllowedTypes('expanded', 'bool');
         $resolver->setAllowedTypes('required', 'bool');
         $resolver->setAllowedTypes('direct', 'bool');
-        $resolver->setAllowedTypes('module', 'string');
+        $resolver->setAllowedTypes('bundle', 'string');
         $resolver->setAllowedTypes('entity', 'string');
         $resolver->setAllowedTypes('entityCategoryClass', 'string');
         $resolver->setAllowedTypes('em', [ObjectManager::class, 'null']);

@@ -22,21 +22,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 
 class MailHelper
 {
-    private bool $mailLoggingEnabled;
-
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly Environment $twig,
-        private readonly VariableApiInterface $variableApi,
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
-        private readonly SiteDefinitionInterface $site
+        private readonly SiteDefinitionInterface $site,
+        private readonly bool $mailLoggingEnabled
     ) {
-        $this->mailLoggingEnabled = (bool) $variableApi->getSystemVar('enableMailLogging', false);
     }
 
     /**
@@ -72,7 +68,7 @@ class MailHelper
         $siteName = $this->site->getName();
 
         $email = (new Email())
-            ->from(new Address($this->variableApi->getSystemVar('adminmail'), $siteName))
+            ->from(new Address($this->site->getAdminMail(), $siteName))
             ->to($toAddress)
             ->subject($subject)
             ->text($textBody)

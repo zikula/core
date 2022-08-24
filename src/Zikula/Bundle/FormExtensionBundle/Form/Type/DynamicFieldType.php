@@ -79,7 +79,7 @@ class DynamicFieldType extends AbstractType
         $builder->add('formType', ChoiceType::class, [
             'label' => 'Field type',
             'choices' => /** @Ignore */ $this->getChoices(),
-            'placeholder' => 'Select'
+            'placeholder' => 'Select',
         ]);
 
         $formModifier = function (FormInterface $form, $formType = null) use ($builder) {
@@ -105,7 +105,7 @@ class DynamicFieldType extends AbstractType
             }
             $formOptions = $builder->create('formOptions', $optionsType, [
                 'label' => 'Field options',
-                'auto_initialize' => false
+                'auto_initialize' => false,
             ]);
             if (ChoiceFormOptionsArrayType::class === $optionsType) {
                 $formOptions->get('choices')->addModelTransformer(
@@ -174,7 +174,7 @@ class DynamicFieldType extends AbstractType
             $this->trans('Other fields') => [
                 $this->trans('Checkbox') => CheckboxType::class,
                 $this->trans('Radio') => RadioType::class,
-            ]
+            ],
         ]);
 
         $this->eventDispatcher->dispatch(new FormTypeChoiceEvent($choices));

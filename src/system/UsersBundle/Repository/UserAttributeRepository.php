@@ -15,8 +15,8 @@ namespace Zikula\UsersBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\UsersBundle\Constant;
 use Zikula\UsersBundle\Entity\UserAttributeEntity;
+use Zikula\UsersBundle\UsersConstant;
 
 class UserAttributeRepository extends ServiceEntityRepository implements UserAttributeRepositoryInterface
 {
@@ -28,8 +28,8 @@ class UserAttributeRepository extends ServiceEntityRepository implements UserAtt
     public function setEmptyValueWhereAttributeNameIn(
         array $attributeNames,
         array $users = [],
-        array $forbiddenUsers = [Constant::USER_ID_ADMIN, Constant::USER_ID_ANONYMOUS]
-    ) {
+        array $forbiddenUsers = [UsersConstant::USER_ID_ADMIN, UsersConstant::USER_ID_ANONYMOUS]
+    ): mixed {
         $qb = $this->createQueryBuilder('a')
             ->update()
             ->set('a.value', '\'\'')

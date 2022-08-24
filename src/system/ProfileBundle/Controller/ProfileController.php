@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Zikula\ProfileBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
+use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ProfileBundle\Form\ProfileTypeFactory;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\Helper\UploadHelper;
@@ -33,9 +33,15 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 #[Route('/profile')]
 class ProfileController extends AbstractController
 {
+    public function __construct(
+        private readonly PermissionApiInterface $permissionApi,
+        private readonly bool $displayRegistrationDate,
+        private readonly string $avatarImagePath
+    ) {
+    }
+
     /**
      * @PermissionCheck({"$_zkModule::view", "::", "read"})
-     * @Template("@ZikulaProfile/Profile/display.html.twig")
      */
     #[Route('/display/{uid}', name: 'zikulaprofilebundle_profile_display', requirements: ['uid' => '\d+'], defaults: ['uid' => null])]
     public function display(
@@ -43,23 +49,19 @@ class ProfileController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         UserEntity $userEntity = null
-    ): array {
+    ): Response {
         if (null === $userEntity) {
             $userEntity = $userRepository->find($currentUserApi->get('uid'));
         }
 
-        return [
+        return $this->render('@ZikulaProfile/Profile/display.html.twig', [
             'prefix' => $this->getParameter('zikula_profile_module.property_prefix'),
             'user' => $userEntity,
             'activeProperties' => $propertyRepository->getDynamicFieldsSpecification(),
-        ];
+            'displayRegistrationDate' => $this->displayRegistrationDate,
+        ]);
     }
 
-    /**
-     * @Template("@ZikulaProfile/Profile/edit.html.twig")
-     *
-     * @return array|RedirectResponse
-     */
     #[Route('/edit/{uid}', name: 'zikulaprofilebundle_profile_edit', requirements: ['uid' => '\d+'], defaults: ['uid' => null])]
     public function edit(
         Request $request,
@@ -70,12 +72,12 @@ class ProfileController extends AbstractController
         UploadHelper $uploadHelper,
         GravatarHelper $gravatarHelper,
         UserEntity $userEntity = null
-    ) {
+    ): Response {
         $currentUserUid = $currentUserApi->get('uid');
         if (null === $userEntity) {
             $userEntity = $userRepository->find($currentUserUid);
         }
-        if ($userEntity->getUid() !== $currentUserUid && !$this->hasPermission('ZikulaProfileModule::edit', '::', ACCESS_EDIT)) {
+        if ($userEntity->getUid() !== $currentUserUid && !$this->permissionApi->hasPermission('ZikulaProfileModule::edit', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         $attributes = $userEntity->getAttributes() ?? [];
@@ -117,10 +119,11 @@ class ProfileController extends AbstractController
         // detach user entity because attributes may be altered for the form (e.g. multiple choice fields)
         $doctrine->getManager()->detach($userEntity);
 
-        return [
+        return $this->render('@ZikulaProfile/Profile/edit.html.twig', [
             'user' => $userEntity,
             'form' => $form->createView(),
+            'imagePath' => $this->avatarImagePath,
             'gravatarUrl' => $gravatarHelper->getGravatarUrl($userEntity->getEmail())
-        ];
+        ]);
     }
 }

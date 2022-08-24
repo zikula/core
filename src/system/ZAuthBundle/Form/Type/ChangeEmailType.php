@@ -31,19 +31,19 @@ class ChangeEmailType extends AbstractType
                     'label' => 'New email address',
                 ],
                 'second_options' => [
-                    'label' => 'Repeat new email address'
+                    'label' => 'Repeat new email address',
                 ],
                 'invalid_message' => 'The emails must match!',
                 'constraints' => [
-                    new ValidEmail()
-                ]
+                    new ValidEmail(),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
         ;
     }

@@ -16,7 +16,6 @@ namespace Zikula\CategoriesBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * Category attributes table.
@@ -24,7 +23,7 @@ use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'categories_attributes')]
-class CategoryAttributeEntity extends EntityAccess
+class CategoryAttributeEntity
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'attributes')]

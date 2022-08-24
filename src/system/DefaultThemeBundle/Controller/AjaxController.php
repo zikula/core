@@ -13,22 +13,27 @@ declare(strict_types=1);
 
 namespace Zikula\DefaultThemeBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
-use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 #[Route('/default-theme/ajax')]
 class AjaxController extends AbstractController
 {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
     #[Route('/changeUserStyle', name: 'zikuladefaultthemebundle_ajax_changeuserstyle', methods: ['POST'], options: ['expose' => true])]
     public function changeUserStyle(Request $request, ZikulaHttpKernelInterface $kernel): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->json($this->trans('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->translator->trans('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
 
         $themeBundle = $kernel->getBundle('ZikulaDefaultThemeBundle');

@@ -15,17 +15,14 @@ namespace Zikula\ZAuthBundle\Helper;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\ZAuthBundle\Api\ApiInterface\UserCreationApiInterface;
 
 class FileIOHelper
 {
-    use TranslatorTrait;
-
     private array $createdUsers;
 
     public function __construct(
-        TranslatorInterface $translator,
+        private readonly TranslatorInterface $translator,
         private readonly UserCreationApiInterface $userCreationApi,
         private readonly MailHelper $mailHelper
     ) {
@@ -36,13 +33,13 @@ class FileIOHelper
     {
         // read the file
         if (!$lines = file($file->getPathname())) {
-            return $this->trans('Error! It has not been possible to read the import file.');
+            return $this->translator->trans('Error! It has not been possible to read the import file.');
         }
         $expectedFields = ['uname', 'pass', 'email', 'activated', 'sendmail', 'groups'];
         $firstLineArray = explode($delimiter, str_replace('"', '', trim($lines[0])));
         foreach ($firstLineArray as $field) {
             if (!in_array(mb_strtolower(trim($field)), $expectedFields, true)) {
-                return $this->trans('Error! The import file does not have the expected field %s in the first row. Please check your import file.', ['%s' => $field]);
+                return $this->translator->trans('Error! The import file does not have the expected field %s in the first row. Please check your import file.', ['%s' => $field]);
             }
         }
         unset($lines[0]);
@@ -57,14 +54,14 @@ class FileIOHelper
 
             // check if the line has all the needed values
             if (count($lineArray) !== count($firstLineArray)) {
-                return $this->trans('Error! The number of parameters in line %s is not correct. Please check your import file.', ['%s' => $counter]);
+                return $this->translator->trans('Error! The number of parameters in line %s is not correct. Please check your import file.', ['%s' => $counter]);
             }
             $importValues[] = array_combine($firstLineArray, $lineArray);
             $counter++;
         }
 
         if (empty($importValues)) {
-            return $this->trans('Error! The import file does not have values.');
+            return $this->translator->trans('Error! The import file does not have values.');
         }
         $generateErrorList = function ($errors) {
             $errorList = '';

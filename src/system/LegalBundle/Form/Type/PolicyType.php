@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Zikula\LegalBundle\Constant;
+use Zikula\LegalBundle\LegalConstant;
 
 class PolicyType extends AbstractType
 {
@@ -35,19 +35,19 @@ class PolicyType extends AbstractType
             'data' => false,
             'help' => 'Check this box to indicate your acceptance of this site\'s policies.',
             'constraints' => $constraints,
-            'required' => !$options['userEditAccess']
+            'required' => !$options['userEditAccess'],
         ]);
     }
 
     public function getBlockPrefix()
     {
-        return Constant::FORM_BLOCK_PREFIX;
+        return LegalConstant::FORM_BLOCK_PREFIX;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'userEditAccess' => false
+            'userEditAccess' => false,
         ]);
     }
 }

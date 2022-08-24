@@ -1,5 +1,1 @@
-{% set policyUrl = getModVar(constant('Zikula\\LegalBundle\\Constant::MODNAME'), constant('Zikula\\LegalBundle\\Constant::MODVAR_CANCELLATIONRIGHTPOLICY_URL')) %}
-{% if policyUrl == '' %}
-    {% set policyUrl = path('zikulalegalbundle_user_cancellationrightpolicy') %}
-{% endif %}
 <a class="legal_inlinelink_cancellationrightpolicy" href="{{ policyUrl|e('html_attr') }}" target="{{ target|e('html_attr') }}">{% trans %}Cancellation right policy{% endtrans %}</a>

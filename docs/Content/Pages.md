@@ -17,4 +17,3 @@ Any standard HTML can be used as well as any template functions and global templ
 - `{{ pageAddAsset('javascript', asset('/path/from/public/to/my/javascript.js')) }}`
 - etc...
 
-There is no way to add additional variables in these pages.

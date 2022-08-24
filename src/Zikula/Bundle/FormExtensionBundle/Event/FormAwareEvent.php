@@ -51,7 +51,10 @@ class FormAwareEvent
     public function addTemplate(string $template, array $templateVars = []): self
     {
         if (!in_array($template, $this->templates, true)) {
-            $this->templates[] = ['view' => $template, 'params' => $templateVars];
+            $this->templates[] = [
+                'view' => $template,
+                'params' => $templateVars,
+            ];
         }
 
         return $this;

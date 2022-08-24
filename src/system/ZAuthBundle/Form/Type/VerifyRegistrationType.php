@@ -23,14 +23,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidRegistrationVerification;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class VerifyRegistrationType extends AbstractType
 {
-    public function __construct(private readonly VariableApiInterface $variableApi)
+    public function __construct(private readonly int $minimumPasswordLength)
     {
     }
 
@@ -41,22 +40,22 @@ class VerifyRegistrationType extends AbstractType
                 'label' => 'User name',
                 'constraints' => [
                     new NotBlank(),
-                    new Type(['type' => 'string'])
-                ]
+                    new Type(['type' => 'string']),
+                ],
             ])
             ->add('verifycode', TextType::class, [
                 'label' => 'Verification code',
                 'constraints' => [
                     new NotBlank(),
-                    new Type(['type' => 'string'])
-                ]
+                    new Type(['type' => 'string']),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
         ;
         if ($options['setpass']) {
@@ -67,16 +66,16 @@ class VerifyRegistrationType extends AbstractType
                         'class' => 'pwstrength',
                         'data-uname-id' => $builder->getName() . '_' . $builder->get('uname')->getName(),
                         'minlength' => $options['minimumPasswordLength'],
-                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}',
                     ],
-                    'label' => 'Password'
+                    'label' => 'Password',
                 ],
                 'second_options' => ['label' => 'Repeat password'],
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [
                     new NotNull(),
-                    new ValidPassword()
-                ]
+                    new ValidPassword(),
+                ],
             ]);
         }
     }
@@ -90,10 +89,10 @@ class VerifyRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'setpass' => true,
-            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
+            'minimumPasswordLength' => $this->minimumPasswordLength,
             'constraints' => [
-                new ValidRegistrationVerification()
-            ]
+                new ValidRegistrationVerification(),
+            ],
         ]);
     }
 }

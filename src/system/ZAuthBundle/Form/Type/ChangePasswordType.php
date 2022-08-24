@@ -21,14 +21,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPasswordChange;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class ChangePasswordType extends AbstractType
 {
-    public function __construct(private readonly VariableApiInterface $variableApi)
+    public function __construct(private readonly int $minimumPasswordLength)
     {
     }
 
@@ -41,7 +40,7 @@ class ChangePasswordType extends AbstractType
             ->add('oldpass', PasswordType::class, [
                 'required' => false,
                 'label' => 'Old password',
-                'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
+                'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -50,13 +49,13 @@ class ChangePasswordType extends AbstractType
                         'class' => 'pwstrength',
                         'data-uname-id' => '',
                         'minlength' => $options['minimumPasswordLength'],
-                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}'
+                        'pattern' => '.{' . $options['minimumPasswordLength'] . ',}',
                     ],
                     'label' => 'New password',
                     'help' => 'Minimum password length: %amount% characters.',
                     'help_translation_parameters' => [
-                        '%amount%' => $options['minimumPasswordLength']
-                    ]
+                        '%amount%' => $options['minimumPasswordLength'],
+                    ],
                 ],
                 'second_options' => [
                     'label' => 'Repeat new password'
@@ -64,19 +63,19 @@ class ChangePasswordType extends AbstractType
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [
                     new NotNull(),
-                    new ValidPassword()
-                ]
+                    new ValidPassword(),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }
@@ -89,10 +88,10 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
+            'minimumPasswordLength' => $this->minimumPasswordLength,
             'constraints' => [
-                new ValidPasswordChange()
-            ]
+                new ValidPasswordChange(),
+            ],
         ]);
     }
 }

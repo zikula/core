@@ -3,18 +3,9 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $extension: '@Zikula\ExtensionsBundle\ZikulaExtensionsBundle'
-            $installed: '%env(ZIKULA_INSTALLED)%'
 
     Zikula\ExtensionsBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
     Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface: '@Zikula\ExtensionsBundle\Api\CapabilityApi'
-    Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface: '@Zikula\ExtensionsBundle\Api\VariableApi'
-    Zikula\ExtensionsBundle\Repository\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsBundle\Repository\ExtensionVarRepository'
-
-    # public because AbstractTheme and others access this using container
-    Zikula\ExtensionsBundle\Api\VariableApi:
-        public: true

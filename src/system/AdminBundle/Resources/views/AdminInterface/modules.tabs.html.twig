@@ -14,7 +14,7 @@
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {% for item in adminMenu %}
-            <li class="dropdown droppable nowrap{% if caller._zkModule == item.moduleName %} active{% endif %}">
+            <li class="dropdown droppable nowrap{% if caller._zkModule == item.bundleName %} active{% endif %}">
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ item.menuText|e('html_attr') }}">
                     <span class="fas fa-arrows-alt admintabs-lock"></span>
                     <span><img src="{{ app.request.basePath }}/{{ item.icon }}" alt="icon" style="height: 18px"/></span>

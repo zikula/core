@@ -17,9 +17,13 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Zikula\LegalBundle\Controller\UserController;
+use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
+use Zikula\LegalBundle\Menu\ExtensionMenu;
+use Zikula\LegalBundle\Twig\TwigExtension;
 
 /**
- * Dependency injection extension for the Legal module.
+ * Dependency injection extension for the Legal bundle.
  */
 class ZikulaLegalExtension extends Extension
 {
@@ -27,5 +31,17 @@ class ZikulaLegalExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->getDefinition(UserController::class)
+            ->setArgument('$legalConfig', $config);
+        $container->getDefinition(AcceptPoliciesHelper::class)
+            ->setArgument('$legalConfig', $config);
+        $container->getDefinition(ExtensionMenu::class)
+            ->setArgument('$legalConfig', $config);
+        $container->getDefinition(TwigExtension::class)
+            ->setArgument('$legalConfig', $config);
     }
 }

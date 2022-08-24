@@ -13,20 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsBundle\Tests\Api\Fixtures;
 
-use Zikula\GroupsBundle\Constant;
+use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\PermissionsBundle\Api\PermissionApi;
 use Zikula\PermissionsBundle\Entity\PermissionEntity;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 
 class StubPermissionRepository implements PermissionRepositoryInterface
 {
+    /** @var PermissionEntity[] */
     private array $entities;
 
     public function __construct()
     {
         $datas = [
             [
-                'gid' => Constant::GROUP_ID_ADMIN, // 2
+                'gid' => GroupsConstant::GROUP_ID_ADMIN, // 2
                 'sequence' => 1,
                 'component' => '.*',
                 'instance' => '.*',
@@ -40,7 +41,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'level' => ACCESS_NONE
             ],
             [
-                'gid' => Constant::GROUP_ID_USERS, // 1
+                'gid' => GroupsConstant::GROUP_ID_USERS, // 1
                 'sequence' => 3,
                 'component' => '.*',
                 'instance' => '.*',
@@ -62,9 +63,12 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             ]
         ];
         foreach ($datas as $data) {
-            $entity = new PermissionEntity();
-            $entity->merge($data);
-            $this->entities[] = $entity;
+            $this->entities[] = (new PermissionEntity())
+                ->setGid($data['gid'])
+                ->setSequence($data['sequence'])
+                ->setComponent($data['component'])
+                ->setInstance($data['instance'])
+                ->setLevel($data['level']);
         }
     }
 
@@ -72,7 +76,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
     {
         $result = [];
         foreach ($this->entities as $entity) {
-            if (in_array($entity['gid'], $groups, true)) {
+            if (in_array($entity->getGid(), $groups, true)) {
                 $result[] = $entity;
             }
         }

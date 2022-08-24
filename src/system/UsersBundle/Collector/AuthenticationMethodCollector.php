@@ -15,7 +15,6 @@ namespace Zikula\UsersBundle\Collector;
 
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\AuthenticationMethodInterface;
 
 class AuthenticationMethodCollector
@@ -25,22 +24,10 @@ class AuthenticationMethodCollector
      */
     private array $authenticationMethods = [];
 
-    /**
-     * @var AuthenticationMethodInterface[] e.g. ['alias' => ServiceObject]
-     */
-    private array $activeAuthenticationMethods = [];
-
-    /**
-     * @var array e.g. ['alias' => bool]
-     */
-    private array $authenticationMethodsStatus;
-
     public function __construct(
-        VariableApiInterface $variableApi,
         #[TaggedIterator('zikula.authentication_method')]
         iterable $methods
     ) {
-        $this->authenticationMethodsStatus = $variableApi->getSystemVar('authenticationMethodsStatus', []);
         foreach ($methods as $method) {
             $this->add($method);
         }
@@ -56,9 +43,6 @@ class AuthenticationMethodCollector
             throw new InvalidArgumentException('Attempting to register an authentication method with a duplicate alias. (' . $alias . ')');
         }
         $this->authenticationMethods[$alias] = $method;
-        if (isset($this->authenticationMethodsStatus[$alias]) && $this->authenticationMethodsStatus[$alias]) {
-            $this->activeAuthenticationMethods[$alias] = $method;
-        }
     }
 
     /**
@@ -86,7 +70,7 @@ class AuthenticationMethodCollector
      */
     public function getActive(): iterable
     {
-        return $this->activeAuthenticationMethods;
+        return $this->getAll();
     }
 
     /**
@@ -102,6 +86,6 @@ class AuthenticationMethodCollector
      */
     public function getActiveKeys(): array
     {
-        return array_keys($this->activeAuthenticationMethods);
+        return $this->getKeys();
     }
 }

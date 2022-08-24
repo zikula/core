@@ -22,7 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\ExtensionsBundle\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
 use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
@@ -31,7 +30,7 @@ use Zikula\ZAuthBundle\ZAuthConstant;
 
 class AdminCreatedUserType extends AbstractType
 {
-    public function __construct(private readonly VariableApiInterface $variableApi)
+    public function __construct(private readonly bool $mailVerificationRequired, private readonly int $minimumPasswordLength)
     {
     }
 
@@ -43,15 +42,15 @@ class AdminCreatedUserType extends AbstractType
                 'choices' => [
                     'User name or email' => ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
                     'User name' => ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
-                    'Email' => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
-                ]
+                    'Email' => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL,
+                ],
             ])
             ->add('uname', TextType::class, [
                 'label' => 'User name',
                 'help' => 'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.',
                 'constraints' => [
-                    new ValidUname()
-                ]
+                    new ValidUname(),
+                ],
             ])
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
@@ -62,20 +61,20 @@ class AdminCreatedUserType extends AbstractType
                 'second_options' => ['label' => 'Repeat Email'],
                 'invalid_message' => 'The emails must match!',
                 'constraints' => [
-                    new ValidEmail()
-                ]
+                    new ValidEmail(),
+                ],
             ])
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => 'Set password now',
                 'label_attr' => ['class' => 'switch-custom'],
-                'alert' => ['If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.' => 'info']
+                'alert' => ['If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.' => 'info'],
             ])
             ->add('pass', ZAuthDuplicatePassType::class, [
                 'label' => 'Password',
                 'data_class' => AuthenticationMappingEntity::class,
-                'dataUnameId' => $builder->getName() . '_' . $builder->get('uname')->getName()
+                'dataUnameId' => $builder->getName() . '_' . $builder->get('uname')->getName(),
             ])
             ->add('sendpass', CheckboxType::class, [
                 'required' => false,
@@ -84,40 +83,40 @@ class AdminCreatedUserType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'alert' => [
                     'Sending a password via email is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.' => 'warning',
-                    'Even if you choose to not send the user\'s password via e-mail, other email messages may be sent to the user as part of the registration process.' => 'info'
-                ]
+                    'Even if you choose to not send the user\'s password via e-mail, other email messages may be sent to the user as part of the registration process.' => 'info',
+                ],
             ])
             ->add('usernotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => 'Send welcome message to user',
-                'label_attr' => ['class' => 'switch-custom']
+                'label_attr' => ['class' => 'switch-custom'],
             ])
             ->add('adminnotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => 'Notify administrators',
-                'label_attr' => ['class' => 'switch-custom']
+                'label_attr' => ['class' => 'switch-custom'],
             ])
             ->add('usermustverify', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'data' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED),
+                'data' => $this->mailVerificationRequired,
                 'label' => 'User must verify email address',
                 'label_attr' => ['class' => 'switch-custom'],
                 'help' => 'Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.',
-                'alert' => ['It is recommended to force users to verify their email address.' => 'info']
+                'alert' => ['It is recommended to force users to verify their email address.' => 'info'],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }
@@ -130,10 +129,10 @@ class AdminCreatedUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'minimumPasswordLength' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::PASSWORD_MINIMUM_LENGTH),
+            'minimumPasswordLength' => $this->minimumPasswordLength,
             'constraints' => [
-                new ValidUserFields()
-            ]
+                new ValidUserFields(),
+            ],
         ]);
     }
 }
