@@ -29,6 +29,14 @@ class BrandingRuntime implements RuntimeExtensionInterface
     }
 
     /**
+     * Returns site definition.
+     */
+    public function getSiteDefinition(): SiteDefinitionInterface
+    {
+        return $this->site;
+    }
+
+    /**
      * Returns site name.
      */
     public function getSiteName(): string

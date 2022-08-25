@@ -21,6 +21,7 @@ functions, filters, tags, tests and global variables.
 - pageGetVar(name, default = null)
 - pageSetVar(name, value)
 - zasset(path)
+- siteDefinition()
 - siteName()
 - siteSlogan()
 - siteBranding()

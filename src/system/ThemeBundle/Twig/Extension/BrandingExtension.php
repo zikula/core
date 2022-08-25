@@ -22,6 +22,7 @@ class BrandingExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
+            new TwigFunction('siteDefinition', [BrandingRuntime::class, 'getSiteDefinition']),
             new TwigFunction('siteName', [BrandingRuntime::class, 'getSiteName']),
             new TwigFunction('siteSlogan', [BrandingRuntime::class, 'getSiteSlogan']),
             new TwigFunction('siteBranding', [BrandingRuntime::class, 'getSiteBrandingMarkup'], ['is_safe' => ['html']]),
