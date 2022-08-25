@@ -56,7 +56,6 @@ class AddJSConfigListener implements EventSubscriberInterface
         $session = $request->hasSession() ? $request->getSession() : null;
 
         $config = [
-            'entrypoint' => ZikulaKernel::FRONT_CONTROLLER,
             'baseURL' => $request->getSchemeAndHttpHost() . '/',
             'baseURI' => $request->getBasePath(),
             'lang' => $request->getLocale(),

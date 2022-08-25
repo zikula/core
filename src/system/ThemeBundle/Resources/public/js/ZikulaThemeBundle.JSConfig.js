@@ -6,7 +6,6 @@ if (typeof(Zikula) == 'undefined') {
 
 // defaults
 Zikula.Config = {
-    "entrypoint": "index.php",
     "baseURL": "http:\/\/localhost\/",
     "baseURI": "",
     "lang": "en",
@@ -14,6 +13,6 @@ Zikula.Config = {
 };
 
 // site-specific override
-if (jQuery('#zkJsConfig').length > 0) {
+if (0 < jQuery('#zkJsConfig').length) {
     Zikula.Config = jQuery('#zkJsConfig').data('parameters');
 }

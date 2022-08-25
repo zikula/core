@@ -21,9 +21,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\AdminBundle\Helper\AdminBundleHelper;
 use Zikula\AdminBundle\Helper\AdminCategoryHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
@@ -56,7 +56,7 @@ class AdminInterfaceController extends AbstractController
         return $this->render('@ZikulaAdmin/AdminInterface/footer.html.twig', [
             'caller' => $this->getCallerInfo($requestStack, $kernel),
             'symfonyVersion' => Kernel::VERSION,
-            'phpVersion' => PHP_VERSION
+            'phpVersion' => PHP_VERSION,
         ]);
     }
 
@@ -71,7 +71,7 @@ class AdminInterfaceController extends AbstractController
         $caller['category'] = $categoryHelper->getCurrentCategory();
 
         return $this->render('@ZikulaAdmin/AdminInterface/breadCrumbs.html.twig', [
-            'caller' => $caller
+            'caller' => $caller,
         ]);
     }
 
@@ -93,8 +93,8 @@ class AdminInterfaceController extends AbstractController
         ZikulaHttpKernelInterface $kernel,
         RouterInterface $router,
         ExtensionMenuCollector $extensionMenuCollector,
-        CapabilityApiInterface $capabilityApi,
-        AdminCategoryHelper $categoryHelper
+        AdminCategoryHelper $categoryHelper,
+        AdminBundleHelper $adminBundleHelper
     ): Response {
         $mainRequest = $requestStack->getMainRequest();
         $currentRequest = $requestStack->getCurrentRequest();
@@ -134,9 +134,7 @@ class AdminInterfaceController extends AbstractController
         }
         ksort($menuCategories);
 
-        // bundle data
-        // get admin capable bundles
-        $adminBundles = $capabilityApi->getExtensionsCapableOf('admin');
+        $adminBundles = $adminBundleHelper->getAdminCapableBundles();
         $menuBundles = [];
         foreach ($categories as $category) {
             foreach ($adminBundles as $adminBundle) {
@@ -150,15 +148,7 @@ class AdminInterfaceController extends AbstractController
                 }
 
                 $bundleInfo = $adminBundle->getMetaData();
-                $menuText = $bundleInfo->getDisplayName();
-                try {
-                    $menuTextUrl = isset($bundleInfo->getCapabilities()['admin']['route'])
-                        ? $router->generate($bundleInfo->getCapabilities()['admin']['route'])
-                        : '';
-                } catch (RouteNotFoundException $routeNotFoundException) {
-                    $menuTextUrl = 'javascript:void(0)';
-                    $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->translator->trans('invalid route') . ')';
-                }
+                [$menuTextUrl, $menuText] = $adminBundleHelper->getAdminRouteInformation($bundleInfo);
 
                 $extensionMenu = $extensionMenuCollector->get($bundleName, ExtensionMenuInterface::TYPE_ADMIN);
                 if (isset($extensionMenu) && 'modules' === $mode && 'tabs' === $template) {
@@ -191,7 +181,7 @@ class AdminInterfaceController extends AbstractController
         return $this->render('@ZikulaAdmin/AdminInterface/' . $fullTemplateName . '.html.twig', [
             'adminMenu' => ('categories' === $mode) ? $menuCategories : $menuBundles,
             'mode' => $mode,
-            'caller' => $caller
+            'caller' => $caller,
         ]);
     }
 }

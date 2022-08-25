@@ -26,8 +26,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\CategoriesBundle\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 
 /**
  * @see https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
@@ -36,7 +36,7 @@ class CategoryRegistryType extends AbstractType
 {
     use TranslatorTrait;
 
-    public function __construct(TranslatorInterface $translator, private readonly EntitySelectionBuilder $entitySelectionBuilder)
+    public function __construct(TranslatorInterface $translator, private readonly CategorizableBundleHelper $categorizableBundleHelper)
     {
         $this->setTranslator($translator);
     }
@@ -73,7 +73,7 @@ class CategoryRegistryType extends AbstractType
 
         $translator = $this->translator;
         $formModifier = function (FormInterface $form, string $bundleName = null) use ($translator) {
-            $entities = null === $bundleName ? [] : $this->entitySelectionBuilder->buildFor($bundleName);
+            $entities = null === $bundleName ? [] : $this->categorizableBundleHelper->buildEntityChoiceListFor($bundleName);
             $form->add('entityname', ChoiceType::class, [
                 /** @Ignore */
                 'label' => $translator->trans('Entity'),

@@ -13,21 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle\Helper;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\ExtensionsBundle\Api\CapabilityApi;
 
 class CategoryProcessingHelper
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly ZikulaHttpKernelInterface $kernel,
         private readonly CategoryRegistryRepositoryInterface $categoryRegistryRepository,
-        private readonly CapabilityApiInterface $capabilityApi
+        private readonly CategorizableBundleHelper $categorizableBundleHelper
     ) {
     }
 
@@ -65,24 +59,8 @@ class CategoryProcessingHelper
                 continue;
             }
 
-            // get information about responsible module
-            if (!$this->kernel->isBundle($registry->getBundleName())) {
-                continue;
-            }
-
-            $capabilities = $this->capabilityApi->getCapabilitiesOf($registry->getBundleName());
-            foreach ($capabilities[CapabilityApi::CATEGORIZABLE] as $entityClass) {
-                if (!is_subclass_of($entityClass, AbstractCategoryAssignment::class)) {
-                    continue;
-                }
-                // check if this mapping table contains a reference to the given category
-                // limit query to one result to avoid wasting performance
-                $mappings = $this->entityManager->getRepository($entityClass)
-                    ->findBy(['category' => $category], [], 1);
-                if (0 < count($mappings)) {
-                    // existing reference found
-                    return false;
-                }
+            if ($this->categorizableBundleHelper->isCategoryUsed($registry->getBundleName(), $category)) {
+                return false;
             }
         }
 

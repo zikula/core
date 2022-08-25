@@ -32,11 +32,6 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
     public function getModules(): array;
 
     /**
-     * Checks if name is is the list of core extensions.
-     */
-    public static function isCoreExtension(string $extensionName): bool;
-
-    /**
      * Gets named theme bundle.
      *
      * @throws InvalidArgumentException when the bundle is not enabled
@@ -45,14 +40,8 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
 
     public function getThemes(): array;
 
-    public function getJustBundles(): array;
-
     /**
      * Is this a Bundle?
      */
     public function isBundle(string $name): bool;
-
-    public function setAutoloader(callable $autoloader): void;
-
-    public function getAutoloader(): object;
 }

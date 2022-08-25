@@ -7,5 +7,3 @@ services:
     Zikula\ExtensionsBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
-
-    Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface: '@Zikula\ExtensionsBundle\Api\CapabilityApi'

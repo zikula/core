@@ -5,7 +5,7 @@ currentMenu: workflows
 
 Zikula utilises the Symfony Workflow component to provide workflow functionality.
 
-You can read more about it in [the manual](https://symfony.com/doc/master/components/workflow.html).
+You can read more about it in [the manual](https://symfony.com/doc/current/components/workflow.html).
 
 ## Workflow events
 
@@ -19,7 +19,7 @@ There are some slight differences regarding workflow behaviour in Zikula.
 
 It seems that usually workflow definitions can only be stored at a central location. We wanted to make this more flexible so we allowed three different levels:
 
-1. Central workflows in the core system are placed in: `/src/Zikula/CoreBundle/Resources/workflows/`
+1. Central workflows in the core system are placed in: `/src/Zikula/Bundle/CoreBundle/Resources/workflows/`
 2. Modules can define their own workflows in: `/src/extensions/Acme/MyBundle/Resources/workflows/`
 3. Also it is possible to define custom workflows (or override existing ones) in: `/config/workflows/`
 

@@ -56,18 +56,6 @@ menu:
                 production:
                     text: Deployment
                     relativeUrl: Setup/production.html
-        configuration:
-            name: Configuration
-            items:
-                main-settings:
-                    text: Main settings
-                    relativeUrl: Configuration/Settings/index.html
-                localisation:
-                    text: Localisation
-                    relativeUrl: Configuration/Localisation/index.html
-                workflows:
-                    text: Workflows
-                    relativeUrl: Configuration/Workflows/index.html
         content:
             name: Content
             items:
@@ -116,15 +104,9 @@ menu:
         development:
             name: Extension Development
             items:
-                dev-general:
-                    text: General
-                    relativeUrl: Development/General/index.html
                 dev-doctrine:
                     text: Databases & Doctrine
                     relativeUrl: Development/Doctrine/index.html
-                dev-extensions:
-                    text: Extension services
-                    relativeUrl: Development/Extensions/index.html
                 dev-misc:
                     text: Misc
                     relativeUrl: Development/Misc/index.html

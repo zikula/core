@@ -2,12 +2,12 @@
 
 (function($) {
     $(document).ready(function() {
-        var $moduleName = $('#zikulacategoriesbundle_category_registry_bundlename');
-        $moduleName.change(function () {
+        var $bundleName = $('#zikulacategoriesbundle_category_registry_bundlename');
+        $bundleName.change(function () {
             $('#entity-loading').removeClass('d-none');
             var $form = $(this).closest('form');
             var data = {};
-            data[$moduleName.attr('name')] = $moduleName.val();
+            data[$bundleName.attr('name')] = $bundleName.val();
             $.ajax({
                 url: $form.attr('action'),
                 type: $form.attr('method'),

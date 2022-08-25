@@ -21,9 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesBundle\Form\Type\CategoryRegistryType;
+use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
-use Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\ExtensionsBundle\Api\CapabilityApi;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
@@ -39,16 +38,16 @@ class RegistryController extends AbstractController
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
-        CapabilityApiInterface $capabilityApi,
         CategoryRegistryRepositoryInterface $registryRepository,
-        CategoryRegistryEntity $registryEntity = null
+        CategoryRegistryEntity $registryEntity = null,
+        CategorizableBundleHelper $categorizableBundleHelper
     ): Response {
         if (null === $registryEntity) {
             $registryEntity = new CategoryRegistryEntity();
         }
 
         $form = $this->createForm(CategoryRegistryType::class, $registryEntity, [
-            'categorizableBundles' => $this->getCategorizableBundles($capabilityApi),
+            'categorizableBundles' => $categorizableBundleHelper->getCategorizableBundleNames(),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -67,18 +66,6 @@ class RegistryController extends AbstractController
             'form' => $form->createView(),
             'registries' => $registryRepository->findAll(),
         ]);
-    }
-
-    private function getCategorizableBundles(CapabilityApiInterface $capabilityApi): array
-    {
-        $bundles = $capabilityApi->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
-        $bundleOptions = [];
-        foreach ($bundles as $bundle) {
-            $bundleName = $bundle->getName();
-            $bundleOptions[$bundleName] = $bundleName;
-        }
-
-        return $bundleOptions;
     }
 
     /**

@@ -26,7 +26,6 @@ All contributors need to have an account at [GitHub](https://github.com).
 
 - [Setting up a core development environment](SetupDevEnv.md)
 - [Contribution workflows](ContributionWorkflows.md)
-- [Mentoring Program](MentoringProgram.md)
 
 ### Guidelines
 

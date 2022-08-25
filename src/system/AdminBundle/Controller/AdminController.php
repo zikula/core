@@ -17,13 +17,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\AdminBundle\Helper\AdminBundleHelper;
 use Zikula\AdminBundle\Helper\AdminCategoryHelper;
-use Zikula\AdminBundle\Helper\AdminLinksHelper;
-use Zikula\ExtensionsBundle\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
@@ -65,10 +62,8 @@ class AdminController extends AbstractController
     #[PermissionCheck('edit')]
     #[Theme('admin')]
     public function adminpanel(
-        CapabilityApiInterface $capabilityApi,
-        RouterInterface $router,
         AdminCategoryHelper $categoryHelper,
-        AdminLinksHelper $adminLinksHelper,
+        AdminBundleHelper $adminBundleHelper,
         ExtensionMenuCollector $extensionMenuCollector,
         string $acslug = null
     ): Response {
@@ -86,8 +81,7 @@ class AdminController extends AbstractController
 
         $bundleNames = $categoryHelper->getBundleAssignments($category);
 
-        // get admin capable bundles
-        $adminBundles = $capabilityApi->getExtensionsCapableOf('admin');
+        $adminBundles = $adminBundleHelper->getAdminCapableBundles();
         $adminLinks = [];
         $sortOrder = 1;
         foreach ($adminBundles as $adminBundle) {
@@ -99,16 +93,7 @@ class AdminController extends AbstractController
             }
 
             $bundleInfo = $adminBundle->getMetaData();
-            $menuText = $bundleInfo->getDisplayName(); // . ' (' . $adminBundle->getName() . ')';
-
-            try {
-                $menuTextUrl = isset($bundleInfo->getCapabilities()['admin']['route'])
-                    ? $router->generate($bundleInfo->getCapabilities()['admin']['route'])
-                    : '';
-            } catch (RouteNotFoundException $routeNotFoundException) {
-                $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (⚠️ ' . $this->translator->trans('invalid route') . ')';
-            }
+            [$menuTextUrl, $menuText] = $adminBundleHelper->getAdminRouteInformation($bundleInfo);
 
             $bundleName = (string) $adminBundle->getName();
             /** @var \Knp\Menu\ItemInterface $extensionMenu */
@@ -127,7 +112,7 @@ class AdminController extends AbstractController
                 'extensionMenu' => $extensionMenu
             ];
         }
-        $templateParameters['adminLinks'] = $adminLinksHelper->sortAdminModsByOrder($adminLinks);
+        $templateParameters['adminLinks'] = $adminBundleHelper->sortAdminBundleLinksByOrder($adminLinks);
 
         return $this->render('@ZikulaAdmin/Admin/adminpanel.html.twig', $templateParameters);
     }
@@ -139,16 +124,14 @@ class AdminController extends AbstractController
     #[PermissionCheck('edit')]
     #[Theme('admin')]
     public function categorymenu(
-        CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
         AdminCategoryHelper $categoryHelper,
-        AdminLinksHelper $adminLinksHelper,
+        AdminBundleHelper $adminBundleHelper,
         string $acslug = null
     ): Response {
         $categories = $categoryHelper->getCategories();
 
-        // get admin capable bundles
-        $adminBundles = $capabilityApi->getExtensionsCapableOf('admin');
+        $adminBundles = $adminBundleHelper->getAdminCapableBundles();
         $adminLinks = [];
         foreach ($categories as $category) {
             $sortOrder = 1;
@@ -163,15 +146,7 @@ class AdminController extends AbstractController
                 }
 
                 $bundleInfo = $adminBundle->getMetaData();
-                $menuText = $bundleInfo->getDisplayName();
-                try {
-                    $menuTextUrl = isset($bundleInfo->getCapabilities()['admin']['route'])
-                        ? $router->generate($bundleInfo->getCapabilities()['admin']['route'])
-                        : '';
-                } catch (RouteNotFoundException $routeNotFoundException) {
-                    $menuTextUrl = 'javascript:void(0)';
-                    $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->translator->trans('invalid route') . ')';
-                }
+                [$menuTextUrl, $menuText] = $adminBundleHelper->getAdminRouteInformation($bundleInfo);
 
                 $slug = $category->getSlug();
 
@@ -187,7 +162,7 @@ class AdminController extends AbstractController
         }
 
         foreach ($adminLinks as $slug => $links) {
-            $adminLinks[$slug] = $adminLinksHelper->sortAdminModsByOrder($links);
+            $adminLinks[$slug] = $adminBundleHelper->sortAdminBundleLinksByOrder($links);
         }
 
         $menuOptions = [];
