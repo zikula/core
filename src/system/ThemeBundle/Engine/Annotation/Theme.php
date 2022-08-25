@@ -25,7 +25,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD)]
 class Theme
 {
-    function __construct(public string $value)
+    public function __construct(public string $value)
     {
     }
 }

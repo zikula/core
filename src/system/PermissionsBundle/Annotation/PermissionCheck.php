@@ -51,7 +51,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class PermissionCheck
 {
-    function __construct(public string|array $value)
+    public function __construct(public string|array $value)
     {
     }
 }
