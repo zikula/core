@@ -19,16 +19,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/theme')]
+#[PermissionCheck('admin')]
 class ConfigController extends AbstractController
 {
-    /**
-     * @Theme("admin")
-     */
     #[Route('/config', name: 'zikulathemebundle_config_config')]
+    #[Theme('admin')]
     public function config(): Response
     {
         return $this->render('@ZikulaTheme/Config/config.html.twig', []);

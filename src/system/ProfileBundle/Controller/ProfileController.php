@@ -40,10 +40,8 @@ class ProfileController extends AbstractController
     ) {
     }
 
-    /**
-     * @PermissionCheck({"$_zkModule::view", "::", "read"})
-     */
     #[Route('/display/{uid}', name: 'zikulaprofilebundle_profile_display', requirements: ['uid' => '\d+'], defaults: ['uid' => null])]
+    #[PermissionCheck(['$_zkModule::view', '::', 'read'])]
     public function display(
         PropertyRepositoryInterface $propertyRepository,
         CurrentUserApiInterface $currentUserApi,

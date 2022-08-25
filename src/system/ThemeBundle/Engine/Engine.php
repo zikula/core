@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Engine;
 
-use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsBundle\AbstractTheme;
-use Zikula\ThemeBundle\Engine\Annotation\Theme as ThemeAnnotation;
+use Zikula\ThemeBundle\Engine\Annotation\Theme as ThemeAttribute;
 
 /**
  * Class Engine
@@ -65,7 +64,6 @@ class Engine
 
     public function __construct(
         private readonly RequestStack $requestStack,
-        private readonly Reader $annotationReader,
         private readonly ZikulaHttpKernelInterface $kernel,
         private readonly AssetFilter $filterService,
         private readonly string $defaultTheme,
@@ -134,16 +132,18 @@ class Engine
     {
         $reflectionClass = new ReflectionClass($controllerClassName);
         $reflectionMethod = $reflectionClass->getMethod($method);
-        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, ThemeAnnotation::class);
-        if (isset($themeAnnotation)) {
-            // method annotations contain `@Theme` so set theme based on value
-            $this->annotationValue = $themeAnnotation->value;
-            switch ($themeAnnotation->value) {
+        $attributes = $reflectionMethod->getAttributes(ThemeAttribute::class);
+        $themeAttribute = 0 < count($attributes) ? $attributes[0] : null;
+        if (isset($themeAttribute)) {
+            $themeAttribute = $themeAttribute->newInstance();
+            // method annotations contain `#[Theme]` so set theme based on value
+            $this->annotationValue = $themeAttribute->value;
+            switch ($themeAttribute->value) {
                 case 'admin':
                     $newThemeName = $this->adminTheme;
                     break;
                 default:
-                    $newThemeName = $themeAnnotation->value;
+                    $newThemeName = $themeAttribute->value;
             }
             if (!empty($newThemeName)) {
                 $this->setActiveTheme($newThemeName);

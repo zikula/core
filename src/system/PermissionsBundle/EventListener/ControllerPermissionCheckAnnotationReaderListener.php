@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsBundle\EventListener;
 
-use Doctrine\Common\Annotations\AnnotationException;
-use Doctrine\Common\Annotations\Reader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,10 +45,8 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         'ACCESS_OVERVIEW' => 'overview',
     ];
 
-    public function __construct(
-        private readonly PermissionApiInterface $permissionApi,
-        private readonly Reader $annotationReader
-    ) {
+    public function __construct(private readonly PermissionApiInterface $permissionApi)
+    {
     }
 
     public static function getSubscribedEvents(): array
@@ -73,19 +69,19 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         if (!is_array($controller)) {
             return;
         }
-        $annotationValue = $this->getAnnotationValueFromController($controller);
-        if (!$annotationValue) {
+        $attribute = $this->getAttributeFromController($controller);
+        if (!$attribute) {
             return;
         }
 
-        [$component, $instance, $level] = $this->formatSchema($annotationValue, $event->getRequest());
+        [$component, $instance, $level] = $this->formatSchema($attribute, $event->getRequest());
 
         if (!$this->permissionApi->hasPermission($component, $instance, $level)) {
             throw new AccessDeniedException();
         }
     }
 
-    private function getAnnotationValueFromController(array $controller): ?object
+    private function getAttributeFromController(array $controller): ?PermissionCheck
     {
         [$controller, $method] = $controller;
         $controllerClassName = $controller::class;
@@ -93,31 +89,36 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         if (!($controller instanceof AbstractController)) {
             return null;
         }
-        $classPermissionAnnotation = $this->annotationReader->getClassAnnotation($reflectionClass, PermissionCheck::class);
+        $classLevelAttributes = $reflectionClass->getAttributes(PermissionCheck::class);
+        $classPermissionAttribute = 0 < count($classLevelAttributes) ? $classLevelAttributes[0] : null;
+
         $reflectionMethod = $reflectionClass->getMethod($method);
-        $methodPermissionAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, PermissionCheck::class);
-        if (!$classPermissionAnnotation && !$methodPermissionAnnotation) {
+        $methodLevelAttributes = $reflectionMethod->getAttributes(PermissionCheck::class);
+        $methodPermissionAttribute = 0 < count($methodLevelAttributes) ? $methodLevelAttributes[0] : null;
+
+        if (!$classPermissionAttribute && !$methodPermissionAttribute) {
             return null;
-        } elseif ($classPermissionAnnotation && $methodPermissionAnnotation) {
-            throw AnnotationException::semanticalError('You cannot use @PermissionCheck() annotation at the method and class level at the same time.');
+        }
+        if ($classPermissionAttribute && $methodPermissionAttribute) {
+            throw new \InvalidArgumentException('You cannot use #[PermissionCheck()] attribute at the method and class level at the same time.');
         }
 
-        return $classPermissionAnnotation ?? $methodPermissionAnnotation;
+        return ($classPermissionAttribute ?? $methodPermissionAttribute)->newInstance();
     }
 
-    private function formatSchema($permAnnotation, Request $request): array
+    private function formatSchema(PermissionCheck $permAttribute, Request $request): array
     {
-        if (is_string($permAnnotation->value)) {
-            return [$request->attributes->get('_zkModule') . '::', '::', $this->getConstant($permAnnotation->value)];
+        if (is_string($permAttribute->value)) {
+            return [$request->attributes->get('_zkModule') . '::', '::', $this->getConstant($permAttribute->value)];
         }
-        if ($this->isValidSchema($permAnnotation->value)) {
+        if ($this->isValidSchema($permAttribute->value)) {
             return [
-                $this->replaceRouteAttributes($permAnnotation->value[0], $request),
-                $this->replaceRouteAttributes($permAnnotation->value[1], $request),
-                $this->getConstant($permAnnotation->value[2])
+                $this->replaceRouteAttributes($permAttribute->value[0], $request),
+                $this->replaceRouteAttributes($permAttribute->value[1], $request),
+                $this->getConstant($permAttribute->value[2])
             ];
         }
-        throw new AnnotationException('Invalid schema in @PermissionCheck() annotation. Value must be string or an array.');
+        throw new \InvalidArgumentException('Invalid schema in #[PermissionCheck()] attribute. Value must be string or an array.');
     }
 
     private function isValidSchema(array $schema): bool
@@ -144,7 +145,7 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
             return $segment;
         }
         if (false === preg_match_all(self::REGEX_PATTERN, $segment, $matches)) {
-            throw new AnnotationException('Invalid schema in @PermissionCheck() annotation. Could not match route attributes');
+            throw new AnnotationException('Invalid schema in #[PermissionCheck()] annotation. Could not match route attributes');
         }
         foreach ($matches[2] as $name) {
             if ($request->attributes->has($name)) {
@@ -170,6 +171,6 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
         if (false !== $key = array_search($string, $this->accessMap)) {
             return constant($key);
         }
-        throw new AnnotationException('Invalid schema in @PermissionCheck() annotation. Access level string invalid.');
+        throw new AnnotationException('Invalid schema in #[PermissionCheck()] annotation. Access level string invalid.');
     }
 }

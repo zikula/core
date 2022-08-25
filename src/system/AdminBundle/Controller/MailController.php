@@ -29,10 +29,8 @@ use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/admin')]
+#[PermissionCheck('admin')]
 class MailController extends AbstractController
 {
     public function __construct(
@@ -42,11 +40,10 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Theme("admin")
-     *
      * This function displays a form to send a test mail.
      */
     #[Route('/mail/test', name: 'zikulaadminbundle_mail_test')]
+    #[Theme('admin')]
     public function test(
         Request $request,
         MailerInterface $mailer,

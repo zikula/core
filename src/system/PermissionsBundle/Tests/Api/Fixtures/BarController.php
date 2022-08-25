@@ -16,9 +16,7 @@ namespace Zikula\PermissionsBundle\Tests\Api\Fixtures;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
-/**
- * @PermissionCheck("admin")
- */
+#[PermissionCheck('admin')]
 class BarController extends AbstractController
 {
     public function first()

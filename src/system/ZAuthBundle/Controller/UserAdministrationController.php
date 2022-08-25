@@ -73,11 +73,9 @@ class UserAdministrationController extends AbstractController
         $this->setTranslator($translator);
     }
 
-    /**
-     * @PermissionCheck("moderate")
-     * @Theme("admin")
-     */
     #[Route('/list/{sort}/{sortdir}/{letter}/{page}', name: 'zikulazauthbundle_useradministration_listmappings', methods: ['GET'], requirements: ['page' => '\d+'])]
+    #[PermissionCheck('moderate')]
+    #[Theme('admin')]
     public function listMappings(
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -142,11 +140,9 @@ class UserAdministrationController extends AbstractController
         ], new PlainResponse());
     }
 
-    /**
-     * @PermissionCheck("admin")
-     * @Theme("admin")
-     */
     #[Route('/user/create', name: 'zikulazauthbundle_useradministration_create')]
+    #[PermissionCheck('admin')]
+    #[Theme('admin')]
     public function create(
         Request $request,
         AuthenticationMethodCollector $authenticationMethodCollector,
@@ -229,11 +225,10 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Theme("admin")
-     *
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the mapping record
      */
     #[Route('/user/modify/{mapping}', name: 'zikulazauthbundle_useradministration_modify', requirements: ['mapping' => '^[1-9]\d*$'])]
+    #[Theme('admin')]
     public function modify(
         Request $request,
         AuthenticationMappingEntity $mapping,
@@ -297,11 +292,9 @@ class UserAdministrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @PermissionCheck("moderate")
-     * @Theme("admin")
-     */
     #[Route('/verify/{mapping}', name: 'zikulazauthbundle_useradministration_verify', requirements: ['mapping' => '^[1-9]\d*$'])]
+    #[PermissionCheck('moderate')]
+    #[Theme('admin')]
     public function verify(
         Request $request,
         AuthenticationMappingEntity $mapping,
@@ -387,13 +380,12 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Theme("admin")
-     *
      * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes
      *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
      */
     #[Route('/toggle-password-change/{user}', name: 'zikulazauthbundle_useradministration_togglepasswordchange', requirements: ['user' => '^[1-9]\d*$'])]
+    #[Theme('admin')]
     public function togglePasswordChange(Request $request, ManagerRegistry $doctrine, UserEntity $user)
     {
         if (!$this->permissionApi->hasPermission('ZikulaZAuthModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
@@ -434,11 +426,9 @@ class UserAdministrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @PermissionCheck("admin")
-     * @Theme("admin")
-     */
     #[Route('/batch-force-password-change', name: 'zikulazauthbundle_useradministration_batchforcepasswordchange')]
+    #[PermissionCheck('admin')]
+    #[Theme('admin')]
     public function batchForcePasswordChange(
         BatchPasswordChangeHelper $batchPasswordChangeHelper,
         Request $request

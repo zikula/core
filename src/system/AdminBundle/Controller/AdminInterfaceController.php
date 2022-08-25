@@ -61,11 +61,10 @@ class AdminInterfaceController extends AbstractController
     }
 
     /**
-     * @PermissionCheck("admin")
-     *
      * Admin breadcrumbs
      */
     #[Route('/breadcrumbs', name: 'zikulaadminbundle_admininterface_breadcrumbs', methods: ['GET'])]
+    #[PermissionCheck('admin')]
     public function breadcrumbs(RequestStack $requestStack, ZikulaHttpKernelInterface $kernel, AdminCategoryHelper $categoryHelper): Response
     {
         $caller = $this->getCallerInfo($requestStack, $kernel);
@@ -85,11 +84,10 @@ class AdminInterfaceController extends AbstractController
     }
 
     /**
-     * @PermissionCheck("admin")
-     *
      * Display admin menu
      */
     #[Route('/menu', name: 'zikulaadminbundle_admininterface_menu', methods: ['GET'])]
+    #[PermissionCheck('admin')]
     public function menu(
         RequestStack $requestStack,
         ZikulaHttpKernelInterface $kernel,

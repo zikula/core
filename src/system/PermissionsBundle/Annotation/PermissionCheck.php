@@ -13,15 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsBundle\Annotation;
 
-use Doctrine\Common\Annotations\Annotation;
+use Attribute;
 
 /**
- * @Annotation
- * @Target({"METHOD", "CLASS"})
  * Controller action permissions
  *
- * This annotation is used in a Controller Action Method OR Class in one of two ways.
- * 1. Like so: @PermissionCheck("admin")
+ * This annotation is used in a controller method OR class in one of two ways.
+ *
+ * 1. Like so: #[PermissionCheck('admin')]
  *     Possible alias values are:
  *       'admin'
  *       'delete'
@@ -35,21 +34,24 @@ use Doctrine\Common\Annotations\Annotation;
  *       the component will be like 'AcmeFooModule::'
  *       the instance will be '::'
  *       the level will be the corresponding ACCESS_* constant (e.g. ACCESS_ADMIN)
- *     Also allowed: @PermissionCheck("ACCESS_ADMIN")
+ *     Also allowed: #[PermissionCheck('ACCESS_ADMIN')]
  *
- * 2. You can also pass any valid permission schema (e.g. @PermissionCheck({"ZikulaCategoriesModule::category", "ID::5", "ACCESS_EDIT"})
- *     - note the use of curly brackets `{}` within for this type of value
+ * 2. You can also pass any valid permission schema (e.g. #[PermissionCheck(['ZikulaCategoriesBundle::category', 'ID::5', 'ACCESS_EDIT'])]
  *     The listener will attempt to replace any variable with a route attribute value. For example if this is the annotation:
- *       @PermissionCheck({"ZikulaGroupsModule::", "$gid::", "ACCESS_EDIT"})
+ *       #[PermissionCheck(['ZikulaGroupsBundle::', '$gid::', 'ACCESS_EDIT'])]
  *     Then, the listener will look for an 'gid' attribute in the Request object and replace the variable name with its value
  *     when testing for permissions.
- *     You can also use `$_zkModule` as the Extension name if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "ACCESS_EDIT"})
- *     You can also use the access alias if preferred, e.g. @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
+ *     You can also use `$_zkModule` as the Extension name if preferred, e.g. #[PermissionCheck(['$_zkModule::', '$gid::', 'ACCESS_EDIT'])]
+ *     You can also use the access alias if preferred, e.g. #[PermissionCheck(['$_zkModule::', '$gid::', 'edit'])]
  *
- * Please note: You cannot use @PermissionCheck() in *both* the Class and the Method. This will produce an AnnotationException.
+ * Please note: You cannot use #[PermissionCheck()] in *both* the class and the method. This will produce an Exception.
  *
  * @see \Zikula\PermissionsBundle\EventListener\ControllerPermissionCheckAnnotationReaderListener
  */
-class PermissionCheck extends Annotation
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
+class PermissionCheck
 {
+    function __construct(public string|array $value)
+    {
+    }
 }

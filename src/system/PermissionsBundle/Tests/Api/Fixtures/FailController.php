@@ -16,14 +16,10 @@ namespace Zikula\PermissionsBundle\Tests\Api\Fixtures;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
-/**
- * @PermissionCheck("admin")
- */
+#[PermissionCheck('admin')]
 class FailController extends AbstractController
 {
-    /**
-     * @PermissionCheck("admin")
-     */
+    #[PermissionCheck('admin')]
     public function first()
     {
         return true;

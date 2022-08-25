@@ -13,22 +13,19 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Engine\Annotation;
 
-use Doctrine\Common\Annotations\Annotation;
+use Attribute;
 
 /**
- * @Annotation
- * Class Theme
- *
- * This annotation is used in a Controller Action Method.
- *  like so: @Theme("admin")
+ * This attribute is used in a controller method like so: #[Theme('admin')]
  * Possible values are:
  *  - 'admin'
- *  - 'print'
- *  - 'atom'
- *  - 'rss'
- *  - any valid theme name (e.g. 'ZikulaAndreas08Theme')
+ *  - any valid theme bundle name (e.g. 'ZikulaDefaultThemeBundle')
  * @see \Zikula\ThemeBundle\Engine\Engine::changeThemeByAnnotation
  */
-class Theme extends Annotation
+#[Attribute(Attribute::TARGET_METHOD)]
+class Theme
 {
+    function __construct(public string $value)
+    {
+    }
 }

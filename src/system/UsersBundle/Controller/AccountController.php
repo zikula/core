@@ -36,10 +36,8 @@ use Zikula\UsersBundle\Helper\DeleteHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
-/**
- * @PermissionCheck("read")
- */
 #[Route('/account')]
+#[PermissionCheck('read')]
 class AccountController extends AbstractController
 {
     public function __construct(

@@ -46,11 +46,10 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @PermissionCheck("overview")
-     *
      * View a list of all groups (user view).
      */
     #[Route('/list/{page}', name: 'zikulagroupsbundle_group_listgroups', methods: ['GET'], requirements: ['page' => '\d+'])]
+    #[PermissionCheck('overview')]
     public function listGroups(GroupRepositoryInterface $groupRepository, int $page = 1): Response
     {
         $excludedStates = [];
@@ -74,12 +73,11 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @PermissionCheck("edit")
-     * @Theme("admin")
-     *
      * View a list of all groups (admin view).
      */
     #[Route('/admin/list/{page}', name: 'zikulagroupsbundle_group_adminlist', methods: ['GET'], requirements: ['page' => '\d+'])]
+    #[PermissionCheck('edit')]
+    #[Theme('admin')]
     public function adminList(GroupRepositoryInterface $groupRepository, int $page = 1): Response
     {
         $paginator = $groupRepository->getGroups([], [], [], $page, $this->groupsPerPage);
@@ -94,12 +92,11 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @PermissionCheck("add")
-     * @Theme("admin")
-     *
      * Display a form to add a new group.
      */
     #[Route('/admin/create', name: 'zikulagroupsbundle_group_create')]
+    #[PermissionCheck('add')]
+    #[Theme('admin')]
     public function create(
         Request $request,
         ManagerRegistry $doctrine,
@@ -127,12 +124,11 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @PermissionCheck({"$_zkModule::", "$gid::", "edit"})
-     * @Theme("admin")
-     *
      * Modify a group.
      */
     #[Route('/admin/edit/{gid}', name: 'zikulagroupsbundle_group_edit', requirements: ['gid' => "^[1-9]\d*$"])]
+    #[PermissionCheck(['$_zkModule::', '$gid::', 'edit'])]
+    #[Theme('admin')]
     public function edit(
         Request $request,
         ManagerRegistry $doctrine,
@@ -162,12 +158,11 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @PermissionCheck({"$_zkModule::", "$gid::", "delete"})
-     * @Theme("admin")
-     *
      * Deletes a group.
      */
     #[Route('/admin/remove/{gid}', name: 'zikulagroupsbundle_group_remove', requirements: ['gid' => "\d+"])]
+    #[PermissionCheck(['$_zkModule::', '$gid::', 'delete'])]
+    #[Theme('admin')]
     public function remove(
         Request $request,
         ManagerRegistry $doctrine,

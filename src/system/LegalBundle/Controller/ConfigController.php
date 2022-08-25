@@ -24,20 +24,16 @@ use Zikula\LegalBundle\Helper\ResetAgreementHelper;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/legal')]
+#[PermissionCheck('admin')]
 class ConfigController extends AbstractController
 {
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
-    /**
-     * @Theme("admin")
-     */
     #[Route('/config', name: 'zikulalegalbundle_config_config')]
+    #[Theme('admin')]
     public function config(
         Request $request,
         GroupRepositoryInterface $groupRepository,

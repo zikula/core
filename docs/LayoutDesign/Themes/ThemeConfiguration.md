@@ -14,7 +14,7 @@ to match the (1) path, (2) route id, or (3) the bundle name. The realms are matc
 first match (case-insensitive). Therefore, more specific definitions must be higher than general definitions.
 
 Three additional 'alias' realms may be defined and neither requires a pattern:
-  1) Defining an 'admin' realm will be used when `@Theme('admin')` controller method annotation is detected in the method
+  1) Defining an 'admin' realm will be used when `#[Theme('admin')]` controller method attribute is detected in the method
   2) Defining a 'home' realm will be used when the path = `/`
   3) Defining an 'error' realm will be used when an exception is thrown (other than AccessDeniedException) and the error
      template is rendered.

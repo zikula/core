@@ -27,10 +27,8 @@ use Zikula\CategoriesBundle\Repository\CategoryRepository;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/categories/admin/category')]
+#[PermissionCheck('admin')]
 class NodeController extends AbstractController
 {
     private string $domTreeNodePrefix = 'node_';

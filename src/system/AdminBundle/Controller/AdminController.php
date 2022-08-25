@@ -44,12 +44,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @PermissionCheck("edit")
-     * @Theme("admin")
-     *
      * Views all admin categories.
      */
     #[Route('/categories', name: 'zikulaadminbundle_admin_view', methods: ['GET'])]
+    #[PermissionCheck('edit')]
+    #[Theme('admin')]
     public function view(AdminCategoryHelper $categoryHelper): Response
     {
         return $this->render('@ZikulaAdmin/Admin/view.html.twig', [
@@ -58,14 +57,13 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @PermissionCheck("edit")
-     * @Theme("admin")
-     *
      * Displays main admin panel for a category.
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the bundle
      */
     #[Route('/panel/{acslug}', name: 'zikulaadminbundle_admin_adminpanel', methods: ['GET'])]
+    #[PermissionCheck('edit')]
+    #[Theme('admin')]
     public function adminpanel(
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
@@ -135,11 +133,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Theme("admin")
-     *
      * Displays main category menu.
      */
     #[Route('/categorymenu/{acslug}', name: 'zikulaadminbundle_admin_categorymenu', methods: ['GET'])]
+    #[PermissionCheck('edit')]
+    #[Theme('admin')]
     public function categorymenu(
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
@@ -237,11 +235,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Theme("admin")
-     *
      * Displays the content of {@see phpinfo()}.
      */
     #[Route('/phpinfo', name: 'zikulaadminbundle_admin_phpinfo', methods: ['GET'])]
+    #[PermissionCheck('admin')]
+    #[Theme('admin')]
     public function phpinfo(): Response
     {
         ob_start();

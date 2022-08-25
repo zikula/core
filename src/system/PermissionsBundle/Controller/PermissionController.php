@@ -35,10 +35,8 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/permissions')]
+#[PermissionCheck('admin')]
 class PermissionController extends AbstractController
 {
     use TranslatorTrait;
@@ -53,10 +51,8 @@ class PermissionController extends AbstractController
         $this->setTranslator($translator);
     }
 
-    /**
-     * @Theme("admin")
-     */
     #[Route('/list', name: 'zikulapermissionsbundle_permission_listpermissions')]
+    #[Theme('admin')]
     public function listPermissions(
         GroupRepositoryInterface $groupsRepository,
         PermissionRepositoryInterface $permissionRepository,

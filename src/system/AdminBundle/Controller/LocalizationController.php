@@ -21,18 +21,15 @@ use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/localization')]
+#[PermissionCheck('admin')]
 class LocalizationController extends AbstractController
 {
     /**
-     * @Theme("admin")
-     *
      * Toggles the "Edit in place" translation functionality.
      */
     #[Route('/toggleeditinplace', name: 'zikulaadminbundle_localization_toggleeditinplace')]
+    #[Theme('admin')]
     public function toggleEditInPlace(Request $request, EditInPlaceActivator $activator): RedirectResponse
     {
         if ($request->hasSession() && ($session = $request->getSession())) {

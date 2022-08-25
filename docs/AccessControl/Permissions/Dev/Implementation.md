@@ -52,20 +52,17 @@ use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 class PersonController extends AbstractController
 {
     /**
-     * @Theme("admin")
-     * @Template("@AcmePerson/Person/edit.html.twig")
-     *
      * Modify a person.
      *
-     * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't permissions to edit the person
      */
     #[Route('/admin/edit/{personid}', name: 'acmepersonbundle_person_edit', requirements: ['personid' => "^[1-9]\d*$"])]
+    #[Theme('admin')]
     public function edit(
         Request $request,
         PersonEntity $person,
         PermissionApiInterface $permissionApi
-    ) {
+    ): Response {
         if (!$permissionApi->hasPermission('AcmePersonBundle::', $person->getId() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -117,13 +114,10 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 class PersonController extends AbstractController
 {
-    /**
-     * @PermissionCheck({"AcmePersonBundle::", "$personid::", "edit"})
-     * @Theme("admin")
-     * @Template("@AcmePersonBundle/Person/edit.html.twig")
-     */
     #[Route('/admin/edit/{personid}', name: 'acmepersonbundle_person_edit', requirements: ['personid' => "^[1-9]\d*$"])]
-    public function edit(Request $request, PersonEntity $person)
+    #[PermissionCheck(['AcmePersonBundle::', '$personid::', 'edit'])]
+    #[Theme('admin')]
+    public function edit(Request $request, PersonEntity $person): Response
     {
         // ...
     }
@@ -144,9 +138,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
-/**
- * @PermissionCheck("admin")
- */
+#[PermissionCheck('admin')]
 class ConfigController extends AbstractController
 {
     public function doSomething(Request $request)

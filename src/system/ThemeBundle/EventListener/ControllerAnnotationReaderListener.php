@@ -20,8 +20,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ThemeBundle\Engine\Engine;
 
 /**
- * This class reads annotations from a controller and submits them to the theme engine to
- * potentially change the theme based on that annotation.
+ * Submits a given controller to the theme engine to potentially change the theme based on its attribute.
  * @see \Zikula\ThemeBundle\Engine\Annotation\Theme
  */
 class ControllerAnnotationReaderListener implements EventSubscriberInterface
@@ -37,9 +36,6 @@ class ControllerAnnotationReaderListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * Read the controller annotations and change theme if the annotation indicate that need
-     */
     public function readControllerAnnotations(ControllerEvent $event): void
     {
         if (!$event->isMasterRequest()) {

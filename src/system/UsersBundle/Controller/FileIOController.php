@@ -25,16 +25,12 @@ use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Form\Type\ExportUsersType;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/users/fileIO')]
+#[PermissionCheck('admin')]
 class FileIOController extends AbstractController
 {
-    /**
-     * @Theme("admin")
-     */
     #[Route('/export', name: 'zikulausersbundle_fileio_export')]
+    #[Theme('admin')]
     public function export(Request $request, UserRepositoryInterface $userRepository)
     {
         $form = $this->createForm(ExportUsersType::class, []);

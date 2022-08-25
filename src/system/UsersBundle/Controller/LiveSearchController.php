@@ -26,10 +26,9 @@ class LiveSearchController extends AbstractController
 {
     /**
      * Retrieves a list of users for a given search term (fragment).
-     *
-     * @PermissionCheck({"$_zkModule::LiveSearch", "::", "edit"})
      */
     #[Route('/getUsers', name: 'zikulausersbundle_livesearch_getusers', methods: ['GET'], options: ['expose' => true])]
+    #[PermissionCheck(['$_zkModule::LiveSearch', '::', 'edit'])]
     public function getUsers(
         Request $request,
         UserRepositoryInterface $userRepository,

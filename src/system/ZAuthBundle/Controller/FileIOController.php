@@ -25,10 +25,8 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\ZAuthBundle\Form\Type\ImportUserType;
 use Zikula\ZAuthBundle\Helper\FileIOHelper;
 
-/**
- * @PermissionCheck("admin")
- */
 #[Route('/zauth/fileIO')]
+#[PermissionCheck('admin')]
 class FileIOController extends AbstractController
 {
     public function __construct(
@@ -38,10 +36,8 @@ class FileIOController extends AbstractController
     ) {
     }
 
-    /**
-     * @Theme("admin")
-     */
     #[Route('/import', name: 'zikulazauthbundle_fileio_import')]
+    #[Theme('admin')]
     public function import(
         Request $request,
         GroupRepositoryInterface $groupRepository,

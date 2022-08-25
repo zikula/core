@@ -18,38 +18,30 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 class FooController extends AbstractController
 {
-    /**
-     * @PermissionCheck("admin")
-     */
+    #[PermissionCheck('admin')]
     public function first()
     {
         return true;
     }
 
-    /**
-     * @PermissionCheck({"AcmeFooModule::", ".*", "overview"})
-     */
+    #[PermissionCheck(['AcmeFooBundle::', '.*', 'overview'])]
     public function second()
     {
         return true;
     }
 
-    /**
-     * @PermissionCheck({"$_zkModule", "::$gid", "ACCESS_EDIT"})
-     */
+    #[PermissionCheck(['$_zkModule', '::$gid', 'ACCESS_EDIT'])]
     public function third()
     {
         return true;
     }
 
-    /**
-     * @PermissionCheck("admin")
-     * @PermissionCheck("edit")
-     * @PermissionCheck("delete")
-     * @PermissionCheck("moderate")
-     * @PermissionCheck("comment")
-     * @PermissionCheck("overview")
-     */
+    #[PermissionCheck('admin')]
+    #[PermissionCheck('edit')]
+    #[PermissionCheck('delete')]
+    #[PermissionCheck('moderate')]
+    #[PermissionCheck('comment')]
+    #[PermissionCheck('overview')]
     public function fourth()
     {
         return true;

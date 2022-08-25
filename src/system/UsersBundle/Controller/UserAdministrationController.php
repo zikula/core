@@ -69,11 +69,9 @@ class UserAdministrationController extends AbstractController
     ) {
     }
 
-    /**
-     * @PermissionCheck("moderate")
-     * @Theme("admin")
-     */
     #[Route('/list/{sort}/{sortdir}/{letter}/{page}', name: 'zikulausersbundle_useradministration_listusers', methods: ['GET'], requirements: ['page' => '\d+'])]
+    #[PermissionCheck('moderate')]
+    #[Theme('admin')]
     public function listUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -145,11 +143,10 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @Theme("admin")
-     *
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the user record
      */
     #[Route('/user/modify/{user}', name: 'zikulausersbundle_useradministration_modify', requirements: ['user' => '^[1-9]\d*$'])]
+    #[Theme('admin')]
     public function modify(
         Request $request,
         UserEntity $user,
@@ -198,11 +195,9 @@ class UserAdministrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @PermissionCheck("moderate")
-     * @Theme("admin")
-     */
     #[Route('/user/approve/{user}/{force}', name: 'zikulausersbundle_useradministration_approve', requirements: ['user' => '^[1-9]\d*$'])]
+    #[PermissionCheck('moderate')]
+    #[Theme('admin')]
     public function approve(
         Request $request,
         UserEntity $user,
@@ -259,11 +254,9 @@ class UserAdministrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @PermissionCheck("delete")
-     * @Theme("admin")
-     */
     #[Route('/delete/{user}', name: 'zikulausersbundle_useradministration_delete', requirements: ['user' => '^[1-9]\d*$'])]
+    #[PermissionCheck('delete')]
+    #[Theme('admin')]
     public function delete(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -338,11 +331,9 @@ class UserAdministrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @PermissionCheck("moderate")
-     * @Theme("admin")
-     */
     #[Route('/search', name: 'zikulausersbundle_useradministration_search')]
+    #[PermissionCheck('moderate')]
+    #[Theme('admin')]
     public function search(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -367,10 +358,8 @@ class UserAdministrationController extends AbstractController
         ]);
     }
 
-    /**
-     * @PermissionCheck({"$_zkModule::MailUsers", "::", "comment"})
-     */
     #[Route('/mail', name: 'zikulausersbundle_useradministration_mailusers')]
+    #[PermissionCheck(['$_zkModule::MailUsers', '::', 'comment'])]
     public function mailUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
