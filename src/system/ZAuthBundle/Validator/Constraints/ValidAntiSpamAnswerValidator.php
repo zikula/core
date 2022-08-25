@@ -27,7 +27,7 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly ValidatorInterface $validator,
-        private readonly string $antiSpamAnswer
+        private readonly ?string $antiSpamAnswer
     ) {
     }
 
@@ -36,7 +36,7 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
         if (!$constraint instanceof ValidAntiSpamAnswer) {
             throw new UnexpectedTypeException($constraint, ValidAntiSpamAnswer::class);
         }
-        $correctAnswer = $this->antiSpamAnswer;
+        $correctAnswer = $this->antiSpamAnswer ?? '';
         /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate($value, [
             new EqualTo([

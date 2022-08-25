@@ -29,7 +29,6 @@ use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidAntiSpamAnswer;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
-use Zikula\ZAuthBundle\ZAuthConstant;
 
 class RegistrationType extends AbstractType
 {
