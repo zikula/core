@@ -53,7 +53,7 @@ class AdminBundleHelper
                 : '';
         } catch (RouteNotFoundException $routeNotFoundException) {
             $menuTextUrl = 'javascript:void(0)';
-            //$menuText .= ' (⚠️ ' . $this->translator->trans('invalid route') . ')';
+            // $menuText .= ' (⚠️ ' . $this->translator->trans('invalid route') . ')';
             $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->translator->trans('invalid route') . ')';
         }
 

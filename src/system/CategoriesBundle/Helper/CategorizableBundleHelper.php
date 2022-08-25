@@ -29,7 +29,6 @@ class CategorizableBundleHelper
     ) {
     }
 
-
     public function getCategorizableBundleNames(): array
     {
         $result = [];

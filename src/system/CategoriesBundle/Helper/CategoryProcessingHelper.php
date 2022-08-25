@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\CategoriesBundle\Helper;
 
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
-use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
 
 class CategoryProcessingHelper

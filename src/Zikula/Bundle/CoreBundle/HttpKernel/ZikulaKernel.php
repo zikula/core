@@ -15,9 +15,7 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Exception;
 use InvalidArgumentException;
-use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Kernel;
-use Zikula\ExtensionsBundle\AbstractExtension;
 use Zikula\ExtensionsBundle\AbstractModule;
 use Zikula\ExtensionsBundle\AbstractTheme;
 
