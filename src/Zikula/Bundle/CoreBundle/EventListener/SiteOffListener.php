@@ -36,7 +36,7 @@ class SiteOffListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // priority set high to catch request before other subscribers

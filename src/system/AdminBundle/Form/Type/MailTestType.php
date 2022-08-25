@@ -29,39 +29,39 @@ class MailTestType extends AbstractType
     {
         $builder
             ->add('fromName', TextType::class, [
-                'label' => 'Sender\'s name'
+                'label' => 'Sender\'s name',
             ])
             ->add('fromAddress', EmailType::class, [
                 'label' => 'Sender\'s email address',
-                'help' => 'Incorrect sender email may cause sending failure.'
+                'help' => 'Incorrect sender email may cause sending failure.',
             ])
             ->add('toName', TextType::class, [
                 'label' => 'Recipient\'s name',
                 'attr' => [
-                    'maxlength' => 50
+                    'maxlength' => 50,
                 ],
                 'constraints' => [
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('toAddress', EmailType::class, [
                 'label' => 'Recipient\'s e-mail address',
                 'attr' => [
-                    'maxlength' => 50
+                    'maxlength' => 50,
                 ],
                 'constraints' => [
                     new NotBlank(),
-                    new Email()
-                ]
+                    new Email(),
+                ],
             ])
             ->add('subject', TextType::class, [
                 'label' => 'Subject',
                 'attr' => [
-                    'maxlength' => 50
+                    'maxlength' => 50,
                 ],
                 'constraints' => [
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('messageType', ChoiceType::class, [
                 'label' => 'Message type',
@@ -69,33 +69,33 @@ class MailTestType extends AbstractType
                 'choices' => [
                     'Plain-text message' => 'text',
                     'HTML-formatted message' => 'html',
-                    'Multi-part message' => 'multipart'
+                    'Multi-part message' => 'multipart',
                 ],
-                'expanded' => false
+                'expanded' => false,
             ])
             ->add('bodyHtml', TextareaType::class, [
                 'label' => 'HTML-formatted message',
-                'required' => false
+                'required' => false,
             ])
             ->add('bodyText', TextareaType::class, [
                 'label' => 'Plain-text message',
-                'required' => false
+                'required' => false,
             ])
             ->add('test', SubmitType::class, [
                 'label' => 'Send test email',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulaadminbundle_mailtest';
     }

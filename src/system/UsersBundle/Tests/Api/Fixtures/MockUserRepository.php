@@ -41,21 +41,21 @@ class MockUserRepository implements UserRepositoryInterface
         $this->users[42] = $user;
     }
 
-    public function find($id)
+    public function find($id): ?object
     {
         return isset($id) ? $this->users[$id] : null;
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         return $this->users;
     }
 
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
     }
 
-    public function findOneBy(array $criteria)
+    public function findOneBy(array $criteria): ?object
     {
     }
 

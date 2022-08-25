@@ -150,28 +150,34 @@ class AuthenticationMappingEntity implements UserInterface
         return [
             'uid' => $this->getUid(),
             'uname' => $this->getUname(),
-            'email' => $this->getEmail()
+            'email' => $this->getEmail(),
         ];
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         // not implemented
+        return [];
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->pass;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    public function getUsername()
+    public function getUserIdentifier(): string
     {
-        return $this->uid;
+        return $this->getUsername();
+    }
+
+    public function getUsername(): string
+    {
+        return (string) $this->uid;
     }
 
     public function eraseCredentials()

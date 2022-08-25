@@ -65,7 +65,7 @@ class BatchForcePasswordChangeType extends AbstractType
         return $choices;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulazauthbundle_batchtogglepass';
     }

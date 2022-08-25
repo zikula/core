@@ -32,13 +32,11 @@ class LocaleListener implements EventSubscriberInterface
         $this->defaultLocale = !empty($userSelectedLocale) ? $userSelectedLocale : $defaultLocale;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // must be registered after the default Locale listener
-            KernelEvents::REQUEST => [
-                ['onKernelRequest', 15]
-            ]
+            KernelEvents::REQUEST => ['onKernelRequest', 15],
         ];
     }
 

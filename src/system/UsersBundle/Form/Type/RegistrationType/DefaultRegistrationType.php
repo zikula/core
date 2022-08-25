@@ -50,7 +50,7 @@ class DefaultRegistrationType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_defaultregistration';
     }
@@ -59,7 +59,7 @@ class DefaultRegistrationType extends AbstractType
     {
         $resolver->setDefaults([
             'constraints' => [
-                new ValidUserFields()
+                new ValidUserFields(),
             ]
         ]);
     }

@@ -49,49 +49,49 @@ class CategoryType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Name',
                 'constraints' => [
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('parent', CategoryTreeType::class, [
                 'label' => 'Parent',
                 'includeRoot' => true,
                 'includeLeaf' => false,
                 'constraints' => [
-                    new NotBlank()
-                ]
+                    new NotBlank(),
+                ],
             ])
             ->add('locked', CheckboxType::class, [
                 'label' => 'Category is locked',
                 'label_attr' => ['class' => 'switch-custom'],
-                'required' => false
+                'required' => false,
             ])
             ->add('leaf', CheckboxType::class, [
                 'label' => 'Category is a leaf node',
                 'label_attr' => ['class' => 'switch-custom'],
-                'required' => false
+                'required' => false,
             ])
             ->add($builder->create('value', TextType::class, [
                 'label' => 'Value',
-                'required' => false
+                'required' => false,
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('icon', IconType::class, [
                 'label' => 'Icon',
-                'required' => false
+                'required' => false,
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('status', CheckboxType::class, [
                 'label' => 'Active',
                 'label_attr' => ['class' => 'switch-custom'],
-                'required' => false
+                'required' => false,
             ])
             ->add('displayName', CollectionType::class, [
                 'entry_type' => TextType::class,
                 'label' => 'Display name',
-                'required' => false
+                'required' => false,
             ])
             ->add('displayDesc', CollectionType::class, [
                 'entry_type' => TextareaType::class,
                 'label' => 'Display description',
-                'required' => false
+                'required' => false,
             ])
             ->add('attributes', CollectionType::class, [
                 'entry_type' => CategoryAttributeType::class,
@@ -101,11 +101,11 @@ class CategoryType extends AbstractType
                 'prototype' => true,
                 'label' => 'Category attributes',
                 'label_attr' => ['class' => 'sr-only'],
-                'required' => false
+                'required' => false,
             ])
             ->add('after', HiddenType::class, [
                 'mapped' => false,
-                'required' => false
+                'required' => false,
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($translator, $options) {
                 // ensure all display name and description exist for all locales
@@ -162,7 +162,7 @@ class CategoryType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulacategoriesbundle_category';
     }
@@ -173,8 +173,8 @@ class CategoryType extends AbstractType
             'data_class' => CategoryEntity::class,
             'locales' => [],
             'constraints' => [
-                new UniqueNameForPosition()
-            ]
+                new UniqueNameForPosition(),
+            ],
         ]);
     }
 }

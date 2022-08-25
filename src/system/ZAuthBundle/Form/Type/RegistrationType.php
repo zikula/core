@@ -119,7 +119,7 @@ class RegistrationType extends AbstractType
         }
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulazauthbundle_registration';
     }

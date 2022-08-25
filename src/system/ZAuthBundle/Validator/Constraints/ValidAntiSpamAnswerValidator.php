@@ -20,6 +20,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 
 class ValidAntiSpamAnswerValidator extends ConstraintValidator
 {
@@ -40,6 +41,7 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
         $errors = $this->validator->validate($value, [
             new EqualTo([
                 'value' => $correctAnswer,
+                /** @Ignore */
                 'message' => $this->translator->trans('You did not provide the correct answer for the security question. Try %answer%!', ['%answer%' => $correctAnswer], 'validators'),
             ])
         ]);

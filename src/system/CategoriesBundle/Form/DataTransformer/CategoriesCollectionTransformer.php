@@ -39,7 +39,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         $this->entityManager = $options['em'];
     }
 
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         $collection = new ArrayCollection();
         $class = $this->entityCategoryClass;

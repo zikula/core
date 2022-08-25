@@ -43,12 +43,12 @@ class CategoryTreeTransformer implements DataTransformerInterface
      * Transform a CategoryId to a CategoryEntity
      *
      * @param mixed $categoryId
-     * @return CategoryEntity|void
+     * @return CategoryEntity|null
      */
-    public function reverseTransform($categoryId)
+    public function reverseTransform($categoryId): mixed
     {
         if (!$categoryId) {
-            return;
+            return null;
         }
         /** @var CategoryEntity $category */
         $category = $this->categoryRepository->find($categoryId);

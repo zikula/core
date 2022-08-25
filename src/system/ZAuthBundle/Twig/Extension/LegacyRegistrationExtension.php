@@ -16,7 +16,7 @@ namespace Zikula\ZAuthBundle\Twig\Extension;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-/** @deprected */
+/** @deprecated */
 class LegacyRegistrationExtension extends AbstractExtension
 {
     public function __construct(

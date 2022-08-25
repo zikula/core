@@ -32,12 +32,12 @@ class CategoryAttributeType extends AbstractType
             ])
             ->add('value', TextType::class, [
                 'label' => 'Value',
-                'required' => false
+                'required' => false,
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulacategoriesbundle_category_attribute';
     }
@@ -45,7 +45,7 @@ class CategoryAttributeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CategoryAttributeEntity::class
+            'data_class' => CategoryAttributeEntity::class,
         ]);
     }
 }

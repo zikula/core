@@ -53,12 +53,10 @@ class ControllerPermissionCheckAnnotationReaderListener implements EventSubscrib
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::CONTROLLER => [
-                ['readControllerAnnotations']
-            ]
+            KernelEvents::CONTROLLER => ['readControllerAnnotations'],
         ];
     }
 

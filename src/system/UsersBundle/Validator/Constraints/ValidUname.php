@@ -22,7 +22,7 @@ class ValidUname extends Constraint
 
     public int $excludedUid;
 
-    public function getDefaultOption()
+    public function getDefaultOption(): ?string
     {
         return 'excludedUid';
     }

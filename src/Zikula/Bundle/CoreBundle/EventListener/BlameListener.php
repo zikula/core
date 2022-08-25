@@ -38,10 +38,10 @@ class BlameListener implements EventSubscriberInterface
         $this->installed = '0.0.0' !== $installed;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => 'onKernelRequest'
+            KernelEvents::REQUEST => 'onKernelRequest',
         ];
     }
 

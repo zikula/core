@@ -33,12 +33,10 @@ class AddThemePathsToLoaderListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => [
-                ['addThemePaths', 2056]
-            ]
+            KernelEvents::REQUEST => ['addThemePaths', 2056],
         ];
     }
 

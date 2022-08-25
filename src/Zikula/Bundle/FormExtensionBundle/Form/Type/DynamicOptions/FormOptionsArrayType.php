@@ -35,7 +35,7 @@ class FormOptionsArrayType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulaformextensionbundle_formoptionsarray';
     }

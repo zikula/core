@@ -50,18 +50,13 @@ class UsersUiListener implements EventSubscriberInterface
     ) {
     }
 
-    /**
-     * Establish the handlers for various events.
-     *
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserAccountDisplayEvent::class => ['uiView'],
             UserPreLoginSuccessEvent::class => ['acceptPolicies'],
             EditUserFormPostCreatedEvent::class => ['amendForm', -256],
-            EditUserFormPostValidatedEvent::class => ['editFormHandler']
+            EditUserFormPostValidatedEvent::class => ['editFormHandler'],
         ];
     }
 

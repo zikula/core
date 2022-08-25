@@ -44,7 +44,7 @@ class ChoiceValuesTransformer implements DataTransformerInterface
      * @param string $value
      * @return array
      */
-    public function reverseTransform(mixed $value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (null === $value) {
             return [];

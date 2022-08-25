@@ -23,6 +23,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -54,6 +55,7 @@ class ValidUnameValidator extends ConstraintValidator
             ]),
             new Regex([
                 'pattern' => '/^' . UsersConstant::UNAME_VALIDATION_PATTERN . '$/uD',
+                /** @Ignore */
                 'message' => $this->translator->trans('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.', [], 'validators'),
             ]),
         ]);

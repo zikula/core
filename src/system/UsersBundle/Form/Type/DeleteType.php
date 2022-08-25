@@ -34,19 +34,19 @@ class DeleteType extends AbstractType
                 'choices' => /** @Ignore */ $options['choices'],
                 'expanded' => true,
                 'multiple' => true,
-                'choice_label' => 'uname'
+                'choice_label' => 'uname',
             ])
             ->add('delete', SubmitType::class, [
                 'label' => 'Delete selected users',
                 'icon' => 'fa-trash-alt',
                 'attr' => [
-                    'class' => 'btn-danger'
-                ]
+                    'class' => 'btn-danger',
+                ],
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_delete';
     }
@@ -55,7 +55,7 @@ class DeleteType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => [],
-            'attr' => ['id' => 'users_searchresults']
+            'attr' => ['id' => 'users_searchresults'],
         ]);
     }
 }

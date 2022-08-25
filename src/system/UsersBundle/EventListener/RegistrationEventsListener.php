@@ -24,10 +24,10 @@ class RegistrationEventsListener implements EventSubscriberInterface
     {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            RegistrationPostSuccessEvent::class => ['sendRegistrationEmail']
+            RegistrationPostSuccessEvent::class => ['sendRegistrationEmail'],
         ];
     }
 

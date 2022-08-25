@@ -50,12 +50,10 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         ];
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => [
-                ['setDefaultPageAssets', 1028]
-            ]
+            KernelEvents::RESPONSE => ['setDefaultPageAssets', 1028],
         ];
     }
 

@@ -19,19 +19,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\CategoriesBundle\Form\DataTransformer\CategoryTreeTransformer;
 use Zikula\CategoriesBundle\Repository\CategoryRepositoryInterface;
 
 class CategoryTreeType extends AbstractType
 {
-    use TranslatorTrait;
-
     public function __construct(
-        TranslatorInterface $translator,
+        private readonly TranslatorInterface $translator,
         private readonly CategoryRepositoryInterface $categoryRepository
     ) {
-        $this->setTranslator($translator);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -40,7 +36,7 @@ class CategoryTreeType extends AbstractType
         $builder->addModelTransformer($transformer);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulacategoriesbundle_category_tree';
     }
@@ -93,7 +89,7 @@ class CategoryTreeType extends AbstractType
         });
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return ChoiceType::class;
     }

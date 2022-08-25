@@ -20,12 +20,12 @@ class ValidGroupName extends Constraint
 {
     public string $message = 'The fields are invalid.';
 
-    public function getDefaultOption()
+    public function getDefaultOption(): ?string
     {
         return 'excludedGid';
     }
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

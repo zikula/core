@@ -81,12 +81,12 @@ class AvatarType extends AbstractType
         $resolver->setDefaults($defaults);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikula_profile_bundle_avatar';
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return $this->allowUploads() ? FileType::class : ChoiceType::class;
     }

@@ -44,7 +44,7 @@ class TogglePasswordConfirmationType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulazauthbundle_togglepassconfirmation';
     }
@@ -52,7 +52,7 @@ class TogglePasswordConfirmationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'mustChangePass' => true
+            'mustChangePass' => true,
         ]);
     }
 }

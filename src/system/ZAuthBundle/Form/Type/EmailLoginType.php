@@ -59,7 +59,7 @@ class EmailLoginType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulazauthbundle_authentication_email';
     }

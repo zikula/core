@@ -176,24 +176,24 @@ class MetaData implements ArrayAccess
         }
     }
 
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->{$offset});
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         $method = 'get' . ucwords($offset);
 
         return $this->{$method}();
     }
 
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new Exception('Setting values by array access is not allowed.');
     }
 
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         throw new Exception('Unsetting values by array access is not allowed.');
     }

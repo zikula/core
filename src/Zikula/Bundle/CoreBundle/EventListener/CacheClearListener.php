@@ -24,12 +24,10 @@ class CacheClearListener implements EventSubscriberInterface
     {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::TERMINATE => [
-                ['doClearCache', -1000]
-            ]
+            KernelEvents::TERMINATE => ['doClearCache', -1000],
         ];
     }
 

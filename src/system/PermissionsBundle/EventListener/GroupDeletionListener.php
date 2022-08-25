@@ -23,10 +23,10 @@ class GroupDeletionListener implements EventSubscriberInterface
     {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            GroupPreDeletedEvent::class => ['preDelete', 5]
+            GroupPreDeletedEvent::class => ['preDelete', 5],
         ];
     }
 

@@ -39,7 +39,7 @@ class PolicyType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return LegalConstant::FORM_BLOCK_PREFIX;
     }

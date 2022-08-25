@@ -2,7 +2,7 @@
 
 (function($) {
     $(document).ready(function() {
-        var $moduleName = $('#zikulacategoriesbundle_category_registry_modname');
+        var $moduleName = $('#zikulacategoriesbundle_category_registry_bundlename');
         $moduleName.change(function () {
             $('#entity-loading').removeClass('d-none');
             var $form = $(this).closest('form');

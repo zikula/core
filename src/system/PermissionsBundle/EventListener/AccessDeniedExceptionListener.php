@@ -35,12 +35,10 @@ class AccessDeniedExceptionListener implements EventSubscriberInterface
         $this->installed = '0.0.0' !== $installed;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::EXCEPTION => [
-                ['onKernelException', 31]
-            ]
+            KernelEvents::EXCEPTION => ['onKernelException', 31],
         ];
     }
 

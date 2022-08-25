@@ -33,23 +33,23 @@ class DeleteConfirmationType extends AbstractType
                 ],
                 'data' => false,
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => false,
             ])
             ->add('delete', SubmitType::class, [
                 'label' => 'Confirm deletion',
                 'icon' => 'fa-trash-alt',
                 'attr' => [
-                    'class' => 'btn-danger'
-                ]
+                    'class' => 'btn-danger',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_deleteconfirmation';
     }

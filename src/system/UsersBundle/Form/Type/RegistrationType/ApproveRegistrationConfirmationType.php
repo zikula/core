@@ -40,12 +40,12 @@ class ApproveRegistrationConfirmationType extends AbstractType
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_approveregistrationconfirmation';
     }
@@ -53,7 +53,7 @@ class ApproveRegistrationConfirmationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'buttonLabel' => ''
+            'buttonLabel' => '',
         ]);
     }
 }

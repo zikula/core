@@ -59,7 +59,7 @@ class ZAuthDuplicatePassType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulazauthbundle_zauthcustompass';
     }

@@ -48,7 +48,7 @@ class ChangeEmailType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulazauthbundle_account_changeemail';
     }

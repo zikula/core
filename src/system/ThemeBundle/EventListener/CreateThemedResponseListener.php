@@ -34,12 +34,10 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         $this->debug = !empty($debug);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => [
-                ['createThemedResponse', -2]
-            ]
+            KernelEvents::RESPONSE => ['createThemedResponse', -2],
         ];
     }
 

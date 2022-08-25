@@ -48,7 +48,7 @@ class ConfigType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulalegalbundle_config';
     }
@@ -56,7 +56,7 @@ class ConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'groupChoices' => []
+            'groupChoices' => [],
         ]);
     }
 }

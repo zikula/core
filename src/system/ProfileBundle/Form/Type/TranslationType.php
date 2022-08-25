@@ -30,7 +30,7 @@ class TranslationType extends AbstractType
         $view->vars['label'] = array_search($view->vars['name'], $this->localeApi->getSupportedLocaleNames(), true);
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }

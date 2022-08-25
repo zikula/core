@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute]
 class UniqueNameForPosition extends Constraint
 {
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

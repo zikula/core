@@ -88,7 +88,7 @@ class CreateGroupType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulagroupsbundle_creategroup';
     }
@@ -97,7 +97,9 @@ class CreateGroupType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => GroupEntity::class,
-            'constraints' => new ValidGroupName(),
+            'constraints' => [
+                new ValidGroupName(),
+            ],
         ]);
     }
 }

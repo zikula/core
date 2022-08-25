@@ -26,12 +26,10 @@ class StaleCacheExceptionListener implements EventSubscriberInterface
     {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::EXCEPTION => [
-                ['handleException', 1000]
-            ]
+            KernelEvents::EXCEPTION => ['handleException', 1000],
         ];
     }
 

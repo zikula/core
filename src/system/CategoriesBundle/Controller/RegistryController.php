@@ -51,7 +51,7 @@ class RegistryController extends AbstractController
         }
 
         $form = $this->createForm(CategoryRegistryType::class, $registryEntity, [
-            'categorizableModules' => $this->getCategorizableModules($capabilityApi)
+            'categorizableBundles' => $this->getCategorizableBundles($capabilityApi),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,16 +72,16 @@ class RegistryController extends AbstractController
         ]);
     }
 
-    private function getCategorizableModules(CapabilityApiInterface $capabilityApi): array
+    private function getCategorizableBundles(CapabilityApiInterface $capabilityApi): array
     {
-        $modules = $capabilityApi->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
-        $moduleOptions = [];
-        foreach ($modules as $module) {
-            $moduleName = $module->getName();
-            $moduleOptions[$moduleName] = $moduleName;
+        $bundles = $capabilityApi->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
+        $bundleOptions = [];
+        foreach ($bundles as $bundle) {
+            $bundleName = $bundle->getName();
+            $bundleOptions[$bundleName] = $bundleName;
         }
 
-        return $moduleOptions;
+        return $bundleOptions;
     }
 
     /**

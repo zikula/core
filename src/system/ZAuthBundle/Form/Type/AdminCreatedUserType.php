@@ -121,7 +121,7 @@ class AdminCreatedUserType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulazauthbundle_admincreateduser';
     }

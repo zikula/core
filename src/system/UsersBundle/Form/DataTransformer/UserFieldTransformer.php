@@ -53,7 +53,7 @@ class UserFieldTransformer implements DataTransformerInterface
      *
      * @return UserEntity|null
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): mixed
     {
         if (!$value) {
             return null;

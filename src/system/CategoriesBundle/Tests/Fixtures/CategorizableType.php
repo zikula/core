@@ -35,7 +35,7 @@ class CategorizableType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulacategoriesbundle_test_categorizable';
     }
@@ -49,7 +49,7 @@ class CategorizableType extends AbstractType
             'expanded' => false,
             'attr' => [],
             'direct' => true,
-            'data_class' => CategorizableEntity::class
+            'data_class' => CategorizableEntity::class,
         ]);
     }
 }

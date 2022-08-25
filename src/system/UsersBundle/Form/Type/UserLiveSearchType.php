@@ -57,18 +57,18 @@ class UserLiveSearchType extends AbstractType
 
         $resolver
             ->setDefaults([
-                'inline_usage' => false
+                'inline_usage' => false,
             ])
             ->setAllowedTypes('inline_usage', 'bool')
         ;
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_userlivesearch';
     }

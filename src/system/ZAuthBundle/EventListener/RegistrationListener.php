@@ -37,7 +37,7 @@ class RegistrationListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ActiveUserPreCreatedEvent::class => ['vetoFullUserCreate'],

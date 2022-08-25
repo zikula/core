@@ -134,7 +134,7 @@ class DynamicFieldType extends AbstractType
         $this->pageAssetApi->add('javascript', $this->assetHelper->resolve('@ZikulaFormExtensionBundle:js/ZikulaFormExtensionBundle.DynamicField.Edit.js'));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulaformextensionbundle_dynamicfield';
     }

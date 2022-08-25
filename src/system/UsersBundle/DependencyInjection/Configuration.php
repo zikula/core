@@ -19,7 +19,7 @@ use Zikula\UsersBundle\UsersConstant;
 
 class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('zikula_users');
 

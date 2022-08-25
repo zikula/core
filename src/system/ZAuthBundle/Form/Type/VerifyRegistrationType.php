@@ -79,7 +79,7 @@ class VerifyRegistrationType extends AbstractType
         }
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_verifyregistration';
     }

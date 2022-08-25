@@ -30,38 +30,38 @@ class ExportUsersType extends AbstractType
                 'label' => 'Export title row',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
-                'data' => true
+                'data' => true,
             ])
             ->add('email', CheckboxType::class, [
                 'label' => 'Export email address',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
-                'data' => true
+                'data' => true,
             ])
             ->add('registrationDate', CheckboxType::class, [
                 'label' => 'Export registration date',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
-                'data' => true
+                'data' => true,
             ])
             ->add('lastLogin', CheckboxType::class, [
                 'label' => 'Export last login date',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
-                'data' => true
+                'data' => true,
             ])
             ->add('groups', CheckboxType::class, [
                 'label' => 'Export group memberships',
                 'label_attr' => ['class' => 'switch-custom'],
-                'required' => false
+                'required' => false,
             ])
             ->add('filename', TextType::class, [
                 'label' => 'CSV filename',
                 'help' => 'A simple name with three letter suffix, e.g. `myfile.csv`',
                 'data' => 'user.csv',
                 'constraints' => [
-                    new Regex(['pattern' => '/^[\w,\s-]+\.[A-Za-z]{3}$/'])
-                ]
+                    new Regex(['pattern' => '/^[\w,\s-]+\.[A-Za-z]{3}$/']),
+                ],
             ])
             ->add('delimiter', ChoiceType::class, [
                 'label' => 'CSV delimiter',
@@ -69,24 +69,24 @@ class ExportUsersType extends AbstractType
                     ',' => ',',
                     ';' => ';',
                     ':' => ':',
-                    'tab' => '\t'
-                ]
+                    'tab' => '\t',
+                ],
             ])
             ->add('download', SubmitType::class, [
                 'label' => 'Download',
                 'icon' => 'fa-download',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times'
+                'icon' => 'fa-times',
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_exportusers';
     }

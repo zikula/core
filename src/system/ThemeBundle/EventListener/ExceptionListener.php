@@ -30,12 +30,11 @@ class ExceptionListener implements EventSubscriberInterface
     ) {
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::EXCEPTION => [
-                ['onKernelException', 30] // lower priority than AccessDeniedExceptionListener
-            ]
+            // lower priority than AccessDeniedExceptionListener
+            KernelEvents::EXCEPTION => ['onKernelException', 30],
         ];
     }
 

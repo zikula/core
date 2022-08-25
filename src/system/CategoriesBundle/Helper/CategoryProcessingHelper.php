@@ -66,11 +66,11 @@ class CategoryProcessingHelper
             }
 
             // get information about responsible module
-            if (!$this->kernel->isBundle($registry->getModname())) {
+            if (!$this->kernel->isBundle($registry->getBundleName())) {
                 continue;
             }
 
-            $capabilities = $this->capabilityApi->getCapabilitiesOf($registry->getModname());
+            $capabilities = $this->capabilityApi->getCapabilitiesOf($registry->getBundleName());
             foreach ($capabilities[CapabilityApi::CATEGORIZABLE] as $entityClass) {
                 if (!is_subclass_of($entityClass, AbstractCategoryAssignment::class)) {
                     continue;

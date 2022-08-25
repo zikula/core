@@ -35,12 +35,10 @@ class AddWebPackAssetsListener implements EventSubscriberInterface
         $this->installed = '0.0.0' !== $installed;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::RESPONSE => [
-                ['addWebPackAssets', 1020]
-            ]
+            KernelEvents::RESPONSE => ['addWebPackAssets', 1020],
         ];
     }
 

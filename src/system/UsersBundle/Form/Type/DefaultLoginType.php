@@ -28,19 +28,19 @@ class DefaultLoginType extends AbstractType
             ->add('rememberme', CheckboxType::class, [
                 'label' => 'Remember me',
                 'label_attr' => ['class' => 'switch-custom'],
-                'required' => false
+                'required' => false,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Login',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_defaultlogin';
     }

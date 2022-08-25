@@ -19,32 +19,29 @@ use Iterator;
 
 class FormTypesChoices implements ArrayAccess, Iterator
 {
-    /**
-     * @var array
-     */
-    private $choices;
+    private array $choices;
 
     public function __construct(array $choices = [])
     {
         $this->choices = $choices;
     }
 
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->choices[$offset]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->choices[$offset];
     }
 
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->choices[$offset] = $value;
     }
 
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         throw new Exception('Not allowed to unset!');
     }

@@ -8,7 +8,7 @@
     <table class="table table-bordered table-striped">
         <colgroup>
             <col id="cId" />
-            <col id="cModule" />
+            <col id="cBundle" />
             <col id="cEntity" />
             <col id="cProperty" />
             <col id="cCategory" />
@@ -17,8 +17,8 @@
         <thead>
             <tr>
                 <th id="hId" scope="col"><label>ID</label></th>
-                <th id="hModule" scope="col"><label>{{ form_label(form.modname) }}</label></th>
-                <th id="hEntity" scope="col"><label>{{ form_label(form.entityname) }}</label></th>
+                <th id="hBundle" scope="col"><label>{{ form_label(form.bundleName) }}</label></th>
+                <th id="hEntity" scope="col"><label>{{ form_label(form.entityName) }}</label></th>
                 <th id="hProperty" scope="col"><label>{{ form_label(form.property) }}</label></th>
                 <th id="hCategory" scope="col"><label>{{ form_label(form.category) }}</label></th>
                 <th id="hActions" scope="col"><label>{% trans %}Actions{% endtrans %}</label></th>
@@ -29,8 +29,8 @@
             {% for registry in registries %}
             <tr>
                 <td headers="hId">{{ registry.id }}</td>
-                <td headers="hModule">{# to be improved: use module's display name here #}{{ registry.modname }}</td>
-                <td headers="hEntity">{% if registry.entityname|default %}{{ registry.entityname }}{% endif %}</td>
+                <td headers="hBundle">{# to be improved: use bundle's display name here #}{{ registry.bundleName }}</td>
+                <td headers="hEntity">{{ registry.entityName|default }}</td>
                 <td headers="hProperty">{{ registry.property }}</td>
                 <td headers="hCategory">{{ registry.category.displayName(app.request.locale|default('en')) }}</td>
                 <td headers="hActions" class="actions">
@@ -42,11 +42,11 @@
         {% endif %}
             <tr>
                 <td headers="hId"></td>
-                <td headers="hModule">
-                    {{ form_widget(form.modname) }}
+                <td headers="hBundle">
+                    {{ form_widget(form.bundleName) }}
                 </td>
                 <td headers="hEntity">
-                    {{ form_widget(form.entityname) }}<i class="fas fa-cog fa-spin fa-fw d-none text-muted" id="entity-loading"></i>
+                    {{ form_widget(form.entityName) }}<i class="fas fa-cog fa-spin fa-fw d-none text-muted" id="entity-loading"></i>
                 </td>
                 <td headers="hProperty">
                     {{ form_widget(form.property) }}

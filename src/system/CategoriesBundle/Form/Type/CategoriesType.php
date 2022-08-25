@@ -40,8 +40,8 @@ class CategoriesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $registries = $this->categoryRegistryRepository->findBy([
-            'modname' => $options['bundle'],
-            'entityname' => $options['entity']
+            'bundleName' => $options['bundle'],
+            'entityName' => $options['entity'],
         ]);
 
         $request = $this->requestStack->getMainRequest();
@@ -69,7 +69,7 @@ class CategoriesType extends AbstractType
                 'expanded' => $options['expanded'],
                 'class' => CategoryEntity::class,
                 'choice_label' => $choiceLabelClosure,
-                'query_builder' => $queryBuilderClosure
+                'query_builder' => $queryBuilderClosure,
             ];
 
             if ($options['showRegistryLabels']) {
@@ -89,7 +89,7 @@ class CategoriesType extends AbstractType
         $builder->addEventSubscriber(new CategoriesMergeCollectionListener());
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulacategoriesbundle_categories';
     }
@@ -108,7 +108,7 @@ class CategoriesType extends AbstractType
             'entityCategoryClass' => '',
             'em' => null,
             'required' => false,
-            'showRegistryLabels' => false
+            'showRegistryLabels' => false,
         ]);
         $resolver->setAllowedTypes('attr', 'array');
         $resolver->setAllowedTypes('multiple', 'bool');

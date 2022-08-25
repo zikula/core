@@ -21,12 +21,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  */
 class IconType extends AbstractType
 {
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikula_icon';
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return TextType::class;
     }

@@ -412,13 +412,13 @@ class CategoriesTypeTest extends TypeTestCase
 
     protected function generateCategoryRegistry(DateTime $now): void
     {
-        $registry = new CategoryRegistryEntity();
-        $registry->setId(1);
-        $registry->setModname('AcmeFooModule');
-        $registry->setEntityname('CategorizableEntity');
-        $registry->setProperty('Main');
-        $registry->setCreatedDate($now);
-        $registry->setUpdatedDate($now);
+        $registry = (new CategoryRegistryEntity())
+            ->setId(1)
+            ->setBundleName('AcmeFooBundle')
+            ->setEntityName('CategorizableEntity')
+            ->setProperty('Main')
+            ->setCreatedDate($now)
+            ->setUpdatedDate($now);
         /** @var CategoryEntity $rootCategory */
         $rootCategory = $this->emRegistry->getRepository(CategoryEntity::class)->find(1);
         $registry->setCategory($rootCategory);
@@ -432,42 +432,42 @@ class CategoriesTypeTest extends TypeTestCase
         $repository = $this->emRegistry->getRepository(CategoryEntity::class);
 
         // root
-        $root = new CategoryEntity();
-        $root->setId(1);
-        $root->setName('root');
-        $root->setDisplayName(['en' => 'root']);
-        $root->setCreatedDate($now);
-        $root->setUpdatedDate($now);
+        $root = (new CategoryEntity())
+            ->setId(1)
+            ->setName('root')
+            ->setDisplayName(['en' => 'root'])
+            ->setCreatedDate($now)
+            ->setUpdatedDate($now);
         $repository->persistAsFirstChild($root);
 
         // first child
-        $a = new CategoryEntity();
-        $a->setId(2);
-        $a->setParent($root);
-        $a->setName('a');
-        $a->setDisplayName(['en' => 'a']);
-        $a->setCreatedDate($now);
-        $a->setUpdatedDate($now);
+        $a = (new CategoryEntity())
+            ->setId(2)
+            ->setParent($root)
+            ->setName('a')
+            ->setDisplayName(['en' => 'a'])
+            ->setCreatedDate($now)
+            ->setUpdatedDate($now);
         $repository->persistAsFirstChildOf($a, $root);
 
         // second child
-        $b = new CategoryEntity();
-        $b->setId(3);
-        $b->setParent($root);
-        $b->setName('b');
-        $b->setDisplayName(['en' => 'b']);
-        $b->setCreatedDate($now);
-        $b->setUpdatedDate($now);
+        $b = (new CategoryEntity())
+            ->setId(3)
+            ->setParent($root)
+            ->setName('b')
+            ->setDisplayName(['en' => 'b'])
+            ->setCreatedDate($now)
+            ->setUpdatedDate($now);
         $repository->persistAsLastChildOf($b, $root);
 
         // child of first child (grand child)
-        $aa = new CategoryEntity();
-        $aa->setId(4);
-        $aa->setParent($a);
-        $aa->setName('aa');
-        $aa->setDisplayName(['en' => 'aa']);
-        $aa->setCreatedDate($now);
-        $aa->setUpdatedDate($now);
+        $aa = (new CategoryEntity())
+            ->setId(4)
+            ->setParent($a)
+            ->setName('aa')
+            ->setDisplayName(['en' => 'aa'])
+            ->setCreatedDate($now)
+            ->setUpdatedDate($now);
         $repository->persistAsFirstChildOf($aa, $a);
 
         $this->em->flush();

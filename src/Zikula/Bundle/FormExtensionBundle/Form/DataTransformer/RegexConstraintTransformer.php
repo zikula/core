@@ -38,7 +38,7 @@ class RegexConstraintTransformer implements DataTransformerInterface
      * @param string $value
      * @return array
      */
-    public function reverseTransform(mixed $value)
+    public function reverseTransform(mixed $value): mixed
     {
         if (is_array($value)) {
             $value = $value[0];

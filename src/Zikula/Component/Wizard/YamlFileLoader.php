@@ -28,7 +28,7 @@ class YamlFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function load($resource, string $type = null)
+    public function load($resource, string $type = null): mixed
     {
         $path = $this->locator->locate($resource);
 
@@ -38,7 +38,7 @@ class YamlFileLoader extends FileLoader
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, string $type = null)
+    public function supports($resource, string $type = null): bool
     {
         return is_string($resource) && 'yml' === pathinfo($resource, PATHINFO_EXTENSION);
     }

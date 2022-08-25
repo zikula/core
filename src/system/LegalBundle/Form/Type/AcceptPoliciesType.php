@@ -38,19 +38,19 @@ class AcceptPoliciesType extends AbstractType
                 'label' => 'Policies',
                 'label_attr' => ['class' => 'switch-custom'],
                 'constraints' => [
-                    new IsTrue(['message' => 'you must accept this site\'s policies'])
-                ]
+                    new IsTrue(['message' => 'you must accept this site\'s policies']),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 /** @Ignore */
                 'label' => $login ? /** @Translate */ 'Save and continue logging in' : /** @Translate */ 'Save',
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn-success']
+                'attr' => ['class' => 'btn-success'],
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return LegalConstant::FORM_BLOCK_PREFIX;
     }

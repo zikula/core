@@ -24,20 +24,17 @@ class AttributeNameTranslationListener implements EventSubscriber
 {
     private array $translations = [];
 
-    private string $locale;
-
     private string $prefix;
 
-    public function __construct(string $locale, string $prefix)
+    public function __construct(private readonly string $locale, string $prefix)
     {
-        $this->locale = $locale;
         $this->prefix = $prefix . ':';
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
-            Events::postLoad
+            Events::postLoad,
         ];
     }
 

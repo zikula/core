@@ -20,7 +20,7 @@ class ValidRegistrationVerification extends Constraint
 {
     public string $message = 'The fields are invalid.';
 
-    public function getTargets()
+    public function getTargets(): string|array
     {
         return self::CLASS_CONSTRAINT;
     }

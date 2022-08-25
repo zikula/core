@@ -55,13 +55,13 @@ class MailType extends AbstractType
                 'label' => 'Send mail',
                 'icon' => 'fa-angle-double-right',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ])
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'zikulausersbundle_mail';
     }
