@@ -12,10 +12,7 @@ functions, filters, tags, tests and global variables.
 
 ### General
 
-- hasPermission(component, instance, level)
 - showflashes(params = [])
-- siteName()
-- siteSlogan()
 
 ### Themes and Assets
 
@@ -24,9 +21,15 @@ functions, filters, tags, tests and global variables.
 - pageGetVar(name, default = null)
 - pageSetVar(name, value)
 - zasset(path)
+- siteName()
+- siteSlogan()
+- siteBranding()
+- siteImagePath()
+- getPreviewImagePath(themeName, size = 'medium')
 
 ### Admin Interface
 
+- adminPanelMenu()
 - adminHeader()
 - adminFooter()
 - adminBreadcrumbs()
@@ -54,7 +57,6 @@ functions, filters, tags, tests and global variables.
 - profileLinkByUserId($userId, $class = '', $image = '', $maxLength = 0, $title = '') (filter)
 - profileLinkByUserName($userName, $class = '', $image = '', $maxLength = 0, $title = '') (filter)
 
-### System Specific
+### Permissions
 
-- adminPanelMenu()
-- getPreviewImagePath(themeName, size = "medium")
+- hasPermission(component, instance, level)
