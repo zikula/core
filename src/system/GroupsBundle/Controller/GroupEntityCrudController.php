@@ -33,7 +33,7 @@ class GroupEntityCrudController extends AbstractCrudController
             ->setPageTitle('detail', fn (GroupEntity $group) => $group->getName())
             ->setPageTitle('edit', fn (GroupEntity $group) => sprintf('Editing <strong>%s</strong>', $group->getName()))
             ->renderContentMaximized()
-            //->renderSidebarMinimized()
+            // ->renderSidebarMinimized()
 //            ->setDateFormat('...')
             // ...
         ;

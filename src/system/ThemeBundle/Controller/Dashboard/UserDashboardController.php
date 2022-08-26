@@ -23,7 +23,6 @@ use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
 use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
-use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 
 class UserDashboardController extends AbstractDashboardController
 {
@@ -63,7 +62,7 @@ class UserDashboardController extends AbstractDashboardController
     {
         yield MenuItem::section('TEST', 'fas fa-flask');
         yield MenuItem::linkToDashboard('Dashboard', 'fas fa-home');
-        //yield MenuItem::linktoRoute('Administration', 'fas fa-wrench', 'home_admin');
+        // yield MenuItem::linktoRoute('Administration', 'fas fa-wrench', 'home_admin');
         yield MenuItem::linkToUrl('Administration', 'fas fa-wrench', '/admin');
         yield MenuItem::linkToUrl('Symfony', 'fab fa-symfony', 'https://symfony.com');
         yield MenuItem::linkToUrl('Zikula', 'fas fa-rocket', 'https://ziku.la');

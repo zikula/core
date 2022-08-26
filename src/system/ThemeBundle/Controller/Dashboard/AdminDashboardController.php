@@ -80,7 +80,7 @@ class AdminDashboardController extends AbstractDashboardController
     {
         yield MenuItem::section('TEST', 'fas fa-flask');
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        //yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'home');
+        // yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'home');
         yield MenuItem::linktoUrl('Back to the website', 'fas fa-home', '/');
         yield MenuItem::linkToUrl('Symfony', 'fab fa-symfony', 'https://symfony.com');
         yield MenuItem::linkToUrl('Zikula', 'fas fa-rocket', 'https://ziku.la');
@@ -116,9 +116,9 @@ class AdminDashboardController extends AbstractDashboardController
                         MenuItem::linkToUrl('Symfony', 'fab fa-symfony', 'https://symfony.com'),
                         MenuItem::linkToUrl('Zikula', 'fas fa-rocket', 'https://ziku.la'),
                         MenuItem::linkToUrl('ModuleStudio', 'fas fa-wand-sparkles', 'https://modulestudio.de/en/'),
-                        //MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class),
-                        //MenuItem::linkToCrud('Posts', 'fa fa-file-text', BlogPost::class),
-                        //MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class),
+                        // MenuItem::linkToCrud('Categories', 'fa fa-tags', Category::class),
+                        // MenuItem::linkToCrud('Posts', 'fa fa-file-text', BlogPost::class),
+                        // MenuItem::linkToCrud('Comments', 'fa fa-comment', Comment::class),
                     ]);
                 } else {
                     yield MenuItem::linktoRoute($menuText, $bundleInfo->getIcon(), $menuTextUrl);
