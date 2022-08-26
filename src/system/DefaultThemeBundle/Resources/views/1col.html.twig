@@ -2,8 +2,6 @@
 
 {% block themebody %}
     <div class="container 1col">
-        {{ admin|default ? adminHeader() : '' }}
         {{ maincontent|raw }}
-        {{ admin|default ? adminFooter() : '' }}
     </div>
 {% endblock themebody %}

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthBundle;
 
-use Zikula\ExtensionsBundle\AbstractModule;
+use Zikula\Bundle\CoreBundle\AbstractModule;
 
 class ZikulaZAuthBundle extends AbstractModule
 {

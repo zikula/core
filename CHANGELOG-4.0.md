@@ -3,6 +3,7 @@
 ## 4.0.0 (unreleased)
 
 - BC Breaks:
+  - [Admin] Remove old administration interface.
   - [Blocks] Remove blocks system/bundle and pending content.
   - [Core] Remove custom session handling.
   - [CoreInstaller] Remove custom installer bundle.
@@ -29,6 +30,7 @@
   - [General] Minimum PHP version is now 8.1 instead of 7.2.5.
   - [General] Zikula uses Composer/Flex and native Symfony bundles instead of custom extension types.
   - [General] Use PHP 8 attributes as well as other features (like constructor property promotion) where appropriate.
+  - [Admin] New interface based on `EasyAdminBundle` dashboards.
   - [Legal] Add `Legal` bundle to monorepo.
   - [Profile] Add `Profile` bundle to monorepo.
   - [Settings] Utilize rate limiter component for test email functionality.

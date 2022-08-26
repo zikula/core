@@ -26,7 +26,6 @@ class FileIOHelper
         private readonly UserCreationApiInterface $userCreationApi,
         private readonly MailHelper $mailHelper
     ) {
-        $this->setTranslator($translator);
     }
 
     public function importUsersFromFile(File $file, string $delimiter = ','): string

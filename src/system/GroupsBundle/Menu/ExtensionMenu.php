@@ -16,8 +16,8 @@ namespace Zikula\GroupsBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
-use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
+use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 
 class ExtensionMenu implements ExtensionMenuInterface

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsBundle\Helper;
 
+use Zikula\Bundle\CoreBundle\AbstractExtension;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsBundle\AbstractExtension;
 
 class SchemaHelper
 {

@@ -17,7 +17,6 @@
         "php": "^8.1",
         "symfony/asset": "^5.4",
         "symfony/config": "^5.4",
-        "symfony/contracts": "^2",
         "symfony/cache": "^5.4",
         "symfony/dependency-injection": "^5.4",
         "symfony/event-dispatcher": "^5.4",
@@ -37,16 +36,12 @@
 
         "zikula/core-bundle": "dev-3.1",
         "zikula/extensions-bundle": "dev-3.1",
-        "zikula/menu-bundle": "dev-3.1",
         "zikula/permissions-bundle": "dev-3.1",
         "zikula/users-bundle": "dev-3.1",
 
-        "zikula/bootstrap-theme": "dev-3.1",
-        "zikula/default-theme": "dev-3.1",
-        "zikula/rss-theme": "dev-3.1",
-        "zikula/printer-theme": "dev-3.1",
-        "zikula/atom-theme": "dev-3.1",
+        "zikula/default-theme-bundle": "dev-3.1",
 
+        "knplabs/knp-menu-bundle": "^3",
         "oro/twig-inspector": "^1",
 
         "oomphinc/composer-installers-extender": "^2",

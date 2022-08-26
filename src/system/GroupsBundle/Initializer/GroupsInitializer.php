@@ -15,7 +15,7 @@ namespace Zikula\GroupsBundle\Initializer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ExtensionsBundle\Initializer\BundleInitializerInterface;
+use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;

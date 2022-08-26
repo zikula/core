@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsBundle\Menu;
 
 use Knp\Menu\ItemInterface;
-use Zikula\MenuBundle\ExtensionMenu\AbstractExtensionMenu;
+use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {

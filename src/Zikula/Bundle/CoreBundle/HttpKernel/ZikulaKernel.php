@@ -16,8 +16,8 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Kernel;
-use Zikula\ExtensionsBundle\AbstractModule;
-use Zikula\ExtensionsBundle\AbstractTheme;
+use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Bundle\CoreBundle\AbstractTheme;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);

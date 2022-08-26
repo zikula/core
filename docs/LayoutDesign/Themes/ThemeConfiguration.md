@@ -19,8 +19,6 @@ Three additional 'alias' realms may be defined and neither requires a pattern:
   3) Defining an 'error' realm will be used when an exception is thrown (other than AccessDeniedException) and the error
      template is rendered.
 
-Any block positions in the page's template must be defined here.
-
 Do not duplicate realm names or later entries will override previous entries
 
 ## Optional Values

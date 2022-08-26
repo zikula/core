@@ -32,18 +32,16 @@
         "components/jquery": "^3",
         "components/jqueryui": "^1",
         "composer/composer": "^2",
-        "composer/semver": "^3",
         "dimsemenov/magnific-popup": "^1",
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2",
+        "easycorp/easyadmin-bundle": "^4.3",
         "egulias/email-validator": "^3",
         "ezyang/htmlpurifier": "dev-master",
-        "frdh/mmenu.js": "^8",
         "friendsofsymfony/jsrouting-bundle": "^3",
         "ircmaxell/random-lib": "^1",
         "itsjavi/fontawesome-iconpicker": "^3",
-        "justinrainbow/json-schema": "^5",
         "knplabs/knp-menu-bundle": "^3",
         "liip/imagine-bundle": "^2",
         "nikic/php-parser": "^4",
@@ -56,7 +54,7 @@
         "stof/doctrine-extensions-bundle": "^1",
         "symfony/asset": "^5.4",
         "symfony/browser-kit": "^5.4",
-        "symfony/contracts": "^2",
+        "symfony/config": "^5.4",
         "symfony/debug-bundle": "^5.4",
         "symfony/doctrine-bridge": "^5.4",
         "symfony/dotenv": "^5.4",
@@ -115,10 +113,8 @@
         "zikula/extensions-bundle": "self.version",
         "zikula/groups-bundle": "self.version",
         "zikula/legal-bundle": "self.version",
-        "zikula/menu-bundle": "self.version",
         "zikula/permissions-bundle": "self.version",
         "zikula/profile-bundle": "self.version",
-        "zikula/routes-bundle": "self.version",
         "zikula/staticcontent-bundle": "self.version",
         "zikula/theme-bundle": "self.version",
         "zikula/users-bundle": "self.version",
@@ -141,15 +137,9 @@
         },
         "zikula-scripts": [
             "composer dump-autoload",
-            "Zikula\\ExtensionsBundle\\Composer\\ManuallyInstallAssets::install"
+            "Zikula\\Bundle\\CoreBundle\\Composer\\ManuallyInstallAssets::install"
         ]
     },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/FrDH/mmenu-js"
-        }
-    ],
     "config": {
         "sort-packages": true,
         "allow-plugins": {

@@ -15,7 +15,7 @@ namespace Zikula\UsersBundle\Initializer;
 
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Zikula\ExtensionsBundle\Initializer\BundleInitializerInterface;
+use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
 use Zikula\UsersBundle\Entity\UserEntity;
 use Zikula\UsersBundle\UsersConstant;
 

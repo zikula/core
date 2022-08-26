@@ -17,8 +17,8 @@ use InvalidArgumentException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\RebootableInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-use Zikula\ExtensionsBundle\AbstractModule;
-use Zikula\ExtensionsBundle\AbstractTheme;
+use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Bundle\CoreBundle\AbstractTheme;
 
 interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface, RebootableInterface
 {

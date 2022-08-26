@@ -7,10 +7,8 @@
                 <p>left column</p>
             </div>
             <div id="themeMainContent" class="col-md-9">
-                {{ admin|default ? adminHeader() : '' }}
                 {{ showflashes() }}
                 {{ maincontent|raw }}
-                {{ admin|default ? adminFooter() : '' }}
             </div>
         </div>
     </div>

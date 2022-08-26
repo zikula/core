@@ -28,22 +28,6 @@ functions, filters, tags, tests and global variables.
 - siteImagePath()
 - getPreviewImagePath(themeName, size = 'medium')
 
-### Admin Interface
-
-- adminPanelMenu()
-- adminHeader()
-- adminFooter()
-- adminBreadcrumbs()
-- adminMenu(mode, template)
-- adminPanelMenu(mode)
-  - this function is a short-cut to  `adminMenu(mode, 'panel')`
-- adminUpdateCheck()
-
-- moduleHeader(type, title, titlelink, set_page_title, insert_flashes, menufirst, image)
-- moduleFooter()
-- moduleBreadcrumbs()
-- moduleLinks(type, links, modname, menuid, menuclass, itemclass, first, last)
-
 ### Users
 
 #### Messages

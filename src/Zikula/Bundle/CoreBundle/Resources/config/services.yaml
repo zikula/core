@@ -15,13 +15,7 @@ services:
 
     Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface: '@Zikula\Bundle\CoreBundle\Api\LocaleApi'
 
-    Zikula\Bundle\CoreBundle\Controller\:
-        resource: '../../Controller/*Controller.php'
-
     Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface: '@kernel'
-
-    Zikula\Bundle\CoreBundle\Controller\MainController:
-        public: true
 
     Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector:
         tags:

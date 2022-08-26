@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle;
 
-use Zikula\ExtensionsBundle\AbstractModule;
-use Zikula\ExtensionsBundle\Initializer\BundleInitializerInterface;
-use Zikula\ExtensionsBundle\Initializer\InitializableBundleInterface;
+use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
+use Zikula\Bundle\CoreBundle\BundleInitializer\InitializableBundleInterface;
 use Zikula\UsersBundle\Initializer\UsersInitializer;
 
 class ZikulaUsersBundle extends AbstractModule implements InitializableBundleInterface

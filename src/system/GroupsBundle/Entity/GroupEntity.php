@@ -56,10 +56,6 @@ class GroupEntity
     /** @var UserEntity[] */
     private Collection $users;
 
-    #[ORM\OneToMany(targetEntity: GroupApplicationEntity::class, mappedBy: 'group')]
-    /** @var GroupApplicationEntity[] */
-    private Collection $applications;
-
     public function __construct()
     {
         $this->name = '';
@@ -68,7 +64,6 @@ class GroupEntity
         $this->state = 0;
         $this->nbumax = 0;
         $this->users = new ArrayCollection();
-        $this->applications = new ArrayCollection();
     }
 
     public function getGid(): ?int
@@ -165,18 +160,6 @@ class GroupEntity
     public function removeAllUsers(): self
     {
         $this->users->clear();
-
-        return $this;
-    }
-
-    public function getApplications(): Collection
-    {
-        return $this->applications;
-    }
-
-    public function setApplications(Collection $applications): self
-    {
-        $this->applications = $applications;
 
         return $this;
     }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsBundle\Initializer;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Zikula\ExtensionsBundle\Initializer\BundleInitializerInterface;
+use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
 use Zikula\GroupsBundle\GroupsConstant;
 
 class PermissionsInitializer implements BundleInitializerInterface

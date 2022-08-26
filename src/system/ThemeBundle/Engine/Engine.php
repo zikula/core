@@ -17,18 +17,16 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Zikula\Bundle\CoreBundle\AbstractTheme;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsBundle\AbstractTheme;
 use Zikula\ThemeBundle\Engine\Annotation\Theme as ThemeAttribute;
 
 /**
- * Class Engine
- *
  * The Theme Engine class is responsible to manage all aspects of theme management using the classes referenced below.
  *
  * @see \Zikula\ThemeBundle\Engine\*
  * @see \Zikula\ThemeBundle\EventListener\*
- * @see \Zikula\ExtensionsBundle\AbstractTheme
+ * @see \Zikula\Bundle\CoreBundle\AbstractTheme
  *
  * The Engine works by intercepting the Response sent by the module controller (the controller action is the
  * 'primary actor'). It takes this response and "wraps" the theme around it and filters the resulting html to add

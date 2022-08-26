@@ -19,8 +19,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Routing\RouterInterface;
 use function Symfony\Component\String\s;
+use Zikula\Bundle\CoreBundle\AbstractExtension;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\ExtensionsBundle\AbstractExtension;
 use Zikula\ThemeBundle\Engine\Exception\AssetNotFoundException;
 
 /**

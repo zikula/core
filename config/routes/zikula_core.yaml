@@ -1,2 +1,0 @@
-zikula_core:
-    resource: "@CoreBundle/Resources/config/routing.yaml"

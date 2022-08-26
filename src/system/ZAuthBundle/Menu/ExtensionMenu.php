@@ -15,8 +15,8 @@ namespace Zikula\ZAuthBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
+use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;

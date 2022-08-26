@@ -26,27 +26,19 @@
                         </button>
                     </div>
                     <div id="themeNavBarCollapse" class="navbar-collapse collapse">
-                        <ul class="navbar-nav">
-                            <li class="mr-2">{{ adminPanelMenu() }}</li>
-                        </ul>
-                        {% if admin|default %}
-                            {{ knp_menu_render('zikulaDefaultThemeAdminMenu', {template: '@ZikulaMenu/Override/bootstrap_fontawesome.html.twig'}) }}
-                        {% else %}
-                            {{ knp_menu_render('zikulaDefaultThemeAdminMenu', {template: '@ZikulaMenu/Override/bootstrap_fontawesome.html.twig'}) }}
-                            {% if currentUser.loggedIn %}
-                                <div class="btn-group navbar-btn ml-auto">
-                                    <a href="{{ path('zikulausersbundle_account_menu') }}" class="btn btn-info">
-                                        <i class="fa fa-user"></i>&nbsp;&nbsp;{% trans with {'%username%': currentUser.uname} %}Signed in as %username%{% endtrans %}
-                                    </a>
-                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="sr-only">{% trans %}Toggle dropdown{% endtrans %}</span>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="{{ path('zikulausersbundle_access_logout') }}" class="dropdown-item">{% trans %}Log out{% endtrans %}</a>
-                                        <a href="{{ path('zikulausersbundle_account_menu') }}" class="dropdown-item">{% trans %}My Account{% endtrans %}</a>
-                                    </div>
+                        {% if currentUser.loggedIn %}
+                            <div class="btn-group navbar-btn ml-auto">
+                                <a href="{{ path('zikulausersbundle_account_menu') }}" class="btn btn-info">
+                                    <i class="fa fa-user"></i>&nbsp;&nbsp;{% trans with {'%username%': currentUser.uname} %}Signed in as %username%{% endtrans %}
+                                </a>
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">{% trans %}Toggle dropdown{% endtrans %}</span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="{{ path('zikulausersbundle_access_logout') }}" class="dropdown-item">{% trans %}Log out{% endtrans %}</a>
+                                    <a href="{{ path('zikulausersbundle_account_menu') }}" class="dropdown-item">{% trans %}My Account{% endtrans %}</a>
                                 </div>
-                            {% endif %}
+                            </div>
                         {% endif %}
                     </div>
                 </div>

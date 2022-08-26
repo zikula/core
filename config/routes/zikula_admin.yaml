@@ -1,2 +1,0 @@
-zikula_admin:
-    resource: "@ZikulaAdminBundle/Resources/config/routing.yaml"

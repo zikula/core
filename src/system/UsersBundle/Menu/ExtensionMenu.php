@@ -16,8 +16,8 @@ namespace Zikula\UsersBundle\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
-use Zikula\MenuBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
+use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\UsersConstant;
@@ -84,7 +84,7 @@ class ExtensionMenu implements ExtensionMenuInterface
         } else {
             if ($this->localeApi->multilingual()) {
                 $locales = $this->localeApi->getSupportedLocales();
-                if (count($locales) > 1) {
+                if (1 < count($locales)) {
                     $menu->addChild('Language switcher', [
                         'route' => 'zikulausersbundle_account_changelanguage',
                     ])->setAttribute('icon', 'fas fa-language');

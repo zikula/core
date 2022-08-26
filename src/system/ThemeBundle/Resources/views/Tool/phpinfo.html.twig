@@ -1,0 +1,10 @@
+{{ pageAddAsset('stylesheet', zasset('@ZikulaThemeBundle:css/phpinfo.css'), 100) }}
+<h3>
+    <span class="fas fa-info-circle"></span>
+    {% trans %}PHP configuration{% endtrans %}
+    {{ pageSetVar('title', 'PHP configuration'|trans) }}
+</h3>
+<div id="phpinfo">
+    {{ phpinfo|raw }}
+</div>
+{{ pageAddAsset('javascript', zasset('@ZikulaThemeBundle:js/ZikulaThemeBundle.Phpinfo.js')) }}

@@ -49,6 +49,8 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         if (!$this->installed) {
             return;
         }
+        // TODO disabled
+        return;
 
         $response = $event->getResponse();
         $format = $event->getRequest()->getRequestFormat();

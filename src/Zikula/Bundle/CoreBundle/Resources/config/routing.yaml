@@ -1,3 +1,0 @@
-zikulacorebundle:
-    resource: "@CoreBundle/Controller"
-    type: annotation

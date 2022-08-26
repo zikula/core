@@ -16,7 +16,6 @@
     "require": {
         "php": "^8.1",
         "doctrine/doctrine-migrations-bundle": "^3.2",
-        "symfony/contracts": "^2",
         "symfony/form": "^5.4",
         "symfony/framework-bundle": "^5.4",
         "symfony/maker-bundle": "^1",
@@ -27,7 +26,6 @@
         "zikula/formextension-bundle": "dev-3.1",
         "zikula/extensions-bundle": "dev-3.1",
         "zikula/groups-bundle": "dev-3.1",
-        "zikula/menu-bundle": "dev-3.1",
         "zikula/theme-bundle": "dev-3.1",
         "zikula/users-bundle": "dev-3.1"
     },

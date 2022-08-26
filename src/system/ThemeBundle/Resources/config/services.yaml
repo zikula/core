@@ -5,6 +5,7 @@ services:
         public: false
         bind:
             $installed: '%env(ZIKULA_INSTALLED)%'
+            $mailLoggingEnabled: '%enable_mail_logging%'
 
     Zikula\ThemeBundle\:
         resource: '../../*'
@@ -57,8 +58,6 @@ services:
         arguments:
           $skipFiles:
             - '/jquery/jquery.min.js'
-            - '/mmenu/css/mmenu.css'
-            - '/mmenu/js/mmenu.js'
 
     Zikula\ThemeBundle\Engine\Asset\JsResolver:
         arguments:
@@ -134,3 +133,7 @@ services:
     Zikula\ThemeBundle\EventListener\ExceptionListener:
         arguments:
             $debug: '%env(APP_DEBUG)%'
+
+    Zikula\ThemeBundle\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
