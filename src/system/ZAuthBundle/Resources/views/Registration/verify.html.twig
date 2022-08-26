@@ -1,4 +1,7 @@
-{{ moduleHeader('user', 'Account verification'|trans, '', true) }}
+{{ pageSetVar('title', 'Account verification'|trans) }}
+<h2>{{ 'Account verification'|trans }}</h2>
+{{ showflashes() }}
+
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>

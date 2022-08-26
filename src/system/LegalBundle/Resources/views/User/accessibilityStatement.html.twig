@@ -1,2 +1,4 @@
-{{ moduleHeader('user', 'Accessibility statement for %s%'|trans({ '%s%': siteName() }), '', true, true) }}
+{{ pageSetVar('title', 'Accessibility statement for %s%'|trans({ '%s%': siteName() })) }}
+<h2>{{ 'Accessibility statement for %s%'|trans({ '%s%': siteName() }) }}</h2>
+{{ showflashes() }}
 {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/accessibilityStatement.html.twig') }}

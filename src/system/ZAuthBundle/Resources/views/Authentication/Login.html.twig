@@ -1,4 +1,6 @@
-{{ moduleHeader('user', 'User login'|trans, '', true, true) }}
+{{ pageSetVar('title', 'User login'|trans) }}
+<h2>{{ 'User login'|trans }}</h2>
+{{ showflashes() }}
 <fieldset>
     {{ loginHeader|raw }}
     {{ form_start(form) }}

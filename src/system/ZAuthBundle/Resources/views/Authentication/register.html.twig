@@ -1,4 +1,6 @@
-{{ moduleHeader('user', 'New account registration'|trans, '', true, true) }}
+{{ pageSetVar('title', 'New account registration'|trans) }}
+<h2>{{ 'New account registration'|trans }}</h2>
+{{ showflashes() }}
 
 <p id="users_formtop">
     {% trans %}Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.{% endtrans %}

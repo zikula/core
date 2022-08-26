@@ -1,4 +1,6 @@
-{{ moduleHeader('user', 'Groups'|trans, '', true, true, false, true) }}
+{{ pageSetVar('title', 'Groups'|trans) }}
+<h2>{{ 'Groups'|trans }}</h2>
+{{ showflashes() }}
 <h3>
     <span class="fas fa-list"></span>
     {% trans %}Groups list{% endtrans %}
@@ -47,7 +49,7 @@
             </td>
             <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions">
                 {% set rowActions = knp_menu_get('zikulaGroupsUserMenu', [], {group: group}) %}
-                {{ knp_menu_render(rowActions, {template: '@ZikulaMenu/Override/actions.html.twig'}) }}
+                {{ knp_menu_render(rowActions, {template: '@ZikulaTheme/Menu/actions.html.twig'}) }}
             </td>
         </tr>
     {% else %}
@@ -56,4 +58,3 @@
     </tbody>
 </table>
 {{ include(paginator.template) }}
-{{ moduleFooter() }}

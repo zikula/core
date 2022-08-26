@@ -78,7 +78,7 @@
             </td>
             <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions">
                 {% set rowActions = knp_menu_get('zikulaGroupsAdminMenu', [], {group: group}) %}
-                {{ knp_menu_render(rowActions, {template: '@ZikulaMenu/Override/actions.html.twig'}) }}
+                {{ knp_menu_render(rowActions, {template: '@ZikulaTheme/Menu/actions.html.twig'}) }}
             </td>
         </tr>
     {% endfor %}

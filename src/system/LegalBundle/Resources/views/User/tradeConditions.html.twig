@@ -1,2 +1,4 @@
-{{ moduleHeader('user', 'Trade conditions for %s%'|trans({ '%s%': siteName() }), '', true, true) }}
+{{ pageSetVar('title', 'Trade conditions for %s%'|trans({ '%s%': siteName() })) }}
+<h2>{{ 'Trade conditions for %s%'|trans({ '%s%': siteName() }) }}</h2>
+{{ showflashes() }}
 {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/tradeConditions.html.twig') }}
