@@ -85,7 +85,7 @@
         "symfony/webpack-encore-bundle": "^1",
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
-        "thomaspark/bootswatch": "^4",
+        "thomaspark/bootswatch": "^5",
         "twig/extra-bundle": "^3",
         "twig/intl-extra": "^3",
         "twig/string-extra": "^3",
