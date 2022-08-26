@@ -86,6 +86,6 @@ class ProfileBundleCollector
 
     public function getSelectedName(): string
     {
-        return $this->currentProfileBundleName;
+        return $this->currentProfileBundleName ?? 'ZikulaUsersBundle';
     }
 }

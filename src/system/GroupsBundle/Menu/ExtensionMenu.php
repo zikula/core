@@ -80,7 +80,7 @@ class ExtensionMenu implements ExtensionMenuInterface
 
     private function getAccount(): ?ItemInterface
     {
-        if (!$this->currentUser->isLoggedIn()) {
+        if (!$this->currentUserApi->isLoggedIn()) {
             return null;
         }
 

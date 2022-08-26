@@ -86,6 +86,6 @@ class MessageBundleCollector
 
     public function getSelectedName(): string
     {
-        return $this->currentMessageBundleName;
+        return $this->currentMessageBundleName ?? 'ZikulaUsersBundle';
     }
 }

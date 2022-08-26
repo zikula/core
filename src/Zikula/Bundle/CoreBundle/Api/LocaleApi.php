@@ -49,7 +49,7 @@ class LocaleApi implements LocaleApiInterface
 
     public function multilingual(): bool
     {
-        return $this->multilingual;
+        return $this->multiLingualEnabled;
     }
 
     public function getSupportedLocales(bool $includeRegions = true, bool $syncConfig = true): array

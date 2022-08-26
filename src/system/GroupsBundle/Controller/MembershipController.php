@@ -270,7 +270,7 @@ class MembershipController extends AbstractController
         ];
         $users = $userRepository->query($filter);
 
-        return $this->render('@ZikulaGroupsBundle/Membership/userlist.html.twig', [
+        return $this->render('@ZikulaGroups/Membership/userlist.html.twig', [
             'users' => $users,
             'gid' => $request->query->get('gid'),
         ], new PlainResponse());

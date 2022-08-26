@@ -67,7 +67,7 @@ class AccountController extends AbstractController
             }
         }
 
-        return $this->render('@ZikulaUsersBundle/Account/menu.html.twig', [
+        return $this->render('@ZikulaUsers/Account/menu.html.twig', [
             'accountMenus' => $accountMenus,
         ]);
     }
@@ -111,7 +111,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersbundle_account_menu', ['_locale' => $locale]);
         }
 
-        return $this->render('@ZikulaUsersBundle/Account/changeLanguage.html.twig', [
+        return $this->render('@ZikulaUsers/Account/changeLanguage.html.twig', [
             'form' => $form->createView(),
             'multilingual' => $localeApi->multilingual(),
         ]);
@@ -164,7 +164,7 @@ class AccountController extends AbstractController
             }
         }
 
-        return $this->render('@ZikulaUsersBundle/Account/delete.html.twig', [
+        return $this->render('@ZikulaUsers/Account/delete.html.twig', [
             'form' => $form->createView(),
             'additionalTemplates' => isset($deleteUserFormPostCreatedEvent) ? $deleteUserFormPostCreatedEvent->getTemplates() : [],
         ]);

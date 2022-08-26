@@ -70,7 +70,7 @@ class ExtensionMenu implements ExtensionMenuInterface
     private function getAccount(): ?ItemInterface
     {
         $menu = $this->factory->createItem('usersAccountMenu');
-        if (!$this->currentUser->isLoggedIn()) {
+        if (!$this->currentUserApi->isLoggedIn()) {
             $menu->addChild('Login', [
                 'label' => 'I would like to login',
                 'route' => 'zikulausersbundle_access_login',
@@ -91,7 +91,7 @@ class ExtensionMenu implements ExtensionMenuInterface
                 }
             }
             if ($this->allowSelfDeletion) {
-                if (UsersConstant::USER_ID_ADMIN !== $this->currentUser->get('uid')) {
+                if (UsersConstant::USER_ID_ADMIN !== $this->currentUserApi->get('uid')) {
                     $menu->addChild('Delete my account', [
                         'route' => 'zikulausersbundle_account_deletemyaccount',
                     ])->setAttribute('icon', 'fas fa-trash-alt')
@@ -111,7 +111,7 @@ class ExtensionMenu implements ExtensionMenuInterface
     {
         $menu = $this->factory->createItem('usersUserMenu');
 
-        if (!$this->currentUser->isLoggedIn()) {
+        if (!$this->currentUserApi->isLoggedIn()) {
             $menu->addChild('Help', [
                 'route' => 'zikulausersbundle_account_menu',
             ])->setAttribute('icon', 'text-danger fas fa-ambulance');

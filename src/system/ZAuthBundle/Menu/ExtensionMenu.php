@@ -77,7 +77,7 @@ class ExtensionMenu implements ExtensionMenuInterface
     private function getAccount(): ?ItemInterface
     {
         $menu = $this->factory->createItem('zauthAccountMenu');
-        if (!$this->currentUser->isLoggedIn()) {
+        if (!$this->currentUserApi->isLoggedIn()) {
             $menu->addChild('UserName', [
                 'label' => 'I have forgotten my account information (for example, my user name)',
                 'route' => 'zikulazauthbundle_account_lostusername',
@@ -87,7 +87,7 @@ class ExtensionMenu implements ExtensionMenuInterface
                 'route' => 'zikulazauthbundle_account_lostpassword',
             ])->setAttribute('icon', 'fas fa-key');
         } else {
-            $userMapping = $this->mappingRepository->findOneBy(['uid' => $this->currentUser->get('uid')]);
+            $userMapping = $this->mappingRepository->findOneBy(['uid' => $this->currentUserApi->get('uid')]);
             if (isset($userMapping)) {
                 $menu->addChild('Change password', [
                     'route' => 'zikulazauthbundle_account_changepassword',

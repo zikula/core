@@ -84,7 +84,7 @@ class FileIOController extends AbstractController
             }
         }
 
-        return $this->render('@ZikulaUsersBundle/FileIO/export.html.twig', [
+        return $this->render('@ZikulaUsers/FileIO/export.html.twig', [
             'form' => $form->createView(),
         ]);
     }
