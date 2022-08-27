@@ -83,22 +83,6 @@ abstract class AbstractExtension extends Bundle
         return $this->container;
     }
 
-    /**
-     * Add the bundle's stylesheet to the page assets.
-     */
-    public function addStylesheet(string $name = 'style.css'): void
-    {
-        try {
-            $styleSheet = $this->getContainer()->get(Asset::class)->resolve('@' . $this->getName() . ":css/${name}");
-        } catch (InvalidArgumentException $exception) {
-            $styleSheet = '';
-        }
-        if (!empty($styleSheet)) {
-            $weight = $this instanceof AbstractTheme ? AssetBag::WEIGHT_THEME_STYLESHEET : AssetBag::WEIGHT_DEFAULT;
-            $this->container->get('zikula_core.common.theme.assets_css')->add([$styleSheet => $weight]);
-        }
-    }
-
     public function getMetaData(): MetaData
     {
         $scanner = new Scanner();

@@ -17,7 +17,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Locales;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class LocaleApi implements LocaleApiInterface
 {
@@ -33,8 +32,8 @@ class LocaleApi implements LocaleApiInterface
     private string $sectionKey;
 
     public function __construct(
-        private readonly ZikulaHttpKernelInterface $kernel,
         private readonly RequestStack $requestStack,
+        private readonly string $projectDir,
         private readonly bool $multiLingualEnabled,
         private readonly string $defaultLocale = 'en',
         string $installed = '0.0.0'
@@ -44,7 +43,7 @@ class LocaleApi implements LocaleApiInterface
             'withoutRegions' => []
         ];
         $this->installed = '0.0.0' !== $installed;
-        $this->translationPath = $this->kernel->getProjectDir() . '/translations';
+        $this->translationPath = $this->projectDir . '/translations';
     }
 
     public function multilingual(): bool

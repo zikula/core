@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\DefaultThemeBundle\Twig;
 
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Extension\RuntimeExtensionInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class DefaultThemeBundleRuntime implements RuntimeExtensionInterface
 {
-    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
+    public function __construct(private readonly KernelInterface $kernel)
     {
     }
 

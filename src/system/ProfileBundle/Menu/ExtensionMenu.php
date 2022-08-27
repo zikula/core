@@ -15,11 +15,9 @@ namespace Zikula\ProfileBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Collector\MessageBundleCollector;
 use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\ZAuthConstant;
@@ -29,9 +27,7 @@ class ExtensionMenu implements ExtensionMenuInterface
     public function __construct(
         private readonly FactoryInterface $factory,
         private readonly PermissionApiInterface $permissionApi,
-        private readonly ZikulaHttpKernelInterface $kernel,
         private readonly CurrentUserApiInterface $currentUserApi,
-        private readonly MessageBundleCollector $messageBundleCollector,
         private readonly ProfileBundleCollector $profileBundleCollector
     ) {
     }
@@ -106,15 +102,6 @@ class ExtensionMenu implements ExtensionMenuInterface
                     'route' => 'zikulazauthbundle_account_changepassword',
                 ]);
             }
-        }
-
-        $messageBundle = $this->messageBundleCollector->getSelectedName();
-        if (null !== $messageBundle && '' !== $messageBundle && $this->kernel->isBundle($messageBundle)
-            && $this->permissionApi->hasPermission($messageBundle . '::', '::', ACCESS_READ)
-        ) {
-            $menu->addChild('Messages', [
-                'uri' => $this->messageBundleCollector->getSelected()->getInboxUrl(),
-            ])->setAttribute('icon', 'fas fa-envelope');
         }
 
         return 0 === $menu->count() ? null : $menu;

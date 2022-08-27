@@ -17,7 +17,6 @@ use DateTime;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Routing\RouterInterface;
 use function Symfony\Component\String\s;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeBundle\Engine\AssetBag;
 
 class Merger implements MergerInterface
@@ -33,13 +32,14 @@ class Merger implements MergerInterface
 
     public function __construct(
         private readonly RouterInterface $router,
-        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly string $projectDir,
+        private readonly string $cacheDir,
         string $lifetime = '1 day',
         private readonly bool $minify = false,
         private readonly bool $compress = false,
         array $skipFiles = []
     ) {
-        $publicDir = realpath($kernel->getProjectDir() . '/public');
+        $publicDir = realpath($this->projectDir . '/public');
         $basePath = $router->getContext()->getBaseUrl();
         $this->rootDir = str_replace($basePath, '', $publicDir);
         $this->lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
@@ -82,7 +82,7 @@ class Merger implements MergerInterface
         $cacheService = new FilesystemAdapter(
             'combined_assets',
             $this->lifetime,
-            $this->kernel->getCacheDir() . '/assets/' . $type
+            $this->cacheDir . '/assets/' . $type
         );
         $key = md5(serialize($assets)) . (int) $this->minify . (int) $this->compress . $this->lifetime . '.combined.' . $type;
         $cacheService->get($key, function () use ($cachedFiles, $type) {

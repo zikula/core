@@ -12,9 +12,21 @@ declare(strict_types=1);
  */
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Symfony\Component\HttpKernel\Kernel as SymfonyKernel;
 
-class Kernel extends ZikulaKernel
+// Defines for access levels
+define('ACCESS_INVALID', -1);
+define('ACCESS_NONE', 0);
+define('ACCESS_OVERVIEW', 100);
+define('ACCESS_READ', 200);
+define('ACCESS_COMMENT', 300);
+define('ACCESS_MODERATE', 400);
+define('ACCESS_EDIT', 500);
+define('ACCESS_ADD', 600);
+define('ACCESS_DELETE', 700);
+define('ACCESS_ADMIN', 800);
+
+class Kernel extends SymfonyKernel
 {
     use MicroKernelTrait;
 

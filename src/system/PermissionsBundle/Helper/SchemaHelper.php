@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsBundle\Helper;
 
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\AbstractExtension;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class SchemaHelper
 {
-    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
+    public function __construct(private readonly KernelInterface $kernel)
     {
     }
 

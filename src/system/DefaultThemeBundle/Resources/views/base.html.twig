@@ -11,6 +11,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!--[if IE]><meta http-equiv="imagetoolbar" content="no" /><![endif]-->
         {{ siteBranding() }}
+        {{ pageAddAsset('stylesheet', zasset('@ZikulaDefaultThemeBundle:css/style.css')) }}
     </head>
     {% block bodydeclaration %}<body{% if admin|default %} class="admin-page"{% elseif home|default %} class="home"{% endif %}>{% endblock %}
 

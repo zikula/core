@@ -46,7 +46,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults([
             'input_group' => null,
-            'alert' => null
+            'alert' => null,
         ]);
 
         $resolver->setAllowedTypes('help', ['string', 'null', 'array']);

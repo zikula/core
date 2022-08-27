@@ -72,6 +72,7 @@
 {{ include('@ZikulaFormExtension/Form/icon_picker.html.twig') }}{# need to preload for editing inside modal #}
 {{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
+{{ pageAddAsset('stylesheet', zasset('@ZikulaCategoriesBundle:css/style.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaThemeBundle:css/jstree.Common.css')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesBundle:js/ZikulaCategoriesModule.Category.List.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesBundle:js/ZikulaCategoriesModule.Category.Edit.js')) }}

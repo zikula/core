@@ -18,7 +18,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Command that performs setup tasks for a given bundle implementing InitializableBundleInterface.
@@ -27,7 +27,7 @@ class SetupBundleCommand extends Command
 {
     protected static $defaultName = 'zikula:init-bundle';
 
-    public function __construct(private readonly ZikulaHttpKernelInterface $kernel)
+    public function __construct(private readonly KernelInterface $kernel)
     {
         parent::__construct();
     }

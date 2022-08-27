@@ -17,10 +17,10 @@ use InvalidArgumentException;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\AbstractExtension;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeBundle\Engine\Exception\AssetNotFoundException;
 
 /**
@@ -41,7 +41,7 @@ use Zikula\ThemeBundle\Engine\Exception\AssetNotFoundException;
 class Asset
 {
     public function __construct(
-        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly KernelInterface $kernel,
         private readonly Packages $assetPackages,
         private readonly RouterInterface $router,
         private readonly Filesystem $fileSystem,

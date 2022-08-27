@@ -17,7 +17,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeBundle\Engine\Asset;
 use Zikula\ThemeBundle\Engine\AssetBag;
 use Zikula\ThemeBundle\Engine\Engine;
@@ -31,12 +30,13 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private array $params;
 
     public function __construct(
-        private readonly ZikulaHttpKernelInterface $kernel,
         private readonly AssetBag $jsAssetBag,
         private readonly AssetBag $cssAssetBag,
         private readonly RouterInterface $router,
         private readonly Asset $assetHelper,
         private readonly Engine $themeEngine,
+        private readonly string $environment,
+        private readonly string $projectDir,
         string $installed,
         string $bootstrapJavascriptPath,
         string $bootstrapStylesheetPath,
@@ -99,7 +99,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addFosJsRouting(): void
     {
-        if ('prod' === $this->kernel->getEnvironment() && file_exists($this->kernel->getProjectDir() . '/public/js/fos_js_routes.js')) {
+        if ('prod' === $this->environment && file_exists($this->projectDir . '/public/js/fos_js_routes.js')) {
             $routeScript = $this->assetHelper->resolve('js/fos_js_routes.js');
         } else {
             $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);

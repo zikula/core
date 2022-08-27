@@ -17,8 +17,8 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\AbstractTheme;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme as ThemeAttribute;
 
 /**
@@ -28,7 +28,7 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme as ThemeAttribute;
  * @see \Zikula\ThemeBundle\EventListener\*
  * @see \Zikula\Bundle\CoreBundle\AbstractTheme
  *
- * The Engine works by intercepting the Response sent by the module controller (the controller action is the
+ * The Engine works by intercepting the Response sent by the bundle controller (the controller action is the
  * 'primary actor'). It takes this response and "wraps" the theme around it and filters the resulting html to add
  * required page assets and variables and then sends the resulting Response to the browser. e.g.
  *     Request -> Controller -> CapturedResponse -> Filter -> ThemedResponse
@@ -61,8 +61,8 @@ class Engine
     private bool $installed;
 
     public function __construct(
+        private readonly KernelInterface $kernel,
         private readonly RequestStack $requestStack,
-        private readonly ZikulaHttpKernelInterface $kernel,
         private readonly AssetFilter $filterService,
         private readonly string $defaultTheme,
         private readonly ?string $adminTheme,
@@ -77,10 +77,8 @@ class Engine
      */
     public function wrapResponseInTheme(Response $response): Response
     {
-        $activeTheme = $this->getTheme();
-        $activeTheme->addStylesheet();
-        $moduleName = $this->requestStack->getMainRequest()->attributes->get('_zkModule');
-        $themedResponse = $activeTheme->generateThemedResponse($this->getRealm(), $response, $moduleName);
+        $bundleName = $this->requestStack->getMainRequest()->attributes->get('_zkModule');
+        $themedResponse = $this->getTheme()->generateThemedResponse($this->getRealm(), $response, $bundleName);
 
         $themedResponse->setStatusCode($response->getStatusCode());
 
@@ -219,7 +217,7 @@ class Engine
                     $valuesToMatch[] = $requestAttributes['_route']; // e.g. zikulapagesbundle_user_display
                 }
                 if (isset($requestAttributes['_zkModule'])) {
-                    $valuesToMatch[] = $requestAttributes['_zkModule']; // e.g. zikulapagesmodule
+                    $valuesToMatch[] = $requestAttributes['_zkModule']; // e.g. zikulapagesbundle
                 }
                 foreach ($valuesToMatch as $value) {
                     $match = preg_match($pattern, $value);
@@ -247,7 +245,11 @@ class Engine
         if (!empty($annotation)) {
             $this->annotationValue = $annotation;
         }
-        $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
+        $bundle = $this->kernel->getBundle($activeTheme);
+        if (!($bundle instanceof AbstractTheme)) {
+            throw new \Exception('Can not set a non-theme bundle as theme.');
+        }
+        $this->activeThemeBundle = $bundle;
         $this->activeThemeBundle->loadThemeVars();
     }
 

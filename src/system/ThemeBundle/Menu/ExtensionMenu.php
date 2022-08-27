@@ -18,7 +18,6 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 
@@ -28,8 +27,8 @@ class ExtensionMenu implements ExtensionMenuInterface
         private readonly FactoryInterface $factory,
         private readonly PermissionApiInterface $permissionApi,
         private readonly RequestStack $requestStack,
-        private readonly ZikulaHttpKernelInterface $kernel,
-        private readonly LocaleApiInterface $localeApi
+        private readonly LocaleApiInterface $localeApi,
+        private readonly string $environment
     ) {
     }
 
@@ -61,7 +60,7 @@ class ExtensionMenu implements ExtensionMenuInterface
                 ->setAttribute('dropdown', true)
             ;
 
-            if ('dev' === $this->kernel->getEnvironment()) {
+            if ('dev' === $this->environment) {
                 $request = $this->requestStack->getCurrentRequest();
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     if ($session->has(EditInPlaceActivator::KEY)) {

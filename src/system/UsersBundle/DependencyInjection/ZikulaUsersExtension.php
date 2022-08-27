@@ -17,7 +17,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zikula\UsersBundle\Collector\MessageBundleCollector;
 use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\Controller\AccountController;
 use Zikula\UsersBundle\Controller\RegistrationController;
@@ -53,8 +52,6 @@ class ZikulaUsersExtension extends Extension
 
         $container->getDefinition(ProfileBundleCollector::class)
             ->setArgument('$currentProfileBundleName', $config['integration']['profile_bundle']);
-        $container->getDefinition(MessageBundleCollector::class)
-            ->setArgument('$currentMessageBundleName', $config['integration']['message_bundle']);
 
         $container->getDefinition(MailHelper::class)
             ->setArgument('$registrationNotificationEmail', $config['registration']['admin_notification_mail']);

@@ -3,5 +3,7 @@
 {{ showflashes() }}
 
 {% for menu in accountMenus|default %}
-    {{ knp_menu_render(menu, {template: '@ZikulaMenu/Override/bootstrap_fontawesome.html.twig'}) }}
+    {{ knp_menu_render(menu, {template: '@ZikulaTheme/Menu/bootstrap_fontawesome.html.twig'}) }}
 {% endfor %}
+
+{{ pageAddAsset('stylesheet', zasset('@ZikulaUsersBundle:css/style.css')) }}

@@ -38,6 +38,10 @@ services:
     zikula_core.common.theme.pagevars:
         class: Zikula\ThemeBundle\Engine\ParameterBag
 
+    Zikula\ThemeBundle\Controller\CombinedAssetController:
+        arguments:
+          $cacheDir: '%kernel.cache_dir%'
+
     Zikula\ThemeBundle\Engine\AssetFilter:
         arguments:
           $headers: '@zikula_core.common.theme.assets_header'
@@ -56,6 +60,8 @@ services:
 
     Zikula\ThemeBundle\Engine\Asset\Merger:
         arguments:
+          $projectDir: '%kernel.project_dir%'
+          $cacheDir: '%kernel.cache_dir%'
           $skipFiles:
             - '/jquery/jquery.min.js'
 
@@ -100,6 +106,8 @@ services:
         arguments:
           $jsAssetBag: '@zikula_core.common.theme.assets_js'
           $cssAssetBag: '@zikula_core.common.theme.assets_css'
+          $environment: '%kernel.environment%'
+          $projectDir: '%kernel.project_dir%'
           $bootstrapJavascriptPath: '/bootstrap/js/bootstrap.bundle.min.js'
           $bootstrapStylesheetPath: '/bootstrap/css/bootstrap.min.css'
           $fontAwesomePath: '/font-awesome/css/all.min.css'
@@ -109,6 +117,7 @@ services:
     Zikula\ThemeBundle\EventListener\DefaultPageVarSetterListener:
         arguments:
           $pageVars: '@zikula_core.common.theme.pagevars'
+          $charset: '%kernel.charset%'
         tags:
             - { name: monolog.logger, channel: request }
 
@@ -137,3 +146,7 @@ services:
     Zikula\ThemeBundle\Helper\:
         resource: '../../Helper/*'
         lazy: true
+
+    Zikula\ThemeBundle\Menu\ExtensionMenu:
+        arguments:
+            $environment: '%kernel.environment%'

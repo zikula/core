@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Zikula\CategoriesBundle\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\Bundle\CoreBundle\AbstractModule;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
 
@@ -24,7 +25,7 @@ class CategorizableBundleHelper
     private const CAPABILITY_NAME = 'categorizable';
 
     public function __construct(
-        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly KernelInterface $kernel,
         private readonly EntityManagerInterface $entityManager
     ) {
     }
@@ -32,9 +33,12 @@ class CategorizableBundleHelper
     public function getCategorizableBundleNames(): array
     {
         $result = [];
-        $extensions = $this->kernel->getModules();
-        foreach ($extensions as $extension) {
-            if (isset($extension->getMetaData()->getCapabilities()[self::CAPABILITY_NAME])) {
+        $bundles = $this->kernel->getBundles();
+        foreach ($bundles as $bundle) {
+            if (!($bundle instanceof AbstractModule)) {
+                continue;
+            }
+            if (isset($bundle->getMetaData()->getCapabilities()[self::CAPABILITY_NAME])) {
                 $bundleName = $bundle->getName();
                 $result[$bundleName] = $bundleName;
             }
@@ -49,11 +53,15 @@ class CategorizableBundleHelper
     public function buildEntityChoiceListFor(string $bundleName): array
     {
         $data = [];
-        if (!$this->kernel->isBundle($bundleName)) {
+        try {
+            $bundle = $this->getBundle($bundleName);
+        } catch (\Exception $exception) {
+            return $data;
+        }
+        if (!($bundle instanceof AbstractModule)) {
             return $data;
         }
 
-        $bundle = $this->kernel->getBundle($bundleName);
         $entityClasses = $this->getCategorizableEntityClasses($bundle->getMetaData());
         if (empty($entityClasses)) {
             return $data;
@@ -72,12 +80,15 @@ class CategorizableBundleHelper
 
     public function isCategoryUsedBy(string $bundleName, CategoryEntity $category): bool
     {
-        // get information about responsible module
-        if (!$this->kernel->isBundle($bundleName)) {
+        try {
+            $bundle = $this->getBundle($bundleName);
+        } catch (\Exception $exception) {
+            return false;
+        }
+        if (!($bundle instanceof AbstractModule)) {
             return false;
         }
 
-        $bundle = $this->kernel->getBundle($bundleName);
         $entityClasses = $this->getCategorizableEntityClasses($bundle->getMetaData());
         if (empty($entityClasses)) {
             return false;

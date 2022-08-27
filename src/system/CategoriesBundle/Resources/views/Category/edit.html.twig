@@ -1,4 +1,3 @@
-{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesBundle:js/ZikulaCategoriesModule.Category.Edit.js')) }}
 {{ form_start(form) }}
 {{ form_errors(form) }}
 {% set currentLocale = app.request.locale|default('en') %}
@@ -63,3 +62,5 @@
 </fieldset>
 {{ form_end(form) }}
 <div id="attributeDefinitions" data-count="{{ form.attributes|length }}"></div>
+{{ pageAddAsset('stylesheet', zasset('@ZikulaCategoriesBundle:css/style.css')) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaCategoriesBundle:js/ZikulaCategoriesModule.Category.Edit.js')) }}

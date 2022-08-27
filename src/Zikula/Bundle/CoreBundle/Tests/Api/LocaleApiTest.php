@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreBundle\Tests\Api;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\Api\LocaleApi;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class LocaleApiTest extends TestCase
 {
@@ -91,12 +90,11 @@ class LocaleApiTest extends TestCase
 
     private function getApi(string $dir = '/Fixtures'): LocaleApiInterface
     {
-        $kernel = $this->getMockBuilder(ZikulaHttpKernelInterface::class)->getMock();
-        $kernel->method('getProjectDir')->willReturn(__DIR__ . $dir);
         $requestStack = $this->getMockBuilder(RequestStack::class)
             ->getMock()
         ;
+        $projectDir = __DIR__ . $dir;
 
-        return new LocaleApi($kernel, $requestStack, true, 'en', '3.0.0');
+        return new LocaleApi($requestStack, $projectDir, true, 'en', '3.0.0');
     }
 }

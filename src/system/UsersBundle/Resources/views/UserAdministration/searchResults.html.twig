@@ -101,6 +101,7 @@
     </div>
     {{ form_end(mailForm) }}
 </div>
+{{ pageAddAsset('stylesheet', zasset('@ZikulaUsersBundle:css/style.css')) }}
 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
     {{ pageAddAsset('javascript', zasset('@ZikulaUsersBundle:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
 {% endif %}

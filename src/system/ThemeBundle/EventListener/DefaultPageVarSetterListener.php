@@ -17,7 +17,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeBundle\Engine\ParameterBag;
@@ -30,10 +29,10 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     private bool $installed;
 
     public function __construct(
+        private readonly RouterInterface $router,
         private readonly SiteDefinitionInterface $site,
         private readonly ParameterBag $pageVars,
-        private readonly RouterInterface $router,
-        private readonly ZikulaHttpKernelInterface $kernel,
+        private readonly string $charset,
         string $installed
     ) {
         $this->installed = '0.0.0' !== $installed;
@@ -60,12 +59,8 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
 
         // set some defaults
         $this->pageVars->set('title', $this->site->getPageTitle());
-        $this->pageVars->set('meta.charset', $this->kernel->getCharset());
+        $this->pageVars->set('meta.charset', $this->charset);
         $this->pageVars->set('meta.description', $this->site->getMetaDescription());
         $this->pageVars->set('homepath', $this->router->generate('home'));
-        $this->pageVars->set('coredata', [
-            'version' => ZikulaKernel::VERSION,
-            'minimumPhpVersion' => ZikulaKernel::PHP_MINIMUM_VERSION
-        ]);
     }
 }
