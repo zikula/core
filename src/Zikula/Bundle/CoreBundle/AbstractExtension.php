@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle;
 
-use InvalidArgumentException;
 use LogicException;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,8 +21,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\Bundle\CoreBundle\Composer\Scanner;
-use Zikula\ThemeBundle\Engine\Asset;
-use Zikula\ThemeBundle\Engine\AssetBag;
 
 abstract class AbstractExtension extends Bundle
 {
