@@ -39,7 +39,7 @@ class ExtensionMenuCollector
         $this->extensionMenus[$extensionMenu->getBundleName()] = $extensionMenu;
     }
 
-    public function get(string $bundleName, MenuContext $context = MenuContext::ADMIN): iterable
+    public function get(string $bundleName, string $context = ExtensionMenuInterface::CONTEXT_ADMIN): iterable
     {
         if ($this->has($bundleName)) {
             $menu = $this->extensionMenus[$bundleName]->get($context);
@@ -54,7 +54,7 @@ class ExtensionMenuCollector
         return null;
     }
 
-    public function getAllByType(MenuContext $context = MenuContext::ADMIN): array
+    public function getAllByType(string $context = ExtensionMenuInterface::CONTEXT_ADMIN): array
     {
         $menus = [];
         foreach ($this->extensionMenus as $bundleName => $extensionMenu) {

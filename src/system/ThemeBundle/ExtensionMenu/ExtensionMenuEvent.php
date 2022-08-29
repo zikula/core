@@ -19,7 +19,7 @@ class ExtensionMenuEvent
 {
     public function __construct(
         private readonly string $bundleName,
-        private readonly MenuContext $context,
+        private readonly string $context,
         private readonly iterable $menu
     ) {
     }
@@ -29,7 +29,7 @@ class ExtensionMenuEvent
         return $this->bundleName;
     }
 
-    public function getMenuContext(): MenuContext
+    public function getMenuContext(): string
     {
         return $this->context;
     }

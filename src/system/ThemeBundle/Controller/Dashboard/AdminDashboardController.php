@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
 use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\PermissionsBundle\Entity\PermissionEntity;
-use Zikula\ThemeBundle\ExtensionMenu\MenuContext;
+use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 
 class AdminDashboardController extends AbstractThemedDashboardController
 {
@@ -65,7 +65,7 @@ class AdminDashboardController extends AbstractThemedDashboardController
                 [$menuTextUrl, $menuText] = $this->adminBundleHelper->getAdminRouteInformation($bundleInfo);
 
                 $bundleName = (string) $adminBundle->getName();
-                $extensionMenuItems = $this->extensionMenuCollector->get($bundleName, MenuContext::ADMIN);
+                $extensionMenuItems = $this->extensionMenuCollector->get($bundleName, ExtensionMenuInterface::CONTEXT_ADMIN);
                 $isSubMenu = isset($extensionMenuItems);
 
                 if ($isSubMenu) {

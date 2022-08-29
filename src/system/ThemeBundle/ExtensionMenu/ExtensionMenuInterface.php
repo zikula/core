@@ -19,6 +19,10 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 #[Autoconfigure(tags: ['zikula.extension_menu'])]
 interface ExtensionMenuInterface
 {
+    public const CONTEXT_ADMIN = 'admin';
+    public const CONTEXT_USER = 'user';
+    public const CONTEXT_ACCOUNT = 'account';
+
     public function getBundleName(): string;
 
     /**
@@ -26,5 +30,5 @@ interface ExtensionMenuInterface
      *
      * @return MenuItemInterface[]
      */
-    public function get(MenuContext $context = MenuContext::ADMIN): iterable;
+    public function get(string $context = self::CONTEXT_ADMIN): iterable;
 }

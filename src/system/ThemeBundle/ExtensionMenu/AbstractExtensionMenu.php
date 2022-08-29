@@ -21,15 +21,15 @@ abstract class AbstractExtensionMenu implements ExtensionMenuInterface
     {
     }
 
-    public function get(MenuContext $context = MenuContext::ADMIN): iterable
+    public function get(string $context = ExtensionMenuInterface::CONTEXT_ADMIN): iterable
     {
-        if (MenuContext::ADMIN === $context) {
+        if (ExtensionMenuInterface::CONTEXT_ADMIN === $context) {
             return $this->getAdmin();
         }
-        if (MenuContext::USER === $context) {
+        if (ExtensionMenuInterface::CONTEXT_USER === $context) {
             return $this->getUser();
         }
-        if (MenuContext::ACCOUNT === $context) {
+        if (ExtensionMenuInterface::CONTEXT_ACCOUNT === $context) {
             return $this->getAccount();
         }
 
