@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\ExtensionMenu;
 
-use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

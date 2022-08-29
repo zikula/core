@@ -18,9 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Zikula\ThemeBundle\Engine\Engine;
-use Zikula\ThemeBundle\EventListener\DefaultPageAssetSetterListener;
 use Zikula\ThemeBundle\EventListener\OutputCompressionListener;
-use Zikula\ThemeBundle\EventListener\ResponseTransformerListener;
 
 class ZikulaThemeExtension extends Extension
 {

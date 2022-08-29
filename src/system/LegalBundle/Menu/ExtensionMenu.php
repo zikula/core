@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Menu;
 
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\RouteMenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\UrlMenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 

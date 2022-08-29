@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Site;
 
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\ThemeBundle\Engine\ParameterBag;
 
 class SiteDefinition implements SiteDefinitionInterface
 {

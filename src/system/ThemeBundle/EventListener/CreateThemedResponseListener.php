@@ -70,7 +70,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         $routeParameters = $request->attributes->get('_route_params');
 
         // TODO utilize theme name
-        //$dashboard = UserDashboardController::class;
+        // $dashboard = UserDashboardController::class;
         $dashboard = AdminDashboardController::class;
 
         // menu indexes
@@ -84,8 +84,8 @@ class CreateThemedResponseListener implements EventSubscriberInterface
             ->set(EA::SUBMENU_INDEX, $subIndex)
             ->generateUrl()
         ;
-        //$event->setResponse(new RedirectResponse($url));
-return;
+        // $event->setResponse(new RedirectResponse($url));
+        return;
 
         $queryParams = $requestParams = $attributes = [];
         $attributes['_controller'] = [$dashboard, 'index'];
@@ -97,15 +97,14 @@ return;
         $event->setResponse(
             $event->getKernel()->handle($subRequest, HttpKernelInterface::SUB_REQUEST)
         );
-/**
-TODO
+        /**
+        TODO
 
-check if EAB is available
-check if EAB is activated for admin/user area (ThemeBundle configuration)
+        check if EAB is available
+        check if EAB is activated for admin/user area (ThemeBundle configuration)
 
-Benefit: works with plain Symfony as well as EAB!
-
- */
+        Benefit: works with plain Symfony as well as EAB!
+         */
     }
 
     public function createThemedResponse(ResponseEvent $event): void

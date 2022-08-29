@@ -15,18 +15,11 @@ namespace Zikula\ThemeBundle\Controller\Dashboard;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
-use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
-use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\ThemeBundle\Helper\AdminBundleHelper;
 use Zikula\ThemeBundle\Helper\AdminCategoryHelper;
 
