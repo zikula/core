@@ -13,23 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\ExtensionMenu;
 
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Menu\MenuItemInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 #[Autoconfigure(tags: ['zikula.extension_menu'])]
 interface ExtensionMenuInterface
 {
-    public const TYPE_ADMIN = 'admin';
-
-    public const TYPE_USER = 'user';
-
-    public const TYPE_ACCOUNT = 'account';
-
     public function getBundleName(): string;
 
     /**
      * get a Menu for the type requested (admin|user|account)
-     * return null if Menu of that type is not available
+     *
+     * @return MenuItemInterface[]
      */
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface;
+    public function get(MenuContext $context = MenuContext::ADMIN): iterable;
 }

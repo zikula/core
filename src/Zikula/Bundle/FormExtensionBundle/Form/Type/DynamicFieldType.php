@@ -55,8 +55,6 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\FormOptionsArrayT
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\MoneyFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\RegexibleFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
-use Zikula\ThemeBundle\Api\ApiInterface\PageAssetApiInterface;
-use Zikula\ThemeBundle\Engine\Asset;
 
 /**
  * Form type providing a dynamic selection of field type and field options.
@@ -67,9 +65,7 @@ class DynamicFieldType extends AbstractType
 
     public function __construct(
         TranslatorInterface $translator,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly PageAssetApiInterface $pageAssetApi,
-        private readonly Asset $assetHelper
+        private readonly EventDispatcherInterface $eventDispatcher
     ) {
         $this->setTranslator($translator);
     }
@@ -131,7 +127,8 @@ class DynamicFieldType extends AbstractType
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $this->pageAssetApi->add('javascript', $this->assetHelper->resolve('@ZikulaFormExtensionBundle:js/ZikulaFormExtensionBundle.DynamicField.Edit.js'));
+        // TODO reenable
+        //$this->pageAssetApi->add('javascript', $this->assetHelper->resolve('@ZikulaFormExtensionBundle:js/ZikulaFormExtensionBundle.DynamicField.Edit.js'));
     }
 
     public function getBlockPrefix(): string

@@ -89,9 +89,6 @@ menu:
                 themes:
                     text: Themes
                     relativeUrl: LayoutDesign/Themes/index.html
-                menus:
-                    text: Menus
-                    relativeUrl: LayoutDesign/Menus/index.html
                 forms:
                     text: Forms
                     relativeUrl: LayoutDesign/Forms/index.html

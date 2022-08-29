@@ -43,6 +43,5 @@ services:
     Zikula\Bundle\CoreBundle\Site\SiteDefinition:
         arguments:
           $defaultLocale: '%kernel.default_locale%'
-          $pageVars: '@zikula_core.common.theme.pagevars'
 
     Symfony\Component\HttpKernel\Fragment\FragmentHandler: '@fragment.handler'

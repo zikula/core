@@ -14,7 +14,6 @@ return [
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
-    Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class => ['all' => true],
@@ -33,5 +32,4 @@ return [
     Zikula\ThemeBundle\ZikulaThemeBundle::class => ['all' => true],
     Zikula\UsersBundle\ZikulaUsersBundle::class => ['all' => true],
     Zikula\ZAuthBundle\ZikulaZAuthBundle::class => ['all' => true],
-    Zikula\DefaultThemeBundle\ZikulaDefaultThemeBundle::class => ['all' => true],
 ];

@@ -13,26 +13,19 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle\Menu;
 
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
-    protected function getAdmin(): ?ItemInterface
+    protected function getAdmin(): iterable
     {
-        $menu = $this->factory->createItem('adminAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-            $menu->addChild('Category tree', [
-                'route' => 'zikulacategoriesbundle_category_listcategories',
-            ])->setAttribute('icon', 'fas fa-tree');
+            yield MenuItem::linktoRoute('Category tree', 'fas fa-tree', 'zikulacategoriesbundle_category_listcategories');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Category registry', [
-                'route' => 'zikulacategoriesbundle_registry_edit',
-            ])->setAttribute('icon', 'fas fa-archive');
+            yield MenuItem::linktoRoute('Category registry', 'fas fa-archive', 'zikulacategoriesbundle_registry_edit');
         }
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
     public function getBundleName(): string

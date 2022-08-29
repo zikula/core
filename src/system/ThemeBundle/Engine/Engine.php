@@ -63,9 +63,8 @@ class Engine
     public function __construct(
         private readonly KernelInterface $kernel,
         private readonly RequestStack $requestStack,
-        private readonly AssetFilter $filterService,
-        private readonly string $defaultTheme,
-        private readonly ?string $adminTheme,
+        private readonly string $defaultDashboard,
+        private readonly ?string $adminDashboard,
         string $installed
     ) {
         $this->installed = '0.0.0' !== $installed;
@@ -82,7 +81,7 @@ class Engine
 
         $themedResponse->setStatusCode($response->getStatusCode());
 
-        return $this->filter($themedResponse);
+        return $themedResponse;
     }
 
     /**
@@ -136,7 +135,7 @@ class Engine
             $this->annotationValue = $themeAttribute->value;
             switch ($themeAttribute->value) {
                 case 'admin':
-                    $newThemeName = $this->adminTheme;
+                    $newThemeName = $this->adminDashboard;
                     break;
                 default:
                     $newThemeName = $themeAttribute->value;
@@ -240,29 +239,10 @@ class Engine
      */
     public function setActiveTheme(string $newThemeName = null, $annotation = ''): void
     {
-        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->defaultTheme;
+        $activeTheme = !empty($newThemeName) ? $newThemeName : $this->defaultDashboard;
 
         if (!empty($annotation)) {
             $this->annotationValue = $annotation;
         }
-        $bundle = $this->kernel->getBundle($activeTheme);
-        if (!($bundle instanceof AbstractTheme)) {
-            throw new \Exception('Can not set a non-theme bundle as theme.');
-        }
-        $this->activeThemeBundle = $bundle;
-        $this->activeThemeBundle->loadThemeVars();
-    }
-
-    /**
-     * Filter the Response to add page assets and vars and return.
-     */
-    private function filter(Response $response): Response
-    {
-        $jsAssets = [];
-        $cssAssets = [];
-        $filteredContent = $this->filterService->filter($response->getContent(), $jsAssets, $cssAssets);
-        $response->setContent($filteredContent);
-
-        return $response;
     }
 }

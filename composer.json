@@ -27,10 +27,7 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
-        "components/bootstrap": "^4",
-        "components/font-awesome": "^6",
         "components/jquery": "^3",
-        "components/jqueryui": "^1",
         "composer/composer": "^2",
         "dimsemenov/magnific-popup": "^1",
         "doctrine/doctrine-bundle": "^2",
@@ -38,14 +35,12 @@
         "doctrine/orm": "^2",
         "easycorp/easyadmin-bundle": "^4.3",
         "egulias/email-validator": "^3",
-        "ezyang/htmlpurifier": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "^3",
         "ircmaxell/random-lib": "^1",
         "itsjavi/fontawesome-iconpicker": "^3",
-        "knplabs/knp-menu-bundle": "^3",
         "liip/imagine-bundle": "^2",
         "nikic/php-parser": "^4",
-        "oomphinc/composer-installers-extender": "^2",
+        "oomphinc/composer-installers-extender": "2.*",
         "oro/twig-inspector": "^1",
         "php-translation/extractor": "^2",
         "php-translation/symfony-bundle": "^0",
@@ -85,7 +80,6 @@
         "symfony/webpack-encore-bundle": "^1",
         "symfony/workflow": "^5.4",
         "symfony/yaml": "^5.4",
-        "thomaspark/bootswatch": "^4",
         "twig/extra-bundle": "^3",
         "twig/intl-extra": "^3",
         "twig/string-extra": "^3",
@@ -155,9 +149,7 @@
             "require": "^5.4"
         },
         "symfony-assets-install": "relative",
-        "installer-types": [
-            "component"
-        ],
+        "installer-types": ["component"],
         "installer-paths": {
             "public/{$name}/": [
                 "type:component"

@@ -13,38 +13,24 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsBundle\Menu;
 
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
-    protected function getAdmin(): ?ItemInterface
+    protected function getAdmin(): iterable
     {
-        $menu = $this->factory->createItem('adminAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-            $menu->addChild('Permission rules list', [
-                'route' => 'zikulapermissionsbundle_permission_listpermissions',
-            ])
-                ->setLinkAttribute('id', 'permissions_view')
-                ->setAttribute('icon', 'fas fa-list')
-            ;
+            yield MenuItem::linktoRoute('Permission rules list', 'fas fa-list', 'zikulapermissionsbundle_permission_listpermissions');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('Create new permission rule', [
-                'uri' => '#',
-            ])
-                ->setLinkAttribute('class', 'create-new-permission')
-                ->setAttribute('icon', 'fas fa-plus')
+            yield MenuItem::linktoUrl('Create new permission rule', 'fas fa-plus', '#')
+                ->setCssClass('create-new-permission')
             ;
         }
-        $menu->addChild('Permission rules information', [
-            'uri' => '#',
-        ])
-            ->setLinkAttribute('class', 'view-instance-info')
-            ->setAttribute('icon', 'fas fa-info')
+        yield MenuItem::linktoUrl('Permission rules information', 'fas fa-info', '#')
+            ->setCssClass('view-instance-info')
         ;
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
     public function getBundleName(): string

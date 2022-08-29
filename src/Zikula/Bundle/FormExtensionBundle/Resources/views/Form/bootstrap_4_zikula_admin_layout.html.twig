@@ -112,8 +112,8 @@ col-md-9
     {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-file-input')|trim}) -%}
     {{- parent() -}}
     {# add https://github.com/Johann-S/bs-custom-file-input #}
-    {{ pageAddAsset('javascript', zasset('@ZikulaFormExtensionBundle:js/bs-custom-file-input/bs-custom-file-input.js'), 85) }}
-    {{ pageAddAsset('javascript', zasset('@ZikulaFormExtensionBundle:js/ZikulaFormExtensionBundle.FilePicker.js'), 86) }}
+    <script src="{{ asset('bundles/zikulaformextension/js/bs-custom-file-input/bs-custom-file-input.js') }}"></script>
+    <script src="{{ asset('bundles/zikulaformextension/js/ZikulaFormExtensionBundle.FilePicker.js') }}"></script>
 {%- endblock file_widget %}
 
 {# move label to left side also for checkbox switches with "switch-custom" class #}
@@ -186,9 +186,9 @@ col-md-9
             <small class="form-text text-muted"><a href="{{ path('zikulausersbundle_useradministration_modify', { 'user': value }) }}" title="{% trans %}Switch to users administration{% endtrans %}">{% trans %}Manage user{% endtrans %}</a></small>
         {% endif %}
     {% endif %}
-    {# load required assets: jQuery UI + custom search code #}
+    {# load required assets: jQuery UI + custom search code # }
     {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
     {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js'), constant('Zikula\\ThemeBundle\\Engine\\AssetBag::WEIGHT_JQUERY_UI')) }}
     {{ pageAddAsset('stylesheet', zasset('@ZikulaUsersBundle:css/livesearch.css')) }}
-    {{ pageAddAsset('javascript', zasset('@ZikulaUsersBundle:js/Zikula.Users.LiveSearch.js')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersBundle:js/Zikula.Users.LiveSearch.js')) } #}
 {% endblock %}

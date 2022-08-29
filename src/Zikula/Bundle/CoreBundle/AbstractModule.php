@@ -13,6 +13,27 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle;
 
-abstract class AbstractModule extends AbstractExtension
+use LogicException;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+use function Symfony\Component\String\s;
+use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\Bundle\CoreBundle\Composer\Scanner;
+
+abstract class AbstractModule extends Bundle
 {
+    public function getMetaData(): MetaData
+    {
+        $scanner = new Scanner();
+        $jsonPath = $this->getPath() . '/composer.json';
+        $jsonContent = $scanner->decode($jsonPath);
+        $metaData = new MetaData($jsonContent);
+        if (!empty($this->container) && $this->container->has('translator')) {
+            $metaData->setTranslator($this->container->get('translator'));
+        }
+
+        return $metaData;
+    }
 }

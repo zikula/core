@@ -21,8 +21,7 @@ class SiteDefinition implements SiteDefinitionInterface
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly array $siteData,
-        private readonly string $defaultLocale,
-        private readonly ParameterBag $pageVars
+        private readonly string $defaultLocale
     ) {
     }
 
@@ -38,10 +37,10 @@ class SiteDefinition implements SiteDefinitionInterface
 
     public function getPageTitle(): string
     {
-        $titleScheme = $this->getLocalizedField('page_title');
-        $title = $this->pageVars->get('title', $titleScheme);
+        $title = $this->getName();
+        $titleScheme = $this->getLocalizedField('page_title_scheme');
         if (!empty($titleScheme)) {
-            $title = str_replace(['#pagetitle#', '#sitename#'], [$title, $this->getName()], $titleScheme);
+            $title = str_replace('#sitename#', $this->getName(), $titleScheme);
         }
 
         return $title;

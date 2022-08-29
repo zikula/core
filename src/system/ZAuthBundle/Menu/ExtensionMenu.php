@@ -13,93 +13,52 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthBundle\Menu;
 
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 
-class ExtensionMenu implements ExtensionMenuInterface
+class ExtensionMenu extends AbstractExtensionMenu
 {
     public function __construct(
-        private readonly FactoryInterface $factory,
-        private readonly PermissionApiInterface $permissionApi,
+        protected readonly PermissionApiInterface $permissionApi,
         private readonly CurrentUserApiInterface $currentUserApi,
         private readonly AuthenticationMappingRepositoryInterface $mappingRepository,
         private readonly RegistrationHelper $registrationHelper
     ) {
     }
 
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
+    protected function getAdmin(): iterable
     {
-        if (self::TYPE_ADMIN === $type) {
-            return $this->getAdmin();
-        }
-        if (self::TYPE_ACCOUNT === $type) {
-            return $this->getAccount();
-        }
-
-        return null;
-    }
-
-    private function getAdmin(): ?ItemInterface
-    {
-        $menu = $this->factory->createItem('zauthAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Users list', [
-                'route' => 'zikulazauthbundle_useradministration_listmappings',
-            ])->setAttribute('icon', 'fas fa-list');
+            yield MenuItem::linktoRoute('Users list', 'fas fa-list', 'zikulazauthbundle_useradministration_listmappings');
         }
         $createUserAccessLevel = $this->registrationHelper->isRegistrationEnabled() ? ACCESS_ADD : ACCESS_ADMIN;
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', $createUserAccessLevel)) {
-            $menu->addChild('New users', [
-                'route' => 'zikulazauthbundle_useradministration_create',
-            ])->setAttribute('icon', 'fas fa-plus')
-                ->setAttribute('dropdown', true);
-            $menu['New users']->addChild('Create new user', [
-                'route' => 'zikulazauthbundle_useradministration_create',
-            ]);
-            $menu['New users']->addChild('Import users', [
-                'route' => 'zikulazauthbundle_fileio_import',
-            ]);
+            yield MenuItem::linktoRoute('Create new user', 'fas fa-plus', 'zikulazauthbundle_useradministration_create');
+            yield MenuItem::linktoRoute('Import users', 'fas fa-upload', 'zikulazauthbundle_fileio_import');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Batch password change', [
-                'route' => 'zikulazauthbundle_useradministration_batchforcepasswordchange',
-            ])->setAttribute('icon', 'fas fa-lock');
+            yield MenuItem::linktoRoute('Batch password change', 'fas fa-lock', 'zikulazauthbundle_useradministration_batchforcepasswordchange');
         }
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
-    private function getAccount(): ?ItemInterface
+    protected function getAccount(): iterable
     {
-        $menu = $this->factory->createItem('zauthAccountMenu');
         if (!$this->currentUserApi->isLoggedIn()) {
-            $menu->addChild('UserName', [
-                'label' => 'I have forgotten my account information (for example, my user name)',
-                'route' => 'zikulazauthbundle_account_lostusername',
-            ])->setAttribute('icon', 'fas fa-user');
-            $menu->addChild('Password', [
-                'label' => 'I have forgotten my password',
-                'route' => 'zikulazauthbundle_account_lostpassword',
-            ])->setAttribute('icon', 'fas fa-key');
+            yield MenuItem::linktoRoute('I have forgotten my account information (for example, my user name)', 'fas fa-user', 'zikulazauthbundle_account_lostusername');
+            yield MenuItem::linktoRoute('I have forgotten my password', 'fas fa-key', 'zikulazauthbundle_account_lostpassword');
         } else {
             $userMapping = $this->mappingRepository->findOneBy(['uid' => $this->currentUserApi->get('uid')]);
             if (isset($userMapping)) {
-                $menu->addChild('Change password', [
-                    'route' => 'zikulazauthbundle_account_changepassword',
-                ])->setAttribute('icon', 'fas fa-key')
-                    ->setLinkAttribute('class', 'text-success');
-                $menu->addChild('Change e-mail address', [
-                    'route' => 'zikulazauthbundle_account_changeemail',
-                ])->setAttribute('icon', 'fas fa-at');
+                yield MenuItem::linktoRoute('Change password', 'fas fa-key', 'zikulazauthbundle_account_changepassword')
+                    ->setCssClass('text-success')
+                ;
+                yield MenuItem::linktoRoute('Change e-mail address', 'fas fa-at', 'zikulazauthbundle_account_changeemail');
             }
         }
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
     public function getBundleName(): string

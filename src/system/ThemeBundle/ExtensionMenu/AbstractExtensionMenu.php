@@ -13,26 +13,41 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\ExtensionMenu;
 
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 abstract class AbstractExtensionMenu implements ExtensionMenuInterface
 {
-    public function __construct(
-        protected readonly FactoryInterface $factory,
-        protected readonly PermissionApiInterface $permissionApi
-    ) {
+    public function __construct(protected readonly PermissionApiInterface $permissionApi)
+    {
     }
 
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
+    public function get(MenuContext $context = MenuContext::ADMIN): iterable
     {
-        if (self::TYPE_ADMIN === $type) {
+        if (MenuContext::ADMIN === $context) {
             return $this->getAdmin();
         }
+        if (MenuContext::USER === $context) {
+            return $this->getUser();
+        }
+        if (MenuContext::ACCOUNT === $context) {
+            return $this->getAccount();
+        }
 
-        return null;
+        return [];
     }
 
-    abstract protected function getAdmin(): ?ItemInterface;
+    protected function getAdmin(): iterable
+    {
+        return [];
+    }
+
+    protected function getUser(): iterable
+    {
+        return [];
+    }
+
+    protected function getAccount(): iterable
+    {
+        return [];
+    }
 }

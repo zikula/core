@@ -40,18 +40,13 @@ class ExtensionMenuCollector
         $this->extensionMenus[$extensionMenu->getBundleName()] = $extensionMenu;
     }
 
-    public function get(string $bundleName, string $type = ExtensionMenuInterface::TYPE_ADMIN): ?ItemInterface
+    public function get(string $bundleName, MenuContext $context = MenuContext::ADMIN): iterable
     {
         if ($this->has($bundleName)) {
-            try {
-                $menu = $this->extensionMenus[$bundleName]->get($type);
-            } catch (\Exception $exception) {
-                // do nothing
-                return null;
-            }
+            $menu = $this->extensionMenus[$bundleName]->get($context);
 
             // fire event here to add more menu items like additional services, etc
-            $event = new ExtensionMenuEvent($bundleName, $type, $menu);
+            $event = new ExtensionMenuEvent($bundleName, $context, $menu);
             $menu = $this->eventDispatcher->dispatch($event)->getMenu();
 
             return $menu;
@@ -60,11 +55,11 @@ class ExtensionMenuCollector
         return null;
     }
 
-    public function getAllByType(string $type = ExtensionMenuInterface::TYPE_ACCOUNT): array
+    public function getAllByType(MenuContext $context = MenuContext::ADMIN): array
     {
         $menus = [];
         foreach ($this->extensionMenus as $bundleName => $extensionMenu) {
-            $menu = $extensionMenu->get($type);
+            $menu = $extensionMenu->get($context);
             if (null !== $menu) {
                 $menus[$bundleName] = $menu;
             }

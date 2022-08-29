@@ -17,14 +17,14 @@ use Exception;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\ThemeBundle\Engine\Asset;
+//use Zikula\ThemeBundle\Engine\Asset;
 
 class BrandingRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly Environment $twig,
-        private readonly SiteDefinitionInterface $site,
-        private readonly Asset $assetHelper
+        private readonly SiteDefinitionInterface $site/*,
+        private readonly Asset $assetHelper*/
     ) {
     }
 
@@ -73,6 +73,8 @@ class BrandingRuntime implements RuntimeExtensionInterface
 
         $assetPath = $this->site->{$accessor}();
 
+        return $assetPath;
+// TODO
         try {
             $imagePath = $this->assetHelper->resolve($assetPath);
         } catch (Exception $exception) {

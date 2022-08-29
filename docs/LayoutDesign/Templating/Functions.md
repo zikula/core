@@ -14,27 +14,16 @@ functions, filters, tags, tests and global variables.
 
 - showflashes(params = [])
 
-### Themes and Assets
+### Themes and Site data
 
 - localeSwitcher()
-- pageAddAsset(type, value, weight = 100)
-- pageGetVar(name, default = null)
-- pageSetVar(name, value)
-- zasset(path)
 - siteDefinition()
 - siteName()
 - siteSlogan()
 - siteBranding()
 - siteImagePath()
-- getPreviewImagePath(themeName, size = 'medium')
 
 ### Users
-
-#### Messages
-
-- messageInboxLink($uid = null, $urlOnly = false, $text = '', $class = '')
-- messageSendLink($uid = null, $urlOnly = false, $text = '', $class = '') (filter)
-- messageCount($uid = null, $unreadOnly = false)
 
 #### Profiles
 

@@ -1,0 +1,7 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block page_title %}{{ siteName()|replace({'#pagetitle#': parent()}) }}{% endblock %}
+{% block sidebar %}
+    <p>Hello admin!</p>
+    {{ parent() }}
+{% endblock %}

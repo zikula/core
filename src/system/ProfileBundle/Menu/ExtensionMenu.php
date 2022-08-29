@@ -13,76 +13,46 @@ declare(strict_types=1);
 
 namespace Zikula\ProfileBundle\Menu;
 
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
-class ExtensionMenu implements ExtensionMenuInterface
+class ExtensionMenu extends AbstractExtensionMenu
 {
     public function __construct(
-        private readonly FactoryInterface $factory,
-        private readonly PermissionApiInterface $permissionApi,
+        protected readonly PermissionApiInterface $permissionApi,
         private readonly CurrentUserApiInterface $currentUserApi,
         private readonly ProfileBundleCollector $profileBundleCollector
     ) {
     }
 
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
+    protected function getAdmin(): iterable
     {
-        $method = 'get' . ucfirst(mb_strtolower($type));
-        if (method_exists($this, $method)) {
-            return $this->{$method}();
-        }
-
-        return null;
-    }
-
-    private function getAdmin(): ?ItemInterface
-    {
-        $menu = $this->factory->createItem('profileAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
-            $menu->addChild('Property list', [
-                'route' => 'zikulaprofilebundle_property_listproperties',
-            ])->setAttribute('icon', 'fas fa-list');
+            yield MenuItem::linktoRoute('Property list', 'fas fa-list', 'zikulaprofilebundle_property_listproperties');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('Create new property', [
-                'route' => 'zikulaprofilebundle_property_edit',
-            ])->setAttribute('icon', 'fas fa-plus');
+            yield MenuItem::linktoRoute('Create new property', 'fas fa-plus', 'zikulaprofilebundle_property_edit');
         }
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
-    private function getUser(): ?ItemInterface
+    protected function getUser(): iterable
     {
-        $menu = $this->factory->createItem('profileUserMenu');
         if (!$this->currentUserApi->isLoggedIn()) {
-            return 0 === $menu->count() ? null : $menu;
+            return;
         }
 
         if ($this->permissionApi->hasPermission('ZikulaUsersBundle::', '::', ACCESS_READ)) {
-            $menu->addChild('Account menu', [
-                'route' => 'zikulausersbundle_account_menu',
-            ])->setAttribute('icon', 'fas fa-user-circle');
+            yield MenuItem::linktoRoute('Account menu', 'fas fa-user-circle', 'zikulausersbundle_account_menu');
         }
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-            $menu->addChild('Profile', [
-                'route' => 'zikulaprofilebundle_profile_display',
-            ])->setAttribute('icon', 'fas fa-user');
-
-            $menu['Profile']->addChild('Display profile', [
-                'route' => 'zikulaprofilebundle_profile_display',
-            ]);
-            $menu['Profile']->addChild('Edit profile', [
-                'route' => 'zikulaprofilebundle_profile_edit',
-            ]);
+            yield MenuItem::linktoRoute('Display profile', 'fas fa-user', 'zikulaprofilebundle_profile_display');
+            yield MenuItem::linktoRoute('Edit profile', 'fas fa-user-pen', 'zikulaprofilebundle_profile_edit');
 
             $attributes = $this->currentUserApi->get('attributes');
             $authMethod = $attributes->offsetExists(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)
@@ -95,21 +65,14 @@ class ExtensionMenu implements ExtensionMenuInterface
                 ZAuthConstant::AUTHENTICATION_METHOD_EMAIL,
             ];
             if (in_array($authMethod, $zauthMethods, true)) {
-                $menu['Profile']->addChild('Change email address', [
-                    'route' => 'zikulazauthbundle_account_changeemail',
-                ]);
-                $menu['Profile']->addChild('Change password', [
-                    'route' => 'zikulazauthbundle_account_changepassword',
-                ]);
+                yield MenuItem::linktoRoute('Change email address', 'fas fa-envelope', 'zikulazauthbundle_account_changeemail');
+                yield MenuItem::linktoRoute('Change password', 'fas fa-key', 'zikulazauthbundle_account_changepassword');
             }
         }
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
-    private function getAccount(): ?ItemInterface
+    protected function getAccount(): iterable
     {
-        $menu = $this->factory->createItem('profileAccountMenu');
         // do not show any account links if Profile is not the Profile manager
         if ($this->profileBundleCollector->getSelectedName() !== $this->getBundleName()) {
             return null;
@@ -119,12 +82,9 @@ class ExtensionMenu implements ExtensionMenuInterface
             return null;
         }
 
-        $menu->addChild('Profile', [
-            'route' => 'zikulaprofilebundle_profile_display',
-            'routeParameters' => ['uid' => $this->currentUserApi->get('uid')]
-        ])->setAttribute('icon', 'fas fa-user');
-
-        return 0 === $menu->count() ? null : $menu;
+        yield MenuItem::linktoRoute('Profile', 'fas fa-user', 'zikulaprofilebundle_profile_display', [
+            'uid' => $this->currentUserApi->get('uid'),
+        ]);
     }
 
     public function getBundleName(): string

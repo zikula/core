@@ -17,11 +17,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zikula\ThemeBundle\Controller\CombinedAssetController;
-use Zikula\ThemeBundle\Engine\Asset\CssResolver;
-use Zikula\ThemeBundle\Engine\Asset\JsResolver;
-use Zikula\ThemeBundle\Engine\Asset\Merger;
-use Zikula\ThemeBundle\Engine\AssetFilter;
 use Zikula\ThemeBundle\Engine\Engine;
 use Zikula\ThemeBundle\EventListener\DefaultPageAssetSetterListener;
 use Zikula\ThemeBundle\EventListener\OutputCompressionListener;
@@ -38,38 +33,10 @@ class ZikulaThemeExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->getDefinition(Engine::class)
-            ->setArgument('$defaultTheme', $config['default_theme'])
-            ->setArgument('$adminTheme', $config['admin_theme']);
-
-        $container->getDefinition(AssetFilter::class)
-            ->setArgument('$scriptPosition', $config['script_position']);
-        $container->getDefinition(ResponseTransformerListener::class)
-            ->setArgument('$trimWhitespace', $config['trimwhitespace']);
+            ->setArgument('$defaultDashboard', $config['default_dashboard'])
+            ->setArgument('$adminDashboard', $config['admin_dashboard']);
 
         $container->getDefinition(OutputCompressionListener::class)
             ->setArgument('$useCompression', $config['use_compression']);
-
-        $container->getDefinition(JsResolver::class)
-            ->setArgument('$combine', $config['asset_manager']['combine']);
-        $container->getDefinition(CssResolver::class)
-            ->setArgument('$combine', $config['asset_manager']['combine']);
-
-        $merger = $container->getDefinition(Merger::class);
-        $skipFiles = $merger->getArgument('$skipFiles');
-        $skipFiles[] = $config['bootstrap']['css_path'];
-        $skipFiles[] = $config['font_awesome_path'];
-        $merger->setArgument('$lifetime', $config['asset_manager']['lifetime'])
-            ->setArgument('$minify', $config['asset_manager']['minify'])
-            ->setArgument('$compress', $config['asset_manager']['compress'])
-            ->setArgument('$skipFiles', $skipFiles);
-
-        $container->getDefinition(CombinedAssetController::class)
-            ->setArgument('$lifetime', $config['asset_manager']['lifetime'])
-            ->setArgument('$compress', $config['asset_manager']['compress']);
-
-        $container->getDefinition(DefaultPageAssetSetterListener::class)
-            ->setArgument('$bootstrapJavascriptPath', $config['bootstrap']['js_path'])
-            ->setArgument('$bootstrapStylesheetPath', $config['bootstrap']['css_path'])
-            ->setArgument('$fontAwesomePath', $config['font_awesome_path']);
     }
 }

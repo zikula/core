@@ -5,7 +5,6 @@ currentMenu: dev-misc
 
 ## Specific services
 
-- [Site definition](SiteDefinition.md)
 - [LocaleApi](LocaleApi.md)
 - [Cache clearer](CacheClearer.md)
 - [Workflows](Workflows.md)

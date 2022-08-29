@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\ExtensionMenu;
 
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Menu\MenuItemInterface;
 
 class ExtensionMenuEvent
 {
     public function __construct(
         private readonly string $bundleName,
-        private readonly string $menuType,
-        private readonly ?ItemInterface $menu
+        private readonly MenuContext $context,
+        private readonly iterable $menu
     ) {
     }
 
@@ -29,12 +29,15 @@ class ExtensionMenuEvent
         return $this->bundleName;
     }
 
-    public function getMenuType(): string
+    public function getMenuContext(): MenuContext
     {
-        return $this->menuType;
+        return $this->context;
     }
 
-    public function getMenu(): ?ItemInterface
+    /**
+     * @return MenuItemInterface[]
+     */
+    public function getMenu(): iterable
     {
         return $this->menu;
     }

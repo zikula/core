@@ -3,27 +3,13 @@ currentMenu: themes
 ---
 # Theme system
 
-## Basic topics
+The `ThemeBundle` allows for creating several themed dashboards. It brings out of the box support for an admin dashboard as well as an user dashboard, but you can define additional ones if you need to.
 
-- [Request / Response cycle](RequestResponseCycle.md)
-- [Using custom Bootstrap and Font Awesome files](CustomBSandFA.md)
-- Special themes: Atom, Printer, RSS
+For each dashboard you can override the base layout template which is named `@ZikulaTheme/Dashboard/layout_<name>.html.twig`, for example `layout_admin.html.twig`, by copying it to `/templates/bundles/ZikulaThemeBundle/`. Furthermore, there are assets you can customise by copying `ZikulaThemeBundle/Resources/public/dashboard/<name>.(css|js)` to `/public/overrides/zikulathemebundle/dashbaord/<name>.(css|js)`.
 
-## Creating a theme
-
-- [Creating a theme based on ZikulaDefaultTheme](ThemeCreationExample.md)
-- [Theme file structure](Structure.md)
-- [Theme template overrides](TemplateOverrides.md)
-- [Theme configuration](ThemeConfiguration.md)
-- [Theme variables](ThemeVariables.md)
-
-## Additional topics
+## Additional topics and further references
 
 - [Branding](Branding.md)
-
-## For developers
-
-- [Theme composer file](Dev/ComposerFile.md)
-- [Theme annotation](Dev/ThemeAnnotation.md)
-- [Twig render events](Dev/TwigRenderEvents.md)
-- [Site definition](../../Configuration/Settings/Dev/SiteDefinition.md)
+- [Theme annotation](ThemeAnnotation.md)
+- [Site definition](../Templating/SiteDefinition.md)
+- [EasyAdminBundle: Dashboards](https://symfony.com/bundles/EasyAdminBundle/current/dashboards.html)

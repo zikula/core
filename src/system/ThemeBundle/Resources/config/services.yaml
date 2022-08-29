@@ -11,137 +11,15 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    Zikula\ThemeBundle\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeBundle\Api\PageAssetApi'
-
-    Zikula\ThemeBundle\Twig\Runtime\PageVarRuntime:
-        arguments:
-            $pageVars: '@zikula_core.common.theme.pagevars'
-
-    zikula_core.common.theme.assets_js:
-        class: Zikula\ThemeBundle\Engine\AssetBag
-    # public because AbstractExtension accesses this using container
-    zikula_core.common.theme.assets_css:
-        class: Zikula\ThemeBundle\Engine\AssetBag
-        public: true
-    zikula_core.common.theme.assets_header:
-        class: Zikula\ThemeBundle\Engine\AssetBag
-    zikula_core.common.theme.assets_footer:
-        class: Zikula\ThemeBundle\Engine\AssetBag
-
-    Zikula\ThemeBundle\Api\PageAssetApi:
-        arguments:
-          $styleSheets: '@zikula_core.common.theme.assets_css'
-          $scripts: '@zikula_core.common.theme.assets_js'
-          $headers: '@zikula_core.common.theme.assets_header'
-          $footers: '@zikula_core.common.theme.assets_footer'
-
-    zikula_core.common.theme.pagevars:
-        class: Zikula\ThemeBundle\Engine\ParameterBag
-
-    Zikula\ThemeBundle\Controller\CombinedAssetController:
-        arguments:
-          $cacheDir: '%kernel.cache_dir%'
-
-    Zikula\ThemeBundle\Engine\AssetFilter:
-        arguments:
-          $headers: '@zikula_core.common.theme.assets_header'
-          $footers: '@zikula_core.common.theme.assets_footer'
-          $jsResolver: '@Zikula\ThemeBundle\Engine\Asset\JsResolver'
-          $cssResolver: '@Zikula\ThemeBundle\Engine\Asset\CssResolver'
-          $scriptPosition: 'foot'
-
-    zikula_core.common.theme.themevars:
-        class: Zikula\ThemeBundle\Engine\ParameterBag
-        public: true
-
-    # public because AbstractExtension accesses this using container
-    Zikula\ThemeBundle\Engine\Asset:
-        public: true
-
-    Zikula\ThemeBundle\Engine\Asset\Merger:
-        arguments:
-          $projectDir: '%kernel.project_dir%'
-          $cacheDir: '%kernel.cache_dir%'
-          $skipFiles:
-            - '/jquery/jquery.min.js'
-
-    Zikula\ThemeBundle\Engine\Asset\JsResolver:
-        arguments:
-          $env: '%env(APP_ENV)%'
-          $bag: '@zikula_core.common.theme.assets_js'
-          $combine: false
-
-    Zikula\ThemeBundle\Engine\Asset\CssResolver:
-        arguments:
-          $env: '%env(APP_ENV)%'
-          $bag: '@zikula_core.common.theme.assets_css'
-          $combine: false
-
-    # override TwigBundle's Twig\Environment definition with Zikula's own child class
-    # see vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/twig.xml
-    twig:
-        class: Zikula\ThemeBundle\Bridge\Twig\EventEnabledTwigEngine
-        public: true
-        arguments:
-          $loader: '@twig.loader'
-          $options: []
-        calls:
-          - setEventDispatcher: ['@event_dispatcher']
-          - addGlobal: ['app', '@twig.app_variable']
-          - addGlobal: ['pagevars', '@zikula_core.common.theme.pagevars']
-          - addGlobal: ['themevars', '@zikula_core.common.theme.themevars']
-          - addGlobal: ['currentUser', '@Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface']
-          - addRuntimeLoader: ['@twig.runtime_loader']
-        configurator: ['@twig.configurator.environment', 'configure']
-    Twig_Environment: '@twig'
-    Twig\Environment: '@twig'
-
     Zikula\ThemeBundle\EventListener\CreateThemedResponseListener:
         arguments:
             $debug: '%env(APP_DEBUG)%'
         tags:
             - { name: monolog.logger, channel: request }
 
-    Zikula\ThemeBundle\EventListener\DefaultPageAssetSetterListener:
-        arguments:
-          $jsAssetBag: '@zikula_core.common.theme.assets_js'
-          $cssAssetBag: '@zikula_core.common.theme.assets_css'
-          $environment: '%kernel.environment%'
-          $projectDir: '%kernel.project_dir%'
-          $bootstrapJavascriptPath: '/bootstrap/js/bootstrap.bundle.min.js'
-          $bootstrapStylesheetPath: '/bootstrap/css/bootstrap.min.css'
-          $fontAwesomePath: '/font-awesome/css/all.min.css'
-        tags:
-            - { name: monolog.logger, channel: request }
-
-    Zikula\ThemeBundle\EventListener\DefaultPageVarSetterListener:
-        arguments:
-          $pageVars: '@zikula_core.common.theme.pagevars'
-          $charset: '%kernel.charset%'
-        tags:
-            - { name: monolog.logger, channel: request }
-
     Zikula\ThemeBundle\EventListener\ControllerAnnotationReaderListener:
         tags:
             - { name: monolog.logger, channel: request }
-
-    Zikula\ThemeBundle\EventListener\AddThemePathsToLoaderListener:
-      arguments:
-        $loader: '@twig.loader'
-
-    Zikula\ThemeBundle\EventListener\AddJSConfigListener:
-        arguments:
-          $footers: '@zikula_core.common.theme.assets_footer'
-
-    Zikula\ThemeBundle\EventListener\AddWebPackAssetsListener:
-        arguments:
-            $jsAssetBag: '@zikula_core.common.theme.assets_js'
-            $cssAssetBag: '@zikula_core.common.theme.assets_css'
-            $projectDir: '%kernel.project_dir%'
-
-    Zikula\ThemeBundle\EventListener\ExceptionListener:
-        arguments:
-            $debug: '%env(APP_DEBUG)%'
 
     Zikula\ThemeBundle\Helper\:
         resource: '../../Helper/*'

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsBundle\Helper;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-use Zikula\Bundle\CoreBundle\AbstractExtension;
+use Zikula\Bundle\CoreBundle\AbstractModule;
 
 class SchemaHelper
 {
@@ -31,7 +31,7 @@ class SchemaHelper
         $bundles = $this->kernel->getBundles();
         $schema = [];
         foreach ($bundles as $bundle) {
-            if (!($bundle instanceof AbstractExtension)) {
+            if (!($bundle instanceof AbstractModule)) {
                 continue;
             }
             if (null === ($bundleSchema = $bundle->getMetaData()->getSecurityschema())) {

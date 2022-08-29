@@ -20,7 +20,7 @@ All these things are determined by the _Site definition_.
 To customise this you have two options:
 
 1. For easy injection of custom images you can just [override them](../Templating/TemplateAndAssetLocations.md).
-2. For more advanced customisation you can subclass the site definition and add your own logic. You can place this wherever you want, including your custom theme. For further information please read the [Site definition docs](../../Configuration/Settings/Dev/SiteDefinition.md) at the bottom.
+2. For more advanced customisation you can subclass the site definition and add your own logic. You can place this wherever you want, including your custom theme. For further information please read the [Site definition docs](../Templating/SiteDefinition.md) at the bottom.
 
 ## View images
 

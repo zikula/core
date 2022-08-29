@@ -10,8 +10,7 @@ Zikula uses the Twig template engine, like Symfony does.
 ### General information about template and asset handling
 
 - [Locations of Templates and Assets](TemplateAndAssetLocations.md)
-- [Page assets](PageAssets.md)
-- [Asset combination](AssetCombination.md)
+- [Site definition](SiteDefinition.md)
 
 ### Twig extensions
 
@@ -31,11 +30,9 @@ Zikula uses the Twig template engine, like Symfony does.
 - [Twig docs](https://twig.symfony.com/doc/3.x/)
 - [Twig extensions provided by Twig](https://twig.symfony.com/doc/3.x/#reference)
 - [Twig extensions provided by Symfony](https://symfony.com/doc/current/reference/twig_reference.html)
-- [Bootstrap 4](https://getbootstrap.com/)
-- [Font Awesome 5](https://fontawesome.com/)
+- [Bootstrap 5](https://getbootstrap.com/)
+- [Font Awesome 6](https://fontawesome.com/)
 
 ## For developers
 
-- [PageAssetApi](Dev/PageAssetApi.md)
-- [Pagination of large result sets](Dev/Pagination.md)
 - [Display an Alpha filter](Dev/AlphaFilter.md)

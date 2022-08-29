@@ -13,87 +13,51 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsBundle\Menu;
 
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 
-class ExtensionMenu implements ExtensionMenuInterface
+class ExtensionMenu extends AbstractExtensionMenu
 {
     public function __construct(
-        private readonly FactoryInterface $factory,
-        private readonly PermissionApiInterface $permissionApi,
+        protected readonly PermissionApiInterface $permissionApi,
         private readonly GroupRepositoryInterface $groupRepository,
         private readonly CurrentUserApiInterface $currentUserApi
     ) {
     }
 
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
+    protected function getAdmin(): iterable
     {
-        if (self::TYPE_ADMIN === $type) {
-            return $this->getAdmin();
-        }
-        if (self::TYPE_USER === $type) {
-            return $this->getUser();
-        }
-        if (self::TYPE_ACCOUNT === $type) {
-            return $this->getAccount();
-        }
-
-        return null;
-    }
-
-    private function getAdmin(): ?ItemInterface
-    {
-        $menu = $this->factory->createItem('adminAdminMenu');
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
-            $menu->addChild('Groups list', [
-                'route' => 'zikulagroupsbundle_group_adminlist',
-            ])->setAttribute('icon', 'fas fa-list');
+            yield MenuItem::linktoRoute('Groups list', 'fas fa-list', 'zikulagroupsbundle_group_adminlist');
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('New group', [
-                'route' => 'zikulagroupsbundle_group_create',
-            ])->setAttribute('icon', 'fas fa-plus');
+            yield MenuItem::linktoRoute('New group', 'fas fa-plus', 'zikulagroupsbundle_group_create');
         }
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
-    private function getUser(): ?ItemInterface
+    protected function getUser(): iterable
     {
-        $menu = $this->factory->createItem('groupsAccountMenu');
-        $menu->addChild('Group list', [
-            'route' => 'zikulagroupsbundle_group_listgroups',
-        ])->setAttribute('icon', 'fas fa-users');
+        yield MenuItem::linktoRoute('Groups list', 'fas fa-users', 'zikulagroupsbundle_group_listgroups');
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
-            $menu->addChild('Groups admin', [
-                'route' => 'zikulagroupsbundle_group_adminlist',
-            ])->setAttribute('icon', 'fas fa-wrench');
+            yield MenuItem::linktoRoute('Groups admin', 'fas fa-wrench', 'zikulagroupsbundle_group_adminlist');
         }
-
-        return 0 === $menu->count() ? null : $menu;
     }
 
-    private function getAccount(): ?ItemInterface
+    protected function getAccount(): iterable
     {
         if (!$this->currentUserApi->isLoggedIn()) {
-            return null;
+            return;
         }
 
         // Check if there is at least one group to show
         $groups = $this->groupRepository->findAll();
-        if (count($groups) > 0) {
-            $menu = $this->factory->createItem('groupsAccountMenu');
-            $menu->addChild('Groups manager', [
-                'route' => 'zikulagroupsbundle_group_listgroups',
-            ])->setAttribute('icon', 'fas fa-users');
+        if (0 < count($groups)) {
+            yield MenuItem::linktoRoute('Groups manager', 'fas fa-users', 'zikulagroupsbundle_group_listgroups');
         }
-
-        return $menu ?? null;
     }
 
     public function getBundleName(): string
