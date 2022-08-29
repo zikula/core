@@ -115,6 +115,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         if (!$this->installed) {
             return;
         }
+
         return;
 
         $request = $event->getRequest();
