@@ -19,16 +19,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ThemeBundle\Controller\Dashboard\AdminDashboardController;
-use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
 use Zikula\ThemeBundle\Engine\Engine;
 
-/**
- * This class intercepts the Response and modifies it to return a themed Response.
- */
 class CreateThemedResponseListener implements EventSubscriberInterface
 {
     private bool $installed;
@@ -48,12 +42,11 @@ class CreateThemedResponseListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['redirectToEasyAdmin'],
-            KernelEvents::RESPONSE => ['createThemedResponse', -2],
+            KernelEvents::REQUEST => ['createThemedResponse'],
         ];
     }
 
-    public function redirectToEasyAdmin(RequestEvent $event): void
+    public function createThemedResponse(RequestEvent $event): void
     {
         $request = $event->getRequest();
         if (!$event->isMasterRequest() || $request->isXmlHttpRequest()) {
@@ -67,11 +60,9 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         if (str_starts_with($route, 'home')) { // TODO remove hardcoded assumption
             return;
         }
-        $routeParameters = $request->attributes->get('_route_params');
 
-        // TODO utilize theme name
-        // $dashboard = UserDashboardController::class;
-        $dashboard = AdminDashboardController::class;
+        $dashboard = $this->themeEngine->getActiveDashboardControllerClass();
+        $routeParameters = $request->attributes->get('_route_params');
 
         // menu indexes
         $index = -1;
@@ -105,36 +96,5 @@ class CreateThemedResponseListener implements EventSubscriberInterface
 
         Benefit: works with plain Symfony as well as EAB!
          */
-    }
-
-    public function createThemedResponse(ResponseEvent $event): void
-    {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-        if (!$this->installed) {
-            return;
-        }
-
-        return;
-
-        $request = $event->getRequest();
-        $response = $event->getResponse();
-        $format = $request->getRequestFormat();
-        $route = $request->attributes->get('_route', '');
-        if (!($response instanceof Response)
-            || 'html' !== $format
-            || str_starts_with($route, '_') // the profiler and other symfony routes begin with '_' @todo this is still too permissive
-            || is_subclass_of($response, Response::class)
-            || $request->isXmlHttpRequest()
-            || !str_contains($response->headers->get('Content-Type'), 'text/html')
-            || $this->debug && ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300)
-        ) {
-            return;
-        }
-
-        // all responses are assumed to be themed. PlainResponse will have already returned.
-        $twigThemedResponse = $this->themeEngine->wrapResponseInTheme($response);
-        $event->setResponse($twigThemedResponse);
     }
 }
