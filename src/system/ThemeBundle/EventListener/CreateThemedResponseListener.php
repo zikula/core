@@ -57,7 +57,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         }
 
         $route = $request->attributes->get('_route', '');
-        if (str_starts_with($route, 'home')) { // TODO remove hardcoded assumption
+        if (str_starts_with($route, 'home')) { // TODO remove hardcoded assumption -> check if controller is a dashboard
             return;
         }
 

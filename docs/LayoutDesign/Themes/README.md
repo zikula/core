@@ -9,7 +9,7 @@ For each dashboard you can override the base layout template which is named `@Zi
 
 ## Additional topics and further references
 
-- [Branding](Branding.md)
 - [Theme annotation](ThemeAnnotation.md)
+- [Branding](Branding.md)
 - [Site definition](../Templating/SiteDefinition.md)
 - [EasyAdminBundle: Dashboards](https://symfony.com/bundles/EasyAdminBundle/current/dashboards.html)

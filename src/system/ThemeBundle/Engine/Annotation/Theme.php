@@ -18,8 +18,8 @@ use Attribute;
 /**
  * This attribute is used in a controller method like so: #[Theme('admin')]
  * Possible values are:
- *  - 'admin'
- *  - any valid theme bundle name (e.g. 'ZikulaDefaultThemeBundle')
+ *  - 'admin' for the configured admin dashboard controller
+ *  - any full qualified dashboard controller class (e.g. 'Zikula\ThemeBundle\Controller\Dashboard\AdminDashboardController')
  * @see \Zikula\ThemeBundle\Engine\Engine::changeThemeByAnnotation
  */
 #[Attribute(Attribute::TARGET_METHOD)]

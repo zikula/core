@@ -18,5 +18,5 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 Possible values are:
 
-- 'admin'
-- any valid theme bundle name (e.g. 'ZikulaDefaultThemeBundle')
+- `'admin'` for the configured admin dashboard controller
+- any full qualified dashboard controller class (e.g. `'Zikula\ThemeBundle\Controller\Dashboard\AdminDashboardController'`)
