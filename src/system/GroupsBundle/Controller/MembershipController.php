@@ -29,6 +29,7 @@ use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\GroupsBundle\Event\GroupPostUserAddedEvent;
 use Zikula\GroupsBundle\Event\GroupPostUserRemovedEvent;
 use Zikula\GroupsBundle\Form\Type\RemoveUserType;
+use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Helper\TranslationHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;

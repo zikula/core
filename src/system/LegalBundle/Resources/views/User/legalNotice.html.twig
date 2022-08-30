@@ -1,4 +1,4 @@
 {{ pageSetVar('title', 'Legal notice for %s%'|trans({ '%s%': siteName() })) }}
 <h2>{{ 'Legal notice for %s%'|trans({ '%s%': siteName() }) }}</h2>
-{{ showflashes() }}
+
 {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/legalNotice.html.twig') }}

@@ -20,12 +20,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\CategoriesBundle\Entity\CategoryEntity;
 use Zikula\CategoriesBundle\Form\Type\CategoryType;
 use Zikula\CategoriesBundle\Helper\CategoryProcessingHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\SettingsBundle\Api\ApiInterface\LocaleApiInterface;
 
 #[Route('/categories/admin/category')]
 #[PermissionCheck('admin')]

@@ -1,4 +1,4 @@
 {{ pageSetVar('title', 'Accessibility statement for %s%'|trans({ '%s%': siteName() })) }}
 <h2>{{ 'Accessibility statement for %s%'|trans({ '%s%': siteName() }) }}</h2>
-{{ showflashes() }}
+
 {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/accessibilityStatement.html.twig') }}

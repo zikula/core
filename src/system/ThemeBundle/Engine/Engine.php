@@ -31,7 +31,7 @@ class Engine
     /**
      * Class name of currently active instance of ThemedDashboardController.
      */
-    private ?string $activeThemeControllerClass;
+    private ?string $activeThemeControllerClass = null;
 
     /**
      * Value of the active method Theme annotation.

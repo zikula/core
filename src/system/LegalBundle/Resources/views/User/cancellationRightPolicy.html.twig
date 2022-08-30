@@ -1,4 +1,4 @@
 {{ pageSetVar('title', 'Cancellation right policy for %s%'|trans({ '%s%': siteName() })) }}
 <h2>{{ 'Cancellation right policy for %s%'|trans({ '%s%': siteName() }) }}</h2>
-{{ showflashes() }}
+
 {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/cancellationRightPolicy.html.twig') }}

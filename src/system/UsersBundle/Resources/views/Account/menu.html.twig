@@ -1,6 +1,5 @@
 {{ pageSetVar('title', 'My account'|trans) }}
 <h2>{{ 'My account'|trans }}</h2>
-{{ showflashes() }}
 
 {% for menu in accountMenus|default %}
     {{ knp_menu_render(menu, {template: '@ZikulaTheme/Menu/bootstrap_fontawesome.html.twig'}) }}

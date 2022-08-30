@@ -58,7 +58,7 @@ class CategoryProcessingHelper
                 continue;
             }
 
-            if ($this->categorizableBundleHelper->isCategoryUsed($registry->getBundleName(), $category)) {
+            if ($this->categorizableBundleHelper->isCategoryUsedBy($registry->getBundleName(), $category)) {
                 return false;
             }
         }

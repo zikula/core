@@ -10,10 +10,6 @@ functions, filters, tags, tests and global variables.
 
 ## Functions
 
-### General
-
-- showflashes(params = [])
-
 ### Themes and Site data
 
 - localeSwitcher()

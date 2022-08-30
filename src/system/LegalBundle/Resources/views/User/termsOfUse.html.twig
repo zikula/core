@@ -1,4 +1,4 @@
 {{ pageSetVar('title', 'Terms of use for %s%'|trans({ '%s%': siteName() })) }}
 <h2>{{ 'Terms of use for %s%'|trans({ '%s%': siteName() }) }}</h2>
-{{ showflashes() }}
+
 {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/termsOfUse.html.twig') }}

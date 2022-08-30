@@ -1,4 +1,4 @@
 {{ pageSetVar('title', 'Privacy policy for %s%'|trans({ '%s%': siteName() })) }}
 <h2>{{ 'Privacy policy for %s%'|trans({ '%s%': siteName() }) }}</h2>
-{{ showflashes() }}
+
 {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/privacyPolicy.html.twig') }}
