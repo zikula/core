@@ -1,6 +1,6 @@
 build:
     environment:
-        node: v16.13.0 # LTS
+        node: v16.17.0 # LTS
     nodes:
         analysis:
             tests:
@@ -10,18 +10,17 @@ build:
         tests-and-coverage:
             environment:
                 php:
-                    version: '8.0.15'
+                    version: 8.1
                     ini:
                         'memory_limit': '512M'
                 apache2:
                     modules: ['rewrite']
             tests:
                 override:
-                    # disable test executions for now because system module test suites are broken
+                    # disable test executions for now because system bundle test suites are broken TODO
                     - true
 filter:
     excluded_paths:
-        - 'src/Zikula/WorkflowBundle/Resources/public/js/jsPlumb/*'
         - '*.min.js'
         - '*/vendor/*'
     dependency_paths:
