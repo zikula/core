@@ -1,4 +1,5 @@
 build:
+    image: default-bionic
     environment:
         node: v16.17.0 # LTS
     nodes:
