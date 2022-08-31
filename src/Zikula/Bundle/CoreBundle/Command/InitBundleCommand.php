@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Command that performs setup tasks for a given bundle implementing InitializableBundleInterface.
  */
-class SetupBundleCommand extends Command
+class InitBundleCommand extends Command
 {
     protected static $defaultName = 'zikula:init-bundle';
 
