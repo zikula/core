@@ -2,8 +2,8 @@
 <?php
 declare(strict_types=1);
 
+use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-
 
 $possibleRootDirectories = [
     __DIR__ . '/../../../../../',
@@ -12,14 +12,6 @@ $possibleRootDirectories = [
 
 foreach ($possibleRootDirectories as $directory) {
     $file = $directory . 'vendor/autoload_runtime.php';
-    if (file_exists($file)) {
-        require_once $file;
-        break;
-    }
-}
-
-foreach ($possibleRootDirectories as $directory) {
-    $file = $directory . 'config/bootstrap.php';
     if (file_exists($file)) {
         require_once $file;
         break;
