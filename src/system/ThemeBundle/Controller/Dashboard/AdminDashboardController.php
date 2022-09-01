@@ -17,11 +17,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Symfony\Component\Translation\t;
 use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
 use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\PermissionsBundle\Entity\PermissionEntity;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
-use function Symfony\Component\Translation\t;
 
 class AdminDashboardController extends AbstractThemedDashboardController
 {
@@ -38,7 +38,7 @@ class AdminDashboardController extends AbstractThemedDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard(t('Dashboard'), 'fa fa-gauge-high');
-        //yield MenuItem::linktoRoute(t('Website frontend'), 'fas fa-home', 'user_dashboard');
+        // yield MenuItem::linktoRoute(t('Website frontend'), 'fas fa-home', 'user_dashboard');
         yield MenuItem::linktoUrl(t('Website frontend'), 'fas fa-home', '/');
 
         yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', GroupEntity::class);

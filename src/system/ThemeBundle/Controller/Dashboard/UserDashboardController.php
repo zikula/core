@@ -17,10 +17,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Symfony\Component\Translation\t;
 use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
 use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
-use function Symfony\Component\Translation\t;
 
 class UserDashboardController extends AbstractThemedDashboardController
 {
@@ -51,11 +51,11 @@ class UserDashboardController extends AbstractThemedDashboardController
 
             $bundleInfo = $bundle->getMetaData();
 
-            $menuItems = is_array($extensionMenuItems) ? $extensionMenuItems: iterator_to_array($extensionMenuItems);
+            $menuItems = is_array($extensionMenuItems) ? $extensionMenuItems : iterator_to_array($extensionMenuItems);
             if (!count($menuItems)) {
                 continue;
             }
-            //yield MenuItem::subMenu($bundleInfo->getDisplayName(), $bundleInfo->getIcon())->setSubItems($menuItems);
+            // yield MenuItem::subMenu($bundleInfo->getDisplayName(), $bundleInfo->getIcon())->setSubItems($menuItems);
             foreach ($menuItems as $item) {
                 yield $item;
             }
