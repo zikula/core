@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
 use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
+use function Symfony\Component\Translation\t;
 
 class UserDashboardController extends AbstractThemedDashboardController
 {
@@ -29,40 +31,44 @@ class UserDashboardController extends AbstractThemedDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle($this->site->getName());
+        return parent::getDashboardWithBranding(true);
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::section('TEST', 'fas fa-flask');
-        yield MenuItem::linkToDashboard('Dashboard', 'fas fa-home');
-        // yield MenuItem::linktoRoute('Administration', 'fas fa-wrench', 'home_admin');
-        yield MenuItem::linkToUrl('Administration', 'fas fa-wrench', '/admin');
-        yield MenuItem::linkToUrl('Symfony', 'fab fa-symfony', 'https://symfony.com')->setLinkTarget('_target');
-        yield MenuItem::linkToUrl('Zikula', 'fas fa-rocket', 'https://ziku.la')->setLinkTarget('_target');
-        yield MenuItem::linkToUrl('Zikula Docs', 'fas fa-book', 'https://docs.ziku.la/')->setLinkTarget('_target');
-        yield MenuItem::linkToUrl('ModuleStudio', 'fas fa-wand-sparkles', 'https://modulestudio.de/en/')->setLinkTarget('_target');
-        yield MenuItem::linkToCrud('Groups', 'fas fa-people-group', GroupEntity::class);
+        yield MenuItem::linkToDashboard(t('Home'), 'fas fa-home');
+        // yield MenuItem::linktoRoute(t('Administration'), 'fas fa-wrench', 'home_admin');
+        yield MenuItem::linkToUrl(t('Administration'), 'fas fa-wrench', '/admin');
+        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', GroupEntity::class);
+
+        yield MenuItem::section();
+        $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_USER);
+        foreach ($menuItemsByBundle as $bundleName => $extensionMenuItems) {
+            $bundle = $this->kernel->getBundle($bundleName);
+            /*if (!$this->permissionApi->hasPermission($bundle->getName() . '::', 'ANY', ACCESS_OVERVIEW)) {
+                continue;
+            }*/
+
+            $bundleInfo = $bundle->getMetaData();
+
+            $menuItems = is_array($extensionMenuItems) ? $extensionMenuItems: iterator_to_array($extensionMenuItems);
+            if (!count($menuItems)) {
+                continue;
+            }
+            //yield MenuItem::subMenu($bundleInfo->getDisplayName(), $bundleInfo->getIcon())->setSubItems($menuItems);
+            foreach ($menuItems as $item) {
+                yield $item;
+            }
+        }
     }
 
-    #[Route('/', name: 'home')]
+    #[Route('/', name: 'user_dashboard')]
     public function index(): Response
     {
-        // return parent::index();
-
-        // Option 1. You can make your dashboard redirect to some common page of your backend
+        // redirect to a common dashboard page
         return $this->redirect($this->adminUrlGenerator->setController(GroupEntityCrudController::class)->generateUrl());
 
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
+        // display a dashboard with widgets, etc. (template should extend @EasyAdmin/page/content.html.twig)
         // return $this->render('some/path/my-dashboard.html.twig');
     }
 }

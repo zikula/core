@@ -13,19 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Twig\Runtime;
 
-use Exception;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-
-// use Zikula\ThemeBundle\Engine\Asset;
 
 class BrandingRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly Environment $twig,
-        private readonly SiteDefinitionInterface $site/*,
-        private readonly Asset $assetHelper*/
+        private readonly SiteDefinitionInterface $site
     ) {
     }
 
@@ -58,7 +54,7 @@ class BrandingRuntime implements RuntimeExtensionInterface
      */
     public function getSiteBrandingMarkup(): string
     {
-        return $this->twig->render('@ZikulaTheme/Engine/manifest.html.twig');
+        return $this->twig->render('@ZikulaTheme/Branding/manifest.html.twig');
     }
 
     /**
@@ -72,27 +68,6 @@ class BrandingRuntime implements RuntimeExtensionInterface
 
         $accessor = 'get' . ucfirst($imageType) . 'Path';
 
-        $assetPath = $this->site->{$accessor}();
-
-        return $assetPath;
-
-        // TODO
-        try {
-            $imagePath = $this->assetHelper->resolve($assetPath);
-        } catch (Exception $exception) {
-            // fall back to default
-            $assetPath = '@CoreBundle:images/';
-            if ('logo' === $imageType) {
-                $assetPath .= 'logo_with_title.png';
-            } elseif ('mobileLogo' === $imageType) {
-                $assetPath .= 'zk-power.png';
-            } elseif ('icon' === $imageType) {
-                $assetPath .= 'logo.gif';
-            }
-
-            $imagePath = $this->assetHelper->resolve($assetPath);
-        }
-
-        return $imagePath;
+        return $this->site->{$accessor}();
     }
 }

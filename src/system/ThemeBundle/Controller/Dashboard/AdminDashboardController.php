@@ -21,6 +21,7 @@ use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
 use Zikula\GroupsBundle\Entity\GroupEntity;
 use Zikula\PermissionsBundle\Entity\PermissionEntity;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
+use function Symfony\Component\Translation\t;
 
 class AdminDashboardController extends AbstractThemedDashboardController
 {
@@ -31,40 +32,36 @@ class AdminDashboardController extends AbstractThemedDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return Dashboard::new()
-            ->setTitle($this->site->getName() . ' Administration');
+        return parent::getDashboardWithBranding(true, t('Administration'));
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::section('TEST', 'fas fa-flask');
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'home');
-        yield MenuItem::linktoUrl('Back to the website', 'fas fa-home', '/');
-        yield MenuItem::linkToUrl('Symfony', 'fab fa-symfony', 'https://symfony.com')->setLinkTarget('_target');
-        yield MenuItem::linkToUrl('Zikula', 'fas fa-rocket', 'https://ziku.la')->setLinkTarget('_target');
-        yield MenuItem::linkToUrl('Zikula Docs', 'fas fa-book', 'https://docs.ziku.la/')->setLinkTarget('_target');
-        yield MenuItem::linkToUrl('ModuleStudio', 'fas fa-wand-sparkles', 'https://modulestudio.de/en/')->setLinkTarget('_target');
+        yield MenuItem::linkToDashboard(t('Dashboard'), 'fa fa-gauge-high');
+        //yield MenuItem::linktoRoute(t('Website frontend'), 'fas fa-home', 'user_dashboard');
+        yield MenuItem::linktoUrl(t('Website frontend'), 'fas fa-home', '/');
 
-        yield MenuItem::linkToCrud('Groups', 'fas fa-people-group', GroupEntity::class);
-        yield MenuItem::linkToCrud('Permissions', 'fas fa-lock', PermissionEntity::class);
+        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', GroupEntity::class);
+        yield MenuItem::linkToCrud(t('Permissions'), 'fas fa-lock', PermissionEntity::class);
+        yield MenuItem::linkToCrud(t('Add permission'), 'fas fa-plus', PermissionEntity::class)
+            ->setAction('new');
 
         foreach ($this->adminCategoryHelper->getCategories() as $category) {
             yield MenuItem::section($category->getName(), $category->getIcon());
             $bundleNames = $this->adminCategoryHelper->getBundleAssignments($category);
             $adminBundles = $this->adminBundleHelper->getAdminCapableBundles();
-            foreach ($adminBundles as $adminBundle) {
-                if (!in_array($adminBundle->getName(), $bundleNames, true)) {
+            foreach ($adminBundles as $bundle) {
+                if (!in_array($bundle->getName(), $bundleNames, true)) {
                     continue;
                 }
-                /*if (!$this->permissionApi->hasPermission($adminBundle->getName() . '::', 'ANY', ACCESS_EDIT)) {
+                /*if (!$this->permissionApi->hasPermission($bundle->getName() . '::', 'ANY', ACCESS_EDIT)) {
                     continue;
                 }*/
 
-                $bundleInfo = $adminBundle->getMetaData();
+                $bundleInfo = $bundle->getMetaData();
                 [$menuTextUrl, $menuText] = $this->adminBundleHelper->getAdminRouteInformation($bundleInfo);
 
-                $bundleName = (string) $adminBundle->getName();
+                $bundleName = (string) $bundle->getName();
                 $extensionMenuItems = $this->extensionMenuCollector->get($bundleName, ExtensionMenuInterface::CONTEXT_ADMIN);
                 $isSubMenu = isset($extensionMenuItems);
 
@@ -75,26 +72,28 @@ class AdminDashboardController extends AbstractThemedDashboardController
                 }
             }
         }
+
+        yield MenuItem::section(t('Resources'), 'fas fa-book');
+        yield MenuItem::subMenu(t('Zikula'), 'fas fa-rocket')->setSubItems([
+            MenuItem::linkToUrl(t('Website'), 'fas fa-house', 'https://ziku.la/')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('Docs'), 'fas fa-file-contract', 'https://docs.ziku.la/')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('Support Slack'), 'fab fa-slack', 'https://joinslack.ziku.la/')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('ModuleStudio'), 'fas fa-wand-sparkles', 'https://modulestudio.de/en/documentation/')->setLinkTarget('_blank'),
+        ]);
+        yield MenuItem::subMenu(t('Foundation'), 'fas fa-cubes-stacked')->setSubItems([
+            MenuItem::linkToUrl(t('Symfony'), 'fab fa-symfony', 'https://symfony.com/')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('Twig'), 'fas fa-file-lines', 'https://twig.symfony.com/')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('Doctrine'), 'fas fa-database', 'https://www.doctrine-project.org/')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('EasyAdmin'), 'fas fa-screwdriver-wrench', 'https://symfony.com/bundles/EasyAdminBundle/current/index.html')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('Bootstrap'), 'fab fa-bootstrap', 'https://getbootstrap.com/')->setLinkTarget('_blank'),
+        ]);
     }
 
-    #[Route('/admin', name: 'home_admin')]
+    #[Route('/admin', name: 'admin_dashboard')]
     public function index(): Response
     {
-        // return parent::index();
-
-        // Option 1. You can make your dashboard redirect to some common page of your backend
+        // redirect to a common dashboard page
         return $this->redirect($this->adminUrlGenerator->setController(GroupEntityCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
 
         /**
          * TODO
@@ -105,5 +104,8 @@ class AdminDashboardController extends AbstractThemedDashboardController
                 </p>
             {% endif %}
          */
+
+        // display a dashboard with widgets, etc. (template should extend @EasyAdmin/page/content.html.twig)
+        // return $this->render('some/path/my-dashboard.html.twig');
     }
 }

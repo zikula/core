@@ -21,12 +21,12 @@ use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 #[Route('/theme')]
 #[PermissionCheck('admin')]
-class ConfigController extends AbstractController
+class BrandingController extends AbstractController
 {
-    #[Route('/config', name: 'zikulathemebundle_config_config')]
+    #[Route('/overview', name: 'zikulathemebundle_branding_overview')]
     #[Theme('admin')]
-    public function config(): Response
+    public function overview(): Response
     {
-        return $this->render('@ZikulaTheme/Config/config.html.twig', []);
+        return $this->render('@ZikulaTheme/Branding/overview.html.twig', []);
     }
 }

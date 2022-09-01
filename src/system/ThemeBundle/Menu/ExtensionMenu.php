@@ -52,7 +52,7 @@ class ExtensionMenu extends AbstractExtensionMenu
             yield MenuItem::subMenu('Localization', 'fa fa-globe')->setSubItems($localizationItems);
         }
 
-        yield MenuItem::linktoRoute('Branding settings', 'fas fa-palette', 'zikulathemebundle_config_config');
+        yield MenuItem::linktoRoute('Branding', 'fas fa-palette', 'zikulathemebundle_branding_overview');
         yield MenuItem::linktoRoute('Test mail settings', 'fas fa-envelope', 'zikulathemebundle_tool_testmail');
         yield MenuItem::linktoRoute('PHP configuration', 'fab fa-php', 'zikulathemebundle_tool_phpinfo');
     }

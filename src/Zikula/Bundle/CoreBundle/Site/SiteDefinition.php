@@ -52,17 +52,17 @@ class SiteDefinition implements SiteDefinitionInterface
 
     public function getLogoPath(): ?string
     {
-        return '@CoreBundle:images/logo_with_title.png';
+        return '/bundles/core/images/logo_with_title.png';
     }
 
     public function getMobileLogoPath(): ?string
     {
-        return '@CoreBundle:images/zk-power.png';
+        return '/bundles/core/images/zk-power.png';
     }
 
     public function getIconPath(): ?string
     {
-        return '@CoreBundle:images/icon.png';
+        return '/bundles/core/images/icon.png';
     }
 
     public function getStartController(): ?array

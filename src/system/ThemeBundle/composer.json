@@ -58,7 +58,7 @@
             "icon": "fas fa-palette",
             "capabilities": {
                 "admin": {
-                    "route": "zikulathemebundle_config_config"
+                    "route": "zikulathemebundle_branding_overview"
                 }
             },
             "securityschema": {

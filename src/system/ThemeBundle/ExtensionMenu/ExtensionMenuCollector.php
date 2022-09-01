@@ -54,7 +54,7 @@ class ExtensionMenuCollector
         return null;
     }
 
-    public function getAllByType(string $context = ExtensionMenuInterface::CONTEXT_ADMIN): array
+    public function getAllByContext(string $context = ExtensionMenuInterface::CONTEXT_ADMIN): array
     {
         $menus = [];
         foreach ($this->extensionMenus as $bundleName => $extensionMenu) {
