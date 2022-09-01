@@ -71,38 +71,38 @@ class ExtensionMenuCollectorTest extends TestCase
      * @covers ExtensionMenuCollector::get
      * @dataProvider menuProvider
      */
-    public function testGet(string $extension, string $type, int $count): void
+    public function testGet(string $extension, string $context, int $count): void
     {
-        $menu = $this->collector->get($extension, $type);
+        $menu = $this->collector->get($extension, $context);
         $this->assertEquals($count, $menu ? $menu->count() : 0);
     }
 
     public function menuProvider(): array
     {
         return [
-            ['Unknown Extension', ExtensionMenuInterface::TYPE_ADMIN, 0],
-            ['ZikulaFooExtension', 'UnknownType', 0],
-            ['ZikulaFooExtension', ExtensionMenuInterface::TYPE_ADMIN, 3],
-            ['ZikulaFooExtension', ExtensionMenuInterface::TYPE_USER, 1],
+            ['Unknown Extension', ExtensionMenuInterface::CONTEXT_ADMIN, 0],
+            ['ZikulaFooExtension', 'UnknownContext', 0],
+            ['ZikulaFooExtension', ExtensionMenuInterface::CONTEXT_ADMIN, 3],
+            ['ZikulaFooExtension', ExtensionMenuInterface::CONTEXT_USER, 1],
             ['ZikulaBarExtension', 'bar', 1],
         ];
     }
 
     /**
-     * @covers ExtensionMenuCollector::getAllByType
+     * @covers ExtensionMenuCollector::getAllByContext
      * @dataProvider allMenusProvider
      */
-    public function testGetAllByType(string $type, array $expected = []): void
+    public function testGetAllByContext(string $context, array $expected = []): void
     {
-        $this->assertEquals($expected, array_keys($this->collector->getAllByType($type)));
+        $this->assertEquals($expected, array_keys($this->collector->getAllByContext($context)));
     }
 
     public function allMenusProvider(): array
     {
         return [
-            [ExtensionMenuInterface::TYPE_ACCOUNT, ['ZikulaBarExtension']],
-            [ExtensionMenuInterface::TYPE_USER, ['ZikulaFooExtension', 'ZikulaBarExtension']],
-            [ExtensionMenuInterface::TYPE_ADMIN, ['ZikulaFooExtension']],
+            [ExtensionMenuInterface::CONTEXT_ACCOUNT, ['ZikulaBarExtension']],
+            [ExtensionMenuInterface::CONTEXT_USER, ['ZikulaFooExtension', 'ZikulaBarExtension']],
+            [ExtensionMenuInterface::CONTEXT_ADMIN, ['ZikulaFooExtension']],
             ['bar', ['ZikulaBarExtension']],
         ];
     }

@@ -53,8 +53,7 @@ class AccountController extends AbstractController
     #[Route('', name: 'zikulausersbundle_account_menu')]
     public function menu(ExtensionMenuCollector $extensionMenuCollector): Response
     {
-        $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
-        $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
+        $accountMenus = $extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_ACCOUNT);
 
         foreach ($accountMenus as $accountMenu) {
             /** @var \Knp\Menu\ItemInterface $accountMenu */
