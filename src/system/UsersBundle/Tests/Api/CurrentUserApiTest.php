@@ -59,7 +59,7 @@ class CurrentUserApiTest extends TestCase
         $this->assertEquals('FooName', $api->uname());
         $this->assertEquals('foo@foo.com', $api->get('email'));
         $this->assertEquals('foo@foo.com', $api->email());
-        $this->assertEquals(Constant::ACTIVATED_ACTIVE, $api->get('activated'));
+        $this->assertEquals(UsersConstant::ACTIVATED_ACTIVE, $api->get('activated'));
 
         $attributes = new ArrayCollection();
         /** @var User $user */
@@ -82,10 +82,10 @@ class CurrentUserApiTest extends TestCase
 
     public function testIsNotLoggedIn(): void
     {
-        $api = $this->getApi(Constant::USER_ID_ANONYMOUS);
+        $api = $this->getApi(UsersConstant::USER_ID_ANONYMOUS);
         $this->assertFalse($api->isLoggedIn());
-        $this->assertEquals(Constant::USER_ID_ANONYMOUS, $api->get('uid'));
-        $this->assertEquals(Constant::USER_ID_ANONYMOUS, $api->uid());
+        $this->assertEquals(UsersConstant::USER_ID_ANONYMOUS, $api->get('uid'));
+        $this->assertEquals(UsersConstant::USER_ID_ANONYMOUS, $api->uid());
         $this->assertEquals('guest', $api->get('uname'));
         $this->assertEquals('guest', $api->uname());
     }
