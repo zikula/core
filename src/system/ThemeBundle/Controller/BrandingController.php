@@ -17,14 +17,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 #[Route('/theme')]
 #[PermissionCheck('admin')]
 class BrandingController extends AbstractController
 {
     #[Route('/overview', name: 'zikulathemebundle_branding_overview')]
-    #[Theme('admin')]
     public function overview(): Response
     {
         return $this->render('@ZikulaTheme/Branding/overview.html.twig', []);

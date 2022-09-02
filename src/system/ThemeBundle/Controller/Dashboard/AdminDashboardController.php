@@ -18,7 +18,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\Translation\t;
-use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
 use Zikula\GroupsBundle\Entity\Group;
 use Zikula\PermissionsBundle\Entity\Permission;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
@@ -92,20 +91,10 @@ class AdminDashboardController extends AbstractThemedDashboardController
     #[Route('/admin', name: 'admin_dashboard')]
     public function index(): Response
     {
-        // redirect to a common dashboard page
-        return $this->redirect($this->adminUrlGenerator->setController(GroupEntityCrudController::class)->generateUrl());
+        if (!extension_loaded('intl')) {
+            $this->addFlash('error', t('WARNING: The PHP extension intl is not loaded. All functions using this will default to "en". Seek assistance from your provider to install.'));
+        }
 
-        /**
-         * TODO
-            {% if not intl_installed|default(false) %}
-                <p class="alert alert-danger">
-                    {% set args = {'%ext%': '<code>INTL</code>'|raw, '%locale%': '<code>EN</code>'|raw} %}
-                    {% trans with args %}WARNING: The PHP Extension %ext% is not loaded. All functions using this will default to %locale%. Seek assistance from your provider to install.{% endtrans %}
-                </p>
-            {% endif %}
-         */
-
-        // display a dashboard with widgets, etc. (template should extend @EasyAdmin/page/content.html.twig)
-        // return $this->render('some/path/my-dashboard.html.twig');
+        return parent::index();
     }
 }

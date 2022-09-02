@@ -26,7 +26,6 @@ use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\ThemeBundle\Form\Type\MailTestType;
 
 #[Route('/admin/tool')]
@@ -43,7 +42,6 @@ class ToolController extends AbstractController
      * This function displays a form to send a test mail.
      */
     #[Route('/testmail', name: 'zikulathemebundle_tool_testmail')]
-    #[Theme('admin')]
     public function test(
         Request $request,
         MailerInterface $mailer,
@@ -114,7 +112,6 @@ class ToolController extends AbstractController
      * Displays the content of {@see phpinfo()}.
      */
     #[Route('/phpinfo', name: 'zikulathemebundle_tool_phpinfo', methods: ['GET'])]
-    #[Theme('admin')]
     public function phpinfo(): Response
     {
         ob_start();

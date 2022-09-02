@@ -23,7 +23,6 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Api\LocaleApi;
-use Zikula\Bundle\CoreBundle\Controller\MainController;
 use Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener;
 use Zikula\Bundle\CoreBundle\EventListener\SiteOffListener;
 use Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener;
@@ -64,7 +63,6 @@ class CoreExtension extends Extension implements PrependExtensionInterface
         // hint which classes contain annotations so they are compiled when generating
         // the application cache to improve the overall performance
         $this->addAnnotatedClassesToCompile([
-            MainController::class,
             'Zikula\\*Bundle\\Controller\\',
             'Zikula\\*Bundle\\Entity\\',
         ]);

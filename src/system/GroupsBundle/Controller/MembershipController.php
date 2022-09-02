@@ -34,7 +34,6 @@ use Zikula\GroupsBundle\Helper\TranslationHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
@@ -80,7 +79,6 @@ class MembershipController extends AbstractController
         requirements: ['gid' => "^[1-9]\d*$", 'letter' => "[a-zA-Z]|\*", 'page' => "\d+"])
     ]
     #[PermissionCheck(['$_zkModule::', '$gid::', 'edit'])]
-    #[Theme('admin')]
     public function adminList(
         Group $group,
         string $letter = '*',
@@ -169,7 +167,6 @@ class MembershipController extends AbstractController
      */
     #[Route('/admin/remove/{gid}/{uid}}', name: 'zikulagroupsbundle_membership_remove', requirements: ['gid' => "^[1-9]\d*$", 'uid' => "^[1-9]\d*$"])]
     #[PermissionCheck(['$_zkModule::', '$gid::', 'edit'])]
-    #[Theme('admin')]
     public function remove(
         Request $request,
         ManagerRegistry $doctrine,

@@ -1,2 +1,10 @@
 zikula_theme:
-    resource: "@ZikulaThemeBundle/Resources/config/routing.yaml"
+    resource: '@ZikulaThemeBundle/Resources/config/routing.yaml'
+
+zikula_user_dashboard:
+    path: /admin
+    controller: '%zikula_theme_user_dashboard%'
+
+zikula_admin_dashboard:
+    path: /admin
+    controller: '%zikula_theme_admin_dashboard%'

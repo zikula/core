@@ -1,6 +1,6 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title 'Create new group' %}
+{% block content_title 'Create new group' %}
 {#
 <h3>
     <span class="fas fa-plus"></span>
@@ -8,7 +8,8 @@
     {{ pageSetVar('title', 'Create new group'|trans) }}
 </h3>
 #}
-{% block page_content %}
+
+{% block main %}
     {{ form_start(form) }}
     {{ form_errors(form) }}
     <fieldset>

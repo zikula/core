@@ -22,7 +22,6 @@ use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\LegalBundle\Form\Type\ConfigType;
 use Zikula\LegalBundle\Helper\ResetAgreementHelper;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 #[Route('/legal')]
 #[PermissionCheck('admin')]
@@ -33,7 +32,6 @@ class ConfigController extends AbstractController
     }
 
     #[Route('/config', name: 'zikulalegalbundle_config_config')]
-    #[Theme('admin')]
     public function config(
         Request $request,
         GroupRepositoryInterface $groupRepository,

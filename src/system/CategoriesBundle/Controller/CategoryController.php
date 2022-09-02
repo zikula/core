@@ -25,7 +25,6 @@ use Zikula\CategoriesBundle\Form\Type\CategoryTreeType;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 #[Route('/categories/admin/category')]
 #[PermissionCheck('admin')]
@@ -43,7 +42,6 @@ class CategoryController extends AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
     #[Route('/list/{id}', name: 'zikulacategoriesbundle_category_listcategories', requirements: ['category' => "^[1-9]\d*$"], defaults: ['id' => 1])]
-    #[Theme('admin')]
     public function listCategories(
         Request $request,
         ManagerRegistry $doctrine,

@@ -24,7 +24,6 @@ use Zikula\CategoriesBundle\Form\Type\CategoryRegistryType;
 use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 #[Route('/categories/admin/registry')]
 #[PermissionCheck('admin')]
@@ -34,7 +33,6 @@ class RegistryController extends AbstractController
      * Creates or edits a category registry.
      */
     #[Route('/edit/{id}', name: 'zikulacategoriesbundle_registry_edit', requirements: ['id' => "^[1-9]\d*$"], defaults: ['id' => null])]
-    #[Theme('admin')]
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
@@ -72,7 +70,6 @@ class RegistryController extends AbstractController
      * Deletes a category registry.
      */
     #[Route('/delete/{id}', name: 'zikulacategoriesbundle_registry_delete', requirements: ['id' => "^[1-9]\d*$"])]
-    #[Theme('admin')]
     public function delete(
         Request $request,
         EntityManagerInterface $entityManager,

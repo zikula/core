@@ -31,7 +31,6 @@ use Zikula\PermissionsBundle\Form\Type\PermissionCheckType;
 use Zikula\PermissionsBundle\Form\Type\PermissionType;
 use Zikula\PermissionsBundle\Helper\SchemaHelper;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -52,7 +51,6 @@ class PermissionController extends AbstractController
     }
 
     #[Route('/list', name: 'zikulapermissionsbundle_permission_listpermissions')]
-    #[Theme('admin')]
     public function listPermissions(
         GroupRepositoryInterface $groupsRepository,
         PermissionRepositoryInterface $permissionRepository,

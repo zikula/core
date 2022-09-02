@@ -35,7 +35,6 @@ use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
 use Zikula\UsersBundle\Entity\User;
@@ -71,7 +70,6 @@ class UserAdministrationController extends AbstractController
 
     #[Route('/list/{sort}/{sortdir}/{letter}/{page}', name: 'zikulausersbundle_useradministration_listusers', methods: ['GET'], requirements: ['page' => '\d+'])]
     #[PermissionCheck('moderate')]
-    #[Theme('admin')]
     public function listUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -146,7 +144,6 @@ class UserAdministrationController extends AbstractController
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the user record
      */
     #[Route('/user/modify/{user}', name: 'zikulausersbundle_useradministration_modify', requirements: ['user' => '^[1-9]\d*$'])]
-    #[Theme('admin')]
     public function modify(
         Request $request,
         User $user,
@@ -197,7 +194,6 @@ class UserAdministrationController extends AbstractController
 
     #[Route('/user/approve/{user}/{force}', name: 'zikulausersbundle_useradministration_approve', requirements: ['user' => '^[1-9]\d*$'])]
     #[PermissionCheck('moderate')]
-    #[Theme('admin')]
     public function approve(
         Request $request,
         User $user,
@@ -256,7 +252,6 @@ class UserAdministrationController extends AbstractController
 
     #[Route('/delete/{user}', name: 'zikulausersbundle_useradministration_delete', requirements: ['user' => '^[1-9]\d*$'])]
     #[PermissionCheck('delete')]
-    #[Theme('admin')]
     public function delete(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -333,7 +328,6 @@ class UserAdministrationController extends AbstractController
 
     #[Route('/search', name: 'zikulausersbundle_useradministration_search')]
     #[PermissionCheck('moderate')]
-    #[Theme('admin')]
     public function search(
         Request $request,
         UserRepositoryInterface $userRepository,

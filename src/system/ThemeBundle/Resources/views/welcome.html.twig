@@ -1,0 +1,9 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    {{ t('Welcome to %siteName%', {'%siteName%': siteName()})|trans }}
+{% endblock %}
+
+{% block main %}
+    <p>{{ t('To customize this page check <code>%file%</code>.', {'%file%': '/config/packages/zikula_theme.yaml'})|trans|raw }}</p>
+{% endblock %}

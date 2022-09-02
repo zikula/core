@@ -17,8 +17,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zikula\ThemeBundle\Engine\Engine;
 use Zikula\ThemeBundle\EventListener\OutputCompressionListener;
+use Zikula\ThemeBundle\Controller\Dashboard\AdminDashboardController;
+use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
 
 class ZikulaThemeExtension extends Extension
 {
@@ -30,9 +31,14 @@ class ZikulaThemeExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->getDefinition(Engine::class)
-            ->setArgument('$defaultDashboard', $config['default_dashboard'])
-            ->setArgument('$adminDashboard', $config['admin_dashboard']);
+        $container->setParameter('zikula_theme_user_dashboard', $config['user_dashboard']['class']);
+        $container->setParameter('zikula_theme_admin_dashboard', $config['admin_dashboard']['class']);
+
+        $container->getDefinition(AdminDashboardController::class)
+            ->setArgument('$themeConfig', $config['admin_dashboard']);
+
+        $container->getDefinition(UserDashboardController::class)
+            ->setArgument('$themeConfig', $config['user_dashboard']);
 
         $container->getDefinition(OutputCompressionListener::class)
             ->setArgument('$useCompression', $config['use_compression']);

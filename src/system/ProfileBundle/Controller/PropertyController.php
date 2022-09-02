@@ -23,14 +23,12 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ProfileBundle\Entity\Property;
 use Zikula\ProfileBundle\Form\Type\PropertyType;
 use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 
 #[Route('/profile/property')]
 #[PermissionCheck('edit')]
 class PropertyController extends AbstractController
 {
     #[Route('/list', name: 'zikulaprofilebundle_property_listproperties')]
-    #[Theme('admin')]
     public function listProperties(PropertyRepositoryInterface $propertyRepository): Response
     {
         return $this->render('@ZikulaProfile/Property/list.html.twig', [
@@ -39,7 +37,6 @@ class PropertyController extends AbstractController
     }
 
     #[Route('/edit/{id}', name: 'zikulaprofilebundle_property_edit', defaults: ['id' => null])]
-    #[Theme('admin')]
     public function edit(Request $request, ManagerRegistry $doctrine, Property $propertyEntity = null): Response
     {
         if (!isset($propertyEntity)) {
@@ -67,7 +64,6 @@ class PropertyController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'zikulaprofilebundle_property_delete')]
-    #[Theme('admin')]
     public function delete(Request $request, ManagerRegistry $doctrine, Property $propertyEntity): Response
     {
         $form = $this->createForm(DeletionType::class, $propertyEntity);

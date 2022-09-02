@@ -18,7 +18,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
@@ -34,13 +36,14 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         protected readonly AdminBundleHelper $adminBundleHelper,
         protected readonly ExtensionMenuCollector $extensionMenuCollector,
         protected readonly PermissionApiInterface $permissionApi,
-        protected readonly SiteDefinitionInterface $site
+        protected readonly SiteDefinitionInterface $site,
+        protected readonly array $themeConfig
     ) {
     }
 
     abstract protected function getName(): string;
 
-    protected function getDashboardWithBranding(bool $showLogo, ?string $title = null): Dashboard
+    protected function getDashboardWithBranding(bool $showLogo, ?TranslatableMessage $title = null): Dashboard
     {
         $siteName = $this->site->getName();
         if ($showLogo) {
@@ -61,6 +64,10 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
             $dashboard->setFaviconPath($iconPath);
         }
 
+        $dashboard->renderContentMaximized($this->themeConfig['view']['content_maximized'])
+            ->renderSidebarMinimized($this->themeConfig['view']['sidebar_minimized'])
+            ->setTranslationDomain('dashboard');
+
         return $dashboard;
     }
 
@@ -77,5 +84,27 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         return parent::configureCrud()
             ->overrideTemplate('layout', '@ZikulaTheme/Dashboard/layout_' . $this->getName() . '.html.twig')
         ;
+    }
+
+    public function index(): Response
+    {
+        $contentConfig = $this->themeConfig['content'];
+        if (null !== $contentConfig['template']) {
+            // render a custom template
+            return $this->render($contentConfig['template']);
+        }
+
+        if (null !== $contentConfig['redirect']['crud']) {
+            // redirect to a CRUD controller page
+            return $this->redirect($this->adminUrlGenerator->setController($contentConfig['redirect']['crud'])->generateUrl());
+        }
+
+        if (null !== $contentConfig['redirect']['route']) {
+            // redirect to a Symfony route
+            return $this->redirectToRoute($contentConfig['redirect']['route'], $contentConfig['redirect']['route_parameters']);
+        }
+
+        // render EAB welcome page
+        return parent::index();
     }
 }

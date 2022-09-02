@@ -21,7 +21,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\ZAuthBundle\Form\Type\ImportUserType;
 use Zikula\ZAuthBundle\Helper\FileIOHelper;
 
@@ -37,7 +36,6 @@ class FileIOController extends AbstractController
     }
 
     #[Route('/import', name: 'zikulazauthbundle_fileio_import')]
-    #[Theme('admin')]
     public function import(
         Request $request,
         GroupRepositoryInterface $groupRepository,

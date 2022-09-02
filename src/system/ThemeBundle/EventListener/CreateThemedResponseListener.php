@@ -20,7 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ThemeBundle\Engine\Engine;
+use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
+// use Zikula\ThemeBundle\Engine\Engine;
 
 class CreateThemedResponseListener implements EventSubscriberInterface
 {
@@ -29,7 +30,6 @@ class CreateThemedResponseListener implements EventSubscriberInterface
     private bool $debug;
 
     public function __construct(
-        private readonly Engine $themeEngine,
         private readonly AdminUrlGenerator $adminUrlGenerator,
         string $installed,
         string $debug,
@@ -60,7 +60,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
             return;
         }
 
-        $dashboard = $this->themeEngine->getActiveDashboardControllerClass();
+        $dashboard = UserDashboardController::class; // TODO $this->themeEngine->getActiveDashboardControllerClass();
         $routeParameters = $request->attributes->get('_route_params');
 
         // menu indexes

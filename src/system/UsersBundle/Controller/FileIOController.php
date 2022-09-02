@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\GroupsBundle\Entity\Group;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Form\Type\ExportUsersType;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
@@ -30,7 +29,6 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 class FileIOController extends AbstractController
 {
     #[Route('/export', name: 'zikulausersbundle_fileio_export')]
-    #[Theme('admin')]
     public function export(Request $request, UserRepositoryInterface $userRepository)
     {
         $form = $this->createForm(ExportUsersType::class, []);
