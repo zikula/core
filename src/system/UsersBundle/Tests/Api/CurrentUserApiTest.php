@@ -21,10 +21,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Api\CurrentUserApi;
-use Zikula\UsersBundle\Constant;
-use Zikula\UsersBundle\Entity\UserAttribute;
 use Zikula\UsersBundle\Entity\User;
+use Zikula\UsersBundle\Entity\UserAttribute;
 use Zikula\UsersBundle\Tests\Api\Fixtures\MockUserRepository;
+use Zikula\UsersBundle\UsersConstant;
 
 class CurrentUserApiTest extends TestCase
 {

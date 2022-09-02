@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
-// use Zikula\ThemeBundle\Engine\Engine;
 
 class CreateThemedResponseListener implements EventSubscriberInterface
 {

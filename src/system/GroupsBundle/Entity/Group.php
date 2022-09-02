@@ -53,7 +53,7 @@ class Group
     #[ORM\JoinColumn(name: 'gid', referencedColumnName: 'gid', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'uid', referencedColumnName: 'uid')]
     #[ORM\OrderBy(['uname' => 'ASC'])]
-    /** @var User[] $users */
+    /** @var User[] */
     private Collection $users;
 
     public function __construct()

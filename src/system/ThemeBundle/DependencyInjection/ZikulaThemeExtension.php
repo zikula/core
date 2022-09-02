@@ -17,9 +17,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zikula\ThemeBundle\EventListener\OutputCompressionListener;
 use Zikula\ThemeBundle\Controller\Dashboard\AdminDashboardController;
 use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
+use Zikula\ThemeBundle\EventListener\OutputCompressionListener;
 
 class ZikulaThemeExtension extends Extension
 {
