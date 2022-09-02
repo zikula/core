@@ -20,13 +20,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\UsersBundle\Repository\UserRepository;
 use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Validator\Constraints as ZikulaAssert;
 
 /**
- * Main Users table.
+ * Main user entity.
  * Stores core information about each user account.
  */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -36,7 +36,7 @@ use Zikula\UsersBundle\Validator\Constraints as ZikulaAssert;
     ORM\Index(fields: ['email'], name: 'email')
 ]
 #[ZikulaAssert\ValidUserFields]
-class UserEntity
+class User
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -44,7 +44,7 @@ class UserEntity
     private int $uid;
 
     /**
-     * User Name: Primary user display name.
+     * Username: Primary user display name.
      */
     #[ORM\Column(length: 25)]
     #[Assert\Length(min: 1, max: 25)]
@@ -52,7 +52,7 @@ class UserEntity
     private string $uname;
 
     /**
-     * E-mail Address: For user notifications.
+     * E-mail address: For user notifications.
      */
     #[ORM\Column(length: 60)]
     #[Assert\Length(min: 1, max: 60)]
@@ -142,14 +142,14 @@ class UserEntity
     /**
      * Additional attributes of this user
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAttributeEntity::class, cascade: ['all'], orphanRemoval: true, indexBy: 'name')]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAttribute::class, cascade: ['all'], orphanRemoval: true, indexBy: 'name')]
     private Collection $attributes;
 
-    #[ORM\ManyToMany(targetEntity: GroupEntity::class, inversedBy: 'users', indexBy: 'gid')]
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users', indexBy: 'gid')]
     #[ORM\JoinTable(name: 'group_membership')]
     #[ORM\JoinColumn(name: 'uid', referencedColumnName: 'uid')]
     #[ORM\InverseJoinColumn(name: 'gid', referencedColumnName: 'gid')]
-    /** @var GroupEntity[] */
+    /** @var Group[] */
     private Collection $groups;
 
     public function __construct()
@@ -336,7 +336,7 @@ class UserEntity
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = new UserAttributeEntity($this, $name, $value);
+            $this->attributes[$name] = new UserAttribute($this, $name, $value);
         }
 
         return $this;
@@ -368,7 +368,7 @@ class UserEntity
         return $this;
     }
 
-    public function addGroup(GroupEntity $group): self
+    public function addGroup(Group $group): self
     {
         $group->addUser($this);
         $this->groups[] = $group;
@@ -376,7 +376,7 @@ class UserEntity
         return $this;
     }
 
-    public function removeGroup(GroupEntity $group): self
+    public function removeGroup(Group $group): self
     {
         $group->removeUser($this);
         $this->groups->removeElement($group);
@@ -386,7 +386,7 @@ class UserEntity
 
     public function removeGroups(): self
     {
-        /** @var GroupEntity $group */
+        /** @var Group $group */
         foreach ($this->groups as $group) {
             $group->removeUser($this);
         }

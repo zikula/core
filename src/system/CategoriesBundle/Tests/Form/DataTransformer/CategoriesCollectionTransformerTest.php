@@ -18,9 +18,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\DataTransformerInterface;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Form\DataTransformer\CategoriesCollectionTransformer;
-use Zikula\CategoriesBundle\Tests\Fixtures\CategoryAssignmentEntity;
+use Zikula\CategoriesBundle\Tests\Fixtures\CategoryAssignment;
 
 class CategoriesCollectionTransformerTest extends TestCase
 {
@@ -45,7 +45,7 @@ class CategoriesCollectionTransformerTest extends TestCase
     {
         $transformer = $this->getTransformer();
 
-        $category = $this->getMockBuilder(CategoryEntity::class)->getMock();
+        $category = $this->getMockBuilder(Category::class)->getMock();
         $categoryAssignment = $this->generateCategoryAssignment($category, 1);
 
         $expected = ['registry_1' => $category];
@@ -57,8 +57,8 @@ class CategoriesCollectionTransformerTest extends TestCase
         $transformer = $this->getTransformer();
         $subCollection = new ArrayCollection();
 
-        $category = $this->getMockBuilder(CategoryEntity::class)->getMock();
-        $subCollection->add(new CategoryAssignmentEntity(1, $category, null));
+        $category = $this->getMockBuilder(Category::class)->getMock();
+        $subCollection->add(new CategoryAssignment(1, $category, null));
 
         $expected = new ArrayCollection();
         $expected->set(1, $subCollection);
@@ -69,9 +69,9 @@ class CategoriesCollectionTransformerTest extends TestCase
     {
         $transformer = $this->getTransformer(true);
 
-        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
+        $categoryA = $this->getMockBuilder(Category::class)->getMock();
         $categoryAssignmentA = $this->generateCategoryAssignment($categoryA, 1);
-        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
+        $categoryB = $this->getMockBuilder(Category::class)->getMock();
         $categoryAssignmentB = $this->generateCategoryAssignment($categoryB, 1);
 
         $expected = ['registry_1' => [$categoryA, $categoryB]];
@@ -83,11 +83,11 @@ class CategoriesCollectionTransformerTest extends TestCase
         $transformer = $this->getTransformer(true);
         $subCollection = new ArrayCollection();
 
-        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
-        $subCollection->add(new CategoryAssignmentEntity(1, $categoryA, null));
+        $categoryA = $this->getMockBuilder(Category::class)->getMock();
+        $subCollection->add(new CategoryAssignment(1, $categoryA, null));
 
-        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
-        $subCollection->add(new CategoryAssignmentEntity(1, $categoryB, null));
+        $categoryB = $this->getMockBuilder(Category::class)->getMock();
+        $subCollection->add(new CategoryAssignment(1, $categoryB, null));
 
         $expected = new ArrayCollection();
         $expected->set(1, $subCollection);
@@ -98,13 +98,13 @@ class CategoriesCollectionTransformerTest extends TestCase
     {
         $transformer = $this->getTransformer(true);
 
-        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
+        $categoryA = $this->getMockBuilder(Category::class)->getMock();
         $categoryAssignmentA = $this->generateCategoryAssignment($categoryA, 1);
-        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
+        $categoryB = $this->getMockBuilder(Category::class)->getMock();
         $categoryAssignmentB = $this->generateCategoryAssignment($categoryB, 1);
-        $categoryC = $this->getMockBuilder(CategoryEntity::class)->getMock();
+        $categoryC = $this->getMockBuilder(Category::class)->getMock();
         $categoryAssignmentC = $this->generateCategoryAssignment($categoryC, 2);
-        $categoryD = $this->getMockBuilder(CategoryEntity::class)->getMock();
+        $categoryD = $this->getMockBuilder(Category::class)->getMock();
         $categoryAssignmentD = $this->generateCategoryAssignment($categoryD, 2);
 
         $expected = [
@@ -120,17 +120,17 @@ class CategoriesCollectionTransformerTest extends TestCase
         $subCollectionA = new ArrayCollection();
         $subCollectionB = new ArrayCollection();
 
-        $categoryA = $this->getMockBuilder(CategoryEntity::class)->getMock();
-        $subCollectionA->add(new CategoryAssignmentEntity(1, $categoryA, null));
+        $categoryA = $this->getMockBuilder(Category::class)->getMock();
+        $subCollectionA->add(new CategoryAssignment(1, $categoryA, null));
 
-        $categoryB = $this->getMockBuilder(CategoryEntity::class)->getMock();
-        $subCollectionA->add(new CategoryAssignmentEntity(1, $categoryB, null));
+        $categoryB = $this->getMockBuilder(Category::class)->getMock();
+        $subCollectionA->add(new CategoryAssignment(1, $categoryB, null));
 
-        $categoryC = $this->getMockBuilder(CategoryEntity::class)->getMock();
-        $subCollectionB->add(new CategoryAssignmentEntity(2, $categoryC, null));
+        $categoryC = $this->getMockBuilder(Category::class)->getMock();
+        $subCollectionB->add(new CategoryAssignment(2, $categoryC, null));
 
-        $categoryD = $this->getMockBuilder(CategoryEntity::class)->getMock();
-        $subCollectionB->add(new CategoryAssignmentEntity(2, $categoryD, null));
+        $categoryD = $this->getMockBuilder(Category::class)->getMock();
+        $subCollectionB->add(new CategoryAssignment(2, $categoryD, null));
 
         $expected = new ArrayCollection();
         $expected->set(1, $subCollectionA);
@@ -144,7 +144,7 @@ class CategoriesCollectionTransformerTest extends TestCase
     protected function getTransformer(bool $multiple = false): DataTransformerInterface
     {
         $options = [
-            'entityCategoryClass' => CategoryAssignmentEntity::class,
+            'entityCategoryClass' => CategoryAssignment::class,
             'multiple' => $multiple,
             'em' => DoctrineTestHelper::createTestEntityManager()
         ];

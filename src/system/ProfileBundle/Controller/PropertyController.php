@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\ProfileBundle\Entity\PropertyEntity;
+use Zikula\ProfileBundle\Entity\Property;
 use Zikula\ProfileBundle\Form\Type\PropertyType;
 use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
@@ -40,10 +40,10 @@ class PropertyController extends AbstractController
 
     #[Route('/edit/{id}', name: 'zikulaprofilebundle_property_edit', defaults: ['id' => null])]
     #[Theme('admin')]
-    public function edit(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity = null): Response
+    public function edit(Request $request, ManagerRegistry $doctrine, Property $propertyEntity = null): Response
     {
         if (!isset($propertyEntity)) {
-            $propertyEntity = new PropertyEntity();
+            $propertyEntity = new Property();
         }
         $form = $this->createForm(PropertyType::class, $propertyEntity);
         $form->handleRequest($request);
@@ -68,7 +68,7 @@ class PropertyController extends AbstractController
 
     #[Route('/delete/{id}', name: 'zikulaprofilebundle_property_delete')]
     #[Theme('admin')]
-    public function delete(Request $request, ManagerRegistry $doctrine, PropertyEntity $propertyEntity): Response
+    public function delete(Request $request, ManagerRegistry $doctrine, Property $propertyEntity): Response
     {
         $form = $this->createForm(DeletionType::class, $propertyEntity);
         $form->handleRequest($request);

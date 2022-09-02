@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
@@ -50,7 +50,7 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
                 ->atPath('uname')
                 ->addViolation();
         } else {
-            $validCode = $this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->isPasswordValid($verifyChg['verifycode'], $data['verifycode'], null);
+            $validCode = $this->encoderFactory->getEncoder(AuthenticationMapping::class)->isPasswordValid($verifyChg['verifycode'], $data['verifycode'], null);
             if (!$validCode) {
                 $this->context->buildViolation($this->translator->trans('The code is invalid for this username.', [], 'validators'))
                     ->atPath('verifycode')

@@ -18,7 +18,7 @@ use DateTimeZone;
 use Zikula\LegalBundle\LegalConstant;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -62,7 +62,7 @@ class AcceptPoliciesHelper
 
         if (null !== $uid && !empty($uid) && is_numeric($uid) && $uid > 0) {
             if ($uid > UsersConstant::USER_ID_ADMIN) {
-                /** @var UserEntity $user */
+                /** @var User $user */
                 $user = $this->userRepository->find($uid);
                 $acceptanceState = $user->getAttributes()->containsKey($attributeName) ? $user->getAttributeValue($attributeName) : null;
             } else {

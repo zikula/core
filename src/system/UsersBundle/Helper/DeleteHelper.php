@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersBundle\Event\RegistrationPostDeletedEvent;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
@@ -66,7 +66,7 @@ class DeleteHelper
         }
         if (isset($date)) {
             $date = \DateTime::createFromFormat('YmdHis', $date, new \DateTimeZone('UTC'));
-            $users = $users->filter(function (UserEntity $user) use ($date) {
+            $users = $users->filter(function (User $user) use ($date) {
                 return $user->getRegistrationDate() < $date;
             });
         }
@@ -78,7 +78,7 @@ class DeleteHelper
         return $users;
     }
 
-    public function deleteUser(UserEntity $user, bool $fullDeletion = false): void
+    public function deleteUser(User $user, bool $fullDeletion = false): void
     {
         if (UsersConstant::ACTIVATED_ACTIVE === $user->getActivated()) {
             $this->eventDispatcher->dispatch(new ActiveUserPostDeletedEvent($user, $fullDeletion));
@@ -92,7 +92,7 @@ class DeleteHelper
         }
     }
 
-    private function convertUserToGhost(UserEntity $userEntity): void
+    private function convertUserToGhost(User $userEntity): void
     {
         $userEntity->setUname('ghost');
         $userEntity->setEmail('nobody@mailinator.com');

@@ -18,25 +18,25 @@ use DateTimeZone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
-use Zikula\UsersBundle\Entity\UserEntity;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthBundle\Entity\UserVerificationEntity;
+use Zikula\UsersBundle\Entity\User;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
+use Zikula\ZAuthBundle\Entity\UserVerification;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class UserVerificationRepository extends ServiceEntityRepository implements UserVerificationRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserVerificationEntity::class);
+        parent::__construct($registry, UserVerification::class);
     }
 
-    public function persistAndFlush(UserVerificationEntity $entity): void
+    public function persistAndFlush(UserVerification $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
     }
 
-    public function removeAndFlush(UserVerificationEntity $entity): void
+    public function removeAndFlush(UserVerification $entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush();
@@ -44,7 +44,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
 
     public function removeByZikulaId(int $userId): void
     {
-        /** @var UserVerificationEntity $entity */
+        /** @var UserVerification $entity */
         $entity = $this->findOneBy(['uid' => $userId]);
         if ($entity) {
             $this->removeAndFlush($entity);
@@ -77,8 +77,8 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         $staleVerificationRecords = $qb->getQuery()->getResult();
 
         $deletedUsers = [];
-        $userRepo = $this->_em->getRepository(UserEntity::class);
-        $authRepo = $this->_em->getRepository(AuthenticationMappingEntity::class);
+        $userRepo = $this->_em->getRepository(User::class);
+        $authRepo = $this->_em->getRepository(AuthenticationMapping::class);
         if (!empty($staleVerificationRecords)) {
             foreach ($staleVerificationRecords as $staleVerificationRecord) {
                 if ($deleteUserEntities) {
@@ -120,7 +120,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
 
     public function isVerificationEmailSent(int $userId): bool
     {
-        /** @var UserVerificationEntity $userVerification */
+        /** @var UserVerification $userVerification */
         $userVerification = $this->findOneBy(['uid' => $userId]);
 
         return null !== $userVerification && null !== $userVerification->getCreatedDate();
@@ -146,7 +146,7 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
             ->getQuery();
         $query->execute();
 
-        $entity = new UserVerificationEntity();
+        $entity = new UserVerification();
         $entity->setChangetype($changeType);
         $entity->setUid($userId);
         $entity->setVerifycode($hashedConfirmationCode);

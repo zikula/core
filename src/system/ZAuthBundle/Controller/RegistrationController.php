@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\AccessHelper;
 use Zikula\UsersBundle\Helper\MailHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
@@ -84,7 +84,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('zikulausersbundle_account_menu');
         }
 
-        /** @var UserEntity $userEntity */
+        /** @var User $userEntity */
         $userEntity = $userRepository->findOneBy(['uname' => $uname]);
         if ($userEntity) {
             $mapping = $authenticationMappingRepository->getByZikulaId($userEntity->getUid());

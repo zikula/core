@@ -21,8 +21,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
-use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
+use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 use Zikula\CategoriesBundle\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesBundle\Form\EventListener\CategoriesMergeCollectionListener;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
@@ -47,13 +47,13 @@ class CategoriesType extends AbstractType
         $request = $this->requestStack->getMainRequest();
         $locale = null !== $request ? $request->getLocale() : 'en';
 
-        /** @var CategoryRegistryEntity[] $registries */
+        /** @var CategoryRegistry[] $registries */
         foreach ($registries as $registry) {
             $baseCategory = $registry->getCategory();
             $queryBuilderClosure = static function (CategoryRepositoryInterface $repo) use ($baseCategory, $options) {
                 return $repo->getChildrenQueryBuilder($baseCategory, $options['direct']);
             };
-            $choiceLabelClosure = static function (CategoryEntity $category) use ($baseCategory, $locale) {
+            $choiceLabelClosure = static function (Category $category) use ($baseCategory, $locale) {
                 $indent = str_repeat('--', $category->getLvl() - $baseCategory->getLvl() - 1);
 
                 $categoryName = $category['displayName'][$locale] ?? $category['displayName']['en'];
@@ -67,7 +67,7 @@ class CategoriesType extends AbstractType
                 'required' => $options['required'],
                 'multiple' => $options['multiple'],
                 'expanded' => $options['expanded'],
-                'class' => CategoryEntity::class,
+                'class' => Category::class,
                 'choice_label' => $choiceLabelClosure,
                 'query_builder' => $queryBuilderClosure,
             ];

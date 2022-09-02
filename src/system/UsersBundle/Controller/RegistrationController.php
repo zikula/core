@@ -29,7 +29,7 @@ use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\EditUserFormPostValidatedEvent;
 use Zikula\UsersBundle\Event\RegistrationPostDeletedEvent;
@@ -154,7 +154,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 $formData = $form->getData();
-                $userEntity = new UserEntity();
+                $userEntity = new User();
                 $userEntity->setUname($formData['uname']);
                 $userEntity->setEmail($formData['email']);
                 $userEntity->setLocale($request->getLocale());

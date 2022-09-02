@@ -16,15 +16,15 @@ namespace Zikula\ZAuthBundle\Repository;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 
 interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function persistAndFlush(AuthenticationMappingEntity $entity): void;
+    public function persistAndFlush(AuthenticationMapping $entity): void;
 
     public function removeByZikulaId(int $userId): void;
 
-    public function getByZikulaId(int $userId): ?AuthenticationMappingEntity;
+    public function getByZikulaId(int $userId): ?AuthenticationMapping;
 
     public function setEmailVerification(int $userId, bool $value = true): void;
 

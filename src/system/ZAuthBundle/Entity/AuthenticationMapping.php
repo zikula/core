@@ -23,7 +23,7 @@ use Zikula\ZAuthBundle\Validator\Constraints as ZAuthAssert;
 #[ORM\Entity(repositoryClass: AuthenticationMappingRepository::class)]
 #[ORM\Table(name: 'zauth_authentication_mapping')]
 #[ZAuthAssert\ValidUserFields]
-class AuthenticationMappingEntity implements UserInterface
+class AuthenticationMapping implements UserInterface
 {
     #[ORM\Id]
     #[ORM\Column]

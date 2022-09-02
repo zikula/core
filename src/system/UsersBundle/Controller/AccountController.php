@@ -28,7 +28,7 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\DeleteUserFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersBundle\Form\Type\ChangeLanguageType;
@@ -93,7 +93,7 @@ class AccountController extends AbstractController
             if ($form->get('submit')->isClicked()) {
                 $data = $form->getData();
                 $locale = !empty($data['locale']) ? $data['locale'] : $locale;
-                /** @var UserEntity $userEntity */
+                /** @var User $userEntity */
                 $userEntity = $userRepository->find($currentUserApi->get('uid'));
                 $userEntity->setLocale($locale);
                 $userRepository->persistAndFlush($userEntity);

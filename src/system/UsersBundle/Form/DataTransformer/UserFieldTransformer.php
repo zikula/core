@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 /**
@@ -29,7 +29,7 @@ class UserFieldTransformer implements DataTransformerInterface
     /**
      * Transforms the object values to the normalised value.
      *
-     * @param UserEntity|null $value
+     * @param User|null $value
      *
      * @return int|null
      */
@@ -39,7 +39,7 @@ class UserFieldTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ($value instanceof UserEntity) {
+        if ($value instanceof User) {
             return $value->getUid();
         }
 
@@ -51,7 +51,7 @@ class UserFieldTransformer implements DataTransformerInterface
      *
      * @param int $value
      *
-     * @return UserEntity|null
+     * @return User|null
      */
     public function reverseTransform($value): mixed
     {

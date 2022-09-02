@@ -26,7 +26,7 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 
 class MailHelper
@@ -61,7 +61,7 @@ class MailHelper
      * @throws RuntimeException Thrown if the registration couldn't be saved
      */
     public function createAndSendRegistrationMail(
-        UserEntity $userEntity,
+        User $userEntity,
         bool $userNotification = true,
         bool $adminNotification = true,
         string $passwordCreatedForUser = ''
@@ -113,7 +113,7 @@ class MailHelper
      *                                  if the registration couldn't be saved
      */
     public function createAndSendUserMail(
-        UserEntity $userEntity,
+        User $userEntity,
         bool $userNotification = true,
         bool $adminNotification = true,
         string $passwordCreatedForUser = ''
@@ -150,7 +150,7 @@ class MailHelper
     /**
      * Send same mail to selected user(s). If more than one user, BCC and batch size are used.
      *
-     * @param UserEntity[] $users
+     * @param User[] $users
      * @param array $messageData
      *  required keys
      *      'replyto'
@@ -200,7 +200,7 @@ class MailHelper
         if ($this->mailLoggingEnabled) {
             $this->mailLogger->info(sprintf('Email sent to %s', 'multiple users'), [
                 'in' => __METHOD__,
-                'users' => array_reduce($users, function ($result, UserEntity $user) { return $result . $user->getEmail() . ','; }, 'emails: ')
+                'users' => array_reduce($users, function ($result, User $user) { return $result . $user->getEmail() . ','; }, 'emails: ')
             ]);
         }
 

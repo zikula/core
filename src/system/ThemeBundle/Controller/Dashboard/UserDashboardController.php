@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\Translation\t;
 use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 
 class UserDashboardController extends AbstractThemedDashboardController
@@ -39,7 +39,7 @@ class UserDashboardController extends AbstractThemedDashboardController
         yield MenuItem::linkToDashboard(t('Home'), 'fas fa-home');
         // yield MenuItem::linktoRoute(t('Administration'), 'fas fa-wrench', 'home_admin');
         yield MenuItem::linkToUrl(t('Administration'), 'fas fa-wrench', '/admin');
-        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', GroupEntity::class);
+        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
 
         yield MenuItem::section();
         $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_USER);

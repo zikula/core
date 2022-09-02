@@ -27,13 +27,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\AccessHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthBundle\Entity\UserVerificationEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
+use Zikula\ZAuthBundle\Entity\UserVerification;
 use Zikula\ZAuthBundle\Form\Type\ChangeEmailType;
 use Zikula\ZAuthBundle\Form\Type\ChangePasswordType;
 use Zikula\ZAuthBundle\Form\Type\LostPasswordType;
@@ -142,11 +142,11 @@ class AccountController extends AbstractController
             $data = $form->getData();
             $field = empty($data['uname']) ? 'email' : 'uname';
             $inverse = 'uname' === $field ? 'email' : 'uname';
-            /** @var AuthenticationMappingEntity $mapping */
+            /** @var AuthenticationMapping $mapping */
             $mapping = $authenticationMappingRepository->findBy([$field => $data[$field]]);
             if (1 === count($mapping)) {
                 $mapping = $mapping[0];
-                /** @var UserEntity $user */
+                /** @var User $user */
                 $user = $userRepository->find($mapping->getUid());
                 switch ($user->getActivated()) {
                     case UsersConstant::ACTIVATED_ACTIVE:
@@ -234,7 +234,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute($redirectToRoute);
         }
 
-        /** @var UserEntity $user */
+        /** @var User $user */
         $user = $userRepository->find($requestDetails['userId']);
         if (null === $user) {
             $this->addFlash('error', 'If an account exists with that email or username, a password reset will be sent to it.');
@@ -305,7 +305,7 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $code = bin2hex(random_bytes(8));
-            $hashedCode = $encoderFactory->getEncoder(AuthenticationMappingEntity::class)->encodePassword($code, null);
+            $hashedCode = $encoderFactory->getEncoder(AuthenticationMapping::class)->encodePassword($code, null);
             $currentUserId = (int) $currentUserApi->get('uid');
             $userVerificationRepository->setVerificationCode($currentUserId, ZAuthConstant::VERIFYCHGTYPE_EMAIL, $hashedCode, $data['email']);
             $templateArgs = [
@@ -349,7 +349,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersbundle_account_menu');
         }
 
-        /** @var UserVerificationEntity $verificationRecord */
+        /** @var UserVerification $verificationRecord */
         $verificationRecord = $userVerificationRepository->findOneBy([
             'uid' => $currentUserApi->get('uid'),
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_EMAIL
@@ -362,19 +362,19 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('zikulausersbundle_account_menu');
         }
 
-        $validCode = $encoderFactory->getEncoder(AuthenticationMappingEntity::class)->isPasswordValid($verificationRecord->getVerifycode(), $code, null);
+        $validCode = $encoderFactory->getEncoder(AuthenticationMapping::class)->isPasswordValid($verificationRecord->getVerifycode(), $code, null);
         if (!$validCode) {
             $this->addFlash('error', $this->trans('Error! Your e-mail has not been found. After your request you have %days% days to confirm the new e-mail address.', ['%days%' => $this->changeEmailExpireDays]));
 
             return $this->redirectToRoute('zikulausersbundle_account_menu');
         }
 
-        /** @var AuthenticationMappingEntity $mapping */
+        /** @var AuthenticationMapping $mapping */
         $mapping = $authenticationMappingRepository->findOneBy(['uid' => $currentUserApi->get('uid')]);
         $mapping->setEmail($verificationRecord->getNewemail());
         $authenticationMappingRepository->persistAndFlush($mapping);
 
-        /** @var UserEntity $user */
+        /** @var User $user */
         $user = $userRepository->find($currentUserApi->get('uid'));
         $user->setEmail($verificationRecord->getNewemail());
         $userRepository->persistAndFlush($user);
@@ -421,11 +421,11 @@ class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
 
-            /** @var AuthenticationMappingEntity $mapping */
+            /** @var AuthenticationMapping $mapping */
             $mapping = $authenticationMappingRepository->findOneBy(['uid' => $data['uid']]);
             $mapping->setPass($encoderFactory->getEncoder($mapping)->encodePassword($data['pass'], null));
 
-            /** @var UserEntity $user */
+            /** @var User $user */
             $user = $userRepository->find($mapping->getUid());
             $user->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
 

@@ -25,7 +25,7 @@ use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\LoginFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\LoginFormPostValidatedEvent;
 use Zikula\UsersBundle\Event\UserPostLoginFailureEvent;
@@ -143,7 +143,7 @@ class AccessController extends AbstractController
         }
         $user = null;
         if (isset($uid)) {
-            /** @var UserEntity $user */
+            /** @var User $user */
             $user = $userRepository->find($uid);
             if (isset($user)) {
                 if ($accessHelper->loginAllowed($user)) {

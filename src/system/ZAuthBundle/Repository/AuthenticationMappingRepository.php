@@ -19,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 
 class AuthenticationMappingRepository extends ServiceEntityRepository implements AuthenticationMappingRepositoryInterface
 {
@@ -27,10 +27,10 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AuthenticationMappingEntity::class);
+        parent::__construct($registry, AuthenticationMapping::class);
     }
 
-    public function persistAndFlush(AuthenticationMappingEntity $entity): void
+    public function persistAndFlush(AuthenticationMapping $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
@@ -45,7 +45,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         }
     }
 
-    public function getByZikulaId(int $userId): ?AuthenticationMappingEntity
+    public function getByZikulaId(int $userId): ?AuthenticationMapping
     {
         return $this->findOneBy(['uid' => $userId]);
     }

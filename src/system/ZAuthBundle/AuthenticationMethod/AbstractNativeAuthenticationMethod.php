@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersBundle\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 use Zikula\ZAuthBundle\Form\Type\RegistrationType;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
@@ -69,7 +69,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         return null;
     }
 
-    private function updatePassword(AuthenticationMappingEntity $mapping, string $unHashedPassword)
+    private function updatePassword(AuthenticationMapping $mapping, string $unHashedPassword)
     {
         $mapping->setPass($this->encoderFactory->getEncoder($mapping)->encodePassword($unHashedPassword, null));
         $this->mappingRepository->persistAndFlush($mapping);
@@ -81,9 +81,9 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      *
      * @throws Exception
      */
-    private function getMapping(string $field, string $value): ?AuthenticationMappingEntity
+    private function getMapping(string $field, string $value): ?AuthenticationMapping
     {
-        /** @var AuthenticationMappingEntity $mapping */
+        /** @var AuthenticationMapping $mapping */
         $mapping = $this->mappingRepository->findOneBy([$field => $value]);
         if (
             isset($mapping)
@@ -115,7 +115,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
 
     public function register(array $data = []): bool
     {
-        $mapping = new AuthenticationMappingEntity();
+        $mapping = new AuthenticationMapping();
         $mapping->setUid($data['uid']);
         $mapping->setUname($data['uname']);
         $mapping->setEmail($data['email']);

@@ -16,7 +16,7 @@ namespace Zikula\UsersBundle\Initializer;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\UsersConstant;
 
 class UsersInitializer implements BundleInitializerInterface
@@ -31,7 +31,7 @@ class UsersInitializer implements BundleInitializerInterface
         $then = new DateTime('1970-01-01 00:00:00');
 
         // Anonymous
-        $user = (new UserEntity())
+        $user = (new User())
             ->setUid(UsersConstant::USER_ID_ANONYMOUS)
             ->setUname('guest')
             ->setEmail('')
@@ -43,7 +43,7 @@ class UsersInitializer implements BundleInitializerInterface
         $this->entityManager->persist($user);
 
         // Admin
-        $user = (new UserEntity())
+        $user = (new User())
             ->setUid(UsersConstant::USER_ID_ADMIN)
             ->setUname('admin')
             ->setEmail('')

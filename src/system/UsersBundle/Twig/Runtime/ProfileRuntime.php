@@ -18,7 +18,7 @@ use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\UsersBundle\Collector\ProfileBundleCollector;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 class ProfileRuntime implements RuntimeExtensionInterface
@@ -106,7 +106,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
         if (!isset($userId) && !isset($userName)) {
             throw new InvalidArgumentException();
         }
-        /** @var UserEntity $user */
+        /** @var User $user */
         if (null !== $userId) {
             $user = $this->userRepository->find($userId);
         } else {

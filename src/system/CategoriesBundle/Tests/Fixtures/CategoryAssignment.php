@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 
 #[ORM\Entity]
-class CategoryAssignmentEntity extends AbstractCategoryAssignment
+class CategoryAssignment extends AbstractCategoryAssignment
 {
     #[ORM\ManyToOne(inversedBy: 'categoryAssignments')]
     #[ORM\JoinColumn(name: 'entityId')]

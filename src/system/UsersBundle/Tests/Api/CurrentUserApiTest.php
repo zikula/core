@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Api\CurrentUserApi;
 use Zikula\UsersBundle\Constant;
-use Zikula\UsersBundle\Entity\UserAttributeEntity;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\UserAttribute;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Tests\Api\Fixtures\MockUserRepository;
 
 class CurrentUserApiTest extends TestCase
@@ -62,9 +62,9 @@ class CurrentUserApiTest extends TestCase
         $this->assertEquals(Constant::ACTIVATED_ACTIVE, $api->get('activated'));
 
         $attributes = new ArrayCollection();
-        /** @var UserEntity $user */
+        /** @var User $user */
         $user = $this->userRepo->find(42);
-        $attributes->set('legs', new UserAttributeEntity($user, 'legs', 2));
+        $attributes->set('legs', new UserAttribute($user, 'legs', 2));
         $this->assertEquals($attributes, $api->get('attributes'));
         $this->assertEmpty($api->get('foo'));
         $this->assertNull($api->foo());

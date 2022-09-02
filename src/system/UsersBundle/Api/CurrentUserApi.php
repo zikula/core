@@ -15,7 +15,7 @@ namespace Zikula\UsersBundle\Api;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -23,7 +23,7 @@ class CurrentUserApi implements CurrentUserApiInterface
 {
     private bool $loggedIn;
 
-    private UserEntity $user;
+    private User $user;
 
     public function __construct(private readonly RequestStack $requestStack, private readonly UserRepositoryInterface $repository)
     {

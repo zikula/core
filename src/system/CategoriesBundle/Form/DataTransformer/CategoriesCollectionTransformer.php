@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 
 class CategoriesCollectionTransformer implements DataTransformerInterface
 {
@@ -47,7 +47,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         foreach ($value as $regId => $categories) {
             $regId = (int) mb_substr($regId, mb_strpos($regId, '_') + 1);
             $subCollection = new ArrayCollection();
-            if (!is_array($categories) && $categories instanceof CategoryEntity) {
+            if (!is_array($categories) && $categories instanceof Category) {
                 $categories = [$categories];
             } elseif (empty($categories)) {
                 $categories = [];
@@ -73,7 +73,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
             $registryKey = 'registry_' . $categoryAssignmentEntity->getCategoryRegistryId();
             $category = $categoryAssignmentEntity->getCategory();
             if (false !== mb_strpos($category::class, 'DoctrineProxy')) {
-                $category = $this->entityManager->find(CategoryEntity::class, $category->getId());
+                $category = $this->entityManager->find(Category::class, $category->getId());
             }
 
             if ($this->multiple) {

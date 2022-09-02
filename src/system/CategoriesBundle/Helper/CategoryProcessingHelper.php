@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle\Helper;
 
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
 
 class CategoryProcessingHelper
@@ -29,7 +29,7 @@ class CategoryProcessingHelper
      * For this all registries are checked to see if the given category is contained in the corresponding subtree.
      * If yes, the mapping table of the corresponding module is checked to see if it contains the given category.
      */
-    public function mayCategoryBeDeletedOrMoved(CategoryEntity $category): bool
+    public function mayCategoryBeDeletedOrMoved(Category $category): bool
     {
         // collect parents
         $isOnTop = false;

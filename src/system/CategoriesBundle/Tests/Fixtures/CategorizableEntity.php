@@ -25,7 +25,7 @@ class CategorizableEntity
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private int $id;
 
-    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: CategoryAssignmentEntity::class, cascade: ['persist', 'remove'], orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'entity', targetEntity: CategoryAssignment::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: true)]
     private Collection $categoryAssignments;
 
     public function __construct()

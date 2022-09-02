@@ -23,18 +23,16 @@ use Zikula\CategoriesBundle\Traits\StandardFieldsTrait;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'categories_category')]
-#[
-    ORM\Index(fields: ['leaf'], name: 'idx_categories_is_leaf')
-]
+#[ORM\Index(fields: ['leaf'], name: 'idx_categories_is_leaf')]
 #[Gedmo\Tree(type: 'nested')]
-class CategoryEntity
+class Category
 {
     use StandardFieldsTrait;
 
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
-    private int $id;
+    private ?int $id;
 
     #[ORM\Column]
     #[Gedmo\TreeLeft]
@@ -48,19 +46,19 @@ class CategoryEntity
     #[Gedmo\TreeRight]
     private int $rgt;
 
-    #[ORM\ManyToOne(targetEntity: CategoryEntity::class)]
+    #[ORM\ManyToOne(targetEntity: Category::class)]
     #[ORM\JoinColumn(name: 'tree_root', onDelete: 'CASCADE')]
     #[Gedmo\TreeRoot]
     private self $root;
 
-    #[ORM\ManyToOne(targetEntity: CategoryEntity::class, inversedBy: 'children')]
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'children')]
     #[ORM\JoinColumn(name: 'parent_id')]
     #[Gedmo\TreeParent]
     private self $parent;
 
-    #[ORM\OneToMany(targetEntity: CategoryEntity::class, mappedBy: 'parent')]
+    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'parent')]
     #[ORM\OrderBy(['lft' => 'ASC'])]
-    /** @var CategoryEntity[] */
+    /** @var Category[] */
     private Collection $children;
 
     /**
@@ -103,8 +101,8 @@ class CategoryEntity
     ])]
     private string $icon;
 
-    #[ORM\OneToMany(targetEntity: CategoryAttributeEntity::class, mappedBy: 'category', cascade: ['all'], orphanRemoval: true, indexBy: 'name')]
-    /** @var CategoryAttributeEntity[] */
+    #[ORM\OneToMany(targetEntity: CategoryAttribute::class, mappedBy: 'category', cascade: ['all'], orphanRemoval: true, indexBy: 'name')]
+    /** @var CategoryAttribute[] */
     private Collection $attributes;
 
     public function __construct(array $locales = [])
@@ -130,7 +128,7 @@ class CategoryEntity
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
 
@@ -286,7 +284,7 @@ class CategoryEntity
         return $this;
     }
 
-    public function addAttribute(CategoryAttributeEntity $attribute): self
+    public function addAttribute(CategoryAttribute $attribute): self
     {
         $attribute->setCategory($this);
         $this->attributes->add($attribute);
@@ -294,7 +292,7 @@ class CategoryEntity
         return $this;
     }
 
-    public function removeAttribute(CategoryAttributeEntity $attribute): self
+    public function removeAttribute(CategoryAttribute $attribute): self
     {
         $this->attributes->removeElement($attribute);
 
@@ -306,7 +304,7 @@ class CategoryEntity
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
         } else {
-            $this->attributes[$name] = (new CategoryAttributeEntity())
+            $this->attributes[$name] = (new CategoryAttribute())
                 ->setCategory($this)
                 ->setName($name)
                 ->setValue($value);
@@ -400,6 +398,6 @@ class CategoryEntity
 
     public function __clone()
     {
-        $this->id = null;
+        $this->setId(null);
     }
 }

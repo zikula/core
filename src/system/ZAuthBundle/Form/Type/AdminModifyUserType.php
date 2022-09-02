@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidUserFields;
 
 class AdminModifyUserType extends AbstractType
@@ -63,7 +63,7 @@ class AdminModifyUserType extends AbstractType
             ])
             ->add('pass', ZAuthDuplicatePassType::class, [
                 'label' => 'Password',
-                'data_class' => AuthenticationMappingEntity::class,
+                'data_class' => AuthenticationMapping::class,
                 'dataUnameId' => $builder->getName() . '_' . $builder->get('uname')->getName()
             ])
             ->add('submit', SubmitType::class, [

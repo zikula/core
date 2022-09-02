@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -85,7 +85,7 @@ class PermissionApi implements PermissionApiInterface
         // Get all groups that user is in
         $foundUsers = $this->userRepository->findByUids($uids);
         $foundGids = [];
-        /** @var UserEntity $foundUser */
+        /** @var User $foundUser */
         foreach ($foundUsers as $foundUser) {
             foreach ($foundUser->getGroups() as $gid => $group) {
                 $foundGids[] = $gid;

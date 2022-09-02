@@ -17,7 +17,7 @@ use DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Zikula\UsersBundle\Constant;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 class MockUserRepository implements UserRepositoryInterface
@@ -26,13 +26,13 @@ class MockUserRepository implements UserRepositoryInterface
 
     public function __construct()
     {
-        $user = new UserEntity();
+        $user = new User();
         $user->setUid(Constant::USER_ID_ANONYMOUS);
         $user->setUname('guest');
         $user->setActivated(Constant::ACTIVATED_ACTIVE);
         $this->users[Constant::USER_ID_ANONYMOUS] = $user;
 
-        $user = new UserEntity();
+        $user = new User();
         $user->setUid(42);
         $user->setUname('FooName');
         $user->setEmail('foo@foo.com');
@@ -72,15 +72,15 @@ class MockUserRepository implements UserRepositoryInterface
         return [];
     }
 
-    public function persistAndFlush(UserEntity $user): void
+    public function persistAndFlush(User $user): void
     {
     }
 
-    public function removeAndFlush(UserEntity $user): void
+    public function removeAndFlush(User $user): void
     {
     }
 
-    public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void
+    public function setApproved(User $user, DateTime $approvedOn, int $approvedBy = null): void
     {
     }
 

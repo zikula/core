@@ -38,7 +38,7 @@ use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersBundle\Event\DeleteUserFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\DeleteUserFormPostValidatedEvent;
@@ -149,7 +149,7 @@ class UserAdministrationController extends AbstractController
     #[Theme('admin')]
     public function modify(
         Request $request,
-        UserEntity $user,
+        User $user,
         ManagerRegistry $doctrine,
         CurrentUserApiInterface $currentUserApi,
         EventDispatcherInterface $eventDispatcher
@@ -200,7 +200,7 @@ class UserAdministrationController extends AbstractController
     #[Theme('admin')]
     public function approve(
         Request $request,
-        UserEntity $user,
+        User $user,
         RegistrationHelper $registrationHelper,
         MailHelper $mailHelper,
         bool $force = false
@@ -263,7 +263,7 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         EventDispatcherInterface $eventDispatcher,
         DeleteHelper $deleteHelper,
-        UserEntity $user = null
+        User $user = null
     ): Response {
         $uids = [];
         if (!isset($user) && Request::METHOD_POST === $request->getMethod() && $request->request->has('zikulausersbundle_delete')) {
@@ -403,7 +403,7 @@ class UserAdministrationController extends AbstractController
      */
     private function checkSelf(
         CurrentUserApiInterface $currentUserApi,
-        UserEntity $userBeingModified,
+        User $userBeingModified,
         array $originalGroups = []
     ): void {
         $currentUserId = $currentUserApi->get('uid');

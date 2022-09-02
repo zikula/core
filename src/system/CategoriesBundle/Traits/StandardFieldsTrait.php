@@ -17,7 +17,7 @@ use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 trait StandardFieldsTrait
 {
@@ -27,7 +27,7 @@ trait StandardFieldsTrait
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'cr_uid', referencedColumnName: 'uid')]
     #[Gedmo\Blameable(on: 'create')]
-    protected ?UserEntity $createdBy = null;
+    protected ?User $createdBy = null;
 
     /**
      * The creation timestamp of this entity
@@ -42,7 +42,7 @@ trait StandardFieldsTrait
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'lu_uid', referencedColumnName: 'uid')]
     #[Gedmo\Blameable(on: 'update')]
-    protected ?UserEntity $updatedBy = null;
+    protected ?User $updatedBy = null;
 
     /**
      * The last updated timestamp of this entity
@@ -51,12 +51,12 @@ trait StandardFieldsTrait
     #[Gedmo\Timestampable(on: 'update')]
     protected ?DateTimeInterface $updatedDate = null;
 
-    public function getCreatedBy(): ?UserEntity
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?UserEntity $createdBy): self
+    public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
 
@@ -75,12 +75,12 @@ trait StandardFieldsTrait
         return $this;
     }
 
-    public function getUpdatedBy(): ?UserEntity
+    public function getUpdatedBy(): ?User
     {
         return $this->updatedBy;
     }
 
-    public function setUpdatedBy(?UserEntity $updatedBy): self
+    public function setUpdatedBy(?User $updatedBy): self
     {
         $this->updatedBy = $updatedBy;
 

@@ -15,12 +15,12 @@ namespace Zikula\PermissionsBundle\Tests\Api\Fixtures;
 
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\PermissionsBundle\Api\PermissionApi;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
+use Zikula\PermissionsBundle\Entity\Permission;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 
 class StubPermissionRepository implements PermissionRepositoryInterface
 {
-    /** @var PermissionEntity[] */
+    /** @var Permission[] */
     private array $entities;
 
     public function __construct()
@@ -63,7 +63,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
             ]
         ];
         foreach ($datas as $data) {
-            $this->entities[] = (new PermissionEntity())
+            $this->entities[] = (new Permission())
                 ->setGid($data['gid'])
                 ->setSequence($data['sequence'])
                 ->setComponent($data['component'])
@@ -99,7 +99,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
         return [];
     }
 
-    public function persistAndFlush(PermissionEntity $entity): void
+    public function persistAndFlush(Permission $entity): void
     {
         // nothing
     }

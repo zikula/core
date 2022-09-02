@@ -20,8 +20,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\CategoriesBundle\Entity\Category;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -41,13 +41,13 @@ class CategoriesInitializer implements BundleInitializerInterface
          * explicitly set admin as user to be set as `updatedBy` and `createdBy` fields. Normally this would be taken care of
          * by the BlameListener but during installation from the CLI this listener is not available
          */
-        /** @var UserEntity $adminUser */
+        /** @var User $adminUser */
         $adminUser = $this->userRepository->find(UsersConstant::USER_ID_ADMIN);
 
         $this->insertDefaultData($adminUser);
 
         // Set autonumber to 10000 (for DB's that support autonumber fields)
-        $category = (new CategoryEntity())
+        $category = (new Category())
             ->setId(9999)
             ->setUpdatedBy($adminUser)
             ->setCreatedBy($adminUser);
@@ -57,12 +57,12 @@ class CategoriesInitializer implements BundleInitializerInterface
         $this->entityManager->flush();
     }
 
-    private function insertDefaultData(UserEntity $adminUser): void
+    private function insertDefaultData(User $adminUser): void
     {
         $categoryData = $this->getDefaultCategoryData();
         $categoryObjectMap = [];
         /** @var ClassMetadata */
-        $categoryMetaData = $this->entityManager->getClassMetaData(CategoryEntity::class);
+        $categoryMetaData = $this->entityManager->getClassMetaData(Category::class);
         // disable auto-generation of keys to allow manual setting from this data set.
         $categoryMetaData->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_NONE);
 
@@ -72,7 +72,7 @@ class CategoriesInitializer implements BundleInitializerInterface
             $attributes = $data['attributes'] ?? [];
             unset($data['attributes']);
 
-            $category = (new CategoryEntity())
+            $category = (new Category())
                 ->setId($data['id'])
                 ->setParent($data['parent'])
                 ->setLocked($data['locked'])

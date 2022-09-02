@@ -17,8 +17,8 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Exception;
-use Zikula\ProfileBundle\Entity\PropertyEntity;
-use Zikula\UsersBundle\Entity\UserAttributeEntity;
+use Zikula\ProfileBundle\Entity\Property;
+use Zikula\UsersBundle\Entity\UserAttribute;
 
 class AttributeNameTranslationListener implements EventSubscriber
 {
@@ -43,13 +43,13 @@ class AttributeNameTranslationListener implements EventSubscriber
         $entity = $args->getObject();
         $entityManager = $args->getObjectManager();
 
-        if ($entity instanceof UserAttributeEntity) {
+        if ($entity instanceof UserAttribute) {
             $name = $entity->getName();
             if (!isset($this->translations[$this->locale][$name])) {
                 $this->translations[$this->locale][$name] = $name;
                 if (0 === mb_strpos($name, $this->prefix)) {
                     try {
-                        $property = $entityManager->find(PropertyEntity::class, mb_substr($name, mb_strlen($this->prefix)));
+                        $property = $entityManager->find(Property::class, mb_substr($name, mb_strlen($this->prefix)));
                         $this->translations[$this->locale][$name] = isset($property) ? $property->getLabel($this->locale) : $name;
                     } catch (Exception $exception) {
                         // listener fails during upgrade. silently fail

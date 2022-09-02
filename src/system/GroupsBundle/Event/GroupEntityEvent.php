@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsBundle\Event;
 
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 
 /**
  * A 'Generic' event that accepts a GroupEntity on construction and sets
@@ -23,12 +23,12 @@ class GroupEntityEvent
 {
     private \DateTimeImmutable $date;
 
-    public function __construct(private readonly GroupEntity $groupEntity)
+    public function __construct(private readonly Group $groupEntity)
     {
         $this->date = new \DateTimeImmutable('now');
     }
 
-    public function getGroup(): GroupEntity
+    public function getGroup(): Group
     {
         return $this->group;
     }

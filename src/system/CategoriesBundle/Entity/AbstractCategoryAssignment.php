@@ -31,13 +31,13 @@ abstract class AbstractCategoryAssignment
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'categoryId')]
-    private CategoryEntity $category;
+    private Category $category;
 
     abstract public function getEntity();
 
     abstract public function setEntity($entity);
 
-    public function __construct($registryId, CategoryEntity $category, $entity)
+    public function __construct($registryId, Category $category, $entity)
     {
         $this->categoryRegistryId = $registryId;
         $this->category = $category;
@@ -68,12 +68,12 @@ abstract class AbstractCategoryAssignment
         return $this;
     }
 
-    public function getCategory(): CategoryEntity
+    public function getCategory(): Category
     {
         return $this->category;
     }
 
-    public function setCategory(CategoryEntity $category): self
+    public function setCategory(Category $category): self
     {
         $this->category = $category;
 

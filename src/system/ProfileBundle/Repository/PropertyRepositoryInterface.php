@@ -15,17 +15,17 @@ namespace Zikula\ProfileBundle\Repository;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\ProfileBundle\Entity\PropertyEntity;
+use Zikula\ProfileBundle\Entity\Property;
 
 interface PropertyRepositoryInterface extends ObjectRepository, Selectable
 {
     /**
-     * @return PropertyEntity[]
+     * @return Property[]
      */
     public function getIndexedActive(): array;
 
     /**
-     * @return PropertyEntity[]
+     * @return Property[]
      */
     public function getDynamicFieldsSpecification(): array;
 }

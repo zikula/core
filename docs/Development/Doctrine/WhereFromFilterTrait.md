@@ -11,4 +11,4 @@ Construct a QueryBuilder `Expr` object suitable for use in `QueryBuilder->where(
 `filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], …]`
 when value is not an array, operator is assumed to be '='
 
-This is used in `\Zikula\UsersModule\Entity\Repository\UserRepository` as one example.
+This is used in `\Zikula\UsersBundle\Repository\UserRepository` as one example.

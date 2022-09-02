@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 use Zikula\CategoriesBundle\Form\Type\CategoryRegistryType;
 use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
@@ -39,11 +39,11 @@ class RegistryController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         CategoryRegistryRepositoryInterface $registryRepository,
-        CategoryRegistryEntity $registryEntity = null,
+        CategoryRegistry $registryEntity = null,
         CategorizableBundleHelper $categorizableBundleHelper
     ): Response {
         if (null === $registryEntity) {
-            $registryEntity = new CategoryRegistryEntity();
+            $registryEntity = new CategoryRegistry();
         }
 
         $form = $this->createForm(CategoryRegistryType::class, $registryEntity, [
@@ -76,7 +76,7 @@ class RegistryController extends AbstractController
     public function delete(
         Request $request,
         EntityManagerInterface $entityManager,
-        CategoryRegistryEntity $registry
+        CategoryRegistry $registry
     ): Response {
         $form = $this->createForm(DeletionType::class);
         $form->handleRequest($request);

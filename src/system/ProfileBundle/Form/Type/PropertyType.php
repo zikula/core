@@ -26,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicFieldType;
-use Zikula\ProfileBundle\Entity\PropertyEntity;
+use Zikula\ProfileBundle\Entity\Property;
 
 class PropertyType extends AbstractType
 {
@@ -93,7 +93,7 @@ class PropertyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PropertyEntity::class,
+            'data_class' => Property::class,
         ]);
     }
 }

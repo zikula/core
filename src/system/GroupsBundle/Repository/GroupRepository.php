@@ -18,14 +18,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\PermissionsBundle\Api\PermissionApi;
 
 class GroupRepository extends ServiceEntityRepository implements GroupRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry, private readonly TranslatorInterface $translator)
     {
-        parent::__construct($registry, GroupEntity::class);
+        parent::__construct($registry, Group::class);
     }
 
     public function countGroups(int $groupType = null, int $excludedState = null): int

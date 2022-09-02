@@ -18,16 +18,16 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmail;
 use Zikula\UsersBundle\Validator\Constraints\ValidUname;
 use Zikula\ZAuthBundle\Api\ApiInterface\UserCreationApiInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 use Zikula\ZAuthBundle\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
@@ -36,14 +36,14 @@ class UserCreationApi implements UserCreationApiInterface
     /**
      * array of created users
      *
-     * @var UserEntity[]
+     * @var User[]
      */
     private array $users = [];
 
     /**
      * array of created ZAuth mappings
      *
-     * @var AuthenticationMappingEntity[]
+     * @var AuthenticationMapping[]
      */
     private array $mappings = [];
 
@@ -53,7 +53,7 @@ class UserCreationApi implements UserCreationApiInterface
     private $constraint;
 
     /**
-     * @var GroupEntity[]
+     * @var Group[]
      */
     private array $groups = [];
 
@@ -111,7 +111,7 @@ class UserCreationApi implements UserCreationApiInterface
         unset($userArray['pass'], $userArray['sendmail'], $userArray['groups']);
         $userArray['activated'] = isset($userArray['activated']) ? empty($userArray['activated']) ? UsersConstant::ACTIVATED_PENDING_REG : 1 : 1;
 
-        $userEntity = new UserEntity();
+        $userEntity = new User();
         foreach ($userArray as $fieldName => $fieldValue) {
             $setter = 'set' . ucfirst($fieldName);
             $userEntity->{$setter}($fieldValue);
@@ -136,12 +136,12 @@ class UserCreationApi implements UserCreationApiInterface
         $this->createMapping($userEntity, $password, $hash);
     }
 
-    private function createMapping(UserEntity $userEntity, string $pass, string $hash): void
+    private function createMapping(User $userEntity, string $pass, string $hash): void
     {
-        $mapping = new AuthenticationMappingEntity();
+        $mapping = new AuthenticationMapping();
         $mapping->setUname($userEntity->getUname());
         $mapping->setEmail($userEntity->getEmail());
-        $mapping->setPass($this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->encodePassword($pass, null));
+        $mapping->setPass($this->encoderFactory->getEncoder(AuthenticationMapping::class)->encodePassword($pass, null));
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
         $mapping->setVerifiedEmail(!$this->mailVerificationRequired);
         $this->mappings[$hash] = $mapping;

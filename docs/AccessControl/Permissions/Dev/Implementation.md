@@ -42,7 +42,7 @@ The following code shows a possible example how to use this in a controller meth
 ```php
 namespace Acme\PersonBundle\Controller;
 
-use Acme\PersonBundle\Entity\PersonEntity;
+use Acme\PersonBundle\Entity\Person;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,7 +60,7 @@ class PersonController extends AbstractController
     #[Theme('admin')]
     public function edit(
         Request $request,
-        PersonEntity $person,
+        Person $person,
         PermissionApiInterface $permissionApi
     ): Response {
         if (!$permissionApi->hasPermission('AcmePersonBundle::', $person->getId() . '::', ACCESS_EDIT)) {
@@ -79,7 +79,7 @@ Of course the [PermissionApi](PermissionApi.md) can also be injected as a servic
 ```php
 namespace Acme\PersonBundle\Helper;
 
-use Acme\PersonBundle\Entity\PersonEntity;
+use Acme\PersonBundle\Entity\Person;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
@@ -89,7 +89,7 @@ class MyService
     {
     }
 
-    public function processPerson(PersonEntity $person)
+    public function processPerson(Person $person)
     {
         if (!$this->permissionApi->hasPermission('AcmePersonBundle::', $person->getId() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -107,7 +107,7 @@ The controller example from above would look like this then:
 ```php
 namespace Acme\PersonBundle\Controller;
 
-use Acme\PersonBundle\Entity\PersonEntity;
+use Acme\PersonBundle\Entity\Person;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
@@ -117,7 +117,7 @@ class PersonController extends AbstractController
     #[Route('/admin/edit/{personid}', name: 'acmepersonbundle_person_edit', requirements: ['personid' => "^[1-9]\d*$"])]
     #[PermissionCheck(['AcmePersonBundle::', '$personid::', 'edit'])]
     #[Theme('admin')]
-    public function edit(Request $request, PersonEntity $person): Response
+    public function edit(Request $request, Person $person): Response
     {
         // ...
     }
@@ -133,7 +133,6 @@ Example for a class-level use case:
 ```php
 namespace Acme\PersonBundle\Controller;
 
-use Acme\PersonBundle\Entity\PersonEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;

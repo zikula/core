@@ -16,13 +16,13 @@ namespace Zikula\ProfileBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
-use Zikula\ProfileBundle\Entity\PropertyEntity;
+use Zikula\ProfileBundle\Entity\Property;
 
 class PropertyRepository extends ServiceEntityRepository implements PropertyRepositoryInterface, DynamicFieldsContainerInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PropertyEntity::class);
+        parent::__construct($registry, Property::class);
     }
 
     public function getIndexedActive(): array

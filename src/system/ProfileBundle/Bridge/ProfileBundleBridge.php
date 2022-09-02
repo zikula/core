@@ -20,7 +20,7 @@ use function Symfony\Component\String\s;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\ProfileConstant;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
@@ -113,7 +113,7 @@ class ProfileBundleBridge implements ProfileBundleInterface
      *
      * @param int|string $uid The user's id or name
      */
-    private function findUser($uid = null): ?UserEntity
+    private function findUser($uid = null): ?User
     {
         if (empty($uid) && $this->currentUser->isLoggedIn()) {
             $uid = $this->currentUser->get('uid');

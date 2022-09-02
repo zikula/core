@@ -19,17 +19,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\UsersBundle\Repository\UserAttributeRepository;
 
 /**
- * User attributes table.
- * Stores extra information about each user account.
+ * User attributes store extra information about each user account.
  */
 #[ORM\Entity(repositoryClass: UserAttributeRepository::class)]
 #[ORM\Table(name: 'users_attributes')]
-class UserAttributeEntity
+class UserAttribute
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'attributes')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uid', onDelete: 'CASCADE')]
-    private UserEntity $user;
+    private User $user;
 
     #[ORM\Id]
     #[ORM\Column(length: 80)]
@@ -47,18 +46,18 @@ class UserAttributeEntity
     /**
      * @param mixed $value
      */
-    public function __construct(UserEntity $user, string $name, $value)
+    public function __construct(User $user, string $name, $value)
     {
         $this->setUser($user);
         $this->setAttribute($name, $value);
     }
 
-    public function getUser(): UserEntity
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(UserEntity $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 

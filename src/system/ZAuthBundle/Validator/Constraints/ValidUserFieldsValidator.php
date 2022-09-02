@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
@@ -40,7 +40,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         $emailAddress = $authenticationMappingEntity->getEmail();
 
         // Validate uname and pass are not the same.
-        /** @var AuthenticationMappingEntity $authenticationMappingEntity */
+        /** @var AuthenticationMapping $authenticationMappingEntity */
         if ($userName === $authenticationMappingEntity->getPass()) {
             $this->context->buildViolation($this->translator->trans('The password cannot be the same as the user name. Please choose a different password.', [], 'validators'))
                 ->atPath('pass')

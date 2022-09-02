@@ -15,7 +15,7 @@ namespace Zikula\CategoriesBundle\Helper;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Repository\CategoryRepositoryInterface;
 
 class TreeMapHelper
@@ -35,7 +35,7 @@ class TreeMapHelper
     {
         $this->index = 1;
         $this->level = 0;
-        /** @var CategoryEntity $root */
+        /** @var Category $root */
         $root = $this->repository->find(1);
         $root->setLvl($this->level);
         $root->setLft($this->index);

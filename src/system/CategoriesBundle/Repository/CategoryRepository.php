@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use LogicException;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 
 class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface
 {
@@ -26,7 +26,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
      */
     public function __construct(ManagerRegistry $registry)
     {
-        $entityClass = CategoryEntity::class;
+        $entityClass = Category::class;
 
         /** @var EntityManagerInterface $manager */
         $manager = $registry->getManagerForClass($entityClass);
@@ -61,7 +61,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
         return (int) $query->getSingleScalarResult();
     }
 
-    public function getLastByParent(int $parentId = 0): ?CategoryEntity
+    public function getLastByParent(int $parentId = 0): ?Category
     {
         if ($parentId < 1) {
             return null;
@@ -83,14 +83,14 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
             return;
         }
 
-        /** @var CategoryEntity $newParent */
+        /** @var Category $newParent */
         $newParent = $this->find($newParentId);
         if (null === $newParent) {
             return;
         }
 
         $searchBy = $includeRoot ? 'id' : 'parent';
-        /** @var CategoryEntity[] $entities */
+        /** @var Category[] $entities */
         $entities = $this->findBy([$searchBy => $oldParentId]);
         foreach ($entities as $entity) {
             $entity->setParent($newParent);

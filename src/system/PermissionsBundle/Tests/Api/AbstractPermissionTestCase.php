@@ -21,7 +21,7 @@ use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\PermissionsBundle\Repository\PermissionRepositoryInterface;
 use Zikula\PermissionsBundle\Tests\Api\Fixtures\StubPermissionRepository;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -34,7 +34,7 @@ class AbstractPermissionTestCase extends TestCase
 
     protected PermissionRepositoryInterface $permRepo;
 
-    protected UserEntity $user;
+    protected User $user;
 
     protected UserRepositoryInterface $userRepo;
 
@@ -46,7 +46,7 @@ class AbstractPermissionTestCase extends TestCase
     {
         $this->permRepo = new StubPermissionRepository();
         $this->user = $this
-            ->getMockBuilder(UserEntity::class)
+            ->getMockBuilder(User::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->userRepo = $this

@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsBundle\Event;
 
-use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\GroupsBundle\Entity\Group;
+use Zikula\UsersBundle\Entity\User;
 
 class GroupUserEvent extends GroupEntityEvent
 {
-    public function __construct(GroupEntity $groupEntity, private readonly UserEntity $userEntity)
+    public function __construct(Group $groupEntity, private readonly User $userEntity)
     {
         parent::__construct($groupEntity);
     }
 
-    public function getUser(): UserEntity
+    public function getUser(): User
     {
         return $this->user;
     }

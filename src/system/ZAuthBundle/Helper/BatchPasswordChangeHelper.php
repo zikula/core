@@ -39,7 +39,7 @@ class BatchPasswordChangeHelper
         $currentUid = $this->currentUserApi->get('uid');
         $count = 0;
 
-        /** @var \Zikula\UsersBundle\Entity\UserEntity $user */
+        /** @var \Zikula\UsersBundle\Entity\User $user */
         foreach ($group->getUsers() as $user) {
             $authMethod = s($user->getAttributeValue('authenticationMethod'));
             $uid = $user->getUid();

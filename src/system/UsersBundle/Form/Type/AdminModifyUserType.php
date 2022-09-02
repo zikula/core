@@ -18,7 +18,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\UsersBundle\UsersConstant;
 
 class AdminModifyUserType extends AbstractType
@@ -35,7 +35,7 @@ class AdminModifyUserType extends AbstractType
                 'label' => 'User status',
             ])
             ->add('groups', EntityType::class, [
-                'class' => GroupEntity::class,
+                'class' => Group::class,
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true,

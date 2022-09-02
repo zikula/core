@@ -15,7 +15,7 @@ namespace Zikula\CategoriesBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Repository\CategoryRepositoryInterface;
 
 class CategoryTreeTransformer implements DataTransformerInterface
@@ -27,7 +27,8 @@ class CategoryTreeTransformer implements DataTransformerInterface
     /**
      * Transform a CategoryEntity to its Id
      *
-     * @param CategoryEntity $category
+     * @param Category $category
+     *
      * @return string
      */
     public function transform($category)
@@ -43,14 +44,15 @@ class CategoryTreeTransformer implements DataTransformerInterface
      * Transform a CategoryId to a CategoryEntity
      *
      * @param mixed $categoryId
-     * @return CategoryEntity|null
+     *
+     * @return Category|null
      */
     public function reverseTransform($categoryId): mixed
     {
         if (!$categoryId) {
             return null;
         }
-        /** @var CategoryEntity $category */
+        /** @var Category $category */
         $category = $this->categoryRepository->find($categoryId);
         if (null === $category) {
             throw new TransformationFailedException(sprintf('A category with number "%s" does not exist!', $categoryId));

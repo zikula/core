@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\Bundle\CoreBundle\AbstractModule;
 use Zikula\Bundle\CoreBundle\Composer\MetaData;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 
 class CategorizableBundleHelper
 {
@@ -78,7 +78,7 @@ class CategorizableBundleHelper
         return $data;
     }
 
-    public function isCategoryUsedBy(string $bundleName, CategoryEntity $category): bool
+    public function isCategoryUsedBy(string $bundleName, Category $category): bool
     {
         try {
             $bundle = $this->getBundle($bundleName);

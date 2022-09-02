@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Zikula\PermissionsBundle\Controller;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
+use Zikula\PermissionsBundle\Entity\Permission;
 
 class PermissionEntityCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return PermissionEntity::class;
+        return Permission::class;
     }
 
     /*

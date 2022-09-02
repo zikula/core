@@ -10,15 +10,15 @@ the more accurate naming, e.g. `categoryAssignments` instead of `categories`.
 ## Purpose
 
 The class exists to make connection to Core categories easier for third-party entities. Simply create a child class
-Entity that extends `AbstractCategoryAssignment` and define the required methods. In your Entity, define the assignment
+Entity that extends `AbstractCategoryAssignment` and define the required methods. In your entity, define the assignment
 property as OneToMany:
 
 ```php
-use Zikula\PagesBundle\Entity\CategoryAssignmentEntity;
+use Zikula\PagesBundle\Entity\CategoryAssignment;
 
 // ...
 
-#[ORM\OneToMany(targetEntity: CategoryAssignmentEntity::class, mappedBy: 'entity', cascade: ['persist', 'remove'], orphanRemoval: true, fetch: 'EAGER')]
+#[ORM\OneToMany(targetEntity: CategoryAssignment::class, mappedBy: 'entity', cascade: ['persist', 'remove'], orphanRemoval: true, fetch: 'EAGER')]
 private Collection $categoryAssignments;
 ```
 
@@ -28,8 +28,8 @@ CategoryAssignment. Therefore your getter/setter must accommodate this based on 
 
 ## Implementation preconditions
 
-You need a existing doctrine2 entity to which you would like add categories support to.
-In this guide we will use a `UserEntity`.
+You need an existing Doctrine2 entity to which you would like add categories support to.
+In this guide we will use a `User`.
 
 ```php
 namespace Acme\YourBundle\Entity;
@@ -38,7 +38,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'yourbundle_user')]
-class UserEntity
+class User
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -59,31 +59,31 @@ class UserEntity
 
 The categories bundle provides the following abstract class: `Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment`.
 You need to create a subclass of that class specific to the entity you would like
-to add categories support to. In this guide we create a `UserCategoryAssignmentsEntity` class.
-**UserEntity** is the name of the entity and **Category** is our categories specific suffix:
+to add categories support to. In this guide we create a `UserCategoryAssignments` class.
+**User** is the name of the entity and **Category** is our categories specific suffix:
 
 ```php
 namespace Acme\YourBundle\Entity;
 
-use Acme\YourBundle\Entity\UserEntity;
+use Acme\YourBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'yourbundle_user_category')]
 #[ORM\UniqueConstraint(columns: ['registryId', 'categoryId', 'entityId'], name: 'cat_unq')]
-class UserCategoryAssignmentsEntity extends AbstractCategoryAssignment
+class UserCategoryAssignments extends AbstractCategoryAssignment
 {
     #[ORM\ManyToOne(inversedBy: 'categories')]
     #[ORM\JoinColumn(name: 'entityId', referencedColumnName: 'id')]
-    private UserEntity $entity;
+    private User $entity;
 
-    public function getEntity(): UserEntity
+    public function getEntity(): User
     {
         return $this->entity;
     }
 
-    public function setEntity(UserEntity $entity): self
+    public function setEntity(User $entity): self
     {
         $this->entity = $entity;
 
@@ -100,15 +100,15 @@ The column name `entityId` in `@JoinColumn` and `@UniqueConstraint` must match.
 We need to add a inverse side of the association to the original `UserEntity`
 
 ```php
-use Acme\YourBundle\Entity\UserCategoryAssignmentsEntity;
+use Acme\YourBundle\Entity\UserCategoryAssignments;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 // …
 
-#[ORM\OneToMany(targetEntity: UserCategoryAssignmentsEntity::class, mappedBy: 'entity', cascade: ['all'],  orphanRemoval: true, indexBy: 'categoryRegistryId')]
+#[ORM\OneToMany(targetEntity: UserCategoryAssignments::class, mappedBy: 'entity', cascade: ['all'],  orphanRemoval: true, indexBy: 'categoryRegistryId')]
 /**
- * @var UserCategoryAssignmentsEntity[]
+ * @var UserCategoryAssignments[]
  */
 private Collection $categories;
 

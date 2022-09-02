@@ -19,7 +19,7 @@ use Zikula\PermissionsBundle\Repository\PermissionRepository;
 
 #[ORM\Entity(repositoryClass: PermissionRepository::class)]
 #[ORM\Table(name: 'group_perms')]
-class PermissionEntity
+class Permission
 {
     #[ORM\Id]
     #[ORM\Column]

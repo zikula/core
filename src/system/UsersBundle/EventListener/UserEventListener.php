@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\UserPostLoginSuccessEvent;
 use Zikula\UsersBundle\Event\UserPostLogoutSuccessEvent;
 
@@ -47,7 +47,7 @@ class UserEventListener implements EventSubscriberInterface
      */
     public function setLocale(UserPostLoginSuccessEvent $event): void
     {
-        /** @var UserEntity $userEntity */
+        /** @var User $userEntity */
         $userEntity = $event->getUser();
         $locale = $userEntity->getLocale();
         if (empty($locale)) {

@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 class DeleteType extends AbstractType
 {
@@ -30,7 +30,7 @@ class DeleteType extends AbstractType
                 'choice_attr' => static function () {
                     return ['class' => 'user-checkboxes'];
                 },
-                'class' => UserEntity::class,
+                'class' => User::class,
                 'choices' => /** @Ignore */ $options['choices'],
                 'expanded' => true,
                 'multiple' => true,

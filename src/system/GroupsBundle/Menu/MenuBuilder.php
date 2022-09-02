@@ -18,7 +18,7 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
@@ -40,7 +40,7 @@ class MenuBuilder
 
     public function createAdminMenu(array $options): ItemInterface
     {
-        /** @var GroupEntity $group */
+        /** @var Group $group */
         $group = $options['group'];
         $gid = $group->getGid();
         $routeParams = ['gid' => $gid];
@@ -68,7 +68,7 @@ class MenuBuilder
 
     public function createUserMenu(array $options): ItemInterface
     {
-        /** @var GroupEntity $group */
+        /** @var Group $group */
         $group = $options['group'];
         $gid = $group->getGid();
         $menu = $this->factory->createItem('userActions');

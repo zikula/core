@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 
 /**
@@ -84,7 +84,7 @@ class CategoryRegistryType extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             static function (FormEvent $event) use ($formModifier) {
-                /** @var CategoryRegistryEntity $data */
+                /** @var CategoryRegistry $data */
                 $data = $event->getData();
                 $formModifier($event->getForm(), $data->getBundleName());
             }

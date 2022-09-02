@@ -15,20 +15,20 @@ namespace Zikula\ZAuthBundle\Repository;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\UsersBundle\Entity\UserEntity;
-use Zikula\ZAuthBundle\Entity\UserVerificationEntity;
+use Zikula\UsersBundle\Entity\User;
+use Zikula\ZAuthBundle\Entity\UserVerification;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 interface UserVerificationRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function persistAndFlush(UserVerificationEntity $entity): void;
+    public function persistAndFlush(UserVerification $entity): void;
 
-    public function removeAndFlush(UserVerificationEntity $entity): void;
+    public function removeAndFlush(UserVerification $entity): void;
 
     public function removeByZikulaId(int $userId): void;
 
     /**
-     * @return UserEntity[] records deleted
+     * @return User[] records deleted
      */
     public function purgeExpiredRecords(
         int $daysOld,

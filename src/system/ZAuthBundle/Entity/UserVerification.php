@@ -21,14 +21,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepository;
 
 /**
- * Account-change verification table.
+ * Account-change verification entity.
  * Holds a one-time use, expirable verification code used when a user needs to change his email address,
  * reset his password and has not answered any security questions,
  * or when a new user is registering with the site for the first time.
  */
 #[ORM\Entity(repositoryClass: UserVerificationRepository::class)]
 #[ORM\Table(name: 'users_verifychg')]
-class UserVerificationEntity
+class UserVerification
 {
     /**
      * ID: Primary ID of the verification record. Not related to the uid.

@@ -16,8 +16,8 @@ namespace Zikula\ProfileBundle\Twig;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
-use Zikula\ProfileBundle\Entity\PropertyEntity;
-use Zikula\UsersBundle\Entity\UserAttributeEntity;
+use Zikula\ProfileBundle\Entity\Property;
+use Zikula\UsersBundle\Entity\UserAttribute;
 
 class TwigExtension extends AbstractExtension
 {
@@ -39,8 +39,8 @@ class TwigExtension extends AbstractExtension
     }
 
     public function formatPropertyForDisplay(
-        PropertyEntity $property,
-        UserAttributeEntity $attribute
+        Property $property,
+        UserAttribute $attribute
     ): string {
         $value = $attribute->getValue();
         if (empty($value)) {

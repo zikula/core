@@ -15,7 +15,7 @@ namespace Zikula\PermissionsBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
+use Zikula\PermissionsBundle\Entity\Permission;
 
 class MenuBuilder
 {
@@ -28,7 +28,7 @@ class MenuBuilder
 
     public function createAdminActionsMenu(array $options): ItemInterface
     {
-        /** @var PermissionEntity $permission */
+        /** @var Permission $permission */
         $permission = $options['permission'];
 
         $menu = $this->factory->createItem('adminActions');

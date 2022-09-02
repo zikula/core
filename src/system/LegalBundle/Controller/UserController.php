@@ -16,7 +16,6 @@ namespace Zikula\LegalBundle\Controller;
 use DateTime;
 use DateTimeZone;
 use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +29,7 @@ use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
 use Zikula\LegalBundle\LegalConstant;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\AccessHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
@@ -181,7 +180,7 @@ class UserController extends AbstractController
         ]);
         if ($form->handleRequest($request) && $form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            /** @var UserEntity $userEntity */
+            /** @var User $userEntity */
             $userEntity = $userRepository->find($data['uid']);
             $policiesToCheck = [
                 'termsOfUse' => LegalConstant::ATTRIBUTE_TERMSOFUSE_ACCEPTED,

@@ -15,8 +15,8 @@ namespace Zikula\ZAuthBundle\Helper;
 
 use Exception;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthBundle\Entity\UserVerificationEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
+use Zikula\ZAuthBundle\Entity\UserVerification;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
@@ -42,7 +42,7 @@ class LostPasswordVerificationHelper
      * Creates an identifier for the lost password link.
      * This link carries the user's id, name and email address as well as the actual confirmation code.
      */
-    public function createLostPasswordId(AuthenticationMappingEntity $mapping): string
+    public function createLostPasswordId(AuthenticationMapping $mapping): string
     {
         $confirmationCode = $this->delimiter;
         while (false !== mb_strpos($confirmationCode, $this->delimiter)) {
@@ -101,12 +101,12 @@ class LostPasswordVerificationHelper
      */
     public function checkConfirmationCode(int $userId, string $code): bool
     {
-        /** @var UserVerificationEntity $userVerificationEntity */
+        /** @var UserVerification $userVerificationEntity */
         $userVerificationEntity = $this->userVerificationRepository->findOneBy([
             'uid' => $userId,
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_PWD
         ]);
-        $passwordValid = $this->encoderFactory->getEncoder(AuthenticationMappingEntity::class)->isPasswordValid($userVerificationEntity->getVerifycode(), $code, null);
+        $passwordValid = $this->encoderFactory->getEncoder(AuthenticationMapping::class)->isPasswordValid($userVerificationEntity->getVerifycode(), $code, null);
 
         return isset($userVerificationEntity) && $passwordValid;
     }

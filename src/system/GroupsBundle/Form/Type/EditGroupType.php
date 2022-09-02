@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\GroupsBundle\Helper\TranslationHelper;
 use Zikula\GroupsBundle\Validator\Constraints\ValidGroupName;
 
@@ -98,7 +98,7 @@ class EditGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => GroupEntity::class,
+            'data_class' => Group::class,
             'constraints' => [
                 new ValidGroupName(),
             ],

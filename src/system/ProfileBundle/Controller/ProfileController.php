@@ -27,7 +27,7 @@ use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\Helper\UploadHelper;
 use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 #[Route('/profile')]
@@ -46,7 +46,7 @@ class ProfileController extends AbstractController
         PropertyRepositoryInterface $propertyRepository,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
-        UserEntity $userEntity = null
+        User $userEntity = null
     ): Response {
         if (null === $userEntity) {
             $userEntity = $userRepository->find($currentUserApi->get('uid'));
@@ -69,7 +69,7 @@ class ProfileController extends AbstractController
         ProfileTypeFactory $profileTypeFactory,
         UploadHelper $uploadHelper,
         GravatarHelper $gravatarHelper,
-        UserEntity $userEntity = null
+        User $userEntity = null
     ): Response {
         $currentUserUid = $currentUserApi->get('uid');
         if (null === $userEntity) {

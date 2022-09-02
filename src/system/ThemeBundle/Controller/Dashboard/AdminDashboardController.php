@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\Translation\t;
 use Zikula\GroupsBundle\Controller\GroupEntityCrudController;
-use Zikula\GroupsBundle\Entity\GroupEntity;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
+use Zikula\GroupsBundle\Entity\Group;
+use Zikula\PermissionsBundle\Entity\Permission;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 
 class AdminDashboardController extends AbstractThemedDashboardController
@@ -41,9 +41,9 @@ class AdminDashboardController extends AbstractThemedDashboardController
         // yield MenuItem::linktoRoute(t('Website frontend'), 'fas fa-home', 'user_dashboard');
         yield MenuItem::linktoUrl(t('Website frontend'), 'fas fa-home', '/');
 
-        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', GroupEntity::class);
-        yield MenuItem::linkToCrud(t('Permissions'), 'fas fa-lock', PermissionEntity::class);
-        yield MenuItem::linkToCrud(t('Add permission'), 'fas fa-plus', PermissionEntity::class)
+        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
+        yield MenuItem::linkToCrud(t('Permissions'), 'fas fa-lock', Permission::class);
+        yield MenuItem::linkToCrud(t('Add permission'), 'fas fa-plus', Permission::class)
             ->setAction('new');
 
         foreach ($this->adminCategoryHelper->getCategories() as $category) {

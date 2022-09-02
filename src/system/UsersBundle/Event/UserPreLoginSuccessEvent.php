@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 /**
  * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
@@ -43,7 +43,7 @@ class UserPreLoginSuccessEvent extends RedirectableUserEntityEvent implements St
 
     private array $flashes = [];
 
-    public function __construct(UserEntity $userEntity, string $authenticationMethod)
+    public function __construct(User $userEntity, string $authenticationMethod)
     {
         parent::__construct($userEntity);
         $this->authenticationMethod = $authenticationMethod;

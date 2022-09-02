@@ -17,8 +17,8 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthBundle\Entity\UserVerificationEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
+use Zikula\ZAuthBundle\Entity\UserVerification;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
@@ -33,13 +33,13 @@ class AdministrationActionsHelper
     ) {
     }
 
-    public function user(AuthenticationMappingEntity $mapping): array
+    public function user(AuthenticationMapping $mapping): array
     {
         $actions = [];
         if (!$this->permissionsApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_MODERATE)) {
             return $actions;
         }
-        /** @var UserVerificationEntity $userVerification */
+        /** @var UserVerification $userVerification */
         $userVerification = $this->userVerificationRepository->findOneBy([
             'uid' => $mapping->getUid(),
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL

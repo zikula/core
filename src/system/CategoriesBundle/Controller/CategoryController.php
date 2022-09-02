@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Form\Type\CategoryTreeType;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
@@ -47,7 +47,7 @@ class CategoryController extends AbstractController
     public function listCategories(
         Request $request,
         ManagerRegistry $doctrine,
-        CategoryEntity $category,
+        Category $category,
         CategoryRepository $categoryRepository
     ): Response {
         if (!$this->permissionApi->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)

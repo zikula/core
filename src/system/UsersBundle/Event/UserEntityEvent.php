@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Event;
 
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 /**
  * A 'Generic' event that accepts a UserEntity on construction and sets
@@ -21,17 +21,17 @@ use Zikula\UsersBundle\Entity\UserEntity;
  */
 class UserEntityEvent
 {
-    private ?UserEntity $user;
+    private ?User $user;
 
     private \DateTimeImmutable $date;
 
-    public function __construct(?UserEntity $user)
+    public function __construct(?User $user)
     {
         $this->user = $user;
         $this->date = new \DateTimeImmutable('now');
     }
 
-    public function getUser(): ?UserEntity
+    public function getUser(): ?User
     {
         return $this->user;
     }

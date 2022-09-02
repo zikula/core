@@ -21,8 +21,8 @@ use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\Doctrine\Paginator;
 use Zikula\Bundle\CoreBundle\Doctrine\WhereFromFilterTrait;
-use Zikula\UsersBundle\Entity\UserAttributeEntity;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
+use Zikula\UsersBundle\Entity\UserAttribute;
 use Zikula\UsersBundle\UsersConstant;
 
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
@@ -31,7 +31,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserEntity::class);
+        parent::__construct($registry, User::class);
     }
 
     public function findByUids(array $userIds = []): array
@@ -44,17 +44,17 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $qb->getQuery()->getResult();
     }
 
-    public function persistAndFlush(UserEntity $user): void
+    public function persistAndFlush(User $user): void
     {
         $this->_em->persist($user);
         $this->_em->flush();
     }
 
-    public function removeAndFlush(UserEntity $user): void
+    public function removeAndFlush(User $user): void
     {
         // the following process should be unnecessary because cascade = all but MySQL 5.7 not working with that (#3726)
         $qb = $this->_em->createQueryBuilder();
-        $qb->delete(UserAttributeEntity::class, 'a')
+        $qb->delete(UserAttribute::class, 'a')
            ->where('a.user = :userId')
            ->setParameter('userId', $user->getUid());
         $query = $qb->getQuery();
@@ -66,7 +66,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $this->_em->flush();
     }
 
-    public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void
+    public function setApproved(User $user, DateTime $approvedOn, int $approvedBy = null): void
     {
         $user->setApprovedDate($approvedOn);
         $user->setApprovedBy($approvedBy ?? $user->getUid());

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\ProfileBundle;
 
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 class IdentityProfileBundle implements ProfileBundleInterface
@@ -29,7 +29,7 @@ class IdentityProfileBundle implements ProfileBundleInterface
             return $this->currentUserApi->get('uname');
         }
 
-        /** @var UserEntity $user */
+        /** @var User $user */
         $user = $this->userRepository->find($userId);
 
         return null !== $user ? $user->getUname() : '';

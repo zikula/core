@@ -15,9 +15,9 @@ namespace Zikula\CategoriesBundle\Tests\Api;
 
 use PHPUnit\Framework\TestCase;
 use Zikula\CategoriesBundle\Api\CategoryPermissionApi;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Tests\Fixtures\CategorizableEntity;
-use Zikula\CategoriesBundle\Tests\Fixtures\CategoryAssignmentEntity;
+use Zikula\CategoriesBundle\Tests\Fixtures\CategoryAssignment;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsBundle\PermissionAlways;
 
@@ -35,7 +35,7 @@ class CategoryPermissionApiTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $permissionApi = new PermissionAlways();
         $api = new CategoryPermissionApi($permissionApi);
-        $category = new CategoryEntity();
+        $category = new Category();
         $api->hasCategoryAccess([$category]);
         $api->hasCategoryAccess([['foo' => 'bar']]);
     }
@@ -44,7 +44,7 @@ class CategoryPermissionApiTest extends TestCase
     {
         $permissionApi = new PermissionAlways();
         $api = new CategoryPermissionApi($permissionApi);
-        $catAssignment = new CategoryAssignmentEntity(1, new CategoryEntity(), new CategorizableEntity());
+        $catAssignment = new CategoryAssignment(1, new Category(), new CategorizableEntity());
         $this->assertTrue($api->hasCategoryAccess([$catAssignment]));
     }
 
@@ -53,14 +53,14 @@ class CategoryPermissionApiTest extends TestCase
         $permissionApi = $this->createEvenPermissionApi();
         $api = new CategoryPermissionApi($permissionApi);
         $categorizableEntity = new CategorizableEntity();
-        $category = new CategoryEntity();
+        $category = new Category();
 
         $category->setId(1);
-        $catAssignment = new CategoryAssignmentEntity(1, $category, $categorizableEntity);
+        $catAssignment = new CategoryAssignment(1, $category, $categorizableEntity);
         $this->assertFalse($api->hasCategoryAccess([$catAssignment]));
 
         $category->setId(2);
-        $catAssignment = new CategoryAssignmentEntity(1, $category, $categorizableEntity);
+        $catAssignment = new CategoryAssignment(1, $category, $categorizableEntity);
         $this->assertTrue($api->hasCategoryAccess([$catAssignment]));
     }
 
@@ -69,13 +69,13 @@ class CategoryPermissionApiTest extends TestCase
         $permissionApi = $this->createEvenPermissionApi();
         $api = new CategoryPermissionApi($permissionApi);
         $categorizableEntity = new CategorizableEntity();
-        $category = new CategoryEntity();
+        $category = new Category();
         $category->setId(1);
-        $category2 = new CategoryEntity();
+        $category2 = new Category();
         $category2->setId(2);
 
-        $catAssignment = new CategoryAssignmentEntity(1, $category, $categorizableEntity);
-        $catAssignment2 = new CategoryAssignmentEntity(1, $category2, $categorizableEntity);
+        $catAssignment = new CategoryAssignment(1, $category, $categorizableEntity);
+        $catAssignment2 = new CategoryAssignment(1, $category2, $categorizableEntity);
         $this->assertTrue($api->hasCategoryAccess([$catAssignment, $catAssignment2]));
     }
 
@@ -84,13 +84,13 @@ class CategoryPermissionApiTest extends TestCase
         $permissionApi = $this->createEvenPermissionApi();
         $api = new CategoryPermissionApi($permissionApi);
         $categorizableEntity = new CategorizableEntity();
-        $category = new CategoryEntity();
+        $category = new Category();
         $category->setId(1);
-        $category2 = new CategoryEntity();
+        $category2 = new Category();
         $category2->setId(2);
 
-        $catAssignment = new CategoryAssignmentEntity(1, $category, $categorizableEntity);
-        $catAssignment2 = new CategoryAssignmentEntity(1, $category2, $categorizableEntity);
+        $catAssignment = new CategoryAssignment(1, $category, $categorizableEntity);
+        $catAssignment2 = new CategoryAssignment(1, $category2, $categorizableEntity);
         $this->assertFalse($api->hasCategoryAccess([$catAssignment, $catAssignment2], ACCESS_OVERVIEW, true));
         $category->setId(4);
         $this->assertTrue($api->hasCategoryAccess([$catAssignment, $catAssignment2], ACCESS_OVERVIEW, true));

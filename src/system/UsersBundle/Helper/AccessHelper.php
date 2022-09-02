@@ -16,7 +16,7 @@ namespace Zikula\UsersBundle\Helper;
 use DateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -29,7 +29,7 @@ class AccessHelper
     ) {
     }
 
-    public function loginAllowed(UserEntity $user): bool
+    public function loginAllowed(User $user): bool
     {
         $request = $this->requestStack->getCurrentRequest();
         $session = null !== $request && $request->hasSession() ? $request->getSession() : null;
@@ -64,7 +64,7 @@ class AccessHelper
         return false;
     }
 
-    public function login(UserEntity $user, bool $rememberMe = false): void
+    public function login(User $user, bool $rememberMe = false): void
     {
         $user->setLastlogin(new DateTime());
         $this->userRepository->persistAndFlush($user);

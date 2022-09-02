@@ -17,11 +17,11 @@ use DateTime;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersBundle\Event\ActiveUserPreCreatedEvent;
 use Zikula\UsersBundle\Event\RegistrationPostApprovedEvent;
@@ -60,7 +60,7 @@ class RegistrationHelper
     /**
      * Create a new user or registration.
      */
-    public function registerNewUser(UserEntity $userEntity): void
+    public function registerNewUser(User $userEntity): void
     {
         $adminApprovalRequired = $this->registrationRequiresApproval;
         if (null === $userEntity->getUid()) {
@@ -85,7 +85,7 @@ class RegistrationHelper
             // Add user to default group
             $defaultGroupId = $this->defaultHelper->getDefaultGroupId();
             if (!$userEntity->getGroups()->containsKey($defaultGroupId)) {
-                /** @var GroupEntity $defaultGroupEntity */
+                /** @var Group $defaultGroupEntity */
                 $defaultGroupEntity = $this->groupRepository->find($defaultGroupId);
                 $userEntity->addGroup($defaultGroupEntity);
             }
@@ -108,7 +108,7 @@ class RegistrationHelper
      * Approves a registration.
      * If the registration is also verified (or does not need it) then a new users table record is created.
      */
-    public function approve(UserEntity $user): void
+    public function approve(User $user): void
     {
         $user->setApprovedBy((int) $this->currentUserApi->get('uid'));
         $user->setApprovedDate(new DateTime());

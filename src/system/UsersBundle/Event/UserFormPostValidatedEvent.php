@@ -15,19 +15,19 @@ namespace Zikula\UsersBundle\Event;
 
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\FormExtensionBundle\Event\FormPostValidatedEvent;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 class UserFormPostValidatedEvent extends FormPostValidatedEvent
 {
-    private UserEntity $user;
+    private User $user;
 
-    public function __construct(FormInterface $form, UserEntity $user)
+    public function __construct(FormInterface $form, User $user)
     {
         parent::__construct($form);
         $this->user = $user;
     }
 
-    public function getUser(): UserEntity
+    public function getUser(): User
     {
         return $this->user;
     }

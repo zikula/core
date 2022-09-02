@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Event;
 
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 /**
  * Occurs right after a successful attempt to log in, and just prior to redirecting the user to the desired page.
@@ -32,7 +32,7 @@ class UserPostLoginSuccessEvent extends RedirectableUserEntityEvent implements A
 {
     use AuthMethodTrait;
 
-    public function __construct(UserEntity $userEntity, string $authenticationMethod)
+    public function __construct(User $userEntity, string $authenticationMethod)
     {
         parent::__construct($userEntity);
         $this->authenticationMethod = $authenticationMethod;

@@ -103,7 +103,7 @@ class FileIOHelper
     }
 
     /**
-     * @return \Zikula\UsersBundle\Entity\UserEntity[]
+     * @return \Zikula\UsersBundle\Entity\User[]
      */
     public function getCreatedUsers(): array
     {

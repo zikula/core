@@ -20,10 +20,8 @@ use Zikula\CategoriesBundle\Traits\StandardFieldsTrait;
 
 #[ORM\Entity(repositoryClass: CategoryRegistryRepository::class)]
 #[ORM\Table(name: 'categories_registry')]
-#[
-    ORM\Index(fields: ['bundleName', 'entityName'], name: 'idx_categories_registry')
-]
-class CategoryRegistryEntity
+#[ORM\Index(fields: ['bundleName', 'entityName'], name: 'idx_categories_registry')]
+class CategoryRegistry
 {
     use StandardFieldsTrait;
 
@@ -46,7 +44,7 @@ class CategoryRegistryEntity
 
     #[ORM\ManyToOne(inversedBy: 'attributes')]
     #[ORM\JoinColumn(name: 'category_id')]
-    private CategoryEntity $category;
+    private Category $category;
 
     #[ORM\Column(name: 'obj_status', length: 1)]
     #[Assert\Length(min: 1, max: 1)]
@@ -64,7 +62,7 @@ class CategoryRegistryEntity
         return $this;
     }
 
-    public function getBundleName(): ?string
+    public function getBundleName(): string
     {
         return $this->bundleName;
     }
@@ -76,7 +74,7 @@ class CategoryRegistryEntity
         return $this;
     }
 
-    public function getEntityName(): ?string
+    public function getEntityName(): string
     {
         return $this->entityName;
     }
@@ -88,7 +86,7 @@ class CategoryRegistryEntity
         return $this;
     }
 
-    public function getProperty(): ?string
+    public function getProperty(): string
     {
         return $this->property;
     }
@@ -100,12 +98,12 @@ class CategoryRegistryEntity
         return $this;
     }
 
-    public function getCategory(): ?CategoryEntity
+    public function getCategory(): Category
     {
         return $this->category;
     }
 
-    public function setCategory(CategoryEntity $category): self
+    public function setCategory(Category $category): self
     {
         $this->category = $category;
 

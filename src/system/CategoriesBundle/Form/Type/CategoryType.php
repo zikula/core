@@ -30,7 +30,7 @@ use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Validator\Constraints\UniqueNameForPosition;
 
 class CategoryType extends AbstractType
@@ -109,7 +109,7 @@ class CategoryType extends AbstractType
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($translator, $options) {
                 // ensure all display name and description exist for all locales
-                /** @var CategoryEntity $category */
+                /** @var Category $category */
                 $category = $event->getData();
 
                 $name = $category->getName();
@@ -133,7 +133,7 @@ class CategoryType extends AbstractType
             })
             ->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) use ($translator, $options) {
                 // ensure all locales have a display name
-                /** @var CategoryEntity $category */
+                /** @var Category $category */
                 $category = $event->getData();
 
                 $name = $category->getName();
@@ -170,7 +170,7 @@ class CategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CategoryEntity::class,
+            'data_class' => Category::class,
             'locales' => [],
             'constraints' => [
                 new UniqueNameForPosition(),

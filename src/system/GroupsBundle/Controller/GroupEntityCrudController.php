@@ -15,13 +15,13 @@ namespace Zikula\GroupsBundle\Controller;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 
 class GroupEntityCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return GroupEntity::class;
+        return Group::class;
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -30,8 +30,8 @@ class GroupEntityCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Group')
             ->setEntityLabelInPlural('Groups')
             ->setPageTitle('index', '%entity_label_plural% list')
-            ->setPageTitle('detail', fn (GroupEntity $group) => $group->getName())
-            ->setPageTitle('edit', fn (GroupEntity $group) => sprintf('Editing <strong>%s</strong>', $group->getName()))
+            ->setPageTitle('detail', fn (Group $group) => $group->getName())
+            ->setPageTitle('edit', fn (Group $group) => sprintf('Editing <strong>%s</strong>', $group->getName()))
             ->renderContentMaximized()
             // ->renderSidebarMinimized()
 //            ->setDateFormat('...')

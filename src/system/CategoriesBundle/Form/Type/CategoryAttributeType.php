@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\CategoriesBundle\Entity\CategoryAttributeEntity;
+use Zikula\CategoriesBundle\Entity\CategoryAttribute;
 
 /**
  * CategoryAttributeType form type class.
@@ -45,7 +45,7 @@ class CategoryAttributeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CategoryAttributeEntity::class,
+            'data_class' => CategoryAttribute::class,
         ]);
     }
 }

@@ -15,7 +15,7 @@ namespace Zikula\ThemeBundle\Helper;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\ThemeBundle\Entity\AdminCategoryEntity;
+use Zikula\ThemeBundle\Entity\AdminCategory;
 
 /**
  * Helper function for non-dynamic admin categories.
@@ -59,13 +59,13 @@ class AdminCategoryHelper
 
         $result = [];
         foreach ($categoryData as $row) {
-            $result[] = (new AdminCategoryEntity())->setName($row['name'])->setSlug($row['slug'])->setDescription($row['description'])->setIcon($row['icon'])->setSortOrder($row['sortOrder'])->setDefault($row['default']);
+            $result[] = (new AdminCategory())->setName($row['name'])->setSlug($row['slug'])->setDescription($row['description'])->setIcon($row['icon'])->setSortOrder($row['sortOrder'])->setDefault($row['default']);
         }
 
         return $result;
     }
 
-    public function getCurrentCategory(): AdminCategoryEntity
+    public function getCurrentCategory(): AdminCategory
     {
         $mainRequest = $this->requestStack->getMainRequest();
         $slug = $mainRequest->attributes->get('acslug', null);
@@ -79,7 +79,7 @@ class AdminCategoryHelper
         return $this->getDefaultCategory();
     }
 
-    public function getDefaultCategory(): AdminCategoryEntity
+    public function getDefaultCategory(): AdminCategory
     {
         foreach ($this->getCategories() as $category) {
             if ($category->isDefault()) {
@@ -90,7 +90,7 @@ class AdminCategoryHelper
         throw new \InvalidArgumentException('No default category defined.');
     }
 
-    public function getBundleAssignments(AdminCategoryEntity $category): array
+    public function getBundleAssignments(AdminCategory $category): array
     {
         return match ($category->getSlug()) {
             'system' => ['ZikulaThemeBundle'],

@@ -15,12 +15,12 @@ namespace Zikula\CategoriesBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 
 class CategoryRegistryRepository extends ServiceEntityRepository implements CategoryRegistryRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CategoryRegistryEntity::class);
+        parent::__construct($registry, CategoryRegistry::class);
     }
 }

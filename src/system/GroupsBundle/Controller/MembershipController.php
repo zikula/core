@@ -25,7 +25,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\GroupsBundle\Event\GroupPostUserAddedEvent;
 use Zikula\GroupsBundle\Event\GroupPostUserRemovedEvent;
 use Zikula\GroupsBundle\Form\Type\RemoveUserType;
@@ -36,7 +36,7 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -61,7 +61,7 @@ class MembershipController extends AbstractController
     ]
     #[PermissionCheck(['$_zkModule::memberslist', '::', 'overview'])]
     public function listMemberships(
-        GroupEntity $group,
+        Group $group,
         string $letter = '*',
         int $page = 1
     ): Response {
@@ -82,7 +82,7 @@ class MembershipController extends AbstractController
     #[PermissionCheck(['$_zkModule::', '$gid::', 'edit'])]
     #[Theme('admin')]
     public function adminList(
-        GroupEntity $group,
+        Group $group,
         string $letter = '*',
         int $page = 1
     ): Response {
@@ -99,8 +99,8 @@ class MembershipController extends AbstractController
     #[Route('/admin/add/{uid}/{gid}/{token}', name: 'zikulagroupsbundle_membership_add', requirements: ['gid' => "^[1-9]\d*$", 'uid' => "^[1-9]\d*$"])]
     #[PermissionCheck(['$_zkModule::', '$gid::', 'edit'])]
     public function add(
-        UserEntity $userEntity,
-        GroupEntity $group,
+        User $userEntity,
+        Group $group,
         string $token,
         ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher
@@ -130,7 +130,7 @@ class MembershipController extends AbstractController
     #[Route('/join/{gid}', name: 'zikulagroupsbundle_membership_join', requirements: ['gid' => "^[1-9]\d*$"])]
     #[PermissionCheck('overview')]
     public function join(
-        GroupEntity $group,
+        Group $group,
         ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
@@ -139,7 +139,7 @@ class MembershipController extends AbstractController
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->trans('Error! You must register for a user account on this site before you can join a group.'));
         }
-        /** @var UserEntity $userEntity */
+        /** @var User $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $groupTypeIsPrivate = GroupsConstant::GTYPE_PRIVATE === $group->getGtype();
         $groupTypeIsCore = GroupsConstant::GTYPE_CORE === $group->getGtype();
@@ -229,7 +229,7 @@ class MembershipController extends AbstractController
     #[Route('/leave/{gid}', name: 'zikulagroupsbundle_membership_leave', requirements: ['gid' => "^[1-9]\d*$"])]
     #[PermissionCheck('overview')]
     public function leave(
-        GroupEntity $group,
+        Group $group,
         ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
@@ -238,7 +238,7 @@ class MembershipController extends AbstractController
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->trans('Error! You must be logged in before you can leave a group.'));
         }
-        /** @var UserEntity $userEntity */
+        /** @var User $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $userEntity->removeGroup($group);
         $doctrine->getManager()->flush();

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Event;
 
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 /**
  * Occurs after the deletion of a user account.
@@ -29,7 +29,7 @@ class ActiveUserPostDeletedEvent extends UserEntityEvent
      */
     private bool $fullDeletion;
 
-    public function __construct(?UserEntity $user, bool $fullDeletion = false)
+    public function __construct(?User $user, bool $fullDeletion = false)
     {
         parent::__construct($user);
         $this->fullDeletion = $fullDeletion;

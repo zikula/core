@@ -23,7 +23,7 @@ use Zikula\ProfileBundle\Repository\PropertyRepository;
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]
 #[ORM\Table(name: 'user_property')]
 #[UniqueEntity('id')]
-class PropertyEntity implements DynamicFieldInterface
+class Property implements DynamicFieldInterface
 {
     /**
      * Note this value is NOT auto-generated and must be manually created!

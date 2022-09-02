@@ -33,7 +33,7 @@ use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\ActiveUserPostUpdatedEvent;
 use Zikula\UsersBundle\Event\EditUserFormPostCreatedEvent;
 use Zikula\UsersBundle\Event\EditUserFormPostValidatedEvent;
@@ -43,7 +43,7 @@ use Zikula\UsersBundle\Helper\MailHelper as UsersMailHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 use Zikula\ZAuthBundle\Form\Type\AdminCreatedUserType;
 use Zikula\ZAuthBundle\Form\Type\AdminModifyUserType;
 use Zikula\ZAuthBundle\Form\Type\BatchForcePasswordChangeType;
@@ -151,7 +151,7 @@ class UserAdministrationController extends AbstractController
         UsersMailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher
     ): Response {
-        $mapping = new AuthenticationMappingEntity();
+        $mapping = new AuthenticationMapping();
         $form = $this->createForm(AdminCreatedUserType::class, $mapping, [
             'minimumPasswordLength' => $this->minimumPasswordLength,
         ]);
@@ -174,7 +174,7 @@ class UserAdministrationController extends AbstractController
                 if (null === $userData['uid']) {
                     unset($userData['uid']);
                 }
-                $user = new UserEntity();
+                $user = new User();
                 foreach ($userData as $fieldName => $fieldValue) {
                     $setter = 'set' . ucfirst($fieldName);
                     $user->{$setter}($fieldValue);
@@ -231,7 +231,7 @@ class UserAdministrationController extends AbstractController
     #[Theme('admin')]
     public function modify(
         Request $request,
-        AuthenticationMappingEntity $mapping,
+        AuthenticationMapping $mapping,
         EncoderFactoryInterface $encoderFactory,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -256,7 +256,7 @@ class UserAdministrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
-                /** @var AuthenticationMappingEntity $mapping */
+                /** @var AuthenticationMapping $mapping */
                 $mapping = $form->getData();
                 if ($form->get('setpass')->getData()) {
                     $mapping->setPass($encoderFactory->getEncoder($mapping)->encodePassword($mapping->getPass(), null));
@@ -265,7 +265,7 @@ class UserAdministrationController extends AbstractController
                 }
                 $authenticationMappingRepository->persistAndFlush($mapping);
                 $userData = $mapping->getUserEntityData();
-                /** @var UserEntity $user */
+                /** @var User $user */
                 $user = $userRepository->find($mapping->getUid());
                 foreach ($userData as $fieldName => $fieldValue) {
                     $setter = 'set' . ucfirst($fieldName);
@@ -297,7 +297,7 @@ class UserAdministrationController extends AbstractController
     #[Theme('admin')]
     public function verify(
         Request $request,
-        AuthenticationMappingEntity $mapping,
+        AuthenticationMapping $mapping,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         RegistrationVerificationHelper $registrationVerificationHelper
     ): Response {
@@ -308,7 +308,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                /** @var AuthenticationMappingEntity $modifiedMapping */
+                /** @var AuthenticationMapping $modifiedMapping */
                 $modifiedMapping = $authenticationMappingRepository->find($form->get('mapping')->getData());
                 $verificationSent = $registrationVerificationHelper->sendVerificationCode($modifiedMapping);
                 if (!$verificationSent) {
@@ -335,7 +335,7 @@ class UserAdministrationController extends AbstractController
      */
     #[Route('/send-confirmation/{mapping}', name: 'zikulazauthbundle_useradministration_sendconfirmation', requirements: ['mapping' => '^[1-9]\d*$'])]
     public function sendConfirmation(
-        AuthenticationMappingEntity $mapping,
+        AuthenticationMapping $mapping,
         LostPasswordVerificationHelper $lostPasswordVerificationHelper,
         MailHelper $mailHelper
     ): RedirectResponse {
@@ -361,7 +361,7 @@ class UserAdministrationController extends AbstractController
      */
     #[Route('/send-username/{mapping}', name: 'zikulazauthbundle_useradministration_sendusername', requirements: ['mapping' => '^[1-9]\d*$'])]
     public function sendUserName(
-        AuthenticationMappingEntity $mapping,
+        AuthenticationMapping $mapping,
         MailHelper $mailHelper
     ): RedirectResponse {
         if (!$this->permissionApi->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE)) {
@@ -380,13 +380,13 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes
+     * @param User $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes
      *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
      */
     #[Route('/toggle-password-change/{user}', name: 'zikulazauthbundle_useradministration_togglepasswordchange', requirements: ['user' => '^[1-9]\d*$'])]
     #[Theme('admin')]
-    public function togglePasswordChange(Request $request, ManagerRegistry $doctrine, UserEntity $user)
+    public function togglePasswordChange(Request $request, ManagerRegistry $doctrine, User $user)
     {
         if (!$this->permissionApi->hasPermission('ZikulaZAuthModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();

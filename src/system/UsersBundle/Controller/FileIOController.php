@@ -18,10 +18,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Engine\Annotation\Theme;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Form\Type\ExportUsersType;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
@@ -51,13 +51,13 @@ class FileIOController extends AbstractController
                         fputcsv($handle, $fields, $data['delimiter']);
                     }
                     $users = $userRepository->findAllAsIterable();
-                    /** @var UserEntity $user */
+                    /** @var User $user */
                     foreach ($users as $user) {
                         $row = [];
                         foreach ($fields as $field) {
                             if ('groups' === $field) {
                                 $gids = [];
-                                /** @var GroupEntity $group */
+                                /** @var Group $group */
                                 foreach ($user[0]->getGroups() as $group) {
                                     $gids[] = $group->getGid();
                                 }

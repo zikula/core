@@ -19,15 +19,15 @@ use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\UsersConstant;
 use Zikula\ZAuthBundle\Api\ApiInterface\UserCreationApiInterface;
 use Zikula\ZAuthBundle\Api\UserCreationApi;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
 class UserCreationApiTest extends KernelTestCase
@@ -96,7 +96,7 @@ class UserCreationApiTest extends KernelTestCase
 
         $users = $this->api->getCreatedUsers();
         $hash = array_key_first($users);
-        /** @var UserEntity $newUser */
+        /** @var User $newUser */
         $newUser = $users[$hash];
         $this->assertEquals('foo', $newUser->getUname());
         $this->assertEquals('foo@bar.com', $newUser->getEmail());
@@ -107,7 +107,7 @@ class UserCreationApiTest extends KernelTestCase
 
         $mappings = $this->api->getCreatedMappings();
         $this->assertArrayHasKey($hash, $mappings);
-        /** @var AuthenticationMappingEntity $newMapping */
+        /** @var AuthenticationMapping $newMapping */
         $newMapping = $mappings[$hash];
         $this->assertEquals('foo', $newMapping->getUname());
         $this->assertEquals('foo@bar.com', $newMapping->getEmail());
@@ -240,7 +240,7 @@ class UserCreationApiTest extends KernelTestCase
 
         $groups = [];
         foreach ($records as $record) {
-            $group = new GroupEntity();
+            $group = new Group();
             $group->setGid($record['gid']);
             $group->setName($record['name']);
             $group->setDescription($record['description']);

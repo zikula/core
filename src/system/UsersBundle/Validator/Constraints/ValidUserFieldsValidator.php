@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -40,7 +40,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         $this->validateUniqueUname($data['uname'], $data['uid'] ?? null);
 
         // users registering duplicate email with different authentication method are invalid
-        if ($data instanceof UserEntity && $data->hasAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
+        if ($data instanceof User && $data->hasAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
             $this->validateEmailWithAuth($data);
         }
     }
@@ -54,7 +54,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         }
     }
 
-    private function validateEmailWithAuth(UserEntity $data): void
+    private function validateEmailWithAuth(User $data): void
     {
         $authMethod = $data->getAttributeValue(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY);
         $existing = $this->userRepository->getByEmailAndAuthMethod($data['email'], $authMethod);

@@ -22,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Translation\Extractor\Annotation\Ignore;
 use Translation\Extractor\Annotation\Translate;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\UsersBundle\UsersConstant;
 
 class SearchUserType extends AbstractType
@@ -51,7 +51,7 @@ class SearchUserType extends AbstractType
                 ],
             ])
             ->add('groups', EntityType::class, [
-                'class' => GroupEntity::class,
+                'class' => Group::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'placeholder' => 'Any group',

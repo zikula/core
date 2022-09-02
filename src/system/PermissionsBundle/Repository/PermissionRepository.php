@@ -16,13 +16,13 @@ namespace Zikula\PermissionsBundle\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\PermissionsBundle\Api\PermissionApi;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
+use Zikula\PermissionsBundle\Entity\Permission;
 
 class PermissionRepository extends ServiceEntityRepository implements PermissionRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PermissionEntity::class);
+        parent::__construct($registry, Permission::class);
     }
 
     public function getPermissionsByGroups(array $groups): array
@@ -82,7 +82,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         return $colours;
     }
 
-    public function persistAndFlush(PermissionEntity $entity): void
+    public function persistAndFlush(Permission $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
@@ -111,7 +111,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
 
     public function reSequence(): void
     {
-        /** @var PermissionEntity[] $permissions */
+        /** @var Permission[] $permissions */
         $permissions = $this->findBy([], ['sequence' => 'ASC']);
         $sequence = 1;
         foreach ($permissions as $permission) {

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\GroupsBundle\Entity\GroupEntity;
+use Zikula\GroupsBundle\Entity\Group;
 use Zikula\GroupsBundle\Event\GroupPostCreatedEvent;
 use Zikula\GroupsBundle\Event\GroupPostDeletedEvent;
 use Zikula\GroupsBundle\Event\GroupPostUpdatedEvent;
@@ -102,7 +102,7 @@ class GroupController extends AbstractController
         ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher
     ): Response {
-        $form = $this->createForm(CreateGroupType::class, new GroupEntity());
+        $form = $this->createForm(CreateGroupType::class, new Group());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
@@ -132,7 +132,7 @@ class GroupController extends AbstractController
     public function edit(
         Request $request,
         ManagerRegistry $doctrine,
-        GroupEntity $group,
+        Group $group,
         EventDispatcherInterface $eventDispatcher
     ): Response {
         $form = $this->createForm(EditGroupType::class, $group);
@@ -166,7 +166,7 @@ class GroupController extends AbstractController
     public function remove(
         Request $request,
         ManagerRegistry $doctrine,
-        GroupEntity $group,
+        Group $group,
         EventDispatcherInterface $eventDispatcher
     ): Response {
         // get the user default group - we do not allow its deletion

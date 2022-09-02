@@ -19,11 +19,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\GroupsBundle\Repository\GroupRepository;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: 'groups_group')]
-class GroupEntity
+class Group
 {
     #[ORM\Id]
     #[ORM\Column]
@@ -48,12 +48,12 @@ class GroupEntity
     #[ORM\Column]
     private int $nbumax;
 
-    #[ORM\ManyToMany(targetEntity: UserEntity::class, mappedBy: 'groups', indexBy: 'uid')]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups', indexBy: 'uid')]
     #[ORM\JoinTable(name: 'group_membership')]
     #[ORM\JoinColumn(name: 'gid', referencedColumnName: 'gid', onDelete: 'CASCADE')]
     #[ORM\InverseJoinColumn(name: 'uid', referencedColumnName: 'uid')]
     #[ORM\OrderBy(['uname' => 'ASC'])]
-    /** @var UserEntity[] */
+    /** @var User[] $users */
     private Collection $users;
 
     public function __construct()
@@ -143,14 +143,14 @@ class GroupEntity
         return $this->users;
     }
 
-    public function addUser(UserEntity $user): self
+    public function addUser(User $user): self
     {
         $this->users[] = $user;
 
         return $this;
     }
 
-    public function removeUser(UserEntity $user): self
+    public function removeUser(User $user): self
     {
         $this->users->removeElement($user);
 

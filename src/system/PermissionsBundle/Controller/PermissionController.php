@@ -25,7 +25,7 @@ use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
+use Zikula\PermissionsBundle\Entity\Permission;
 use Zikula\PermissionsBundle\Form\Type\FilterListType;
 use Zikula\PermissionsBundle\Form\Type\PermissionCheckType;
 use Zikula\PermissionsBundle\Form\Type\PermissionType;
@@ -93,10 +93,10 @@ class PermissionController extends AbstractController
         GroupRepositoryInterface $groupsRepository,
         PermissionRepositoryInterface $permissionRepository,
         PermissionApiInterface $permissionApi,
-        PermissionEntity $permissionEntity = null
+        Permission $permissionEntity = null
     ): JsonResponse {
         if (!isset($permissionEntity)) {
-            $permissionEntity = new PermissionEntity();
+            $permissionEntity = new Permission();
             if ($request->request->has('sequence')) {
                 $permissionEntity->setSequence($request->request->getInt('sequence'));
             }
@@ -167,7 +167,7 @@ class PermissionController extends AbstractController
      */
     #[Route('/delete/{pid}', name: 'zikulapermissionsbundle_permission_delete', methods: ['POST'], options: ['expose' => true])]
     public function delete(
-        PermissionEntity $permissionEntity,
+        Permission $permissionEntity,
         ManagerRegistry $doctrine,
         PermissionRepositoryInterface $permissionRepository
     ): JsonResponse {

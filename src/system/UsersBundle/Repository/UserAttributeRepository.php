@@ -15,14 +15,14 @@ namespace Zikula\UsersBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\UsersBundle\Entity\UserAttributeEntity;
+use Zikula\UsersBundle\Entity\UserAttribute;
 use Zikula\UsersBundle\UsersConstant;
 
 class UserAttributeRepository extends ServiceEntityRepository implements UserAttributeRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserAttributeEntity::class);
+        parent::__construct($registry, UserAttribute::class);
     }
 
     public function setEmptyValueWhereAttributeNameIn(

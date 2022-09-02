@@ -18,10 +18,10 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
-use Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity;
-use Zikula\ZAuthBundle\Entity\UserVerificationEntity;
+use Zikula\ZAuthBundle\Entity\AuthenticationMapping;
+use Zikula\ZAuthBundle\Entity\UserVerification;
 use Zikula\ZAuthBundle\Repository\UserVerificationRepositoryInterface;
 use Zikula\ZAuthBundle\ZAuthConstant;
 
@@ -43,7 +43,7 @@ class RegistrationVerificationHelper
      * @return DateTime|bool
      * @throws AccessDeniedException
      */
-    public function sendVerificationCode(AuthenticationMappingEntity $mapping)
+    public function sendVerificationCode(AuthenticationMapping $mapping)
     {
         // we do not check permissions for guests here - registering users are not logged in and must complete this method.
         if ($this->currentUserApi->isLoggedIn() && !$this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_MODERATE)) {
@@ -54,7 +54,7 @@ class RegistrationVerificationHelper
         $hashedCode = $this->encoderFactory->getEncoder($mapping)->encodePassword($verificationCode, null);
 
         $this->userVerificationRepository->setVerificationCode($mapping->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $hashedCode, $mapping->getEmail());
-        /** @var UserEntity $userEntity */
+        /** @var User $userEntity */
         $userEntity = $this->userRepository->find($mapping->getUid());
         $codeSent = $this->mailHelper->sendNotification($mapping->getEmail(), 'regverifyemail', [
             'user' => $mapping,
@@ -62,7 +62,7 @@ class RegistrationVerificationHelper
             'verifycode' => $verificationCode,
         ]);
 
-        /** @var UserVerificationEntity $userVerificationEntity */
+        /** @var UserVerification $userVerificationEntity */
         $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $mapping->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if ($codeSent) {
             return $userVerificationEntity->getCreatedDate();

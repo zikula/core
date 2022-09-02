@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Form\Type\CategoryType;
 use Zikula\CategoriesBundle\Helper\CategoryProcessingHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
@@ -45,7 +45,7 @@ class NodeController extends AbstractController
         CategoryProcessingHelper $processingHelper,
         LocaleApiInterface $localeApi,
         string $action = 'edit',
-        CategoryEntity $category = null
+        Category $category = null
     ): JsonResponse {
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
             return $this->json($this->translator->trans('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
@@ -55,7 +55,7 @@ class NodeController extends AbstractController
         switch ($action) {
             case 'copy':
                 if (!isset($category)) {
-                    $category = new CategoryEntity($localeApi->getSupportedLocales());
+                    $category = new Category($localeApi->getSupportedLocales());
                 }
                 $newCategory = clone $category;
                 $newCategory->setName($category->getName() . 'copy');
@@ -71,16 +71,16 @@ class NodeController extends AbstractController
                 // no break
             case 'edit':
                 if (!isset($category)) {
-                    $category = new CategoryEntity($localeApi->getSupportedLocales());
+                    $category = new Category($localeApi->getSupportedLocales());
                     $parentId = $request->request->get('parent');
                     $mode = 'new';
                     if (!empty($parentId)) {
-                        /** @var CategoryEntity $parent */
+                        /** @var Category $parent */
                         $parent = $categoryRepository->find($parentId);
                         $category->setParent($parent);
                         $category->setRoot($parent->getRoot());
                     } elseif (empty($parentId) && $request->request->has('after')) { // sibling of top-level child
-                        /** @var CategoryEntity $sibling */
+                        /** @var Category $sibling */
                         $sibling = $categoryRepository->find($request->request->get('after'));
                         $category->setParent($sibling->getParent());
                         $category->setRoot($sibling->getRoot());
@@ -118,7 +118,7 @@ class NodeController extends AbstractController
                 ];
                 break;
             case 'deleteandmovechildren':
-                /** @var CategoryEntity $newParent */
+                /** @var Category $newParent */
                 $newParent = $categoryRepository->find($request->request->get('parent', 1));
                 if (null === $newParent || $newParent === $category->getParent()) {
                     $response = ['result' => true];
@@ -175,7 +175,7 @@ class NodeController extends AbstractController
     /**
      * Recursive method to remove all generations below parent.
      */
-    private function removeRecursive(CategoryEntity $parent, ManagerRegistry $doctrine, CategoryProcessingHelper $processingHelper): void
+    private function removeRecursive(Category $parent, ManagerRegistry $doctrine, CategoryProcessingHelper $processingHelper): void
     {
         $entityManager = $doctrine->getManager();
         foreach ($parent->getChildren() as $child) {
@@ -200,7 +200,7 @@ class NodeController extends AbstractController
     ): JsonResponse {
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
-        /** @var CategoryEntity $category */
+        /** @var Category $category */
         $category = $categoryRepository->find($entityId);
         if (!$processingHelper->mayCategoryBeDeletedOrMoved($category)) {
             return $this->json(['result' => false]);

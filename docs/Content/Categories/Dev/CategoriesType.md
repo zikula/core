@@ -6,9 +6,9 @@ currentMenu: categories
 The CategoriesBundle provides a CategoriesType form type for ease of use with Symfony Forms.
 It is implemented by the `\Zikula\CategoriesBundle\Form\Type\CategoriesType` class.
 
-## Class naming for CategoryAssignmentEntity
+## Class naming for CategoryAssignment
 
-The "categories" term is often interchanged with the Entity that defines the assignment of the category (which is not 
+The "categories" term is often interchanged with the entity that defines the assignment of the category (which is not 
 the same thing, but a common misunderstanding). To help clarify this, a new naming scheme has been used here:
 `categoryAssignments` instead of simply `categories`. See the [AbstractCategoryAssignment](AbstractCategoryAssignment.md) doc for more information.
 
@@ -18,19 +18,19 @@ Assuming you have registered your entity to utilize at least one branch of categ
 
 Assuming your Entities are set up like this:
 
-### PageEntity
+### Page
 
 ```php
-use Zikula\PagesBundle\Entity\CategoryAssignmentEntity;
+use Zikula\PagesBundle\Entity\CategoryAssignment;
 
-class PageEntity
+class Page
 {
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    #[ORM\OneToMany(targetEntity: CategoryAssignmentEntity::class, mappedBy: 'entity', cascade: ['persist', 'remove'], orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: CategoryAssignment::class, mappedBy: 'entity', cascade: ['persist', 'remove'], orphanRemoval: true, fetch: 'EAGER')]
     private Collection $categoryAssignments;
 
     public function getCategoryAssignments(): Collection
@@ -57,10 +57,10 @@ class PageEntity
     /**
      * Check if a collection contains an element based only on two criteria (categoryRegistryId, category).
      */
-    private function collectionContains(Collection $collection, CategoryAssignmentEntity $element): bool|int
+    private function collectionContains(Collection $collection, CategoryAssignment $element): bool|int
     {
         foreach ($collection as $key => $collectionAssignment) {
-            /** @var CategoryAssignmentEntity $collectionAssignment */
+            /** @var CategoryAssignment $collectionAssignment */
             if ($collectionAssignment->getCategoryRegistryId() == $element->getCategoryRegistryId()
                 && $collectionAssignment->getCategory() == $element->getCategory()
             ) {
@@ -72,24 +72,24 @@ class PageEntity
     }
 ```
 
-### CategoryAssignmentEntity
+### CategoryAssignment
 
 ```php
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
-use Zikula\PagesBundle\Entity\PageEntity;
+use Zikula\PagesBundle\Entity\Page;
 
-class CategoryAssignmentEntity extends AbstractCategoryAssignment
+class CategoryAssignment extends AbstractCategoryAssignment
 {
     #[ORM\ManyToOne(inversedBy: 'assignments')]
     #[ORM\JoinColumn(name: 'entityId', referencedColumnName: 'pageid')]
-    private PageEntity $entity;
+    private Page $entity;
 
-    public function getEntity(): PageEntity
+    public function getEntity(): Page
     {
         return $this->entity;
     }
 
-    public function setEntity(PageEntity $entity): self
+    public function setEntity(Page $entity): self
     {
         $this->entity = $entity;
 
@@ -109,8 +109,8 @@ class PageType extends AbstractType
             'required' => false,
             'multiple' => true,
             'bundle' => 'ZikulaPagesBundle',
-            'entity' => 'PageEntity',
-            'entityCategoryClass' => CategoryAssignmentEntity::class,
+            'entity' => 'Page',
+            'entityCategoryClass' => CategoryAssignment::class,
         ]);
     }
 }

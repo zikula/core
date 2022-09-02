@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Event;
 
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 /**
  * An UserEntityEvent that adds an oldUser to reflect changed data.
  */
 class UserEntityChangedEvent extends UserEntityEvent
 {
-    private UserEntity $oldUser;
+    private User $oldUser;
 
-    public function __construct(UserEntity $user, UserEntity $oldUser)
+    public function __construct(User $user, User $oldUser)
     {
         parent::__construct($user);
         $this->oldUser = $oldUser;
     }
 
-    public function getOldUser(): UserEntity
+    public function getOldUser(): User
     {
         return $this->oldUser;
     }

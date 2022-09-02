@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsBundle\Repository;
 
 use Zikula\PermissionsBundle\Api\PermissionApi;
-use Zikula\PermissionsBundle\Entity\PermissionEntity;
+use Zikula\PermissionsBundle\Entity\Permission;
 
 interface PermissionRepositoryInterface
 {
@@ -29,7 +29,7 @@ interface PermissionRepositoryInterface
 
     public function getAllColours(): array;
 
-    public function persistAndFlush(PermissionEntity $entity): void;
+    public function persistAndFlush(Permission $entity): void;
 
     /**
      * Get the highest sequential number.

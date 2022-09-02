@@ -29,14 +29,14 @@ use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
-use Zikula\CategoriesBundle\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
+use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 use Zikula\CategoriesBundle\Form\Type\CategoriesType;
 use Zikula\CategoriesBundle\Repository\CategoryRepositoryInterface;
 use Zikula\CategoriesBundle\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesBundle\Tests\Fixtures\CategorizableEntity;
 use Zikula\CategoriesBundle\Tests\Fixtures\CategorizableType;
-use Zikula\CategoriesBundle\Tests\Fixtures\CategoryAssignmentEntity;
+use Zikula\CategoriesBundle\Tests\Fixtures\CategoryAssignment;
 
 /**
  * @see https://symfony.com/doc/current/form/unit_testing.html
@@ -59,10 +59,10 @@ class CategoriesTypeTest extends TypeTestCase
 
         $schemaTool = new SchemaTool($this->em);
         $classes = [
-            $this->em->getClassMetadata(CategoryEntity::class),
-            $this->em->getClassMetadata(CategoryRegistryEntity::class),
+            $this->em->getClassMetadata(Category::class),
+            $this->em->getClassMetadata(CategoryRegistry::class),
             $this->em->getClassMetadata(CategorizableEntity::class),
-            $this->em->getClassMetadata(CategoryAssignmentEntity::class),
+            $this->em->getClassMetadata(CategoryAssignment::class),
         ];
 
         try {
@@ -90,7 +90,7 @@ class CategoriesTypeTest extends TypeTestCase
     protected function getExtensions(): array
     {
         /** @var CategoryRegistryRepositoryInterface $repository */
-        $repository = $this->emRegistry->getRepository(CategoryRegistryEntity::class);
+        $repository = $this->emRegistry->getRepository(CategoryRegistry::class);
 
         $request = new Request([], [], [], [], [], [], json_encode([
             'foo' => 'bar'
@@ -123,8 +123,8 @@ class CategoriesTypeTest extends TypeTestCase
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 2);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
+        $assignedCategory = $this->em->getReference(Category::class, 2);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $expectedObject));
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
         // submit the data to the form directly
@@ -155,8 +155,8 @@ class CategoriesTypeTest extends TypeTestCase
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
         foreach ([2, 3] as $id) {
-            $assignedCategory = $this->em->getReference(CategoryEntity::class, $id);
-            $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
+            $assignedCategory = $this->em->getReference(Category::class, $id);
+            $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $expectedObject));
         }
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
@@ -172,16 +172,16 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
+        $assignedCategory = $this->em->getReference(Category::class, 1);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
         $form = $this->factory->create(CategorizableType::class, $existingObject, ['em' => $this->em]);
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 2);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
+        $assignedCategory = $this->em->getReference(Category::class, 2);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $expectedObject));
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
         // submit the data to the form directly
@@ -205,8 +205,8 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
+        $assignedCategory = $this->em->getReference(Category::class, 1);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
         $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), [
@@ -217,8 +217,8 @@ class CategoriesTypeTest extends TypeTestCase
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
         foreach ([2, 3] as $id) {
-            $assignedCategory = $this->em->getReference(CategoryEntity::class, $id);
-            $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
+            $assignedCategory = $this->em->getReference(Category::class, $id);
+            $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $expectedObject));
         }
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
@@ -244,8 +244,8 @@ class CategoriesTypeTest extends TypeTestCase
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
         foreach ([2, 3] as $id) {
-            $assignedCategory = $this->em->getReference(CategoryEntity::class, $id);
-            $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
+            $assignedCategory = $this->em->getReference(Category::class, $id);
+            $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $existingObject));
         }
         $existingObject->setCategoryAssignments($categoryAssignments);
 
@@ -253,8 +253,8 @@ class CategoriesTypeTest extends TypeTestCase
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 2);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
+        $assignedCategory = $this->em->getReference(Category::class, 2);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $expectedObject));
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
         // submit the data to the form directly
@@ -278,8 +278,8 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
+        $assignedCategory = $this->em->getReference(Category::class, 1);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
         $form = $this->factory->create(CategorizableType::class, $existingObject, ['em' => $this->em]);
@@ -309,8 +309,8 @@ class CategoriesTypeTest extends TypeTestCase
         ];
         $existingObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 1);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $existingObject));
+        $assignedCategory = $this->em->getReference(Category::class, 1);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $existingObject));
         $existingObject->setCategoryAssignments($categoryAssignments);
 
         $form = $this->factory->create(CategorizableType::class, new CategorizableEntity(), [
@@ -349,8 +349,8 @@ class CategoriesTypeTest extends TypeTestCase
 
         $expectedObject = new CategorizableEntity();
         $categoryAssignments = new ArrayCollection();
-        $assignedCategory = $this->em->getReference(CategoryEntity::class, 4);
-        $categoryAssignments->add(new CategoryAssignmentEntity(1, $assignedCategory, $expectedObject));
+        $assignedCategory = $this->em->getReference(Category::class, 4);
+        $categoryAssignments->add(new CategoryAssignment(1, $assignedCategory, $expectedObject));
         $expectedObject->setCategoryAssignments($categoryAssignments);
 
         // submit the data to the form directly
@@ -412,15 +412,15 @@ class CategoriesTypeTest extends TypeTestCase
 
     protected function generateCategoryRegistry(DateTime $now): void
     {
-        $registry = (new CategoryRegistryEntity())
+        $registry = (new CategoryRegistry())
             ->setId(1)
             ->setBundleName('AcmeFooBundle')
             ->setEntityName('CategorizableEntity')
             ->setProperty('Main')
             ->setCreatedDate($now)
             ->setUpdatedDate($now);
-        /** @var CategoryEntity $rootCategory */
-        $rootCategory = $this->emRegistry->getRepository(CategoryEntity::class)->find(1);
+        /** @var Category $rootCategory */
+        $rootCategory = $this->emRegistry->getRepository(Category::class)->find(1);
         $registry->setCategory($rootCategory);
         $this->em->persist($registry);
         $this->em->flush();
@@ -429,10 +429,10 @@ class CategoriesTypeTest extends TypeTestCase
     protected function generateCategories(DateTime $now): void
     {
         /** @var CategoryRepositoryInterface $repository */
-        $repository = $this->emRegistry->getRepository(CategoryEntity::class);
+        $repository = $this->emRegistry->getRepository(Category::class);
 
         // root
-        $root = (new CategoryEntity())
+        $root = (new Category())
             ->setId(1)
             ->setName('root')
             ->setDisplayName(['en' => 'root'])
@@ -441,7 +441,7 @@ class CategoriesTypeTest extends TypeTestCase
         $repository->persistAsFirstChild($root);
 
         // first child
-        $a = (new CategoryEntity())
+        $a = (new Category())
             ->setId(2)
             ->setParent($root)
             ->setName('a')
@@ -451,7 +451,7 @@ class CategoriesTypeTest extends TypeTestCase
         $repository->persistAsFirstChildOf($a, $root);
 
         // second child
-        $b = (new CategoryEntity())
+        $b = (new Category())
             ->setId(3)
             ->setParent($root)
             ->setName('b')
@@ -461,7 +461,7 @@ class CategoriesTypeTest extends TypeTestCase
         $repository->persistAsLastChildOf($b, $root);
 
         // child of first child (grand child)
-        $aa = (new CategoryEntity())
+        $aa = (new Category())
             ->setId(4)
             ->setParent($a)
             ->setName('aa')

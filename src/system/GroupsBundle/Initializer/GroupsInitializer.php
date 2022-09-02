@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
 use Zikula\GroupsBundle\GroupsConstant;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 class GroupsInitializer implements BundleInitializerInterface
@@ -31,7 +31,7 @@ class GroupsInitializer implements BundleInitializerInterface
 
     public function init(): void
     {
-        /** @var UserEntity $adminUser */
+        /** @var User $adminUser */
         $adminUser = $this->userRepository->find(UsersConstant::USER_ID_ADMIN);
 
         $group = (new GroupEntity())

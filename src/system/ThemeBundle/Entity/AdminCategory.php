@@ -15,7 +15,7 @@ namespace Zikula\ThemeBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AdminCategoryEntity
+class AdminCategory
 {
     private int $cid;
 

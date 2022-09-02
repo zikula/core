@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Event;
 
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 /**
  * Occurs right after an unsuccessful attempt to log in.
@@ -33,7 +33,7 @@ class UserPostLoginFailureEvent extends RedirectableUserEntityEvent implements A
 {
     use AuthMethodTrait;
 
-    public function __construct(?UserEntity $userEntity, string $authenticationMethod)
+    public function __construct(?User $userEntity, string $authenticationMethod)
     {
         parent::__construct($userEntity);
         $this->authenticationMethod = $authenticationMethod;

@@ -18,30 +18,30 @@ use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\Persistence\ObjectRepository;
 use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
-use Zikula\UsersBundle\Entity\UserEntity;
+use Zikula\UsersBundle\Entity\User;
 
 interface UserRepositoryInterface extends ObjectRepository, Selectable
 {
     public function findByUids(array $userIds = []): array;
 
-    public function persistAndFlush(UserEntity $user): void;
+    public function persistAndFlush(User $user): void;
 
-    public function removeAndFlush(UserEntity $user): void;
+    public function removeAndFlush(User $user): void;
 
     /**
      * If $approvedBy is null, user will be considered as 'self-approved'.
      */
-    public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void;
+    public function setApproved(User $user, DateTime $approvedOn, int $approvedBy = null): void;
 
     /**
-     * @return UserEntity[]
+     * @return User[]
      */
     public function queryBySearchForm(array $formData = []);
 
     /**
      * Find users for a search result
      *
-     * @return UserEntity[]
+     * @return User[]
      */
     public function getSearchResults(array $words = []);
 
@@ -61,7 +61,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     );
 
     /**
-     * @return UserEntity[]
+     * @return User[]
      */
     public function query(
         array $filter = [],
@@ -77,7 +77,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     public function findAllAsIterable(): IterableResult;
 
     /**
-     * @return UserEntity[]
+     * @return User[]
      */
     public function searchActiveUser(array $unameFilter = []);
 

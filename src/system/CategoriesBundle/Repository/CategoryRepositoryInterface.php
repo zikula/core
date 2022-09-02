@@ -17,7 +17,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
 use Gedmo\Tree\RepositoryInterface;
-use Zikula\CategoriesBundle\Entity\CategoryEntity;
+use Zikula\CategoriesBundle\Entity\Category;
 
 interface CategoryRepositoryInterface extends ObjectRepository, Selectable, RepositoryInterface, ServiceEntityRepositoryInterface
 {
@@ -29,7 +29,7 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable, Repo
     /**
      * Returns the last added category within a given parent category.
      */
-    public function getLastByParent(int $parentId = 0): ?CategoryEntity;
+    public function getLastByParent(int $parentId = 0): ?Category;
 
     /**
      * Updates the parent id of one or multiple categories.
