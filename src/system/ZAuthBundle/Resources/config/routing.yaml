@@ -1,3 +1,3 @@
 zikulazauthbundle:
-    resource: "@ZikulaZAuthBundle/Controller"
+    resource: '@ZikulaZAuthBundle/Controller'
     type:     annotation

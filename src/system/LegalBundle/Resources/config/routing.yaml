@@ -1,5 +1,3 @@
 zikulalegalbundle:
-    # define routing support for these controllers
-    resource: "@ZikulaLegalBundle/Controller"
-    # enable support for defining routes by annotations
+    resource: '@ZikulaLegalBundle/Controller'
     type: annotation
