@@ -35,12 +35,28 @@ class ZikulaThemeExtension extends Extension
         $container->setParameter('zikula_theme_admin_dashboard', $config['admin_dashboard']['class']);
 
         $container->getDefinition(AdminDashboardController::class)
-            ->setArgument('$themeConfig', $config['admin_dashboard']);
+            ->setArgument('$themeConfig', $this->prepareThemeConfig($config['admin_dashboard']));
 
         $container->getDefinition(UserDashboardController::class)
-            ->setArgument('$themeConfig', $config['user_dashboard']);
+            ->setArgument('$themeConfig', $this->prepareThemeConfig($config['user_dashboard']));
 
         $container->getDefinition(OutputCompressionListener::class)
             ->setArgument('$useCompression', $config['use_compression']);
+    }
+
+    private function prepareThemeConfig(array $themeConfig): array
+    {
+        if (null === $themeConfig['content']['redirect']['route']) {
+            return $themeConfig;
+        }
+        if (empty($themeConfig['content']['redirect']['route_parameters'])) {
+            return $themeConfig;
+        }
+
+        foreach ($themeConfig['content']['redirect']['route_parameters'] as $key => $entry) {
+            $themeConfig['content']['redirect']['route_parameters'][$key] = $entry['value'];
+        }
+
+        return $themeConfig;
     }
 }

@@ -51,6 +51,17 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('content')
                             ->info('Index page behavior.')
                             ->addDefaultsIfNotSet()
+                            ->validate()
+                                ->ifTrue(static function ($v) {
+                                    $amount = 0;
+                                    $amount += isset($v['template']) ? 1 : 0;
+                                    $amount += isset($v['redirect']['crud']) ? 1 : 0;
+                                    $amount += isset($v['redirect']['route']) ? 1 : 0;
+
+                                    return 1 < $amount;
+                                })
+                                ->thenInvalid('User dashboard index page content must only be one of template, crud redirect or route redirect.')
+                            ->end()
                             ->children()
                                 ->scalarNode('template')
                                     ->info('Render a template at the specified path.')
@@ -109,6 +120,17 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('content')
                             ->info('Index page behavior.')
                             ->addDefaultsIfNotSet()
+                            ->validate()
+                                ->ifTrue(static function ($v) {
+                                    $amount = 0;
+                                    $amount += isset($v['template']) ? 1 : 0;
+                                    $amount += isset($v['redirect']['crud']) ? 1 : 0;
+                                    $amount += isset($v['redirect']['route']) ? 1 : 0;
+
+                                    return 1 < $amount;
+                                })
+                                ->thenInvalid('Admin dashboard index page content must only be one of template, crud redirect or route redirect.')
+                            ->end()
                             ->children()
                                 ->scalarNode('template')
                                     ->info('Render a template at the specified path.')
