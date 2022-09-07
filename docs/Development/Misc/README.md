@@ -12,7 +12,6 @@ currentMenu: dev-misc
 ## Specific components
 
 - [Sortable Columns](SortableColumns.md)
-- [Wizard](Wizard.md)
 
 ## Specific topics
 
