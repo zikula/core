@@ -37,4 +37,3 @@
   - [SortableColumns] Add `SortableColumns` component to monorepo.
   - [Theme] Introduce themed dashboards extending `EasyAdminBundle` dashboard functionality.
   - [StaticContent] Add `StaticContent` bundle to monorepo.
-  - [Wizard] Add `Wizard` component to monorepo.
