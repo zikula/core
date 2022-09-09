@@ -26,7 +26,7 @@
             <td headers="hId">{{ property.id}}</td>
             <td headers="hLabel">{{ property.label(app.request.locale|default('en')) }}</td>
             <td headers="hFormType">{{ property.formType|split('\\')|last }}</td>
-            <td headers="hActive">{{ property.active|yesNo }}</td>
+            <td headers="hActive">{% if property.active %}{% trans %}Yes{% endtrans %}{% else %}{% trans %}No{% endtrans %}{% endif %}</td>
             <td headers="hActions" class="actions">
                 <a href="{{ path('zikulaprofilebundle_property_edit', {id: property.id}) }}" title="{{ 'Edit property'|trans|e('html_attr') }}"><i class="fas fa-pencil-alt fa-fw"></i></a>
                 <a href="{{ path('zikulaprofilebundle_property_delete', {id: property.id}) }}" title="{{ 'Delete property'|trans|e('html_attr') }}"><i class="fas fa-trash-alt fa-fw"></i></a>

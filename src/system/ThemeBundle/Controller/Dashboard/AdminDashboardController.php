@@ -21,6 +21,7 @@ use function Symfony\Component\Translation\t;
 use Zikula\GroupsBundle\Entity\Group;
 use Zikula\PermissionsBundle\Entity\Permission;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
+use Zikula\UsersBundle\Entity\User;
 
 class AdminDashboardController extends AbstractThemedDashboardController
 {
@@ -40,6 +41,7 @@ class AdminDashboardController extends AbstractThemedDashboardController
         // yield MenuItem::linktoRoute(t('Website frontend'), 'fas fa-home', 'user_dashboard');
         yield MenuItem::linktoUrl(t('Website frontend'), 'fas fa-home', '/');
 
+        yield MenuItem::linkToCrud(t('Users'), 'fas fa-user', User::class);
         yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
         yield MenuItem::linkToCrud(t('Permissions'), 'fas fa-lock', Permission::class);
         yield MenuItem::linkToCrud(t('Add permission'), 'fas fa-plus', Permission::class)

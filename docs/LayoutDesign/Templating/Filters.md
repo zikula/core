@@ -10,11 +10,7 @@ functions, filters, tags, tests and global variables.
 
 ## Filters
 
-- php(func)
 - profileLinkByUserId
 - profileLinkByUserName
 - protectMail
-- safeHtml
 - urldecode
-- yesNo
-- onlineSince(minutes)

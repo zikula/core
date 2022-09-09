@@ -22,9 +22,7 @@ class CoreExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('yesNo', [CoreRuntime::class, 'yesNo']),
-            new TwigFilter('php', [CoreRuntime::class, 'applyPhp']),
-            new TwigFilter('protectMail', [CoreRuntime::class, 'protectMailAddress'], ['is_safe' => ['html']])
+            new TwigFilter('protectMail', [CoreRuntime::class, 'protectMailAddress'], ['is_safe' => ['html']]),
         ];
     }
 }
