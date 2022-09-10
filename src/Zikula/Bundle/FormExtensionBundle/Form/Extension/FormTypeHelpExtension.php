@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 
 /**
  * @author Xatoo (http://stackoverflow.com/users/3492835/xatoo)
@@ -49,7 +50,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
             'alert' => null,
         ]);
 
-        $resolver->setAllowedTypes('help', ['string', 'null', 'array']);
+        $resolver->setAllowedTypes('help', ['string', 'null', 'array', TranslatableMessage::class]);
     }
 
     public static function getExtendedTypes(): iterable
