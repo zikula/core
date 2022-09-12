@@ -21,10 +21,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatableMessage;
 
-/**
- * @author Xatoo (http://stackoverflow.com/users/3492835/xatoo)
- * @see http://stackoverflow.com/q/27905939/2600812
- */
 class FormTypeHelpExtension extends AbstractTypeExtension
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
