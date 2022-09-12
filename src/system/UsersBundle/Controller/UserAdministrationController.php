@@ -29,8 +29,6 @@ use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\Component\SortableColumns\Column;
-use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\GroupsBundle\GroupsConstant;
 use Zikula\GroupsBundle\Helper\DefaultHelper;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
@@ -81,7 +79,7 @@ class UserAdministrationController extends AbstractController
         string $letter = 'all',
         int $page = 1
     ): Response {
-        $sortableColumns = new SortableColumns($router, 'zikulausersbundle_useradministration_listusers', 'sort', 'sortdir');
+        /*$sortableColumns = new SortableColumns($router, 'zikulausersbundle_useradministration_listusers', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid'), new Column('registrationDate'), new Column('lastLogin'), new Column('activated')]);
         $sortableColumns->setOrderByFromRequest($request);
         $sortableColumns->setAdditionalUrlParameters([
@@ -89,6 +87,7 @@ class UserAdministrationController extends AbstractController
             'page' => $page
         ]);
 
+        */
         $filter = [];
         if (!empty($letter) && 'all' !== $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
@@ -103,7 +102,7 @@ class UserAdministrationController extends AbstractController
         $paginator->setRouteParameters($routeParameters);
 
         return $this->render('@ZikulaUsers/UserAdministration/list.html.twig', [
-            'sort' => $sortableColumns->generateSortableColumns(),
+            // 'sort' => $sortableColumns->generateSortableColumns(),
             'actionsHelper' => $actionsHelper,
             'authMethodCollector' => $authenticationMethodCollector,
             'alpha' => new AlphaFilter('zikulausersbundle_useradministration_listusers', $routeParameters, $letter),

@@ -27,8 +27,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\Component\SortableColumns\Column;
-use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
@@ -84,7 +82,7 @@ class UserAdministrationController extends AbstractController
         string $letter = 'all',
         int $page = 1
     ): Response {
-        $sortableColumns = new SortableColumns($router, 'zikulazauthbundle_useradministration_listmappings', 'sort', 'sortdir');
+        /*$sortableColumns = new SortableColumns($router, 'zikulazauthbundle_useradministration_listmappings', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid')]);
         $sortableColumns->setOrderByFromRequest($request);
         $sortableColumns->setAdditionalUrlParameters([
@@ -92,6 +90,7 @@ class UserAdministrationController extends AbstractController
             'page' => $page
         ]);
 
+        */
         $filter = [];
         if (!empty($letter) && 'all' !== $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
@@ -106,7 +105,7 @@ class UserAdministrationController extends AbstractController
         $paginator->setRouteParameters($routeParameters);
 
         return $this->render('@ZikulaZAuth/UserAdministration/list.html.twig', [
-            'sort' => $sortableColumns->generateSortableColumns(),
+            // 'sort' => $sortableColumns->generateSortableColumns(),
             'actionsHelper' => $actionsHelper,
             'alpha' => new AlphaFilter('zikulazauthbundle_useradministration_listmappings', $routeParameters, $letter),
             'paginator' => $paginator,

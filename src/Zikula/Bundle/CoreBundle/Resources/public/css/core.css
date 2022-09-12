@@ -224,18 +224,3 @@ label.required.custom-control-label:after {
     margin-bottom: 1.5em;
     background-color: #fff;
 }
-
-.sorted-desc:after,
-.sorted-asc:after,
-.unsorted:after {
-    font-family: 'Font Awesome 5 Free';
-}
-.sorted-asc:after {
-    content: "\A0\f0de";
-}
-.sorted-desc:after {
-    content: "\A0\f0dd";
-}
-.unsorted:after {
-    content: "\A0\f0dc"
-}

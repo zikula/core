@@ -9,10 +9,6 @@ currentMenu: dev-misc
 - [Cache clearer](CacheClearer.md)
 - [Workflows](Workflows.md)
 
-## Specific components
-
-- [Sortable Columns](SortableColumns.md)
-
 ## Specific topics
 
 - [Performance optimisation](Performance.md)
