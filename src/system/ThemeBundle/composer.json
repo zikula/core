@@ -45,7 +45,6 @@
         "oro/twig-inspector": "^1",
 
         "components/jquery": "^3",
-        "dimsemenov/magnific-popup": "^1",
         "itsjavi/fontawesome-iconpicker": "^3",
         "oomphinc/composer-installers-extender": "2.*",
         "vakata/jstree": "^3"

@@ -9,6 +9,7 @@
         "psr-4": {
             "Zikula\\Bundle\\": "src/Zikula/Bundle/",
             "Zikula\\Component\\": "src/Zikula/Component/",
+            "Guite\\": "src/extensions/Guite/",
             "Zikula\\": "src/system/"
         },
         "files": [
@@ -29,7 +30,6 @@
         "ext-xml": "*",
         "components/jquery": "^3",
         "composer/composer": "^2",
-        "dimsemenov/magnific-popup": "^1",
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2",
