@@ -9,7 +9,6 @@
         "psr-4": {
             "Zikula\\Bundle\\": "src/Zikula/Bundle/",
             "Zikula\\Component\\": "src/Zikula/Component/",
-            "Guite\\": "src/extensions/Guite/",
             "Zikula\\": "src/system/"
         },
         "files": [
