@@ -1,4 +1,0 @@
-# Set the base directory, where from files can be opened by twig inspector, 
-# useful if you use some files from the outside of project root.
-oro_twig_inspector:
-    base_dir: '%kernel.project_dir%/'

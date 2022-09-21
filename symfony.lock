@@ -26,9 +26,6 @@
     "composer/xdebug-handler": {
         "version": "1.4.5"
     },
-    "dimsemenov/magnific-popup": {
-        "version": "1.1.0"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -182,9 +179,6 @@
     },
     "nyholm/nsa": {
         "version": "1.2.1"
-    },
-    "oro/twig-inspector": {
-        "version": "1.0.3"
     },
     "phar-io/manifest": {
         "version": "2.0.1"
