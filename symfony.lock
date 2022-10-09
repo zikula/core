@@ -177,6 +177,24 @@
     "nikic/php-parser": {
         "version": "v4.10.3"
     },
+    "nucleos/profile-bundle": {
+        "version": "2.0.0"
+    },
+    "nucleos/user-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.1",
+            "ref": "88cca294afe46854e805316dbcde52696c661ce6"
+        },
+        "files": [
+            "config/packages/nucleos_user.yaml",
+            "config/routes/nucleos_user.yaml",
+            "src/Entity/User/Group.php",
+            "src/Entity/User/User.php"
+        ]
+    },
     "nyholm/nsa": {
         "version": "1.2.1"
     },
@@ -437,15 +455,6 @@
             "src/Controller/.gitignore",
             "src/Kernel.php"
         ]
-    },
-    "symfony/google-mailer": {
-        "version": "4.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.4",
-            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
-        }
     },
     "symfony/http-client": {
         "version": "v5.2.2"
