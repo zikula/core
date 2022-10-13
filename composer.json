@@ -72,7 +72,7 @@
         "symfony/string": "^5.4",
         "symfony/translation": "^5.4",
         "symfony/twig-bundle": "^5.4",
-        "symfony/validator": "^5.4",
+        "symfony/validator": "^6.1",
         "symfony/web-link": "^5.4",
         "symfony/web-profiler-bundle": "^5.4",
         "symfony/workflow": "^5.4",
