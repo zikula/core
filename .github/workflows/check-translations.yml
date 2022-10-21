@@ -6,26 +6,29 @@ jobs:
   update-translations:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout sources from main branch
-      uses: actions/checkout@v3
-      with:
-        ref: main
+      - name: Checkout sources from main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
 
-    # persist composer's internal cache directory to reduce the workflow execution time
-    - name: Get Composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
-        restore-keys: ${{ runner.os }}-composer-
+      # persist composer's internal cache directory to reduce the workflow execution time
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: |
+          dir="$(composer config cache-files-dir)"
+          echo "dir=$dir" >> $GITHUB_OUTPUT
 
-    - name: Install dependencies
-      run: |
-        composer install
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-    - name: Check missing translations
-      run: |
-        php bin/console translation:check-missing en zikula
+      - name: Install dependencies
+        run: |
+          composer install
+
+      - name: Check missing translations
+        run: |
+          php bin/console translation:check-missing en zikula
