@@ -353,9 +353,6 @@
             "config/packages/stof_doctrine_extensions.yaml"
         ]
     },
-    "symfony/amqp-messenger": {
-        "version": "v5.2.0"
-    },
     "symfony/asset": {
         "version": "v5.2.0"
     },
@@ -397,9 +394,6 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v5.1.9"
-    },
-    "symfony/doctrine-messenger": {
-        "version": "v5.2.0"
     },
     "symfony/dom-crawler": {
         "version": "v5.2.0"
@@ -469,12 +463,12 @@
         "version": "v5.2.0"
     },
     "symfony/lock": {
-        "version": "5.2",
+        "version": "6.2",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
+            "branch": "main",
             "version": "5.2",
-            "ref": "a1c8800e40ae735206bb14586fdd6c4630a51b8d"
+            "ref": "8e937ff2b4735d110af1770f242c1107fdab4c8e"
         },
         "files": [
             "config/packages/lock.yaml"
@@ -501,18 +495,6 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
-    "symfony/messenger": {
-        "version": "5.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "5.4",
-            "ref": "dfe610928a5c61619bdfc830cd7fa7f091368023"
-        },
-        "files": [
-            "config/packages/messenger.yaml"
-        ]
-    },
     "symfony/mime": {
         "version": "v5.2.0"
     },
@@ -529,18 +511,6 @@
         },
         "files": [
             "config/packages/monolog.yaml"
-        ]
-    },
-    "symfony/notifier": {
-        "version": "5.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.0",
-            "ref": "c31585e252b32fe0e1f30b1f256af553f4a06eb9"
-        },
-        "files": [
-            "config/packages/notifier.yaml"
         ]
     },
     "symfony/options-resolver": {
@@ -582,9 +552,6 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.20.0"
     },
-    "symfony/polyfill-php81": {
-        "version": "v1.23.0"
-    },
     "symfony/polyfill-uuid": {
         "version": "v1.20.0"
     },
@@ -598,9 +565,6 @@
         "version": "v5.2.0"
     },
     "symfony/rate-limiter": {
-        "version": "v5.2.0"
-    },
-    "symfony/redis-messenger": {
         "version": "v5.2.0"
     },
     "symfony/requirements-checker": {
@@ -644,9 +608,6 @@
         "version": "v5.2.0"
     },
     "symfony/security-csrf": {
-        "version": "v5.2.0"
-    },
-    "symfony/security-guard": {
         "version": "v5.2.0"
     },
     "symfony/security-http": {
