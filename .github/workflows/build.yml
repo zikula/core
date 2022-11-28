@@ -86,7 +86,7 @@ jobs:
           path: ~/.symfony/cache
           key: db
       - name: Run security checker
-        uses: symfonycorp/security-checker-action@v4
+        uses: symfonycorp/security-checker-action@v5
 
 #      - name: Run Migration
 #        run: |
