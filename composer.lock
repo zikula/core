@@ -9560,16 +9560,16 @@
         },
         {
             "name": "symfony/rate-limiter",
-            "version": "v6.2.0",
+            "version": "v6.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/rate-limiter.git",
-                "reference": "3ef69420bd95f6c1a6b03688a026b3c1b2bedf54"
+                "reference": "3925f66ae3f4e6ed0d91251e2111909498d4f105"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/3ef69420bd95f6c1a6b03688a026b3c1b2bedf54",
-                "reference": "3ef69420bd95f6c1a6b03688a026b3c1b2bedf54",
+                "url": "https://api.github.com/repos/symfony/rate-limiter/zipball/3925f66ae3f4e6ed0d91251e2111909498d4f105",
+                "reference": "3925f66ae3f4e6ed0d91251e2111909498d4f105",
                 "shasum": ""
             },
             "require": {
@@ -9613,7 +9613,7 @@
                 "rate-limiter"
             ],
             "support": {
-                "source": "https://github.com/symfony/rate-limiter/tree/v6.2.0"
+                "source": "https://github.com/symfony/rate-limiter/tree/v6.2.2"
             },
             "funding": [
                 {
@@ -9629,7 +9629,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-24T08:47:45+00:00"
+            "time": "2022-12-09T14:23:20+00:00"
         },
         {
             "name": "symfony/requirements-checker",
