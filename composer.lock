@@ -879,16 +879,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "1.14.1",
+            "version": "1.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "9e034d7a70032d422169f27d8759e8d84abb4f51"
+                "reference": "ad785217c1e9555a7d6c6c8c9f406395a5e2882b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/9e034d7a70032d422169f27d8759e8d84abb4f51",
-                "reference": "9e034d7a70032d422169f27d8759e8d84abb4f51",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/ad785217c1e9555a7d6c6c8c9f406395a5e2882b",
+                "reference": "ad785217c1e9555a7d6c6c8c9f406395a5e2882b",
                 "shasum": ""
             },
             "require": {
@@ -949,9 +949,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/annotations/issues",
-                "source": "https://github.com/doctrine/annotations/tree/1.14.1"
+                "source": "https://github.com/doctrine/annotations/tree/1.14.2"
             },
-            "time": "2022-12-12T12:46:12+00:00"
+            "time": "2022-12-15T06:48:22+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -3942,16 +3942,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.12.7",
+            "version": "0.12.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "123dfd27f5fb330d2ea5e5519565eae97f91839e"
+                "reference": "9bd3ecace0a4019a7a4327ca9ea8df1c23ff0da3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/123dfd27f5fb330d2ea5e5519565eae97f91839e",
-                "reference": "123dfd27f5fb330d2ea5e5519565eae97f91839e",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/9bd3ecace0a4019a7a4327ca9ea8df1c23ff0da3",
+                "reference": "9bd3ecace0a4019a7a4327ca9ea8df1c23ff0da3",
                 "shasum": ""
             },
             "require": {
@@ -3973,7 +3973,7 @@
                 "matthiasnoback/symfony-config-test": "^4.1",
                 "matthiasnoback/symfony-dependency-injection-test": "^4.1",
                 "nyholm/psr7": "^1.1",
-                "nyholm/symfony-bundle-test": "^1.6.1, <1.8",
+                "nyholm/symfony-bundle-test": "^2.0",
                 "php-http/curl-client": "^1.7 || ^2.0",
                 "php-http/message": "^1.11",
                 "php-http/message-factory": "^1.0.2",
@@ -4013,9 +4013,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-translation/symfony-bundle/issues",
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.7"
+                "source": "https://github.com/php-translation/symfony-bundle/tree/0.12.8"
             },
-            "time": "2022-09-02T15:33:16+00:00"
+            "time": "2022-12-19T12:38:39+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -12372,5 +12372,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
