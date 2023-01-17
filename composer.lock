@@ -12040,16 +12040,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.12",
+            "version": "3.3.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "7a03954015eaea2467956dc05e6be78f4d1a1ff0"
+                "reference": "a1acb81a3b4b6e7a5a825367b5beab54a5ddbab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/7a03954015eaea2467956dc05e6be78f4d1a1ff0",
-                "reference": "7a03954015eaea2467956dc05e6be78f4d1a1ff0",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/a1acb81a3b4b6e7a5a825367b5beab54a5ddbab8",
+                "reference": "a1acb81a3b4b6e7a5a825367b5beab54a5ddbab8",
                 "shasum": ""
             },
             "require": {
@@ -12100,15 +12100,11 @@
             },
             "funding": [
                 {
-                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@vakata.com&currency_code=USD&amount=&return=http://jstree.com/donation&item_name=Buy+me+a+coffee+for+jsTree",
-                    "type": "custom"
-                },
-                {
                     "url": "https://github.com/vakata",
                     "type": "github"
                 }
             ],
-            "time": "2021-09-03T12:55:53+00:00"
+            "time": "2023-01-16T10:29:43+00:00"
         },
         {
             "name": "webmozart/assert",
