@@ -6778,16 +6778,16 @@
         },
         {
             "name": "symfony/doctrine-bridge",
-            "version": "v6.2.3",
+            "version": "v6.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-bridge.git",
-                "reference": "f0f0d9d81a172a334c29f536500475c741a5d4c0"
+                "reference": "3d42ae343f74a67991d9da7a42eb21e4d9c3d070"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/f0f0d9d81a172a334c29f536500475c741a5d4c0",
-                "reference": "f0f0d9d81a172a334c29f536500475c741a5d4c0",
+                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/3d42ae343f74a67991d9da7a42eb21e4d9c3d070",
+                "reference": "3d42ae343f74a67991d9da7a42eb21e4d9c3d070",
                 "shasum": ""
             },
             "require": {
@@ -6873,7 +6873,7 @@
             "description": "Provides integration for Doctrine with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-bridge/tree/v6.2.3"
+                "source": "https://github.com/symfony/doctrine-bridge/tree/v6.2.5"
             },
             "funding": [
                 {
@@ -6889,7 +6889,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-12-20T16:41:15+00:00"
+            "time": "2023-01-10T18:53:53+00:00"
         },
         {
             "name": "symfony/dom-crawler",
