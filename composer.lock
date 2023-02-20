@@ -11975,16 +11975,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.14",
+            "version": "3.3.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "a1acb81a3b4b6e7a5a825367b5beab54a5ddbab8"
+                "reference": "8c1bcc87771f5be0b70cd49d6a7888707ebcc64e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/a1acb81a3b4b6e7a5a825367b5beab54a5ddbab8",
-                "reference": "a1acb81a3b4b6e7a5a825367b5beab54a5ddbab8",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/8c1bcc87771f5be0b70cd49d6a7888707ebcc64e",
+                "reference": "8c1bcc87771f5be0b70cd49d6a7888707ebcc64e",
                 "shasum": ""
             },
             "require": {
@@ -12039,7 +12039,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-16T10:29:43+00:00"
+            "time": "2023-02-19T23:38:56+00:00"
         },
         {
             "name": "webmozart/assert",
