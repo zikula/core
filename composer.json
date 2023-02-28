@@ -9,6 +9,7 @@
         "psr-4": {
             "Zikula\\Bundle\\": "src/Zikula/Bundle/",
             "Zikula\\Component\\": "src/Zikula/Component/",
+            "Guite\\ValidationTestBundle\\": "src/extensions/Guite/ValidationTestBundle/",
             "Zikula\\": "src/system/"
         },
         "files": [
