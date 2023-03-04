@@ -15,7 +15,6 @@ namespace Zikula\UsersBundle\ProfileBundle;
 
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
-use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
 
 class ProfileBundleCollector
 {

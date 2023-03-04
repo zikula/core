@@ -40,7 +40,7 @@ class DeleteHelper
                 /*if (in_array((int) $value, [GroupsConstant::GROUP_ID_USERS, GroupsConstant::GROUP_ID_ADMIN], true)) {
                     throw new \InvalidArgumentException('Cannot delete from main User or Administrator group.');
                 }*/
-                //$users = $this->groupRepository->find((int) $value)->getUsers();
+                // $users = $this->groupRepository->find((int) $value)->getUsers();
                 $users = []; // TODO
                 break;
             case 'status':

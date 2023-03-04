@@ -18,7 +18,6 @@ use Doctrine\Common\Collections\Collection;
 
 trait UserAttributesTrait
 {
-    
     private Collection $attributes;
 
     public function getAttributes(): Collection
