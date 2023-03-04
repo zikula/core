@@ -30,8 +30,6 @@
 
         "zikula/core-bundle": "dev-3.1",
         "zikula/formextension-bundle": "dev-3.1",
-        "zikula/extensions-bundle": "dev-3.1",
-        "zikula/permissions-bundle": "dev-3.1",
         "zikula/theme-bundle": "dev-3.1",
         "zikula/users-bundle": "dev-3.1"
     },

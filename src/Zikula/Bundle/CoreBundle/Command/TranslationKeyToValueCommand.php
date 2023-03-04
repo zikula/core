@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -28,8 +29,10 @@ class TranslationKeyToValueCommand extends Command
 {
     protected static $defaultName = 'zikula:translation:keytovalue';
 
-    public function __construct(private readonly ?string $defaultTransPath = null)
-    {
+    public function __construct(
+        #[Autowire('%translator.default_path%')]
+        private readonly ?string $defaultTransPath = null
+    ) {
         parent::__construct();
     }
 

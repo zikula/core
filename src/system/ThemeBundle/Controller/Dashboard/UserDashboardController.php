@@ -18,7 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use function Symfony\Component\Translation\t;
-use Zikula\GroupsBundle\Entity\Group;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Entity\User;
 
@@ -39,17 +39,13 @@ class UserDashboardController extends AbstractThemedDashboardController
         yield MenuItem::linkToDashboard(t('Home'), 'fas fa-home');
         // yield MenuItem::linktoRoute(t('Administration'), 'fas fa-wrench', 'home_admin');
         yield MenuItem::linkToUrl(t('Administration'), 'fas fa-wrench', '/admin');
-        yield MenuItem::linkToCrud(t('Users'), 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
+        yield MenuItem::linkToCrud(t('Users'), 'fas fa-people-group', User::class);
+        yield MenuItem::linkToCrud(t('Categories'), 'fas fa-sitemap', Category::class);
 
         yield MenuItem::section();
         $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_USER);
         foreach ($menuItemsByBundle as $bundleName => $extensionMenuItems) {
             $bundle = $this->kernel->getBundle($bundleName);
-            /*if (!$this->permissionApi->hasPermission($bundle->getName() . '::', 'ANY', ACCESS_OVERVIEW)) {
-                continue;
-            }*/
-
             $bundleInfo = $bundle->getMetaData();
 
             $menuItems = is_array($extensionMenuItems) ? $extensionMenuItems : iterator_to_array($extensionMenuItems);

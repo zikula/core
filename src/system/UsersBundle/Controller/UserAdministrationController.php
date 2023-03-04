@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,15 +23,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Desc;
 use Zikula\Bundle\CoreBundle\Filter\AlphaFilter;
 use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\GroupsBundle\GroupsConstant;
-use Zikula\GroupsBundle\Helper\DefaultHelper;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Collector\AuthenticationMethodCollector;
 use Zikula\UsersBundle\Entity\User;
@@ -56,18 +52,16 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
 #[Route('/users/admin')]
+#[IsGranted('ROLE_ADMIN')]
 class UserAdministrationController extends AbstractController
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly PermissionApiInterface $permissionApi,
-        private readonly DefaultHelper $defaultHelper,
         private readonly int $itemsPerPage
     ) {
     }
 
     #[Route('/list/{sort}/{sortdir}/{letter}/{page}', name: 'zikulausersbundle_useradministration_listusers', methods: ['GET'], requirements: ['page' => '\d+'])]
-    #[PermissionCheck('moderate')]
     public function listUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -120,9 +114,6 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         AdministrationActionsHelper $actionsHelper
     ): Response {
-        if (!$this->permissionApi->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
-            return new PlainResponse('');
-        }
         $fragment = $request->request->get('fragment');
         $filter = [
             'activated' => ['operator' => 'notIn', 'operand' => [
@@ -140,7 +131,7 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the user record
+     * @throws AccessDeniedException Thrown if guest user is being edited
      */
     #[Route('/user/modify/{user}', name: 'zikulausersbundle_useradministration_modify', requirements: ['user' => '^[1-9]\d*$'])]
     public function modify(
@@ -150,9 +141,6 @@ class UserAdministrationController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         EventDispatcherInterface $eventDispatcher
     ): Response {
-        if (!$this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
         if (UsersConstant::USER_ID_ANONYMOUS === $user->getUid()) {
             throw new AccessDeniedException($this->trans("Error! You can't edit the guest account."));
         }
@@ -192,7 +180,6 @@ class UserAdministrationController extends AbstractController
     }
 
     #[Route('/user/approve/{user}/{force}', name: 'zikulausersbundle_useradministration_approve', requirements: ['user' => '^[1-9]\d*$'])]
-    #[PermissionCheck('moderate')]
     public function approve(
         Request $request,
         User $user,
@@ -200,7 +187,7 @@ class UserAdministrationController extends AbstractController
         MailHelper $mailHelper,
         bool $force = false
     ): Response {
-        $forceVerification = $this->permissionApi->hasPermission('ZikulaUsersModule', '::', ACCESS_ADMIN) && $force;
+        $forceVerification = $force;
         $form = $this->createForm(ApproveRegistrationConfirmationType::class, [
             'user' => $user->getUid(),
             'force' => $forceVerification
@@ -209,17 +196,10 @@ class UserAdministrationController extends AbstractController
         ]);
         $redirectToRoute = 'zikulausersbundle_useradministration_listusers';
 
-        if (!$forceVerification) {
-            if ($user->isApproved()) {
-                $this->addFlash('error', $this->translator->trans('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
+        if (!$forceVerification && $user->isApproved()) {
+            $this->addFlash('error', $this->translator->trans('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
 
-                return $this->redirectToRoute($redirectToRoute);
-            }
-            if (!$user->isApproved() && !$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-                $this->addFlash('error', $this->translator->trans('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
-
-                return $this->redirectToRoute($redirectToRoute);
-            }
+            return $this->redirectToRoute($redirectToRoute);
         }
 
         $form->handleRequest($request);
@@ -250,7 +230,6 @@ class UserAdministrationController extends AbstractController
     }
 
     #[Route('/delete/{user}', name: 'zikulausersbundle_useradministration_delete', requirements: ['user' => '^[1-9]\d*$'])]
-    #[PermissionCheck('delete')]
     public function delete(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
@@ -326,7 +305,6 @@ class UserAdministrationController extends AbstractController
     }
 
     #[Route('/search', name: 'zikulausersbundle_useradministration_search')]
-    #[PermissionCheck('moderate')]
     public function search(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -352,7 +330,6 @@ class UserAdministrationController extends AbstractController
     }
 
     #[Route('/mail', name: 'zikulausersbundle_useradministration_mailusers')]
-    #[PermissionCheck(['$_zkModule::MailUsers', '::', 'comment'])]
     public function mailUsers(
         Request $request,
         UserRepositoryInterface $userRepository,
@@ -365,7 +342,7 @@ class UserAdministrationController extends AbstractController
             $data = $mailForm->getData();
             $users = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => explode(',', $data['userIds'])]]);
             if (empty($users)) {
-                throw new InvalidArgumentException($this->translator->trans('No users found.'));
+                throw new \InvalidArgumentException($this->translator->trans('No users found.'));
             }
             if ($mailHelper->mailUsers($users, $data)) {
                 $this->addFlash('success', 'Done! Mail sent.');
@@ -409,6 +386,7 @@ class UserAdministrationController extends AbstractController
             $this->addFlash('info', 'You are not allowed to alter your own active state.');
             $userBeingModified->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         }
+        /*
         // current user not allowed to remove self from default group
         $defaultGroupId = $this->defaultHelper->getDefaultGroupId();
         if (!$userBeingModified->getGroups()->containsKey($defaultGroupId)) {
@@ -419,6 +397,6 @@ class UserAdministrationController extends AbstractController
         if (isset($originalGroups[GroupsConstant::GROUP_ID_ADMIN]) && !$userBeingModified->getGroups()->containsKey(GroupsConstant::GROUP_ID_ADMIN)) {
             $this->addFlash('info', 'You are not allowed to remove yourself from the primary administrator group.');
             $userBeingModified->getGroups()->add($originalGroups[GroupsConstant::GROUP_ID_ADMIN]);
-        }
+        }*/
     }
 }

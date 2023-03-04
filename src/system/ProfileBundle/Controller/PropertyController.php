@@ -18,14 +18,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ProfileBundle\Entity\Property;
 use Zikula\ProfileBundle\Form\Type\PropertyType;
 use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;
 
 #[Route('/profile/property')]
-#[PermissionCheck('edit')]
+#[IsGranted('ROLE_EDITOR')]
 class PropertyController extends AbstractController
 {
     #[Route('/list', name: 'zikulaprofilebundle_property_listproperties')]

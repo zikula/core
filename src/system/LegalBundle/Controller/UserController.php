@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Controller;
 
-use DateTime;
-use DateTimeZone;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,7 +25,6 @@ use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\LegalBundle\Form\Type\AcceptPoliciesType;
 use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
 use Zikula\LegalBundle\LegalConstant;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\AccessHelper;
@@ -37,7 +34,6 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 class UserController extends AbstractController
 {
     public function __construct(
-        private readonly PermissionApiInterface $permissionApi,
         private readonly SiteDefinitionInterface $site,
         private readonly array $legalConfig
     ) {
@@ -131,10 +127,6 @@ class UserController extends AbstractController
      */
     private function renderDocument(string $documentName, string $policyConfigKey): Response
     {
-        if (!$this->permissionApi->hasPermission('ZikulaLegalBundle::' . $documentName, '::', ACCESS_OVERVIEW)) {
-            throw new AccessDeniedException();
-        }
-
         $policyConfig = $this->legalConfig['policies'][$policyConfigKey];
         if (!$policyConfig['enabled']) {
             return $this->render('@ZikulaLegal/User/policyNotActive.html.twig');
@@ -189,8 +181,8 @@ class UserController extends AbstractController
                 'tradeConditions' => LegalConstant::ATTRIBUTE_TRADECONDITIONS_ACCEPTED,
                 'cancellationRightPolicy' => LegalConstant::ATTRIBUTE_CANCELLATIONRIGHTPOLICY_ACCEPTED,
             ];
-            $nowUTC = new DateTime('now', new DateTimeZone('UTC'));
-            $nowUTCStr = $nowUTC->format(DateTime::ATOM);
+            $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
+            $nowUTCStr = $nowUTC->format(\DateTime::ATOM);
             $activePolicies = $acceptPoliciesHelper->getActivePolicies();
             foreach ($policiesToCheck as $policyName => $acceptedVar) {
                 if ($data['acceptedpolicies_policies'] && $activePolicies[$policyName]) {

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ProfileBundle\Bridge;
 
-use InvalidArgumentException;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use function Symfony\Component\String\s;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\ProfileConstant;
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
@@ -29,10 +29,12 @@ class ProfileBundleBridge implements ProfileBundleInterface
     public function __construct(
         private readonly RouterInterface $router,
         private readonly RequestStack $requestStack,
-        private readonly CurrentUserApiInterface $currentUser,
+        private readonly Security $security,
         private readonly UserRepositoryInterface $userRepository,
         private readonly GravatarHelper $gravatarHelper,
+        #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
+        #[Autowire('%zikula_profile_module.property_prefix%')]
         private readonly string $prefix,
         private readonly string $avatarImagePath,
         private readonly string $avatarDefaultImage,
@@ -44,7 +46,7 @@ class ProfileBundleBridge implements ProfileBundleInterface
     {
         $userEntity = $this->findUser($uid);
         if (!$userEntity) {
-            throw new InvalidArgumentException('Invalid UID provided');
+            throw new \InvalidArgumentException('Invalid UID provided');
         }
 
         $key = $this->prefix . ':' . ProfileConstant::ATTRIBUTE_NAME_DISPLAY_NAME;
@@ -59,7 +61,7 @@ class ProfileBundleBridge implements ProfileBundleInterface
     {
         $userEntity = $this->findUser($uid);
         if (!$userEntity) {
-            throw new InvalidArgumentException('Invalid UID provided');
+            throw new \InvalidArgumentException('Invalid UID provided');
         }
 
         return $this->router->generate('zikulaprofilebundle_profile_display', ['uid' => $userEntity->getUid()]);
@@ -69,7 +71,7 @@ class ProfileBundleBridge implements ProfileBundleInterface
     {
         $userEntity = $this->findUser($uid);
         if (!$userEntity) {
-            throw new InvalidArgumentException('Invalid UID provided');
+            throw new \InvalidArgumentException('Invalid UID provided');
         }
 
         $avatarPath = $this->avatarImagePath;
@@ -115,9 +117,10 @@ class ProfileBundleBridge implements ProfileBundleInterface
      */
     private function findUser($uid = null): ?User
     {
-        if (empty($uid) && $this->currentUser->isLoggedIn()) {
-            $uid = $this->currentUser->get('uid');
+        if (empty($uid)) {
+            return $this->security->getUser();
         }
+
         if (is_numeric($uid)) {
             return $this->userRepository->find($uid);
         }

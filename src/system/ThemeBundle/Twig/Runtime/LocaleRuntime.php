@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Twig\Runtime;
 
-use Exception;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +22,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 class LocaleRuntime implements RuntimeExtensionInterface
 {
@@ -32,24 +30,19 @@ class LocaleRuntime implements RuntimeExtensionInterface
         private readonly RequestStack $requestStack,
         private readonly Environment $twig,
         private readonly FormFactoryInterface $formFactory,
-        private readonly PermissionApiInterface $permissionApi,
         private readonly LocaleApiInterface $localeApi
     ) {
     }
 
     public function renderLocaleSwitcher(): string
     {
-        if (!$this->permissionApi->hasPermission('LocaleSwitcher::', '::', ACCESS_OVERVIEW)) {
-            return '';
-        }
-
         $locales = $this->localeApi->getSupportedLocaleNames();
         $localeLinks = [];
         /** @var Request $request */
         $request = $this->requestStack->getMainRequest();
         try {
             $routeInfo = $this->router->match($request->getPathInfo());
-        } catch (Exception) {
+        } catch (\Exception) {
             return '';
         }
         $locale = $request->getLocale();

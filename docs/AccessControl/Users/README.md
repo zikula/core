@@ -21,15 +21,6 @@ users are assigned a UID as they are created.
 ### Settings
 
 - [Users configuration](UsersConfiguration.md)
-- [Authentication Methods](AuthenticationMethods.md)
-
-### TBD
-
-add more details about Users module
-
-## Authentication
-
-Separate modules like ZAuthModule are responsible for the *authentication* of each user. For further details refer to [Authentication](../Authentication/README.md).
 
 ### Security
 
@@ -65,13 +56,7 @@ Profile
 
 - [Importing Users](ImportFromFile.md)
 
-## Generate users
-
-- [Generate users for test purposes](GenerateUsers.md)
-
 ## For developers
 
-- [CurrentUserApi](Dev/CurrentUserApi.md)
 - [Access, User and Registration events](Dev/AccessUserAndRegistrationEvents.md)
 - [Profile interface](Dev/ProfileInterface.md)
-- [Message interface](Dev/MessageInterface.md)

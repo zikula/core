@@ -16,22 +16,18 @@ namespace Zikula\LegalBundle\Menu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\RouteMenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\UrlMenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
-    public function __construct(
-        protected readonly PermissionApiInterface $permissionApi,
-        private readonly array $legalConfig
-    ) {
+    public function __construct(private readonly array $legalConfig)
+    {
     }
 
     protected function getAdmin(): iterable
     {
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            yield MenuItem::linktoRoute('Settings', 'fas fa-wrench', 'zikulalegalbundle_config_config');
-        }
+        yield MenuItem::linktoRoute('Settings', 'fas fa-wrench', 'zikulalegalbundle_config_config')
+            ->setPermission('ROLE_ADMIN');
     }
 
     protected function getUser(): iterable

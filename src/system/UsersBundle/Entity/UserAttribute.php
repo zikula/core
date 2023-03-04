@@ -21,13 +21,14 @@ use Zikula\UsersBundle\Repository\UserAttributeRepository;
 /**
  * User attributes store extra information about each user account.
  */
-#[ORM\Entity(repositoryClass: UserAttributeRepository::class)]
-#[ORM\Table(name: 'users_attributes')]
+// #[ORM\Entity(repositoryClass: UserAttributeRepository::class)] TODO remove if unneeded
+#[ORM\Entity]
+#[ORM\Table(name: 'nucleos_user__user_attribute')]
 class UserAttribute
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'attributes')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'uid', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private User $user;
 
     #[ORM\Id]
@@ -48,8 +49,8 @@ class UserAttribute
      */
     public function __construct(User $user, string $name, $value)
     {
-        $this->setUser($user);
-        $this->setAttribute($name, $value);
+        $this->setUser($user)
+            ->setAttribute($name, $value);
     }
 
     public function getUser(): User

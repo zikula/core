@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Api;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Locales;
@@ -33,9 +34,11 @@ class LocaleApi implements LocaleApiInterface
 
     public function __construct(
         private readonly RequestStack $requestStack,
+        #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
         private readonly bool $multiLingualEnabled,
         private readonly string $defaultLocale = 'en',
+        #[Autowire('%env(ZIKULA_INSTALLED)%')]
         string $installed = '0.0.0'
     ) {
         $this->supportedLocales = [

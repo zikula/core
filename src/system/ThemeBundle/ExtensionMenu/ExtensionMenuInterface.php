@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ThemeBundle\ExtensionMenu;
 
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Menu\MenuItemInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[Autoconfigure(tags: ['zikula.extension_menu'])]
+#[AutoconfigureTag]
 interface ExtensionMenuInterface
 {
     public const CONTEXT_ADMIN = 'admin';

@@ -13,14 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Helper;
 
-use DateTime;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
-use Zikula\GroupsBundle\Entity\Group;
-use Zikula\GroupsBundle\Helper\DefaultHelper;
-use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\ActiveUserPostCreatedEvent;
 use Zikula\UsersBundle\Event\ActiveUserPreCreatedEvent;
@@ -34,11 +30,9 @@ class RegistrationHelper
     use TranslatorTrait;
 
     public function __construct(
-        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly Security $security,
         private readonly UserRepositoryInterface $userRepository,
-        private readonly GroupRepositoryInterface $groupRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly DefaultHelper $defaultHelper,
         TranslatorInterface $translator,
         private readonly bool $registrationEnabled,
         private readonly bool $registrationRequiresApproval,
@@ -64,7 +58,7 @@ class RegistrationHelper
     {
         $adminApprovalRequired = $this->registrationRequiresApproval;
         if (null === $userEntity->getUid()) {
-            $userEntity->setRegistrationDate(new DateTime());
+            $userEntity->setRegistrationDate(new \DateTime());
         }
         $this->eventDispatcher->dispatch($createActiveUser = new ActiveUserPreCreatedEvent($userEntity));
         if (($adminApprovalRequired && !$userEntity->isApproved()) || $createActiveUser->isPropagationStopped()) {
@@ -83,12 +77,13 @@ class RegistrationHelper
             $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
 
             // Add user to default group
+            /* TODO
             $defaultGroupId = $this->defaultHelper->getDefaultGroupId();
             if (!$userEntity->getGroups()->containsKey($defaultGroupId)) {
-                /** @var Group $defaultGroupEntity */
+                /** @var Group $defaultGroupEntity * /
                 $defaultGroupEntity = $this->groupRepository->find($defaultGroupId);
                 $userEntity->addGroup($defaultGroupEntity);
-            }
+            }*/
 
             // ATTENTION: This is the proper place for the ActiveUserPostCreatedEvent, not when a pending
             // registration is created. It is not a "real" record until now, so it wasn't really
@@ -98,8 +93,8 @@ class RegistrationHelper
         }
         $this->userRepository->persistAndFlush($userEntity);
         if (!$adminApprovalRequired) {
-            $approvedBy = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : $userEntity->getUid();
-            $this->userRepository->setApproved($userEntity, new DateTime(), $approvedBy); // flushes EM
+            $approvedBy = $this->security->getUser()?->getId() ?? $userEntity->getUid();
+            $this->userRepository->setApproved($userEntity, new \DateTime(), $approvedBy); // flushes EM
         }
         $this->eventDispatcher->dispatch($event);
     }
@@ -110,8 +105,8 @@ class RegistrationHelper
      */
     public function approve(User $user): void
     {
-        $user->setApprovedBy((int) $this->currentUserApi->get('uid'));
-        $user->setApprovedDate(new DateTime());
+        $user->setApprovedBy((int) $this->security->getUser()?->getId());
+        $user->setApprovedDate(new \DateTime());
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);

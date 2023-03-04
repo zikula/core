@@ -16,10 +16,10 @@ namespace Zikula\ThemeBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/theme')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class BrandingController extends AbstractController
 {
     #[Route('/overview', name: 'zikulathemebundle_branding_overview')]

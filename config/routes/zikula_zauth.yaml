@@ -1,2 +1,0 @@
-zikula_zauth:
-    resource: "@ZikulaZAuthBundle/Resources/config/routing.yaml"

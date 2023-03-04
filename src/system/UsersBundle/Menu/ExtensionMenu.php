@@ -14,18 +14,16 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Menu;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use Symfony\Bundle\SecurityBundle\Security;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\UsersConstant;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
     public function __construct(
-        protected readonly PermissionApiInterface $permissionApi,
-        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly Security $security,
         private readonly LocaleApiInterface $localeApi,
         private readonly RegistrationHelper $registrationHelper,
         private readonly bool $allowSelfDeletion
@@ -34,16 +32,17 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAdmin(): iterable
     {
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
-            yield MenuItem::linktoRoute('Users list', 'fas fa-list', 'zikulausersbundle_useradministration_listusers');
-            yield MenuItem::linktoRoute('Export users', 'fas fa-download', 'zikulausersbundle_fileio_export');
-            yield MenuItem::linktoRoute('Find & Mail|Delete users', 'fas fa-search', 'zikulausersbundle_useradministration_search');
-        }
+        yield MenuItem::linktoRoute('Users list', 'fas fa-list', 'zikulausersbundle_useradministration_listusers')
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linktoRoute('Export users', 'fas fa-download', 'zikulausersbundle_fileio_export')
+            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linktoRoute('Find & Mail|Delete users', 'fas fa-search', 'zikulausersbundle_useradministration_search')
+            ->setPermission('ROLE_ADMIN');
     }
 
     protected function getUser(): iterable
     {
-        if (!$this->currentUserApi->isLoggedIn()) {
+        if (null === $this->security->getUser()) {
             yield MenuItem::linktoRoute('Help', 'fas fa-ambulance', 'zikulausersbundle_account_menu');
             if ($this->registrationHelper->isRegistrationEnabled()) {
                 yield MenuItem::linktoRoute('New account', 'fas fa-plus', 'zikulausersbundle_registration_register');
@@ -55,7 +54,7 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAccount(): iterable
     {
-        if (!$this->currentUserApi->isLoggedIn()) {
+        if (null === $this->security->getUser()) {
             yield MenuItem::linktoRoute('I would like to login', 'fas fa-sign-in-alt', 'zikulausersbundle_access_login');
             if ($this->registrationHelper->isRegistrationEnabled()) {
                 yield MenuItem::linktoRoute('I would like to create a new account', 'fas fa-plus', 'zikulausersbundle_registration_register');

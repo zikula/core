@@ -79,7 +79,7 @@ jobs:
           php bin/console lint:yaml src/Zikula/ --parse-tags
           php bin/console lint:twig --show-deprecations src/system/ src/Zikula/
 
-      - name: Iache vulnerability database
+      - name: Cache vulnerability database
         uses: actions/cache@v3
         id: cache-db
         with:

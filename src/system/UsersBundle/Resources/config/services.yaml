@@ -14,17 +14,5 @@ services:
         resource: '../../Helper/*'
         lazy: true
 
-    Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface: '@Zikula\UsersBundle\Api\CurrentUserApi'
-
-    # public because this is often required as part of Doctrine listeners
-    # which need to access this using container because CurrentUserApi
-    # depends on entities as well
-    Zikula\UsersBundle\Api\CurrentUserApi:
-        public: true
-
-    Zikula\UsersBundle\EventListener\UserEventListener:
-        arguments:
-          $environment: '%env(APP_ENV)%'
-
     Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface: '@Zikula\UsersBundle\Repository\UserAttributeRepository'
     Zikula\UsersBundle\Repository\UserRepositoryInterface: '@Zikula\UsersBundle\Repository\UserRepository'

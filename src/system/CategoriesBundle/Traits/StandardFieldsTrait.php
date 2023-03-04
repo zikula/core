@@ -25,14 +25,14 @@ trait StandardFieldsTrait
      * The user id of the creator of this entity
      */
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'cr_uid', referencedColumnName: 'uid')]
+    #[ORM\JoinColumn(name: 'createdBy', referencedColumnName: 'id')]
     #[Gedmo\Blameable(on: 'create')]
     protected ?User $createdBy = null;
 
     /**
      * The creation timestamp of this entity
      */
-    #[ORM\Column(name: 'cr_date', type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'createdDate', type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'create')]
     protected ?DateTimeInterface $createdDate = null;
 
@@ -40,14 +40,14 @@ trait StandardFieldsTrait
      * The user id of the last update of this entity
      */
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(name: 'lu_uid', referencedColumnName: 'uid')]
+    #[ORM\JoinColumn(name: 'updatedBy', referencedColumnName: 'id')]
     #[Gedmo\Blameable(on: 'update')]
     protected ?User $updatedBy = null;
 
     /**
      * The last updated timestamp of this entity
      */
-    #[ORM\Column(name: 'lu_date', type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(name: 'updatedDate', type: Types::DATETIME_MUTABLE)]
     #[Gedmo\Timestampable(on: 'update')]
     protected ?DateTimeInterface $updatedDate = null;
 

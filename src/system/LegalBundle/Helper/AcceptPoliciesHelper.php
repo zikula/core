@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Helper;
 
-use DateTime;
-use DateTimeZone;
+use Symfony\Bundle\SecurityBundle\Security;
 use Zikula\LegalBundle\LegalConstant;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
@@ -28,8 +25,7 @@ use Zikula\UsersBundle\UsersConstant;
 class AcceptPoliciesHelper
 {
     public function __construct(
-        private readonly PermissionApiInterface $permissionApi,
-        private readonly CurrentUserApiInterface $currentUserApi,
+        private readonly Security $security,
         private readonly UserRepositoryInterface $userRepository,
         private readonly array $legalConfig
     ) {
@@ -61,14 +57,14 @@ class AcceptPoliciesHelper
         $acceptanceState = null;
 
         if (null !== $uid && !empty($uid) && is_numeric($uid) && $uid > 0) {
-            if ($uid > UsersConstant::USER_ID_ADMIN) {
+            if (UsersConstant::USER_ID_ADMIN < $uid) {
                 /** @var User $user */
                 $user = $this->userRepository->find($uid);
                 $acceptanceState = $user->getAttributes()->containsKey($attributeName) ? $user->getAttributeValue($attributeName) : null;
             } else {
                 // The special users (uid == UsersConstant::USER_ID_ADMIN or UsersConstant::USER_ID_ANONYMOUS) have always accepted all policies.
-                $now = new \DateTime('now', new DateTimeZone('UTC'));
-                $nowStr = $now->format(DateTime::ATOM);
+                $now = new \DateTime('now', new \DateTimeZone('UTC'));
+                $nowStr = $now->format(\DateTime::ATOM);
                 $acceptanceState = $nowStr;
             }
         }
@@ -87,13 +83,13 @@ class AcceptPoliciesHelper
         $cancellationRightPolicyAcceptedDateStr = $this->determineAcceptanceState($uid, LegalConstant::ATTRIBUTE_CANCELLATIONRIGHTPOLICY_ACCEPTED);
         $tradeConditionsAcceptedDateStr = $this->determineAcceptanceState($uid, LegalConstant::ATTRIBUTE_TRADECONDITIONS_ACCEPTED);
 
-        $termsOfUseAcceptedDate = $termsOfUseAcceptedDateStr ? new DateTime($termsOfUseAcceptedDateStr) : false;
-        $privacyPolicyAcceptedDate = $privacyPolicyAcceptedDateStr ? new DateTime($privacyPolicyAcceptedDateStr) : false;
-        $agePolicyConfirmedDate = $agePolicyConfirmedDateStr ? new DateTime($agePolicyConfirmedDateStr) : false;
-        $cancellationRightPolicyAcceptedDate = $cancellationRightPolicyAcceptedDateStr ? new DateTime($cancellationRightPolicyAcceptedDateStr) : false;
-        $tradeConditionsAcceptedDate = $tradeConditionsAcceptedDateStr ? new DateTime($tradeConditionsAcceptedDateStr) : false;
+        $termsOfUseAcceptedDate = $termsOfUseAcceptedDateStr ? new \DateTime($termsOfUseAcceptedDateStr) : false;
+        $privacyPolicyAcceptedDate = $privacyPolicyAcceptedDateStr ? new \DateTime($privacyPolicyAcceptedDateStr) : false;
+        $agePolicyConfirmedDate = $agePolicyConfirmedDateStr ? new \DateTime($agePolicyConfirmedDateStr) : false;
+        $cancellationRightPolicyAcceptedDate = $cancellationRightPolicyAcceptedDateStr ? new \DateTime($cancellationRightPolicyAcceptedDateStr) : false;
+        $tradeConditionsAcceptedDate = $tradeConditionsAcceptedDateStr ? new \DateTime($tradeConditionsAcceptedDateStr) : false;
 
-        $now = new DateTime();
+        $now = new \DateTime();
         $termsOfUseAccepted = $termsOfUseAcceptedDate ? $termsOfUseAcceptedDate <= $now : false;
         $privacyPolicyAccepted = $privacyPolicyAcceptedDate ? $privacyPolicyAcceptedDate <= $now : false;
         $agePolicyConfirmed = $agePolicyConfirmedDate ? $agePolicyConfirmedDate <= $now : false;
@@ -113,36 +109,38 @@ class AcceptPoliciesHelper
      * Determine whether the current user can view the acceptance/confirmation status of certain policies.
      *
      * If the current user is the subject user, then the user can always see his status for each policy. If the current user is not the
-     * same as the subject user, then the current user can only see the status if he has ACCESS_MODERATE access for the policy.
+     * same as the subject user, then he needs to be an editor.
      */
     public function getViewablePolicies(int $userId = null): array
     {
-        $currentUid = $this->currentUserApi->get('uid');
-        $isCurrentUser = null !== $userId && $userId === $currentUid;
+        $currentUser = $this->security->getUser();
+        $isCurrentUser = null === $userId && null === $currentUser || null !== $userId && $userId === $currentUser?->getId();
+        $isEditor = $this->security->isGranted('ROLE_EDITOR');
 
         return [
-            'privacyPolicy'           => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::privacyPolicy', '::', ACCESS_MODERATE),
-            'termsOfUse'              => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::termsOfUse', '::', ACCESS_MODERATE),
-            'tradeConditions'         => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::tradeConditions', '::', ACCESS_MODERATE),
-            'cancellationRightPolicy' => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::cancellationRightPolicy', '::', ACCESS_MODERATE),
-            'agePolicy'               => $isCurrentUser ? true : $this->permissionApi->hasPermission('ZikulaLegalBundle::agePolicy', '::', ACCESS_MODERATE),
+            'privacyPolicy'           => $isCurrentUser || $isEditor,
+            'termsOfUse'              => $isCurrentUser || $isEditor,
+            'tradeConditions'         => $isCurrentUser || $isEditor,
+            'cancellationRightPolicy' => $isCurrentUser || $isEditor,
+            'agePolicy'               => $isCurrentUser || $isEditor,
         ];
     }
 
     /**
      * Determine whether the current user can edit the acceptance/confirmation status of certain policies.
      *
-     * The current user can only edit the status if he has ACCESS_EDIT access for the policy, whether he is the subject user or not. The ability to edit
-     * status for login and new registrations is handled differently, and does not count on the output of this function.
+     * The current user can only edit the status if he is an editor.
      */
     public function getEditablePolicies(): array
     {
+        $isEditor = $this->security->isGranted('ROLE_EDITOR');
+
         return [
-            'privacyPolicy'           => $this->permissionApi->hasPermission('ZikulaLegalBundle::privacyPolicy', '::', ACCESS_EDIT),
-            'termsOfUse'              => $this->permissionApi->hasPermission('ZikulaLegalBundle::termsOfUse', '::', ACCESS_EDIT),
-            'tradeConditions'         => $this->permissionApi->hasPermission('ZikulaLegalBundle::tradeConditions', '::', ACCESS_EDIT),
-            'cancellationRightPolicy' => $this->permissionApi->hasPermission('ZikulaLegalBundle::cancellationRightPolicy', '::', ACCESS_EDIT),
-            'agePolicy'               => $this->permissionApi->hasPermission('ZikulaLegalBundle::agePolicy', '::', ACCESS_EDIT),
+            'privacyPolicy'           => $isEditor,
+            'termsOfUse'              => $isEditor,
+            'tradeConditions'         => $isEditor,
+            'cancellationRightPolicy' => $isEditor,
+            'agePolicy'               => $isEditor,
         ];
     }
 }

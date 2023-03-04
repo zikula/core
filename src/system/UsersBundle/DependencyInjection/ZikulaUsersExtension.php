@@ -17,13 +17,13 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zikula\UsersBundle\Collector\ProfileBundleCollector;
 use Zikula\UsersBundle\Controller\AccountController;
 use Zikula\UsersBundle\Controller\RegistrationController;
 use Zikula\UsersBundle\Controller\UserAdministrationController;
 use Zikula\UsersBundle\Helper\MailHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Menu\ExtensionMenu;
+use Zikula\UsersBundle\ProfileBundle\ProfileBundleCollector;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmailValidator;
 use Zikula\UsersBundle\Validator\Constraints\ValidUnameValidator;
 

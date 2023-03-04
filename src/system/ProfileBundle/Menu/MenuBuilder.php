@@ -15,15 +15,15 @@ namespace Zikula\ProfileBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 class MenuBuilder
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly FactoryInterface $factory,
-        private readonly PermissionApiInterface $permissionApi
+        private readonly Security $security
     ) {
     }
 
@@ -32,13 +32,13 @@ class MenuBuilder
         $user = $options['user'];
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        if ($this->permissionApi->hasPermission('ZikulaUsersBundle::', '::', ACCESS_EDIT)) {
+        if ($this->security->isGranted('ROLE_EDITOR')) {
             $menu->addChild($this->translator->trans('Edit "%name"', ['%name' => $user->getUname()]), [
                 'route' => 'zikulausersbundle_useradministration_modify',
                 'routeParameters' => ['user' => $user->getUid()],
             ])->setAttribute('icon', 'fas fa-pencil-alt');
         }
-        if ($this->permissionApi->hasPermission('ZikulaUsersBundle::', '::', ACCESS_DELETE)) {
+        if ($this->security->isGranted('ROLE_ADMIN')) {
             $menu->addChild($this->translator->trans('Delete "%name"', ['%name' => $user->getUname()]), [
                 'route' => 'zikulausersbundle_useradministration_delete',
                 'routeParameters' => ['user' => $user->getUid()],

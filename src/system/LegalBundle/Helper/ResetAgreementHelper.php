@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Helper;
 
-use Exception;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\LegalBundle\LegalConstant;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface;
 
 /**
@@ -26,7 +25,7 @@ use Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface;
 class ResetAgreementHelper
 {
     public function __construct(
-        private readonly PermissionApiInterface $permissionApi,
+        private readonly Security $security,
         private readonly UserAttributeRepositoryInterface $attributeRepository,
         private readonly GroupRepositoryInterface $groupRepository
     ) {
@@ -40,11 +39,11 @@ class ResetAgreementHelper
      */
     public function reset(int $groupId): bool
     {
-        if (!$this->permissionApi->hasPermission('ZikulaLegalBundle::', '::', ACCESS_ADMIN)) {
+        if (!$this->security->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedException();
         }
-        if (!is_numeric($groupId) || $groupId < 0) {
-            throw new Exception();
+        if (!is_numeric($groupId) || 0 > $groupId) {
+            throw new \Exception();
         }
 
         $attributeNames = [

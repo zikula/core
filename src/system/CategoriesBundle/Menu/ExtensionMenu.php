@@ -20,12 +20,10 @@ class ExtensionMenu extends AbstractExtensionMenu
 {
     protected function getAdmin(): iterable
     {
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-            yield MenuItem::linktoRoute('Category tree', 'fas fa-tree', 'zikulacategoriesbundle_category_listcategories');
-        }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            yield MenuItem::linktoRoute('Category registry', 'fas fa-archive', 'zikulacategoriesbundle_registry_edit');
-        }
+        yield MenuItem::linktoRoute('Category tree', 'fas fa-tree', 'zikulacategoriesbundle_category_listcategories')
+            ->setPermission('ROLE_EDITOR');
+        yield MenuItem::linktoRoute('Category registry', 'fas fa-archive', 'zikulacategoriesbundle_registry_edit')
+            ->setPermission('ROLE_ADMIN');
     }
 
     public function getBundleName(): string

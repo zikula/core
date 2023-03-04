@@ -17,11 +17,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 #[Route('/localization')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class LocalizationController extends AbstractController
 {
     /**

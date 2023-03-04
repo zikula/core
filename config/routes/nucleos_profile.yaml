@@ -1,0 +1,7 @@
+nucleos_profile_profile:
+    resource: "@NucleosProfileBundle/Resources/config/routing/profile.php"
+    prefix: /profile
+
+nucleos_profile_registration:
+    resource: "@NucleosProfileBundle/Resources/config/routing/registration.php"
+    prefix: /registration

@@ -21,16 +21,6 @@ use Zikula\UsersBundle\Entity\UserAttribute;
 
 class TwigExtension extends AbstractExtension
 {
-    /**
-     * @var string
-     */
-    protected $prefix;
-
-    public function __construct(string $prefix)
-    {
-        $this->prefix = $prefix;
-    }
-
     public function getFilters()
     {
         return [

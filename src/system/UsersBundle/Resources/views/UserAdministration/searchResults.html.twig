@@ -13,7 +13,7 @@
     {{ form_errors(resultsForm) }}
     <table class="table table-bordered table-striped">
         <colgroup>
-            {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+            {% if is_granted('ROLE_ADMIN') %}
             <col id="cDelete" />
             {% endif %}
             <col id="cUser" />
@@ -23,7 +23,7 @@
         </colgroup>
         <thead>
             <tr>
-                {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <th id="hDelete" scope="col">&nbsp;</th>
                 {% endif %}
                 <th id="hUser" scope="col">{% trans %}User name{% endtrans %}</th>
@@ -36,7 +36,7 @@
             {% for user in resultsForm.users %}
                 {% set excluded = user.vars.name <= 2 ? true : false %}
                 <tr{% if excluded %} class="warning"{% endif %}>
-                {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <td headers="hDelete">
                     {{ form_widget(user, {title: 'Delete %n'|trans({'%n': user.vars.label}), disabled:excluded}) }}
                 </td>
@@ -53,11 +53,11 @@
                     {% endif %}
                 </td>
                 <td headers="hActions" class="actions">
-                    {% if hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_EDIT') and user.vars.name > 1 %}
-                        <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulausersbundle_useradministration_modify', {user:user.vars.name}) }}" title="{% trans with {"%sub%": user.vars.label} %}Edit %sub%{% endtrans %}"></a>
+                    {% if is_granted('ROLE_EDITOR') and user.vars.name > 1 %}
+                        <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulausersbundle_useradministration_modify', {user: user.vars.name}) }}" title="{% trans with {"%sub%": user.vars.label} %}Edit %sub%{% endtrans %}"></a>
                     {% endif %}
-                    {% if not excluded and currentUser.uid != user.vars.name and hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_DELETE') %}
-                        <a class="fas fa-trash-alt fa-fw tooltips" href="{{ path('zikulausersbundle_useradministration_delete', {user:user.vars.name}) }}" title="{% trans with {"%sub%": user.vars.label} %}Delete %sub%{% endtrans %}"></a>
+                    {% if not excluded and currentUser.uid != user.vars.name and is_granted('ROLE_ADMIN') %}
+                        <a class="fas fa-trash-alt fa-fw tooltips" href="{{ path('zikulausersbundle_useradministration_delete', {user: user.vars.name}) }}" title="{% trans with {"%sub%": user.vars.label} %}Delete %sub%{% endtrans %}"></a>
                     {% endif %}
                 </td>
             </tr>
@@ -65,14 +65,14 @@
         </tbody>
     </table>
 
-    {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-    <p><a href="#" id="select-all">{% trans %}Select all{% endtrans %}</a> / <a href="#" id="deselect-all">{% trans %}De-select all{% endtrans %}</a></p>
+    {% if is_granted('ROLE_ADMIN') %}
+        <p><a href="#" id="select-all">{% trans %}Select all{% endtrans %}</a> / <a href="#" id="deselect-all">{% trans %}De-select all{% endtrans %}</a></p>
     {% endif %}
 
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
             <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#email-users-form" aria-expanded="false" aria-controls="email-users-form"><i class="fas fa-envelope"></i> {% trans %}Mail selected users{% endtrans %}</button>
-            {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+            {% if is_granted('ROLE_ADMIN') %}
                 {{ form_widget(resultsForm.delete) }}
             {% endif %}
             <a class="btn btn-secondary" href="{{ path('zikulausersbundle_useradministration_listusers') }}"><i class="fas fa-sync"></i> {% trans %}Return to User Administration{% endtrans %}</a>
@@ -102,6 +102,6 @@
     {{ form_end(mailForm) }}
 </div>
 {{ pageAddAsset('stylesheet', zasset('@ZikulaUsersBundle:css/style.css')) }}
-{% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
+{% if is_granted('ROLE_ADMIN') %}
     {{ pageAddAsset('javascript', zasset('@ZikulaUsersBundle:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
 {% endif %}

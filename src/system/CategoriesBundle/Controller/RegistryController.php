@@ -18,15 +18,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 use Zikula\CategoriesBundle\Form\Type\CategoryRegistryType;
 use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 #[Route('/categories/admin/registry')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class RegistryController extends AbstractController
 {
     /**

@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\ProfileBundle;
 
-use InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[Autoconfigure(tags: ['zikula.profile_bundle'])]
+#[AutoconfigureTag]
 interface ProfileBundleInterface
 {
     /**
@@ -24,7 +23,7 @@ interface ProfileBundleInterface
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
      *
      * @param int|string $userId The user's id or name
-     * @throws InvalidArgumentException if provided $userId is not null and invalid
+     * @throws \InvalidArgumentException if provided $userId is not null and invalid
      */
     public function getDisplayName($userId = null): string;
 
@@ -33,7 +32,7 @@ interface ProfileBundleInterface
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
      *
      * @param int|string $userId The user's id or name
-     * @throws InvalidArgumentException if provided $userId is not null and invalid
+     * @throws \InvalidArgumentException if provided $userId is not null and invalid
      */
     public function getProfileUrl($userId = null): string;
 
@@ -42,7 +41,7 @@ interface ProfileBundleInterface
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
      *
      * @param int|string $userId The user's id or name
-     * @throws InvalidArgumentException if provided $userId is not null and invalid
+     * @throws \InvalidArgumentException if provided $userId is not null and invalid
      */
     public function getAvatar($userId = null, array $parameters = []): string;
 

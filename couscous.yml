@@ -59,27 +59,15 @@ menu:
         content:
             name: Content
             items:
-                content-pages:
-                    text: Static pages
-                    relativeUrl: Content/pages.html
                 categories:
                     text: Categories
                     relativeUrl: Content/Categories/index.html
         access-control:
             name: Access Control
             items:
-                groups:
-                    text: Groups
-                    relativeUrl: AccessControl/Groups/index.html
                 users:
                     text: Users
                     relativeUrl: AccessControl/Users/index.html
-                authentication:
-                    text: Authentication
-                    relativeUrl: AccessControl/Authentication/index.html
-                permissions:
-                    text: Permissions
-                    relativeUrl: AccessControl/Permissions/index.html
         layout:
             name: Layout & Design
             items:

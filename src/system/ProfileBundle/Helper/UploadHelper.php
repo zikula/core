@@ -15,6 +15,7 @@ namespace Zikula\ProfileBundle\Helper;
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadHelper
@@ -28,6 +29,7 @@ class UploadHelper
 
     public function __construct(
         private readonly array $uploadConfig,
+        #[Autowire('%kernel.project_dir%')]
         string $projectDir,
         string $imagePath
     ) {

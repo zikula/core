@@ -77,7 +77,7 @@ class ExtensionMenuCollectorTest extends TestCase
         $this->assertEquals($count, $menu ? $menu->count() : 0);
     }
 
-    public function menuProvider(): array
+    public static function menuProvider(): array
     {
         return [
             ['Unknown Extension', ExtensionMenuInterface::CONTEXT_ADMIN, 0],
@@ -97,7 +97,7 @@ class ExtensionMenuCollectorTest extends TestCase
         $this->assertEquals($expected, array_keys($this->collector->getAllByContext($context)));
     }
 
-    public function allMenusProvider(): array
+    public static function allMenusProvider(): array
     {
         return [
             [ExtensionMenuInterface::CONTEXT_ACCOUNT, ['ZikulaBarExtension']],

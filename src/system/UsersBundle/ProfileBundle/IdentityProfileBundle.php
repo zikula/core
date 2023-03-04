@@ -13,26 +13,26 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\ProfileBundle;
 
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 class IdentityProfileBundle implements ProfileBundleInterface
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository, private readonly CurrentUserApiInterface $currentUserApi)
+    public function __construct(private readonly UserRepositoryInterface $userRepository, private readonly Security $security)
     {
     }
 
     public function getDisplayName($userId = null): string
     {
         if (!isset($userId)) {
-            return $this->currentUserApi->get('uname');
+            return $this->security->getUser()?->getUserIdentifier() ?? '';
         }
 
         /** @var User $user */
         $user = $this->userRepository->find($userId);
 
-        return null !== $user ? $user->getUname() : '';
+        return $user?->getUname() ?? '';
     }
 
     public function getProfileUrl($userId = null): string

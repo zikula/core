@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Site;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class SiteDefinition implements SiteDefinitionInterface
@@ -20,6 +21,7 @@ class SiteDefinition implements SiteDefinitionInterface
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly array $siteData,
+        #[Autowire('%kernel.default_locale%')]
         private readonly string $defaultLocale
     ) {
     }

@@ -3,28 +3,19 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $installed: '%env(ZIKULA_INSTALLED)%'
-            $mailLoggingEnabled: '%enable_mail_logging%'
 
     Zikula\ThemeBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    Zikula\ThemeBundle\EventListener\CreateThemedResponseListener:
-        arguments:
-            $debug: '%env(APP_DEBUG)%'
+    Zikula\ThemeBundle\EventSubscriber\CreateThemedResponseSubscriber:
         tags:
             - { name: monolog.logger, channel: request }
 
-    Zikula\ThemeBundle\EventListener\ControllerAnnotationReaderListener:
+    Zikula\ThemeBundle\EventSubscriber\ControllerAnnotationReaderSubscriber:
         tags:
             - { name: monolog.logger, channel: request }
 
     Zikula\ThemeBundle\Helper\:
         resource: '../../Helper/*'
         lazy: true
-
-    Zikula\ThemeBundle\Menu\ExtensionMenu:
-        arguments:
-            $environment: '%kernel.environment%'

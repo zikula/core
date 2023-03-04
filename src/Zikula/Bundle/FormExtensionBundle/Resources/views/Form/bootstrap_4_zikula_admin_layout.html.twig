@@ -182,7 +182,7 @@ col-md-9
         <small class="form-text text-muted"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="d-none">{% trans %}Reset to empty value{% endtrans %}</a></small>
     {% endif %}
     {% if value and not inline_usage %}
-        {% if hasPermission('ZikulaUsersBundle::', '::', 'ACCESS_ADMIN') %}
+        {% if is_granted('ROLE_ADMIN') %}
             <small class="form-text text-muted"><a href="{{ path('zikulausersbundle_useradministration_modify', { 'user': value }) }}" title="{% trans %}Switch to users administration{% endtrans %}">{% trans %}Manage user{% endtrans %}</a></small>
         {% endif %}
     {% endif %}

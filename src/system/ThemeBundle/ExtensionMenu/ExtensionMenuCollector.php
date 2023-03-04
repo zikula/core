@@ -25,7 +25,7 @@ class ExtensionMenuCollector
 
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        #[TaggedIterator('zikula.extension_menu')]
+        #[TaggedIterator(ExtensionMenuInterface::class)]
         iterable $extensionMenus = []
     ) {
         $this->extensionMenus = [];

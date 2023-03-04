@@ -1,0 +1,12 @@
+# see https://docs.nucleos.rocks/projects/user-bundle/en/2.0.x/configuration_reference.html
+nucleos_user:
+    db_driver: orm
+    user_class: 'Zikula\UsersBundle\Entity\User'
+    firewall_name: main
+    from_email: '%env(MAIL_SENDER)%'
+    deletion:
+        enabled: true
+    group:
+        group_class: 'Zikula\UsersBundle\Entity\Group'
+    loggedin:
+        route: 'user_dashboard' # Redirect route after login

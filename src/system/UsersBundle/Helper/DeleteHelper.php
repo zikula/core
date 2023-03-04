@@ -16,8 +16,6 @@ namespace Zikula\UsersBundle\Helper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\GroupsBundle\GroupsConstant;
-use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Event\ActiveUserPostDeletedEvent;
 use Zikula\UsersBundle\Event\RegistrationPostDeletedEvent;
@@ -28,8 +26,7 @@ class DeleteHelper
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly GroupRepositoryInterface $groupRespository
+        private readonly UserRepositoryInterface $userRepository
     ) {
     }
 
@@ -40,10 +37,11 @@ class DeleteHelper
     {
         switch ($param) {
             case 'gid':
-                if (in_array((int) $value, [GroupsConstant::GROUP_ID_USERS, GroupsConstant::GROUP_ID_ADMIN], true)) {
+                /*if (in_array((int) $value, [GroupsConstant::GROUP_ID_USERS, GroupsConstant::GROUP_ID_ADMIN], true)) {
                     throw new \InvalidArgumentException('Cannot delete from main User or Administrator group.');
-                }
-                $users = $this->groupRespository->find((int) $value)->getUsers();
+                }*/
+                //$users = $this->groupRepository->find((int) $value)->getUsers();
+                $users = []; // TODO
                 break;
             case 'status':
                 $statuses = [

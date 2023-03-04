@@ -15,6 +15,7 @@ namespace Zikula\ThemeBundle\Controller;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
@@ -24,16 +25,17 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\Form\Type\MailTestType;
 
 #[Route('/admin/tool')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class ToolController extends AbstractController
 {
     public function __construct(
         private readonly SiteDefinitionInterface $site,
+        #[Autowire('%enable_mail_logging%')]
         private readonly bool $mailLoggingEnabled
     ) {
     }

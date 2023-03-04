@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    {% if currentUser.uid == user.uid or hasPermission('ZikulaProfileBundle::edit', '::', 'ACCESS_EDIT') %}
+    {% if currentUser.uid == user.uid or is_granted('ROLE_EDITOR') %}
         <div class="card-footer text-right">
             <a class="btn btn-success btn-sm" href="{{ path('zikulaprofilebundle_profile_edit', {uid: user.uid}) }}"><i class="fas fa-pencil-alt"></i> {% trans %}Edit profile{% endtrans %}</a>
         </div>

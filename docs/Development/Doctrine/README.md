@@ -7,7 +7,7 @@ Like Symfony, Zikula uses Doctrine for managing database operations.
 
 ## Zikula additions
 
-- [UTC DateTime column type](UtcDateTypeType.md)
+- [UTC DateTime column type](UtcDateTimeType.md)
 - [WhereFromFilterTrait](WhereFromFilterTrait.md)
 
 ## External resources

@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreBundle;
 use FilesystemIterator;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
@@ -33,10 +34,15 @@ class CacheClearer
 
     public function __construct(
         LoggerInterface $zikulaLogger,
+        #[Autowire(service: 'cache_warmer')]
         private readonly CacheWarmerInterface $warmer,
+        #[Autowire(service: 'fos_js_routing.extractor')]
         private readonly ExposedRoutesExtractorInterface $fosJsRoutesExtractor,
+        #[Autowire('%kernel.cache_dir%')]
         private readonly string $cacheDir,
+        #[Autowire('%kernel.container_class%')]
         private readonly string $kernelContainerClass,
+        #[Autowire('%env(ZIKULA_INSTALLED)%')]
         string $installed
     ) {
         $this->logger = $zikulaLogger;

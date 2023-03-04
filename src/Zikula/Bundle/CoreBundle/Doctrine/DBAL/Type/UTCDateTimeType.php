@@ -13,18 +13,20 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Doctrine\DBAL\Type;
 
-use DateTime;
-use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
 
+/**
+ * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
+ */
 class UTCDateTimeType extends DateTimeType
 {
+    private static \DateTimeZone $utc;
+
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        if ($value instanceof DateTimeInterface) {
+        if ($value instanceof \DateTimeInterface) {
             $value->setTimezone(self::getUtc());
         }
 
@@ -33,11 +35,11 @@ class UTCDateTimeType extends DateTimeType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
-        if (null === $value || $value instanceof DateTimeInterface) {
+        if (null === $value || $value instanceof \DateTimeInterface) {
             return $value;
         }
 
-        $converted = DateTime::createFromFormat($platform->getDateTimeFormatString(), $value, self::getUtc());
+        $converted = \DateTime::createFromFormat($platform->getDateTimeFormatString(), $value, self::getUtc());
         if (!$converted) {
             throw ConversionException::conversionFailedFormat($value, $this->getName(), $platform->getDateTimeFormatString());
         }
@@ -45,8 +47,8 @@ class UTCDateTimeType extends DateTimeType
         return $converted;
     }
 
-    private static function getUtc(): DateTimeZone
+    private static function getUtc(): \DateTimeZone
     {
-        return new DateTimeZone('UTC');
+        return self::$utc ??= new \DateTimeZone('UTC');
     }
 }

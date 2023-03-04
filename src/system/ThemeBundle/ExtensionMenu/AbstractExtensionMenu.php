@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\ExtensionMenu;
 
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
-
 abstract class AbstractExtensionMenu implements ExtensionMenuInterface
 {
-    public function __construct(protected readonly PermissionApiInterface $permissionApi)
-    {
-    }
-
     public function get(string $context = ExtensionMenuInterface::CONTEXT_ADMIN): iterable
     {
         if (ExtensionMenuInterface::CONTEXT_ADMIN === $context) {

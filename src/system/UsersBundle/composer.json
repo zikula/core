@@ -35,12 +35,7 @@
 
         "zikula/core-bundle": "dev-3.1",
         "zikula/formextension-bundle": "dev-3.1",
-        "zikula/extensions-bundle": "dev-3.1",
-        "zikula/groups-bundle": "dev-3.1",
-        "zikula/permissions-bundle": "dev-3.1",
-        "zikula/theme-bundle": "dev-3.1",
-        "zikula/zauth-bundle": "dev-3.1",
-        "zikula/sortable-columns": "dev-main"
+        "zikula/theme-bundle": "dev-3.1"
     },
     "extra": {
         "zikula": {

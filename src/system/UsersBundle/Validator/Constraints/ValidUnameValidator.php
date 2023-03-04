@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Validator\Constraints;
 
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -24,7 +25,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\UsersConstant;
 
 class ValidUnameValidator extends ConstraintValidator
@@ -32,7 +32,7 @@ class ValidUnameValidator extends ConstraintValidator
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly ValidatorInterface $validator,
-        private readonly PermissionApiInterface $permissionApi,
+        private readonly Security $security,
         private readonly ?string $illegalUserNames
     ) {
     }
@@ -68,7 +68,7 @@ class ValidUnameValidator extends ConstraintValidator
 
         // ensure not reserved/illegal (unless performed by Admin)
         $illegalUserNames = $this->illegalUserNames ?? '';
-        if (!empty($illegalUserNames) && !$this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_ADMIN)) {
+        if (!empty($illegalUserNames) && !$this->security->isGranted('ROLE_ADMIN')) {
             $pattern = ['/^(\s*,\s*|\s+)+/D', '/\b(\s*,\s*|\s+)+\b/D', '/(\s*,\s*|\s+)+$/D'];
             $replace = ['', '|', ''];
             $illegalUserNames = preg_replace($pattern, $replace, preg_quote($illegalUserNames, '/'));

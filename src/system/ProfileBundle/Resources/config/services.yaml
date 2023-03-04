@@ -6,9 +6,6 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $prefix: '%zikula_profile_module.property_prefix%'
-            $projectDir: '%kernel.project_dir%'
 
     Zikula\ProfileBundle\:
         resource: '../../*'
@@ -18,9 +15,7 @@ services:
         resource: '../../Helper/*'
         lazy: true
 
-    Zikula\ProfileBundle\EventListener\AttributeNameTranslationListener:
-        arguments:
-            $locale: '%kernel.default_locale%'
+    Zikula\ProfileBundle\EventSubscriber\AttributeNameTranslationSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 

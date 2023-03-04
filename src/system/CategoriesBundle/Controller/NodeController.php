@@ -19,16 +19,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Form\Type\CategoryType;
 use Zikula\CategoriesBundle\Helper\CategoryProcessingHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 #[Route('/categories/admin/category')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class NodeController extends AbstractController
 {
     private string $domTreeNodePrefix = 'node_';

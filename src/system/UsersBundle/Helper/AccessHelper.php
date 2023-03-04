@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Helper;
 
-use DateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
@@ -24,8 +22,7 @@ class AccessHelper
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly PermissionApiInterface $permissionApi
+        private readonly UserRepositoryInterface $userRepository
     ) {
     }
 
@@ -66,7 +63,7 @@ class AccessHelper
 
     public function login(User $user, bool $rememberMe = false): void
     {
-        $user->setLastlogin(new DateTime());
+        $user->setLastlogin(new \DateTime());
         $this->userRepository->persistAndFlush($user);
         $request = $this->requestStack->getCurrentRequest();
         if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
@@ -77,7 +74,6 @@ class AccessHelper
                 $session->set('rememberme', 1);
             }
         }
-        $this->permissionApi->resetPermissionsForUser($user->getUid());
     }
 
     public function logout(): bool

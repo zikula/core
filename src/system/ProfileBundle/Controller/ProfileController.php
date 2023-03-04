@@ -20,8 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Zikula\ProfileBundle\Form\ProfileTypeFactory;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\Helper\UploadHelper;
@@ -34,14 +33,13 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 class ProfileController extends AbstractController
 {
     public function __construct(
-        private readonly PermissionApiInterface $permissionApi,
         private readonly bool $displayRegistrationDate,
         private readonly string $avatarImagePath
     ) {
     }
 
     #[Route('/display/{uid}', name: 'zikulaprofilebundle_profile_display', requirements: ['uid' => '\d+'], defaults: ['uid' => null])]
-    #[PermissionCheck(['$_zkModule::view', '::', 'read'])]
+    #[IsGranted('ROLE_USER')]
     public function display(
         PropertyRepositoryInterface $propertyRepository,
         CurrentUserApiInterface $currentUserApi,
@@ -75,7 +73,7 @@ class ProfileController extends AbstractController
         if (null === $userEntity) {
             $userEntity = $userRepository->find($currentUserUid);
         }
-        if ($userEntity->getUid() !== $currentUserUid && !$this->permissionApi->hasPermission('ZikulaProfileModule::edit', '::', ACCESS_EDIT)) {
+        if ($userEntity->getUid() !== $currentUserUid && !$this->isGranted('ROLE_EDITOR')) {
             throw new AccessDeniedException();
         }
         $attributes = $userEntity->getAttributes() ?? [];

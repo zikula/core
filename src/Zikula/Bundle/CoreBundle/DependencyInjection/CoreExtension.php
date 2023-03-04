@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\DependencyInjection;
 
-use InvalidArgumentException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -23,9 +22,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Api\LocaleApi;
-use Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener;
-use Zikula\Bundle\CoreBundle\EventListener\SiteOffListener;
-use Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener;
+use Zikula\Bundle\CoreBundle\EventSubscriber\ClickjackProtectionSubscriber;
+use Zikula\Bundle\CoreBundle\EventSubscriber\SiteOffSubscriber;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinition;
 
 class CoreExtension extends Extension implements PrependExtensionInterface
@@ -43,14 +41,12 @@ class CoreExtension extends Extension implements PrependExtensionInterface
 
         $container->setParameter('data_directory', $config['datadir']);
 
-        $container->getDefinition(ClickjackProtectionListener::class)
+        $container->getDefinition(ClickjackProtectionSubscriber::class)
             ->setArgument('$xFrameOptions', $config['x_frame_options']);
 
-        $container->getDefinition(SiteOffListener::class)
+        $container->getDefinition(SiteOffSubscriber::class)
             ->setArgument('$maintenanceModeEnabled', $config['maintenance_mode']['enabled'])
             ->setArgument('$maintenanceReason', $config['maintenance_mode']['reason']);
-        $container->getDefinition(SiteOffVetoLoginListener::class)
-            ->setArgument('$maintenanceModeEnabled', $config['maintenance_mode']['enabled']);
 
         $container->setParameter('enable_mail_logging', $config['enable_mail_logging']);
 
@@ -115,7 +111,7 @@ class CoreExtension extends Extension implements PrependExtensionInterface
                 $loader = new XmlFileLoader($container, new FileLocator($file->getPath()));
                 $loader->load($file->getFilename());
             }
-        } catch (InvalidArgumentException) {
+        } catch (\InvalidArgumentException) {
             // no module with a workflow directory exists, ignore
         }
     }

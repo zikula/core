@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ProfileBundle\Form;
 
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -29,6 +30,7 @@ class ProfileTypeFactory
         private readonly FormFactoryInterface $formFactory,
         private readonly PropertyRepositoryInterface $propertyRepository,
         private readonly TranslatorInterface $translator,
+        #[Autowire('%zikula_profile_module.property_prefix%')]
         private readonly string $prefix
     ) {
     }

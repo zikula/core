@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Zikula\ProfileBundle\Bridge\ProfileBundleBridge;
 use Zikula\ProfileBundle\Controller\ProfileController;
-use Zikula\ProfileBundle\EventListener\UsersUiListener;
+use Zikula\ProfileBundle\EventSubscriber\UsersUiSubscriber;
 use Zikula\ProfileBundle\Form\Type\AvatarType;
 use Zikula\ProfileBundle\Helper\UploadHelper;
 
@@ -42,7 +42,7 @@ class ZikulaProfileExtension extends Extension
             ->setArgument('$displayRegistrationDate', $config['display_registration_date'])
             ->setArgument('$avatarImagePath', $config['avatar']['image_path']);
 
-        $container->getDefinition(UsersUiListener::class)
+        $container->getDefinition(UsersUiSubscriber::class)
             ->setArgument('$displayRegistrationDate', $config['display_registration_date'])
             ->setArgument('$avatarImagePath', $config['avatar']['image_path']);
 

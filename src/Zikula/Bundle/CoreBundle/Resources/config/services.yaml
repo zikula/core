@@ -3,8 +3,6 @@ services:
         autowire: true
         autoconfigure: true
         public: false
-        bind:
-            $installed: '%env(ZIKULA_INSTALLED)%'
 
     # alias interface to doctrine service
     Doctrine\Persistence\ManagerRegistry: '@doctrine'
@@ -14,34 +12,9 @@ services:
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
     Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface: '@Zikula\Bundle\CoreBundle\Api\LocaleApi'
-    Zikula\Bundle\CoreBundle\Api\LocaleApi:
-        arguments:
-          $projectDir: '%kernel.project_dir%'
 
-    Zikula\Bundle\CoreBundle\CacheClearer:
-        arguments:
-          $warmer: '@cache_warmer'
-          $fosJsRoutesExtractor: '@fos_js_routing.extractor'
-          $cacheDir: '%kernel.cache_dir%'
-          $kernelContainerClass: '%kernel.container_class%'
-
-    Zikula\Bundle\CoreBundle\EventListener\BlameListener:
-        arguments:
-          $blameableListener: '@stof_doctrine_extensions.listener.blameable'
-
-    Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener:
+    Zikula\Bundle\CoreBundle\EventSubscriber\ClickjackProtectionSubscriber:
         arguments:
             $xFrameOptions: 'SAMEORIGIN'
-
-    Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener:
-        lazy: true
-
-    Zikula\Bundle\CoreBundle\EventListener\LoggableListener:
-        arguments:
-          $loggableListener: '@stof_doctrine_extensions.listener.loggable'
-
-    Zikula\Bundle\CoreBundle\Site\SiteDefinition:
-        arguments:
-          $defaultLocale: '%kernel.default_locale%'
 
     Symfony\Component\HttpKernel\Fragment\FragmentHandler: '@fragment.handler'

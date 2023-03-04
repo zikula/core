@@ -13,19 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle\Api;
 
-use InvalidArgumentException;
 use Zikula\CategoriesBundle\Api\ApiInterface\CategoryPermissionApiInterface;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 class CategoryPermissionApi implements CategoryPermissionApiInterface
 {
-    /**
-     * @var PermissionApiInterface
-     */
-    private $permissionApi;
-
-    public function __construct(PermissionApiInterface $permissionApi)
+    public function __construct(private readonly PermissionApiInterface $permissionApi)
     {
         $this->permissionApi = $permissionApi;
     }
@@ -44,7 +38,7 @@ class CategoryPermissionApi implements CategoryPermissionApiInterface
         /** @var AbstractCategoryAssignment[] $categoryAssignments */
         foreach ($categoryAssignments as $categoryAssignment) {
             if (!($categoryAssignment instanceof AbstractCategoryAssignment)) {
-                throw new InvalidArgumentException('$categoryAssignments must be an array of AbstractCategoryAssignment');
+                throw new \InvalidArgumentException('$categoryAssignments must be an array of AbstractCategoryAssignment');
             }
             $regId = $categoryAssignment->getCategoryRegistryId();
             $catId = $categoryAssignment->getCategory()->getId();

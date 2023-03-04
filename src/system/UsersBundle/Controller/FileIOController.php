@@ -18,14 +18,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Zikula\GroupsBundle\Entity\Group;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Form\Type\ExportUsersType;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 #[Route('/users/fileIO')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class FileIOController extends AbstractController
 {
     #[Route('/export', name: 'zikulausersbundle_fileio_export')]

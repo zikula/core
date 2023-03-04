@@ -21,10 +21,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
@@ -37,7 +37,7 @@ use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
 
 #[Route('/account')]
-#[PermissionCheck('read')]
+#[IsGranted('ROLE_USER')]
 class AccountController extends AbstractController
 {
     public function __construct(

@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Zikula\ThemeBundle\Controller\Dashboard\AdminDashboardController;
 use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
-use Zikula\ThemeBundle\EventListener\OutputCompressionListener;
+use Zikula\ThemeBundle\EventSubscriber\OutputCompressionSubscriber;
 
 class ZikulaThemeExtension extends Extension
 {
@@ -40,7 +40,7 @@ class ZikulaThemeExtension extends Extension
         $container->getDefinition(UserDashboardController::class)
             ->setArgument('$themeConfig', $this->prepareThemeConfig($config['user_dashboard']));
 
-        $container->getDefinition(OutputCompressionListener::class)
+        $container->getDefinition(OutputCompressionSubscriber::class)
             ->setArgument('$useCompression', $config['use_compression']);
     }
 

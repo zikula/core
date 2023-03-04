@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ProfileBundle\Form\Type;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -25,6 +26,7 @@ class AvatarType extends AbstractType
 
     public function __construct(
         private readonly array $avatarConfig,
+        #[Autowire('%kernel.project_dir%')]
         string $projectDir
     ) {
         $this->avatarPath = $projectDir . '/' . $avatarConfig['image_path'];

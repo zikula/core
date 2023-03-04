@@ -17,14 +17,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\LegalBundle\Form\Type\ConfigType;
 use Zikula\LegalBundle\Helper\ResetAgreementHelper;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
 
 #[Route('/legal')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class ConfigController extends AbstractController
 {
     public function __construct(private readonly TranslatorInterface $translator)

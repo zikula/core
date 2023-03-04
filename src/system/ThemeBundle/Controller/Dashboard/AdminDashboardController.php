@@ -17,12 +17,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use function Symfony\Component\Translation\t;
-use Zikula\GroupsBundle\Entity\Group;
-use Zikula\PermissionsBundle\Entity\Permission;
+use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Entity\User;
 
+#[IsGranted('ROLE_ADMIN')]
 class AdminDashboardController extends AbstractThemedDashboardController
 {
     protected function getName(): string
@@ -43,8 +44,8 @@ class AdminDashboardController extends AbstractThemedDashboardController
 
         yield MenuItem::linkToCrud(t('Users'), 'fas fa-user', User::class);
         yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
-        yield MenuItem::linkToCrud(t('Permissions'), 'fas fa-lock', Permission::class);
-        yield MenuItem::linkToCrud(t('Add permission'), 'fas fa-plus', Permission::class)
+        yield MenuItem::linkToCrud(t('Categories'), 'fas fa-sitemap', Category::class);
+        yield MenuItem::linkToCrud(t('Add category'), 'fas fa-plus', Category::class)
             ->setAction('new');
 
         foreach ($this->adminCategoryHelper->getCategories() as $category) {
@@ -55,9 +56,6 @@ class AdminDashboardController extends AbstractThemedDashboardController
                 if (!in_array($bundle->getName(), $bundleNames, true)) {
                     continue;
                 }
-                /*if (!$this->permissionApi->hasPermission($bundle->getName() . '::', 'ANY', ACCESS_EDIT)) {
-                    continue;
-                }*/
 
                 $bundleInfo = $bundle->getMetaData();
                 [$menuTextUrl, $menuText] = $this->adminBundleHelper->getAdminRouteInformation($bundleInfo);

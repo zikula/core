@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeBundle\Helper\AdminBundleHelper;
 use Zikula\ThemeBundle\Helper\AdminCategoryHelper;
@@ -35,7 +34,6 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         protected readonly AdminCategoryHelper $adminCategoryHelper,
         protected readonly AdminBundleHelper $adminBundleHelper,
         protected readonly ExtensionMenuCollector $extensionMenuCollector,
-        protected readonly PermissionApiInterface $permissionApi,
         protected readonly SiteDefinitionInterface $site,
         protected readonly array $themeConfig
     ) {

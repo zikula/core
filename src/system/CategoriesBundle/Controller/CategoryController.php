@@ -18,28 +18,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Form\Type\CategoryTreeType;
 use Zikula\CategoriesBundle\Repository\CategoryRepository;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 
 #[Route('/categories/admin/category')]
-#[PermissionCheck('admin')]
+#[IsGranted('ROLE_ADMIN')]
 class CategoryController extends AbstractController
 {
     private string $domTreeNodePrefix = 'node_';
 
-    public function __construct(private readonly TranslatorInterface $translator, private readonly PermissionApiInterface $permissionApi)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
     /**
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
-     * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
     #[Route('/list/{id}', name: 'zikulacategoriesbundle_category_listcategories', requirements: ['category' => "^[1-9]\d*$"], defaults: ['id' => 1])]
     public function listCategories(
@@ -48,11 +45,6 @@ class CategoryController extends AbstractController
         Category $category,
         CategoryRepository $categoryRepository
     ): Response {
-        if (!$this->permissionApi->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)
-            || !$this->permissionApi->hasPermission('ZikulaCategoriesModule::category', 'ID::' . $category->getId(), ACCESS_EDIT)) {
-            throw new AccessDeniedException();
-        }
-
         $categoryRepository->recover();
         $doctrine->getManager()->flush();
         $tree = $categoryRepository->childrenHierarchy(

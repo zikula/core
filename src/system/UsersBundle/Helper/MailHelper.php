@@ -13,21 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Helper;
 
-use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
-use Zikula\PermissionsBundle\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\ZAuthBundle\Repository\AuthenticationMappingRepositoryInterface;
 
 class MailHelper
 {
@@ -36,8 +32,7 @@ class MailHelper
         private readonly Environment $twig,
         private readonly MailerInterface $mailer,
         private readonly LoggerInterface $mailLogger, // $mailLogger var name auto-injects the mail channel handler
-        private readonly PermissionApiInterface $permissionApi,
-        private readonly AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
+        private readonly Security $security,
         private readonly SiteDefinitionInterface $site,
         private readonly ?string $registrationNotificationEmail,
         private readonly bool $mailLoggingEnabled
@@ -56,9 +51,6 @@ class MailHelper
      *                                       administrator (but not by the user himself)
      *
      * @return array of errors created from the mail process
-     *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received
-     * @throws RuntimeException Thrown if the registration couldn't be saved
      */
     public function createAndSendRegistrationMail(
         User $userEntity,
@@ -70,7 +62,7 @@ class MailHelper
         $rendererArgs = [];
         $rendererArgs['user'] = $userEntity;
         $rendererArgs['createdpassword'] = $passwordCreatedForUser;
-        $rendererArgs['createdByAdmin'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
+        $rendererArgs['createdByAdmin'] = $this->security->isGranted('ROLE_ADMIN');
 
         if (!empty($passwordCreatedForUser) || ($userNotification && $userEntity->isApproved())) {
             $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
@@ -81,9 +73,7 @@ class MailHelper
         if ($adminNotification) {
             // send notification email to inform admin about registration
             if (!empty($this->registrationNotificationEmail)) {
-                $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
-                $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
-
+                $rendererArgs['isVerified'] = false; // TODO replace ZAuth data
                 $mailSent = $this->sendNotification($this->registrationNotificationEmail, 'regadminnotify', $rendererArgs);
                 if (!$mailSent) {
                     $mailErrors[] = $this->translator->trans('Warning! The notification email for the new registration could not be sent.', [], 'mail');
@@ -106,11 +96,6 @@ class MailHelper
      *                                       an administrator (but not by the user himself)
      *
      * @return array of mail errors
-     *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received
-     * @throws AccessDeniedException Thrown if the current user does not have overview access
-     * @throws RuntimeException Thrown if the user couldn't be added to the relevant user groups or
-     *                                  if the registration couldn't be saved
      */
     public function createAndSendUserMail(
         User $userEntity,
@@ -122,7 +107,7 @@ class MailHelper
         $rendererArgs = [];
         $rendererArgs['user'] = $userEntity;
         $rendererArgs['createdpassword'] = $passwordCreatedForUser;
-        $rendererArgs['createdByAdmin'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
+        $rendererArgs['createdByAdmin'] = $this->security->isGranted('ROLE_ADMIN');
 
         if ($userNotification || !empty($passwordCreatedForUser)) {
             $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);

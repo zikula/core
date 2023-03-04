@@ -1,33 +1,41 @@
 security:
-    enable_authenticator_manager: true
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    encoders:
-        Zikula\ZAuthBundle\Entity\AuthenticationMappingEntity:
-            algorithm: auto
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+
     providers:
-        users_in_memory: { memory: null }
+        nucleos_userbundle:
+            id: nucleos_user.user_provider.username_email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            lazy: true
-            provider: users_in_memory
+            pattern: ^/
+            user_checker: Nucleos\UserBundle\Security\UserChecker
+            form_login:
+                provider: nucleos_userbundle
+                enable_csrf: true
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
+            logout: true
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
+    role_hierarchy:
+        ROLE_EDITOR:      ROLE_USER
+        ROLE_ADMIN:       ROLE_EDITOR
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # public access for login form and password reset page
+        - { path: ^/login, role: PUBLIC_ACCESS }
+        - { path: ^/resetting, role: PUBLIC_ACCESS }
+        # login for password change and profile
+        - { path: ^/change-password, role: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/profile, role: IS_AUTHENTICATED_REMEMBERED }
+        # admin dashboard - disabled in favor of #[IsGranted] attribute in AdminDashboardController
+        # - { path: ^/admin, role: ROLE_ADMIN }
 
 when@test:
     security:

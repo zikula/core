@@ -1,3 +1,0 @@
-#permission-list > tbody > tr:not(.locked) {
-    cursor: move;
-}

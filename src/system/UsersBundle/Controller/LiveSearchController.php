@@ -17,8 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\PermissionsBundle\Annotation\PermissionCheck;
-use Zikula\UsersBundle\Collector\ProfileBundleCollector;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Zikula\UsersBundle\ProfileBundle\ProfileBundleCollector;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 #[Route('/users/livesearch')]
@@ -28,7 +28,7 @@ class LiveSearchController extends AbstractController
      * Retrieves a list of users for a given search term (fragment).
      */
     #[Route('/getUsers', name: 'zikulausersbundle_livesearch_getusers', methods: ['GET'], options: ['expose' => true])]
-    #[PermissionCheck(['$_zkModule::LiveSearch', '::', 'edit'])]
+    #[IsGranted('ROLE_EDITOR')]
     public function getUsers(
         Request $request,
         UserRepositoryInterface $userRepository,

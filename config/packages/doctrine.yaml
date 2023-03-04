@@ -6,10 +6,10 @@ doctrine:
             utcdatetime:
                 class: Zikula\Bundle\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
     orm:
-        proxy_namespace: DoctrineProxy
-        proxy_dir: '%kernel.cache_dir%/doctrine/orm/DoctrineProxy'
+        auto_generate_proxy_classes: false
+        enable_lazy_ghost_objects: true
+        proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
         default_entity_manager: default
-        auto_generate_proxy_classes: true
         #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         entity_managers:
             # the standard distribution overrides this to be true in debug, false otherwise
@@ -53,7 +53,6 @@ doctrine:
 when@prod:
     doctrine:
         orm:
-            auto_generate_proxy_classes: false
             query_cache_driver:
                 type: pool
                 pool: doctrine.system_cache_pool

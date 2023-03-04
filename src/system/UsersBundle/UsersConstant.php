@@ -37,11 +37,6 @@ class UsersConstant
     public const FORCE_PASSWORD_SESSION_UID_KEY = 'l56F2fe7ZBbLm6ruQhgU';
 
     /**
-     * This key is used to define an attribute.
-     */
-    public const AUTHENTICATION_METHOD_ATTRIBUTE_KEY = 'authenticationMethod';
-
-    /**
      * Pending registration (not able to log in).
      * Moderation and/or e-mail verification are in use in the registration process, and one or more of the required steps has not yet
      * been completed.

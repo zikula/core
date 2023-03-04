@@ -1,0 +1,6 @@
+# see https://docs.nucleos.rocks/projects/profile-bundle/en/1.5.x/configuration.html
+nucleos_profile:
+    registration:
+        confirmation:
+            enabled: true
+            from_email: '%env(MAIL_SENDER)%'
