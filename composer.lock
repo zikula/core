@@ -3156,16 +3156,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.11.0",
+            "version": "1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "14daed4296fae74d9e3201d2c4925d1acb7aa614"
+                "reference": "7284c22080590fb39f2ffa3e9057f10a4ddd0e0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/14daed4296fae74d9e3201d2c4925d1acb7aa614",
-                "reference": "14daed4296fae74d9e3201d2c4925d1acb7aa614",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/7284c22080590fb39f2ffa3e9057f10a4ddd0e0c",
+                "reference": "7284c22080590fb39f2ffa3e9057f10a4ddd0e0c",
                 "shasum": ""
             },
             "require": {
@@ -3203,7 +3203,7 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                "source": "https://github.com/myclabs/DeepCopy/tree/1.11.0"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.11.1"
             },
             "funding": [
                 {
@@ -3211,7 +3211,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-03T13:19:32+00:00"
+            "time": "2023-03-08T13:26:56+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -3940,16 +3940,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "10.0.1",
+            "version": "10.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "b9c21a93dd8c8eed79879374884ee733259475cc"
+                "reference": "20800e84296ea4732f9a125e08ce86b4004ae3e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/b9c21a93dd8c8eed79879374884ee733259475cc",
-                "reference": "b9c21a93dd8c8eed79879374884ee733259475cc",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/20800e84296ea4732f9a125e08ce86b4004ae3e4",
+                "reference": "20800e84296ea4732f9a125e08ce86b4004ae3e4",
                 "shasum": ""
             },
             "require": {
@@ -3971,8 +3971,8 @@
                 "phpunit/phpunit": "^10.0"
             },
             "suggest": {
-                "ext-pcov": "*",
-                "ext-xdebug": "*"
+                "ext-pcov": "PHP extension that provides line coverage",
+                "ext-xdebug": "PHP extension that provides line coverage as well as branch and path coverage"
             },
             "type": "library",
             "extra": {
@@ -4005,7 +4005,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.0.1"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/10.0.2"
             },
             "funding": [
                 {
@@ -4013,7 +4013,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-25T05:35:03+00:00"
+            "time": "2023-03-06T13:00:19+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -4258,16 +4258,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.0.14",
+            "version": "10.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "7065dbebcb0f66cf16a45fc9cfc28c2351e06169"
+                "reference": "9b0c2245ef173a3d9546f6a4393a85d60eabe071"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7065dbebcb0f66cf16a45fc9cfc28c2351e06169",
-                "reference": "7065dbebcb0f66cf16a45fc9cfc28c2351e06169",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9b0c2245ef173a3d9546f6a4393a85d60eabe071",
+                "reference": "9b0c2245ef173a3d9546f6a4393a85d60eabe071",
                 "shasum": ""
             },
             "require": {
@@ -4299,7 +4299,7 @@
                 "sebastian/version": "^4.0"
             },
             "suggest": {
-                "ext-soap": "*"
+                "ext-soap": "To be able to generate mocks based on WSDL files"
             },
             "bin": [
                 "phpunit"
@@ -4338,7 +4338,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.0.14"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.0.15"
             },
             "funding": [
                 {
@@ -4354,7 +4354,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-01T05:37:49+00:00"
+            "time": "2023-03-09T06:43:13+00:00"
         },
         {
             "name": "psr/cache",
