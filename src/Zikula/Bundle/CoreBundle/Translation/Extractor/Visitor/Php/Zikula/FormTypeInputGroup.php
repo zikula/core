@@ -15,9 +15,9 @@ namespace Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Zikula;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitor;
-use function Symfony\Component\String\s;
 use Translation\Extractor\Visitor\Php\Symfony\AbstractFormType;
 use Translation\Extractor\Visitor\Php\Symfony\FormTrait;
+use function Symfony\Component\String\s;
 
 /**
  * This class extracts "input_group" array values from form type classes.

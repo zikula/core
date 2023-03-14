@@ -18,10 +18,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use function Symfony\Component\Translation\t;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Entity\User;
+use function Symfony\Component\Translation\t;
 
 #[IsGranted('ROLE_ADMIN')]
 class AdminDashboardController extends AbstractThemedDashboardController

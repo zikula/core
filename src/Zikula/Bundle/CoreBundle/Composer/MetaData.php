@@ -16,9 +16,9 @@ namespace Zikula\Bundle\CoreBundle\Composer;
 use ArrayAccess;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
-use function Symfony\Component\String\s;
 use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
+use function Symfony\Component\String\s;
 
 class MetaData implements ArrayAccess
 {
