@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Twig\Runtime;
 
 use InvalidArgumentException;
-use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\ProfileBundle\ProfileBundleCollector;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use function Symfony\Component\String\s;
 
 class ProfileRuntime implements RuntimeExtensionInterface
 {

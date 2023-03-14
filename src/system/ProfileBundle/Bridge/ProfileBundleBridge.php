@@ -17,12 +17,12 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use function Symfony\Component\String\s;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\ProfileConstant;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
+use function Symfony\Component\String\s;
 
 class ProfileBundleBridge implements ProfileBundleInterface
 {

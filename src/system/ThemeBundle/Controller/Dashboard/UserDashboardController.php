@@ -17,10 +17,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use function Symfony\Component\Translation\t;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersBundle\Entity\User;
+use function Symfony\Component\Translation\t;
 
 class UserDashboardController extends AbstractThemedDashboardController
 {

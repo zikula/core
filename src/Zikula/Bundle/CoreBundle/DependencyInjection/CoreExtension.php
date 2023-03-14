@@ -20,11 +20,11 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use function Symfony\Component\String\s;
 use Zikula\Bundle\CoreBundle\Api\LocaleApi;
 use Zikula\Bundle\CoreBundle\EventSubscriber\ClickjackProtectionSubscriber;
 use Zikula\Bundle\CoreBundle\EventSubscriber\SiteOffSubscriber;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinition;
+use function Symfony\Component\String\s;
 
 class CoreExtension extends Extension implements PrependExtensionInterface
 {

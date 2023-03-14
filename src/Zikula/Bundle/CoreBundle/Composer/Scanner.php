@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Composer;
 
-use const JSON_ERROR_NONE;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use function Symfony\Component\String\s;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function Symfony\Component\String\s;
+use const JSON_ERROR_NONE;
 
 class Scanner
 {
