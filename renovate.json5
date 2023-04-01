@@ -1,0 +1,50 @@
+{
+  // all options: see https://docs.renovatebot.com/configuration-options/
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  // configuration presets to use or extend
+  extends: ['config:base', 'group:symfony', 'docker:enableMajor'],
+  // ignore versions with unstable SemVer
+  ignoreUnstable: true,
+  // when is Renovate allowed to run
+  schedule: ['at any time'],
+  // enforce enablement of semantic commits
+  semanticCommits: 'enabled',
+  // separate major or minor branches if both updates exist
+  separateMajorMinor: true,
+  // separate minor or patch branches if both updates exist
+  separateMinorPatch: true,
+  // separate branches for multiple major updates
+  separateMultipleMajor: true,
+  // rules for matching package names
+  // see https://docs.renovatebot.com/configuration-options/#packagerules
+  packageRules: [
+    {
+      matchManagers: ['composer'],
+      rangeStrategy: 'update-lockfile',
+    },
+    // group all docker updates together
+    {
+      matchManagers: ['docker-compose', 'dockerfile'],
+      groupName: 'docker',
+    },
+    // group other updates with patch level
+    {
+      matchManagers: ['composer'],
+      matchUpdateTypes: ['patch'],
+      groupName: 'composer (patch)',
+    },
+    {
+      matchManagers: ['npm'],
+      matchUpdateTypes: ['patch'],
+      groupName: 'npm (patch)',
+    },
+    {
+      matchPackagePatterns: ['^doctrine'],
+      groupName: 'doctrine',
+    },
+  ],
+  // required for Symfony Flex integration
+  // see https://github.com/renovatebot/renovate/pull/11990
+  allowPlugins: true,
+  ignorePlugins: false,
+}
