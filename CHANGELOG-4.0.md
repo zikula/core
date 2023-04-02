@@ -18,6 +18,7 @@
   - [Routes] Remove custom routes system/bundle.
   - [Search] Remove search bundle.
   - [SecurityCenter] Remove security center bundle (PHPIDS in favor of your server's WAF, HTML Purifer in favor of [ExerciseHTMLPurifierBundle](https://github.com/Exercise/HTMLPurifierBundle) and [Symfony HtmlSanitizer](https://symfony.com/blog/new-in-symfony-6-1-htmlsanitizer-component)).
+  - [StaticContent] Remove static content bundle.
   - [Theme] Remove `AtomTheme`, `PrinterTheme`, `RssTheme`, `BootstrapTheme`, `DefaultTheme`.
   - [Theme] Remove theme engine in favor of lightweight themed dashboards (see below).
   - [Workflow] Remove graphical workflow editor.
@@ -34,6 +35,4 @@
   - [Legal] Add `Legal` bundle to monorepo.
   - [Profile] Add `Profile` bundle to monorepo.
   - [Settings] Utilize rate limiter component for test email functionality.
-  - [SortableColumns] Add `SortableColumns` component to monorepo.
   - [Theme] Introduce themed dashboards extending `EasyAdminBundle` dashboard functionality.
-  - [StaticContent] Add `StaticContent` bundle to monorepo.
