@@ -19,11 +19,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Zikula\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 use Zikula\CategoriesBundle\Form\Type\CategoryRegistryType;
 use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CategoriesBundle\Repository\CategoryRegistryRepositoryInterface;
+use Zikula\FormExtensionBundle\Form\Type\DeletionType;
 
 #[Route('/categories/admin/registry')]
 #[IsGranted('ROLE_ADMIN')]
