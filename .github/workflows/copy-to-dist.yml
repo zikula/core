@@ -151,24 +151,6 @@ jobs:
           dst_path: /config/routes.yaml
           dst_owner: zikula
           dst_repo_name: distribution
-  copy_routes_dev_yaml:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set branch
-        id: vars
-        run: |
-          branch_name=${GITHUB_REF##*/}
-          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
-      - name: Copy config/routes_dev.yaml
-        uses: andstor/copycat-action@v3
-        with:
-          personal_token: ${{ secrets.COPY_DIST_TOKEN }}
-          src_branch: ${{ steps.vars.outputs.branch_name }}
-          dst_branch: ${{ steps.vars.outputs.branch_name }}
-          src_path: /config/routes_dev.yaml
-          dst_path: /config/routes_dev.yaml
-          dst_owner: zikula
-          dst_repo_name: distribution
   copy_services_yaml:
     runs-on: ubuntu-latest
     steps:
