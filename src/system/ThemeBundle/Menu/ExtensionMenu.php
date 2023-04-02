@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ThemeBundle\Menu;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 
 class ExtensionMenu extends AbstractExtensionMenu
