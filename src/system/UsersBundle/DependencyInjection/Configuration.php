@@ -15,7 +15,6 @@ namespace Zikula\UsersBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Zikula\UsersBundle\UsersConstant;
 
 class Configuration implements ConfigurationInterface
 {

@@ -94,7 +94,7 @@ class UserCrudController extends AbstractCrudController
         yield 'timezone' => TimezoneField::new('timezone', t('Timezone'));
 
         // custom additions
-        yield 'activated' => ChoiceField::new('activated', t('Activated'))->setRequired(true)->setChoices($this->choiceHelper->getActivatedValues());
+        yield 'activated' => ChoiceField::new('activated', t('Activated'))->setRequired(true)->setChoices($this->choiceHelper->getActivatedValues())->renderExpanded();
         yield 'approvedDate' => DateTimeField::new('approvedDate', t('Approved at'))->hideOnIndex();
         yield 'approvedBy' => NumberField::new('approvedBy', t('Approved by'))->hideOnIndex(); // TODO replace by AssociationField
         yield 'registrationDate' => DateTimeField::new('registrationDate', t('Registered at'))->hideOnIndex();

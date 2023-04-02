@@ -48,7 +48,7 @@ class User extends BaseUser
     protected Collection $groups;
 
     /**
-     * Account State: The user's current state, see \Zikula\UsersModule\Constant::ACTIVATED_* for defined constants.
+     * Account State: The user's current state, see \Zikula\UsersModule\UsersConstant::ACTIVATED_* for defined constants.
      * A state represented by a negative integer means that the user's account is in a pending state, and should not yet be considered a "real" user account.
      * For example, user accounts pending the completion of the registration process (because either moderation, e-mail verification, or both are in use)
      * will have a negative integer representing their state. If the user's registration request expires before it the process is completed, or if the administrator
@@ -56,7 +56,6 @@ class User extends BaseUser
      * When this deletion happens, it will be assumed by the system that no external module has yet interacted with the user account record,
      * because its state never progressed beyond its pending state, and therefore normal hooks/events may not be triggered
      * (although it is possible that events regarding the pending account may be triggered).
-     *
      */
     #[Assert\Choice(callback: 'getActivatedValues')] // TODO replace by enum
     #[ORM\Column]
