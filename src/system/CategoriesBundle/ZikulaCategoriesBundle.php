@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
-use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
-use Zikula\Bundle\CoreBundle\BundleInitializer\InitializableBundleInterface;
+use Zikula\CoreBundle\AbstractModule;
+use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
+use Zikula\CoreBundle\BundleInitializer\InitializableBundleInterface;
 use Zikula\CategoriesBundle\Initializer\CategoriesInitializer;
 
 class ZikulaCategoriesBundle extends AbstractModule implements InitializableBundleInterface

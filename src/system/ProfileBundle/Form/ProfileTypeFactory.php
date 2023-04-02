@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\FormExtensionBundle\Form\Type\InlineFormDefinitionType;
+use Zikula\FormExtensionBundle\Form\Type\InlineFormDefinitionType;
 use Zikula\ProfileBundle\ProfileConstant;
 use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;
 

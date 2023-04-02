@@ -17,7 +17,7 @@ use DateTime;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Bundle\CoreBundle\Doctrine\PaginatorInterface;
+use Zikula\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\UsersBundle\Entity\User;
 
 interface UserRepositoryInterface extends ObjectRepository, Selectable

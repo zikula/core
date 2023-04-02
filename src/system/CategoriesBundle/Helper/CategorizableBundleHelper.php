@@ -15,8 +15,8 @@ namespace Zikula\CategoriesBundle\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Zikula\Bundle\CoreBundle\AbstractModule;
-use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\CoreBundle\AbstractModule;
+use Zikula\CoreBundle\Composer\MetaData;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesBundle\Entity\Category;
 

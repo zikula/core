@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatableMessage;
-use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
+use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeBundle\Helper\AdminBundleHelper;
 use Zikula\ThemeBundle\Helper\AdminCategoryHelper;

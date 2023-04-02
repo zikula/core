@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\FormExtensionBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'

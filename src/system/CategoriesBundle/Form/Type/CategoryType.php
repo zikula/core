@@ -27,11 +27,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Validator\Constraints\UniqueNameForPosition;
+use Zikula\CoreBundle\Translation\TranslatorTrait;
 
 class CategoryType extends AbstractType
 {

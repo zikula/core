@@ -4,7 +4,7 @@ doctrine:
         server_version: 5 # any value will work (bypasses DBALException)
         types:
             utcdatetime:
-                class: Zikula\Bundle\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
+                class: Zikula\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: false
         enable_lazy_ghost_objects: true

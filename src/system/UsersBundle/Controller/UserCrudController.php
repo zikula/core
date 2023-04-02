@@ -38,7 +38,7 @@ use Nucleos\UserBundle\Model\UserManager;
 use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\ChoiceHelper;
 use function Symfony\Component\Translation\t;

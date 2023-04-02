@@ -43,10 +43,6 @@
                 "admin": {
                     "route": "zikulacategoriesbundle_category_listcategories"
                 }
-            },
-            "securityschema": {
-                "ZikulaCategoriesModule::": "::",
-                "ZikulaCategoriesModule:PropertyId:CategoryId": "$propId::$catId"
             }
         }
     }

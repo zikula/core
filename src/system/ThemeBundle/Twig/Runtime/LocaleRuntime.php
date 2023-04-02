@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 
 class LocaleRuntime implements RuntimeExtensionInterface
 {

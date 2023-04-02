@@ -10,7 +10,7 @@ translation:
             excluded_names: ["*TestCase.php", "*Test.php"]
             excluded_dirs: [cache, data, logs]
         zikula:
-            dirs: ["%kernel.project_dir%/templates", "%kernel.project_dir%/src/system", "%kernel.project_dir%/src/Zikula"]
+            dirs: ["%kernel.project_dir%/templates", "%kernel.project_dir%/src/system"]
             output_dir: "%kernel.project_dir%/translations"
             excluded_names: ["*TestCase.php", "*Test.php"]
             excluded_dirs: [cache, data, logs, vendor]

@@ -26,7 +26,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
+use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeBundle\Form\Type\MailTestType;
 
 #[Route('/admin/tool')]

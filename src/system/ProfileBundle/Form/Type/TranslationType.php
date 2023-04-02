@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 
 class TranslationType extends AbstractType
 {

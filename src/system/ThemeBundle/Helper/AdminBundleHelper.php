@@ -17,8 +17,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\AbstractModule;
-use Zikula\Bundle\CoreBundle\Composer\MetaData;
+use Zikula\CoreBundle\AbstractModule;
+use Zikula\CoreBundle\Composer\MetaData;
 
 class AdminBundleHelper
 {

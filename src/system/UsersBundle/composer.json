@@ -50,12 +50,6 @@
                 "user": {
                     "route": "zikulausersbundle_account_menu"
                 }
-            },
-            "securityschema": {
-                "ZikulaUsersModule::": "Uname::User ID",
-                "ZikulaUsersModule::LiveSearch": "::",
-                "ZikulaUsersModule::MailUsers": "::",
-                "Accountlinks::": "Block title::"
             }
         }
     }

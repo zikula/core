@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Form\Type\ChangeLanguageType;

@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
-use Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent;
+use Zikula\FormExtensionBundle\Event\FormTypeChoiceEvent;
 use Zikula\ProfileBundle\Form\ProfileTypeFactory;
 use Zikula\ProfileBundle\Form\Type\AvatarType;
 use Zikula\ProfileBundle\Helper\UploadHelper;

@@ -55,9 +55,6 @@
                 "admin": {
                     "route": "zikulathemebundle_branding_overview"
                 }
-            },
-            "securityschema": {
-                "LocaleSwitcher::": "::"
             }
         }
     }

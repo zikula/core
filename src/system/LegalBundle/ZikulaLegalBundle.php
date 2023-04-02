@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle;
 
-use Zikula\Bundle\CoreBundle\AbstractModule;
+use Zikula\CoreBundle\AbstractModule;
 
 class ZikulaLegalBundle extends AbstractModule
 {

@@ -16,7 +16,7 @@ namespace Zikula\UsersBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType;
+use Zikula\FormExtensionBundle\Form\Type\LocaleType;
 
 class ChangeLanguageType extends AbstractType
 {

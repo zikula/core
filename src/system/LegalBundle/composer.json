@@ -29,16 +29,6 @@
                 "user": {
                     "route": "zikulalegalbundle_user_legalnotice"
                 }
-            },
-            "securityschema": {
-                "ZikulaLegalModule::": "::",
-                "ZikulaLegalModule::legalNotice": "::",
-                "ZikulaLegalModule::termsOfUse": "::",
-                "ZikulaLegalModule::privacyPolicy": "::",
-                "ZikulaLegalModule::agePolicy": "::",
-                "ZikulaLegalModule::accessibilityStatement": "::",
-                "ZikulaLegalModule::cancellationRightPolicy": "::",
-                "ZikulaLegalModule::tradeConditions": "::"
             }
         }
     }

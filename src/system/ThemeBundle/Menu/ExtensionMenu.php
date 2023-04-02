@@ -17,7 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 
 class ExtensionMenu extends AbstractExtensionMenu

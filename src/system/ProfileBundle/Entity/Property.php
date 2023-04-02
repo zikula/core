@@ -17,7 +17,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\FormExtensionBundle\DynamicFieldInterface;
+use Zikula\FormExtensionBundle\DynamicFieldInterface;
 use Zikula\ProfileBundle\Repository\PropertyRepository;
 
 #[ORM\Entity(repositoryClass: PropertyRepository::class)]

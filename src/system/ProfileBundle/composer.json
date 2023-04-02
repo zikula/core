@@ -31,11 +31,6 @@
                 "user": {
                     "route": "zikulaprofilebundle_profile_display"
                 }
-            },
-            "securityschema": {
-                "ZikulaProfileModule::": "::",
-                "ZikulaProfileModule::view": "::",
-                "ZikulaProfileModule::item": "PropertyId::"
             }
         }
     }

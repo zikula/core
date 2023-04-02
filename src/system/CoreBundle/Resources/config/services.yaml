@@ -1,0 +1,20 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # alias interface to doctrine service
+    Doctrine\Persistence\ManagerRegistry: '@doctrine'
+
+    Zikula\CoreBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface: '@Zikula\CoreBundle\Api\LocaleApi'
+
+    Zikula\CoreBundle\EventSubscriber\ClickjackProtectionSubscriber:
+        arguments:
+            $xFrameOptions: 'SAMEORIGIN'
+
+    Symfony\Component\HttpKernel\Fragment\FragmentHandler: '@fragment.handler'

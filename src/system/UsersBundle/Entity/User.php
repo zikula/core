@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Nucleos\UserBundle\Model\User as BaseUser;
 use Nucleos\UserBundle\Validator\Constraints\Pattern as PasswordPattern;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\Bundle\CoreBundle\Doctrine\DBAL\CustomTypes;
+use Zikula\CoreBundle\Doctrine\DBAL\CustomTypes;
 
 // #[ORM\Entity(repositoryClass: UserRepository::class)] TODO remove if unneeded
 #[ORM\Entity]

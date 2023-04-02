@@ -16,7 +16,7 @@ namespace Zikula\ProfileBundle\Initializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\BundleInitializer\BundleInitializerInterface;
+use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
 use Zikula\ProfileBundle\ProfileConstant;
 
 class ProfileInitializer implements BundleInitializerInterface

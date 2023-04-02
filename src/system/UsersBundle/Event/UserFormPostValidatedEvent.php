@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Event;
 
 use Symfony\Component\Form\FormInterface;
-use Zikula\Bundle\FormExtensionBundle\Event\FormPostValidatedEvent;
+use Zikula\FormExtensionBundle\Event\FormPostValidatedEvent;
 use Zikula\UsersBundle\Entity\User;
 
 class UserFormPostValidatedEvent extends FormPostValidatedEvent

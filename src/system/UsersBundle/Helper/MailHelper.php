@@ -22,7 +22,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
+use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\UsersBundle\Entity\User;
 
 class MailHelper

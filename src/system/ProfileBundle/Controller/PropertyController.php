@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
+use Zikula\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\ProfileBundle\Entity\Property;
 use Zikula\ProfileBundle\Form\Type\PropertyType;
 use Zikula\ProfileBundle\Repository\PropertyRepositoryInterface;

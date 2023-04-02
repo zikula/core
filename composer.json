@@ -7,8 +7,6 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Zikula\\Bundle\\": "src/Zikula/Bundle/",
-            "Zikula\\Component\\": "src/Zikula/Component/",
             "Zikula\\": "src/system/"
         },
         "files": [

@@ -15,7 +15,7 @@ namespace Zikula\UsersBundle\Menu;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\UsersBundle\Entity\Group;
 use Zikula\UsersBundle\Entity\User;

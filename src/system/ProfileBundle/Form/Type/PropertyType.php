@@ -24,8 +24,8 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicFieldType;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ProfileBundle\Entity\Property;
 
 class PropertyType extends AbstractType

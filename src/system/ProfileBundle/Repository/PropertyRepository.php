@@ -15,7 +15,7 @@ namespace Zikula\ProfileBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
+use Zikula\FormExtensionBundle\DynamicFieldsContainerInterface;
 use Zikula\ProfileBundle\Entity\Property;
 
 class PropertyRepository extends ServiceEntityRepository implements PropertyRepositoryInterface, DynamicFieldsContainerInterface

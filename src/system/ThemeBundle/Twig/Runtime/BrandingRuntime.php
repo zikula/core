@@ -15,7 +15,7 @@ namespace Zikula\ThemeBundle\Twig\Runtime;
 
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
-use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
+use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 
 class BrandingRuntime implements RuntimeExtensionInterface
 {
