@@ -57,8 +57,8 @@ jobs:
           personal_token: ${{ secrets.COPY_DIST_TOKEN }}
           src_branch: ${{ steps.vars.outputs.branch_name }}
           dst_branch: ${{ steps.vars.outputs.branch_name }}
-          src_path: /templates/bundles/TranslationBundle/WebUI/
-          dst_path: /templates/bundles/TranslationBundle/
+          src_path: /templates/bundles/NucleosUserBundle/
+          dst_path: /templates/bundles/
           dst_owner: zikula
           dst_repo_name: distribution
   copy_translations:
