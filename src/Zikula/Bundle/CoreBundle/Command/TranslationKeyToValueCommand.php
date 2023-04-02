@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,10 +26,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
+#[AsCommand(name: 'zikula:translation:keytovalue', description: 'Update translation files to remove null values and replace them with the key.')]
 class TranslationKeyToValueCommand extends Command
 {
-    protected static $defaultName = 'zikula:translation:keytovalue';
-
     public function __construct(
         #[Autowire('%translator.default_path%')]
         private readonly ?string $defaultTransPath = null
@@ -39,7 +39,6 @@ class TranslationKeyToValueCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('update translation files to remove null values and replace them with the key')
             ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages')
             ->setHelp(
                 <<<'EOF'

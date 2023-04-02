@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Command;
 
 use InvalidArgumentException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,10 +24,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Command that performs setup tasks for a given bundle implementing InitializableBundleInterface.
  */
+#[AsCommand(name: 'zikula:init-bundle', description: 'Performs setup tasks for a given initializable bundle.')]
 class InitBundleCommand extends Command
 {
-    protected static $defaultName = 'zikula:init-bundle';
-
     public function __construct(private readonly KernelInterface $kernel)
     {
         parent::__construct();
@@ -36,7 +36,6 @@ class InitBundleCommand extends Command
     {
         $this
             ->addArgument('bundle', InputArgument::REQUIRED, 'The bundle name')
-            ->setDescription('Performs setup tasks for a given initializable bundle.')
             ->setHelp(
                 <<<'EOT'
 The <info>%command.name%</info> command performs setup tasks for a given bundle implementing <info>InitializableBundleInterface</info>.
