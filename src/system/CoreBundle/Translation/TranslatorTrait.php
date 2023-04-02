@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\CoreBundle\Translation;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Translation\Extractor\Annotation\Ignore;
 
 trait TranslatorTrait
 {
@@ -22,7 +21,7 @@ trait TranslatorTrait
 
     public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
-        return $this->getTranslator()->trans(/** @Ignore */ $id, $parameters, $domain, $locale);
+        return $this->getTranslator()->trans($id, $parameters, $domain, $locale);
     }
 
     public function getTranslator(): TranslatorInterface

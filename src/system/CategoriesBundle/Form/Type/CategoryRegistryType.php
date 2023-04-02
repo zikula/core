@@ -24,7 +24,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Translation\Extractor\Annotation\Ignore;
 use Zikula\CategoriesBundle\Entity\CategoryRegistry;
 use Zikula\CategoriesBundle\Helper\CategorizableBundleHelper;
 use Zikula\CoreBundle\Translation\TranslatorTrait;
@@ -46,7 +45,7 @@ class CategoryRegistryType extends AbstractType
         $builder
             ->add('bundleName', ChoiceType::class, [
                 'label' => 'Bundle',
-                'choices' => /** @Ignore */ $options['categorizableBundles'],
+                'choices' => $options['categorizableBundles'],
                 'placeholder' => 'Select bundle',
             ])
             ->add('property', TextType::class, [
@@ -75,9 +74,8 @@ class CategoryRegistryType extends AbstractType
         $formModifier = function (FormInterface $form, string $bundleName = null) use ($translator) {
             $entities = null === $bundleName ? [] : $this->categorizableBundleHelper->buildEntityChoiceListFor($bundleName);
             $form->add('entityname', ChoiceType::class, [
-                /** @Ignore */
                 'label' => $translator->trans('Entity'),
-                'choices' => /** @Ignore */ $entities,
+                'choices' => $entities,
             ]);
         };
 

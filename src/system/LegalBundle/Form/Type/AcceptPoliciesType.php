@@ -19,8 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Translation\Extractor\Annotation\Ignore;
-use Translation\Extractor\Annotation\Translate;
 use Zikula\LegalBundle\LegalConstant;
 
 class AcceptPoliciesType extends AbstractType
@@ -43,7 +41,7 @@ class AcceptPoliciesType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 /** @Ignore */
-                'label' => $login ? /** @Translate */ 'Save and continue logging in' : /** @Translate */ 'Save',
+                'label' => $login ? 'Save and continue logging in' : 'Save',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn-success'],
             ])

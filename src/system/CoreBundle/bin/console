@@ -6,7 +6,7 @@ use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 $possibleRootDirectories = [
-    __DIR__ . '/../../../../../',
+    __DIR__ . '/../../../../',
     __DIR__ . '/../'
 ];
 

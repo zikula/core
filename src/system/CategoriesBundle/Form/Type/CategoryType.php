@@ -26,7 +26,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
 use Zikula\CategoriesBundle\Entity\Category;
@@ -119,7 +118,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->trans(/** @Ignore */ $name, [], 'zikula', $code);
+                        $displayName[$code] = $translator->trans($name, [], 'zikula', $code);
                     }
                     if (!isset($displayDesc[$code])) {
                         $displayDesc[$code] = '';
@@ -141,7 +140,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->trans(/** @Ignore */ $name, [], 'zikula', $code);
+                        $displayName[$code] = $translator->trans($name, [], 'zikula', $code);
                     }
                 }
                 $category->setDisplayName($displayName);

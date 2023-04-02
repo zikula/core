@@ -44,7 +44,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;
@@ -74,7 +73,7 @@ class DynamicFieldType extends AbstractType
     {
         $builder->add('formType', ChoiceType::class, [
             'label' => 'Field type',
-            'choices' => /** @Ignore */ $this->getChoices(),
+            'choices' => $this->getChoices(),
             'placeholder' => 'Select',
         ]);
 

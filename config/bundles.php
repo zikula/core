@@ -17,7 +17,6 @@ return [
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
-    Translation\Bundle\TranslationBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
     Zikula\CoreBundle\CoreBundle::class => ['all' => true],
     Zikula\FormExtensionBundle\ZikulaFormExtensionBundle::class => ['all' => true],

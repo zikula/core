@@ -6,11 +6,13 @@ currentMenu: translation
 ## Basic topics
 
 - [Translation terminology](Terminology.md)
-- [Installation of translations](Installation.md)
 - [Translator usage](Usage.md)
-- [Translation extraction](Extraction.md)
 - [Plural forms](PluralForms.md)
-- [UI-based translations](UserInterface.md)
+
+## Translation extraction
+
+- [Extracting translation messages in Symfony](https://symfony.com/doc/current/translation.html#extracting-translation-contents-and-updating-catalogs-automatically)
+- For the core use `bin/translations.sh`.
 
 ## Specific and advanced topics
 

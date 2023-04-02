@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Translation\Extractor\Annotation\Ignore;
 
 class ConfigType extends AbstractType
 {
@@ -27,7 +26,7 @@ class ConfigType extends AbstractType
         $builder
             ->add('resetagreement', ChoiceType::class, [
                 'label'             => 'Reset user group\'s acceptance of site policies',
-                'choices'           => /** @Ignore*/ $options['groupChoices'],
+                'choices'           => $options['groupChoices'],
                 'required'          => false,
                 'expanded'          => false,
                 'multiple'          => false,

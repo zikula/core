@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Translation\Extractor\Annotation\Ignore;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
@@ -394,7 +393,7 @@ class CategoriesInitializer implements BundleInitializerInterface
     {
         $values = [];
         foreach ($this->localeApi->getSupportedLocales() as $code) {
-            $values[$code] = $this->translator->trans(/** @Ignore */ $value, [], 'zikula', $code);
+            $values[$code] = $this->translator->trans($value, [], 'zikula', $code);
         }
 
         return $values;
