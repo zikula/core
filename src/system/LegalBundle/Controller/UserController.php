@@ -15,7 +15,9 @@ namespace Zikula\LegalBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Nucleos\UserBundle\Security\LoginManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,16 +30,21 @@ use Zikula\LegalBundle\LegalConstant;
 use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\UsersBundle\Helper\AccessHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 #[Route('/legal')]
 class UserController extends AbstractController
 {
+    private string $firewallName;
+
     public function __construct(
         private readonly SiteDefinitionInterface $site,
-        private readonly array $legalConfig
+        private readonly array $legalConfig,
+        private readonly LoginManager $loginManager,
+        #[Autowire(service: 'nucleos_user.firewall_name')]
+        string $firewallName
     ) {
+        $this->firewallName = $firewallName;
     }
 
     /**
@@ -155,7 +162,6 @@ class UserController extends AbstractController
         ManagerRegistry $doctrine,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
-        AccessHelper $accessHelper,
         AcceptPoliciesHelper $acceptPoliciesHelper
     ): Response {
         // Retrieve and delete any session variables being sent in by the log-in process before we give the function a chance to
@@ -200,7 +206,7 @@ class UserController extends AbstractController
             }
             $doctrine->getManager()->flush();
             if ($data['acceptedpolicies_policies'] && $data['login']) {
-                $accessHelper->login($userEntity);
+                $this->loginManager->logInUser($this->firewallName, $userEntity);
             }
 
             return $this->redirectToRoute('home');

@@ -20,6 +20,7 @@ use Nucleos\UserBundle\Model\User as BaseUser;
 use Nucleos\UserBundle\Validator\Constraints\Pattern as PasswordPattern;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\CoreBundle\Doctrine\DBAL\CustomTypes;
+use Zikula\UsersBundle\UsersConstant;
 
 // #[ORM\Entity(repositoryClass: UserRepository::class)] TODO remove if unneeded
 #[ORM\Entity]
