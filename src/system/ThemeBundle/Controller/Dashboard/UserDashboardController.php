@@ -17,9 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
-use Zikula\UsersBundle\Entity\User;
 use function Symfony\Component\Translation\t;
 
 class UserDashboardController extends AbstractThemedDashboardController
@@ -37,10 +35,7 @@ class UserDashboardController extends AbstractThemedDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard(t('Home'), 'fas fa-home');
-        // yield MenuItem::linktoRoute(t('Administration'), 'fas fa-wrench', 'home_admin');
-        yield MenuItem::linkToUrl(t('Administration'), 'fas fa-wrench', '/admin');
-        yield MenuItem::linkToCrud(t('Users'), 'fas fa-people-group', User::class);
-        yield MenuItem::linkToCrud(t('Categories'), 'fas fa-sitemap', Category::class);
+        yield MenuItem::linkToUrl(t('Administration'), 'fas fa-wrench', '/admin')->setPermission('ROLE_ADMIN');
 
         yield MenuItem::section();
         $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_USER);
@@ -52,10 +47,10 @@ class UserDashboardController extends AbstractThemedDashboardController
             if (!count($menuItems)) {
                 continue;
             }
-            // yield MenuItem::subMenu($bundleInfo->getDisplayName(), $bundleInfo->getIcon())->setSubItems($menuItems);
-            foreach ($menuItems as $item) {
+            yield MenuItem::subMenu($bundleInfo->getDisplayName(), $bundleInfo->getIcon())->setSubItems($menuItems);
+            /*foreach ($menuItems as $item) {
                 yield $item;
-            }
+            }*/
         }
     }
 

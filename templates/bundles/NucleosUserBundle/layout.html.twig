@@ -1,0 +1,19 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title 'Your account'|trans %}
+{% block main %}
+    <div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'NucleosUserBundle') }} |
+            <a href="{{ path('nucleos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'NucleosUserBundle') }}
+            </a>
+        {% else %}
+            <a href="{{ path('nucleos_user_security_login') }}">{{ 'layout.login'|trans({}, 'NucleosUserBundle') }}</a>
+        {% endif %}
+    </div>
+    <div class="my-5 p-2">
+        {% block nucleos_user_content %}
+        {% endblock nucleos_user_content %}
+    </div>
+{% endblock %}

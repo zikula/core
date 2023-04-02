@@ -16,24 +16,30 @@ namespace Zikula\ThemeBundle\Controller\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
+use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\ThemeBundle\Helper\AdminBundleHelper;
 use Zikula\ThemeBundle\Helper\AdminCategoryHelper;
+use Zikula\ThemeBundle\Helper\UserMenuExtensionHelper;
 
 abstract class AbstractThemedDashboardController extends AbstractDashboardController
 {
     public function __construct(
         protected readonly KernelInterface $kernel,
-        protected readonly AdminUrlGenerator $adminUrlGenerator,
+        protected readonly AdminUrlGenerator $urlGenerator,
         protected readonly AdminCategoryHelper $adminCategoryHelper,
         protected readonly AdminBundleHelper $adminBundleHelper,
         protected readonly ExtensionMenuCollector $extensionMenuCollector,
+        protected readonly UserMenuExtensionHelper $userMenuExtensionHelper,
         protected readonly SiteDefinitionInterface $site,
         protected readonly array $themeConfig
     ) {
@@ -84,6 +90,11 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         ;
     }
 
+    public function configureUserMenu(UserInterface $user): UserMenu
+    {
+        return $this->userMenuExtensionHelper->configureUserMenu(parent::configureUserMenu($user), $user);
+    }
+
     public function index(): Response
     {
         $contentConfig = $this->themeConfig['content'];
@@ -94,12 +105,12 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
 
         if (null !== $contentConfig['redirect']['crud']) {
             // redirect to a CRUD controller page
-            return $this->redirect($this->adminUrlGenerator->setController($contentConfig['redirect']['crud'])->generateUrl());
+            return $this->redirect($this->urlGenerator->setController($contentConfig['redirect']['crud'])->generateUrl());
         }
 
         if (null !== $contentConfig['redirect']['route']) {
             // redirect to a Symfony route
-            return $this->redirectToRoute($contentConfig['redirect']['route'], $contentConfig['redirect']['route_parameters']);
+            return $this->redirect($this->urlGenerator->setRoute($contentConfig['redirect']['route'], $contentConfig['redirect']['route_parameters'])->generateUrl());
         }
 
         // render EAB welcome page

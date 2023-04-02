@@ -1,8 +1,0 @@
-{{ pageSetVar('title', 'My account'|trans) }}
-<h2>{{ 'My account'|trans }}</h2>
-
-{% for menu in accountMenus|default %}
-    {{ knp_menu_render(menu, {template: '@ZikulaTheme/Menu/bootstrap_fontawesome.html.twig'}) }}
-{% endfor %}
-
-{{ pageAddAsset('stylesheet', zasset('@ZikulaUsersBundle:css/style.css')) }}

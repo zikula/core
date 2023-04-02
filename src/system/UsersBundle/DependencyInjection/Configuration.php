@@ -25,12 +25,6 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->integerNode('items_per_page')
-                    ->info('Number of items (e.g., user account records) displayed per page.')
-                    ->defaultValue(25)
-                    ->min(1)
-                    ->max(999)
-                ->end()
                 ->booleanNode('display_graphics_on_account_page')
                     ->info('Display graphics on user\'s account page.')
                     ->defaultTrue()

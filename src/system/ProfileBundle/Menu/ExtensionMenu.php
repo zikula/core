@@ -15,14 +15,9 @@ namespace Zikula\ProfileBundle\Menu;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
-use Zikula\UsersBundle\ProfileBundle\ProfileBundleCollector;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
-    public function __construct(private readonly ProfileBundleCollector $profileBundleCollector)
-    {
-    }
-
     protected function getAdmin(): iterable
     {
         yield MenuItem::linktoRoute('Property list', 'fas fa-list', 'zikulaprofilebundle_property_listproperties')
@@ -43,14 +38,9 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAccount(): iterable
     {
-        // do not show any account links if Profile is not the Profile manager
-        if ($this->profileBundleCollector->getSelectedName() !== $this->getBundleName()) {
-            return null;
-        }
-
-        yield MenuItem::linktoRoute('Profile', 'fas fa-user', 'zikulaprofilebundle_profile_display', [
+        yield MenuItem::linktoRoute('Profile', 'fas fa-user', 'zikulaprofilebundle_profile_display'/*, [
             'uid' => $this->currentUserApi->get('uid'),
-        ])
+        ]*/)
             ->setPermission('IS_AUTHENTICATED');
     }
 

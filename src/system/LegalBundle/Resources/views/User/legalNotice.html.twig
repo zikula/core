@@ -1,4 +1,6 @@
-{{ pageSetVar('title', 'Legal notice for %s%'|trans({ '%s%': siteName() })) }}
-<h2>{{ 'Legal notice for %s%'|trans({ '%s%': siteName() }) }}</h2>
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-{{ include('@ZikulaLegal/' ~ app.request.locale ~ '/legalNotice.html.twig') }}
+{% block content_title 'Legal notice for %s%'|trans({ '%s%': siteName() }) %}
+{% block main %}
+    {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/legalNotice.html.twig') }}
+{% endblock %}

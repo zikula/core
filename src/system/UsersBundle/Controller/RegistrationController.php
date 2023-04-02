@@ -172,7 +172,7 @@ class RegistrationController extends AbstractController
                     }
                     $route = 'zikulausersbundle_registration_register';
                     if (in_array(ValidUserFieldsValidator::DUP_EMAIL_ALT_AUTH, $codes, true)) {
-                        $route = 'zikulausersbundle_access_login';
+                        $route = 'nucleos_user_security_login';
                     }
 
                     return $this->redirectToRoute($route); // try again.
@@ -213,7 +213,7 @@ class RegistrationController extends AbstractController
                     return $this->redirectToRoute('home');
                 }
 
-                return $this->redirectToRoute('zikulausersbundle_access_login');
+                return $this->redirectToRoute('nucleos_user_security_login');
             }
             if (null !== $session) {
                 $session->invalidate();

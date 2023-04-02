@@ -95,7 +95,7 @@ class AdminCategoryHelper
         return match ($category->getSlug()) {
             'system' => ['ZikulaThemeBundle'],
             'users' => ['ZikulaGroupsBundle', 'ZikulaLegalBundle', 'ZikulaProfileBundle', 'ZikulaUsersBundle'],
-            'content' => ['ZikulaStaticContentBundle'],
+            'content' => ['ZikulaCategoriesBundle'],
         };
     }
 }

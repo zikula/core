@@ -1,6 +1,0 @@
-<h2>{% trans %}Choose a login authentication method{% endtrans %}</h2>
-<ul>
-{% for method in collector.activeKeys %}
-    <li><a href="{{ path(path, {'authenticationMethod': method}) }}">{{ collector.get(method).DisplayName }}</a></li>
-{% endfor %}
-</ul>

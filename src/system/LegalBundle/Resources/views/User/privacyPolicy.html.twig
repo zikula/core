@@ -1,4 +1,6 @@
-{{ pageSetVar('title', 'Privacy policy for %s%'|trans({ '%s%': siteName() })) }}
-<h2>{{ 'Privacy policy for %s%'|trans({ '%s%': siteName() }) }}</h2>
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-{{ include('@ZikulaLegal/' ~ app.request.locale ~ '/privacyPolicy.html.twig') }}
+{% block content_title 'Privacy policy for %s%'|trans({ '%s%': siteName() }) %}
+{% block main %}
+    {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/privacyPolicy.html.twig') }}
+{% endblock %}

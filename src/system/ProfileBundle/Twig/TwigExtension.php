@@ -28,10 +28,8 @@ class TwigExtension extends AbstractExtension
         ];
     }
 
-    public function formatPropertyForDisplay(
-        Property $property,
-        UserAttribute $attribute
-    ): string {
+    public function formatPropertyForDisplay(Property $property, UserAttribute $attribute): string
+    {
         $value = $attribute->getValue();
         if (empty($value)) {
             return $value;

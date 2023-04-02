@@ -16,9 +16,12 @@ namespace Zikula\UsersBundle\Menu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\UsersBundle\Entity\Group;
+use Zikula\UsersBundle\Entity\User;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\UsersConstant;
+use function Symfony\Component\Translation\t;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
@@ -32,18 +35,14 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAdmin(): iterable
     {
-        yield MenuItem::linktoRoute('Users list', 'fas fa-list', 'zikulausersbundle_useradministration_listusers')
-            ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linktoRoute('Export users', 'fas fa-download', 'zikulausersbundle_fileio_export')
-            ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linktoRoute('Find & Mail|Delete users', 'fas fa-search', 'zikulausersbundle_useradministration_search')
-            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud(t('Users'), 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
     }
 
     protected function getUser(): iterable
     {
         if (null === $this->security->getUser()) {
-            yield MenuItem::linktoRoute('Help', 'fas fa-ambulance', 'zikulausersbundle_account_menu');
+            yield MenuItem::linktoRoute('Login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
             if ($this->registrationHelper->isRegistrationEnabled()) {
                 yield MenuItem::linktoRoute('New account', 'fas fa-plus', 'zikulausersbundle_registration_register');
             }
@@ -54,26 +53,41 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAccount(): iterable
     {
-        if (null === $this->security->getUser()) {
-            yield MenuItem::linktoRoute('I would like to login', 'fas fa-sign-in-alt', 'zikulausersbundle_access_login');
+        $loggedIn = null !== $this->security->getUser();
+        if (!$loggedIn) {
+            yield MenuItem::linktoRoute('I would like to login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
             if ($this->registrationHelper->isRegistrationEnabled()) {
                 yield MenuItem::linktoRoute('I would like to create a new account', 'fas fa-plus', 'zikulausersbundle_registration_register');
+                // TODO maybe move to ProfileBundle if we keep one
+                // | Registration | nucleos_profile_registration_check_email | /registration/check-email |
+                // | Registration | nucleos_profile_registration_confirmed | /registration/confirmed |
+                // | Registration | nucleos_profile_registration_register | /registration/ |
             }
-        } else {
+        }
+        yield MenuItem::linktoRoute('Reset password', 'fas fa-refresh', 'nucleos_user_resetting_request');
+        if ($loggedIn) {
+            yield MenuItem::linktoRoute('Change password', 'fas fa-lock', 'nucleos_user_change_password');
+
             if ($this->localeApi->multilingual()) {
                 $locales = $this->localeApi->getSupportedLocales();
                 if (1 < count($locales)) {
                     yield MenuItem::linktoRoute('Language switcher', 'fas fa-language', 'zikulausersbundle_account_changelanguage');
                 }
             }
+
+            // TODO maybe move to ProfileBundle if we keep one
+            yield MenuItem::linktoRoute('My profile', 'fas fa-user', 'nucleos_profile_profile_show');
+            yield MenuItem::linktoRoute('Edit profile', 'fas fa-user-pen', 'nucleos_profile_profile_edit');
+
             if ($this->allowSelfDeletion) {
                 if (UsersConstant::USER_ID_ADMIN !== $this->currentUserApi->get('uid')) {
-                    yield MenuItem::linktoRoute('Delete my account', 'fas fa-trash-alt', 'zikulausersbundle_account_deletemyaccount')
+                    yield MenuItem::linktoRoute('Delete my account', 'fas fa-trash-alt', 'nucleos_user_delete_account')
                         ->setCssClass('text-danger')
                     ;
                 }
             }
-            yield MenuItem::linktoRoute('Log out', 'fas fa-power-off', 'zikulausersbundle_access_logout')
+            // TODO remove this test entry again
+            yield MenuItem::linktoRoute('Delete my account', 'fas fa-trash-alt', 'nucleos_user_delete_account')
                 ->setCssClass('text-danger')
             ;
         }

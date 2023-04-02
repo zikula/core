@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\Twig\Runtime;
+namespace Zikula\ProfileBundle\Twig\Runtime;
 
 use InvalidArgumentException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
+use Zikula\ProfileBundle\Bridge\ProfileBundleBridge;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\UsersBundle\ProfileBundle\ProfileBundleCollector;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use function Symfony\Component\String\s;
 
 class ProfileRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
+        private readonly ProfileBundleBridge $profile,
         private readonly UserRepositoryInterface $userRepository,
-        private readonly ProfileBundleCollector $profileBundleCollector,
         private readonly TranslatorInterface $translator
     ) {
     }
@@ -37,7 +37,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
      */
     public function getUserAvatar($userId = 0, array $parameters = []): string
     {
-        return $this->profileBundleCollector->getSelected()->getAvatar($userId, $parameters);
+        return $this->profile->getAvatar($userId, $parameters);
     }
 
     /**
@@ -116,7 +116,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
             return $userId . $userName; // one or the other is empty
         }
 
-        $userDisplayName = $this->profileBundleCollector->getSelected()->getDisplayName($user->getUid());
+        $userDisplayName = $this->profile->getDisplayName($user->getUid());
         if (!$userDisplayName) {
             $userDisplayName = $user->getUname();
         }
@@ -133,7 +133,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }
-        $href = $this->profileBundleCollector->getSelected()->getProfileUrl($user->getUid());
+        $href = $this->profile->getProfileUrl($user->getUid());
         if ('#' === $href) {
             return $userDisplayName;
         }

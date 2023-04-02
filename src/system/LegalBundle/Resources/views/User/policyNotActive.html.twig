@@ -1,4 +1,6 @@
-{{ pageSetVar('title', 'Policy not available'|trans) }}
-<h2>{{ 'Policy not available'|trans }}</h2>
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-<p>{% trans %}The selected policy is not available.{% endtrans %}</p>
+{% block content_title 'Policy not available'|trans %}
+{% block main %}
+    <p>{% trans %}The selected policy is not available.{% endtrans %}</p>
+{% endblock %}

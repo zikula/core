@@ -1,4 +1,6 @@
-{{ pageSetVar('title', 'Accessibility statement for %s%'|trans({ '%s%': siteName() })) }}
-<h2>{{ 'Accessibility statement for %s%'|trans({ '%s%': siteName() }) }}</h2>
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-{{ include('@ZikulaLegal/' ~ app.request.locale ~ '/accessibilityStatement.html.twig') }}
+{% block content_title 'Accessibility statement for %s%'|trans({ '%s%': siteName() }) %}
+{% block main %}
+    {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/accessibilityStatement.html.twig') }}
+{% endblock %}

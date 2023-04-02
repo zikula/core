@@ -19,11 +19,9 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Zikula\UsersBundle\Controller\AccountController;
 use Zikula\UsersBundle\Controller\RegistrationController;
-use Zikula\UsersBundle\Controller\UserAdministrationController;
 use Zikula\UsersBundle\Helper\MailHelper;
 use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\Menu\ExtensionMenu;
-use Zikula\UsersBundle\ProfileBundle\ProfileBundleCollector;
 use Zikula\UsersBundle\Validator\Constraints\ValidEmailValidator;
 use Zikula\UsersBundle\Validator\Constraints\ValidUnameValidator;
 
@@ -46,12 +44,6 @@ class ZikulaUsersExtension extends Extension
             ->setArgument('$registrationDisabledReason', $config['registration']['disabled_reason'])
             ->setArgument('$useAutoLogin', $config['registration']['auto_login'])
             ->setArgument('$illegalUserAgents', $config['registration']['illegal_user_agents']);
-
-        $container->getDefinition(UserAdministrationController::class)
-            ->setArgument('$itemsPerPage', $config['items_per_page']);
-
-        $container->getDefinition(ProfileBundleCollector::class)
-            ->setArgument('$currentProfileBundleName', $config['integration']['profile_bundle']);
 
         $container->getDefinition(MailHelper::class)
             ->setArgument('$registrationNotificationEmail', $config['registration']['admin_notification_mail']);

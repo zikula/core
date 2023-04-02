@@ -20,11 +20,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\ProfileBundle\Helper\GravatarHelper;
 use Zikula\ProfileBundle\ProfileConstant;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\UsersBundle\ProfileBundle\ProfileBundleInterface;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use function Symfony\Component\String\s;
 
-class ProfileBundleBridge implements ProfileBundleInterface
+class ProfileBundleBridge
 {
     public function __construct(
         private readonly RouterInterface $router,

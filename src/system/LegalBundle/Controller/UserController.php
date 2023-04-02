@@ -14,17 +14,18 @@ declare(strict_types=1);
 namespace Zikula\LegalBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\LegalBundle\Form\Type\AcceptPoliciesType;
 use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
 use Zikula\LegalBundle\LegalConstant;
+use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\AccessHelper;
@@ -44,9 +45,15 @@ class UserController extends AbstractController
      * Redirects to the Terms of Use legal document.
      */
     #[Route('', name: 'zikulalegalbundle_user_index', methods: ['GET'])]
-    public function index(RouterInterface $router): RedirectResponse
+    public function index(AdminUrlGenerator $urlGenerator): RedirectResponse
     {
-        return $this->redirectToRoute('zikulalegalbundle_user_legalnotice');
+        return $this->redirect(
+            $urlGenerator
+                ->setDashboard(UserDashboardController::class)
+                ->setController(self::class)
+                ->setRoute('zikulalegalbundle_user_legalnotice')
+                ->generateUrl()
+        );
     }
 
     /**

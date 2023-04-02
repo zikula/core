@@ -32,7 +32,7 @@ class Category
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue]
-    private ?int $id;
+    private ?int $id = null;
 
     #[ORM\Column]
     #[Gedmo\TreeLeft]
@@ -245,9 +245,9 @@ class Category
         return $this;
     }
 
-    public function getStatus(): bool
+    public function getStatus(): string
     {
-        return 'A' === $this->status;
+        return $this->status;
     }
 
     public function setStatus($status): self

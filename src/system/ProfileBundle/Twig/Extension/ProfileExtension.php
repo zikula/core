@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\Twig\Extension;
+namespace Zikula\ProfileBundle\Twig\Extension;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Zikula\UsersBundle\Twig\Runtime\ProfileRuntime;
+use Zikula\ProfileBundle\Twig\Runtime\ProfileRuntime;
 
 class ProfileExtension extends AbstractExtension
 {

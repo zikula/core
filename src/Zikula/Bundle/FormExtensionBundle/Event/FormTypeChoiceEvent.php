@@ -17,7 +17,7 @@ use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 
 class FormTypeChoiceEvent
 {
-    public function __construct(private readonly FormTypesChoices $choices)
+    public function __construct(private FormTypesChoices $choices)
     {
     }
 

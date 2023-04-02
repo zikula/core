@@ -18,9 +18,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
-use Zikula\UsersBundle\Entity\User;
+use Zikula\ThemeBundle\Helper\ResourceMenuProvider;
 use function Symfony\Component\Translation\t;
 
 #[IsGranted('ROLE_ADMIN')]
@@ -39,14 +38,7 @@ class AdminDashboardController extends AbstractThemedDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard(t('Dashboard'), 'fa fa-gauge-high');
-        // yield MenuItem::linktoRoute(t('Website frontend'), 'fas fa-home', 'user_dashboard');
         yield MenuItem::linktoUrl(t('Website frontend'), 'fas fa-home', '/');
-
-        yield MenuItem::linkToCrud(t('Users'), 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
-        yield MenuItem::linkToCrud(t('Categories'), 'fas fa-sitemap', Category::class);
-        yield MenuItem::linkToCrud(t('Add category'), 'fas fa-plus', Category::class)
-            ->setAction('new');
 
         foreach ($this->adminCategoryHelper->getCategories() as $category) {
             yield MenuItem::section($category->getName(), $category->getIcon());
@@ -72,20 +64,10 @@ class AdminDashboardController extends AbstractThemedDashboardController
             }
         }
 
-        yield MenuItem::section(t('Resources'), 'fas fa-book');
-        yield MenuItem::subMenu(t('Zikula'), 'fas fa-rocket')->setSubItems([
-            MenuItem::linkToUrl(t('Website'), 'fas fa-house', 'https://ziku.la/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Docs'), 'fas fa-file-contract', 'https://docs.ziku.la/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Support Slack'), 'fab fa-slack', 'https://joinslack.ziku.la/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('ModuleStudio'), 'fas fa-wand-sparkles', 'https://modulestudio.de/en/documentation/')->setLinkTarget('_blank'),
-        ]);
-        yield MenuItem::subMenu(t('Foundation'), 'fas fa-cubes-stacked')->setSubItems([
-            MenuItem::linkToUrl(t('Symfony'), 'fab fa-symfony', 'https://symfony.com/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Twig'), 'fas fa-file-lines', 'https://twig.symfony.com/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Doctrine'), 'fas fa-database', 'https://www.doctrine-project.org/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('EasyAdmin'), 'fas fa-screwdriver-wrench', 'https://symfony.com/bundles/EasyAdminBundle/current/index.html')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Bootstrap'), 'fab fa-bootstrap', 'https://getbootstrap.com/')->setLinkTarget('_blank'),
-        ]);
+        $resources = ResourceMenuProvider::getResources();
+        foreach ($resources as $resourceItem) {
+            yield $resourceItem;
+        }
     }
 
     #[Route('/admin', name: 'admin_dashboard')]

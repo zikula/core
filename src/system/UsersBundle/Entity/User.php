@@ -35,7 +35,7 @@ class User extends BaseUser
     #[ORM\Id]
     #[ORM\Column]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    protected int $id;
+    protected ?int $id = null;
 
     #[Assert\Length(min: 12)]
     #[PasswordPattern(minUpper: 1, minLower: 1, minNumeric: 1, minSpecial: 1)]
@@ -93,12 +93,12 @@ class User extends BaseUser
         $this->attributes = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(?int $id): void
     {
         $this->id = $id;
     }
