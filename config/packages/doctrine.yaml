@@ -1,12 +1,15 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '15'
         server_version: 5 # any value will work (bypasses DBALException)
         types:
             utcdatetime:
                 class: Zikula\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
     orm:
-        auto_generate_proxy_classes: false
+        auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
         default_entity_manager: default
@@ -15,9 +18,6 @@ doctrine:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:
                 auto_mapping: true
-                #metadata_cache_driver: array
-                #query_cache_driver: array
-                #result_cache_driver: array
                 mappings:
                     gedmo_translatable:
                         type: attribute
@@ -53,6 +53,8 @@ doctrine:
 when@prod:
     doctrine:
         orm:
+            auto_generate_proxy_classes: false
+            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
             query_cache_driver:
                 type: pool
                 pool: doctrine.system_cache_pool
