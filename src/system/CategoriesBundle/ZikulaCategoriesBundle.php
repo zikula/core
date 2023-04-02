@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle;
 
-use Zikula\CoreBundle\AbstractModule;
 use Zikula\CategoriesBundle\Initializer\CategoriesInitializer;
+use Zikula\CoreBundle\AbstractModule;
 use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
 use Zikula\CoreBundle\BundleInitializer\InitializableBundleInterface;
 
