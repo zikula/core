@@ -1,5 +1,6 @@
 framework:
     default_locale: en
+    #enabled_locales: [en, de]
     translator:
         default_path: '%kernel.project_dir%/translations'
         fallbacks:
@@ -11,3 +12,6 @@ framework:
 #                dsn: '%env(LOCO_DSN)%'
 #            lokalise:
 #                dsn: '%env(LOKALISE_DSN)%'
+    # enable language negotiation
+    set_locale_from_accept_language: true
+    set_content_language_from_locale: true

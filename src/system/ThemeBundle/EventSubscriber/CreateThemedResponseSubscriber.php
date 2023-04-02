@@ -25,19 +25,8 @@ use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
 
 class CreateThemedResponseSubscriber implements EventSubscriberInterface
 {
-    private bool $installed;
-
-    private bool $debug;
-
-    public function __construct(
-        private readonly AdminUrlGenerator $adminUrlGenerator,
-        #[Autowire('%env(ZIKULA_INSTALLED)%')]
-        string $installed,
-        #[Autowire('%env(APP_DEBUG)%')]
-        string $debug,
-    ) {
-        $this->installed = '0.0.0' !== $installed;
-        $this->debug = !empty($debug);
+    public function __construct(private readonly AdminUrlGenerator $adminUrlGenerator)
+    {
     }
 
     public static function getSubscribedEvents(): array
@@ -51,9 +40,6 @@ class CreateThemedResponseSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         if (!$event->isMainRequest() || $request->isXmlHttpRequest()) {
-            return;
-        }
-        if (!$this->installed) {
             return;
         }
 

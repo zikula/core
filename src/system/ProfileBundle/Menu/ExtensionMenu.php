@@ -28,8 +28,6 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getUser(): iterable
     {
-        yield MenuItem::linktoRoute('Account menu', 'fas fa-user-circle', 'zikulausersbundle_account_menu')
-            ->setPermission('IS_AUTHENTICATED');
         yield MenuItem::linktoRoute('Display profile', 'fas fa-user', 'zikulaprofilebundle_profile_display')
             ->setPermission('IS_AUTHENTICATED');
         yield MenuItem::linktoRoute('Edit profile', 'fas fa-user-pen', 'zikulaprofilebundle_profile_edit')

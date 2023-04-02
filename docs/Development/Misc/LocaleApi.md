@@ -19,17 +19,12 @@ public function multilingual(): bool;
 /**
  * Get array of supported locales.
  */
-public function getSupportedLocales($includeRegions = true, bool $syncConfig = true): array;
+public function getSupportedLocales($includeRegions = true): array;
 
 /**
  * Get array of supported locales with their translated name.
  */
 public function getSupportedLocaleNames(string $region = null, string $displayLocale = null, $includeRegions = true): array;
-
-/**
- * Detect languages preferred by browser and make best match to available provided languages.
- */
-public function getBrowserLocale(string $default = 'en'): string;
 ```
 
 The class is fully tested.

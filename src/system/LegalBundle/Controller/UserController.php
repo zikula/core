@@ -201,8 +201,6 @@ class UserController extends AbstractController
             $doctrine->getManager()->flush();
             if ($data['acceptedpolicies_policies'] && $data['login']) {
                 $accessHelper->login($userEntity);
-
-                return $this->redirectToRoute('zikulausersbundle_account_menu');
             }
 
             return $this->redirectToRoute('home');

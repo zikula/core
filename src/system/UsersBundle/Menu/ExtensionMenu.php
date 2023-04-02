@@ -45,8 +45,6 @@ class ExtensionMenu extends AbstractExtensionMenu
             if ($this->registrationEnabled) {
                 yield MenuItem::linktoRoute('New account', 'fas fa-plus', 'zikulausersbundle_registration_register');
             }
-        } else {
-            yield MenuItem::linktoRoute('Account menu', 'fas fa-user-circle', 'zikulausersbundle_account_menu');
         }
     }
 
@@ -66,13 +64,6 @@ class ExtensionMenu extends AbstractExtensionMenu
         yield MenuItem::linktoRoute('Reset password', 'fas fa-refresh', 'nucleos_user_resetting_request');
         if ($loggedIn) {
             yield MenuItem::linktoRoute('Change password', 'fas fa-lock', 'nucleos_user_change_password');
-
-            if ($this->localeApi->multilingual()) {
-                $locales = $this->localeApi->getSupportedLocales();
-                if (1 < count($locales)) {
-                    yield MenuItem::linktoRoute('Language switcher', 'fas fa-language', 'zikulausersbundle_account_changelanguage');
-                }
-            }
 
             // TODO maybe move to ProfileBundle if we keep one
             yield MenuItem::linktoRoute('My profile', 'fas fa-user', 'nucleos_profile_profile_show');

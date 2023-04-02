@@ -54,7 +54,13 @@ class UserDashboardController extends AbstractThemedDashboardController
         }
     }
 
-    #[Route('/', name: 'user_dashboard')]
+    #[Route('/', name: 'user_home')]
+    public function home(): Response
+    {
+        return $this->redirectToRoute('user_dashboard', ['_locale' => $this->defaultLocale]);
+    }
+
+    #[Route('/{_locale}', name: 'user_dashboard')]
     public function index(): Response
     {
         return parent::index();

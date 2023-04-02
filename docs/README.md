@@ -14,7 +14,7 @@ and bundle development called [ModuleStudio](https://modulestudio.de/en/) or MOS
 
 ### Foundation
 
-- Based on Symfony 5.x which provides stability, continuity and extensibility
+- Based on Symfony 6.x which provides stability, continuity and extensibility
 - Uses Doctrine for persisting data
 - Uses Twig as template engine
 - Uses Mailer component for mail handling
@@ -26,9 +26,7 @@ and bundle development called [ModuleStudio](https://modulestudio.de/en/) or MOS
 
 ### Users and security
 
-- Users and Groups management
-  - Extensible/customizable User authorization API
-- Dynamic user rights/permissions management by group
+- Users management with roles and groups
 - Included add-ons
   - Profile module (user profile information)
   - Legal module (TOS, Age Check, etc)

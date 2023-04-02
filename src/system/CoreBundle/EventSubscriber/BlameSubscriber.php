@@ -27,17 +27,12 @@ use Zikula\UsersBundle\UsersConstant;
  */
 class BlameSubscriber implements EventSubscriberInterface
 {
-    private bool $installed;
-
     public function __construct(
         #[Autowire(service: 'stof_doctrine_extensions.listener.blameable')]
         private readonly BlameableListener $blameableListener,
         private readonly EntityManagerInterface $entityManager,
-        private readonly RequestStack $requestStack,
-        #[Autowire('%env(ZIKULA_INSTALLED)%')]
-        string $installed
+        private readonly RequestStack $requestStack
     ) {
-        $this->installed = '0.0.0' !== $installed;
     }
 
     public static function getSubscribedEvents(): array
@@ -51,13 +46,13 @@ class BlameSubscriber implements EventSubscriberInterface
     {
         try {
             $uid = UsersConstant::USER_ID_ANONYMOUS;
-            if (!$this->installed) {
-                $uid = UsersConstant::USER_ID_ADMIN;
-            } else {
+            try {
                 $request = $this->requestStack->getCurrentRequest();
                 if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
                     $uid = $this->session->isStarted() ? $this->session->get('uid', UsersConstant::USER_ID_ANONYMOUS) : $uid;
                 }
+            } catch (\Exception) {
+                $uid = UsersConstant::USER_ID_ADMIN;
             }
             $user = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid);
             $this->blameableListener->setUserValue($user);

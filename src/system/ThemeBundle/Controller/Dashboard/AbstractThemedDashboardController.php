@@ -19,10 +19,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatableMessage;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeBundle\Helper\AdminCategoryHelper;
@@ -30,6 +32,10 @@ use Zikula\ThemeBundle\Helper\UserMenuExtensionHelper;
 
 abstract class AbstractThemedDashboardController extends AbstractDashboardController
 {
+    protected const INVALID_LOCALE = 'invalid';
+    protected array $enabledLocales;
+    protected string $defaultLocale;
+
     public function __construct(
         protected readonly KernelInterface $kernel,
         protected readonly AdminUrlGenerator $urlGenerator,
@@ -37,8 +43,15 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         protected readonly ExtensionMenuCollector $extensionMenuCollector,
         protected readonly UserMenuExtensionHelper $userMenuExtensionHelper,
         protected readonly SiteDefinitionInterface $site,
-        protected readonly array $themeConfig
+        protected readonly array $themeConfig,
+        #[Autowire('%kernel.enabled_locales%')]
+        array $enabledLocales,
+        #[Autowire('%kernel.default_locale%')]
+        string $defaultLocale,
+        protected readonly LocaleApiInterface $localeApi
     ) {
+        $this->enabledLocales = $enabledLocales ?: $localeApi->getSupportedLocales();
+        $this->defaultLocale = $defaultLocale;
     }
 
     abstract protected function getName(): string;
@@ -66,7 +79,8 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
 
         $dashboard->renderContentMaximized($this->themeConfig['view']['content_maximized'])
             ->renderSidebarMinimized($this->themeConfig['view']['sidebar_minimized'])
-            ->setTranslationDomain('dashboard');
+            ->setTranslationDomain('dashboard')
+            ->setLocales($this->enabledLocales);
 
         return $dashboard;
     }

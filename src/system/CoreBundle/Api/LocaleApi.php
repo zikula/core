@@ -26,8 +26,6 @@ class LocaleApi implements LocaleApiInterface
      */
     private array $supportedLocales = [];
 
-    private bool $installed;
-
     private string $translationPath;
 
     private string $sectionKey;
@@ -37,15 +35,13 @@ class LocaleApi implements LocaleApiInterface
         #[Autowire('%kernel.project_dir%')]
         private readonly string $projectDir,
         private readonly bool $multiLingualEnabled,
-        private readonly string $defaultLocale = 'en',
-        #[Autowire('%env(ZIKULA_INSTALLED)%')]
-        string $installed = '0.0.0'
+        #[Autowire('%kernel.default_locale%')]
+        private readonly string $defaultLocale
     ) {
         $this->supportedLocales = [
             'withRegions' => [],
             'withoutRegions' => []
         ];
-        $this->installed = '0.0.0' !== $installed;
         $this->translationPath = $this->projectDir . '/translations';
     }
 
@@ -54,7 +50,7 @@ class LocaleApi implements LocaleApiInterface
         return $this->multiLingualEnabled;
     }
 
-    public function getSupportedLocales(bool $includeRegions = true, bool $syncConfig = true): array
+    public function getSupportedLocales(bool $includeRegions = true): array
     {
         $this->sectionKey = $includeRegions ? 'withRegions' : 'withoutRegions';
 
@@ -63,9 +59,6 @@ class LocaleApi implements LocaleApiInterface
         }
 
         $this->supportedLocales[$this->sectionKey][] = $this->defaultLocale;
-        if (!$this->installed) {
-            return $this->supportedLocales[$this->sectionKey];
-        }
 
         if (!is_dir($this->translationPath)) {
             return $this->supportedLocales[$this->sectionKey];
@@ -90,16 +83,6 @@ class LocaleApi implements LocaleApiInterface
         ksort($namedLocales);
 
         return $namedLocales;
-    }
-
-    public function getBrowserLocale(string $default = 'en'): string
-    {
-        $request = null !== $this->requestStack ? $this->requestStack->getCurrentRequest() : null;
-        if (null === $request || 'cli' === PHP_SAPI) {
-            return $default;
-        }
-
-        return $request->getPreferredLanguage($this->getSupportedLocales()) ?? $default;
     }
 
     private function getTranslationFiles(): Finder

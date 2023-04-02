@@ -61,7 +61,13 @@ class AdminDashboardController extends AbstractThemedDashboardController
         }
     }
 
-    #[Route('/admin', name: 'admin_dashboard')]
+    #[Route('/admin', name: 'admin_home')]
+    public function home(): Response
+    {
+        return $this->redirectToRoute('admin_dashboard', ['_locale' => $this->defaultLocale]);
+    }
+
+    #[Route('/admin/{_locale}', name: 'admin_dashboard')]
     public function index(): Response
     {
         if (!extension_loaded('intl')) {
