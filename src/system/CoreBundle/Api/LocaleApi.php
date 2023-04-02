@@ -74,7 +74,7 @@ class LocaleApi implements LocaleApiInterface
 
     public function getSupportedLocaleNames(string $region = null, string $displayLocale = null, bool $includeRegions = true): array
     {
-        $locales = $this->getSupportedLocales($includeRegions, false);
+        $locales = $this->getSupportedLocales($includeRegions);
         $namedLocales = [];
         foreach ($locales as $locale) {
             $localeName = Locales::getName($locale, $displayLocale);

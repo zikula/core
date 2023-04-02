@@ -95,6 +95,6 @@ class LocaleApiTest extends TestCase
         ;
         $projectDir = __DIR__ . $dir;
 
-        return new LocaleApi($requestStack, $projectDir, true, 'en', '3.0.0');
+        return new LocaleApi($requestStack, $projectDir, true, 'en');
     }
 }
