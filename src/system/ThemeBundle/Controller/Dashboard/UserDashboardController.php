@@ -41,12 +41,12 @@ class UserDashboardController extends AbstractThemedDashboardController
         $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_USER);
         foreach ($menuItemsByBundle as $bundleName => $extensionMenuItems) {
             $bundle = $this->kernel->getBundle($bundleName);
-            $bundleInfo = $bundle->getMetaData();
 
             $menuItems = is_array($extensionMenuItems) ? $extensionMenuItems : iterator_to_array($extensionMenuItems);
             if (!count($menuItems)) {
                 continue;
             }
+            $bundleInfo = $bundle->getMetaData();
             yield MenuItem::subMenu($bundleInfo->getDisplayName(), $bundleInfo->getIcon())->setSubItems($menuItems);
             /*foreach ($menuItems as $item) {
                 yield $item;

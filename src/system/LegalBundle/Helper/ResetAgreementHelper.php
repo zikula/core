@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Helper;
 
+use Nucleos\UserBundle\Model\GroupManager;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\LegalBundle\LegalConstant;
 use Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface;
 
@@ -26,8 +26,8 @@ class ResetAgreementHelper
 {
     public function __construct(
         private readonly Security $security,
-        private readonly UserAttributeRepositoryInterface $attributeRepository,
-        private readonly GroupRepositoryInterface $groupRepository
+        private readonly GroupManager $groupManager,
+        private readonly UserAttributeRepositoryInterface $attributeRepository
     ) {
     }
 
@@ -56,8 +56,8 @@ class ResetAgreementHelper
 
         $members = [];
         if (0 !== $groupId) {
-            $group = $this->groupRepository->find($groupId);
-            if (empty($group)) {
+            $group = $this->groupManager->findGroupBy(['id' => $groupId]);
+            if (null === $group) {
                 return false;
             }
             $members = $group->getUsers()->toArray();

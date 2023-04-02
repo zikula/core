@@ -40,27 +40,18 @@ class AdminDashboardController extends AbstractThemedDashboardController
         yield MenuItem::linkToDashboard(t('Dashboard'), 'fa fa-gauge-high');
         yield MenuItem::linktoUrl(t('Website frontend'), 'fas fa-home', '/');
 
+        $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_ADMIN);
+
         foreach ($this->adminCategoryHelper->getCategories() as $category) {
             yield MenuItem::section($category->getName(), $category->getIcon());
             $bundleNames = $this->adminCategoryHelper->getBundleAssignments($category);
-            $adminBundles = $this->adminBundleHelper->getAdminCapableBundles();
-            foreach ($adminBundles as $bundle) {
+            foreach ($menuItemsByBundle as $bundleName => $extensionMenuItems) {
+                $bundle = $this->kernel->getBundle($bundleName);
                 if (!in_array($bundle->getName(), $bundleNames, true)) {
                     continue;
                 }
-
                 $bundleInfo = $bundle->getMetaData();
-                [$menuTextUrl, $menuText] = $this->adminBundleHelper->getAdminRouteInformation($bundleInfo);
-
-                $bundleName = (string) $bundle->getName();
-                $extensionMenuItems = $this->extensionMenuCollector->get($bundleName, ExtensionMenuInterface::CONTEXT_ADMIN);
-                $isSubMenu = isset($extensionMenuItems);
-
-                if ($isSubMenu) {
-                    yield MenuItem::subMenu($menuText, $bundleInfo->getIcon())->setSubItems(iterator_to_array($extensionMenuItems));
-                } else {
-                    yield MenuItem::linktoRoute($menuText, $bundleInfo->getIcon(), $menuTextUrl);
-                }
+                yield MenuItem::subMenu($bundleInfo->getDisplayName(), $bundleInfo->getIcon())->setSubItems(iterator_to_array($extensionMenuItems));
             }
         }
 

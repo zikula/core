@@ -38,12 +38,7 @@
             "class": "Zikula\\CategoriesBundle\\ZikulaCategoriesBundle",
             "displayname": "Categories",
             "url": "categories",
-            "icon": "fas fa-sitemap",
-            "capabilities": {
-                "admin": {
-                    "route": "zikulacategoriesbundle_category_listcategories"
-                }
-            }
+            "icon": "fas fa-sitemap"
         }
     }
 }

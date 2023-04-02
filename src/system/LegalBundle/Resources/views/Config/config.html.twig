@@ -1,21 +1,20 @@
-<h3>
-    <span class="fas fa-wrench"></span>
-    {% trans %}Settings{% endtrans %}
-    {{ pageSetVar('title', 'Legal settings'|trans) }}
-</h3>
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-<p class="alert alert-danger"><strong>{% trans %}Important Usage Note{% endtrans %}</strong>: {% trans with {'%dir%': '"/Resources/views/en"', '%dir2%': '"templates/bundles/ZikulaLegalBundle/"'} %}The provided legal statements are samples only. They need to be adapted to your specific needs and locales. You will find the content of the statements in files in the %dir% directory. These templates can be overridden by theme templates, or by global templates you would create in the %dir2% directory (in the appropriate sub-directory for the language you are writing for).{% endtrans %}</p>
+{% block content_title 'Legal settings'|trans %}
+{% block main %}
+    <p class="alert alert-danger"><strong>{% trans %}Important Usage Note{% endtrans %}</strong>: {% trans with {'%dir%': '"/Resources/views/en"', '%dir2%': '"templates/bundles/ZikulaLegalBundle/"'} %}The provided legal statements are samples only. They need to be adapted to your specific needs and locales. You will find the content of the statements in files in the %dir% directory. These templates can be overridden by theme templates, or by global templates you would create in the %dir2% directory (in the appropriate sub-directory for the language you are writing for).{% endtrans %}</p>
 
-{{ form_start(form) }}
-{{ form_errors(form) }}
-<fieldset>
-    <legend>{% trans %}Reset agreement{% endtrans %}</legend>
-    {{ form_row(form.resetagreement) }}
-</fieldset>
-<div class="form-group">
-    <div class="col-md-9 offset-md-3">
-        {{ form_widget(form.save) }}
-        {{ form_widget(form.cancel) }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <fieldset>
+        <legend>{% trans %}Reset agreement{% endtrans %}</legend>
+        {{ form_row(form.resetagreement) }}
+    </fieldset>
+    <div class="form-group">
+        <div class="col-md-9 offset-md-3">
+            {{ form_widget(form.save) }}
+            {{ form_widget(form.cancel) }}
+        </div>
     </div>
-</div>
-{{ form_end(form) }}
+    {{ form_end(form) }}
+{% endblock %}

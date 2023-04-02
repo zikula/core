@@ -23,15 +23,7 @@
             "class": "Zikula\\ProfileBundle\\ZikulaProfileModule",
             "displayname": "Profile",
             "url": "profile",
-            "icon": "fas fa-id-card",
-            "capabilities": {
-                "admin": {
-                    "route": "zikulaprofilebundle_property_listproperties"
-                },
-                "user": {
-                    "route": "zikulaprofilebundle_profile_display"
-                }
-            }
+            "icon": "fas fa-id-card"
         }
     }
 }

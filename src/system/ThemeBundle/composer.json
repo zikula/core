@@ -50,12 +50,7 @@
             "class": "Zikula\\ThemeBundle\\ZikulaThemeBundle",
             "displayname": "Theme management",
             "url": "theme",
-            "icon": "fas fa-palette",
-            "capabilities": {
-                "admin": {
-                    "route": "zikulathemebundle_branding_overview"
-                }
-            }
+            "icon": "fas fa-palette"
         }
     }
 }

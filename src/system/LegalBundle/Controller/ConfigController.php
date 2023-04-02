@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle\Controller;
 
+use Nucleos\UserBundle\Model\GroupManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\GroupsBundle\Repository\GroupRepositoryInterface;
 use Zikula\LegalBundle\Form\Type\ConfigType;
 use Zikula\LegalBundle\Helper\ResetAgreementHelper;
 
@@ -27,23 +27,24 @@ use Zikula\LegalBundle\Helper\ResetAgreementHelper;
 #[IsGranted('ROLE_ADMIN')]
 class ConfigController extends AbstractController
 {
-    public function __construct(private readonly TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly GroupManager $groupManager,
+        private readonly TranslatorInterface $translator
+    ) {
     }
 
     #[Route('/config', name: 'zikulalegalbundle_config_config')]
     public function config(
         Request $request,
-        GroupRepositoryInterface $groupRepository,
         ResetAgreementHelper $resetAgreementHelper
     ): Response {
         // build choices for user group selector
         $groupChoices = [
             $this->translator->trans('All users') => 0,
         ];
-        $groups = $groupRepository->findAll();
+        $groups = $this->groupManager->findGroups();
         foreach ($groups as $group) {
-            $groupChoices[$group->getName()] = $group->getGid();
+            $groupChoices[$group->getName()] = $group->getId();
         }
 
         $form = $this->createForm(ConfigType::class, [], [

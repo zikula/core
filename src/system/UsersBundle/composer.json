@@ -42,15 +42,7 @@
             "class": "Zikula\\UsersBundle\\ZikulaUsersBundle",
             "displayname": "Users management",
             "url": "users",
-            "icon": "fas fa-users-cog",
-            "capabilities": {
-                "admin": {
-                    "route": "zikulausersbundle_useradministration_listusers"
-                },
-                "user": {
-                    "route": "zikulausersbundle_account_menu"
-                }
-            }
+            "icon": "fas fa-users-cog"
         }
     }
 }

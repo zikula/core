@@ -46,8 +46,6 @@ class MetaData implements ArrayAccess
 
     private array $capabilities;
 
-    private array $securitySchema;
-
     public function __construct(array $json = [])
     {
         $this->name = $json['name'];
@@ -61,7 +59,6 @@ class MetaData implements ArrayAccess
         $this->url = $json['extra']['zikula']['url'] ?? '';
         $this->icon = $json['extra']['zikula']['icon'] ?? '';
         $this->capabilities = $json['extra']['zikula']['capabilities'] ?? [];
-        $this->securitySchema = $json['extra']['zikula']['securityschema'] ?? [];
     }
 
     public function getName(): string
@@ -162,11 +159,6 @@ class MetaData implements ArrayAccess
     public function getCapabilities(): array
     {
         return $this->capabilities;
-    }
-
-    public function getSecuritySchema(): array
-    {
-        return $this->securitySchema;
     }
 
     private function confirmTranslator(): void

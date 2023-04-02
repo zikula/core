@@ -21,15 +21,7 @@
             "class": "Zikula\\LegalBundle\\ZikulaLegalModule",
             "displayname": "Legal",
             "url": "legal",
-            "icon": "fas fa-gavel",
-            "capabilities": {
-                "admin": {
-                    "route": "zikulalegalbundle_config_config"
-                },
-                "user": {
-                    "route": "zikulalegalbundle_user_legalnotice"
-                }
-            }
+            "icon": "fas fa-gavel"
         }
     }
 }

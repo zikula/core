@@ -25,7 +25,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
-use Zikula\ThemeBundle\Helper\AdminBundleHelper;
 use Zikula\ThemeBundle\Helper\AdminCategoryHelper;
 use Zikula\ThemeBundle\Helper\UserMenuExtensionHelper;
 
@@ -35,7 +34,6 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         protected readonly KernelInterface $kernel,
         protected readonly AdminUrlGenerator $urlGenerator,
         protected readonly AdminCategoryHelper $adminCategoryHelper,
-        protected readonly AdminBundleHelper $adminBundleHelper,
         protected readonly ExtensionMenuCollector $extensionMenuCollector,
         protected readonly UserMenuExtensionHelper $userMenuExtensionHelper,
         protected readonly SiteDefinitionInterface $site,
