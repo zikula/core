@@ -1,10 +1,16 @@
-{{ pageAddAsset('stylesheet', zasset('@ZikulaThemeBundle:css/phpinfo.css'), 100) }}
-<h3>
-    <span class="fas fa-info-circle"></span>
-    {% trans %}PHP configuration{% endtrans %}
-    {{ pageSetVar('title', 'PHP configuration'|trans) }}
-</h3>
-<div id="phpinfo">
-    {{ phpinfo|raw }}
-</div>
-{{ pageAddAsset('javascript', zasset('@ZikulaThemeBundle:js/ZikulaThemeBundle.Phpinfo.js')) }}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title 'PHP configuration'|trans %}
+{% block main %}
+    <div id="phpinfo">
+        {{ phpinfo|raw }}
+    </div>
+{% endblock %}
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/zikulatheme/css/phpinfo.css') }}" />
+{% endblock %}
+{% block body_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/zikulatheme/js/ZikulaThemeBundle.Phpinfo.js') }}"></script>
+{% endblock body_javascript %}

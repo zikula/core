@@ -28,14 +28,14 @@ class UserMenuExtensionHelper
     {
         return $menu
             // TODO full name (with fallback to username)
-            //->setName($user->getFullName())
+            // ->setName($user->getFullName())
 
             // TODO avatar
             // the default user avatar is a generic avatar icon
             // you can return an URL with the avatar image
-            //->setAvatarUrl($user->getProfileImageUrl())
+            // ->setAvatarUrl($user->getProfileImageUrl())
             // use this method if you don't want to display the user image
-            //->displayUserAvatar(false)
+            // ->displayUserAvatar(false)
             // you can also pass an email address to use gravatar's service
             ->setGravatarEmail($user->getEmailCanonical())
 

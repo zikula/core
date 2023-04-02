@@ -27,7 +27,7 @@ use Nucleos\UserBundle\Model\GroupInterface;
 use Nucleos\UserBundle\Model\GroupManager;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Zikula\UsersBundle\Entity\Group;
-use Zikula\UsersBundle\Helper\RoleHelper;
+use Zikula\UsersBundle\Helper\ChoiceHelper;
 use function Symfony\Component\Translation\t;
 
 #[IsGranted('ROLE_ADMIN')]
@@ -35,7 +35,7 @@ class GroupCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly GroupManager $groupManager,
-        private readonly RoleHelper $roleHelper
+        private readonly ChoiceHelper $choiceHelper
     ) {
     }
 
@@ -66,7 +66,7 @@ class GroupCrudController extends AbstractCrudController
     {
         yield 'id' => IdField::new('id', t('Id'))->hideOnForm()->setTextAlign('right')->setRequired(true);
         yield 'name' => TextField::new('name', t('Group name'))->setRequired(true);
-        yield 'roles' => ChoiceField::new('roles', t('Roles'))->setRequired(false)->setChoices($this->roleHelper->getRoleOptions())->allowMultipleChoices();
+        yield 'roles' => ChoiceField::new('roles', t('Roles'))->setRequired(false)->setChoices($this->choiceHelper->getRoles())->allowMultipleChoices();
     }
 
     public function configureFilters(Filters $filters): Filters
@@ -74,7 +74,7 @@ class GroupCrudController extends AbstractCrudController
         return $filters
             ->add('id')
             ->add('name')
-            ->add(ChoiceFilter::new('roles')->setChoices($this->roleHelper->getRoleOptions())->canSelectMultiple())
+            ->add(ChoiceFilter::new('roles')->setChoices($this->choiceHelper->getRoles())->canSelectMultiple())
         ;
     }
 

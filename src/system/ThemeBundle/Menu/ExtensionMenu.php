@@ -32,9 +32,6 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAdmin(): iterable
     {
-        yield MenuItem::linktoRoute('Bundle categories list', 'fas fa-list', 'zikulathemebundle_admin_view')
-            ->setPermission('ROLE_ADMIN');
-
         if ($this->localeApi->multilingual() && 'dev' === $this->environment) {
             $localizationItems = [];
             $request = $this->requestStack->getCurrentRequest();

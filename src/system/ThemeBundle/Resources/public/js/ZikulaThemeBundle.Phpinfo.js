@@ -1,9 +1,5 @@
 // Copyright Zikula, licensed MIT.
 
-(function($) {
-    $(document).ready(function() {
-        $(function() {
-            $('#phpinfo table').addClass('table table-striped table-bordered');
-        });
-    });
-})(jQuery);
+window.addEventListener('load', function () {
+    document.querySelectorAll('#phpinfo table').forEach(el => el.classList.add('table', 'table-striped', 'table-bordered'));
+}, false);

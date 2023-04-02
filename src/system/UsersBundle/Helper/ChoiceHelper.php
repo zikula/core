@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Helper;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Zikula\UsersBundle\UsersConstant;
 
-class RoleHelper
+class ChoiceHelper
 {
     private array $roleHierarchy;
 
@@ -26,7 +27,7 @@ class RoleHelper
         $this->roleHierarchy = $roleHierarchy;
     }
 
-    public function getRoleOptions(): array
+    public function getRoles(): array
     {
         $systemRoles = [
             'User' => 'ROLE_USER',
@@ -36,7 +37,7 @@ class RoleHelper
         ];
 
         $definedRoles = [];
-        array_walk_recursive($this->roleHierarchy, function($role) use (&$roles) {
+        array_walk_recursive($this->roleHierarchy, function ($role) use (&$roles) {
             $definedRoles[$role] = $role;
         });
 
@@ -48,5 +49,14 @@ class RoleHelper
         }
 
         return $roles;
+    }
+
+    public function getActivatedValues(): array
+    {
+        return [
+            'Active' => UsersConstant::ACTIVATED_ACTIVE,
+            'Inactive' => UsersConstant::ACTIVATED_INACTIVE,
+            'Pending' => UsersConstant::ACTIVATED_PENDING_REG,
+        ];
     }
 }

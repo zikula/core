@@ -16,10 +16,9 @@ namespace Zikula\UsersBundle\Menu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\UsersBundle\Entity\Group;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
-use Zikula\UsersBundle\Helper\RegistrationHelper;
 use Zikula\UsersBundle\UsersConstant;
 use function Symfony\Component\Translation\t;
 
@@ -28,7 +27,7 @@ class ExtensionMenu extends AbstractExtensionMenu
     public function __construct(
         private readonly Security $security,
         private readonly LocaleApiInterface $localeApi,
-        private readonly RegistrationHelper $registrationHelper,
+        private readonly bool $registrationEnabled,
         private readonly bool $allowSelfDeletion
     ) {
     }
@@ -43,7 +42,7 @@ class ExtensionMenu extends AbstractExtensionMenu
     {
         if (null === $this->security->getUser()) {
             yield MenuItem::linktoRoute('Login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
-            if ($this->registrationHelper->isRegistrationEnabled()) {
+            if ($this->registrationEnabled) {
                 yield MenuItem::linktoRoute('New account', 'fas fa-plus', 'zikulausersbundle_registration_register');
             }
         } else {
@@ -56,7 +55,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         $loggedIn = null !== $this->security->getUser();
         if (!$loggedIn) {
             yield MenuItem::linktoRoute('I would like to login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
-            if ($this->registrationHelper->isRegistrationEnabled()) {
+            if ($this->registrationEnabled) {
                 yield MenuItem::linktoRoute('I would like to create a new account', 'fas fa-plus', 'zikulausersbundle_registration_register');
                 // TODO maybe move to ProfileBundle if we keep one
                 // | Registration | nucleos_profile_registration_check_email | /registration/check-email |
@@ -80,7 +79,7 @@ class ExtensionMenu extends AbstractExtensionMenu
             yield MenuItem::linktoRoute('Edit profile', 'fas fa-user-pen', 'nucleos_profile_profile_edit');
 
             if ($this->allowSelfDeletion) {
-                if (UsersConstant::USER_ID_ADMIN !== $this->currentUserApi->get('uid')) {
+                if (UsersConstant::USER_ID_ADMIN !== $this->security->getUser()->getId()) {
                     yield MenuItem::linktoRoute('Delete my account', 'fas fa-trash-alt', 'nucleos_user_delete_account')
                         ->setCssClass('text-danger')
                     ;

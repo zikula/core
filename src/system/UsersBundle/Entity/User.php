@@ -48,6 +48,21 @@ class User extends BaseUser
     protected Collection $groups;
 
     /**
+     * Account State: The user's current state, see \Zikula\UsersModule\Constant::ACTIVATED_* for defined constants.
+     * A state represented by a negative integer means that the user's account is in a pending state, and should not yet be considered a "real" user account.
+     * For example, user accounts pending the completion of the registration process (because either moderation, e-mail verification, or both are in use)
+     * will have a negative integer representing their state. If the user's registration request expires before it the process is completed, or if the administrator
+     * denies the request for an new account, the user account record will be deleted.
+     * When this deletion happens, it will be assumed by the system that no external module has yet interacted with the user account record,
+     * because its state never progressed beyond its pending state, and therefore normal hooks/events may not be triggered
+     * (although it is possible that events regarding the pending account may be triggered).
+     *
+     */
+    #[Assert\Choice(callback: 'getActivatedValues')] // TODO replace by enum
+    #[ORM\Column]
+    private int $activated;
+
+    /**
      * Account Approved Date/Time: The date and time the user's registration request was approved through the moderation process.
      * If the moderation process was not in effect at the time the user made a registration request, then this will be the date and time of the registration request.
      */
@@ -101,6 +116,18 @@ class User extends BaseUser
     public function setId(?int $id): void
     {
         $this->id = $id;
+    }
+
+    public function getActivated(): int
+    {
+        return $this->activated;
+    }
+
+    public function setActivated(int $activated): self
+    {
+        $this->activated = $activated;
+
+        return $this;
     }
 
     public function getApprovedDate(): \DateTimeInterface
@@ -160,5 +187,18 @@ class User extends BaseUser
         $this->setTimezone($this->registrationDate->getTimeZone()->getName());
 
         return $this;
+    }
+
+    /**
+     * Callback function used to validate the activated value.
+     */
+    public static function getActivatedValues(): array
+    {
+        return [
+            UsersConstant::ACTIVATED_ACTIVE,
+            UsersConstant::ACTIVATED_INACTIVE,
+            UsersConstant::ACTIVATED_PENDING_DELETE,
+            UsersConstant::ACTIVATED_PENDING_REG,
+        ];
     }
 }

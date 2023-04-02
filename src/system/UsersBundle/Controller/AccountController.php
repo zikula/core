@@ -25,22 +25,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\UsersBundle\Event\DeleteUserFormPostCreatedEvent;
-use Zikula\UsersBundle\Event\DeleteUserFormPostValidatedEvent;
 use Zikula\UsersBundle\Form\Type\ChangeLanguageType;
-use Zikula\UsersBundle\Helper\DeleteHelper;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
-use Zikula\UsersBundle\UsersConstant;
 
 #[Route('/account')]
 #[IsGranted('ROLE_USER')]
 class AccountController extends AbstractController
 {
-    public function __construct(
-        private readonly TranslatorInterface $translator,
-        private readonly bool $displayGraphics,
-        private readonly bool $allowSelfDeletion
-    ) {
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
     }
 
     /**
