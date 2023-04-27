@@ -2265,16 +2265,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.6.1",
+            "version": "v4.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "340548d93c2f6a732a71a528668fdf155d4a2f25"
+                "reference": "96ead4d842f7da1ad0183fd16b6e2596f9e2a595"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/340548d93c2f6a732a71a528668fdf155d4a2f25",
-                "reference": "340548d93c2f6a732a71a528668fdf155d4a2f25",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/96ead4d842f7da1ad0183fd16b6e2596f9e2a595",
+                "reference": "96ead4d842f7da1ad0183fd16b6e2596f9e2a595",
                 "shasum": ""
             },
             "require": {
@@ -2346,7 +2346,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.6.1"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.6.2"
             },
             "funding": [
                 {
@@ -2354,7 +2354,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-12T10:16:10+00:00"
+            "time": "2023-04-26T18:19:05+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -7648,16 +7648,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v6.2.7",
+            "version": "v6.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "e7346ea6d88ae22e1b5d489b7a60135e72527cec"
+                "reference": "10b75bdb706082b181e662077ee7741f15fafc95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/e7346ea6d88ae22e1b5d489b7a60135e72527cec",
-                "reference": "e7346ea6d88ae22e1b5d489b7a60135e72527cec",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/10b75bdb706082b181e662077ee7741f15fafc95",
+                "reference": "10b75bdb706082b181e662077ee7741f15fafc95",
                 "shasum": ""
             },
             "require": {
@@ -7698,7 +7698,7 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Provides a PHP replacement layer for the C intl extension that includes additional data from the ICU library",
+            "description": "Provides access to the localization data of the ICU library",
             "homepage": "https://symfony.com",
             "keywords": [
                 "i18n",
@@ -7709,7 +7709,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v6.2.7"
+                "source": "https://github.com/symfony/intl/tree/v6.2.9"
             },
             "funding": [
                 {
@@ -7725,7 +7725,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-21T10:54:55+00:00"
+            "time": "2023-04-11T16:03:19+00:00"
         },
         {
             "name": "symfony/lock",
