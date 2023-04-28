@@ -2,16 +2,14 @@
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         backupGlobals="false"
          bootstrap="tests/bootstrap.php"
          colors="true"
-         convertDeprecationsToExceptions="false"
          executionOrder="depends,defects"
-         forceCoversAnnotation="true"
-         beStrictAboutCoversAnnotation="true"
+         requireCoverageMetadata="true"
+         beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
-         verbose="true">
+>
     <php>
         <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
