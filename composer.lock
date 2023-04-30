@@ -3271,41 +3271,41 @@
         },
         {
             "name": "nucleos/profile-bundle",
-            "version": "2.1.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosProfileBundle.git",
-                "reference": "43baf5e2469cc41c820f47951c0449f52da85da4"
+                "reference": "bc57cac0b1af50f384c9f1933aff99271f070f78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/43baf5e2469cc41c820f47951c0449f52da85da4",
-                "reference": "43baf5e2469cc41c820f47951c0449f52da85da4",
+                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/bc57cac0b1af50f384c9f1933aff99271f070f78",
+                "reference": "bc57cac0b1af50f384c9f1933aff99271f070f78",
                 "shasum": ""
             },
             "require": {
                 "doctrine/persistence": "^2.2.2 || ^3.0.0",
                 "nucleos/user-bundle": "^2.0",
-                "php": "^8.0",
-                "symfony/config": "^5.4 || ^6.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0",
-                "symfony/event-dispatcher": "^5.4 || ^6.0",
+                "php": "^8.1",
+                "symfony/config": "^5.4 || ^6.2",
+                "symfony/dependency-injection": "^5.4 || ^6.2",
+                "symfony/event-dispatcher": "^5.4 || ^6.2",
                 "symfony/event-dispatcher-contracts": "^1.0 || ^2.0 || ^3.0",
-                "symfony/form": "^5.4 || ^6.0",
-                "symfony/framework-bundle": "^5.4 || ^6.0",
-                "symfony/http-foundation": "^5.4 || ^6.0",
-                "symfony/http-kernel": "^5.4 || ^6.0",
-                "symfony/intl": "^5.4 || ^6.0",
-                "symfony/mailer": "^5.4 || ^6.0",
-                "symfony/mime": "^5.4 || ^6.0",
-                "symfony/options-resolver": "^5.4 || ^6.0",
-                "symfony/routing": "^5.4 || ^6.0",
-                "symfony/security-core": "^5.4 || ^6.0",
-                "symfony/translation": "^5.4 || ^6.0",
+                "symfony/form": "^5.4 || ^6.2",
+                "symfony/framework-bundle": "^5.4.19 || ^6.2.5",
+                "symfony/http-foundation": "^5.4 || ^6.2",
+                "symfony/http-kernel": "^5.4 || ^6.2",
+                "symfony/intl": "^5.4 || ^6.2",
+                "symfony/mailer": "^5.4 || ^6.2",
+                "symfony/mime": "^5.4 || ^6.2",
+                "symfony/options-resolver": "^5.4 || ^6.2",
+                "symfony/routing": "^5.4 || ^6.2",
+                "symfony/security-core": "^5.4 || ^6.2",
+                "symfony/translation": "^5.4 || ^6.2",
                 "symfony/translation-contracts": "^1.0 || ^2.0 || ^3.0",
-                "symfony/twig-bridge": "^5.4 || ^6.0",
-                "symfony/twig-bundle": "^5.4 || ^6.0",
-                "symfony/validator": "^5.4 || ^6.0",
+                "symfony/twig-bridge": "^5.4 || ^6.2",
+                "symfony/twig-bundle": "^5.4 || ^6.2",
+                "symfony/validator": "^5.4 || ^6.2",
                 "twig/twig": "^2.14 || ^3.1"
             },
             "conflict": {
@@ -3318,9 +3318,9 @@
                 "doctrine/doctrine-bundle": "^2.5",
                 "doctrine/orm": "^2.7",
                 "ergebnis/composer-normalize": "^2.0.1",
-                "symfony/browser-kit": "^5.4 || ^6.0",
-                "symfony/doctrine-bridge": "^5.4 || ^6.0",
-                "symfony/yaml": "^5.4 || ^6.0"
+                "symfony/browser-kit": "^5.4 || ^6.2",
+                "symfony/doctrine-bridge": "^5.4 || ^6.2",
+                "symfony/yaml": "^5.4 || ^6.2"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -3348,7 +3348,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosProfileBundle/issues",
-                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.1.0"
+                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.2.0"
             },
             "funding": [
                 {
@@ -3368,7 +3368,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-12-17T09:16:17+00:00"
+            "time": "2023-04-30T17:12:57+00:00"
         },
         {
             "name": "nucleos/user-bundle",
@@ -7648,16 +7648,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v6.2.9",
+            "version": "v6.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "10b75bdb706082b181e662077ee7741f15fafc95"
+                "reference": "860c99e53149d22df1900d3aefdaeb17adb7669d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/10b75bdb706082b181e662077ee7741f15fafc95",
-                "reference": "10b75bdb706082b181e662077ee7741f15fafc95",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/860c99e53149d22df1900d3aefdaeb17adb7669d",
+                "reference": "860c99e53149d22df1900d3aefdaeb17adb7669d",
                 "shasum": ""
             },
             "require": {
@@ -7709,7 +7709,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v6.2.9"
+                "source": "https://github.com/symfony/intl/tree/v6.2.10"
             },
             "funding": [
                 {
@@ -7725,7 +7725,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-11T16:03:19+00:00"
+            "time": "2023-04-14T16:23:31+00:00"
         },
         {
             "name": "symfony/lock",
