@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "014a7a0be9c1536e14bf899715c0d8c3",
+    "content-hash": "10e76bebbe02a01902a6669071668959",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2265,16 +2265,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.6.3",
+            "version": "v4.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "149cd740756157ad8c04f0bd7ea3aab1c8219797"
+                "reference": "4a1fee0a4f598c1a2b909eeb5f280789926d747a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/149cd740756157ad8c04f0bd7ea3aab1c8219797",
-                "reference": "149cd740756157ad8c04f0bd7ea3aab1c8219797",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/4a1fee0a4f598c1a2b909eeb5f280789926d747a",
+                "reference": "4a1fee0a4f598c1a2b909eeb5f280789926d747a",
                 "shasum": ""
             },
             "require": {
@@ -2346,7 +2346,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.6.3"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.6.4"
             },
             "funding": [
                 {
@@ -2354,7 +2354,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-27T18:06:58+00:00"
+            "time": "2023-05-03T18:05:00+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -11925,5 +11925,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
