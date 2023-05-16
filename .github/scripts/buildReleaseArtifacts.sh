@@ -59,7 +59,7 @@ echo "Creating translation files..."
 #cd var/cache
 #rm -rf dev prod
 #cd ../..
-#php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract zikula en
+#php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" translation:extract --force zikula en
 #php -dmemory_limit=2G "${PACKAGE_PATH}/bin/console" zikula:translation:keytovalue
 
 echo "Clearing cache directory..."
