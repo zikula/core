@@ -10,23 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1']#, '8.2']
+        php-versions: ['8.1', '8.2']
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
-
-      # Docs: https://github.com/shivammathur/setup-php
-      - name: Setup PHP with PCOV
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          tools: php-cs-fixer, phpunit-bridge
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, mysql
-          coverage: pcov
-          #ini-values: post_max_size=256M, max_execution_time=180
-
-      - name: Start mysql service
-        run: sudo systemctl start mysql
 
       - name: Get composer cache directory
         id: composer-cache
@@ -47,13 +34,27 @@ jobs:
       - name: Extract English translations
         run: php bin/console translation:extract zikula en -vvv
 
+  security-check:
+    name: Security checker (PHP ${{ matrix.php-versions }})
+    runs-on: ubuntu-latest
+    needs: test
+    strategy:
+      matrix:
+        php-versions: ['8.2']
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+  
+      - name: Run security checker
+        uses: symfonycorp/security-checker-action@v5
+
   test:
     name: Tests (PHP ${{ matrix.php-versions }})
     runs-on: ubuntu-latest
     needs: build
     strategy:
       matrix:
-        php-versions: ['8.1']#, '8.2']
+        php-versions: ['8.1', '8.2']
     services:
       mysql:
         image: mysql:latest
@@ -68,6 +69,17 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v3
 
+      # Docs: https://github.com/shivammathur/setup-php
+      - name: Setup PHP with PCOV
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          tools: php-cs-fixer, phpunit-bridge
+          # required PHP extensions for Symfony: see https://symfony.com/doc/current/setup.html#technical-requirements
+          extensions: ctype, iconv, intl, json, mbstring, pcre, session, simplexml, tokenizer, xml, php-ast # xml is required by phpunit, php-ast is used by phan
+          #ini-values: memory_limit=256M, post_max_size=256M, max_execution_time=180, pcov.directory=src
+          coverage: pcov
+
       - name: Install composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
@@ -76,8 +88,7 @@ jobs:
           php bin/console lint:container
           php bin/console lint:yaml config/
           php bin/console lint:yaml src/system/ --parse-tags
-          php bin/console lint:yaml src/Zikula/ --parse-tags
-          php bin/console lint:twig --show-deprecations src/system/ src/Zikula/
+          php bin/console lint:twig --show-deprecations src/system/
 
       - name: Cache vulnerability database
         uses: actions/cache@v3
@@ -88,22 +99,136 @@ jobs:
       - name: Run security checker
         uses: symfonycorp/security-checker-action@v5
 
-#      - name: Run Migration
-#        run: |
-#          composer require --dev symfony/orm-pack
-#          php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
-#          php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
-#        env:
-#          DATABASE_URL: mysql://root:zikula@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/zk_test
+     # TODO enable migrations
+     # - name: Run Migration
+     #   run: |
+     #     composer require --dev symfony/orm-pack
+     #     php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+     #     php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+     #   env:
+     #     DATABASE_URL: mysql://root:zikula@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/zk_test
 
-      - name: Install PHPUnit
-        run: ./vendor/bin/simple-phpunit install
+      - name: Run unit tests with coverage
+        # see https://dev.to/swashata/setup-php-pcov-for-5-times-faster-phpunit-code-coverage-3d9c
+        # run: ./vendor/bin/phpunit
+        run: php -dpcov.enabled=1 -dpcov.directory="src" -dpcov.exclude="~vendor~" vendor/bin/phpunit -c "phpunit.xml.dist" "src" --coverage-text
 
-      - name: Run unit tests
-        run: ./vendor/bin/simple-phpunit --coverage-text
+      # - name: Determine coverage badge
+      #   uses: timkrase/phpunit-coverage-badge@main
+      #   with:
+      #     push_badge: true
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Test installation
         run: ./.github/scripts/testInstall.sh
+
+  # qa-phpstan:
+  #   name: QA - Run phpstan (PHP ${{ matrix.php-versions }})
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       php-versions: ['8.1']#, '8.2']
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  # 
+  #     - name: Install composer dependencies
+  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
+  # 
+  #     - name: Run phpstan
+  #       # see https://github.com/phpstan/phpstan
+  #       # level: (0 = loosest - 7 = "max" = strictest), default level is 0
+  #       run: ./vendor/bin/phpstan analyse -c ./build/phpstan.neon --level 3 src
+  # 
+  # qa-psalm:
+  #   name: QA - Run psalm (PHP ${{ matrix.php-versions }})
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       php-versions: ['8.1']#, '8.2']
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  # 
+  #     - name: Install composer dependencies
+  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
+  # 
+  #     - name: Run psalm
+  #       run: ./vendor/bin/psalm src --find-dead-code --threads=8 --diff --diff-methods --show-info=1
+  # 
+  # qa-phpcpd:
+  #   name: QA - Run phpcpd (PHP ${{ matrix.php-versions }})
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       php-versions: ['8.1']#, '8.2']
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  # 
+  #     - name: Install composer dependencies
+  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
+  # 
+  #     - name: Run phpcpd
+  #       # see https://github.com/sebastianbergmann/phpcpd
+  #       run: ./vendor/bin/phpcpd --exclude vendor ./src/
+  #
+  # qa-phpmd:
+  #   name: QA - Run phpmd (PHP ${{ matrix.php-versions }})
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       php-versions: ['8.1']#, '8.2']
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  # 
+  #     - name: Install composer dependencies
+  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
+  # 
+  #     - name: Run phpmd
+  #       # see https://github.com/phpmd/phpmd
+  #       run: ./vendor/bin/phpmd src text "build/phpmd.xml" --exclude vendor
+  # 
+  # qa-phan:
+  #   name: QA - Run phan (PHP ${{ matrix.php-versions }})
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       php-versions: ['8.1']#, '8.2']
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  # 
+  #     - name: Install composer dependencies
+  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
+  # 
+  #     - name: Run phan
+  #       # see https://github.com/phan/phan
+  #       run: ./vendor/bin/phan --config-file "build/phan.php" --directory src
+  # 
+  # qa-cs-fixer:
+  #   name: QA - Run php-cs-fixer (PHP ${{ matrix.php-versions }})
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       php-versions: ['8.1']#, '8.2']
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  # 
+  #     - name: Install composer dependencies
+  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
+  # 
+  #     - name: Run php-cs-fixer
+  #       # see https://cs.symfony.com/
+  #       run: ./vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes --dry-run --config "build/php_cs_fixer.dist"
 
   docs:
     name: Documentation

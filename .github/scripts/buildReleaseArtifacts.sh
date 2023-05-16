@@ -14,13 +14,7 @@ DOC_PATH="${PACKAGE_PATH}/docs/en"
 declare -A COPY_FILES
 COPY_FILES=(
     ["README_md"]="${DOC_PATH}"
-    ["CHANGELOG-2_0_md"]="${DOC_PATH}"
-    ["CHANGELOG-3_0_md"]="${DOC_PATH}"
-    ["CHANGELOG-3_1_md"]="${DOC_PATH}"
     ["CHANGELOG-4_0_md"]="${DOC_PATH}"
-    ["CHANGELOG-VENDORS-3_0_md"]="${DOC_PATH}"
-    ["CHANGELOG-VENDORS-3_1_md"]="${DOC_PATH}"
-    ["CHANGELOG-VENDORS-4_0_md"]="${DOC_PATH}"
     ["composer_json"]="${DOC_PATH}/dev"
     ["composer_lock"]="${DOC_PATH}/dev"
 )
