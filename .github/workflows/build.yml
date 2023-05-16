@@ -35,7 +35,7 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Extract English translations
-        run: php bin/console translation:extract --force zikula en -vvv
+        run: php bin/console translation:extract --force en -vv
 
   test:
     name: Tests (PHP ${{ matrix.php-versions }})
