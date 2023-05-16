@@ -15,6 +15,9 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v3
 
+      - name: Run security checker
+        uses: symfonycorp/security-checker-action@v5
+
       - name: Get composer cache directory
         id: composer-cache
         run: |
@@ -33,20 +36,6 @@ jobs:
 
       - name: Extract English translations
         run: php bin/console translation:extract --force zikula en -vvv
-
-  security-check:
-    name: Security checker (PHP ${{ matrix.php-versions }})
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      matrix:
-        php-versions: ['8.2']
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-  
-      - name: Run security checker
-        uses: symfonycorp/security-checker-action@v5
 
   test:
     name: Tests (PHP ${{ matrix.php-versions }})
