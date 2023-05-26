@@ -28,7 +28,7 @@
         "symfony/routing": "^6.0",
         "symfony/string": "^6.0",
         "symfony/twig-bundle": "^6.0",
-        "symfony/webpack-encore-bundle": "^1",
+        "symfony/webpack-encore-bundle": "^2",
         "symfony/yaml": "^6.0",
         "twig/intl-extra": "^3",
         "twig/string-extra": "^3",
