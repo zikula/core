@@ -1,7 +1,7 @@
 {
     "name": "zikula/theme-bundle",
     "version": "4.0.0-dev",
-    "description": "Theme system and administration",
+    "description": "Theme system and admin extensions",
     "type": "symfony-bundle",
     "license": "LGPL-3.0-or-later",
     "authors": [
@@ -28,6 +28,7 @@
         "symfony/routing": "^6.0",
         "symfony/string": "^6.0",
         "symfony/twig-bundle": "^6.0",
+        "symfony/validator": "^6.0",
         "symfony/webpack-encore-bundle": "^2",
         "symfony/yaml": "^6.0",
         "twig/intl-extra": "^3",

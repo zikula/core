@@ -43,7 +43,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         if (null === $this->security->getUser()) {
             yield MenuItem::linktoRoute('Login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
             if ($this->registrationEnabled) {
-                yield MenuItem::linktoRoute('New account', 'fas fa-plus', 'zikulausersbundle_registration_register');
+                yield MenuItem::linktoRoute('New account', 'fas fa-plus', 'nucleos_profile_registration_register');
             }
         }
     }
@@ -54,8 +54,8 @@ class ExtensionMenu extends AbstractExtensionMenu
         if (!$loggedIn) {
             yield MenuItem::linktoRoute('I would like to login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
             if ($this->registrationEnabled) {
-                yield MenuItem::linktoRoute('I would like to create a new account', 'fas fa-plus', 'zikulausersbundle_registration_register');
-                // TODO maybe move to ProfileBundle if we keep one
+                yield MenuItem::linktoRoute('I would like to create a new account', 'fas fa-plus', 'nucleos_profile_registration_register');
+
                 // | Registration | nucleos_profile_registration_check_email | /registration/check-email |
                 // | Registration | nucleos_profile_registration_confirmed | /registration/confirmed |
                 // | Registration | nucleos_profile_registration_register | /registration/ |
@@ -65,7 +65,6 @@ class ExtensionMenu extends AbstractExtensionMenu
         if ($loggedIn) {
             yield MenuItem::linktoRoute('Change password', 'fas fa-lock', 'nucleos_user_change_password');
 
-            // TODO maybe move to ProfileBundle if we keep one
             yield MenuItem::linktoRoute('My profile', 'fas fa-user', 'nucleos_profile_profile_show');
             yield MenuItem::linktoRoute('Edit profile', 'fas fa-user-pen', 'nucleos_profile_profile_edit');
 

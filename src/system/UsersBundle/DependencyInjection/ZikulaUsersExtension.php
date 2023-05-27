@@ -18,8 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Zikula\UsersBundle\Form\Type\AvatarType;
 use Zikula\UsersBundle\Helper\MailHelper;
+use Zikula\UsersBundle\Helper\ProfileHelper;
+use Zikula\UsersBundle\Helper\UploadHelper;
 use Zikula\UsersBundle\Menu\ExtensionMenu;
+use Zikula\UsersBundle\Twig\Runtime\ProfileRuntime;
 
 class ZikulaUsersExtension extends Extension implements PrependExtensionInterface
 {
@@ -43,11 +47,26 @@ class ZikulaUsersExtension extends Extension implements PrependExtensionInterfac
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->getDefinition(ExtensionMenu::class)
+            ->setArgument('$registrationEnabled', $config['registration']['enabled'])
+            ->setArgument('$allowSelfDeletion', $this->isNucleosSelfDeletionEnabled ?? $config['allow_self_deletion']);
+
+        $container->getDefinition(AvatarType::class)
+            ->setArgument('$avatarConfig', $config['avatar']);
+
         $container->getDefinition(MailHelper::class)
             ->setArgument('$registrationNotificationEmail', $config['registration']['admin_notification_mail']);
 
-        $container->getDefinition(ExtensionMenu::class)
-            ->setArgument('$registrationEnabled', $this->isNucleosSelfDeletionEnabled ?? $config['registration']['enabled'])
-            ->setArgument('$allowSelfDeletion', $config['allow_self_deletion']);
+        $container->getDefinition(ProfileHelper::class)
+            ->setArgument('$avatarImagePath', $config['avatar']['image_path'])
+            ->setArgument('$avatarDefaultImage', $config['avatar']['default_image'])
+            ->setArgument('$gravatarEnabled', $config['avatar']['gravatar_enabled']);
+
+        $container->getDefinition(UploadHelper::class)
+            ->setArgument('$uploadConfig', $config['avatar']['uploads'])
+            ->setArgument('$imagePath', $config['avatar']['image_path']);
+
+        $container->getDefinition(ProfileRuntime::class)
+            ->setArgument('$displayRegistrationDate', $config['display_registration_date']);
     }
 }

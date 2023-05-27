@@ -1,8 +1,0 @@
-<fieldset>
-    <legend>{% trans %}Profile{% endtrans %}</legend>
-    {% for element in form.zikulaprofilebundle_editprofile %}
-        {{ form_row(element) }}
-    {% endfor %}
-    <input type="hidden" id="avatarPath" value="{{ imagePath|e('html_attr') }}" />
-</fieldset>
-{{ pageAddAsset('javascript', zasset('@ZikulaProfileBundle:js/ZikulaProfileBundle.Avatar.Edit.js')) }}

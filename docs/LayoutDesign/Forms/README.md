@@ -13,4 +13,4 @@ currentMenu: forms
 
 ## For developers
 
-- [Dynamic form fields](Dev/DynamicFormFields.md)
+- [Dynamic Form Bundle](https://github.com/zikula/DynamicFormBundle)

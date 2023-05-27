@@ -1,5 +1,0 @@
-<fieldset>
-    <legend>{% trans %}Profile{% endtrans %}</legend>
-    <p>{{ user.uname|profileLinkByUserName('', userAvatar(user.uid)) }}</p>
-    {{ include('@ZikulaProfile/displayAttributes.html.twig', {context: 'hook'}) }}
-</fieldset>

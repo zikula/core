@@ -12,18 +12,18 @@ Zikula provides two form themes that can be used together or separately
 
 ```twig
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaTheme/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaTheme/Form/form_div_layout.html.twig'
 ] %}
 ```
 
-The `@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig` theme automatically 'bootstrapifies' the
+The `@ZikulaTheme/Form/bootstrap_4_zikula_admin_layout.html.twig` theme automatically 'bootstrapifies' the
 form so all elements use the Bootstrap 4 form styles. This is an extension of Symfony's own bootstrap theme.
 Additional customizations are added to format the form in a standard Zikula 'admin' style form.
 
 ## Input additions
 
-When using `@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig` you can specify 'help' text, 
+When using `@ZikulaTheme/Form/bootstrap_4_zikula_admin_layout.html.twig` you can specify 'help' text, 
 'alert' text and 'input_group' parameters for each form element. 
 
 - Help texts are rendered as bootstrap `form-text text-muted` class (see [Bootstrap forms](https://getbootstrap.com/docs/4.4/components/forms/)).
@@ -70,7 +70,7 @@ Alert texts must be an array with the keys as the text and the value as the type
 ])
 ```
 
-When using `@ZikulaFormExtension/Form/form_div_layout.html.twig` you can specify an 'icon' parameter to button form elements. 
+When using `@ZikulaTheme/Form/form_div_layout.html.twig` you can specify an 'icon' parameter to button form elements. 
 
 ```php
 ->add('save', SubmitType::class, [

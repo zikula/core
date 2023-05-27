@@ -1,8 +1,8 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: [
-        '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-        '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+        '@ZikulaTheme/Form/bootstrap_4_zikula_admin_layout.html.twig',
+        '@ZikulaTheme/Form/form_div_layout.html.twig'
     ]
 
 when@test:

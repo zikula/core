@@ -95,7 +95,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
                         $filter['activated'] = ['operator' => '=', 'operand' => $v];
                         break;
                     default:
-                        $filter[$k] = ['operator' => 'like', 'operand' => "%${v}%"];
+                        $filter[$k] = ['operator' => 'like', 'operand' => '%' . $v . '%'];
                 }
             }
         }
@@ -112,7 +112,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $i = 1;
         foreach ($words as $word) {
             $subWhere = $qb->expr()->orX();
-            $expr = $qb->expr()->like('u.uname', "?${i}");
+            $expr = $qb->expr()->like('u.uname', '?' . $i);
             $subWhere->add($expr);
             $qb->setParameter($i, '%' . $word . '%');
             $i++;

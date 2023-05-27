@@ -42,7 +42,7 @@ class CategoryPermissionApi implements CategoryPermissionApiInterface
             }
             $regId = $categoryAssignment->getCategoryRegistryId();
             $catId = $categoryAssignment->getCategory()->getId();
-            $hasAccess = $this->permissionApi->hasPermission('ZikulaCategoriesModule:PropertyId:CategoryId', "${regId}::${catId}", $permLevel);
+            $hasAccess = $this->permissionApi->hasPermission('ZikulaCategoriesModule:PropertyId:CategoryId', $regId . '::' . $catId, $permLevel);
             if ($requireAccessForAll && !$hasAccess) {
                 return false;
             }
