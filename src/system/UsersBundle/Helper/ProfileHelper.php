@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\UsersBundle\Helper\GravatarHelper;
 use Zikula\UsersBundle\ProfileConstant;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use function Symfony\Component\String\s;
