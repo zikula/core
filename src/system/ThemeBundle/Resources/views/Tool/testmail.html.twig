@@ -13,10 +13,10 @@
         {{ form_row(form.toAddress) }}
         {{ form_row(form.subject) }}
         {{ form_row(form.messageType) }}
-        <div data-switch="zikulathemebundle_mailtest[messageType]" data-switch-value="html,multipart">
+        <div id="zikulathemebundle_mailtest_bodyHtml_row">
             {{ form_row(form.bodyHtml) }}
         </div>
-        <div data-switch="zikulathemebundle_mailtest[messageType]" data-switch-value="text,multipart">
+        <div id="zikulathemebundle_mailtest_bodyText_row">
             {{ form_row(form.bodyText) }}
         </div>
     </fieldset>
@@ -29,3 +29,7 @@
     </div>
     {{ form_end(form) }}
 {% endblock %}
+{% block body_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/zikulatheme/js/ZikulaThemeBundle.TestMail.js') }}"></script>
+{% endblock body_javascript %}
