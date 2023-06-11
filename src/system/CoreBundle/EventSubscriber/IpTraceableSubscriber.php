@@ -13,21 +13,19 @@ declare(strict_types=1);
 
 namespace Zikula\CoreBundle\EventSubscriber;
 
-use Gedmo\Loggable\LoggableListener as Loggable;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Gedmo\IpTraceable\IpTraceableListener as IpTraceable;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Loggable subscriber to provide the current user. Note we use the ID to avoid storing user names.
+ * IpTraceable subscriber to provide the current users IP address.
+ *
+ * Workaround until https://github.com/stof/StofDoctrineExtensionsBundle/pull/233
  */
-class LoggableSubscriber
+class IpTraceableSubscriber
 {
     public function __construct(
-        #[Autowire(service: 'stof_doctrine_extensions.listener.loggable')]
-        private readonly Loggable $loggableListener,
-        private readonly Security $security
+        private readonly IpTraceable $ipTraceableListener
     ) {
     }
 
@@ -39,7 +37,7 @@ class LoggableSubscriber
     }
 
     /**
-     * Set the current users identifier.
+     * Set the current users IP address.
      */
     public function onKernelRequest(RequestEvent $event): void
     {
@@ -47,6 +45,9 @@ class LoggableSubscriber
             return;
         }
 
-        $this->loggableListener->setUsername($this->security->getUser()?->getId());
+        $ip = $event->getRequest()->getClientIp();
+        if (!empty($ip)) {
+            $this->ipTraceableListener->setIpValue($ip);
+        }
     }
 }
