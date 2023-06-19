@@ -1,6 +1,6 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title 'Terms of use for %s%'|trans({ '%s%': siteName() }) %}
+{% block page_title 'Terms of use for %s%'|trans({ '%s%': siteName() }) %}
 {% block main %}
     {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/termsOfUse.html.twig') }}
 {% endblock %}

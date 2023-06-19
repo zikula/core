@@ -1,0 +1,6 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'Test page'|trans %}
+{% block main %}
+    <h3>Hello {% if isAdminArea %}admin{% else %}user{% endif %}!</h3>
+{% endblock %}

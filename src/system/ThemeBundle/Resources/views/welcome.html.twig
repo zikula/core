@@ -1,8 +1,6 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}{{ block('content_title') }}{% endblock %}
-
-{% block content_title %}
+{% block page_title %}
     {{ t('Welcome to %siteName%', {'%siteName%': siteName()})|trans }}
 {% endblock %}
 

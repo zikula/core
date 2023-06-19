@@ -63,7 +63,7 @@ class LocaleSubscriber implements EventSubscriberInterface
             if ($user instanceof LocaleAwareUser) {
                 $userSelectedLocale = $user->getLocale();
             }
-            $defaultLocale = $userSelectedLocale ?? $this->defaultLocale;
+            $defaultLocale = $userSelectedLocale ?: $this->defaultLocale;
 
             $request->setLocale($session->get('_locale', $this->defaultLocale));
         }

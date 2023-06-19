@@ -14,73 +14,97 @@ declare(strict_types=1);
 namespace Zikula\ThemeBundle\EventSubscriber;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\DashboardControllerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\AdminContextFactory;
+use EasyCorp\Bundle\EasyAdminBundle\Factory\ControllerFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
+use Zikula\ThemeBundle\Helper\FallbackDashboardDetector;
 
 class CreateThemedResponseSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly AdminUrlGenerator $adminUrlGenerator)
-    {
+    public function __construct(
+        private readonly AdminContextFactory $adminContextFactory,
+        private readonly ControllerFactory $controllerFactory,
+        private readonly FallbackDashboardDetector $dashboardDetector
+    ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['createThemedResponse'],
+            KernelEvents::REQUEST => ['onKernelRequest', -50], // run after AdminRouterSubscriber (has default priority 0)
         ];
     }
 
-    public function createThemedResponse(RequestEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        if (!$event->isMainRequest() || $request->isXmlHttpRequest()) {
+        if (null !== $adminContext = $request->attributes->get(EA::CONTEXT_REQUEST_ATTRIBUTE)) {
+            // nothing to do if we already have an EA context
             return;
         }
 
-        $route = $request->attributes->get('_route', '');
-        if (str_starts_with($route, 'home')) { // TODO remove hardcoded assumption -> check if controller is a dashboard
+        if (null === $dashboardControllerFqcn = $this->getDashboardControllerFqcn($request)) {
+            // current controller is not a dashboard controller, so add a fallback
+            $dashboardControllerFqcn = $this->dashboardDetector->getDashboardControllerFqcn($request);
+        }
+
+        if (null === $dashboardControllerInstance = $this->getDashboardControllerInstance($dashboardControllerFqcn, $request)) {
             return;
         }
 
-        $dashboard = UserDashboardController::class; // TODO $this->themeEngine->getActiveDashboardControllerClass();
-        $routeParameters = $request->attributes->get('_route_params');
+        // $crudControllerInstance is always null atm but this seems fine as we are dealing with a regular Symfony controller
+        $crudControllerInstance = $this->getCrudControllerInstance($request);
+        $adminContext = $this->adminContextFactory->create($request, $dashboardControllerInstance, $crudControllerInstance);
+        $request->attributes->set(EA::CONTEXT_REQUEST_ATTRIBUTE, $adminContext);
 
-        // menu indexes
-        $index = -1;
-        $subIndex = -1;
+        $request->query->set(EA::ROUTE_NAME, $request->attributes->get('_route'));
+        $request->query->set(EA::ROUTE_PARAMS, $request->attributes->get('_route_params'));
+    }
 
-        $url = $this->adminUrlGenerator
-            ->setDashboard($dashboard)
-            ->setRoute($route, $routeParameters)
-            ->set(EA::MENU_INDEX, $index)
-            ->set(EA::SUBMENU_INDEX, $subIndex)
-            ->generateUrl()
-        ;
-        // $event->setResponse(new RedirectResponse($url));
-        return;
+    /**
+     * Copy of AdminRouterSubscriber#getDashboardControllerFqcn.
+     */
+    private function getDashboardControllerFqcn(Request $request): ?string
+    {
+        $controller = $request->attributes->get('_controller');
+        $controllerFqcn = null;
 
-        $queryParams = $requestParams = $attributes = [];
-        $attributes['_controller'] = [$dashboard, 'index'];
-        $attributes['_route'] = $route;
-        $attributes['_route_params'] = $routeParameters;
+        if (\is_string($controller)) {
+            [$controllerFqcn, ] = explode('::', $controller);
+        }
 
-        $subRequest = $request->duplicate($queryParams, $requestParams, $attributes);
+        if (\is_array($controller)) {
+            $controllerFqcn = $controller[0];
+        }
 
-        $event->setResponse(
-            $event->getKernel()->handle($subRequest, HttpKernelInterface::SUB_REQUEST)
-        );
-        /**
-        TODO
+        if (\is_object($controller)) {
+            $controllerFqcn = $controller::class;
+        }
 
-        check if EAB is available
-        check if EAB is activated for admin/user area (ThemeBundle configuration)
+        return is_subclass_of($controllerFqcn, DashboardControllerInterface::class) ? $controllerFqcn : null;
+    }
 
-        Benefit: works with plain Symfony as well as EAB!
-         */
+    /**
+     * Copy of AdminRouterSubscriber#getDashboardControllerInstance.
+     */
+    private function getDashboardControllerInstance(string $dashboardControllerFqcn, Request $request): ?DashboardControllerInterface
+    {
+        return $this->controllerFactory->getDashboardControllerInstance($dashboardControllerFqcn, $request);
+    }
+
+    /**
+     * Copy of AdminRouterSubscriber#getCrudControllerInstance.
+     */
+    private function getCrudControllerInstance(Request $request): ?CrudControllerInterface
+    {
+        $crudControllerFqcn = $request->query->get(EA::CRUD_CONTROLLER_FQCN);
+
+        $crudAction = $request->query->get(EA::CRUD_ACTION);
+
+        return $this->controllerFactory->getCrudControllerInstance($crudControllerFqcn, $crudAction, $request);
     }
 }

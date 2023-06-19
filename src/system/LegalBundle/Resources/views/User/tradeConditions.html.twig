@@ -1,6 +1,6 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block content_title 'Trade conditions for %s%'|trans({ '%s%': siteName() }) %}
+{% block page_title 'Trade conditions for %s%'|trans({ '%s%': siteName() }) %}
 {% block main %}
     {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/tradeConditions.html.twig') }}
 {% endblock %}
