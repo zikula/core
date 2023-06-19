@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeBundle\EventSubscriber;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\CrudControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Controller\DashboardControllerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\AdminContextFactory;
 use EasyCorp\Bundle\EasyAdminBundle\Factory\ControllerFactory;
@@ -42,7 +43,7 @@ class CreateThemedResponseSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
-        if (null !== $adminContext = $request->attributes->get(EA::CONTEXT_REQUEST_ATTRIBUTE)) {
+        if (null !== $request->attributes->get(EA::CONTEXT_REQUEST_ATTRIBUTE)) {
             // nothing to do if we already have an EA context
             return;
         }
