@@ -74,7 +74,7 @@ class CreateThemedResponseSubscriber implements EventSubscriberInterface
         $controllerFqcn = null;
 
         if (\is_string($controller)) {
-            [$controllerFqcn, ] = explode('::', $controller);
+            [$controllerFqcn] = explode('::', $controller);
         }
 
         if (\is_array($controller)) {
