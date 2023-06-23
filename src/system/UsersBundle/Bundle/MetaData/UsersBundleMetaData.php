@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Zikula\UsersBundle\Bundle\MetaData;
-
 /*
  * This file is part of the Zikula package.
  *
@@ -12,6 +10,8 @@ namespace Zikula\UsersBundle\Bundle\MetaData;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace Zikula\UsersBundle\Bundle\MetaData;
 
 use Symfony\Component\Translation\TranslatableMessage;
 use Zikula\CoreBundle\Bundle\MetaData\BundleMetaDataInterface;

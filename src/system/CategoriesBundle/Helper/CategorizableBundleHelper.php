@@ -17,9 +17,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesBundle\Entity\Category;
+use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 
 class CategorizableBundleHelper
 {

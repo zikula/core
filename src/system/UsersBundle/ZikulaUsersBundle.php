@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Zikula\CoreBundle\Bundle\MetaData\BundleMetaDataInterface;
-use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\CoreBundle\Bundle\Initializer\BundleInitializerInterface;
 use Zikula\CoreBundle\Bundle\Initializer\InitializableBundleInterface;
+use Zikula\CoreBundle\Bundle\MetaData\BundleMetaDataInterface;
+use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\UsersBundle\Bundle\Initializer\UsersInitializer;
 use Zikula\UsersBundle\Bundle\MetaData\UsersBundleMetaData;
 
