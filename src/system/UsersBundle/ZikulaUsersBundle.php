@@ -27,6 +27,7 @@ class ZikulaUsersBundle extends Bundle implements InitializableBundleInterface, 
     {
         return $this->container->get(UsersBundleMetaData::class);
     }
+
     public function getInitializer(): BundleInitializerInterface
     {
         return $this->container->get(UsersInitializer::class);
