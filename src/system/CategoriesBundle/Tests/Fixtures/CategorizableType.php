@@ -29,7 +29,7 @@ class CategorizableType extends AbstractType
             'attr' => $options['attr'],
             'expanded' => $options['expanded'],
             'direct' => $options['direct'],
-            'module' => 'AcmeFooModule',
+            'bundle' => 'AcmeFooBundle',
             'entity' => 'CategorizableEntity',
             'entityCategoryClass' => CategoryAssignment::class,
         ]);

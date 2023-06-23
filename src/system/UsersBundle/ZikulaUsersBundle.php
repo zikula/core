@@ -13,13 +13,20 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle;
 
-use Zikula\CoreBundle\AbstractModule;
-use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
-use Zikula\CoreBundle\BundleInitializer\InitializableBundleInterface;
-use Zikula\UsersBundle\Initializer\UsersInitializer;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zikula\CoreBundle\Bundle\MetaData\BundleMetaDataInterface;
+use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
+use Zikula\CoreBundle\Bundle\Initializer\BundleInitializerInterface;
+use Zikula\CoreBundle\Bundle\Initializer\InitializableBundleInterface;
+use Zikula\UsersBundle\Bundle\Initializer\UsersInitializer;
+use Zikula\UsersBundle\Bundle\MetaData\UsersBundleMetaData;
 
-class ZikulaUsersBundle extends AbstractModule implements InitializableBundleInterface
+class ZikulaUsersBundle extends Bundle implements InitializableBundleInterface, MetaDataAwareBundleInterface
 {
+    public function getMetaData(): BundleMetaDataInterface
+    {
+        return $this->container->get(UsersBundleMetaData::class);
+    }
     public function getInitializer(): BundleInitializerInterface
     {
         return $this->container->get(UsersInitializer::class);

@@ -24,13 +24,12 @@ use Zikula\CoreBundle\Api\LocaleApi;
 use Zikula\CoreBundle\EventSubscriber\ClickjackProtectionSubscriber;
 use Zikula\CoreBundle\EventSubscriber\SiteOffSubscriber;
 use Zikula\CoreBundle\Site\SiteDefinition;
-use function Symfony\Component\String\s;
 
 class CoreExtension extends Extension implements PrependExtensionInterface
 {
     private array $workflowDirectories = [];
 
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
@@ -55,7 +54,7 @@ class CoreExtension extends Extension implements PrependExtensionInterface
         $container->getDefinition(SiteDefinition::class)
             ->setArgument('$siteData', $config['site_data']);
 
-        // hint which classes contain annotations so they are compiled when generating
+        // hint which classes contain annotations, so they are compiled when generating
         // the application cache to improve the overall performance
         $this->addAnnotatedClassesToCompile([
             'Zikula\\*Bundle\\Controller\\',
@@ -68,15 +67,11 @@ class CoreExtension extends Extension implements PrependExtensionInterface
         return 'http://symfony.com/schema/dic/symfony';
     }
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         // bundles may define their workflows in: <bundlePath>/Resources/workflows/
         $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
         foreach ($bundleMetaData as $bundleName => $metaData) {
-            // TODO still needed/wanted? could check for AbstractModule
-            /*if (!s($bundleName)->endsWith('Module')) {
-                continue;
-            }*/
             $workflowPath = $metaData['path'] . '/Resources/workflows';
             if (!file_exists($workflowPath)) {
                 continue;
@@ -93,7 +88,7 @@ class CoreExtension extends Extension implements PrependExtensionInterface
     /**
      * Loads workflow files from given directories.
      */
-    private function loadWorkflowDefinitions(ContainerBuilder $container)
+    private function loadWorkflowDefinitions(ContainerBuilder $container): void
     {
         try {
             $finder = new Finder();
@@ -111,7 +106,7 @@ class CoreExtension extends Extension implements PrependExtensionInterface
                 $loader->load($file->getFilename());
             }
         } catch (\InvalidArgumentException) {
-            // no module with a workflow directory exists, ignore
+            // no bundle with a workflow directory exists, ignore
         }
     }
 }

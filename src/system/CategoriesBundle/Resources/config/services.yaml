@@ -8,6 +8,9 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
+    Zikula\CategoriesBundle\Bundle\MetaData\CategoriesBundleMetaData:
+        public: true
+
     Zikula\CategoriesBundle\Helper\:
         resource: '../../Helper/*'
         lazy: true

@@ -11,6 +11,9 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
+    Zikula\UsersBundle\Bundle\MetaData\UsersBundleMetaData:
+        public: true
+
     Zikula\UsersBundle\Helper\:
         resource: '../../Helper/*'
         lazy: true

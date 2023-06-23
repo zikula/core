@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\CoreBundle\BundleInitializer;
+namespace Zikula\CoreBundle\Bundle\MetaData;
 
-interface InitializableBundleInterface
+interface MetaDataAwareBundleInterface
 {
-    public function getInitializer(): BundleInitializerInterface;
+    public function getMetaData(): BundleMetaDataInterface;
 }

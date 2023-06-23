@@ -27,7 +27,7 @@ class CategoryProcessingHelper
     /**
      * Checks whether a category may be deleted or moved.
      * For this all registries are checked to see if the given category is contained in the corresponding subtree.
-     * If yes, the mapping table of the corresponding module is checked to see if it contains the given category.
+     * If yes, the mapping table of the corresponding bundle is checked to see if it contains the given category.
      */
     public function mayCategoryBeDeletedOrMoved(Category $category): bool
     {

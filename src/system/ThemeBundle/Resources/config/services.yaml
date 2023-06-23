@@ -8,13 +8,8 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    Zikula\ThemeBundle\EventSubscriber\CreateThemedResponseSubscriber:
-        tags:
-            - { name: monolog.logger, channel: request }
-
-    Zikula\ThemeBundle\EventSubscriber\ControllerAnnotationReaderSubscriber:
-        tags:
-            - { name: monolog.logger, channel: request }
+    Zikula\ThemeBundle\Bundle\MetaData\ThemeBundleMetaData:
+        public: true
 
     Zikula\ThemeBundle\Helper\:
         resource: '../../Helper/*'

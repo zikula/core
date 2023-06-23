@@ -52,12 +52,12 @@ class User extends BaseUser implements LegalAwareUserInterface
     protected Collection $groups;
 
     /**
-     * Account State: The user's current state, see \Zikula\UsersModule\UsersConstant::ACTIVATED_* for defined constants.
+     * Account State: The user's current state, see \Zikula\UsersBundle\UsersConstant::ACTIVATED_* for defined constants.
      * A state represented by a negative integer means that the user's account is in a pending state, and should not yet be considered a "real" user account.
      * For example, user accounts pending the completion of the registration process (because either moderation, e-mail verification, or both are in use)
      * will have a negative integer representing their state. If the user's registration request expires before it the process is completed, or if the administrator
-     * denies the request for an new account, the user account record will be deleted.
-     * When this deletion happens, it will be assumed by the system that no external module has yet interacted with the user account record,
+     * denies the request for a new account, the user account record will be deleted.
+     * When this deletion happens, it will be assumed by the system that no external bundle has yet interacted with the user account record,
      * because its state never progressed beyond its pending state, and therefore normal hooks/events may not be triggered
      * (although it is possible that events regarding the pending account may be triggered).
      */

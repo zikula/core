@@ -21,7 +21,7 @@ interface CategoryPermissionApiInterface
      * Check for access to a certain set of categories.
      *
      * For each category property in the list, check if we have access to that category in that property.
-     * Check is done as "ZikulaCategoriesModule:PropertyId:CategoryId", "$regId::$catId"
+     * Check is done as "ZikulaCategoriesBundle:PropertyId:CategoryId", "$regId::$catId"
      *
      * @param AbstractCategoryAssignment[] $categoryAssignments
      */

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\CategoriesBundle\Initializer;
+namespace Zikula\CategoriesBundle\Bundle\Initializer;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
-use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
+use Zikula\CoreBundle\Bundle\Initializer\BundleInitializerInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use Zikula\UsersBundle\UsersConstant;
@@ -118,8 +118,8 @@ class CategoriesInitializer implements BundleInitializerInterface
             'locked' => false,
             'leaf' => false,
             'value' => '',
-            'name' => 'Modules',
-            'displayName' => $this->localize($this->translator->trans('Modules')),
+            'name' => 'Bundles',
+            'displayName' => $this->localize($this->translator->trans('Bundles')),
             'displayDesc' => $this->localize(),
             'status' => 'A'
         ];

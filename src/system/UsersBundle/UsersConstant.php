@@ -14,10 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle;
 
 /**
- * Users module-wide constants.
- * Add only constants here. No variables, functions, or other elements.
- * Constants used for specific classes can be defined in those classes. The constants in this class are module-wide
- * constants.
+ * Users bundle-wide constants.
  */
 class UsersConstant
 {
@@ -56,6 +53,7 @@ class UsersConstant
      */
     public const ACTIVATED_PENDING_DELETE = 16384;
 
+    // TODO move to enum
     public const ACTIVATED_OPTIONS = [
         self::ACTIVATED_ACTIVE,
         self::ACTIVATED_INACTIVE,

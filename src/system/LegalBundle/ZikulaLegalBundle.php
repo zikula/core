@@ -13,8 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\LegalBundle;
 
-use Zikula\CoreBundle\AbstractModule;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zikula\CoreBundle\Bundle\MetaData\BundleMetaDataInterface;
+use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
+use Zikula\LegalBundle\Bundle\MetaData\LegalBundleMetaData;
 
-class ZikulaLegalBundle extends AbstractModule
+class ZikulaLegalBundle extends Bundle implements MetaDataAwareBundleInterface
 {
+    public function getMetaData(): BundleMetaDataInterface
+    {
+        return $this->container->get(LegalBundleMetaData::class);
+    }
 }

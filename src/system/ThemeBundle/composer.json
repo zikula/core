@@ -1,6 +1,6 @@
 {
     "name": "zikula/theme-bundle",
-    "version": "4.0.0-dev",
+    "version": "dev-4.0",
     "description": "Theme system and admin extensions",
     "type": "symfony-bundle",
     "license": "LGPL-3.0-or-later",
@@ -15,28 +15,25 @@
     },
     "require": {
         "php": "^8.1",
-        "symfony/asset": "^6.0",
-        "symfony/config": "^6.0",
-        "symfony/cache": "^6.0",
-        "symfony/dependency-injection": "^6.0",
-        "symfony/event-dispatcher": "^6.0",
-        "symfony/filesystem": "^6.0",
-        "symfony/finder": "^6.0",
-        "symfony/form": "^6.0",
-        "symfony/http-foundation": "^6.0",
-        "symfony/http-kernel": "^6.0",
-        "symfony/routing": "^6.0",
-        "symfony/string": "^6.0",
-        "symfony/twig-bundle": "^6.0",
-        "symfony/validator": "^6.0",
+        "symfony/config": "^6.3",
+        "symfony/dependency-injection": "^6.3",
+        "symfony/event-dispatcher": "^6.3",
+        "symfony/filesystem": "^6.3",
+        "symfony/form": "^6.3",
+        "symfony/http-foundation": "^6.3",
+        "symfony/http-kernel": "^6.3",
+        "symfony/routing": "^6.3",
+        "symfony/string": "^6.3",
+        "symfony/twig-bundle": "^6.3",
+        "symfony/validator": "^6.3",
         "symfony/webpack-encore-bundle": "^2",
-        "symfony/yaml": "^6.0",
+        "symfony/yaml": "^6.3",
         "twig/intl-extra": "^3",
         "twig/string-extra": "^3",
         "twig/extra-bundle": "^3",
 
-        "zikula/core-bundle": "dev-3.1",
-        "zikula/users-bundle": "dev-3.1",
+        "zikula/core-bundle": "dev-4.0",
+        "zikula/users-bundle": "dev-4.0",
 
         "knplabs/knp-menu-bundle": "^3",
         "oro/twig-inspector": "^1",
@@ -45,13 +42,5 @@
         "itsjavi/fontawesome-iconpicker": "^3",
         "oomphinc/composer-installers-extender": "2.*",
         "vakata/jstree": "^3"
-    },
-    "extra": {
-        "zikula": {
-            "class": "Zikula\\ThemeBundle\\ZikulaThemeBundle",
-            "displayname": "Theme management",
-            "url": "theme",
-            "icon": "fas fa-palette"
-        }
     }
 }

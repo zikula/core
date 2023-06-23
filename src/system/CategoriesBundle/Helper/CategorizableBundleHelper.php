@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace Zikula\CategoriesBundle\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\CategoriesBundle\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesBundle\Entity\Category;
-use Zikula\CoreBundle\AbstractModule;
-use Zikula\CoreBundle\Composer\MetaData;
 
 class CategorizableBundleHelper
 {
-    private const CAPABILITY_NAME = 'categorizable';
-
     public function __construct(
         private readonly KernelInterface $kernel,
         private readonly EntityManagerInterface $entityManager
@@ -35,10 +34,8 @@ class CategorizableBundleHelper
         $result = [];
         $bundles = $this->kernel->getBundles();
         foreach ($bundles as $bundle) {
-            if (!($bundle instanceof AbstractModule)) {
-                continue;
-            }
-            if (isset($bundle->getMetaData()->getCapabilities()[self::CAPABILITY_NAME])) {
+            $entityClasses = $this->getCategorizableEntityClasses($bundle);
+            if (!empty($entityClasses)) {
                 $bundleName = $bundle->getName();
                 $result[$bundleName] = $bundleName;
             }
@@ -54,15 +51,12 @@ class CategorizableBundleHelper
     {
         $data = [];
         try {
-            $bundle = $this->getBundle($bundleName);
-        } catch (\Exception $exception) {
-            return $data;
-        }
-        if (!($bundle instanceof AbstractModule)) {
+            $bundle = $this->kernel->getBundle($bundleName);
+        } catch (InvalidArgumentException) {
             return $data;
         }
 
-        $entityClasses = $this->getCategorizableEntityClasses($bundle->getMetaData());
+        $entityClasses = $this->getCategorizableEntityClasses($bundle);
         if (empty($entityClasses)) {
             return $data;
         }
@@ -81,15 +75,12 @@ class CategorizableBundleHelper
     public function isCategoryUsedBy(string $bundleName, Category $category): bool
     {
         try {
-            $bundle = $this->getBundle($bundleName);
-        } catch (\Exception $exception) {
-            return false;
-        }
-        if (!($bundle instanceof AbstractModule)) {
+            $bundle = $this->kernel->getBundle($bundleName);
+        } catch (InvalidArgumentException) {
             return false;
         }
 
-        $entityClasses = $this->getCategorizableEntityClasses($bundle->getMetaData());
+        $entityClasses = $this->getCategorizableEntityClasses($bundle);
         if (empty($entityClasses)) {
             return false;
         }
@@ -112,8 +103,12 @@ class CategorizableBundleHelper
         return false;
     }
 
-    private function getCategorizableEntityClasses(MetaData $metaData): array
+    private function getCategorizableEntityClasses(BundleInterface $bundle): ?array
     {
-        return $metaData->getCapabilities()[self::CAPABILITY_NAME] ?? [];
+        if (!($bundle instanceof MetaDataAwareBundleInterface)) {
+            return null;
+        }
+
+        return $bundle->getMetaData()->getCategorizableEntityClasses();
     }
 }

@@ -13,13 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesBundle;
 
-use Zikula\CategoriesBundle\Initializer\CategoriesInitializer;
-use Zikula\CoreBundle\AbstractModule;
-use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
-use Zikula\CoreBundle\BundleInitializer\InitializableBundleInterface;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Zikula\CoreBundle\Bundle\MetaData\BundleMetaDataInterface;
+use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
+use Zikula\CategoriesBundle\Bundle\Initializer\CategoriesInitializer;
+use Zikula\CategoriesBundle\Bundle\MetaData\CategoriesBundleMetaData;
+use Zikula\CoreBundle\Bundle\Initializer\BundleInitializerInterface;
+use Zikula\CoreBundle\Bundle\Initializer\InitializableBundleInterface;
 
-class ZikulaCategoriesBundle extends AbstractModule implements InitializableBundleInterface
+class ZikulaCategoriesBundle extends Bundle implements InitializableBundleInterface, MetaDataAwareBundleInterface
 {
+    public function getMetaData(): BundleMetaDataInterface
+    {
+        return $this->container->get(CategoriesBundleMetaData::class);
+    }
+
     public function getInitializer(): BundleInitializerInterface
     {
         return $this->container->get(CategoriesInitializer::class);

@@ -1,6 +1,6 @@
 {
     "name": "zikula/users-bundle",
-    "version": "4.0.0-dev",
+    "version": "dev-4.0",
     "description": "User account administration",
     "type": "symfony-bundle",
     "license": "LGPL-3.0-or-later",
@@ -18,33 +18,22 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "nucleos/profile-bundle": "^2",
         "nucleos/user-bundle": "^2",
-        "symfony/config": "^6.0",
-        "symfony/console": "^6.0",
-        "symfony/dependency-injection": "^6.0",
-        "symfony/doctrine-bridge": "^6.0",
-        "symfony/event-dispatcher": "^6.0",
-        "symfony/form": "^6.0",
-        "symfony/http-foundation": "^6.0",
-        "symfony/http-kernel": "^6.0",
-        "symfony/intl": "^6.0",
-        "symfony/mailer": "^6.0",
+        "symfony/config": "^6.3",
+        "symfony/dependency-injection": "^6.3",
+        "symfony/doctrine-bridge": "^6.3",
+        "symfony/form": "^6.3",
+        "symfony/http-foundation": "^6.3",
+        "symfony/http-kernel": "^6.3",
+        "symfony/intl": "^6.3",
+        "symfony/mailer": "^6.3",
         "symfony/maker-bundle": "^1",
-        "symfony/property-access": "^6.0",
-        "symfony/routing": "^6.0",
-        "symfony/security-bundle": "^6.0",
-        "symfony/string": "^6.0",
-        "symfony/validator": "^6.0",
+        "symfony/property-access": "^6.3",
+        "symfony/routing": "^6.3",
+        "symfony/security-bundle": "^6.3",
+        "symfony/string": "^6.3",
+        "symfony/validator": "^6.3",
 
-        "zikula/core-bundle": "dev-3.1",
-        "zikula/formextension-bundle": "dev-3.1",
-        "zikula/theme-bundle": "dev-3.1"
-    },
-    "extra": {
-        "zikula": {
-            "class": "Zikula\\UsersBundle\\ZikulaUsersBundle",
-            "displayname": "Users management",
-            "url": "users",
-            "icon": "fas fa-users-cog"
-        }
+        "zikula/core-bundle": "dev-4.0",
+        "zikula/theme-bundle": "dev-4.0"
     }
 }

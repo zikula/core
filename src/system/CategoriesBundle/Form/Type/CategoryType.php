@@ -26,11 +26,10 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
-use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
 use Zikula\CategoriesBundle\Entity\Category;
 use Zikula\CategoriesBundle\Validator\Constraints\UniqueNameForPosition;
 use Zikula\CoreBundle\Translation\TranslatorTrait;
+use Zikula\ThemeBundle\Form\Type\IconType;
 
 class CategoryType extends AbstractType
 {

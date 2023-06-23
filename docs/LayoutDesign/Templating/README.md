@@ -30,7 +30,3 @@ Zikula uses the Twig template engine, like Symfony does.
 - [Twig extensions provided by Symfony](https://symfony.com/doc/current/reference/twig_reference.html)
 - [Bootstrap 5](https://getbootstrap.com/)
 - [Font Awesome 6](https://fontawesome.com/)
-
-## For developers
-
-- [Display an Alpha filter](Dev/AlphaFilter.md)

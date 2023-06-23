@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\CoreBundle\BundleInitializer;
+namespace Zikula\CoreBundle\Bundle\Initializer;
 
 interface BundleInitializerInterface
 {

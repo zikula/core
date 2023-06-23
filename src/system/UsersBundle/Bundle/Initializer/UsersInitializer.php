@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\Initializer;
+namespace Zikula\UsersBundle\Bundle\Initializer;
 
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Zikula\CoreBundle\BundleInitializer\BundleInitializerInterface;
+use Zikula\CoreBundle\Bundle\Initializer\BundleInitializerInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\UsersConstant;
 

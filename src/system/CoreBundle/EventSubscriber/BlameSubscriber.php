@@ -49,12 +49,12 @@ class BlameSubscriber implements EventSubscriberInterface
             try {
                 $request = $this->requestStack->getCurrentRequest();
                 if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
-                    $uid = $this->session->isStarted() ? $this->session->get('uid', UsersConstant::USER_ID_ANONYMOUS) : $uid;
+                    $uid = $session->isStarted() ? $session->get('uid', UsersConstant::USER_ID_ANONYMOUS) : $uid;
                 }
             } catch (\Exception) {
                 $uid = UsersConstant::USER_ID_ADMIN;
             }
-            $user = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid);
+            $user = $this->entityManager->getReference('ZikulaUsersBundle:User', $uid);
             $this->blameableListener->setUserValue($user);
         } catch (\Exception) {
             // silently fail - likely installing and tables not available
