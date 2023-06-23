@@ -55,7 +55,7 @@ class UserController extends AbstractController
     {
         $url = $urlGenerator
             ->setDashboard(UserDashboardController::class)
-            //->setController(self::class)
+            // ->setController(self::class)
             ->setRoute('zikulalegalbundle_user_legalnotice')
             ->generateUrl();
         $url = str_replace('/admin?route', '/en?route', $url); // TODO remove hack
@@ -181,7 +181,7 @@ class UserController extends AbstractController
             $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
             foreach ($policiesToCheck as $policyName => $isEnabled) {
                 $setter = 'set' . ucfirst($policyName);
-                $userEntity->$setter($data[$policyName . 'Accepted'] && $isEnabled ? $nowUTC : null);
+                $userEntity->{$setter}($data[$policyName . 'Accepted'] && $isEnabled ? $nowUTC : null);
             }
             $doctrine->getManager()->flush();
             if ($data['hasAcceptedPolicies'] && $data['loginRequired']) {

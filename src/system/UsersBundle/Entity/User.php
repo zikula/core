@@ -33,8 +33,8 @@ use Zikula\UsersBundle\UsersConstant;
 ]
 class User extends BaseUser implements LegalAwareUserInterface
 {
-    use UserAttributesTrait;
     use LegalAwareUserTrait;
+    use UserAttributesTrait;
 
     #[ORM\Id]
     #[ORM\Column]

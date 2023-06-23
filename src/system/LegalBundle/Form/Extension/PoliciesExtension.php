@@ -42,12 +42,12 @@ class PoliciesExtension extends AbstractTypeExtension
                 'getter' => function (User $user, FormInterface $form): bool {
                     $getter = 'get' . ucwords((string) $form->getPropertyPath());
 
-                    return null !== $user->$getter();
+                    return null !== $user->{$getter}();
                 },
                 'setter' => function (User $user, bool $state, FormInterface $form): void {
                     $setter = 'set' . ucwords((string) $form->getPropertyPath());
                     $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
-                    $user->$setter($state ? $nowUTC : null);
+                    $user->{$setter}($state ? $nowUTC : null);
                 },
             ]);
         }
