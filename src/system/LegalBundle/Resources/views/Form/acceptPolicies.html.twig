@@ -1,0 +1,55 @@
+{% trans_default_domain 'zikulalegalbundle' %}
+{% macro policyLink(policyName, policyTitle) %}
+    {% set policyUrl = zikulalegalbundle_getUrl(policyName) %}
+    <a class="policy-link" data-toggle="modal" data-target="#modal-{{ policyName }}" href="{{ policyUrl }}">{{ policyTitle }}</a>
+{% endmacro %}
+{% macro fieldLabel(policyName, policyTitle) %}
+    {% set policyLink = _self.policyLink(policyName, policyTitle) %}
+    {% trans with { '%policy%': policyLink } %}I accept the %policy%.{% endtrans %}
+{% endmacro %}
+{% if form.termsOfUseAccepted is defined or form.privacyPolicyAccepted is defined or form.tradeConditionsAccepted is defined or form.cancellationRightPolicyAccepted is defined %}
+    <p id="acceptpolicies_policies_info">{% trans %}Please click on the following links to read the corresponding documents.{% endtrans %}</p>
+{% endif %}
+{% if form.termsOfUseAccepted is defined %}
+    {% set policyLabel = 'Terms of use'|trans %}
+    {% set label = _self.fieldLabel('termsOfUse', policyLabel) %}
+    {{ form_widget(form.termsOfUseAccepted, {label: label, label_html: true}) }}
+{% endif %}
+{% if form.privacyPolicyAccepted is defined %}
+    {% set policyLabel = 'Privacy policy'|trans %}
+    {% set label = _self.fieldLabel('privacyPolicy', policyLabel) %}
+    {{ form_widget(form.privacyPolicyAccepted, {label: label, label_html: true}) }}
+{% endif %}
+{% if form.tradeConditionsAccepted is defined %}
+    {% set policyLabel = 'General terms and conditions of trade'|trans %}
+    {% set label = _self.fieldLabel('tradeConditions', policyLabel) %}
+    {{ form_widget(form.tradeConditionsAccepted, {label: label, label_html: true}) }}
+{% endif %}
+{% if form.cancellationRightPolicyAccepted is defined %}
+    {% set policyLabel = 'Cancellation right policy'|trans %}
+    {% set label = _self.fieldLabel('cancellationRightPolicy', policyLabel) %}
+    {{ form_widget(form.cancellationRightPolicyAccepted, {label: label, label_html: true}) }}
+{% endif %}
+{% if form.agePolicyAccepted is defined %}
+    {% set label = 'I accept the %policy%.'|trans({ '%policy%': ('Age policy'|trans) }) %}
+    {{ form_widget(form.agePolicyAccepted, {label: label}) }}
+    {% set help %}
+        {% trans with { '%amountOfYears%': zikulalegalbundle_minimumAge() } %}You need to be %amountOfYears% years of age or older, in accordance with our minimum age requirement.{% endtrans %}
+    {% endset %}
+    {{ form_help(form.agePolicyAccepted, {help: help}) }}
+{% endif %}
+<div class="modal fade" id="policyModal" tabindex="-1" role="dialog" aria-labelledby="policyModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="policyModalTitle"></h5>
+                <button type="button" class="btn-close"data-bs-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}">&times;</button>
+            </div>
+            <div class="modal-body" id="policyModalBody"><i class="fas fa-spin fa-cog fa-2x"></i></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ asset('bundles/zikulalegal/js/ZikulaLegalBundle.User.AcceptPolicies.js') }}"></script>

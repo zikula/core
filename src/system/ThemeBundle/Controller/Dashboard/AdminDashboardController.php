@@ -32,7 +32,7 @@ class AdminDashboardController extends AbstractThemedDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return parent::getDashboardWithBranding(true, t('Administration'));
+        return $this->getDashboardWithBranding(true, t('Administration'));
     }
 
     public function configureMenuItems(): iterable

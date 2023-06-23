@@ -29,7 +29,7 @@ class UserDashboardController extends AbstractThemedDashboardController
 
     public function configureDashboard(): Dashboard
     {
-        return parent::getDashboardWithBranding(true);
+        return $this->getDashboardWithBranding(true);
     }
 
     public function configureMenuItems(): iterable

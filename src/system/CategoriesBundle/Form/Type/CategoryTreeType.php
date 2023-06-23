@@ -30,7 +30,7 @@ class CategoryTreeType extends AbstractType
     ) {
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $transformer = new CategoryTreeTransformer($this->categoryRepository);
         $builder->addModelTransformer($transformer);
@@ -41,7 +41,7 @@ class CategoryTreeType extends AbstractType
         return 'zikulacategoriesbundle_category_tree';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'locale' => 'en',
@@ -70,7 +70,7 @@ class CategoryTreeType extends AbstractType
         });
         $resolver->setNormalizer('placeholder', static function (Options $options, $placeholder) {
             if (!$options['required']) {
-                if (null === $placeholder || empty($placeholder)) {
+                if (empty($placeholder)) {
                     $isMultiple = $options['multiple'];
                     $translator = $options['translator'];
 
@@ -111,7 +111,7 @@ class CategoryTreeType extends AbstractType
                 continue;
             }
             $indent = $child['lvl'] > 0 ? str_repeat('--', $child['lvl']) : '';
-            if (isset($child['displayName'][$locale]) && !empty($child['displayName'][$locale])) {
+            if (!empty($child['displayName'][$locale])) {
                 $catName = $child['displayName'][$locale];
             } else {
                 $catName = $child['name'];

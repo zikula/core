@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Nucleos\UserBundle\Security\LoginManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +27,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\LegalBundle\Form\Type\AcceptPoliciesType;
 use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
-use Zikula\LegalBundle\LegalConstant;
 use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
-use Zikula\UsersBundle\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
@@ -49,18 +48,19 @@ class UserController extends AbstractController
 
     /**
      * Main user function.
-     * Redirects to the Terms of Use legal document.
+     * Redirects to the legal notice document.
      */
     #[Route('', name: 'zikulalegalbundle_user_index', methods: ['GET'])]
     public function index(AdminUrlGenerator $urlGenerator): RedirectResponse
     {
-        return $this->redirect(
-            $urlGenerator
-                ->setDashboard(UserDashboardController::class)
-                ->setController(self::class)
-                ->setRoute('zikulalegalbundle_user_legalnotice')
-                ->generateUrl()
-        );
+        $url = $urlGenerator
+            ->setDashboard(UserDashboardController::class)
+            //->setController(self::class)
+            ->setRoute('zikulalegalbundle_user_legalnotice')
+            ->generateUrl();
+        $url = str_replace('/admin?route', '/en?route', $url); // TODO remove hack
+
+        return $this->redirect($url);
     }
 
     /**
@@ -143,7 +143,7 @@ class UserController extends AbstractController
     {
         $policyConfig = $this->legalConfig['policies'][$policyConfigKey];
         if (!$policyConfig['enabled']) {
-            return $this->render('@ZikulaLegal/User/policyNotActive.html.twig');
+            return $this->render('@ZikulaLegal/User/Policy/Display/policyNotActive.html.twig');
         }
 
         $customUrl = $policyConfig['custom_url'] ?: null;
@@ -151,7 +151,7 @@ class UserController extends AbstractController
             return $this->redirect($customUrl);
         }
 
-        return $this->render('@ZikulaLegal/User/' . $documentName . '.html.twig', [
+        return $this->render('@ZikulaLegal/User/Policy/Display/' . $documentName . '.html.twig', [
             'adminMail' => $this->site->getAdminMail(),
         ]);
     }
@@ -160,63 +160,40 @@ class UserController extends AbstractController
     public function acceptPolicies(
         Request $request,
         ManagerRegistry $doctrine,
-        CurrentUserApiInterface $currentUserApi,
+        Security $security,
         UserRepositoryInterface $userRepository,
         AcceptPoliciesHelper $acceptPoliciesHelper
     ): Response {
-        // Retrieve and delete any session variables being sent in by the log-in process before we give the function a chance to
-        // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
-        $uid = null;
-        if ($request->hasSession() && ($session = $request->getSession())) {
-            $uid = $session->get(LegalConstant::FORCE_POLICY_ACCEPTANCE_SESSION_UID_KEY);
-            $session->remove(LegalConstant::FORCE_POLICY_ACCEPTANCE_SESSION_UID_KEY);
-        }
+        $currentUser = $security->getUser();
+        $loginRequired = null === $currentUser;
+        $userId = $currentUser?->getId() ?? 0;
 
-        if (null !== $uid) {
-            $login = true;
-        } else {
-            $login = false;
-            $uid = $currentUserApi->get('uid');
-        }
-
-        $form = $this->createForm(AcceptPoliciesType::class, [
-            'uid' => $uid,
-            'login' => $login
+        $form = $this->createForm(AcceptPoliciesType::class, $currentUser, [
+            'userId' => $userId,
+            'loginRequired' => $loginRequired,
         ]);
-        if ($form->handleRequest($request) && $form->isSubmitted() && $form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             /** @var User $userEntity */
-            $userEntity = $userRepository->find($data['uid']);
-            $policiesToCheck = [
-                'termsOfUse' => LegalConstant::ATTRIBUTE_TERMSOFUSE_ACCEPTED,
-                'privacyPolicy' => LegalConstant::ATTRIBUTE_PRIVACYPOLICY_ACCEPTED,
-                'agePolicy' => LegalConstant::ATTRIBUTE_AGEPOLICY_CONFIRMED,
-                'tradeConditions' => LegalConstant::ATTRIBUTE_TRADECONDITIONS_ACCEPTED,
-                'cancellationRightPolicy' => LegalConstant::ATTRIBUTE_CANCELLATIONRIGHTPOLICY_ACCEPTED,
-            ];
+            $userEntity = $userRepository->find($data['userId']);
+            $policiesToCheck = $acceptPoliciesHelper->getActivePolicies();
             $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
-            $nowUTCStr = $nowUTC->format(\DateTime::ATOM);
-            $activePolicies = $acceptPoliciesHelper->getActivePolicies();
-            foreach ($policiesToCheck as $policyName => $acceptedVar) {
-                if ($data['acceptedpolicies_policies'] && $activePolicies[$policyName]) {
-                    $userEntity->setAttribute($acceptedVar, $nowUTCStr);
-                } else {
-                    $userEntity->delAttribute($acceptedVar);
-                }
+            foreach ($policiesToCheck as $policyName => $isEnabled) {
+                $setter = 'set' . ucfirst($policyName);
+                $userEntity->$setter($data[$policyName . 'Accepted'] && $isEnabled ? $nowUTC : null);
             }
             $doctrine->getManager()->flush();
-            if ($data['acceptedpolicies_policies'] && $data['login']) {
+            if ($data['hasAcceptedPolicies'] && $data['loginRequired']) {
                 $this->loginManager->logInUser($this->firewallName, $userEntity);
             }
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('user_home');
         }
 
         return $this->render('@ZikulaLegal/User/acceptPolicies.html.twig', [
-            'login' => $login,
+            'loginRequired' => $loginRequired,
             'form' => $form->createView(),
-            'activePolicies' => $acceptPoliciesHelper->getActivePolicies(),
-            'acceptedPolicies' => $acceptPoliciesHelper->getAcceptedPolicies($uid),
         ]);
     }
 }

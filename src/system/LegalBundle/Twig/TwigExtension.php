@@ -29,7 +29,7 @@ class TwigExtension extends AbstractExtension
     ) {
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('zikulalegalbundle_getUrl', [$this, 'getUrl']),
@@ -52,9 +52,8 @@ class TwigExtension extends AbstractExtension
             $policyConfigName = 'accessibility';
         }
         $policyConfig = $this->legalConfig['policies'][$policyConfigName];
-        $policyUrl = $policyConfig['custom_url'] ?: $this->router->generate('zikulalegalbundle_user_' . mb_strtolower($policy));
 
-        return $policyUrl;
+        return $policyConfig['custom_url'] ?: $this->router->generate('zikulalegalbundle_user_' . mb_strtolower($policy));
     }
 
     /**
@@ -64,17 +63,11 @@ class TwigExtension extends AbstractExtension
      *     {{ zikulalegalbundle_inlineLink('termsOfUse') }}
      *
      * Templates used:
-     *      InlineLink/accessibilityStatement.html.twig
-     *      InlineLink/cancellationRightPolicy.html.twig
-     *      InlineLink/legalNotice.html.twig
-     *      InlineLink/notFound.html.twig
-     *      InlineLink/privacyPolicy.html.twig
-     *      InlineLink/termsOfUse.html.twig
-     *      InlineLink/tradeConditions.html.twig
+     *      User/Policy/InlineLink/*
      */
     public function inlineLink(string $policy = '', string $target = ''): string
     {
-        $templatePath = '@ZikulaLegal/InlineLink/';
+        $templatePath = '@ZikulaLegal/User/Policy/InlineLink/';
         $templateParameters = [
             'policyUrl' => $this->getUrl($policy),
             'target' => $target,

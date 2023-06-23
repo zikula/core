@@ -20,6 +20,8 @@ use Nucleos\UserBundle\Model\User as BaseUser;
 use Nucleos\UserBundle\Validator\Constraints\Pattern as PasswordPattern;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\CoreBundle\Doctrine\DBAL\CustomTypes;
+use Zikula\LegalBundle\Entity\LegalAwareUserInterface;
+use Zikula\LegalBundle\Entity\LegalAwareUserTrait;
 use Zikula\UsersBundle\UsersConstant;
 
 // #[ORM\Entity(repositoryClass: UserRepository::class)] TODO remove if unneeded
@@ -29,9 +31,10 @@ use Zikula\UsersBundle\UsersConstant;
     ORM\Index(fields: ['username'], name: 'username'),
     ORM\Index(fields: ['email'], name: 'email')
 ]
-class User extends BaseUser
+class User extends BaseUser implements LegalAwareUserInterface
 {
     use UserAttributesTrait;
+    use LegalAwareUserTrait;
 
     #[ORM\Id]
     #[ORM\Column]
@@ -72,7 +75,7 @@ class User extends BaseUser
     /**
      * The uid of the user account that approved the request to register a new account.
      * If this is the same as the user account's uid, then moderation was not in use at the time the request for a new account was made.
-     * If this is -1, the the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
+     * If this is -1, the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
      */
     #[ORM\Column(name: 'approved_by')]
     private int $approvedBy;
@@ -113,9 +116,11 @@ class User extends BaseUser
         return $this->id;
     }
 
-    public function setId(?int $id): void
+    public function setId(?int $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getActivated(): int

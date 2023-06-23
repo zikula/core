@@ -41,5 +41,5 @@ when@test:
     framework:
         test: true
         session:
-            handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler
+            handler_id: session.handler.native_file
             storage_factory_id: session.storage.factory.mock_file

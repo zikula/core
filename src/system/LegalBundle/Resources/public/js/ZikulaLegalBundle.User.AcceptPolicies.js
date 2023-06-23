@@ -1,15 +1,32 @@
 // Copyright Zikula, licensed MIT.
 
-( function($) {
-    $(document).ready(function() {
-        $('.policy-link').on('click', function (event) {
+document.addEventListener('DOMContentLoaded', function () {
+    const policyLinks = document.querySelectorAll('.policy-link');
+    const modalTitle = document.querySelector('#policyModalTitle');
+    const modalBody = document.querySelector('#policyModalBody');
+    const modalElem = document.querySelector('#policyModal');
+    const modal = new bootstrap.Modal('#policyModal', {});
+
+    policyLinks.forEach(function (link) {
+        link.addEventListener('click', function (event) {
             event.preventDefault();
-            $('#modal-policy-title').text($(this).text());
-            $('#modal-policy-body').load($(this).attr('href'));
-            $('#modal-policy').modal('show');
-        });
-        $('#modal-policy').on('hidden.bs.modal', function (event) {
-            $('#modal-policy-body').html('<i class="fas fa-spin fa-cog fa-2x"></i>');
+            modalTitle.textContent = this.textContent;
+            const href = this.getAttribute('href') + '?raw=1';
+            fetch(href)
+                .then(function (response) {
+                    return response.text();
+                })
+                .then(function (data) {
+                    modalBody.innerHTML = data;
+                    modal.show();
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                });
         });
     });
-})(jQuery);
+
+    modalElem.addEventListener('hidden.bs.modal', event => {
+        modalBody.innerHTML = '<i class="fas fa-spin fa-cog fa-2x"></i>';
+    });
+});

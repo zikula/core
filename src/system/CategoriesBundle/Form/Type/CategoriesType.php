@@ -37,7 +37,7 @@ class CategoriesType extends AbstractType
     ) {
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $registries = $this->categoryRegistryRepository->findBy([
             'bundleName' => $options['bundle'],
@@ -94,7 +94,7 @@ class CategoriesType extends AbstractType
         return 'zikulacategoriesbundle_categories';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['entityCategoryClass', 'bundle', 'entity']);
         $resolver->setDefined(['attr', 'multiple', 'expanded', 'direct', 'required', 'em']);

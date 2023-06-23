@@ -1,6 +1,0 @@
-{% extends '@EasyAdmin/page/content.html.twig' %}
-
-{% block page_title 'Accessibility statement for %s%'|trans({ '%s%': siteName() }) %}
-{% block main %}
-    {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/accessibilityStatement.html.twig') }}
-{% endblock %}

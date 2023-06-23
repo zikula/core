@@ -14,42 +14,37 @@ declare(strict_types=1);
 namespace Zikula\LegalBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\IsTrue;
-use Zikula\LegalBundle\LegalConstant;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AcceptPoliciesType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $login = $builder->getData()['login'];
+        $loginRequired = $options['loginRequired'];
 
         $builder
-            ->add('uid', HiddenType::class)
-            ->add('login', HiddenType::class)
-            ->add('acceptedpolicies_policies', CheckboxType::class, [
-                'data' => true,
-                'help' => 'Check this box to indicate your acceptance of this site\'s policies.',
-                'label' => 'Policies',
-                'label_attr' => ['class' => 'switch-custom'],
-                'constraints' => [
-                    new IsTrue(['message' => 'you must accept this site\'s policies']),
-                ],
-            ])
+            ->add('userId', HiddenType::class, ['mapped' => false])
+            ->add('loginRequired', HiddenType::class, ['mapped' => false])
             ->add('submit', SubmitType::class, [
-                /** @Ignore */
-                'label' => $login ? 'Save and continue logging in' : 'Save',
+                'label' => $loginRequired ? 'Save and continue logging in' : 'Save',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn-success'],
             ])
         ;
     }
 
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults(['userId' => '', 'loginRequired' => false])
+            ->setAllowedTypes('userId', 'int')
+            ->setAllowedTypes('loginRequired', 'bool');
+    }
+
     public function getBlockPrefix(): string
     {
-        return LegalConstant::FORM_BLOCK_PREFIX;
+        return 'zikulalegalbundle_policy';
     }
 }

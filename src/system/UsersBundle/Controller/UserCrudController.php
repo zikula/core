@@ -99,6 +99,14 @@ class UserCrudController extends AbstractCrudController
         yield 'approvedBy' => NumberField::new('approvedBy', t('Approved by'))->hideOnIndex(); // TODO replace by AssociationField
         yield 'registrationDate' => DateTimeField::new('registrationDate', t('Registered at'))->hideOnIndex();
 
+        // legal policies
+        // TODO consider configuration about which policies are enabled
+        yield 'privacyPolicyAccepted' => DateTimeField::new('privacyPolicyAccepted', t('Privacy policy accepted'));
+        yield 'termsOfUseAccepted' => DateTimeField::new('termsOfUseAccepted', t('Terms of use accepted'))->hideOnIndex();
+        yield 'tradeConditionsAccepted' => DateTimeField::new('tradeConditionsAccepted', t('Trade conditions accepted'))->hideOnIndex();
+        yield 'cancellationRightPolicyAccepted' => DateTimeField::new('cancellationRightPolicyAccepted', t('Cancellation right policy accepted'))->hideOnIndex();
+        yield 'agePolicyAccepted' => DateTimeField::new('agePolicyAccepted', t('Age policy accepted'))->hideOnIndex();
+
         // yield 'attributes' => CollectionField... if eventually needed
     }
 

@@ -1,6 +1,0 @@
-{% extends '@EasyAdmin/page/content.html.twig' %}
-
-{% block page_title 'Privacy policy for %s%'|trans({ '%s%': siteName() }) %}
-{% block main %}
-    {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/privacyPolicy.html.twig') }}
-{% endblock %}

@@ -1,0 +1,6 @@
+{% extends '@ZikulaLegal/User/Policy/Display/template.html.twig' %}
+
+{% block page_title 'Trade conditions for %s%'|trans({ '%s%': siteName() }) %}
+{% block policy_content %}
+    {{ include('@ZikulaLegal/PolicyContent/' ~ app.request.locale ~ '/tradeConditions.html.twig') }}
+{% endblock %}

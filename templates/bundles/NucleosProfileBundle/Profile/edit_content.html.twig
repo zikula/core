@@ -1,0 +1,31 @@
+{% trans_default_domain 'NucleosProfileBundle' %}
+
+<h2><span class="fas fa-pencil-alt"></span> {{ 'Edit profile'|trans }}</h2>
+
+{{ form_start(form, { 'action': path('nucleos_profile_profile_edit'), 'attr': { 'class': 'nucleos_profile_profile_edit' } }) }}
+    {% set policies %}
+        <fieldset>
+            <legend>{{ 'Site policies'|trans }}</legend>
+            {{ include('@ZikulaLegal/Form/acceptPolicies.html.twig') }}
+        </fieldset>
+        {{ form_row(form.save) }}
+    {% endset %}
+    {{ form_widget(form) }}
+    {{ policies }}
+{{ form_end(form) }}
+
+{#{ form_start(form) }}
+{% for element in form|filter(e => e.vars.name not in ['save', 'cancel']) %}
+    {{ form_row(element) }}
+{% endfor %}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+    <input type="hidden" id="avatarPath" value="{{ imagePath|e('html_attr') }}" />
+    <input type="hidden" id="gravatarUrl" value="{{ gravatarUrl|e('html_attr') }}" />
+</div>
+{{ form_end(form) }#}
+
+<script src="{{ asset('bundles/zikulausers/js/ZikulaUsersBundle.Avatar.Edit.js') }}"></script>

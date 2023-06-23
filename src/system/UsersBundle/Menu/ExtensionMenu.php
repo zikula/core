@@ -15,7 +15,6 @@ namespace Zikula\UsersBundle\Menu;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
-use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
 use Zikula\UsersBundle\Entity\Group;
 use Zikula\UsersBundle\Entity\User;
@@ -26,7 +25,6 @@ class ExtensionMenu extends AbstractExtensionMenu
 {
     public function __construct(
         private readonly Security $security,
-        private readonly LocaleApiInterface $localeApi,
         private readonly bool $registrationEnabled,
         private readonly bool $allowSelfDeletion
     ) {

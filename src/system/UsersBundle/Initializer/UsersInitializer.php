@@ -31,11 +31,10 @@ class UsersInitializer implements BundleInitializerInterface
         $then = new DateTime('1970-01-01 00:00:00');
 
         // Anonymous
-        $user = (new User())
-            ->setUid(UsersConstant::USER_ID_ANONYMOUS)
-            ->setUname('guest')
-            ->setEmail('')
-            ->setActivated(UsersConstant::ACTIVATED_ACTIVE)
+        $user = (new User())->setId(UsersConstant::USER_ID_ANONYMOUS);
+        $user->setUsername('guest');
+        $user->setEmail('');
+        $user->setActivated(UsersConstant::ACTIVATED_ACTIVE)
             ->setApprovedDate($then)
             ->setApprovedBy(UsersConstant::USER_ID_ADMIN)
             ->setRegistrationDate($then)
@@ -43,11 +42,10 @@ class UsersInitializer implements BundleInitializerInterface
         $this->entityManager->persist($user);
 
         // Admin
-        $user = (new User())
-            ->setUid(UsersConstant::USER_ID_ADMIN)
-            ->setUname('admin')
-            ->setEmail('')
-            ->setActivated(UsersConstant::ACTIVATED_ACTIVE)
+        $user = (new User())->setId(UsersConstant::USER_ID_ADMIN);
+        $user->setUsername('admin');
+        $user->setEmail('');
+        $user->setActivated(UsersConstant::ACTIVATED_ACTIVE)
             ->setApprovedDate($now)
             ->setApprovedBy(UsersConstant::USER_ID_ADMIN)
             ->setRegistrationDate($now)

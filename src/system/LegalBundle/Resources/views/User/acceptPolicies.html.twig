@@ -2,9 +2,9 @@
 
 {% block page_title 'Site policies'|trans %}
 {% block main %}
-    {% if login %}
+    {% if loginRequired %}
         <div class="alert alert-danger">
-            {% trans %}In order to log in you must accept this site\'s policies. If you have accepted the site\'s policies in the past, then they have been updated and we ask that you review the changes.{% endtrans %}
+            {% trans %}In order to log in you must accept this site's policies. If you have accepted the site's policies in the past, then they have been updated and we ask that you review the changes.{% endtrans %}
             <hr />
             {% trans %}If you leave this page without successfully accepting the policies, then you will not be logged in.{% endtrans %}
         </div>
@@ -15,13 +15,13 @@
             {{ form_start(form) }}
             {{ form_errors(form) }}
             <fieldset>
-                {{ form_row(form.acceptedpolicies_policies) }}
-                {{ include('@ZikulaLegal/Include/acceptPolicies.html.twig') }}
+                <legend>{{ 'Site policies'|trans }}</legend>
+                {{ include('@ZikulaLegal/Form/acceptPolicies.html.twig') }}
             </fieldset>
             <div class="form-group row">
                 <div class="col-md-9 offset-md-3">
                     {{ form_widget(form.submit) }}
-                    <a class="btn btn-danger" href="{{ path('home') }}" title="{% trans %}Cancel{% endtrans %}">{% trans %}Cancel and logout{% endtrans %}</a>
+                    <a class="btn btn-secondary" href="{{ path('user_home') }}" title="{% trans %}Cancel{% endtrans %}">{% if loginRequired %}{% trans %}Cancel and logout{% endtrans %}{% else %}{% trans %}Cancel{% endtrans %}{% endif %}</a>
                 </div>
             </div>
             {{ form_end(form) }}

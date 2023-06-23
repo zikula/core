@@ -84,10 +84,10 @@ class Category
     ])]
     private string $value;
 
-    #[ORM\Column(name: 'display_name')]
+    #[ORM\Column]
     private array $displayName;
 
-    #[ORM\Column(name: 'display_desc')]
+    #[ORM\Column]
     private array $displayDesc;
 
     #[ORM\Column(length: 1)]

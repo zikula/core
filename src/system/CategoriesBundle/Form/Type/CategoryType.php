@@ -41,7 +41,7 @@ class CategoryType extends AbstractType
         $this->setTranslator($translator);
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $translator = $this->translator;
         $builder
@@ -166,7 +166,7 @@ class CategoryType extends AbstractType
         return 'zikulacategoriesbundle_category';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Category::class,

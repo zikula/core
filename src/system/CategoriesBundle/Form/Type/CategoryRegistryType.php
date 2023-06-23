@@ -40,7 +40,7 @@ class CategoryRegistryType extends AbstractType
         $this->setTranslator($translator);
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('bundleName', ChoiceType::class, [
@@ -102,7 +102,7 @@ class CategoryRegistryType extends AbstractType
         return 'zikulacategoriesbundle_category_registry';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'categorizableBundles' => [],

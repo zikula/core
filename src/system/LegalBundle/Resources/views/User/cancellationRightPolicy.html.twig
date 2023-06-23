@@ -1,6 +1,0 @@
-{% extends '@EasyAdmin/page/content.html.twig' %}
-
-{% block page_title 'Cancellation right policy for %s%'|trans({ '%s%': siteName() }) %}
-{% block main %}
-    {{ include('@ZikulaLegal/' ~ app.request.locale ~ '/cancellationRightPolicy.html.twig') }}
-{% endblock %}

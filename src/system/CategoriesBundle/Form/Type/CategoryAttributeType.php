@@ -24,7 +24,7 @@ use Zikula\CategoriesBundle\Entity\CategoryAttribute;
  */
 class CategoryAttributeType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
@@ -42,7 +42,7 @@ class CategoryAttributeType extends AbstractType
         return 'zikulacategoriesbundle_category_attribute';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CategoryAttribute::class,

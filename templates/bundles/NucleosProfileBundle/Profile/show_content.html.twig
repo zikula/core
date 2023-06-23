@@ -1,0 +1,36 @@
+{% trans_default_domain 'NucleosProfileBundle' %}
+
+<div class="nucleos_profile_user_show card bg-light mb-3">
+    <div class="card-body">
+        <h2 class="card-title"><i class="fas fa-user-circle"></i> {% trans with {'%username': user.username} %}Profile for %username{% endtrans %}</h2>
+        <div class="card-text row">
+            <div class="col-md-3 text-center">
+                {{ userAvatar(user.id) }}
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-3 text-right">
+                        <strong>{{ 'profile.show.username'|trans }}</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <span>{{ user.username }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 text-right">
+                        <strong>{{ 'profile.show.email'|trans }}</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <span>{{ user.email }}</span>
+                    </div>
+                </div>
+                {{ include('@NucleosProfile/Profile/show_profile_fields.html.twig') }}
+            </div>
+        </div>
+    </div>
+    {% if app.user|default and app.user.id == user.id or is_granted('ROLE_EDITOR') %}
+        <div class="card-footer text-right">
+            <a class="btn btn-success btn-sm" href="{{ path('nucleos_profile_profile_edit', {uid: user.id}) }}"><i class="fas fa-pencil-alt"></i> {% trans %}Edit profile{% endtrans %}</a>
+        </div>
+    {% endif %}
+</div>

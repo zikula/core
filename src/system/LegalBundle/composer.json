@@ -18,7 +18,7 @@
     },
     "extra": {
         "zikula": {
-            "class": "Zikula\\LegalBundle\\ZikulaLegalModule",
+            "class": "Zikula\\LegalBundle\\ZikulaLegalBundle",
             "displayname": "Legal",
             "url": "legal",
             "icon": "fas fa-gavel"

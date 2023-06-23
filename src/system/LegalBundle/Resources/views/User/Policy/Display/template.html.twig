@@ -1,0 +1,15 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block wrapper_wrapper %}
+    {% if app.request.query.getBoolean('raw') %}
+        {# for modal display #}
+        {{ block('policy_content') }}
+    {% else %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{# for normal display #}
+{% block main %}
+    {{ block('policy_content') }}
+{% endblock %}

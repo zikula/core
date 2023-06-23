@@ -32,7 +32,7 @@ class AvatarType extends AbstractType
         $this->avatarPath = $projectDir . '/' . $avatarConfig['image_path'];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $defaults = [
             'required' => false,
@@ -85,7 +85,7 @@ class AvatarType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'zikula_profile_bundle_avatar';
+        return 'zikulausersbundle_avatar';
     }
 
     public function getParent(): ?string
