@@ -27,7 +27,7 @@ class ManuallyInstallAssets
      * @var array
      * The list of assets. [[vendorPath => destinationPath]]
      */
-    protected static $assets = [
+    protected static array $assets = [
         '/itsjavi/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.css' => '/fontawesome-iconpicker/fontawesome-iconpicker.css',
         '/itsjavi/fontawesome-iconpicker/dist/css/fontawesome-iconpicker.min.css' => '/fontawesome-iconpicker/fontawesome-iconpicker.min.css',
         '/itsjavi/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.js' => '/fontawesome-iconpicker/fontawesome-iconpicker.js',

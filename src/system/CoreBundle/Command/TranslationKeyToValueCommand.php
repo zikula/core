@@ -30,7 +30,7 @@ use Symfony\Component\Yaml\Yaml;
 class TranslationKeyToValueCommand extends Command
 {
     public function __construct(
-        #[Autowire('%translator.default_path%')]
+        #[Autowire(param: 'translator.default_path')]
         private readonly ?string $defaultTransPath = null
     ) {
         parent::__construct();

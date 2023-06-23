@@ -17,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use function Symfony\Component\Translation\t;
 
@@ -41,6 +42,9 @@ class UserDashboardController extends AbstractThemedDashboardController
         $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_USER);
         foreach ($menuItemsByBundle as $bundleName => $extensionMenuItems) {
             $bundle = $this->kernel->getBundle($bundleName);
+            if (!($bundle instanceof MetaDataAwareBundleInterface)) {
+                continue;
+            }
 
             $menuItems = is_array($extensionMenuItems) ? $extensionMenuItems : iterator_to_array($extensionMenuItems);
             if (!count($menuItems)) {

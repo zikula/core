@@ -32,10 +32,10 @@ class LocaleApi implements LocaleApiInterface
 
     public function __construct(
         private readonly RequestStack $requestStack,
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         private readonly string $projectDir,
         private readonly bool $multiLingualEnabled,
-        #[Autowire('%kernel.default_locale%')]
+        #[Autowire(param: 'kernel.default_locale')]
         private readonly string $defaultLocale
     ) {
         $this->supportedLocales = [

@@ -40,7 +40,7 @@ class UserController extends AbstractController
         private readonly SiteDefinitionInterface $site,
         private readonly array $legalConfig,
         private readonly LoginManager $loginManager,
-        #[Autowire('%nucleos_user.firewall_name%')]
+        #[Autowire(param: 'nucleos_user.firewall_name')]
         string $firewallName
     ) {
         $this->firewallName = $firewallName;

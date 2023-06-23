@@ -29,7 +29,7 @@ class UploadHelper
 
     public function __construct(
         private readonly array $uploadConfig,
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         string $projectDir,
         string $imagePath
     ) {

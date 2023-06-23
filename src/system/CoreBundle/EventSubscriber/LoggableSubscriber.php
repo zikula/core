@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Loggable subscriber to provide the current user. Note we use the ID to avoid storing user names.
+ * Loggable subscriber to provide the current user. Note we use the ID to avoid storing usernames.
  */
 class LoggableSubscriber
 {

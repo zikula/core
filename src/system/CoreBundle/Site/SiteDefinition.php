@@ -21,7 +21,7 @@ class SiteDefinition implements SiteDefinitionInterface
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly array $siteData,
-        #[Autowire('%kernel.default_locale%')]
+        #[Autowire(param: 'kernel.default_locale')]
         private readonly string $defaultLocale
     ) {
     }

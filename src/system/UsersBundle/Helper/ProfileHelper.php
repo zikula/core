@@ -30,9 +30,9 @@ class ProfileHelper
         private readonly Security $security,
         private readonly UserRepositoryInterface $userRepository,
         private readonly GravatarHelper $gravatarHelper,
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         private readonly string $projectDir,
-        #[Autowire('%profile_property_prefix%')]
+        #[Autowire(param: 'profile_property_prefix')]
         private readonly string $prefix,
         private readonly string $avatarImagePath,
         private readonly string $avatarDefaultImage,

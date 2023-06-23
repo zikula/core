@@ -35,7 +35,7 @@ class ToolController extends AbstractController
 {
     public function __construct(
         private readonly SiteDefinitionInterface $site,
-        #[Autowire('%enable_mail_logging%')]
+        #[Autowire(param: 'enable_mail_logging')]
         private readonly bool $mailLoggingEnabled
     ) {
     }

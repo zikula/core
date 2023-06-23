@@ -44,9 +44,9 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         protected readonly UserMenuExtensionHelper $userMenuExtensionHelper,
         protected readonly SiteDefinitionInterface $site,
         protected readonly array $themeConfig,
-        #[Autowire('%kernel.enabled_locales%')]
+        #[Autowire(param: 'kernel.enabled_locales')]
         array $enabledLocales,
-        #[Autowire('%kernel.default_locale%')]
+        #[Autowire(param: 'kernel.default_locale')]
         string $defaultLocale,
         protected readonly LocaleApiInterface $localeApi
     ) {

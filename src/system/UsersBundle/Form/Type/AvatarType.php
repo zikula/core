@@ -26,7 +26,7 @@ class AvatarType extends AbstractType
 
     public function __construct(
         private readonly array $avatarConfig,
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         string $projectDir
     ) {
         $this->avatarPath = $projectDir . '/' . $avatarConfig['image_path'];

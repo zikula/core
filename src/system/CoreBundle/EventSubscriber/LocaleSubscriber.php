@@ -24,7 +24,7 @@ class LocaleSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly Security $security,
-        #[Autowire('%kernel.default_locale%')]
+        #[Autowire(param: 'kernel.default_locale')]
         private readonly string $defaultLocale
     ) {
     }

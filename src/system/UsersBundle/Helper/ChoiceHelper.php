@@ -21,7 +21,7 @@ class ChoiceHelper
     private array $roleHierarchy;
 
     public function __construct(
-        #[Autowire('%security.role_hierarchy.roles%')]
+        #[Autowire(param: 'security.role_hierarchy.roles')]
         array $roleHierarchy
     ) {
         $this->roleHierarchy = $roleHierarchy;
@@ -37,7 +37,7 @@ class ChoiceHelper
         ];
 
         $definedRoles = [];
-        array_walk_recursive($this->roleHierarchy, function ($role) use (&$roles) {
+        array_walk_recursive($this->roleHierarchy, static function ($role) use (&$roles) {
             $definedRoles[$role] = $role;
         });
 
