@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
@@ -13,7 +15,6 @@ return [
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
-    Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
     Zikula\CoreBundle\CoreBundle::class => ['all' => true],
@@ -23,4 +24,5 @@ return [
     Zikula\UsersBundle\ZikulaUsersBundle::class => ['all' => true],
     Nucleos\UserBundle\NucleosUserBundle::class => ['all' => true],
     Nucleos\ProfileBundle\NucleosProfileBundle::class => ['all' => true],
+    Symfony\UX\Translator\UxTranslatorBundle::class => ['all' => true],
 ];

@@ -7,7 +7,6 @@ currentMenu: translation
 
 - [Translation terminology](Terminology.md)
 - [Translator usage](Usage.md)
-- [Plural forms](PluralForms.md)
 
 ## Translation extraction
 

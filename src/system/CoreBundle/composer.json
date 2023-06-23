@@ -54,7 +54,7 @@
         "stof/doctrine-extensions-bundle": "^1",
         "liip/imagine-bundle": "^2",
 
-        "willdurand/js-translation-bundle": "^5",
+        "symfony/ux-translator": "^2.9",
         "friendsofsymfony/jsrouting-bundle": "^3",
 
         "php-translation/extractor": "^2",

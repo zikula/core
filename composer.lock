@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "014a7a0be9c1536e14bf899715c0d8c3",
+    "content-hash": "166f5fd932572e3b7df9eba98c727ccf",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -10716,6 +10716,82 @@
             "time": "2023-04-08T07:25:02+00:00"
         },
         {
+            "name": "symfony/ux-translator",
+            "version": "v2.9.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/ux-translator.git",
+                "reference": "1b7ef6368ac236c2bd8a53a035c26ccb028349a6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/1b7ef6368ac236c2bd8a53a035c26ccb028349a6",
+                "reference": "1b7ef6368ac236c2bd8a53a035c26ccb028349a6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0",
+                "symfony/console": "^5.4|^6.0",
+                "symfony/filesystem": "^5.4|^6.0",
+                "symfony/string": "^5.4|^6.0",
+                "symfony/translation": "^5.4|^6.0"
+            },
+            "require-dev": {
+                "symfony/framework-bundle": "^5.4|^6.0",
+                "symfony/phpunit-bridge": "^5.2|^6.0",
+                "symfony/var-dumper": "^5.4|^6.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "thanks": {
+                    "name": "symfony/ux",
+                    "url": "https://github.com/symfony/ux"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\UX\\Translator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hugo Alliaume",
+                    "email": "hugo@alliau.me"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Exposes Symfony Translations directly to JavaScript.",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "symfony-ux"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/ux-translator/tree/v2.9.1"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-05-30T14:40:50+00:00"
+        },
+        {
             "name": "symfony/validator",
             "version": "v6.3.0",
             "source": {
@@ -11681,74 +11757,6 @@
             "time": "2023-02-19T23:38:56+00:00"
         },
         {
-            "name": "willdurand/js-translation-bundle",
-            "version": "5.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
-                "reference": "811fff5e9cf16471d350d8d3d0d09127bfe31b1e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/811fff5e9cf16471d350d8d3d0d09127bfe31b1e",
-                "reference": "811fff5e9cf16471d350d8d3d0d09127bfe31b1e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.5",
-                "symfony/console": "~4.4|~5.0|~6.0",
-                "symfony/finder": "~4.4|~5.0|~6.0",
-                "symfony/framework-bundle": "~4.4|~5.0|~6.0",
-                "symfony/intl": "~4.4|~5.0|~6.0",
-                "symfony/translation": "~4.4|~5.0|~6.0",
-                "symfony/twig-bundle": "~4.4|~5.0|~6.0"
-            },
-            "replace": {
-                "willdurand/expose-translation-bundle": "2.5.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8|~5.7|~6.5|~8",
-                "symfony/asset": "~4.4|~5.0|~6.0",
-                "symfony/browser-kit": "~4.4|~5.0|~6.0",
-                "symfony/filesystem": "~4.4|~5.0|~6.0",
-                "symfony/phpunit-bridge": "^5.0|^6.0",
-                "symfony/twig-bundle": "~4.4|~5.0|~6.0",
-                "symfony/yaml": "~4.4|~5.0|~6.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Bazinga\\Bundle\\JsTranslationBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "William Durand",
-                    "email": "will+git@drnd.me"
-                }
-            ],
-            "description": "A pretty nice way to expose your translation messages to your JavaScript.",
-            "keywords": [
-                "javascript",
-                "symfony",
-                "translation"
-            ],
-            "support": {
-                "issues": "https://github.com/willdurand/BazingaJsTranslationBundle/issues",
-                "source": "https://github.com/willdurand/BazingaJsTranslationBundle/tree/5.0.0"
-            },
-            "time": "2021-12-02T07:27:01+00:00"
-        },
-        {
             "name": "willdurand/jsonp-callback-validator",
             "version": "v2.0.0",
             "source": {
@@ -11981,5 +11989,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

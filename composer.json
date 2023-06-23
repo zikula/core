@@ -36,7 +36,6 @@
         "ircmaxell/random-lib": "^1",
         "itsjavi/fontawesome-iconpicker": "^3",
         "liip/imagine-bundle": "^2",
-        "nikic/php-parser": "^4",
         "nucleos/profile-bundle": "^2",
         "nucleos/user-bundle": "^2",
         "oomphinc/composer-installers-extender": "2.*",
@@ -66,6 +65,7 @@
         "symfony/string": "^6.2",
         "symfony/translation": "^6.2",
         "symfony/twig-bundle": "^6.2",
+        "symfony/ux-translator": "^2.9",
         "symfony/validator": "^6.2",
         "symfony/web-link": "^6.2",
         "symfony/web-profiler-bundle": "^6.2",
@@ -74,8 +74,7 @@
         "twig/extra-bundle": "^3",
         "twig/intl-extra": "^3",
         "twig/string-extra": "^3",
-        "vakata/jstree": "^3",
-        "willdurand/js-translation-bundle": "^5"
+        "vakata/jstree": "^3"
     },
     "require-dev": {
         "symfony/maker-bundle": "^1",

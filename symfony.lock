@@ -661,6 +661,21 @@
             "config/packages/uid.yaml"
         ]
     },
+    "symfony/ux-translator": {
+        "version": "2.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.9",
+            "ref": "bc396565cc4cab95692dd6df810553dc22e352e1"
+        },
+        "files": [
+            "assets/translator.js",
+            "config/packages/ux_translator.yaml",
+            "var/translations/configuration.js",
+            "var/translations/index.js"
+        ]
+    },
     "symfony/validator": {
         "version": "5.4",
         "recipe": {
@@ -730,18 +745,6 @@
     },
     "webmozart/assert": {
         "version": "1.9.1"
-    },
-    "willdurand/js-translation-bundle": {
-        "version": "2.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.0",
-            "ref": "02b720a49f6d36b44d557e0b18e48bf09e0a8e07"
-        },
-        "files": [
-            "config/routes/js_translation.yaml"
-        ]
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"
