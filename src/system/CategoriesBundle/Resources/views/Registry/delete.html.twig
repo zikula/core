@@ -1,22 +1,25 @@
-<h3>
-    <span class="fas fa-trash-alt"></span> {% trans %}Delete registry entry{% endtrans %}
-    {{ pageSetVar('title', 'Delete registry entry'|trans) }}
-</h3>
+{% extends '@EasyAdmin/page/content.html.twig' %}
 
-<p class="alert alert-warning">
-    {% trans %}Do you really want to delete this registry entry?{% endtrans %}<br />
-    {% trans %}Bundle{% endtrans %}: <strong>{{ registry.bundleName }}</strong><br />
-    {% trans %}Entity{% endtrans %}: <strong>{{ registry.entityName }}</strong><br />
-    {% trans %}Property name{% endtrans %}: <strong>{{ registry.property }}</strong>
-</p>
+{% block page_title 'Delete registry entry'|trans %}
+{% block main %}
+    <p class="alert alert-warning">
+        {% trans %}Do you really want to delete this registry entry?{% endtrans %}<br />
+        {% trans %}Bundle{% endtrans %}: <strong>{{ registry.bundleName }}</strong><br />
+        {% trans %}Entity{% endtrans %}: <strong>{{ registry.entityName }}</strong><br />
+        {% trans %}Property name{% endtrans %}: <strong>{{ registry.property }}</strong>
+    </p>
 
-{{ form_start(form) }}
-{{ form_errors(form) }}
-<div class="form-group row">
-    <div class="col-md-9 offset-md-3">
-        {{ form_widget(form.delete) }}
-        {{ form_widget(form.cancel) }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="form-group row">
+        <div class="col-md-9 offset-md-3">
+            {{ form_widget(form.delete) }}
+            {{ form_widget(form.cancel) }}
+        </div>
     </div>
-</div>
-{{ form_end(form) }}
-{{ pageAddAsset('javascript', asset('bundles/zikulacategories/css/style.css')) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/zikulacategories/css/style.css') }}" />
+{% endblock %}

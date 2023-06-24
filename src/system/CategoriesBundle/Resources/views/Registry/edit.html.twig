@@ -1,70 +1,76 @@
-<h3>
-    <span class="fas fa-archive"></span>
-    {% trans %}Edit category registry{% endtrans %}
-    {{ pageSetVar('title', 'Edit category registry'|trans) }}
-</h3>
-{{ form_start(form) }}
-<div>
-    <table class="table table-bordered table-striped">
-        <colgroup>
-            <col id="cId" />
-            <col id="cBundle" />
-            <col id="cEntity" />
-            <col id="cProperty" />
-            <col id="cCategory" />
-            <col id="cActions" />
-        </colgroup>
-        <thead>
-            <tr>
-                <th id="hId" scope="col"><label>ID</label></th>
-                <th id="hBundle" scope="col"><label>{{ form_label(form.bundleName) }}</label></th>
-                <th id="hEntity" scope="col"><label>{{ form_label(form.entityName) }}</label></th>
-                <th id="hProperty" scope="col"><label>{{ form_label(form.property) }}</label></th>
-                <th id="hCategory" scope="col"><label>{{ form_label(form.category) }}</label></th>
-                <th id="hActions" scope="col"><label>{% trans %}Actions{% endtrans %}</label></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% if form.vars.value.id is empty %}
-            {% for registry in registries %}
-            <tr>
-                <td headers="hId">{{ registry.id }}</td>
-                <td headers="hBundle">{# to be improved: use bundle's display name here #}{{ registry.bundleName }}</td>
-                <td headers="hEntity">{{ registry.entityName|default }}</td>
-                <td headers="hProperty">{{ registry.property }}</td>
-                <td headers="hCategory">{{ registry.category.displayName(app.request.locale|default('en')) }}</td>
-                <td headers="hActions" class="actions">
-                    <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulacategoriesbundle_registry_edit', {id: registry.id}) }}" title="{% trans %}Edit{% endtrans %}" ></a>
-                    <a class="fas fa-trash-alt tooltips" href="{{ path('zikulacategoriesbundle_registry_delete', {id: registry.id}) }}" title="{% trans %}Delete{% endtrans %}"></a>
-                </td>
-            </tr>
-            {% endfor %}
-        {% endif %}
-            <tr>
-                <td headers="hId"></td>
-                <td headers="hBundle">
-                    {{ form_widget(form.bundleName) }}
-                </td>
-                <td headers="hEntity">
-                    {{ form_widget(form.entityName) }}<i class="fas fa-cog fa-spin fa-fw d-none text-muted" id="entity-loading"></i>
-                </td>
-                <td headers="hProperty">
-                    {{ form_widget(form.property) }}
-                </td>
-                <td headers="hCategory">
-                    {{ form_widget(form.category) }}
-                </td>
-                <td headers="hActions">&nbsp;</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="form-group row">
-        <div class="col-md-9 offset-md-3">
-            {{ form_widget(form.save) }}
-            {{ form_widget(form.cancel) }}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'Edit registry entry'|trans %}
+{% block main %}
+    {{ form_start(form) }}
+    <div>
+        <table class="table table-bordered table-striped">
+            <colgroup>
+                <col id="cId" />
+                <col id="cBundle" />
+                <col id="cEntity" />
+                <col id="cProperty" />
+                <col id="cCategory" />
+                <col id="cActions" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th id="hId" scope="col"><label>ID</label></th>
+                    <th id="hBundle" scope="col"><label>{{ form_label(form.bundleName) }}</label></th>
+                    <th id="hEntity" scope="col"><label>{{ form_label(form.entityName) }}</label></th>
+                    <th id="hProperty" scope="col"><label>{{ form_label(form.property) }}</label></th>
+                    <th id="hCategory" scope="col"><label>{{ form_label(form.category) }}</label></th>
+                    <th id="hActions" scope="col"><label>{% trans %}Actions{% endtrans %}</label></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if form.vars.value.id is empty %}
+                {% for registry in registries %}
+                <tr>
+                    <td headers="hId">{{ registry.id }}</td>
+                    <td headers="hBundle">{# to be improved: use bundle's display name here #}{{ registry.bundleName }}</td>
+                    <td headers="hEntity">{{ registry.entityName|default }}</td>
+                    <td headers="hProperty">{{ registry.property }}</td>
+                    <td headers="hCategory">{{ registry.category.displayName(app.request.locale|default('en')) }}</td>
+                    <td headers="hActions" class="actions">
+                        <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulacategoriesbundle_registry_edit', {id: registry.id}) }}" title="{% trans %}Edit{% endtrans %}" ></a>
+                        <a class="fas fa-trash-alt tooltips" href="{{ path('zikulacategoriesbundle_registry_delete', {id: registry.id}) }}" title="{% trans %}Delete{% endtrans %}"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+                <tr>
+                    <td headers="hId"></td>
+                    <td headers="hBundle">
+                        {{ form_widget(form.bundleName) }}
+                    </td>
+                    <td headers="hEntity">
+                        {{ form_widget(form.entityName) }}<i class="fas fa-cog fa-spin fa-fw d-none text-muted" id="entity-loading"></i>
+                    </td>
+                    <td headers="hProperty">
+                        {{ form_widget(form.property) }}
+                    </td>
+                    <td headers="hCategory">
+                        {{ form_widget(form.category) }}
+                    </td>
+                    <td headers="hActions">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
+                {{ form_widget(form.save) }}
+                {{ form_widget(form.cancel) }}
+            </div>
         </div>
     </div>
-</div>
-{{ form_end(form) }}
-{{ pageAddAsset('javascript', asset('bundles/zikulacategories/css/style.css')) }}
-{{ pageAddAsset('javascript', asset('bundles/zikulacategories/js/ZikulaCategoriesBundle.Registry.Edit.js')) }}
+    {{ form_end(form) }}
+{% endblock %}
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/zikulacategories/css/style.css') }}" />
+{% endblock %}
+{% block body_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/zikulacategories/js/ZikulaCategoriesBundle.Registry.Edit.js') }}"></script>
+{% endblock %}
