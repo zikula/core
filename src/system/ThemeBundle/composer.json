@@ -35,12 +35,7 @@
         "zikula/core-bundle": "dev-4.0",
         "zikula/users-bundle": "dev-4.0",
 
-        "knplabs/knp-menu-bundle": "^3",
-        "oro/twig-inspector": "^1",
-
         "components/jquery": "^3",
-        "itsjavi/fontawesome-iconpicker": "^3",
-        "oomphinc/composer-installers-extender": "2.*",
         "vakata/jstree": "^3"
     }
 }
