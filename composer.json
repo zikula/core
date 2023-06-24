@@ -26,7 +26,6 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "components/jquery": "^3",
-        "composer/composer": "^2",
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2",
@@ -84,45 +83,32 @@
         "symfony/symfony": "*"
     },
     "replace": {
-        "symfony/polyfill-php80": "*",
-        "symfony/polyfill-php74": "*",
-        "symfony/polyfill-php73": "*",
-        "symfony/polyfill-php72": "*",
         "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-intl-icu": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*",
         "zikula/core-bundle": "self.version",
-        "zikula/formextension-bundle": "self.version",
-        "zikula/admin-bundle": "self.version",
         "zikula/categories-bundle": "self.version",
-        "zikula/extensions-bundle": "self.version",
-        "zikula/groups-bundle": "self.version",
         "zikula/legal-bundle": "self.version",
-        "zikula/permissions-bundle": "self.version",
-        "zikula/profile-bundle": "self.version",
-        "zikula/staticcontent-bundle": "self.version",
         "zikula/theme-bundle": "self.version",
-        "zikula/users-bundle": "self.version",
-        "zikula/zauth-bundle": "self.version",
-        "zikula/default-theme-bundle": "self.version"
+        "zikula/users-bundle": "self.version"
     },
     "scripts": {
+        "auto-scripts": {
+            "composer dump-autoload": "script",
+            "cache:clear": "symfony-cmd",
+            "assets:install --relative %PUBLIC_DIR%": "symfony-cmd"
+        },
         "post-install-cmd": [
-            "@auto-scripts",
-            "@zikula-scripts"
+            "@auto-scripts"
         ],
         "post-update-cmd": [
-            "@auto-scripts",
-            "@zikula-scripts"
-        ],
-        "auto-scripts": {
-            "cache:clear --env prod": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "requirements-checker": "script"
-        },
-        "zikula-scripts": [
-            "composer dump-autoload",
-            "Zikula\\Bundle\\CoreBundle\\Composer\\ManuallyInstallAssets::install"
+            "@auto-scripts"
         ]
     },
     "config": {
@@ -137,7 +123,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "^6.2"
+            "require": "^6.3"
         },
         "symfony-assets-install": "relative",
         "installer-types": ["component"],
