@@ -2,5 +2,5 @@
 
 {% block page_title 'Terms of use for %s%'|trans({ '%s%': siteName() }) %}
 {% block policy_content %}
-    {{ include('@ZikulaLegal/PolicyContent/' ~ app.request.locale ~ '/termsOfUse.html.twig') }}
+    {{ include('@ZikulaLegal/PolicyContent/' ~ app.locale ~ '/termsOfUse.html.twig') }}
 {% endblock %}

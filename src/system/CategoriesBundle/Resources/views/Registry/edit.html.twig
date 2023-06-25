@@ -31,7 +31,7 @@
                     <td headers="hBundle">{# to be improved: use bundle's display name here #}{{ registry.bundleName }}</td>
                     <td headers="hEntity">{{ registry.entityName|default }}</td>
                     <td headers="hProperty">{{ registry.property }}</td>
-                    <td headers="hCategory">{{ registry.category.displayName(app.request.locale|default('en')) }}</td>
+                    <td headers="hCategory">{{ registry.category.displayName(app.locale|default('en')) }}</td>
                     <td headers="hActions" class="actions">
                         <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulacategoriesbundle_registry_edit', {id: registry.id}) }}" title="{% trans %}Edit{% endtrans %}" ></a>
                         <a class="fas fa-trash-alt tooltips" href="{{ path('zikulacategoriesbundle_registry_delete', {id: registry.id}) }}" title="{% trans %}Delete{% endtrans %}"></a>

@@ -1,6 +1,6 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
-{% set currentLocale = app.request.locale|default('en') %}
+{% set currentLocale = app.locale|default('en') %}
 <fieldset>
     <legend>{% trans %}Basic properties{% endtrans %}</legend>
     {{ form_row(form.name) }}

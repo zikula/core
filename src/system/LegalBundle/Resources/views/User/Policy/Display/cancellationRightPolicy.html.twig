@@ -2,5 +2,5 @@
 
 {% block page_title 'Cancellation right policy for %s%'|trans({ '%s%': siteName() }) %}
 {% block policy_content %}
-    {{ include('@ZikulaLegal/PolicyContent/' ~ app.request.locale ~ '/cancellationRightPolicy.html.twig') }}
+    {{ include('@ZikulaLegal/PolicyContent/' ~ app.locale ~ '/cancellationRightPolicy.html.twig') }}
 {% endblock %}
