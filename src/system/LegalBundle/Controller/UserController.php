@@ -193,7 +193,7 @@ class UserController extends AbstractController
 
         return $this->render('@ZikulaLegal/User/acceptPolicies.html.twig', [
             'loginRequired' => $loginRequired,
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 }

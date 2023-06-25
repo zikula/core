@@ -61,7 +61,7 @@ class RegistryController extends AbstractController
         }
 
         return $this->render('@ZikulaCategories/Registry/edit.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
             'registries' => $registryRepository->findAll(),
         ]);
     }
@@ -90,7 +90,7 @@ class RegistryController extends AbstractController
         }
 
         return $this->render('@ZikulaCategories/Registry/delete.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
             'registry' => $registry,
         ]);
     }

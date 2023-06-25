@@ -59,10 +59,7 @@ class SiteOffSubscriber implements EventSubscriberInterface
         } catch (\Exception) {
             return;
         }
-        if (
-            'zikulausersbundle_access_login' === $routeInfo['_route']
-            || 'zikulathemebundle_combinedasset_asset' === $routeInfo['_route']
-        ) {
+        if ('nucleos_user_security_login' === $routeInfo['_route']) {
             return;
         }
         if ($response instanceof PlainResponse
@@ -82,7 +79,7 @@ class SiteOffSubscriber implements EventSubscriberInterface
         $response = new PlainResponse();
         $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
         $response->setStatusCode(503);
-        $content = $this->twig->render('CoreBundle:System:siteoff.html.twig', [
+        $content = $this->twig->render('@Core/System/siteoff.html.twig', [
             'reason' => $this->maintenanceReason,
         ]);
         $response->setContent($content);

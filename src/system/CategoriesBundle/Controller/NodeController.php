@@ -104,17 +104,17 @@ class NodeController extends AbstractController
 
                     return $this->json([
                         'node' => $category->toJson($this->domTreeNodePrefix, $request->getLocale()),
-                        'mode' => $mode
+                        'mode' => $mode,
                     ]);
                 }
                 $response = [
                     'result' => $this->renderView('@ZikulaCategories/Category/edit.html.twig', [
                         'locales' => $localeApi->getSupportedLocaleNames(null, $request->getLocale()),
-                        'form' => $form->createView()
+                        'form' => $form,
                     ]),
                     'action' => $action,
                     'id' => $category->getId(),
-                    'mode' => $mode
+                    'mode' => $mode,
                 ];
                 break;
             case 'deleteandmovechildren':

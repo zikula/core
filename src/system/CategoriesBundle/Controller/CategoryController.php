@@ -61,7 +61,7 @@ class CategoryController extends AbstractController
         return $this->render('@ZikulaCategories/Category/list.html.twig', [
             'category' => $category,
             'tree' => $tree,
-            'categorySelector' => $form->createView(),
+            'categorySelector' => $form,
         ]);
     }
 

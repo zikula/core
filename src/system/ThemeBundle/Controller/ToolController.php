@@ -91,7 +91,7 @@ class ToolController extends AbstractController
         }
 
         return $this->render('@ZikulaTheme/Tool/testmail.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
