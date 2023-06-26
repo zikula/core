@@ -1495,16 +1495,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.6.6",
+            "version": "v4.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "ef10d412109429cf47bb5a406bbba6a256255350"
+                "reference": "17562010c5c7d160a5059c7f70b2c7e03f149d40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/ef10d412109429cf47bb5a406bbba6a256255350",
-                "reference": "ef10d412109429cf47bb5a406bbba6a256255350",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/17562010c5c7d160a5059c7f70b2c7e03f149d40",
+                "reference": "17562010c5c7d160a5059c7f70b2c7e03f149d40",
                 "shasum": ""
             },
             "require": {
@@ -1577,7 +1577,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.6.6"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.7.0"
             },
             "funding": [
                 {
@@ -1585,7 +1585,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-30T18:19:51+00:00"
+            "time": "2023-06-26T18:40:07+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -5017,16 +5017,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v6.3.0",
+            "version": "v6.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "49c7d14fc0465813e85b7cbbda49844af208d95a"
+                "reference": "fdf4aff85fff2cc681cc45936b6b2a52731acc23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/49c7d14fc0465813e85b7cbbda49844af208d95a",
-                "reference": "49c7d14fc0465813e85b7cbbda49844af208d95a",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/fdf4aff85fff2cc681cc45936b6b2a52731acc23",
+                "reference": "fdf4aff85fff2cc681cc45936b6b2a52731acc23",
                 "shasum": ""
             },
             "require": {
@@ -5078,7 +5078,7 @@
                 "localization"
             ],
             "support": {
-                "source": "https://github.com/symfony/intl/tree/v6.3.0"
+                "source": "https://github.com/symfony/intl/tree/v6.3.1"
             },
             "funding": [
                 {
@@ -5094,7 +5094,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-24T14:22:26+00:00"
+            "time": "2023-06-21T12:08:28+00:00"
         },
         {
             "name": "symfony/lock",
