@@ -41,7 +41,11 @@ class User extends BaseUser implements LegalAwareUserInterface
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected ?int $id = null;
 
+    #[Assert\NoSuspiciousCharacters]
+    protected ?string $username = null;
+
     #[Assert\Length(min: 12)]
+    #[Assert\PasswordStrength]
     #[PasswordPattern(minUpper: 1, minLower: 1, minNumeric: 1, minSpecial: 1)]
     protected ?string $plainPassword = null;
 
