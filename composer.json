@@ -32,7 +32,6 @@
         "egulias/email-validator": "^4",
         "friendsofsymfony/jsrouting-bundle": "^3",
         "ircmaxell/random-lib": "^1",
-        "itsjavi/fontawesome-iconpicker": "^3",
         "liip/imagine-bundle": "^2",
         "nucleos/profile-bundle": "^2",
         "nucleos/user-bundle": "^2",
