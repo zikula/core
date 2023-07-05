@@ -7808,20 +7808,20 @@
         },
         {
             "name": "symfony/ux-translator",
-            "version": "v2.9.1",
+            "version": "v2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-translator.git",
-                "reference": "1b7ef6368ac236c2bd8a53a035c26ccb028349a6"
+                "reference": "9f49e121558d7c1fab134031b878dfc884775da0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/1b7ef6368ac236c2bd8a53a035c26ccb028349a6",
-                "reference": "1b7ef6368ac236c2bd8a53a035c26ccb028349a6",
+                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/9f49e121558d7c1fab134031b878dfc884775da0",
+                "reference": "9f49e121558d7c1fab134031b878dfc884775da0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.0",
+                "php": ">=8.1",
                 "symfony/console": "^5.4|^6.0",
                 "symfony/filesystem": "^5.4|^6.0",
                 "symfony/string": "^5.4|^6.0",
@@ -7864,7 +7864,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-translator/tree/v2.9.1"
+                "source": "https://github.com/symfony/ux-translator/tree/v2.10.0"
             },
             "funding": [
                 {
@@ -7880,7 +7880,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-30T14:40:50+00:00"
+            "time": "2023-06-19T18:55:23+00:00"
         },
         {
             "name": "symfony/validator",
