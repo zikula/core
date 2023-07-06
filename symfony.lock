@@ -138,15 +138,6 @@
     "imagine/imagine": {
         "version": "1.2.4"
     },
-    "ircmaxell/random-lib": {
-        "version": "v1.2.0"
-    },
-    "ircmaxell/security-lib": {
-        "version": "v1.1.0"
-    },
-    "itsjavi/fontawesome-iconpicker": {
-        "version": "3.2.0"
-    },
     "jakeasmith/http_build_url": {
         "version": "1.0.1"
     },

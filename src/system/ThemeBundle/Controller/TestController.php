@@ -17,13 +17,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Zikula\ThemeBundle\Helper\FallbackDashboardDetector;
 
 class TestController extends AbstractController
 {
     #[Route('/test/page', name: 'zikulathemebundle_test_page')]
     #[Route('/admin/test/page', name: 'zikulathemebundle_admin_test_page')]
-    public function lala(Request $request, FallbackDashboardDetector $dashboardDetector): Response
+    public function lala(Request $request): Response
     {
         return $this->render('@ZikulaTheme/Test/page.html.twig',
             [
