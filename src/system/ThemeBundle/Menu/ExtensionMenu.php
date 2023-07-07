@@ -15,16 +15,17 @@ namespace Zikula\ThemeBundle\Menu;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
+use function Symfony\Component\Translation\t;
 
 class ExtensionMenu extends AbstractExtensionMenu
 {
     protected function getAdmin(): iterable
     {
-        yield MenuItem::linktoRoute('Branding', 'fas fa-palette', 'zikulathemebundle_branding_overview')
+        yield MenuItem::linktoRoute(t('Branding'), 'fas fa-palette', 'zikulathemebundle_branding_overview')
             ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linktoRoute('Test mail settings', 'fas fa-envelope', 'zikulathemebundle_tool_testmail')
+        yield MenuItem::linktoRoute(t('Test mail settings'), 'fas fa-envelope', 'zikulathemebundle_tool_testmail')
             ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linktoRoute('PHP configuration', 'fab fa-php', 'zikulathemebundle_tool_phpinfo')
+        yield MenuItem::linktoRoute(t('PHP configuration'), 'fab fa-php', 'zikulathemebundle_tool_phpinfo')
             ->setPermission('ROLE_ADMIN');
     }
 

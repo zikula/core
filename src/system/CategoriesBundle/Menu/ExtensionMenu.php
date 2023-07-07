@@ -26,11 +26,11 @@ class ExtensionMenu extends AbstractExtensionMenu
         yield MenuItem::linkToCrud(t('Add category'), 'fas fa-plus', Category::class)
             ->setAction('new');
 
-        yield MenuItem::section('Old stuff');
+        yield MenuItem::section(t('Old stuff'));
 
-        yield MenuItem::linktoRoute('Category tree', 'fas fa-tree', 'zikulacategoriesbundle_category_listcategories')
+        yield MenuItem::linktoRoute(t('Category tree'), 'fas fa-tree', 'zikulacategoriesbundle_category_listcategories')
             ->setPermission('ROLE_EDITOR');
-        yield MenuItem::linktoRoute('Category registry', 'fas fa-archive', 'zikulacategoriesbundle_registry_edit')
+        yield MenuItem::linktoRoute(t('Category registry'), 'fas fa-archive', 'zikulacategoriesbundle_registry_edit')
             ->setPermission('ROLE_ADMIN');
     }
 

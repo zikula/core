@@ -39,9 +39,9 @@ class ExtensionMenu extends AbstractExtensionMenu
     protected function getUser(): iterable
     {
         if (null === $this->security->getUser()) {
-            yield MenuItem::linktoRoute('Login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
+            yield MenuItem::linktoRoute(t('Login'), 'fas fa-sign-in-alt', 'nucleos_user_security_login');
             if ($this->registrationEnabled) {
-                yield MenuItem::linktoRoute('New account', 'fas fa-plus', 'nucleos_profile_registration_register');
+                yield MenuItem::linktoRoute(t('New account'), 'fas fa-plus', 'nucleos_profile_registration_register');
             }
         }
     }
@@ -50,33 +50,25 @@ class ExtensionMenu extends AbstractExtensionMenu
     {
         $loggedIn = null !== $this->security->getUser();
         if (!$loggedIn) {
-            yield MenuItem::linktoRoute('I would like to login', 'fas fa-sign-in-alt', 'nucleos_user_security_login');
+            yield MenuItem::linktoRoute(t('I would like to login'), 'fas fa-sign-in-alt', 'nucleos_user_security_login');
             if ($this->registrationEnabled) {
-                yield MenuItem::linktoRoute('I would like to create a new account', 'fas fa-plus', 'nucleos_profile_registration_register');
-
-                // | Registration | nucleos_profile_registration_check_email | /registration/check-email |
-                // | Registration | nucleos_profile_registration_confirmed | /registration/confirmed |
-                // | Registration | nucleos_profile_registration_register | /registration/ |
+                yield MenuItem::linktoRoute(t('I would like to create a new account'), 'fas fa-plus', 'nucleos_profile_registration_register');
             }
         }
-        yield MenuItem::linktoRoute('Reset password', 'fas fa-refresh', 'nucleos_user_resetting_request');
+        yield MenuItem::linktoRoute(t('Reset password'), 'fas fa-refresh', 'nucleos_user_resetting_request');
         if ($loggedIn) {
-            yield MenuItem::linktoRoute('Change password', 'fas fa-lock', 'nucleos_user_change_password');
+            yield MenuItem::linktoRoute(t('Change password'), 'fas fa-lock', 'nucleos_user_change_password');
 
-            yield MenuItem::linktoRoute('My profile', 'fas fa-user', 'nucleos_profile_profile_show');
-            yield MenuItem::linktoRoute('Edit profile', 'fas fa-user-pen', 'nucleos_profile_profile_edit');
+            yield MenuItem::linktoRoute(t('My profile'), 'fas fa-user', 'nucleos_profile_profile_show');
+            yield MenuItem::linktoRoute(t('Edit profile'), 'fas fa-user-pen', 'nucleos_profile_profile_edit');
 
             if ($this->allowSelfDeletion) {
                 if (UsersConstant::USER_ID_ADMIN !== $this->security->getUser()->getId()) {
-                    yield MenuItem::linktoRoute('Delete my account', 'fas fa-trash-alt', 'nucleos_user_delete_account')
+                    yield MenuItem::linktoRoute(t('Delete my account'), 'fas fa-trash-alt', 'nucleos_user_delete_account')
                         ->setCssClass('text-danger')
                     ;
                 }
             }
-            // TODO remove this test entry again
-            yield MenuItem::linktoRoute('Delete my account', 'fas fa-trash-alt', 'nucleos_user_delete_account')
-                ->setCssClass('text-danger')
-            ;
         }
     }
 
