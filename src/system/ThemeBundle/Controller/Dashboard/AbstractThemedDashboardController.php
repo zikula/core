@@ -70,14 +70,8 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         $titleSuffix = $title ? ' ' . $title : '';
 
         $dashboard = parent::configureDashboard()
-            ->setTitle($titlePrefix . $titleSuffix);
-
-        $iconPath = $this->site->getIconPath();
-        if (null !== $iconPath) {
-            $dashboard->setFaviconPath($iconPath);
-        }
-
-        $dashboard->renderContentMaximized($this->themeConfig['view']['content_maximized'])
+            ->setTitle($titlePrefix . $titleSuffix)
+            ->renderContentMaximized($this->themeConfig['view']['content_maximized'])
             ->renderSidebarMinimized($this->themeConfig['view']['sidebar_minimized'])
             ->setTranslationDomain('dashboard')
             ->setLocales($this->enabledLocales);

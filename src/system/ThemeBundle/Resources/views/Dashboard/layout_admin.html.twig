@@ -1,5 +1,10 @@
 {% extends '@!EasyAdmin/layout.html.twig' %}
 
+{% block head_metas %}
+    {{ parent() }}
+    {{ include('@ZikulaTheme/Dashboard/manifest.html.twig') }}
+{% endblock %}
+
 {% block page_title %}{{ siteName()|replace({'#pagetitle#': parent()}) }}{% endblock %}
 {% block sidebar %}
     <p>Hello admin!</p>
