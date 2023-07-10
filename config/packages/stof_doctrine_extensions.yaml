@@ -14,18 +14,8 @@ stof_doctrine_extensions:
             sluggable: true
             tree: true
             loggable: true
+            ip_traceable: true
             sortable: true
             softdeleteable: true
             uploadable: true
             reference_integrity: true
-    class:
-        translatable:         Gedmo\Translatable\TranslatableListener
-        timestampable:        Gedmo\Timestampable\TimestampableListener
-        blameable:            Gedmo\Blameable\BlameableListener
-        sluggable:            Gedmo\Sluggable\SluggableListener
-        tree:                 Gedmo\Tree\TreeListener
-        loggable:             Gedmo\Loggable\LoggableListener
-        sortable:             Gedmo\Sortable\SortableListener
-        softdeleteable:       Gedmo\SoftDeleteable\SoftDeleteableListener
-        uploadable:           Gedmo\Uploadable\UploadableListener
-        reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
