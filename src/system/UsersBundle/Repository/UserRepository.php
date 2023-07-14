@@ -44,33 +44,10 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $qb->getQuery()->getResult();
     }
 
-    public function persistAndFlush(User $user): void
-    {
-        $this->_em->persist($user);
-        $this->_em->flush();
-    }
-
-    public function removeAndFlush(User $user): void
-    {
-        // the following process should be unnecessary because cascade = all but MySQL 5.7 not working with that (#3726)
-        $qb = $this->_em->createQueryBuilder();
-        $qb->delete(UserAttribute::class, 'a')
-           ->where('a.user = :userId')
-           ->setParameter('userId', $user->getUid());
-        $query = $qb->getQuery();
-        $query->execute();
-        // end of theoretically unrequired process
-
-        $user->setAttributes(new ArrayCollection());
-        $this->_em->remove($user);
-        $this->_em->flush();
-    }
-
     public function setApproved(User $user, DateTime $approvedOn, int $approvedBy = null): void
     {
         $user->setApprovedDate($approvedOn);
         $user->setApprovedBy($approvedBy ?? $user->getUid());
-        $this->_em->flush();
     }
 
     public function queryBySearchForm(array $formData = [])

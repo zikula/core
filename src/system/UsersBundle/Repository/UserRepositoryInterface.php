@@ -24,10 +24,6 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
 {
     public function findByUids(array $userIds = []): array;
 
-    public function persistAndFlush(User $user): void;
-
-    public function removeAndFlush(User $user): void;
-
     /**
      * If $approvedBy is null, user will be considered as 'self-approved'.
      */

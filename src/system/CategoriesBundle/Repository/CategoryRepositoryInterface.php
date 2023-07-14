@@ -30,13 +30,4 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable, Repo
      * Returns the last added category within a given parent category.
      */
     public function getLastByParent(int $parentId = 0): ?Category;
-
-    /**
-     * Updates the parent id of one or multiple categories.
-     *
-     * @param integer $oldParentId The categoryID of the category to be updated
-     * @param integer $newParentId The categoryID of the new parent category
-     * @param boolean $includeRoot Whether or not to also move the root folder (optional) (default=true)
-     */
-    public function updateParent(int $oldParentId = 0, int $newParentId = 0, bool $includeRoot = true): void;
 }

@@ -76,25 +76,4 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
 
         return $qb->getQuery()->getSingleResult();
     }
-
-    public function updateParent(int $oldParentId = 0, int $newParentId = 0, bool $includeRoot = true): void
-    {
-        if ($oldParentId < 1 || $newParentId < 1) {
-            return;
-        }
-
-        /** @var Category $newParent */
-        $newParent = $this->find($newParentId);
-        if (null === $newParent) {
-            return;
-        }
-
-        $searchBy = $includeRoot ? 'id' : 'parent';
-        /** @var Category[] $entities */
-        $entities = $this->findBy([$searchBy => $oldParentId]);
-        foreach ($entities as $entity) {
-            $entity->setParent($newParent);
-        }
-        $this->_em->flush();
-    }
 }
