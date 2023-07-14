@@ -22,7 +22,6 @@ use Doctrine\Persistence\ManagerRegistry;
 use Zikula\CoreBundle\Doctrine\Paginator;
 use Zikula\CoreBundle\Doctrine\WhereFromFilterTrait;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\UsersBundle\Entity\UserAttribute;
 use Zikula\UsersBundle\UsersConstant;
 
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
