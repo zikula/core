@@ -37,7 +37,7 @@ class UserMenuExtensionHelper
             // use this method if you don't want to display the user image
             // ->displayUserAvatar(false)
             // you can also pass an email address to use gravatar's service
-            ->setGravatarEmail($user->getEmailCanonical())
+            ->setGravatarEmail($user->getEmail())
 
             // additional account menu items contributed by extensions
             ->addMenuItems(iterator_to_array($this->configureUserMenuItems()))

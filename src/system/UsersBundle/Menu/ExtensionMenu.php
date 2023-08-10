@@ -57,7 +57,7 @@ class ExtensionMenu extends AbstractExtensionMenu
         }
         yield MenuItem::linktoRoute(t('Reset password'), 'fas fa-refresh', 'nucleos_user_resetting_request');
         if ($loggedIn) {
-            yield MenuItem::linktoRoute(t('Change password'), 'fas fa-lock', 'nucleos_user_change_password');
+            yield MenuItem::linktoRoute(t('Update security'), 'fas fa-lock', 'nucleos_user_update_security');
 
             yield MenuItem::linktoRoute(t('My profile'), 'fas fa-user', 'nucleos_profile_profile_show');
             yield MenuItem::linktoRoute(t('Edit profile'), 'fas fa-user-pen', 'nucleos_profile_profile_edit');
