@@ -33,7 +33,7 @@
         "friendsofsymfony/jsrouting-bundle": "^3",
         "liip/imagine-bundle": "^2",
         "nucleos/profile-bundle": "^2",
-        "nucleos/user-bundle": "^2",
+        "nucleos/user-bundle": "^3",
         "stof/doctrine-extensions-bundle": "^1",
         "symfony/asset": "^6.3",
         "symfony/browser-kit": "^6.3",
