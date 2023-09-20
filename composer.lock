@@ -1496,16 +1496,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.7.6",
+            "version": "v4.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "60e04377612ce4d63ad833209127541caaf7e93b"
+                "reference": "7561f781aa8ac7852a18938711052fffb641005c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/60e04377612ce4d63ad833209127541caaf7e93b",
-                "reference": "60e04377612ce4d63ad833209127541caaf7e93b",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/7561f781aa8ac7852a18938711052fffb641005c",
+                "reference": "7561f781aa8ac7852a18938711052fffb641005c",
                 "shasum": ""
             },
             "require": {
@@ -1578,7 +1578,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.7.6"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.7.7"
             },
             "funding": [
                 {
@@ -1586,7 +1586,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-07T06:13:39+00:00"
+            "time": "2023-09-19T18:35:59+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -8649,16 +8649,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.15",
+            "version": "3.3.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "8c1bcc87771f5be0b70cd49d6a7888707ebcc64e"
+                "reference": "b3135cfc65eba90d4c670e6959273ef92cd1b447"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/8c1bcc87771f5be0b70cd49d6a7888707ebcc64e",
-                "reference": "8c1bcc87771f5be0b70cd49d6a7888707ebcc64e",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/b3135cfc65eba90d4c670e6959273ef92cd1b447",
+                "reference": "b3135cfc65eba90d4c670e6959273ef92cd1b447",
                 "shasum": ""
             },
             "require": {
@@ -8713,7 +8713,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-19T23:38:56+00:00"
+            "time": "2023-09-19T10:32:25+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
