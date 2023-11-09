@@ -7724,29 +7724,29 @@
         },
         {
             "name": "symfony/ux-translator",
-            "version": "v2.12.0",
+            "version": "v2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-translator.git",
-                "reference": "9f49e121558d7c1fab134031b878dfc884775da0"
+                "reference": "38f88fa2de2e292d5198a9fdcc47c9084a0afaa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/9f49e121558d7c1fab134031b878dfc884775da0",
-                "reference": "9f49e121558d7c1fab134031b878dfc884775da0",
+                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/38f88fa2de2e292d5198a9fdcc47c9084a0afaa1",
+                "reference": "38f88fa2de2e292d5198a9fdcc47c9084a0afaa1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.1",
-                "symfony/console": "^5.4|^6.0",
-                "symfony/filesystem": "^5.4|^6.0",
-                "symfony/string": "^5.4|^6.0",
-                "symfony/translation": "^5.4|^6.0"
+                "symfony/console": "^5.4|^6.0|^7.0",
+                "symfony/filesystem": "^5.4|^6.0|^7.0",
+                "symfony/string": "^5.4|^6.0|^7.0",
+                "symfony/translation": "^5.4|^6.0|^7.0"
             },
             "require-dev": {
-                "symfony/framework-bundle": "^5.4|^6.0",
-                "symfony/phpunit-bridge": "^5.2|^6.0",
-                "symfony/var-dumper": "^5.4|^6.0"
+                "symfony/framework-bundle": "^5.4|^6.0|^7.0",
+                "symfony/phpunit-bridge": "^5.2|^6.0|^7.0",
+                "symfony/var-dumper": "^5.4|^6.0|^7.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -7780,7 +7780,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-translator/tree/v2.12.0"
+                "source": "https://github.com/symfony/ux-translator/tree/v2.13.0"
             },
             "funding": [
                 {
@@ -7796,7 +7796,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-06-19T18:55:23+00:00"
+            "time": "2023-11-07T21:10:32+00:00"
         },
         {
             "name": "symfony/validator",
