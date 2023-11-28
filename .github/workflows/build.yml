@@ -219,39 +219,6 @@ jobs:
   #       # see https://cs.symfony.com/
   #       run: ./vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes --dry-run --config "build/php_cs_fixer.dist"
 
-  docs:
-    name: Documentation
-    if: github.ref_name == 'main'
-    runs-on: ubuntu-latest
-    needs: [build, test]
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-
-      - name: Install composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-
-      - name: Dump vendors into doc
-        run: ./build.php build:generate_vendor_doc --write-to "docs/General/VendorInformation.md"
-
-      # GH action not possible yet
-      # see https://github.com/CouscousPHP/Couscous/issues/263
-      # see https://github.com/CouscousPHP/Couscous/issues/265
-      - name: Build docs
-        #uses: CouscousPHP/GitHub-Action@v1
-        run: |
-          wget https://github.com/CouscousPHP/Couscous/archive/refs/heads/master.zip
-          unzip master.zip && rm master.zip
-          cd Couscous-master && composer install && cd ..
-          Couscous-master/bin/couscous generate
-          rm -rf Couscous-master/
-
-      - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./.couscous/generated
-
   create-artifacts:
     name: Package
     runs-on: ubuntu-latest
