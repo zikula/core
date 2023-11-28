@@ -16,7 +16,7 @@ For a long time, Zikula's philosophy was to fulfill all wishes. For several year
 
 ## Zikula 3.x - the last of its kind
 
-The releases of Zikula 3, which were based on Symfony 5, still bear witness to this old architecture. They can still be used, but they are no longer maintained. Bei Fragen schreibt gerne in die Github discussions.
+The releases of Zikula 3, which were based on Symfony 5, still bear witness to this old architecture. They can still be used, but they are no longer maintained. If you have any questions, please write in the [Github discussions](https://github.com/zikula/core/discussions).
 
 ## Zikula 4.0 - Focus on own strengths (Work in Progress)
 
