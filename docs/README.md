@@ -3,9 +3,9 @@ currentMenu: home
 ---
 # Zikula Core - Application Framework
 
-Zikula Core is an Application Framework which extends Symfony 6.x and includes technologies
-fostering a dynamic modular development paradigm and Twig-based theming system which allows for rapid
-application development. See the features section below for more information.
+Zikula Core is an Application Framework which extends Symfony 7.x and includes technologies
+fostering a dynamic modular development paradigm which allows for rapid application development.
+See the features section below for more information.
 
 Zikula also features an [MDSD](https://en.wikipedia.org/wiki/Model-driven_engineering) tool for rapid prototyping
 and bundle development called [ModuleStudio](https://modulestudio.de/en/) or MOST.
@@ -14,7 +14,7 @@ and bundle development called [ModuleStudio](https://modulestudio.de/en/) or MOS
 
 ### Foundation
 
-- Based on Symfony 6.x which provides stability, continuity and extensibility
+- Based on Symfony 7.x which provides stability, continuity and extensibility
 - Uses Doctrine for persisting data
 - Uses Twig as template engine
 - Uses Mailer component for mail handling

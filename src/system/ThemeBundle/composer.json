@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\ThemeBundle\\": "" }
     },
     "require": {
-        "php": "^8.1",
+        "php": ">=8.2",
         "symfony/config": "^6.3",
         "symfony/dependency-injection": "^6.3",
         "symfony/event-dispatcher": "^6.3",

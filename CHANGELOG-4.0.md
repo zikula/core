@@ -34,10 +34,11 @@
   - none yet
 
 - Features:
-  - [General] Minimum PHP version is now 8.1.0 instead of 7.2.5.
+  - [General] Minimum PHP version is now 8.2.0 instead of 7.2.5.
   - [General] Zikula uses Composer/Flex and native Symfony bundles instead of custom extension types.
   - [General] Use PHP 8 attributes as well as other features (like constructor property promotion) where appropriate.
   - [General] Use Symfony security and `NucleosUserBundle` + `NucleosProfileBundle` for user and auth related concerns.
+  - [General] Use Symfony UX Translator instead of `BazingaJsTranslationBundle`
   - [Admin] New interface based on `EasyAdminBundle` dashboards.
   - [Settings] Utilize rate limiter component for test email functionality.
   - [Theme] Introduce themed dashboards extending `EasyAdminBundle` dashboard functionality.

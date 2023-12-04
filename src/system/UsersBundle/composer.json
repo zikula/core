@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\UsersBundle\\": "" }
     },
     "require": {
-        "php": "^8.1",
+        "php": ">=8.2",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "nucleos/profile-bundle": "^2",
         "nucleos/user-bundle": "^3",

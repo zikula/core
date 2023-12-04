@@ -13,7 +13,7 @@
     ],
     "bin": ["bin/console"],
     "require": {
-        "php": "^8.1",
+        "php": ">=8.2",
 
         "zikula/categories-bundle": "dev-4.0",
         "zikula/legal-bundle": "dev-4.0",
