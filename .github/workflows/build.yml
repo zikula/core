@@ -25,7 +25,7 @@ jobs:
           echo "dir=$dir" >> $GITHUB_OUTPUT
 
       - name: Cache composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
@@ -80,7 +80,7 @@ jobs:
           php bin/console lint:twig --show-deprecations src/system/
 
       - name: Cache vulnerability database
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-db
         with:
           path: ~/.symfony/cache
