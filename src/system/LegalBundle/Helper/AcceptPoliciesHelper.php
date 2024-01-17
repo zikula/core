@@ -32,11 +32,11 @@ class AcceptPoliciesHelper
         $policies = $this->legalConfig['policies'];
 
         return [
-            'privacyPolicy'           => $policies['privacy_policy']['enabled'],
-            'termsOfUse'              => $policies['terms_of_use']['enabled'],
-            'tradeConditions'         => $policies['trade_conditions']['enabled'],
+            'privacyPolicy' => $policies['privacy_policy']['enabled'],
+            'termsOfUse' => $policies['terms_of_use']['enabled'],
+            'tradeConditions' => $policies['trade_conditions']['enabled'],
             'cancellationRightPolicy' => $policies['cancellation_right_policy']['enabled'],
-            'agePolicy'               => 0 !== $this->legalConfig['minimum_age'],
+            'agePolicy' => 0 !== $this->legalConfig['minimum_age'],
         ];
     }
 }
