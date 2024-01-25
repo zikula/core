@@ -23,8 +23,7 @@ class ResourceMenuProvider
         yield MenuItem::section(t('Resources'), 'fas fa-book');
         yield MenuItem::subMenu(t('Zikula'), 'fas fa-rocket')->setSubItems([
             MenuItem::linkToUrl(t('Website'), 'fas fa-house', 'https://ziku.la/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Docs'), 'fas fa-file-contract', 'https://docs.ziku.la/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Support Slack'), 'fab fa-slack', 'https://joinslack.ziku.la/')->setLinkTarget('_blank'),
+            MenuItem::linkToUrl(t('Docs'), 'fas fa-file-contract', 'https://github.com/zikula/core/tree/main/docs')->setLinkTarget('_blank'),
             MenuItem::linkToUrl(t('ModuleStudio'), 'fas fa-wand-sparkles', 'https://modulestudio.de/en/documentation/')->setLinkTarget('_blank'),
         ]);
         yield MenuItem::subMenu(t('Foundation'), 'fas fa-cubes-stacked')->setSubItems([
