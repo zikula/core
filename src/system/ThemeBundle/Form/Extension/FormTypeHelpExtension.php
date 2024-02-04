@@ -23,7 +23,7 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 class FormTypeHelpExtension extends AbstractTypeExtension
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->setAttribute('help', $options['help'])
@@ -32,14 +32,14 @@ class FormTypeHelpExtension extends AbstractTypeExtension
         ;
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['help'] = $options['help'];
         $view->vars['input_group'] = $options['input_group'];
         $view->vars['alert'] = $options['alert'];
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'input_group' => null,

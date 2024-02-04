@@ -30,7 +30,7 @@ class NullToEmptyTransformer implements DataTransformerInterface
      * @param string|null $value
      * @return string
      */
-    public function transform(mixed $value)
+    public function transform(mixed $value): mixed
     {
         return $value;
     }

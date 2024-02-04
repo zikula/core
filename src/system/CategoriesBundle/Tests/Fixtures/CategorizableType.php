@@ -20,7 +20,7 @@ use Zikula\CategoriesBundle\Form\Type\CategoriesType;
 
 class CategorizableType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('categoryAssignments', CategoriesType::class, [
             'em' => $options['em'],
@@ -40,7 +40,7 @@ class CategorizableType extends AbstractType
         return 'zikulacategoriesbundle_test_categorizable';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'em' => null,

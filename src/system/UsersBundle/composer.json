@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=8.2",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
         "nucleos/profile-bundle": "^2",
         "nucleos/user-bundle": "^3",
         "symfony/config": "^7.0",

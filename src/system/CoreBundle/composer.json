@@ -45,12 +45,12 @@
         "symfony/web-profiler-bundle": "^7.0",
 
         "doctrine/doctrine-bundle": "^2",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^2",
-        "easycorp/easyadmin-bundle": "^4.3",
         "stof/doctrine-extensions-bundle": "^1",
         "liip/imagine-bundle": "^2",
 
-        "symfony/ux-translator": "^2.9",
+        "symfony/ux-translator": "^2",
         "friendsofsymfony/jsrouting-bundle": "^3"
     },
     "autoload": {

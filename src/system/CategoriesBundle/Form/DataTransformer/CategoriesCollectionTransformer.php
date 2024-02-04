@@ -39,29 +39,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         $this->entityManager = $options['em'];
     }
 
-    public function reverseTransform($value): mixed
-    {
-        $collection = new ArrayCollection();
-        $class = $this->entityCategoryClass;
-
-        foreach ($value as $regId => $categories) {
-            $regId = (int) mb_substr($regId, mb_strpos($regId, '_') + 1);
-            $subCollection = new ArrayCollection();
-            if (!is_array($categories) && $categories instanceof Category) {
-                $categories = [$categories];
-            } elseif (empty($categories)) {
-                $categories = [];
-            }
-            foreach ($categories as $category) {
-                $subCollection->add(new $class($regId, $category, null));
-            }
-            $collection->set($regId, $subCollection);
-        }
-
-        return $collection;
-    }
-
-    public function transform($value)
+    public function transform(mixed $value): mixed
     {
         $data = [];
         if (empty($value)) {
@@ -84,5 +62,27 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         }
 
         return $data;
+    }
+
+    public function reverseTransform(mixed $value): mixed
+    {
+        $collection = new ArrayCollection();
+        $class = $this->entityCategoryClass;
+
+        foreach ($value as $regId => $categories) {
+            $regId = (int) mb_substr($regId, mb_strpos($regId, '_') + 1);
+            $subCollection = new ArrayCollection();
+            if (!is_array($categories) && $categories instanceof Category) {
+                $categories = [$categories];
+            } elseif (empty($categories)) {
+                $categories = [];
+            }
+            foreach ($categories as $category) {
+                $subCollection->add(new $class($regId, $category, null));
+            }
+            $collection->set($regId, $subCollection);
+        }
+
+        return $collection;
     }
 }

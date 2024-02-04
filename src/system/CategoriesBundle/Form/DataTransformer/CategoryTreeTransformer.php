@@ -31,7 +31,7 @@ class CategoryTreeTransformer implements DataTransformerInterface
      *
      * @return string
      */
-    public function transform($category)
+    public function transform(mixed $category): mixed
     {
         if (null === $category) {
             return '';
@@ -47,7 +47,7 @@ class CategoryTreeTransformer implements DataTransformerInterface
      *
      * @return Category|null
      */
-    public function reverseTransform($categoryId): mixed
+    public function reverseTransform(mixed $categoryId): mixed
     {
         if (!$categoryId) {
             return null;

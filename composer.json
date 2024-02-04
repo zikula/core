@@ -26,9 +26,9 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "doctrine/doctrine-bundle": "^2",
-        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^2",
-        "easycorp/easyadmin-bundle": "^4.3",
+        "easycorp/easyadmin-bundle": "^4.8",
         "egulias/email-validator": "^4",
         "friendsofsymfony/jsrouting-bundle": "^3",
         "liip/imagine-bundle": "^2",
@@ -59,7 +59,7 @@
         "symfony/string": "^7.0",
         "symfony/translation": "^7.0",
         "symfony/twig-bundle": "^7.0",
-        "symfony/ux-translator": "^2.9",
+        "symfony/ux-translator": "^2",
         "symfony/validator": "^7.0",
         "symfony/web-link": "^7.0",
         "symfony/web-profiler-bundle": "^7.0",
@@ -117,7 +117,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "^6.3"
+            "require": "^7.0"
         },
         "symfony-assets-install": "relative"
     }
