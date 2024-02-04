@@ -43,8 +43,6 @@ class CategoryTreeTransformer implements DataTransformerInterface
     /**
      * Transform a CategoryId to a CategoryEntity
      *
-     * @param mixed $categoryId
-     *
      * @return Category|null
      */
     public function reverseTransform(mixed $categoryId): mixed
