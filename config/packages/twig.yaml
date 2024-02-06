@@ -4,6 +4,7 @@ twig:
         '@ZikulaTheme/Form/bootstrap_4_zikula_admin_layout.html.twig',
         '@ZikulaTheme/Form/form_div_layout.html.twig'
     ]
+    file_name_pattern: '*.twig'
 
 when@test:
     twig:
