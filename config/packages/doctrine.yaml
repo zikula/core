@@ -3,17 +3,19 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '15'
-        server_version: 5 # any value will work (bypasses DBALException)
+        #server_version: '16'
+
+        profiling_collect_backtrace: '%kernel.debug%'
         types:
             utcdatetime:
                 class: Zikula\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
-        proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
-        default_entity_manager: default
+        report_fields_where_declared: true
+        validate_xml_mapping: true
         #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        default_entity_manager: default
         entity_managers:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:
