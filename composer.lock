@@ -7688,16 +7688,16 @@
         },
         {
             "name": "symfony/ux-translator",
-            "version": "v2.14.0",
+            "version": "v2.14.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-translator.git",
-                "reference": "802ced1bc3292f65f48acd8704d7b29f1cbdd51c"
+                "reference": "928543eb9d702baa6658f432b5944d6f00a68993"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/802ced1bc3292f65f48acd8704d7b29f1cbdd51c",
-                "reference": "802ced1bc3292f65f48acd8704d7b29f1cbdd51c",
+                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/928543eb9d702baa6658f432b5944d6f00a68993",
+                "reference": "928543eb9d702baa6658f432b5944d6f00a68993",
                 "shasum": ""
             },
             "require": {
@@ -7744,7 +7744,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-translator/tree/v2.14.0"
+                "source": "https://github.com/symfony/ux-translator/tree/v2.14.2"
             },
             "funding": [
                 {
@@ -7760,7 +7760,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-14T07:27:47+00:00"
+            "time": "2024-02-03T21:01:32+00:00"
         },
         {
             "name": "symfony/validator",
