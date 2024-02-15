@@ -9,6 +9,7 @@ doctrine:
         types:
             utcdatetime:
                 class: Zikula\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
+        use_savepoints: true
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
