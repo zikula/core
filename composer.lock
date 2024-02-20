@@ -7688,7 +7688,7 @@
         },
         {
             "name": "symfony/ux-translator",
-            "version": "v2.14.2",
+            "version": "v2.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-translator.git",
@@ -7744,7 +7744,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-translator/tree/v2.14.2"
+                "source": "https://github.com/symfony/ux-translator/tree/v2.15.0"
             },
             "funding": [
                 {
