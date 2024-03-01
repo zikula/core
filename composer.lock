@@ -1248,16 +1248,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "2a250b5814de192a23438c0a43e15da7e77890a7"
+                "reference": "b8d0a85017374165d8f8c0855e9eb18806b25d32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/2a250b5814de192a23438c0a43e15da7e77890a7",
-                "reference": "2a250b5814de192a23438c0a43e15da7e77890a7",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/b8d0a85017374165d8f8c0855e9eb18806b25d32",
+                "reference": "b8d0a85017374165d8f8c0855e9eb18806b25d32",
                 "shasum": ""
             },
             "require": {
@@ -1279,12 +1279,12 @@
             "require-dev": {
                 "doctrine/coding-standard": "^12.0",
                 "phpbench/phpbench": "^1.0",
-                "phpstan/phpstan": "1.10.35",
+                "phpstan/phpstan": "1.10.59",
                 "phpunit/phpunit": "^10.4.0",
                 "psr/log": "^1 || ^2 || ^3",
                 "squizlabs/php_codesniffer": "3.7.2",
                 "symfony/cache": "^5.4 || ^6.2 || ^7.0",
-                "vimeo/psalm": "5.16.0"
+                "vimeo/psalm": "5.22.2"
             },
             "suggest": {
                 "ext-dom": "Provides support for XSD validation for XML mapping files",
@@ -1330,22 +1330,22 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/3.0.1"
+                "source": "https://github.com/doctrine/orm/tree/3.0.2"
             },
-            "time": "2024-02-22T12:23:53+00:00"
+            "time": "2024-03-01T09:51:50+00:00"
         },
         {
             "name": "doctrine/persistence",
-            "version": "3.2.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "63fee8c33bef740db6730eb2a750cd3da6495603"
+                "reference": "f75d11b1bcd0a9b75a9e1cabd80ffe3bc0164bcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/63fee8c33bef740db6730eb2a750cd3da6495603",
-                "reference": "63fee8c33bef740db6730eb2a750cd3da6495603",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/f75d11b1bcd0a9b75a9e1cabd80ffe3bc0164bcc",
+                "reference": "f75d11b1bcd0a9b75a9e1cabd80ffe3bc0164bcc",
                 "shasum": ""
             },
             "require": {
@@ -1414,7 +1414,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/persistence/issues",
-                "source": "https://github.com/doctrine/persistence/tree/3.2.0"
+                "source": "https://github.com/doctrine/persistence/tree/3.3.0"
             },
             "funding": [
                 {
@@ -1430,7 +1430,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-17T18:32:04+00:00"
+            "time": "2024-03-01T10:11:31+00:00"
         },
         {
             "name": "doctrine/sql-formatter",
