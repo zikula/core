@@ -3490,16 +3490,16 @@
         },
         {
             "name": "symfony/doctrine-bridge",
-            "version": "v7.0.4",
+            "version": "v7.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/doctrine-bridge.git",
-                "reference": "aded7ef586f9c75a04627326a5748f29ceba3506"
+                "reference": "e3cf34996df541c62acc1bd5f187aacc18a204d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/aded7ef586f9c75a04627326a5748f29ceba3506",
-                "reference": "aded7ef586f9c75a04627326a5748f29ceba3506",
+                "url": "https://api.github.com/repos/symfony/doctrine-bridge/zipball/e3cf34996df541c62acc1bd5f187aacc18a204d2",
+                "reference": "e3cf34996df541c62acc1bd5f187aacc18a204d2",
                 "shasum": ""
             },
             "require": {
@@ -3576,7 +3576,7 @@
             "description": "Provides integration for Doctrine with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/doctrine-bridge/tree/v7.0.4"
+                "source": "https://github.com/symfony/doctrine-bridge/tree/v7.0.5"
             },
             "funding": [
                 {
@@ -3592,7 +3592,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-04T16:21:40+00:00"
+            "time": "2024-02-27T12:34:35+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -4465,16 +4465,16 @@
         },
         {
             "name": "symfony/http-client",
-            "version": "v7.0.4",
+            "version": "v7.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-client.git",
-                "reference": "8384876f49a2316a63f88a9cd12436de6936bee6"
+                "reference": "425f462a59d8030703ee04a9e1c666575ed5db3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-client/zipball/8384876f49a2316a63f88a9cd12436de6936bee6",
-                "reference": "8384876f49a2316a63f88a9cd12436de6936bee6",
+                "url": "https://api.github.com/repos/symfony/http-client/zipball/425f462a59d8030703ee04a9e1c666575ed5db3b",
+                "reference": "425f462a59d8030703ee04a9e1c666575ed5db3b",
                 "shasum": ""
             },
             "require": {
@@ -4537,7 +4537,7 @@
                 "http"
             ],
             "support": {
-                "source": "https://github.com/symfony/http-client/tree/v7.0.4"
+                "source": "https://github.com/symfony/http-client/tree/v7.0.5"
             },
             "funding": [
                 {
@@ -4553,7 +4553,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-15T11:33:06+00:00"
+            "time": "2024-03-02T12:46:12+00:00"
         },
         {
             "name": "symfony/http-client-contracts",
@@ -10482,5 +10482,5 @@
         "ext-xml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.6.0"
 }
