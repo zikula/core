@@ -199,16 +199,16 @@
         },
         {
             "name": "doctrine/collections",
-            "version": "2.2.0",
+            "version": "2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "07e16cd7b80a2cffed99e36b541876af172f0257"
+                "reference": "420480fc085bc65f3c956af13abe8e7546f94813"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/07e16cd7b80a2cffed99e36b541876af172f0257",
-                "reference": "07e16cd7b80a2cffed99e36b541876af172f0257",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/420480fc085bc65f3c956af13abe8e7546f94813",
+                "reference": "420480fc085bc65f3c956af13abe8e7546f94813",
                 "shasum": ""
             },
             "require": {
@@ -265,7 +265,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/collections/issues",
-                "source": "https://github.com/doctrine/collections/tree/2.2.0"
+                "source": "https://github.com/doctrine/collections/tree/2.2.1"
             },
             "funding": [
                 {
@@ -281,7 +281,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-25T22:55:36+00:00"
+            "time": "2024-03-05T22:28:45+00:00"
         },
         {
             "name": "doctrine/common",
@@ -2218,16 +2218,16 @@
         },
         {
             "name": "nucleos/user-bundle",
-            "version": "3.3.1",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosUserBundle.git",
-                "reference": "547048d40ef3e5fb2e6c5e01346f24ab567ef3d6"
+                "reference": "6bf071f03e56ffedadb2225a2423b777145e26aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/547048d40ef3e5fb2e6c5e01346f24ab567ef3d6",
-                "reference": "547048d40ef3e5fb2e6c5e01346f24ab567ef3d6",
+                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/6bf071f03e56ffedadb2225a2423b777145e26aa",
+                "reference": "6bf071f03e56ffedadb2225a2423b777145e26aa",
                 "shasum": ""
             },
             "require": {
@@ -2308,7 +2308,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosUserBundle/issues",
-                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.3.1"
+                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.4.0"
             },
             "funding": [
                 {
@@ -2328,7 +2328,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-03-04T19:52:29+00:00"
+            "time": "2024-03-06T19:21:20+00:00"
         },
         {
             "name": "psr/cache",
