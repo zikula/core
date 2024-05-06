@@ -72,7 +72,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "symfony/maker-bundle": "^1",
         "symfony/phpunit-bridge": "^7"
     },
     "conflict": {
