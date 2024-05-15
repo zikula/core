@@ -53,13 +53,6 @@ class CoreExtension extends Extension implements PrependExtensionInterface
 
         $container->getDefinition(SiteDefinition::class)
             ->setArgument('$siteData', $config['site_data']);
-
-        // hint which classes contain annotations, so they are compiled when generating
-        // the application cache to improve the overall performance
-        $this->addAnnotatedClassesToCompile([
-            'Zikula\\*Bundle\\Controller\\',
-            'Zikula\\*Bundle\\Entity\\',
-        ]);
     }
 
     public function getNamespace(): string
