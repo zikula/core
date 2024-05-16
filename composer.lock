@@ -1848,16 +1848,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.12.2",
+            "version": "2.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "2ad259dd46ce55f93c6e8d87908d2572bd94796e"
+                "reference": "fa2baa6262bb74038f01ac746dc3e2a8bc441e09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/2ad259dd46ce55f93c6e8d87908d2572bd94796e",
-                "reference": "2ad259dd46ce55f93c6e8d87908d2572bd94796e",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/fa2baa6262bb74038f01ac746dc3e2a8bc441e09",
+                "reference": "fa2baa6262bb74038f01ac746dc3e2a8bc441e09",
                 "shasum": ""
             },
             "require": {
@@ -1945,9 +1945,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipImagineBundle/issues",
-                "source": "https://github.com/liip/LiipImagineBundle/tree/2.12.2"
+                "source": "https://github.com/liip/LiipImagineBundle/tree/2.12.3"
             },
-            "time": "2024-02-23T21:12:25+00:00"
+            "time": "2024-05-16T08:51:30+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -8497,16 +8497,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.10.0",
+            "version": "v3.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "34422f90043aba75e419dd77ee0a86e1688c28ee"
+                "reference": "67f29781ffafa520b0bbfbd8384674b42db04572"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/34422f90043aba75e419dd77ee0a86e1688c28ee",
-                "reference": "34422f90043aba75e419dd77ee0a86e1688c28ee",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/67f29781ffafa520b0bbfbd8384674b42db04572",
+                "reference": "67f29781ffafa520b0bbfbd8384674b42db04572",
                 "shasum": ""
             },
             "require": {
@@ -8560,7 +8560,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.10.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.10.3"
             },
             "funding": [
                 {
@@ -8572,7 +8572,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-11T07:44:16+00:00"
+            "time": "2024-05-16T10:04:27+00:00"
         },
         {
             "name": "vakata/jstree",
