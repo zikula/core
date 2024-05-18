@@ -19,8 +19,6 @@ use Zikula\ThemeBundle\Entity\AdminCategory;
 
 /**
  * Helper function for non-dynamic admin categories.
- *
- * TODO think about using Categories bundle.
  */
 class AdminCategoryHelper
 {
@@ -95,7 +93,7 @@ class AdminCategoryHelper
         return match ($category->getSlug()) {
             'system' => ['ZikulaThemeBundle'],
             'users' => ['ZikulaGroupsBundle', 'ZikulaLegalBundle', 'ZikulaProfileBundle', 'ZikulaUsersBundle'],
-            'content' => ['ZikulaCategoriesBundle'],
+            'content' => [],
         };
     }
 }

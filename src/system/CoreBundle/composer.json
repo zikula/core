@@ -15,7 +15,6 @@
     "require": {
         "php": ">=8.2",
 
-        "zikula/categories-bundle": "dev-4.0",
         "zikula/legal-bundle": "dev-4.0",
         "zikula/theme-bundle": "dev-4.0",
         "zikula/users-bundle": "dev-4.0",
