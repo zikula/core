@@ -22,6 +22,4 @@ interface BundleMetaDataInterface
     public function getDescription(): TranslatableMessage;
 
     public function getIcon(): string;
-
-    public function getCategorizableEntityClasses(): array;
 }
