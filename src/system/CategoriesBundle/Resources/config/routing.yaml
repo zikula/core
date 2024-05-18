@@ -1,3 +1,0 @@
-zikulacategoriesbundle:
-    resource: '@ZikulaCategoriesBundle/Controller'
-    type: attribute

@@ -22,6 +22,7 @@
     - [Users] Base on `NucleosUserBundle` and `NucleosProfileBundle`.
     - [ZAuth] Remove deprecated `PasswordApi`.
   - Remove content management
+    - [Categories] Remove categories bundle.
     - [Hook] Remove hooks support.
     - [Menu] Remove custom (database-driven) menus.
     - [PageLock] Remove page lock bundle.

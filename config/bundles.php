@@ -17,7 +17,6 @@ return [
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
     Zikula\CoreBundle\CoreBundle::class => ['all' => true],
-    Zikula\CategoriesBundle\ZikulaCategoriesBundle::class => ['all' => true],
     Zikula\LegalBundle\ZikulaLegalBundle::class => ['all' => true],
     Zikula\ThemeBundle\ZikulaThemeBundle::class => ['all' => true],
     Zikula\UsersBundle\ZikulaUsersBundle::class => ['all' => true],

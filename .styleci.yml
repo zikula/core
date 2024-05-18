@@ -41,7 +41,5 @@ disabled:
   - unalign_equals
 
 finder:
-  not-path:
-    - src/system/CategoriesBundle/Entity
   not-name:
     - "bundles.php"
