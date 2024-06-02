@@ -1430,16 +1430,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.10.1",
+            "version": "v4.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "020192e4d935a5aec43cca52a4d81a478688de65"
+                "reference": "a2775352f5e0f0a778516eb7d6c62ff8eb417ecb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/020192e4d935a5aec43cca52a4d81a478688de65",
-                "reference": "020192e4d935a5aec43cca52a4d81a478688de65",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/a2775352f5e0f0a778516eb7d6c62ff8eb417ecb",
+                "reference": "a2775352f5e0f0a778516eb7d6c62ff8eb417ecb",
                 "shasum": ""
             },
             "require": {
@@ -1513,7 +1513,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.10.1"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.10.2"
             },
             "funding": [
                 {
@@ -1521,7 +1521,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-02T11:20:15+00:00"
+            "time": "2024-05-21T19:52:09+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -2220,16 +2220,16 @@
         },
         {
             "name": "nucleos/user-bundle",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosUserBundle.git",
-                "reference": "6bf071f03e56ffedadb2225a2423b777145e26aa"
+                "reference": "22fbd8f0a325dbdd1f59e18a6b865f63fad9ab76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/6bf071f03e56ffedadb2225a2423b777145e26aa",
-                "reference": "6bf071f03e56ffedadb2225a2423b777145e26aa",
+                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/22fbd8f0a325dbdd1f59e18a6b865f63fad9ab76",
+                "reference": "22fbd8f0a325dbdd1f59e18a6b865f63fad9ab76",
                 "shasum": ""
             },
             "require": {
@@ -2276,6 +2276,7 @@
                 "doctrine/orm": "<2.18"
             },
             "require-dev": {
+                "dama/doctrine-test-bundle": "^8.0",
                 "doctrine/doctrine-bundle": "^2.4",
                 "doctrine/mongodb-odm": "^2.3",
                 "doctrine/mongodb-odm-bundle": "^4.4 || ^5.0",
@@ -2283,6 +2284,7 @@
                 "ergebnis/composer-normalize": "^2.0.1",
                 "ext-mongodb": "*",
                 "symfony/browser-kit": "^6.4 || ^7.0",
+                "symfony/css-selector": "^6.4 || ^7.0",
                 "symfony/doctrine-bridge": "^6.4 || ^7.0",
                 "symfony/yaml": "^6.4 || ^7.0"
             },
@@ -2310,7 +2312,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosUserBundle/issues",
-                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.4.0"
+                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.4.1"
             },
             "funding": [
                 {
@@ -2330,7 +2332,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-03-06T19:21:20+00:00"
+            "time": "2024-05-20T19:29:07+00:00"
         },
         {
             "name": "psr/cache",
