@@ -5629,16 +5629,16 @@
         },
         {
             "name": "symfony/polyfill-intl-messageformatter",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-messageformatter.git",
-                "reference": "6603d1d7cb7fb3df80c23ecf6ea6977f8a02be3f"
+                "reference": "d5c117020a1111318ea4d64ab16f6367c885d966"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-messageformatter/zipball/6603d1d7cb7fb3df80c23ecf6ea6977f8a02be3f",
-                "reference": "6603d1d7cb7fb3df80c23ecf6ea6977f8a02be3f",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-messageformatter/zipball/d5c117020a1111318ea4d64ab16f6367c885d966",
+                "reference": "d5c117020a1111318ea4d64ab16f6367c885d966",
                 "shasum": ""
             },
             "require": {
@@ -5690,7 +5690,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-messageformatter/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-intl-messageformatter/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -5706,7 +5706,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-29T20:11:03+00:00"
+            "time": "2024-06-19T12:30:46+00:00"
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
@@ -5948,16 +5948,16 @@
         },
         {
             "name": "symfony/polyfill-uuid",
-            "version": "v1.29.0",
+            "version": "v1.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-uuid.git",
-                "reference": "3abdd21b0ceaa3000ee950097bc3cf9efc137853"
+                "reference": "2ba1f33797470debcda07fe9dce20a0003df18e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/3abdd21b0ceaa3000ee950097bc3cf9efc137853",
-                "reference": "3abdd21b0ceaa3000ee950097bc3cf9efc137853",
+                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/2ba1f33797470debcda07fe9dce20a0003df18e9",
+                "reference": "2ba1f33797470debcda07fe9dce20a0003df18e9",
                 "shasum": ""
             },
             "require": {
@@ -6007,7 +6007,7 @@
                 "uuid"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.30.0"
             },
             "funding": [
                 {
@@ -6023,7 +6023,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-29T20:11:03+00:00"
+            "time": "2024-05-31T15:07:36+00:00"
         },
         {
             "name": "symfony/process",
