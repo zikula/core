@@ -44,7 +44,7 @@
 
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-migrations-bundle": "^3.3",
-        "doctrine/orm": "^2",
+        "doctrine/orm": "^3",
         "stof/doctrine-extensions-bundle": "^1",
         "liip/imagine-bundle": "^2",
 
