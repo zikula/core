@@ -15,7 +15,6 @@ namespace Zikula\UsersBundle\Repository;
 
 use DateTime;
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\Persistence\ObjectRepository;
 use Zikula\CoreBundle\Doctrine\PaginatorInterface;
 use Zikula\UsersBundle\Entity\User;
@@ -70,7 +69,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
     /**
      * Return all users as memory-saving iterable result.
      */
-    public function findAllAsIterable(): IterableResult;
+    public function findAllAsIterable(): iterable;
 
     /**
      * @return User[]

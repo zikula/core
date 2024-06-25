@@ -16,7 +16,6 @@ namespace Zikula\UsersBundle\Repository;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\CoreBundle\Doctrine\Paginator;
@@ -169,11 +168,11 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $orderBy;
     }
 
-    public function findAllAsIterable(): IterableResult
+    public function findAllAsIterable(): iterable
     {
         $qb = $this->createQueryBuilder('u');
 
-        return $qb->getQuery()->iterate();
+        return $qb->getQuery()->toIterable();
     }
 
     public function searchActiveUser(array $unameFilter = [])
