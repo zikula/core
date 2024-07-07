@@ -2113,21 +2113,21 @@
         },
         {
             "name": "nucleos/profile-bundle",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosProfileBundle.git",
-                "reference": "ec5fcf658fabaae5886873ec8a4d469ae6952e9b"
+                "reference": "f31450267ee1b57afcdbf58b134ddc3783654e0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/ec5fcf658fabaae5886873ec8a4d469ae6952e9b",
-                "reference": "ec5fcf658fabaae5886873ec8a4d469ae6952e9b",
+                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/f31450267ee1b57afcdbf58b134ddc3783654e0d",
+                "reference": "f31450267ee1b57afcdbf58b134ddc3783654e0d",
                 "shasum": ""
             },
             "require": {
                 "doctrine/persistence": "^2.2.2 || ^3.0.0",
-                "nucleos/user-bundle": "^2.3 || ^3.0",
+                "nucleos/user-bundle": "^2.3 || ^3.4.0",
                 "php": "^8.1",
                 "symfony/config": "^6.4 || ^7.0",
                 "symfony/dependency-injection": "^6.4 || ^7.0",
@@ -2157,10 +2157,12 @@
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
+                "dama/doctrine-test-bundle": "^8.0",
                 "doctrine/doctrine-bundle": "^2.5",
                 "doctrine/orm": "^2.7",
                 "ergebnis/composer-normalize": "^2.0.1",
                 "symfony/browser-kit": "^6.4 || ^7.0",
+                "symfony/css-selector": "^6.4 || ^7.0",
                 "symfony/doctrine-bridge": "^6.4 || ^7.0",
                 "symfony/yaml": "^6.4 || ^7.0"
             },
@@ -2190,7 +2192,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosProfileBundle/issues",
-                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.5.0"
+                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.5.1"
             },
             "funding": [
                 {
@@ -2210,20 +2212,20 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-02-04T17:07:46+00:00"
+            "time": "2024-07-07T07:07:14+00:00"
         },
         {
             "name": "nucleos/user-bundle",
-            "version": "3.4.1",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosUserBundle.git",
-                "reference": "22fbd8f0a325dbdd1f59e18a6b865f63fad9ab76"
+                "reference": "446d10f247a4afc34c7ae61cd40578738391d063"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/22fbd8f0a325dbdd1f59e18a6b865f63fad9ab76",
-                "reference": "22fbd8f0a325dbdd1f59e18a6b865f63fad9ab76",
+                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/446d10f247a4afc34c7ae61cd40578738391d063",
+                "reference": "446d10f247a4afc34c7ae61cd40578738391d063",
                 "shasum": ""
             },
             "require": {
@@ -2306,7 +2308,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosUserBundle/issues",
-                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.4.1"
+                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.4.2"
             },
             "funding": [
                 {
@@ -2326,7 +2328,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-05-20T19:29:07+00:00"
+            "time": "2024-07-07T13:37:18+00:00"
         },
         {
             "name": "psr/cache",
@@ -3175,16 +3177,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v7.1.1",
+            "version": "v7.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "9b008f2d7b21c74ef4d0c3de6077a642bc55ece3"
+                "reference": "0aa29ca177f432ab68533432db0de059f39c92ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/9b008f2d7b21c74ef4d0c3de6077a642bc55ece3",
-                "reference": "9b008f2d7b21c74ef4d0c3de6077a642bc55ece3",
+                "url": "https://api.github.com/repos/symfony/console/zipball/0aa29ca177f432ab68533432db0de059f39c92ae",
+                "reference": "0aa29ca177f432ab68533432db0de059f39c92ae",
                 "shasum": ""
             },
             "require": {
@@ -3248,7 +3250,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v7.1.1"
+                "source": "https://github.com/symfony/console/tree/v7.1.2"
             },
             "funding": [
                 {
@@ -3264,7 +3266,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:57:53+00:00"
+            "time": "2024-06-28T10:03:55+00:00"
         },
         {
             "name": "symfony/debug-bundle",
