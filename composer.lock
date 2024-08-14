@@ -2216,16 +2216,16 @@
         },
         {
             "name": "nucleos/user-bundle",
-            "version": "3.4.3",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosUserBundle.git",
-                "reference": "1fb35a7b60567bb7b8a219b204992fcf5cc0db54"
+                "reference": "f3b0c155473f4b8b00748b77e2b223b02e6bce74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/1fb35a7b60567bb7b8a219b204992fcf5cc0db54",
-                "reference": "1fb35a7b60567bb7b8a219b204992fcf5cc0db54",
+                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/f3b0c155473f4b8b00748b77e2b223b02e6bce74",
+                "reference": "f3b0c155473f4b8b00748b77e2b223b02e6bce74",
                 "shasum": ""
             },
             "require": {
@@ -2308,7 +2308,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosUserBundle/issues",
-                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.4.3"
+                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.5.0"
             },
             "funding": [
                 {
@@ -2328,7 +2328,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-07-07T17:56:15+00:00"
+            "time": "2024-08-14T16:26:52+00:00"
         },
         {
             "name": "psr/cache",
