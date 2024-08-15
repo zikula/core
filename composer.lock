@@ -2113,16 +2113,16 @@
         },
         {
             "name": "nucleos/profile-bundle",
-            "version": "2.5.1",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosProfileBundle.git",
-                "reference": "f31450267ee1b57afcdbf58b134ddc3783654e0d"
+                "reference": "c47ed5240bfa23d52918d2ffee1190de5ff639aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/f31450267ee1b57afcdbf58b134ddc3783654e0d",
-                "reference": "f31450267ee1b57afcdbf58b134ddc3783654e0d",
+                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/c47ed5240bfa23d52918d2ffee1190de5ff639aa",
+                "reference": "c47ed5240bfa23d52918d2ffee1190de5ff639aa",
                 "shasum": ""
             },
             "require": {
@@ -2152,14 +2152,14 @@
             },
             "conflict": {
                 "doctrine/doctrine-bundle": "<2.5",
-                "doctrine/orm": "<2.7",
+                "doctrine/orm": "<2.18",
                 "symfony/doctrine-bridge": "<6.4"
             },
             "require-dev": {
                 "alcaeus/mongo-php-adapter": "^1.1",
                 "dama/doctrine-test-bundle": "^8.0",
                 "doctrine/doctrine-bundle": "^2.5",
-                "doctrine/orm": "^2.7",
+                "doctrine/orm": "^2.18 || ^3.0",
                 "ergebnis/composer-normalize": "^2.0.1",
                 "symfony/browser-kit": "^6.4 || ^7.0",
                 "symfony/css-selector": "^6.4 || ^7.0",
@@ -2192,7 +2192,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosProfileBundle/issues",
-                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.5.1"
+                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.6.0"
             },
             "funding": [
                 {
@@ -2212,7 +2212,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-07-07T07:07:14+00:00"
+            "time": "2024-08-14T16:07:25+00:00"
         },
         {
             "name": "nucleos/user-bundle",
