@@ -1419,16 +1419,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.11.1",
+            "version": "v4.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "d0945053e9dbf81d0c10f8cacec25c8ec5e87053"
+                "reference": "d21c3222a660f6aa9748623e53db8be5d8d98e78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/d0945053e9dbf81d0c10f8cacec25c8ec5e87053",
-                "reference": "d0945053e9dbf81d0c10f8cacec25c8ec5e87053",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/d21c3222a660f6aa9748623e53db8be5d8d98e78",
+                "reference": "d21c3222a660f6aa9748623e53db8be5d8d98e78",
                 "shasum": ""
             },
             "require": {
@@ -1502,7 +1502,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.11.1"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.12.0"
             },
             "funding": [
                 {
@@ -1510,7 +1510,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-08-06T18:21:54+00:00"
+            "time": "2024-09-02T17:48:17+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -7663,16 +7663,16 @@
         },
         {
             "name": "symfony/uid",
-            "version": "v7.1.1",
+            "version": "v7.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/uid.git",
-                "reference": "bb59febeecc81528ff672fad5dab7f06db8c8277"
+                "reference": "82177535395109075cdb45a70533aa3d7a521cdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/uid/zipball/bb59febeecc81528ff672fad5dab7f06db8c8277",
-                "reference": "bb59febeecc81528ff672fad5dab7f06db8c8277",
+                "url": "https://api.github.com/repos/symfony/uid/zipball/82177535395109075cdb45a70533aa3d7a521cdf",
+                "reference": "82177535395109075cdb45a70533aa3d7a521cdf",
                 "shasum": ""
             },
             "require": {
@@ -7717,7 +7717,7 @@
                 "uuid"
             ],
             "support": {
-                "source": "https://github.com/symfony/uid/tree/v7.1.1"
+                "source": "https://github.com/symfony/uid/tree/v7.1.4"
             },
             "funding": [
                 {
@@ -7733,7 +7733,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-05-31T14:57:53+00:00"
+            "time": "2024-08-12T09:59:40+00:00"
         },
         {
             "name": "symfony/ux-translator",
