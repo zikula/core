@@ -8675,16 +8675,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.16",
+            "version": "3.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "b3135cfc65eba90d4c670e6959273ef92cd1b447"
+                "reference": "6256df013ebd98aea138402d8ac96db3efe0c0da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/b3135cfc65eba90d4c670e6959273ef92cd1b447",
-                "reference": "b3135cfc65eba90d4c670e6959273ef92cd1b447",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/6256df013ebd98aea138402d8ac96db3efe0c0da",
+                "reference": "6256df013ebd98aea138402d8ac96db3efe0c0da",
                 "shasum": ""
             },
             "require": {
@@ -8739,7 +8739,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-19T10:32:25+00:00"
+            "time": "2024-09-03T07:13:38+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
