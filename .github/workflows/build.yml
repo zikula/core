@@ -222,7 +222,7 @@ jobs:
   create-artifacts:
     name: Package
     runs-on: ubuntu-latest
-    needs: [build, test, docs]
+    needs: [build, test]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
