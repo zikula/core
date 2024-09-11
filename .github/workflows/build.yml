@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: ['8.2', '8.3']
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -43,7 +43,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: ['8.2', '8.3']
     services:
       mysql:
         image: mysql:latest
@@ -117,7 +117,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.2']
+  #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v3
@@ -136,7 +136,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.2']
+  #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v3
@@ -153,7 +153,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.2']
+  #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v3
@@ -171,7 +171,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.2']
+  #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v3
@@ -189,7 +189,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.2']
+  #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v3
@@ -207,7 +207,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.2']
+  #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v3
