@@ -1,7 +1,8 @@
 name: Build and test
-on:
-  push:
-    branches-ignore: [gh-pages]
+on: [push] #, pull_request]
+#on:
+#  push:
+#    branches-ignore: [gh-pages]
 #  pull_request:
 #    branches-ignore: [gh-pages]
 jobs:
@@ -120,7 +121,7 @@ jobs:
   #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   # 
   #     - name: Install composer dependencies
   #       run: composer install --no-progress --prefer-dist --optimize-autoloader
@@ -139,7 +140,7 @@ jobs:
   #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   # 
   #     - name: Install composer dependencies
   #       run: composer install --no-progress --prefer-dist --optimize-autoloader
@@ -156,7 +157,7 @@ jobs:
   #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   # 
   #     - name: Install composer dependencies
   #       run: composer install --no-progress --prefer-dist --optimize-autoloader
@@ -174,7 +175,7 @@ jobs:
   #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   # 
   #     - name: Install composer dependencies
   #       run: composer install --no-progress --prefer-dist --optimize-autoloader
@@ -192,7 +193,7 @@ jobs:
   #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   # 
   #     - name: Install composer dependencies
   #       run: composer install --no-progress --prefer-dist --optimize-autoloader
@@ -210,7 +211,7 @@ jobs:
   #       php-versions: ['8.3']
   #   steps:
   #     - name: Checkout sources
-  #       uses: actions/checkout@v3
+  #       uses: actions/checkout@v4
   # 
   #     - name: Install composer dependencies
   #       run: composer install --no-progress --prefer-dist --optimize-autoloader
