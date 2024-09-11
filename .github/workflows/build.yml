@@ -32,6 +32,17 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      # Docs: https://github.com/shivammathur/setup-php
+      - name: Setup PHP with PCOV
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          #tools: php-cs-fixer, phpunit-bridge
+          # required PHP extensions for Symfony: see https://symfony.com/doc/current/setup.html#technical-requirements
+          extensions: ctype, iconv, intl, json, mbstring, mysql, pcre, session, simplexml, tokenizer, xml, php-ast # xml is required by phpunit, php-ast is used by phan
+          coverage: pcov
+          ini-values: memory_limit=256M, post_max_size=256M, pcov.directory=src
+
       - name: Install composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
@@ -64,11 +75,11 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
-          tools: php-cs-fixer, phpunit-bridge
+          #tools: php-cs-fixer, phpunit-bridge
           # required PHP extensions for Symfony: see https://symfony.com/doc/current/setup.html#technical-requirements
-          extensions: ctype, iconv, intl, json, mbstring, pcre, session, simplexml, tokenizer, xml, php-ast # xml is required by phpunit, php-ast is used by phan
-          #ini-values: memory_limit=256M, post_max_size=256M, max_execution_time=180, pcov.directory=src
+          extensions: ctype, iconv, intl, json, mbstring, mysql, pcre, session, simplexml, tokenizer, xml, php-ast # xml is required by phpunit, php-ast is used by phan
           coverage: pcov
+          ini-values: memory_limit=256M, post_max_size=256M, pcov.directory=src
 
       - name: Install composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
