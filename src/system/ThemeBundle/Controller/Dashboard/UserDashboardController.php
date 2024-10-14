@@ -16,7 +16,7 @@ namespace Zikula\ThemeBundle\Controller\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use function Symfony\Component\Translation\t;
