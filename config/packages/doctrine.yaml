@@ -16,6 +16,8 @@ doctrine:
         #report_fields_where_declared: true
         #validate_xml_mapping: true
         #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        #identity_generation_preferences:
+        #    Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         default_entity_manager: default
         entity_managers:
             # the standard distribution overrides this to be true in debug, false otherwise
@@ -46,6 +48,8 @@ doctrine:
                         dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity'
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
+        controller_resolver:
+            auto_mapping: false
 
 #when@test:
 #    doctrine:
