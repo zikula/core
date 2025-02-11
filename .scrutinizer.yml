@@ -2,7 +2,7 @@ build:
     image: default-bionic
     environment:
         node: v16.17.0 # LTS
-        php: 8.2
+        php: 8.3
     nodes:
         analysis:
             tests:
@@ -12,7 +12,7 @@ build:
         tests-and-coverage:
             environment:
                 php:
-                    version: 8.2
+                    version: 8.3
                     ini:
                         'memory_limit': '512M'
                 apache2:
