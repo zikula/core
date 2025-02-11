@@ -2108,16 +2108,16 @@
         },
         {
             "name": "nucleos/profile-bundle",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosProfileBundle.git",
-                "reference": "c47ed5240bfa23d52918d2ffee1190de5ff639aa"
+                "reference": "c174de74d3d3e77ded2366077e388df9ef50c042"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/c47ed5240bfa23d52918d2ffee1190de5ff639aa",
-                "reference": "c47ed5240bfa23d52918d2ffee1190de5ff639aa",
+                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/c174de74d3d3e77ded2366077e388df9ef50c042",
+                "reference": "c174de74d3d3e77ded2366077e388df9ef50c042",
                 "shasum": ""
             },
             "require": {
@@ -2187,7 +2187,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosProfileBundle/issues",
-                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.6.0"
+                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.7.0"
             },
             "funding": [
                 {
@@ -2207,7 +2207,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2024-08-14T16:07:25+00:00"
+            "time": "2025-02-09T20:31:24+00:00"
         },
         {
             "name": "nucleos/user-bundle",
