@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.2', '8.3']
+        php-versions: ['8.2', '8.3', '8.4']
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        php-versions: ['8.2', '8.3']
+        php-versions: ['8.2', '8.3', '8.4']
     services:
       mysql:
         image: mysql:latest
@@ -123,103 +123,13 @@ jobs:
       - name: Test installation
         run: ./.github/scripts/testInstall.sh
 
-  # qa-phpstan:
-  #   name: QA - Run phpstan (PHP ${{ matrix.php-versions }})
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   strategy:
-  #     matrix:
-  #       php-versions: ['8.3']
-  #   steps:
-  #     - name: Checkout sources
-  #       uses: actions/checkout@v4
-  # 
-  #     - name: Install composer dependencies
-  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
-  # 
-  #     - name: Run phpstan
-  #       # see https://github.com/phpstan/phpstan
-  #       # level: (0 = loosest - 7 = "max" = strictest), default level is 0
-  #       run: ./vendor/bin/phpstan analyse -c ./build/phpstan.neon --level 3 src
-  # 
-  # qa-psalm:
-  #   name: QA - Run psalm (PHP ${{ matrix.php-versions }})
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   strategy:
-  #     matrix:
-  #       php-versions: ['8.3']
-  #   steps:
-  #     - name: Checkout sources
-  #       uses: actions/checkout@v4
-  # 
-  #     - name: Install composer dependencies
-  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
-  # 
-  #     - name: Run psalm
-  #       run: ./vendor/bin/psalm src --find-dead-code --threads=8 --diff --diff-methods --show-info=1
-  # 
-  # qa-phpcpd:
-  #   name: QA - Run phpcpd (PHP ${{ matrix.php-versions }})
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   strategy:
-  #     matrix:
-  #       php-versions: ['8.3']
-  #   steps:
-  #     - name: Checkout sources
-  #       uses: actions/checkout@v4
-  # 
-  #     - name: Install composer dependencies
-  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
-  # 
-  #     - name: Run phpcpd
-  #       # see https://github.com/sebastianbergmann/phpcpd
-  #       run: ./vendor/bin/phpcpd --exclude vendor ./src/
-  #
-  # qa-phpmd:
-  #   name: QA - Run phpmd (PHP ${{ matrix.php-versions }})
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   strategy:
-  #     matrix:
-  #       php-versions: ['8.3']
-  #   steps:
-  #     - name: Checkout sources
-  #       uses: actions/checkout@v4
-  # 
-  #     - name: Install composer dependencies
-  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
-  # 
-  #     - name: Run phpmd
-  #       # see https://github.com/phpmd/phpmd
-  #       run: ./vendor/bin/phpmd src text "build/phpmd.xml" --exclude vendor
-  # 
-  # qa-phan:
-  #   name: QA - Run phan (PHP ${{ matrix.php-versions }})
-  #   runs-on: ubuntu-latest
-  #   needs: test
-  #   strategy:
-  #     matrix:
-  #       php-versions: ['8.3']
-  #   steps:
-  #     - name: Checkout sources
-  #       uses: actions/checkout@v4
-  # 
-  #     - name: Install composer dependencies
-  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
-  # 
-  #     - name: Run phan
-  #       # see https://github.com/phan/phan
-  #       run: ./vendor/bin/phan --config-file "build/phan.php" --directory src
-  # 
   # qa-cs-fixer:
   #   name: QA - Run php-cs-fixer (PHP ${{ matrix.php-versions }})
   #   runs-on: ubuntu-latest
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.3']
+  #       php-versions: ['8.4']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v4
@@ -230,6 +140,25 @@ jobs:
   #     - name: Run php-cs-fixer
   #       # see https://cs.symfony.com/
   #       run: ./vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes --dry-run --config "build/php_cs_fixer.dist"
+
+  # qa-phpstan:
+  #   name: QA - Run phpstan (PHP ${{ matrix.php-versions }})
+  #   runs-on: ubuntu-latest
+  #   needs: test
+  #   strategy:
+  #     matrix:
+  #       php-versions: ['8.4']
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v4
+  # 
+  #     - name: Install composer dependencies
+  #       run: composer install --no-progress --prefer-dist --optimize-autoloader
+  # 
+  #     - name: Run phpstan
+  #       # see https://github.com/phpstan/phpstan
+  #       # level: (0 = loosest - 10 = strictest), default level is 0
+  #       run: ./vendor/bin/phpstan analyse -c ./build/phpstan.neon --level 3 src
 
   create-artifacts:
     name: Package
