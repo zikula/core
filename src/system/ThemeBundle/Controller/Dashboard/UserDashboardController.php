@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Controller\Dashboard;
 
+// use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,8 @@ use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use function Symfony\Component\Translation\t;
 
+// TODO blocked by https://github.com/EasyCorp/EasyAdminBundle/issues/6792
+// #[AdminDashboard(routePath: '/', routeName: 'user')]
 class UserDashboardController extends AbstractThemedDashboardController
 {
     protected function getName(): string
@@ -36,7 +39,7 @@ class UserDashboardController extends AbstractThemedDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard(t('Home'), 'fas fa-home');
-        yield MenuItem::linkToUrl(t('Administration'), 'fas fa-wrench', '/admin')->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToRoute(t('Administration'), 'fas fa-wrench', 'admin_home')->setPermission('ROLE_ADMIN');
 
         yield MenuItem::section();
         $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_USER);
