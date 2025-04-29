@@ -16,6 +16,7 @@ return [
     FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
+    Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
     Zikula\CoreBundle\CoreBundle::class => ['all' => true],
     Zikula\LegalBundle\ZikulaLegalBundle::class => ['all' => true],
     Zikula\ThemeBundle\ZikulaThemeBundle::class => ['all' => true],
