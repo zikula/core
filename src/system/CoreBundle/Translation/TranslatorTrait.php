@@ -19,7 +19,7 @@ trait TranslatorTrait
 {
     private TranslatorInterface $translator;
 
-    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    public function trans(string $id, array $parameters = [], ?string $domain = null, ?string $locale = null): string
     {
         return $this->getTranslator()->trans($id, $parameters, $domain, $locale);
     }
