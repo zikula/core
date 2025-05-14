@@ -21,11 +21,8 @@ class ResourceMenuProvider
     public static function getResources(): iterable
     {
         yield MenuItem::section(t('Resources'), 'fas fa-book');
-        yield MenuItem::subMenu(t('Zikula'), 'fas fa-rocket')->setSubItems([
-            MenuItem::linkToUrl(t('Website'), 'fas fa-house', 'https://ziku.la/')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('Docs'), 'fas fa-file-contract', 'https://github.com/zikula/core/tree/main/docs')->setLinkTarget('_blank'),
-            MenuItem::linkToUrl(t('ModuleStudio'), 'fas fa-wand-sparkles', 'https://modulestudio.de/en/documentation/')->setLinkTarget('_blank'),
-        ]);
+        yield MenuItem::linkToUrl(t('Zikula'), 'fas fa-rocket', 'https://github.com/zikula/core/tree/main/docs')->setLinkTarget('_blank');
+        yield MenuItem::linkToUrl(t('ModuleStudio'), 'fas fa-wand-sparkles', 'https://modulestudio.de/en/documentation/')->setLinkTarget('_blank');
         yield MenuItem::subMenu(t('Foundation'), 'fas fa-cubes-stacked')->setSubItems([
             MenuItem::linkToUrl(t('Symfony'), 'fab fa-symfony', 'https://symfony.com/')->setLinkTarget('_blank'),
             MenuItem::linkToUrl(t('Twig'), 'fas fa-file-lines', 'https://twig.symfony.com/')->setLinkTarget('_blank'),

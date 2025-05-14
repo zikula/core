@@ -24,7 +24,7 @@ To customise this you have two options:
 
 ## View images
 
-You can see an overview of all currently used images when calling `/theme/config` at your site.
+You can see an overview of all currently used images when calling the `Branding` page in the `Theme management` section at the backend of your site.
 
 ## Additional assets
 
