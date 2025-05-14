@@ -26,12 +26,6 @@ class ExtensionMenu extends AbstractExtensionMenu
     {
     }
 
-    protected function getAdmin(): iterable
-    {
-        yield MenuItem::linktoRoute(t('Settings'), 'fas fa-wrench', 'zikulalegalbundle_config_config')
-            ->setPermission('ROLE_ADMIN');
-    }
-
     protected function getUser(): iterable
     {
         $policies = $this->legalConfig['policies'];
@@ -58,7 +52,7 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAccount(): iterable
     {
-        yield MenuItem::linktoRoute(t('Legal Docs'), 'fas fa-gavel', 'zikulalegalbundle_user_index');
+        yield MenuItem::linktoRoute(t('Legal Docs'), 'fas fa-gavel', 'zikula_legal_user_index');
     }
 
     private function getMenuItem(TranslatableMessage $title, string $defaultRoute, ?string $customUrl): RouteMenuItem|UrlMenuItem
@@ -67,7 +61,7 @@ class ExtensionMenu extends AbstractExtensionMenu
             return MenuItem::linktoUrl($title, null, $customUrl);
         }
 
-        return MenuItem::linktoRoute($title, null, 'zikulalegalbundle_user_' . $defaultRoute);
+        return MenuItem::linktoRoute($title, null, 'zikula_legal_user_' . $defaultRoute);
     }
 
     public function getBundleName(): string

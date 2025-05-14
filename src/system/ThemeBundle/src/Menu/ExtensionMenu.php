@@ -21,11 +21,11 @@ class ExtensionMenu extends AbstractExtensionMenu
 {
     protected function getAdmin(): iterable
     {
-        yield MenuItem::linktoRoute(t('Branding'), 'fas fa-palette', 'zikulathemebundle_branding_overview')
+        yield MenuItem::linktoRoute(t('Branding'), 'fas fa-palette', 'zikula_theme_branding_overview')
             ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linktoRoute(t('Test mail settings'), 'fas fa-envelope', 'zikulathemebundle_tool_testmail')
+        yield MenuItem::linktoRoute(t('Test mail settings'), 'fas fa-envelope', 'zikula_theme_tool_testmail')
             ->setPermission('ROLE_ADMIN');
-        yield MenuItem::linktoRoute(t('PHP configuration'), 'fab fa-php', 'zikulathemebundle_tool_phpinfo')
+        yield MenuItem::linktoRoute(t('PHP configuration'), 'fab fa-php', 'zikula_theme_tool_phpinfo')
             ->setPermission('ROLE_ADMIN');
     }
 
