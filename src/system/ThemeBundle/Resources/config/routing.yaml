@@ -1,3 +1,0 @@
-zikulathemebundle:
-    resource: '@ZikulaThemeBundle/Controller'
-    type: attribute

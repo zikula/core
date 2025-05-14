@@ -1,2 +1,2 @@
 zikula_legal:
-    resource: "@ZikulaLegalBundle/Resources/config/routing.yaml"
+    resource: '@ZikulaLegalBundle/config/routing.yaml'

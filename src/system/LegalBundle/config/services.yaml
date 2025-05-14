@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $twigLoader: '@twig.loader'
+
+    Zikula\LegalBundle\:
+        resource: '../src/*'
+
+    Zikula\LegalBundle\Bundle\MetaData\LegalBundleMetaData:
+        public: true
+
+    Zikula\LegalBundle\Helper\:
+        resource: '../src/Helper/*'
+        lazy: true

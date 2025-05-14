@@ -10,9 +10,6 @@
             "homepage": "https://ziku.la/"
         }
     ],
-    "autoload": {
-        "psr-4": { "Zikula\\ThemeBundle\\": "" }
-    },
     "require": {
         "php": ">=8.2",
         "easycorp/easyadmin-bundle": "^4.12",
@@ -34,9 +31,14 @@
         "twig/extra-bundle": "^3",
 
         "zikula/core-bundle": "dev-4.0",
-        "zikula/users-bundle": "dev-4.0",
 
         "components/jquery": "^3",
         "vakata/jstree": "^3"
+    },
+    "autoload": {
+        "psr-4": { "Zikula\\ThemeBundle\\": "src" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Zikula\\ThemeBundle\\Tests\\": "tests" }
     }
 }

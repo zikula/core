@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\ThemeBundle\:
+        resource: '../src/*'
+
+    Zikula\ThemeBundle\Bundle\MetaData\ThemeBundleMetaData:
+        public: true
+
+    Zikula\ThemeBundle\Helper\:
+        resource: '../src/Helper/*'
+        lazy: true

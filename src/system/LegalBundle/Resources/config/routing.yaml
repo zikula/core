@@ -1,3 +1,0 @@
-zikulalegalbundle:
-    resource: '@ZikulaLegalBundle/Controller'
-    type: attribute

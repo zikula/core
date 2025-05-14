@@ -1,0 +1,24 @@
+parameters:
+    profile_property_prefix: 'zpmpp'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\UsersBundle\:
+        resource: '../src/*'
+
+    Zikula\UsersBundle\Bundle\Initializer\UsersInitializer:
+        public: true
+
+    Zikula\UsersBundle\Bundle\MetaData\UsersBundleMetaData:
+        public: true
+
+    Zikula\UsersBundle\Helper\:
+        resource: '../src/Helper/*'
+        lazy: true
+
+    Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface: '@Zikula\UsersBundle\Repository\UserAttributeRepository'
+    Zikula\UsersBundle\Repository\UserRepositoryInterface: '@Zikula\UsersBundle\Repository\UserRepository'

@@ -10,10 +10,10 @@
             "homepage": "https://ziku.la"
         }
     ],
-    "autoload": {
-        "psr-4": { "Zikula\\LegalBundle\\": "" }
-    },
     "require": {
         "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": { "Zikula\\LegalBundle\\": "" }
     }
 }

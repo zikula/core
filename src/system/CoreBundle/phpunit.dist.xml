@@ -22,7 +22,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="ZikulaCoreBundle Test Suite">
+        <testsuite name="CoreBundle Test Suite">
             <directory>./Tests/</directory>
         </testsuite>
     </testsuites>

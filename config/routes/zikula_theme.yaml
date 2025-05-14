@@ -1,5 +1,5 @@
 zikula_theme:
-    resource: '@ZikulaThemeBundle/Resources/config/routing.yaml'
+    resource: '@ZikulaThemeBundle/config/routing.yaml'
 
 zikula_user_dashboard:
     path: /admin

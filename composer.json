@@ -5,20 +5,29 @@
     "description": "Zikula Application Framework",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "Zikula\\": "src/system/"
-        },
-        "files": [
-            "src/Kernel.php"
-        ]
-    },
     "authors": [
         {
             "name": "Zikula Team",
             "homepage": "https://github.com/zikula/core/graphs/contributors"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Zikula\\CoreBundle\\": "src/system/CoreBundle/src",
+            "Zikula\\LegalBundle\\": "src/system/LegalBundle/src",
+            "Zikula\\ThemeBundle\\": "src/system/ThemeBundle/src",
+            "Zikula\\UsersBundle\\": "src/system/UsersBundle/src"
+        },
+        "files": [
+            "src/Kernel.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zikula\\CoreBundle\\Tests\\": "src/system/CoreBundle/tests",
+            "Zikula\\ThemeBundle\\Tests\\": "src/system/ThemeBundle/tests"
+        }
+    },
     "require": {
         "php": ">=8.2",
         "ext-json": "*",
@@ -88,7 +97,6 @@
         "symfony/polyfill-php80": "*",
         "symfony/polyfill-php81": "*",
         "zikula/core-bundle": "self.version",
-        "zikula/categories-bundle": "self.version",
         "zikula/legal-bundle": "self.version",
         "zikula/theme-bundle": "self.version",
         "zikula/users-bundle": "self.version"
@@ -116,7 +124,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "^7.1"
+            "require": "^7.2"
         },
         "symfony-assets-install": "relative"
     }

@@ -10,9 +10,6 @@
             "homepage": "https://ziku.la/"
         }
     ],
-    "autoload": {
-        "psr-4": { "Zikula\\UsersBundle\\": "" }
-    },
     "require": {
         "php": ">=8.2",
         "doctrine/doctrine-migrations-bundle": "^3.3",
@@ -34,5 +31,8 @@
 
         "zikula/core-bundle": "dev-4.0",
         "zikula/theme-bundle": "dev-4.0"
+    },
+    "autoload": {
+        "psr-4": { "Zikula\\UsersBundle\\": "src" }
     }
 }
