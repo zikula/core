@@ -7824,16 +7824,16 @@
         },
         {
             "name": "symfony/ux-translator",
-            "version": "v2.25.1",
+            "version": "v2.25.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-translator.git",
-                "reference": "92f2de7cabf784c85e5b21e5e40f860544541d2f"
+                "reference": "7446dbe3987c297098d8d17987b824416f71a6b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/92f2de7cabf784c85e5b21e5e40f860544541d2f",
-                "reference": "92f2de7cabf784c85e5b21e5e40f860544541d2f",
+                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/7446dbe3987c297098d8d17987b824416f71a6b0",
+                "reference": "7446dbe3987c297098d8d17987b824416f71a6b0",
                 "shasum": ""
             },
             "require": {
@@ -7880,7 +7880,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-translator/tree/v2.25.1"
+                "source": "https://github.com/symfony/ux-translator/tree/v2.25.2"
             },
             "funding": [
                 {
@@ -7896,7 +7896,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-19T07:20:25+00:00"
+            "time": "2025-05-19T11:54:27+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
