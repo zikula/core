@@ -52,10 +52,9 @@ body:
       label: PHP version
       description: Which PHP version are you running?
       options:
+        - 8.4.x
+        - 8.3.x
         - 8.2.x
-        - 8.1.x
-        - 8.0.x
-        - 7.4.x
         - older
     validations:
       required: true

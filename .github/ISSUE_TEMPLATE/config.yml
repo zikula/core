@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Support @ Slack
-    url: https://joinslack.ziku.la/
-    about: Please ask and answer questions here.
+  - name: Discussions
+    url: https://github.com/zikula/core/discussions
+    about: Feel free to talk with us.
