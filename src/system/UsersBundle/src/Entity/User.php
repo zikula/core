@@ -22,8 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\CoreBundle\Doctrine\DBAL\CustomTypes;
 use Zikula\LegalBundle\Entity\LegalAwareUserInterface;
 use Zikula\LegalBundle\Entity\LegalAwareUserTrait;
-use Zikula\UsersBundle\UsersConstant;
 use Zikula\UsersBundle\Repository\UserRepository;
+use Zikula\UsersBundle\UsersConstant;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'nucleos_user__user')]
