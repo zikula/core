@@ -28,5 +28,5 @@ interface LocaleApiInterface
     /**
      * Get array of supported locales with their translated name.
      */
-    public function getSupportedLocaleNames(string $region = null, string $displayLocale = null, bool $includeRegions = true): array;
+    public function getSupportedLocaleNames(?string $region = null, ?string $displayLocale = null, bool $includeRegions = true): array;
 }

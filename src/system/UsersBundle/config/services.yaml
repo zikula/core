@@ -20,5 +20,4 @@ services:
         resource: '../src/Helper/*'
         lazy: true
 
-    Zikula\UsersBundle\Repository\UserAttributeRepositoryInterface: '@Zikula\UsersBundle\Repository\UserAttributeRepository'
     Zikula\UsersBundle\Repository\UserRepositoryInterface: '@Zikula\UsersBundle\Repository\UserRepository'

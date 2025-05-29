@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\UsersBundle\Helper;
 
+use Nucleos\UserBundle\Model\UserManager;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\ProfileConstant;
-use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use function Symfony\Component\String\s;
 
 class ProfileHelper
@@ -28,7 +28,7 @@ class ProfileHelper
         private readonly RouterInterface $router,
         private readonly RequestStack $requestStack,
         private readonly Security $security,
-        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserManager $userManager,
         private readonly GravatarHelper $gravatarHelper,
         #[Autowire(param: 'kernel.project_dir')]
         private readonly string $projectDir,
@@ -137,16 +137,11 @@ class ProfileHelper
         }
 
         if (is_numeric($userId)) {
-            return $this->userRepository->find($userId);
+            return $this->userManager->findUserBy(['id' => $userId]);
         }
 
         // select user id by user name
-        $results = $this->userRepository->searchActiveUser(['operator' => '=', 'operand' => $userId], 1);
-        if (!count($results)) {
-            return null;
-        }
-
-        return $results[0];
+        return $this->userManager->findUserByUsername($userId);
     }
 
     /**

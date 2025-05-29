@@ -16,12 +16,10 @@ namespace Zikula\UsersBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Zikula\UsersBundle\Repository\UserAttributeRepository;
 
 /**
  * User attributes store extra information about each user account.
  */
-// #[ORM\Entity(repositoryClass: UserAttributeRepository::class)] TODO remove if unneeded
 #[ORM\Entity]
 #[ORM\Table(name: 'nucleos_user__user_attribute')]
 class UserAttribute

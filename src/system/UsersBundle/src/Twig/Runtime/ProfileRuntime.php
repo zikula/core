@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Twig\Runtime;
 
 use InvalidArgumentException;
+use Nucleos\UserBundle\Model\UserManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\ProfileHelper;
-use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 use function Symfony\Component\String\s;
 
 class ProfileRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly ProfileHelper $profileHelper,
-        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserManager $userManager,
         private readonly TranslatorInterface $translator,
         private readonly bool $displayRegistrationDate = false
     ) {
@@ -105,8 +105,8 @@ class ProfileRuntime implements RuntimeExtensionInterface
      * Internal function used by profileLinkByUserId() and profileLinkByUserName().
      */
     private function determineProfileLink(
-        int $userId = null,
-        string $userName = null,
+        ?int $userId = null,
+        ?string $userName = null,
         string $class = '',
         string $imagePath = '',
         int $maxLength = 0,
@@ -115,11 +115,10 @@ class ProfileRuntime implements RuntimeExtensionInterface
         if (!isset($userId) && !isset($userName)) {
             throw new InvalidArgumentException();
         }
-        /** @var User $user */
         if (null !== $userId) {
-            $user = $this->userRepository->find($userId);
+            $user = $this->userManager->findUserBy(['id' => $userId]);
         } else {
-            $user = $this->userRepository->findOneBy(['uname' => $userName]);
+            $user = $this->userManager->findUserByUsername($userName);
         }
         if (!$user) {
             return $userId . $userName; // one or the other is empty

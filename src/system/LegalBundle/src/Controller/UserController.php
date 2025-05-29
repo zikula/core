@@ -15,6 +15,7 @@ namespace Zikula\LegalBundle\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Nucleos\UserBundle\Model\UserManager;
 use Nucleos\UserBundle\Security\LoginManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -29,7 +30,6 @@ use Zikula\LegalBundle\Form\Type\AcceptPoliciesType;
 use Zikula\LegalBundle\Helper\AcceptPoliciesHelper;
 use Zikula\ThemeBundle\Controller\Dashboard\UserDashboardController;
 use Zikula\UsersBundle\Entity\User;
-use Zikula\UsersBundle\Repository\UserRepositoryInterface;
 
 #[Route('/legal')]
 class UserController extends AbstractController
@@ -161,7 +161,7 @@ class UserController extends AbstractController
         Request $request,
         ManagerRegistry $doctrine,
         Security $security,
-        UserRepositoryInterface $userRepository,
+        UserManager $userManager,
         AcceptPoliciesHelper $acceptPoliciesHelper
     ): Response {
         $currentUser = $security->getUser();
@@ -175,8 +175,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            /** @var User $userEntity */
-            $userEntity = $userRepository->find($data['userId']);
+            $userEntity = $userManager->findUserBy(['id' => $data['userId']]);
             $policiesToCheck = $acceptPoliciesHelper->getActivePolicies();
             $nowUTC = new \DateTime('now', new \DateTimeZone('UTC'));
             foreach ($policiesToCheck as $policyName => $isEnabled) {
