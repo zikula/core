@@ -20,6 +20,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Zikula\CoreBundle\Bundle\Initializer\InitializableBundleInterface;
 
 /**
  * Command that performs setup tasks for a given bundle implementing InitializableBundleInterface.
@@ -52,7 +53,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $bundleName = $input->getArgument('bundle');
-        $bundle = $kernel->getBundle($bundleName);
+        $bundle = $this->kernel->getBundle($bundleName);
         if (!($bundle instanceof InitializableBundleInterface)) {
             throw new InvalidArgumentException(sprintf('"%s" is not an initializable bundle.', $bundleName));
         }
