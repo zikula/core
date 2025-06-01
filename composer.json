@@ -68,6 +68,7 @@
         "symfony/string": "^7.2",
         "symfony/translation": "^7.2",
         "symfony/twig-bundle": "^7.2",
+        "symfony/uid": "^7.2",
         "symfony/ux-translator": "^2",
         "symfony/validator": "^7.2",
         "symfony/web-link": "^7.2",
