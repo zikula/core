@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36df5910703d58a6efb7a6e2d997c7bf",
+    "content-hash": "e4b6ebec7131ff2858b6c15ee050ef72",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -7824,16 +7824,16 @@
         },
         {
             "name": "symfony/ux-translator",
-            "version": "v2.25.2",
+            "version": "v2.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-translator.git",
-                "reference": "7446dbe3987c297098d8d17987b824416f71a6b0"
+                "reference": "e0c10aea8f2aa484db484710721035dc22d653c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/7446dbe3987c297098d8d17987b824416f71a6b0",
-                "reference": "7446dbe3987c297098d8d17987b824416f71a6b0",
+                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/e0c10aea8f2aa484db484710721035dc22d653c5",
+                "reference": "e0c10aea8f2aa484db484710721035dc22d653c5",
                 "shasum": ""
             },
             "require": {
@@ -7880,7 +7880,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-translator/tree/v2.25.2"
+                "source": "https://github.com/symfony/ux-translator/tree/v2.26.1"
             },
             "funding": [
                 {
@@ -7896,7 +7896,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-19T11:54:27+00:00"
+            "time": "2025-06-05T17:25:17+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
