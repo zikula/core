@@ -45,16 +45,18 @@ class AdminDashboardController extends AbstractThemedDashboardController
         yield MenuItem::linktoRoute(t('Website frontend'), 'fas fa-home', 'user_home');
 
         $menuItemsByBundle = $this->extensionMenuCollector->getAllByContext(ExtensionMenuInterface::CONTEXT_ADMIN);
+        $defaultCategory = $this->adminCategoryHelper->getDefaultCategory();
+        $bundleCategoryAssignments = $this->adminCategoryHelper->getBundleAssignments();
 
         foreach ($this->adminCategoryHelper->getCategories() as $category) {
             yield MenuItem::section($category->getName(), $category->getIcon());
-            $bundleNames = $this->adminCategoryHelper->getBundleAssignments($category);
             foreach ($menuItemsByBundle as $bundleName => $extensionMenuItems) {
                 $bundle = $this->kernel->getBundle($bundleName);
-                if (!in_array($bundle->getName(), $bundleNames, true)) {
+                if (!($bundle instanceof MetaDataAwareBundleInterface)) {
                     continue;
                 }
-                if (!($bundle instanceof MetaDataAwareBundleInterface)) {
+                $bundleCategory = $bundleCategoryAssignments[$bundleName] ?? $defaultCategory->getSlug();
+                if ($bundleCategory !== $category->getSlug()) {
                     continue;
                 }
                 $bundleInfo = $bundle->getMetaData();

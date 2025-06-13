@@ -88,12 +88,12 @@ class AdminCategoryHelper
         throw new \InvalidArgumentException('No default category defined.');
     }
 
-    public function getBundleAssignments(AdminCategory $category): array
+    public function getBundleAssignments(): array
     {
-        return match ($category->getSlug()) {
-            'system' => ['ZikulaThemeBundle'],
-            'users' => ['ZikulaGroupsBundle', 'ZikulaLegalBundle', 'ZikulaProfileBundle', 'ZikulaUsersBundle'],
-            'content' => [],
-        };
+        return [
+            'ZikulaThemeBundle' => 'system',
+            'ZikulaLegalBundle' => 'users',
+            'ZikulaUsersBundle' => 'users',
+        ];
     }
 }
