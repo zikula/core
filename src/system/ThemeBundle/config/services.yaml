@@ -13,3 +13,8 @@ services:
     Zikula\ThemeBundle\Helper\:
         resource: '../src/Helper/*'
         lazy: true
+
+    form.factory:
+        class: Zikula\ThemeBundle\Form\FormFactory
+        arguments:
+            - '@form.registry'
