@@ -18,7 +18,6 @@
 !src/extensions/.gitignore
 src/.preload.php
 /templates/
-!/templates/bundles/EasyAdminBundle/crud/filters.html.twig
 !/templates/bundles/NucleosProfileBundle/*
 !/templates/bundles/NucleosUserBundle/*
 /translations/*
