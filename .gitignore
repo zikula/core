@@ -3,7 +3,6 @@
 /bin/
 /bin/*
 !/bin/console
-/config/packages/core.yaml
 /config/packages/zikula*.yaml
 *.phpunit.result.cache
 /public/*
@@ -19,11 +18,12 @@
 !src/extensions/.gitignore
 src/.preload.php
 /templates/
-!/templates/bundles/TranslationBundle/WebUI/base.html.twig
+!/templates/bundles/EasyAdminBundle/crud/filters.html.twig
+!/templates/bundles/NucleosProfileBundle/*
+!/templates/bundles/NucleosUserBundle/*
 /translations/*
 /webpack.config.js
 !/var/cache/.htaccess
-/.vagrant
 
 ###> symfony/framework-bundle ###
 /.env.local
