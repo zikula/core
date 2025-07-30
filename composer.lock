@@ -7824,16 +7824,16 @@
         },
         {
             "name": "symfony/ux-translator",
-            "version": "v2.28.1",
+            "version": "v2.28.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-translator.git",
-                "reference": "e6f9c7b3a03639322af9535cd7d029960ff0799c"
+                "reference": "8fc244ed82541ff54508f3b131c8790cbc964544"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/e6f9c7b3a03639322af9535cd7d029960ff0799c",
-                "reference": "e6f9c7b3a03639322af9535cd7d029960ff0799c",
+                "url": "https://api.github.com/repos/symfony/ux-translator/zipball/8fc244ed82541ff54508f3b131c8790cbc964544",
+                "reference": "8fc244ed82541ff54508f3b131c8790cbc964544",
                 "shasum": ""
             },
             "require": {
@@ -7881,7 +7881,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-translator/tree/v2.28.1"
+                "source": "https://github.com/symfony/ux-translator/tree/v2.28.2"
             },
             "funding": [
                 {
@@ -7893,11 +7893,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-07-28T19:36:26+00:00"
+            "time": "2025-07-29T15:18:27+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
