@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\CoreBundle\Command;
 
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
@@ -26,43 +23,36 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
-#[AsCommand(name: 'zikula:translation:keytovalue', description: 'Update translation files to remove null values and replace them with the key.')]
-class TranslationKeyToValueCommand extends Command
+#[AsCommand(
+    name: 'zikula:translation:keytovalue',
+    description: 'Update translation files to remove null values and replace them with the key.',
+    help: <<<TXT
+        The <info>%command.name%</info> command transforms translation strings of a given
+        bundle or the default translations directory. It sets null messages to the value of the key.
+
+        It is recommended to run <info>php bin/console translation:extract</info> first.
+
+        Example running against a Bundle (AcmeBundle)
+
+        <info>php %command.full_name% AcmeBundle</info>
+
+        Example running against default messages directory
+
+        <info>php %command.full_name%</info>
+        TXT
+)]
+class TranslationKeyToValueCommand
 {
     public function __construct(
         #[Autowire(param: 'translator.default_path')]
         private readonly ?string $defaultTransPath = null
     ) {
-        parent::__construct();
     }
 
-    protected function configure()
-    {
-        $this
-            ->addArgument('bundle', InputArgument::OPTIONAL, 'The bundle name or directory where to load the messages')
-            ->setHelp(
-                <<<'EOF'
-The <info>%command.name%</info> command transforms translation strings of a given
-bundle or the default translations directory. It sets null messages to the value of the key.
-
-It is recommended to run <info>php bin/console translation:extract</info> first.
-
-Example running against a Bundle (AcmeBundle)
-
-  <info>php %command.full_name% AcmeBundle</info>
-
-Example running against default messages directory
-
-  <info>php %command.full_name%</info>
-EOF
-            )
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-
+    public function __invoke(
+        SymfonyStyle $io,
+        #[Argument(name: 'bundle', description: 'The bundle name or directory where to load the messages')] ?string $bundleName
+    ): int {
         /** @var KernelInterface $kernel */
         $kernel = $this->getApplication()->getKernel();
         $transPaths = [];
@@ -71,15 +61,15 @@ EOF
         }
         $currentName = 'default directory';
         // Override with provided Bundle info (this section copied from symfony's translation:update command)
-        if (null !== ($bundle = $input->getArgument('bundle'))) {
+        if (null !== $bundleName) {
             try {
-                $foundBundle = $kernel->getBundle($bundle);
+                $foundBundle = $kernel->getBundle($bundleName);
                 $bundleDir = $foundBundle->getPath();
                 $transPaths = [is_dir($bundleDir . '/Resources/translations') ? $bundleDir . '/Resources/translations' : $bundleDir . '/translations'];
                 $currentName = $foundBundle->getName();
             } catch (\InvalidArgumentException) {
                 // such a bundle does not exist, so treat the argument as path
-                $path = $bundle;
+                $path = $bundleName;
                 $transPaths = [$path . '/translations'];
                 if (!is_dir($transPaths[0]) && !isset($transPaths[1])) {
                     throw new InvalidArgumentException(sprintf('"%s" is neither an enabled bundle nor a directory.', $transPaths[0]));
