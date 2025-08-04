@@ -3,9 +3,7 @@ framework:
     #enabled_locales: [en, de]
     translator:
         default_path: '%kernel.project_dir%/translations'
-        fallbacks:
-            - en
-#        providers:
+        providers:
     # enable language negotiation
     set_locale_from_accept_language: true
     set_content_language_from_locale: true
