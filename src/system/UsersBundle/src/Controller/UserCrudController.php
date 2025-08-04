@@ -121,8 +121,8 @@ class UserCrudController extends AbstractCrudController
             ->add(DateTimeFilter::new('passwordRequestedAt'))
             ->add(ChoiceFilter::new('roles')->setChoices($this->choiceHelper->getRoles())->canSelectMultiple())
             ->add(EntityFilter::new('groups')->canSelectMultiple())
-            ->add(TextFilter::new('locale')->setFormTypeOptions(['value_type' => LocaleType::class, 'value_type_options.placeholder' => t('All')]))
-            ->add(TextFilter::new('timezone')->setFormTypeOptions(['value_type' => TimezoneType::class, 'value_type_options.placeholder' => t('All')]))
+            ->add(TextFilter::new('locale')->setFormTypeOptions(['value_type' => LocaleType::class]))
+            ->add(TextFilter::new('timezone')->setFormTypeOptions(['value_type' => TimezoneType::class]))
 
             // custom additions
             ->add(ChoiceFilter::new('activated')->setChoices($this->choiceHelper->getActivatedValues())->canSelectMultiple())
