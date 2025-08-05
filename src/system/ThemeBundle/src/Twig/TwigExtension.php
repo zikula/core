@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ThemeBundle\Twig\Runtime;
+namespace Zikula\ThemeBundle\Twig;
 
+use Twig\Attribute\AsTwigFunction;
 use Twig\Environment;
-use Twig\Extension\RuntimeExtensionInterface;
 use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 
-class BrandingRuntime implements RuntimeExtensionInterface
+class TwigExtension
 {
     public function __construct(
         private readonly Environment $twig,
@@ -28,6 +28,7 @@ class BrandingRuntime implements RuntimeExtensionInterface
     /**
      * Returns site definition.
      */
+    #[AsTwigFunction('siteDefinition')]
     public function getSiteDefinition(): SiteDefinitionInterface
     {
         return $this->site;
@@ -36,6 +37,7 @@ class BrandingRuntime implements RuntimeExtensionInterface
     /**
      * Returns site name.
      */
+    #[AsTwigFunction('siteName')]
     public function getSiteName(): string
     {
         return $this->site->getName();
@@ -44,6 +46,7 @@ class BrandingRuntime implements RuntimeExtensionInterface
     /**
      * Returns site slogan.
      */
+    #[AsTwigFunction('siteSlogan')]
     public function getSiteSlogan(): string
     {
         return $this->site->getSlogan();
@@ -52,6 +55,7 @@ class BrandingRuntime implements RuntimeExtensionInterface
     /**
      * Returns site branding markup.
      */
+    #[AsTwigFunction('siteBranding', isSafe: ['html'])]
     public function getSiteBrandingMarkup(): string
     {
         return $this->twig->render('@ZikulaTheme/Branding/manifest.html.twig');
@@ -60,6 +64,7 @@ class BrandingRuntime implements RuntimeExtensionInterface
     /**
      * Returns site image path.
      */
+    #[AsTwigFunction('siteImagePath')]
     public function getSiteImagePath(string $imageType = ''): string
     {
         if (!in_array($imageType, ['logo', 'mobileLogo', 'icon'], true)) {

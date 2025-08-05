@@ -11,17 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersBundle\Twig\Runtime;
+namespace Zikula\UsersBundle\Twig;
 
 use InvalidArgumentException;
 use Nucleos\UserBundle\Model\UserManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\RuntimeExtensionInterface;
+use Twig\Attribute\AsTwigFilter;
+use Twig\Attribute\AsTwigFunction;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\ProfileHelper;
 use function Symfony\Component\String\s;
 
-class ProfileRuntime implements RuntimeExtensionInterface
+class TwigExtension
 {
     public function __construct(
         private readonly ProfileHelper $profileHelper,
@@ -34,6 +35,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
     /**
      * Whether to show the users registration date or not.
      */
+    #[AsTwigFunction('displayRegistrationDate')]
     public function displayRegistrationDate(): bool
     {
         return $this->displayRegistrationDate;
@@ -44,6 +46,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
      *
      * @param int|string $userId The user's id or name
      */
+    #[AsTwigFunction('userAvatar', isSafe: ['html'])]
     public function getUserAvatar($userId = 0, array $parameters = []): string
     {
         return $this->profileHelper->getAvatar($userId, $parameters);
@@ -61,6 +64,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
      *   Using profile.gif instead of username, no class
      *   {{ uid|profileLinkByUserId(image='images/profile.gif') }}
      */
+    #[AsTwigFilter('profileLinkByUserId', isSafe: ['html'])]
     public function profileLinkByUserId(
         int $userId,
         string $class = '',
@@ -87,6 +91,7 @@ class ProfileRuntime implements RuntimeExtensionInterface
      *   Using profile.gif instead of username, no class
      *   {{ username|profileLinkByUserName('image'='images/profile.gif') }}
      */
+    #[AsTwigFilter('profileLinkByUserName', isSafe: ['html'])]
     public function profileLinkByUserName(
         string $userName,
         string $class = '',

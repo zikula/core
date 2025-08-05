@@ -11,16 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\CoreBundle\Twig\Runtime;
+namespace Zikula\CoreBundle\Twig;
 
-use Twig\Extension\RuntimeExtensionInterface;
+use Twig\Attribute\AsTwigFilter;
 
-class CoreRuntime implements RuntimeExtensionInterface
+class TwigExtension
 {
     /**
      * Protect a given mail address by finding the text 'x@y' and replacing
      * it with HTML entities. This provides protection against email harvesters.
      */
+    #[AsTwigFilter('protectMail', isSafe: ['html'])]
     public function protectMailAddress(string $string): string
     {
         $string = preg_replace_callback(

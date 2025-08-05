@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Zikula\LegalBundle\Twig;
 
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Attribute\AsTwigFunction;
 use Twig\Environment;
-use Twig\Extension\AbstractExtension;
 use Twig\Loader\LoaderInterface;
-use Twig\TwigFunction;
 
-class TwigExtension extends AbstractExtension
+class TwigExtension
 {
     public function __construct(
         private readonly RouterInterface $router,
@@ -29,21 +28,13 @@ class TwigExtension extends AbstractExtension
     ) {
     }
 
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('zikulalegalbundle_getUrl', [$this, 'getUrl']),
-            new TwigFunction('zikulalegalbundle_inlineLink', [$this, 'inlineLink'], ['is_safe' => ['html']]),
-            new TwigFunction('zikulalegalbundle_minimumAge', [$this, 'getMinimumAge']),
-        ];
-    }
-
     /**
      * Returns the link to a specific policy for the Legal bundle.
      *
      * Example
      *     {{ zikulalegalbundle_getUrl('termsOfUse') }}
      */
+    #[AsTwigFunction('zikulalegalbundle_getUrl')]
     public function getUrl(string $policy = ''): string
     {
         // see https://stackoverflow.com/questions/1993721/how-to-convert-pascalcase-to-snake-case
@@ -53,7 +44,7 @@ class TwigExtension extends AbstractExtension
         }
         $policyConfig = $this->legalConfig['policies'][$policyConfigName];
 
-        return $policyConfig['custom_url'] ?: $this->router->generate('zikulalegalbundle_user_' . mb_strtolower($policy));
+        return $policyConfig['custom_url'] ?: $this->router->generate('zikula_legal_user_' . mb_strtolower($policy));
     }
 
     /**
@@ -65,6 +56,7 @@ class TwigExtension extends AbstractExtension
      * Templates used:
      *      User/Policy/InlineLink/*
      */
+    #[AsTwigFunction('zikulalegalbundle_inlineLink', isSafe: ['html'])]
     public function inlineLink(string $policy = '', string $target = ''): string
     {
         $templatePath = '@ZikulaLegal/User/Policy/InlineLink/';
@@ -89,6 +81,7 @@ class TwigExtension extends AbstractExtension
      * Example
      *     {{ zikulalegalbundle_minimumAge() }}
      */
+    #[AsTwigFunction('zikulalegalbundle_minimumAge')]
     public function getMinimumAge(): int
     {
         return $this->legalConfig['minimum_age'];

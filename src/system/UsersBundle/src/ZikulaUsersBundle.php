@@ -28,7 +28,7 @@ use Zikula\UsersBundle\Helper\MailHelper;
 use Zikula\UsersBundle\Helper\ProfileHelper;
 use Zikula\UsersBundle\Helper\UploadHelper;
 use Zikula\UsersBundle\Menu\ExtensionMenu;
-use Zikula\UsersBundle\Twig\Runtime\ProfileRuntime;
+use Zikula\UsersBundle\Twig\TwigExtension;
 
 class ZikulaUsersBundle extends AbstractBundle implements InitializableBundleInterface, MetaDataAwareBundleInterface
 {
@@ -85,7 +85,7 @@ class ZikulaUsersBundle extends AbstractBundle implements InitializableBundleInt
             ->arg('$uploadConfig', $config['avatar']['uploads'])
             ->arg('$imagePath', $config['avatar']['image_path']);
 
-        $services->get(ProfileRuntime::class)
+        $services->get(TwigExtension::class)
             ->arg('$displayRegistrationDate', $config['display_registration_date']);
     }
 }
