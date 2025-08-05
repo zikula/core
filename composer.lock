@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aae78a6acb0a7dec27706ea6cd0772dc",
+    "content-hash": "8e0938c60505a0df6b0951bda9a0c711",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1085,16 +1085,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "6deec3655ba3e8f15280aac11e264225854d2369"
+                "reference": "64444dcfd511089d526cd2c7f74b9d7ed583bdfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/6deec3655ba3e8f15280aac11e264225854d2369",
-                "reference": "6deec3655ba3e8f15280aac11e264225854d2369",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/64444dcfd511089d526cd2c7f74b9d7ed583bdfc",
+                "reference": "64444dcfd511089d526cd2c7f74b9d7ed583bdfc",
                 "shasum": ""
             },
             "require": {
@@ -1169,9 +1169,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/3.5.0"
+                "source": "https://github.com/doctrine/orm/tree/3.5.1"
             },
-            "time": "2025-07-01T17:40:53+00:00"
+            "time": "2025-08-05T06:05:51+00:00"
         },
         {
             "name": "doctrine/persistence",
