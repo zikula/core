@@ -14,7 +14,7 @@ jobs:
         php-versions: ['8.2', '8.3', '8.4']
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run security checker
         uses: symfonycorp/security-checker-action@v5
@@ -68,7 +68,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Docs: https://github.com/shivammathur/setup-php
       - name: Setup PHP with PCOV
@@ -166,7 +166,7 @@ jobs:
     needs: [build, test]
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Build release artifacts
         run: ./.github/scripts/buildReleaseArtifacts.sh
