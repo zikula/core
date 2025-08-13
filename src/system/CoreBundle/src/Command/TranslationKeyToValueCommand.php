@@ -15,6 +15,7 @@ namespace Zikula\CoreBundle\Command;
 
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -51,7 +52,7 @@ class TranslationKeyToValueCommand
 
     public function __invoke(
         SymfonyStyle $io,
-        #[Argument(name: 'bundle', description: 'The bundle name or directory where to load the messages')] ?string $bundleName
+        #[Argument(description: 'The bundle name or directory where to load the messages', name: 'bundle')] ?string $bundleName
     ): int {
         /** @var KernelInterface $kernel */
         $kernel = $this->getApplication()->getKernel();

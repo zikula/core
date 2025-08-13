@@ -16,6 +16,7 @@ namespace Zikula\CoreBundle\Command;
 use InvalidArgumentException;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\CoreBundle\Bundle\Initializer\InitializableBundleInterface;
@@ -43,7 +44,7 @@ class InitBundleCommand
      */
     public function __invoke(
         SymfonyStyle $io,
-        #[Argument(name: 'bundle', description: 'The bundle name')] string $bundleName
+        #[Argument(description: 'The bundle name', name: 'bundle')] string $bundleName
     ): int {
         $bundle = $this->kernel->getBundle($bundleName);
         if (!($bundle instanceof InitializableBundleInterface)) {
