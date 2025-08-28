@@ -112,7 +112,7 @@ jobs:
       - name: Run unit tests with coverage
         # see https://dev.to/swashata/setup-php-pcov-for-5-times-faster-phpunit-code-coverage-3d9c
         # run: ./vendor/bin/phpunit
-        run: php -dpcov.enabled=1 -dpcov.directory="src" -dpcov.exclude="~vendor~" vendor/bin/phpunit -c "phpunit.xml.dist" "src" --coverage-text
+        run: php -dpcov.enabled=1 -dpcov.directory="src" -dpcov.exclude="~vendor~" vendor/bin/phpunit -c "phpunit.dist.xml" "src" --coverage-text
 
       # - name: Determine coverage badge
       #   uses: timkrase/phpunit-coverage-badge@main
