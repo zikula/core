@@ -16,8 +16,8 @@ namespace Zikula\CoreBundle\Tests\Api;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\CoreBundle\Api\LocaleApi;
 use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\LocaleApi;
 
 #[CoversClass(LocaleApi::class)]
 class LocaleApiTest extends TestCase
