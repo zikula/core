@@ -13,52 +13,33 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Tests\ExtensionMenu\Fixtures;
 
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 
 class FooExtensionMenu implements ExtensionMenuInterface
 {
-    public function __construct(private readonly FactoryInterface $factory)
+    public function get(string $type = ExtensionMenuInterface::CONTEXT_ADMIN): iterable
     {
-    }
-
-    public function get(string $type = ExtensionMenuInterface::TYPE_ADMIN): ?ItemInterface
-    {
-        if (ExtensionMenuInterface::TYPE_ADMIN === $type) {
+        if (ExtensionMenuInterface::CONTEXT_ADMIN === $type) {
             return $this->getAdmin();
         }
-        if (ExtensionMenuInterface::TYPE_USER === $type) {
+        if (ExtensionMenuInterface::CONTEXT_USER === $type) {
             return $this->getUser();
         }
 
-        return null;
+        return [];
     }
 
-    private function getAdmin(): ?ItemInterface
+    private function getAdmin(): iterable
     {
-        $menu = $this->factory->createItem('foo');
-        $menu->addChild('list', [
-            'route' => 'list',
-        ]);
-        $menu->addChild('foo', [
-            'route' => 'foo',
-        ]);
-        $menu->addChild('bar', [
-            'route' => 'bar',
-        ]);
-
-        return $menu;
+        yield MenuItem::linkToUrl('Visit public website', null, '/');
+        yield MenuItem::linkToUrl('Search in Google', 'fab fa-google', 'https://google.com');
+        yield MenuItem::linkToUrl('Another url', null, 'https://google.de');
     }
 
-    private function getUser(): ?ItemInterface
+    private function getUser(): iterable
     {
-        $menu = $this->factory->createItem('foo');
-        $menu->addChild('user list', [
-            'route' => 'user_list',
-        ]);
-
-        return $menu;
+        yield MenuItem::linkToUrl('Visit admin area', null, '/admin/');
     }
 
     public function getBundleName(): string

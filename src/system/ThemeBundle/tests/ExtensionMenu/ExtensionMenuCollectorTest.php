@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Tests\ExtensionMenu;
 
-use Knp\Menu\MenuFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
@@ -22,6 +23,7 @@ use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\ThemeBundle\Tests\ExtensionMenu\Fixtures\BarExtensionMenu;
 use Zikula\ThemeBundle\Tests\ExtensionMenu\Fixtures\FooExtensionMenu;
 
+#[CoversClass(ExtensionMenuCollector::class)]
 class ExtensionMenuCollectorTest extends TestCase
 {
     private ExtensionMenuCollector $collector;
@@ -35,17 +37,13 @@ class ExtensionMenuCollectorTest extends TestCase
         $dispatcher
             ->method('dispatch')
             ->with($this->isInstanceOf(ExtensionMenuEvent::class), $this->anything())
-            ->will($this->returnArgument(0));
+            ->willReturnCallback(fn ($arg) => $arg);
         $this->collector = new ExtensionMenuCollector($dispatcher, []);
 
-        $factory = new MenuFactory();
-        $this->collector->add(new FooExtensionMenu($factory));
-        $this->collector->add(new BarExtensionMenu($factory));
+        $this->collector->add(new FooExtensionMenu());
+        $this->collector->add(new BarExtensionMenu());
     }
 
-    /**
-     * @covers ExtensionMenuCollector::add
-     */
     public function testAdd(): void
     {
         $menu = $this->getMockBuilder(ExtensionMenuInterface::class)->getMock();
@@ -56,9 +54,6 @@ class ExtensionMenuCollectorTest extends TestCase
         $this->assertTrue($this->collector->has('MockExtension'));
     }
 
-    /**
-     * @covers ExtensionMenuCollector::has
-     */
     public function testHas(): void
     {
         $this->assertTrue($this->collector->has('ZikulaFooExtension'));
@@ -67,14 +62,11 @@ class ExtensionMenuCollectorTest extends TestCase
         $this->assertFalse($this->collector->has('ZikulaBazExtension'));
     }
 
-    /**
-     * @covers ExtensionMenuCollector::get
-     * @dataProvider menuProvider
-     */
+    #[DataProvider('menuProvider')]
     public function testGet(string $extension, string $context, int $count): void
     {
         $menu = $this->collector->get($extension, $context);
-        $this->assertEquals($count, $menu ? $menu->count() : 0);
+        $this->assertEquals($count, count(iterator_to_array($menu)));
     }
 
     public static function menuProvider(): array
@@ -88,10 +80,7 @@ class ExtensionMenuCollectorTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ExtensionMenuCollector::getAllByContext
-     * @dataProvider allMenusProvider
-     */
+    #[DataProvider('allMenusProvider')]
     public function testGetAllByContext(string $context, array $expected = []): void
     {
         $this->assertEquals($expected, array_keys($this->collector->getAllByContext($context)));

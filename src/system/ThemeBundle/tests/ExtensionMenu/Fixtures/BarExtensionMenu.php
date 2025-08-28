@@ -13,57 +13,36 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Tests\ExtensionMenu\Fixtures;
 
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\ItemInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 
 class BarExtensionMenu implements ExtensionMenuInterface
 {
-    public function __construct(private readonly FactoryInterface $factory)
-    {
-    }
-
-    public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
+    public function get(string $type = ExtensionMenuInterface::CONTEXT_ADMIN): iterable
     {
         $method = 'get' . ucfirst($type);
         if (method_exists($this, $method)) {
             return $this->{$method}();
         }
 
-        return null;
+        return [];
     }
 
-    private function getUser(): ?ItemInterface
+    private function getUser(): iterable
     {
-        $menu = $this->factory->createItem('admin');
-        $menu->addChild('list', [
-            'route' => 'list',
-        ])->setAttribute('icon', 'fas fa-list');
-        $menu->addChild('new', [
-            'route' => 'edit',
-        ]);
-
-        return $menu;
+        yield MenuItem::linkToUrl('Visit admin area', null, '/admin/');
+        yield MenuItem::linkToUrl('Search in Google', 'fab fa-google', 'https://google.com');
     }
 
-    private function getBar(): ?ItemInterface
+    private function getBar(): iterable
     {
-        $menu = $this->factory->createItem('foo');
-        $menu->addChild('bar admin', [
-            'route' => 'bar_admin',
-        ])->setAttribute('icon', 'fas fa-plus');
-
-        return $menu;
+        yield MenuItem::linkToUrl('Visit public website', null, '/');
     }
 
-    private function getAccount(): ?ItemInterface
+    private function getAccount(): iterable
     {
-        $menu = $this->factory->createItem('account');
-        $menu->addChild('bar acct', [
-            'route' => 'bar_acct',
-        ]);
-
-        return $menu;
+        yield MenuItem::linkToUrl('Visit public website', null, '/');
+        yield MenuItem::linkToUrl('Search in Google', 'fab fa-google', 'https://google.com');
     }
 
     public function getBundleName(): string

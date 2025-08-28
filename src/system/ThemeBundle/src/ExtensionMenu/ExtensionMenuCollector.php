@@ -51,7 +51,7 @@ class ExtensionMenuCollector
             return $menu;
         }
 
-        return null;
+        return [];
     }
 
     public function getAllByContext(string $context = ExtensionMenuInterface::CONTEXT_ADMIN): array
@@ -59,7 +59,7 @@ class ExtensionMenuCollector
         $menus = [];
         foreach ($this->extensionMenus as $bundleName => $extensionMenu) {
             $menu = $extensionMenu->get($context);
-            if (null !== $menu) {
+            if (0 < count(iterator_to_array($menu))) {
                 $menus[$bundleName] = $menu;
             }
         }
