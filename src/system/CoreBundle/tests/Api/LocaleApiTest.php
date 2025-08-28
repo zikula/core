@@ -16,7 +16,7 @@ namespace Zikula\CoreBundle\Tests\Api;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\CoreBundle\Api\LocaleApi;
-use Zikula\CoreBundle\ApiInterface\LocaleApiInterface;
+use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 
 class LocaleApiTest extends TestCase
 {
