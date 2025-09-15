@@ -58,8 +58,8 @@ class ExtensionMenuCollector
     {
         $menus = [];
         foreach ($this->extensionMenus as $bundleName => $extensionMenu) {
-            $menu = $extensionMenu->get($context);
-            if (0 < count(iterator_to_array($menu))) {
+            $menu = iterator_to_array($extensionMenu->get($context));
+            if (0 < count($menu)) {
                 $menus[$bundleName] = $menu;
             }
         }
