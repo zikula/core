@@ -11,17 +11,16 @@ doctrine:
                 class: Zikula\CoreBundle\Doctrine\DBAL\Type\UTCDateTimeType
         use_savepoints: true
     orm:
-        auto_generate_proxy_classes: true
-        enable_lazy_ghost_objects: true
-        #report_fields_where_declared: true
-        #validate_xml_mapping: true
-        #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        enable_native_lazy_objects: true
         #identity_generation_preferences:
         #    Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         default_entity_manager: default
         entity_managers:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:
+                report_fields_where_declared: true
+                validate_xml_mapping: true
+                #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
                 auto_mapping: true
                 mappings:
                     gedmo_translatable:
