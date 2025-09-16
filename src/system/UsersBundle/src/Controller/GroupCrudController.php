@@ -59,6 +59,8 @@ class GroupCrudController extends AbstractCrudController
             ->setPageTitle('index', '%entity_label_plural% list')
             ->setPageTitle('detail', fn (Group $group) => $group)
             ->setPageTitle('edit', fn (Group $group) => sprintf('Edit %s', $group))
+            ->addFormTheme('@ZikulaTheme/Form/bootstrap_4_zikula_admin_layout.html.twig')
+            ->addFormTheme('@ZikulaTheme/Form/form_div_layout.html.twig')
         ;
     }
 
