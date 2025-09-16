@@ -75,8 +75,7 @@ class UserCrudController extends AbstractCrudController
             ->setPageTitle('edit', fn (User $user) => sprintf('Edit %s', $user))
             ->setDateFormat(DateTimeField::FORMAT_MEDIUM)
             ->setDateTimeFormat(DateTimeField::FORMAT_MEDIUM, DateTimeField::FORMAT_SHORT)
-            ->addFormTheme('@ZikulaTheme/Form/bootstrap_4_zikula_admin_layout.html.twig')
-            ->addFormTheme('@ZikulaTheme/Form/form_div_layout.html.twig')
+            ->addFormTheme('@ZikulaTheme/Form/form_layout_addons.html.twig')
         ;
     }
 
