@@ -1,7 +1,4 @@
 {
-    "behat/transliterator": {
-        "version": "v1.3.0"
-    },
     "components/jquery": {
         "version": "3.5.1"
     },
