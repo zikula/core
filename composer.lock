@@ -1704,16 +1704,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "2.14.0",
+            "version": "2.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "f80dc13e9a454682b8c2255b3487829d2f8a7fe4"
+                "reference": "f8c98a5a962806f26571db219412b64266c763d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/f80dc13e9a454682b8c2255b3487829d2f8a7fe4",
-                "reference": "f80dc13e9a454682b8c2255b3487829d2f8a7fe4",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/f8c98a5a962806f26571db219412b64266c763d8",
+                "reference": "f8c98a5a962806f26571db219412b64266c763d8",
                 "shasum": ""
             },
             "require": {
@@ -1805,9 +1805,9 @@
             ],
             "support": {
                 "issues": "https://github.com/liip/LiipImagineBundle/issues",
-                "source": "https://github.com/liip/LiipImagineBundle/tree/2.14.0"
+                "source": "https://github.com/liip/LiipImagineBundle/tree/2.15.0"
             },
-            "time": "2025-09-03T06:33:10+00:00"
+            "time": "2025-10-09T06:49:28+00:00"
         },
         {
             "name": "masterminds/html5",
