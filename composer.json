@@ -35,7 +35,7 @@
         "ext-pdo": "*",
         "ext-xml": "*",
         "doctrine/doctrine-bundle": "^2",
-        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^3.5",
         "doctrine/orm": "^3",
         "easycorp/easyadmin-bundle": "^4.24",
         "egulias/email-validator": "^4",
