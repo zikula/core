@@ -37,7 +37,7 @@
         "doctrine/doctrine-bundle": "^2",
         "doctrine/doctrine-migrations-bundle": "^3.5",
         "doctrine/orm": "^3",
-        "easycorp/easyadmin-bundle": "^4.24",
+        "easycorp/easyadmin-bundle": "^4.26",
         "egulias/email-validator": "^4",
         "friendsofsymfony/jsrouting-bundle": "^3",
         "liip/imagine-bundle": "^2",
@@ -78,7 +78,8 @@
         "twig/extra-bundle": "^3",
         "twig/intl-extra": "^3",
         "twig/string-extra": "^3",
-        "vakata/jstree": "^3"
+        "vakata/jstree": "^3",
+        "vich/uploader-bundle": "^2.8"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

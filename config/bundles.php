@@ -24,4 +24,5 @@ return [
     Nucleos\UserBundle\NucleosUserBundle::class => ['all' => true],
     Nucleos\ProfileBundle\NucleosProfileBundle::class => ['all' => true],
     Symfony\UX\Translator\UxTranslatorBundle::class => ['all' => true],
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
 ];
