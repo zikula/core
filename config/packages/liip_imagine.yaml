@@ -34,7 +34,7 @@ liip_imagine:
             jpeg_quality: 90
             png_compression_level: 7
             filters:
-                thumbnail: { size: [32, 32], mode: inset }
+                thumbnail: { size: [120, 120], mode: inset }
         thumb_detail:
             data_loader: zikula_root
             jpeg_quality: 90
