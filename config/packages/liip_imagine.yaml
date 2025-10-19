@@ -47,4 +47,10 @@ liip_imagine:
             png_compression_level: 7
             filters:
                 thumbnail: { size: [180, 180], mode: inset }
+        thumb_related:
+            data_loader: zikula_root
+            jpeg_quality: 90
+            png_compression_level: 7
+            filters:
+                thumbnail: { size: [100, 75], mode: inset }
         # add more filters as required for your personal application
