@@ -10,6 +10,9 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        image_resolver:
+            pattern: ^/media/cache/resolve
+            security: false
         main:
             pattern: ^/
             user_checker: Nucleos\UserBundle\Security\UserChecker
