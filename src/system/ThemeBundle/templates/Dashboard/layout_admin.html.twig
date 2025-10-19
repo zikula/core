@@ -2,7 +2,7 @@
 
 {% block head_metas %}
     {{ parent() }}
-    {{ include('@ZikulaTheme/Dashboard/manifest.html.twig') }}
+    {{ include('@ZikulaTheme/Branding/manifest.html.twig') }}
 {% endblock %}
 
 {% block page_title %}{{ siteName()|replace({'#pagetitle#': parent()}) }}{% endblock %}

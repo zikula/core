@@ -82,6 +82,8 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
     public function configureAssets(): Assets
     {
         return parent::configureAssets()
+            ->addCssFile('bundles/zikulatheme/dashboard/common.css')
+            ->addJsFile('bundles/zikulatheme/dashboard/common.js')
             ->addCssFile('bundles/zikulatheme/dashboard/' . $this->getName() . '.css')
             ->addJsFile('bundles/zikulatheme/dashboard/' . $this->getName() . '.js')
         ;
