@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "30d06366342f9f498cca8daad7447dfb",
+    "content-hash": "93eb636dd691ba9194c6797999fe9197",
     "packages": [
         {
             "name": "components/jquery",
@@ -234,48 +234,40 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.10.3",
+            "version": "4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "65edaca19a752730f290ec2fb89d593cb40afb43"
+                "reference": "1a2fbd0e93b8dec7c3d1ac2b6396a7b929b130dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/65edaca19a752730f290ec2fb89d593cb40afb43",
-                "reference": "65edaca19a752730f290ec2fb89d593cb40afb43",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/1a2fbd0e93b8dec7c3d1ac2b6396a7b929b130dc",
+                "reference": "1a2fbd0e93b8dec7c3d1ac2b6396a7b929b130dc",
                 "shasum": ""
             },
             "require": {
-                "composer-runtime-api": "^2",
-                "doctrine/deprecations": "^0.5.3|^1",
-                "doctrine/event-manager": "^1|^2",
-                "php": "^7.4 || ^8.0",
+                "doctrine/deprecations": "^1.1.5",
+                "php": "^8.2",
                 "psr/cache": "^1|^2|^3",
                 "psr/log": "^1|^2|^3"
             },
-            "conflict": {
-                "doctrine/cache": "< 1.11"
-            },
             "require-dev": {
-                "doctrine/cache": "^1.11|^2.0",
                 "doctrine/coding-standard": "14.0.0",
                 "fig/log-test": "^1",
-                "jetbrains/phpstorm-stubs": "2023.1",
+                "jetbrains/phpstorm-stubs": "2023.2",
                 "phpstan/phpstan": "2.1.30",
+                "phpstan/phpstan-phpunit": "2.0.7",
                 "phpstan/phpstan-strict-rules": "^2",
-                "phpunit/phpunit": "9.6.29",
+                "phpunit/phpunit": "11.5.23",
                 "slevomat/coding-standard": "8.24.0",
                 "squizlabs/php_codesniffer": "4.0.0",
-                "symfony/cache": "^5.4|^6.0|^7.0",
-                "symfony/console": "^4.4|^5.4|^6.0|^7.0"
+                "symfony/cache": "^6.3.8|^7.0",
+                "symfony/console": "^5.4|^6.3|^7.0"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
             },
-            "bin": [
-                "bin/doctrine-dbal"
-            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -328,7 +320,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.10.3"
+                "source": "https://github.com/doctrine/dbal/tree/4.3.4"
             },
             "funding": [
                 {
@@ -344,7 +336,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-10-09T09:05:12+00:00"
+            "time": "2025-10-09T09:11:36+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -2042,21 +2034,21 @@
         },
         {
             "name": "nucleos/profile-bundle",
-            "version": "2.8.x-dev",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosProfileBundle.git",
-                "reference": "0965689d7555c072af53cb56d00b7e24c8584e7f"
+                "reference": "56cf7f03acc9c0cff744ed23fccb2506d6fa8a12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/0965689d7555c072af53cb56d00b7e24c8584e7f",
-                "reference": "0965689d7555c072af53cb56d00b7e24c8584e7f",
+                "url": "https://api.github.com/repos/nucleos/NucleosProfileBundle/zipball/56cf7f03acc9c0cff744ed23fccb2506d6fa8a12",
+                "reference": "56cf7f03acc9c0cff744ed23fccb2506d6fa8a12",
                 "shasum": ""
             },
             "require": {
                 "doctrine/persistence": "^4.0.0",
-                "nucleos/user-bundle": "^2.3 || ^3.4.0",
+                "nucleos/user-bundle": "^3.7 || ^4.0",
                 "php": "^8.3",
                 "symfony/config": "^6.4 || ^7.0",
                 "symfony/dependency-injection": "^6.4 || ^7.0",
@@ -2080,13 +2072,13 @@
                 "twig/twig": "^2.14 || ^3.1"
             },
             "conflict": {
-                "doctrine/doctrine-bundle": "<2.5",
+                "doctrine/doctrine-bundle": "<2.18",
                 "doctrine/orm": "<2.18",
                 "symfony/doctrine-bridge": "<6.4"
             },
             "require-dev": {
                 "dama/doctrine-test-bundle": "^8.0",
-                "doctrine/doctrine-bundle": "^2.5",
+                "doctrine/doctrine-bundle": "^2.18 || ^3.0",
                 "doctrine/orm": "^2.18 || ^3.0",
                 "ergebnis/composer-normalize": "^2.0.1",
                 "symfony/browser-kit": "^6.4 || ^7.0",
@@ -2094,7 +2086,6 @@
                 "symfony/doctrine-bridge": "^6.4 || ^7.0",
                 "symfony/yaml": "^6.4 || ^7.0"
             },
-            "default-branch": true,
             "type": "symfony-bundle",
             "autoload": {
                 "psr-4": {
@@ -2121,7 +2112,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosProfileBundle/issues",
-                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.8.x"
+                "source": "https://github.com/nucleos/NucleosProfileBundle/tree/2.8.0"
             },
             "funding": [
                 {
@@ -2141,20 +2132,20 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-10-16T14:22:31+00:00"
+            "time": "2025-10-20T19:02:08+00:00"
         },
         {
             "name": "nucleos/user-bundle",
-            "version": "3.7.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nucleos/NucleosUserBundle.git",
-                "reference": "c357fd4c6dc970c08f5b8daa159e51bea5291d79"
+                "reference": "8ad9c454156dafc3df5d59c0c235aa760c76d638"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/c357fd4c6dc970c08f5b8daa159e51bea5291d79",
-                "reference": "c357fd4c6dc970c08f5b8daa159e51bea5291d79",
+                "url": "https://api.github.com/repos/nucleos/NucleosUserBundle/zipball/8ad9c454156dafc3df5d59c0c235aa760c76d638",
+                "reference": "8ad9c454156dafc3df5d59c0c235aa760c76d638",
                 "shasum": ""
             },
             "require": {
@@ -2193,21 +2184,15 @@
                 "twig/twig": "^2.14 || ^3.1"
             },
             "conflict": {
-                "doctrine/dbal": ">=4",
-                "doctrine/doctrine-bundle": "<1.12",
-                "doctrine/mongodb": "<1.6",
-                "doctrine/mongodb-odm": "<1.1",
-                "doctrine/mongodb-odm-bundle": "<4.1",
+                "doctrine/dbal": "<4.0",
+                "doctrine/doctrine-bundle": "<2.18",
                 "doctrine/orm": "<2.18"
             },
             "require-dev": {
-                "dama/doctrine-test-bundle": "^8.0",
+                "dama/doctrine-test-bundle": "^8.3",
                 "doctrine/doctrine-bundle": "^2.18 || ^3.0",
-                "doctrine/mongodb-odm": "^2.3",
-                "doctrine/mongodb-odm-bundle": "^4.4 || ^5.0",
                 "doctrine/orm": "^2.18 || ^3.0",
                 "ergebnis/composer-normalize": "^2.0.1",
-                "ext-mongodb": "*",
                 "symfony/browser-kit": "^6.4 || ^7.0",
                 "symfony/css-selector": "^6.4 || ^7.0",
                 "symfony/doctrine-bridge": "^6.4 || ^7.0",
@@ -2237,7 +2222,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nucleos/NucleosUserBundle/issues",
-                "source": "https://github.com/nucleos/NucleosUserBundle/tree/3.7.0"
+                "source": "https://github.com/nucleos/NucleosUserBundle/tree/4.0.0"
             },
             "funding": [
                 {
@@ -2257,7 +2242,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2025-10-12T19:51:36+00:00"
+            "time": "2025-10-20T18:32:05+00:00"
         },
         {
             "name": "psr/cache",
