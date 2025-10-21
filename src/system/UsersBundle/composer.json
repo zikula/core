@@ -14,7 +14,7 @@
         "php": ">=8.3",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "nucleos/profile-bundle": "^2",
-        "nucleos/user-bundle": "^3",
+        "nucleos/user-bundle": "^4",
         "symfony/config": "^7.3",
         "symfony/dependency-injection": "^7.3",
         "symfony/doctrine-bridge": "^7.3",
