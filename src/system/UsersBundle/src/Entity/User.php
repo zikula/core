@@ -42,6 +42,7 @@ class User extends BaseUser implements LegalAwareUserInterface
     protected ?int $id = null;
 
     #[Assert\NoSuspiciousCharacters]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
     protected ?string $username = null;
 
     #[Assert\Length(min: 12)]
