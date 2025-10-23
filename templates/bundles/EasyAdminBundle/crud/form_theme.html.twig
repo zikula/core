@@ -1,0 +1,41 @@
+{% extends '@!EasyAdmin/crud/form_theme.html.twig' %}
+
+{% block upload_file_preview %}
+    {% if not app.request.attributes.get('upload_preview_assets_loaded') %}
+        <link rel="stylesheet" href="{{ asset('bundles/zikulatheme/css/ZikulaThemeBundle.UploadPreview.css') }}" />
+        <script src="{{ asset('bundles/zikulatheme/js/ZikulaThemeBundle.UploadPreview.js') }}"></script>
+        {{ app.request.attributes.set('upload_preview_assets_loaded', true) }}
+    {% endif %}
+
+    {% set fieldName = form.file.vars.id %}
+    <section class="image-upload" data-fieldname="{{ fieldName }}">
+        <div class="field preview" aria-labelledby="preview-label-{{ fieldName }}">
+            <div id="preview-label-{{ fieldName }}" class="sr-only">Preview</div>
+
+            <figure id="figure-{{ fieldName }}" class="d-none">
+                <img id="img-{{ fieldName }}" alt="" />
+                <figcaption id="caption-{{ fieldName }}"></figcaption>
+            </figure>
+
+            <iframe id="pdf-{{ fieldName }}" class="pdf-preview d-none"></iframe>
+
+            <div id="fallback-{{ fieldName }}" class="fallback d-none" aria-live="polite">
+                <strong class="sr-only">{% trans %}No preview possible.{% endtrans %}</strong>
+                <div id="fallback-text-{{ fieldName }}"></div>
+            </div>
+        </div>
+
+        <!-- live status for screen reader -->
+        <p id="status-{{ fieldName }}" role="status" aria-live="polite" class="sr-only"></p>
+    </section>
+{% endblock %}
+
+{% block vich_file_widget %}
+    {{ parent() }}
+    {{ block('upload_file_preview') }}
+{% endblock %}
+
+{% block vich_image_widget %}
+    {{ parent() }}
+    {{ block('upload_file_preview') }}
+{% endblock %}

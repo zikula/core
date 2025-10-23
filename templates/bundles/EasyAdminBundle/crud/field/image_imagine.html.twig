@@ -17,12 +17,3 @@
         <img src="{{ asset(image) }}">
     </div>
 {% endfor %}
-
-
-{% if field.value %}
-  <img
-    src="{{ asset(field.value) }}"
-    alt=""
-    style="display: block; max-width: 100%; height: auto"
-  >
-{% endif %}

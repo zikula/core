@@ -1,0 +1,22 @@
+.image-upload .preview {
+  border: 1px solid #ccc;
+  padding: .5rem;
+  border-radius: .25rem;
+  max-width: 320px;
+}
+.image-upload .preview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.image-upload .fallback {
+  padding: 1rem;
+  border: 1px dashed #999;
+  border-radius: .25rem;
+  font-size: .9rem;
+  word-break: break-all;
+}
+.image-upload iframe.pdf-preview {
+  width: 520px;
+  height: 340px;
+}
