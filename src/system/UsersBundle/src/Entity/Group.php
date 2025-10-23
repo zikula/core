@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Nucleos\UserBundle\Model\Group as BaseGroup;
+use Nucleos\UserBundle\Entity\BaseGroup;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'nucleos_user__group')]

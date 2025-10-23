@@ -16,7 +16,7 @@ namespace Zikula\UsersBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Nucleos\UserBundle\Model\User as BaseUser;
+use Nucleos\UserBundle\Entity\BaseUser;
 use Nucleos\UserBundle\Validator\Constraints\Pattern as PasswordPattern;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\CoreBundle\Doctrine\DBAL\CustomTypes;
@@ -42,7 +42,6 @@ class User extends BaseUser implements LegalAwareUserInterface
     protected ?int $id = null;
 
     #[Assert\NoSuspiciousCharacters]
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
     protected ?string $username = null;
 
     #[Assert\Length(min: 12)]
