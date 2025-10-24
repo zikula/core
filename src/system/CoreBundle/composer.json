@@ -39,7 +39,7 @@
         "symfony/web-link": "^7.3",
         "symfony/web-profiler-bundle": "^7.3",
 
-        "doctrine/doctrine-bundle": "^2",
+        "doctrine/doctrine-bundle": "^3",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3",
         "stof/doctrine-extensions-bundle": "^1",
