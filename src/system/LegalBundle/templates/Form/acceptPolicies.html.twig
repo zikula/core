@@ -13,26 +13,26 @@
 {% if form.termsOfUseAccepted is defined %}
     {% set policyLabel = 'Terms of use'|trans %}
     {% set label = _self.fieldLabel('termsOfUse', policyLabel) %}
-    {{ form_widget(form.termsOfUseAccepted, {label: label, label_html: true}) }}
+    {{ form_row(form.termsOfUseAccepted, {label: label, label_html: true}) }}
 {% endif %}
 {% if form.privacyPolicyAccepted is defined %}
     {% set policyLabel = 'Privacy policy'|trans %}
     {% set label = _self.fieldLabel('privacyPolicy', policyLabel) %}
-    {{ form_widget(form.privacyPolicyAccepted, {label: label, label_html: true}) }}
+    {{ form_row(form.privacyPolicyAccepted, {label: label, label_html: true}) }}
 {% endif %}
 {% if form.tradeConditionsAccepted is defined %}
     {% set policyLabel = 'General terms and conditions of trade'|trans %}
     {% set label = _self.fieldLabel('tradeConditions', policyLabel) %}
-    {{ form_widget(form.tradeConditionsAccepted, {label: label, label_html: true}) }}
+    {{ form_row(form.tradeConditionsAccepted, {label: label, label_html: true}) }}
 {% endif %}
 {% if form.cancellationRightPolicyAccepted is defined %}
     {% set policyLabel = 'Cancellation right policy'|trans %}
     {% set label = _self.fieldLabel('cancellationRightPolicy', policyLabel) %}
-    {{ form_widget(form.cancellationRightPolicyAccepted, {label: label, label_html: true}) }}
+    {{ form_row(form.cancellationRightPolicyAccepted, {label: label, label_html: true}) }}
 {% endif %}
 {% if form.agePolicyAccepted is defined %}
     {% set label = 'I accept the %policy%.'|trans({ '%policy%': ('Age policy'|trans) }) %}
-    {{ form_widget(form.agePolicyAccepted, {label: label}) }}
+    {{ form_row(form.agePolicyAccepted, {label: label}) }}
     {% set help %}
         {% trans with { '%amountOfYears%': zikulalegalbundle_minimumAge() } %}You need to be %amountOfYears% years of age or older, in accordance with our minimum age requirement.{% endtrans %}
     {% endset %}
@@ -43,7 +43,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="policyModalTitle"></h5>
-                <button type="button" class="btn-close"data-bs-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}">&times;</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans %}Close{% endtrans %}">&times;</button>
             </div>
             <div class="modal-body" id="policyModalBody"><i class="fas fa-spin fa-cog fa-2x"></i></div>
             <div class="modal-footer">
