@@ -53,6 +53,15 @@ class TwigExtension
     }
 
     /**
+     * Returns current page title.
+     */
+    #[AsTwigFunction('pageTitle')]
+    public function getPageTitle(): string
+    {
+        return $this->site->getPageTitle();
+    }
+
+    /**
      * Returns site branding markup.
      */
     #[AsTwigFunction('siteBranding', isSafe: ['html'])]

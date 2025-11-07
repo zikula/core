@@ -5,7 +5,7 @@
     {{ include('@ZikulaTheme/Branding/manifest.html.twig') }}
 {% endblock %}
 
-{% block page_title %}{{ siteName()|replace({'#pagetitle#': parent()}) }}{% endblock %}
+{% block page_title %}{{ pageTitle()|replace({'#pagetitle#': parent()}) }}{% endblock %}
 {% block sidebar %}
     <p>Hello admin!</p>
     {{ parent() }}
