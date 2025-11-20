@@ -1257,16 +1257,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.27.3",
+            "version": "v4.27.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "426009fe298db8237885ffc316dcde21735b7038"
+                "reference": "6d94c62bca8393bbedbcf66112066e763cd1d20b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/426009fe298db8237885ffc316dcde21735b7038",
-                "reference": "426009fe298db8237885ffc316dcde21735b7038",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/6d94c62bca8393bbedbcf66112066e763cd1d20b",
+                "reference": "6d94c62bca8393bbedbcf66112066e763cd1d20b",
                 "shasum": ""
             },
             "require": {
@@ -1348,7 +1348,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.27.3"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.27.4"
             },
             "funding": [
                 {
@@ -1356,7 +1356,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-11-13T18:58:30+00:00"
+            "time": "2025-11-20T19:08:03+00:00"
         },
         {
             "name": "egulias/email-validator",
