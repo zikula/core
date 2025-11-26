@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.3', '8.4']
+        php-versions: ['8.3', '8.4', '8.5']
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
@@ -55,7 +55,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        php-versions: ['8.3', '8.4']
+        php-versions: ['8.3', '8.4', '8.5']
     services:
       mysql:
         image: mysql:latest
@@ -129,7 +129,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.4']
+  #       php-versions: ['8.5']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v4
@@ -147,7 +147,7 @@ jobs:
   #   needs: test
   #   strategy:
   #     matrix:
-  #       php-versions: ['8.4']
+  #       php-versions: ['8.5']
   #   steps:
   #     - name: Checkout sources
   #       uses: actions/checkout@v4
