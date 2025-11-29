@@ -57,7 +57,7 @@
         "symfony/http-client": "^7.3",
         "symfony/lock": "^7.3",
         "symfony/mailer": "^7.3",
-        "symfony/monolog-bundle": "^3",
+        "symfony/monolog-bundle": "^4",
         "symfony/polyfill-intl-messageformatter": "^1",
         "symfony/polyfill-uuid": "^1",
         "symfony/rate-limiter": "^7.3",
