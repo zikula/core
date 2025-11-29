@@ -30,7 +30,7 @@
         "symfony/doctrine-bridge": "^7.3",
         "symfony/expression-language": "^7.3",
         "symfony/lock": "^7.3",
-        "symfony/monolog-bundle": "^3",
+        "symfony/monolog-bundle": "^4",
         "symfony/polyfill-uuid": "^1",
         "symfony/polyfill-intl-messageformatter": "^1",
         "symfony/runtime": "^7.3",
