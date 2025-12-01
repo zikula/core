@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'nucleos_user__user_attribute')]
-class UserAttribute
+class UserAttribute implements \Stringable
 {
     #[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'attributes')]
