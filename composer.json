@@ -79,7 +79,7 @@
         "twig/intl-extra": "^3",
         "twig/string-extra": "^3",
         "vakata/jstree": "^3",
-        "vich/uploader-bundle": "^2.8"
+        "vich/uploader-bundle": "^2.9"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
