@@ -9162,16 +9162,16 @@
         },
         {
             "name": "vich/uploader-bundle",
-            "version": "v2.9.0",
+            "version": "v2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dustin10/VichUploaderBundle.git",
-                "reference": "deb1d70a46f3d4250801e8fa40bd52ffa3494d70"
+                "reference": "945939a04a33c0b78c5fbb7ead31533d85112df5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/deb1d70a46f3d4250801e8fa40bd52ffa3494d70",
-                "reference": "deb1d70a46f3d4250801e8fa40bd52ffa3494d70",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/945939a04a33c0b78c5fbb7ead31533d85112df5",
+                "reference": "945939a04a33c0b78c5fbb7ead31533d85112df5",
                 "shasum": ""
             },
             "require": {
@@ -9264,9 +9264,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dustin10/VichUploaderBundle/issues",
-                "source": "https://github.com/dustin10/VichUploaderBundle/tree/v2.9.0"
+                "source": "https://github.com/dustin10/VichUploaderBundle/tree/v2.9.1"
             },
-            "time": "2025-12-07T13:46:23+00:00"
+            "time": "2025-12-10T08:23:38+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
