@@ -2565,16 +2565,16 @@
         },
         {
             "name": "stof/doctrine-extensions-bundle",
-            "version": "v1.15.0",
+            "version": "v1.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stof/StofDoctrineExtensionsBundle.git",
-                "reference": "002db495ae2c35875dcb7b9719a9da8a0feafe83"
+                "reference": "7f21c77823fa8df57eabbe1f1686149d2d4afae1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/002db495ae2c35875dcb7b9719a9da8a0feafe83",
-                "reference": "002db495ae2c35875dcb7b9719a9da8a0feafe83",
+                "url": "https://api.github.com/repos/stof/StofDoctrineExtensionsBundle/zipball/7f21c77823fa8df57eabbe1f1686149d2d4afae1",
+                "reference": "7f21c77823fa8df57eabbe1f1686149d2d4afae1",
                 "shasum": ""
             },
             "require": {
@@ -2641,9 +2641,9 @@
             ],
             "support": {
                 "issues": "https://github.com/stof/StofDoctrineExtensionsBundle/issues",
-                "source": "https://github.com/stof/StofDoctrineExtensionsBundle/tree/v1.15.0"
+                "source": "https://github.com/stof/StofDoctrineExtensionsBundle/tree/v1.15.1"
             },
-            "time": "2025-12-11T21:00:08+00:00"
+            "time": "2025-12-12T13:32:18+00:00"
         },
         {
             "name": "symfony/asset",
