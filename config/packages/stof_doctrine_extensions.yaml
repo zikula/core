@@ -17,5 +17,5 @@ stof_doctrine_extensions:
             ip_traceable: true
             sortable: true
             softdeleteable: true
-            uploadable: true
+            uploadable: false
             reference_integrity: true
