@@ -129,7 +129,7 @@ class TwigExtension
             return $userId . $userName; // one or the other is empty
         }
 
-        $userDisplayName = $this->profileHelper->getDisplayName($user->getUid());
+        $userDisplayName = $this->profileHelper->getDisplayName($user->getId());
         if (!$userDisplayName) {
             $userDisplayName = $user->getUname();
         }
@@ -146,7 +146,7 @@ class TwigExtension
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }
-        $href = $this->profileHelper->getProfileUrl($user->getUid());
+        $href = $this->profileHelper->getProfileUrl($user->getId());
         if ('#' === $href) {
             return $userDisplayName;
         }

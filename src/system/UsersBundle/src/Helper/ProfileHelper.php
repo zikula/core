@@ -79,7 +79,7 @@ class ProfileHelper
             throw new \InvalidArgumentException('Invalid userId provided');
         }
 
-        return $this->router->generate('zikulaprofilebundle_profile_display', ['userId' => $userEntity->getId()]);
+        return $this->router->generate('nucleos_profile_profile_show', ['userId' => $userEntity->getId()]);
     }
 
     public function getAvatar($userId = null, array $parameters = []): string
