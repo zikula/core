@@ -17,7 +17,7 @@ use Twig\Attribute\AsTwigFunction;
 use Twig\Environment;
 use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 
-class TwigExtension
+class SiteBrandingExtension
 {
     public function __construct(
         private readonly Environment $twig,
