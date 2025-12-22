@@ -388,16 +388,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "1ffb6fa7bf43974874a8c1464252d91c1df85f5a"
+                "reference": "b7d8e4d4ec7934ac60493fc6cd5f76507163ce95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/1ffb6fa7bf43974874a8c1464252d91c1df85f5a",
-                "reference": "1ffb6fa7bf43974874a8c1464252d91c1df85f5a",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/b7d8e4d4ec7934ac60493fc6cd5f76507163ce95",
+                "reference": "b7d8e4d4ec7934ac60493fc6cd5f76507163ce95",
                 "shasum": ""
             },
             "require": {
@@ -424,6 +424,7 @@
                 "phpstan/phpstan": "2.1.1",
                 "phpstan/phpstan-phpunit": "2.0.3",
                 "phpstan/phpstan-strict-rules": "^2",
+                "phpstan/phpstan-symfony": "^2.0",
                 "phpunit/phpunit": "^12.3.10",
                 "psr/log": "^3.0",
                 "symfony/doctrine-messenger": "^6.4 || ^7.0 || ^8.0",
@@ -482,7 +483,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/3.1.1"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/3.2.0"
             },
             "funding": [
                 {
@@ -498,7 +499,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-12-21T20:20:06+00:00"
+            "time": "2025-12-21T20:34:16+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
