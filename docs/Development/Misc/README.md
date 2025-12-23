@@ -5,8 +5,6 @@ currentMenu: dev-misc
 
 ## Specific services
 
-- [LocaleApi](LocaleApi.md)
-- [Cache clearer](CacheClearer.md)
 - [Workflows](Workflows.md)
 
 ## Specific topics
