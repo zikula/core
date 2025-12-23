@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -31,6 +32,7 @@ use Zikula\UsersBundle\Helper\ChoiceHelper;
 use function Symfony\Component\Translation\t;
 
 #[IsGranted('ROLE_ADMIN')]
+#[AdminRoute(path: '/groups', name: 'groups')]
 class GroupCrudController extends AbstractCrudController
 {
     public function __construct(
