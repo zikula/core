@@ -10,8 +10,6 @@ services:
     Zikula\CoreBundle\:
         resource: '../src/*'
 
-    Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface: '@Zikula\CoreBundle\Api\LocaleApi'
-
     Zikula\CoreBundle\EventSubscriber\ClickjackProtectionSubscriber:
         arguments:
             $xFrameOptions: 'SAMEORIGIN'

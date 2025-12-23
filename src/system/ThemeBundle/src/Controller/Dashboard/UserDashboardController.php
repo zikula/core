@@ -13,17 +13,16 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeBundle\Controller\Dashboard;
 
-// use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminRoute;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Zikula\CoreBundle\Bundle\MetaData\MetaDataAwareBundleInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuInterface;
 use function Symfony\Component\Translation\t;
 
-// TODO blocked by https://github.com/EasyCorp/EasyAdminBundle/issues/6792
-// #[AdminDashboard(routePath: '/', routeName: 'user')]
+#[AdminDashboard(routePath: '/', routeName: 'user')]
 class UserDashboardController extends AbstractThemedDashboardController
 {
     protected function getName(): string
@@ -61,13 +60,7 @@ class UserDashboardController extends AbstractThemedDashboardController
         }
     }
 
-    #[Route('/', name: 'user_home')]
-    public function home(): Response
-    {
-        return $this->redirectToRoute('user_dashboard', ['_locale' => $this->defaultLocale]);
-    }
-
-    #[Route('/{_locale}', name: 'user_dashboard')]
+    #[AdminRoute('/', name: 'dashboard')]
     public function index(): Response
     {
         return parent::index();

@@ -50,8 +50,5 @@
     },
     "autoload": {
         "psr-4": { "Zikula\\CoreBundle\\": "src" }
-    },
-    "autoload-dev": {
-        "psr-4": { "Zikula\\CoreBundle\\Tests\\": "tests" }
     }
 }

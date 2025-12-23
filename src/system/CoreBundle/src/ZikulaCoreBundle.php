@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Zikula\CoreBundle\Api\LocaleApi;
 use Zikula\CoreBundle\EventSubscriber\ClickjackProtectionSubscriber;
 use Zikula\CoreBundle\EventSubscriber\SiteOffSubscriber;
 use Zikula\CoreBundle\Site\SiteDefinition;
@@ -71,9 +70,6 @@ class ZikulaCoreBundle extends AbstractBundle
         $services->get(SiteOffSubscriber::class)
             ->arg('$maintenanceModeEnabled', $config['maintenance_mode']['enabled'])
             ->arg('$maintenanceReason', $config['maintenance_mode']['reason']);
-
-        $services->get(LocaleApi::class)
-            ->arg('$multiLingualEnabled', $config['multilingual']);
 
         $services->get(SiteDefinition::class)
             ->arg('$siteData', $config['site_data']);

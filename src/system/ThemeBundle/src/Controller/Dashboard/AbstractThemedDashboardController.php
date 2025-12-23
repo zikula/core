@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatableMessage;
-use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\CoreBundle\Site\SiteDefinitionInterface;
 use Zikula\ThemeBundle\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeBundle\Helper\AdminCategoryHelper;
@@ -32,10 +31,6 @@ use Zikula\ThemeBundle\Helper\UserMenuExtensionHelper;
 
 abstract class AbstractThemedDashboardController extends AbstractDashboardController
 {
-    protected const INVALID_LOCALE = 'invalid';
-    protected array $enabledLocales;
-    protected string $defaultLocale;
-
     public function __construct(
         protected readonly KernelInterface $kernel,
         protected readonly AdminUrlGenerator $urlGenerator,
@@ -45,13 +40,10 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
         protected readonly SiteDefinitionInterface $site,
         protected readonly array $themeConfig,
         #[Autowire(param: 'kernel.enabled_locales')]
-        array $enabledLocales,
+        protected readonly array $enabledLocales,
         #[Autowire(param: 'kernel.default_locale')]
-        string $defaultLocale,
-        protected readonly LocaleApiInterface $localeApi
+        protected readonly string $defaultLocale,
     ) {
-        $this->enabledLocales = $enabledLocales ?: $localeApi->getSupportedLocales();
-        $this->defaultLocale = $defaultLocale;
     }
 
     abstract protected function getName(): string;
@@ -103,6 +95,10 @@ abstract class AbstractThemedDashboardController extends AbstractDashboardContro
 
     public function index(): Response
     {
+        if (!extension_loaded('intl')) {
+            $this->addFlash('error', t('WARNING: The PHP extension intl is not loaded. All functions using this will default to "en". Seek assistance from your provider to install.'));
+        }
+
         $contentConfig = $this->themeConfig['content'];
         if (null !== $contentConfig['template']) {
             // render a custom template

@@ -35,10 +35,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use Nucleos\UserBundle\Model\UserInterface;
 use Nucleos\UserBundle\Model\UserManager;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Zikula\CoreBundle\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersBundle\Entity\User;
 use Zikula\UsersBundle\Helper\ChoiceHelper;
 use function Symfony\Component\Translation\t;
@@ -48,8 +48,9 @@ class UserCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly UserManager $userManager,
-        private readonly LocaleApiInterface $localeApi,
-        private readonly ChoiceHelper $choiceHelper
+        private readonly ChoiceHelper $choiceHelper,
+        #[Autowire(param: 'kernel.enabled_locales')]
+        private readonly array $enabledLocales,
     ) {
     }
 
@@ -91,7 +92,7 @@ class UserCrudController extends AbstractCrudController
         yield 'passwordRequestedAt' => DateTimeField::new('passwordRequestedAt', t('Password requested at'))->hideOnIndex();
         yield 'roles' => ChoiceField::new('roles', t('Roles'))->setRequired(true)->setChoices($this->choiceHelper->getRoles())->allowMultipleChoices();
         yield 'groups' => AssociationField::new('groups', t('Groups'));
-        yield 'locale' => LocaleField::new('locale', t('Locale'))->includeOnly($this->localeApi->getSupportedLocales());
+        yield 'locale' => LocaleField::new('locale', t('Locale'))->includeOnly($this->enabledLocales);
         yield 'timezone' => TimezoneField::new('timezone', t('Timezone'));
 
         // custom additions

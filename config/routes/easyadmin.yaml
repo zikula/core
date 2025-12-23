@@ -1,3 +1,6 @@
 easyadmin:
     resource: .
     type: easyadmin.routes
+    prefix: /{_locale}
+    requirements:
+        _locale: de|en

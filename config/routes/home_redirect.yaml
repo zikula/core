@@ -1,0 +1,6 @@
+root_redirect:
+  path: /
+  controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+  defaults:
+    path: /en/
+    permanent: true
