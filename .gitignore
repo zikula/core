@@ -3,8 +3,12 @@
 /bin/
 /bin/*
 !/bin/console
+/config/packages/guite*.yaml*
 /config/packages/zikula*.yaml
+/config/reference.php
+/config/routes/guite*.yaml
 *.phpunit.result.cache
+/migrations/Version*.php
 /public/*
 !/public/index.php
 !/public/uploads/
@@ -14,6 +18,7 @@
 !/public/browserconfig.xml
 !/public/robots
 !/public/site.webmanifest
+/public/uploads/*
 /src/extensions/*
 !src/extensions/.gitignore
 src/.preload.php
@@ -21,7 +26,6 @@ src/.preload.php
 !/templates/bundles/NucleosProfileBundle/*
 !/templates/bundles/NucleosUserBundle/*
 /translations/*
-/webpack.config.js
 !/var/cache/.htaccess
 
 ###> symfony/framework-bundle ###
