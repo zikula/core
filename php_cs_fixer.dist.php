@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
-if (!file_exists(__DIR__)) {
-    exit(0);
-}
-
 // see also https://github.com/symfony/symfony/blob/7.4/.php-cs-fixer.dist.php
 
 return new PhpCsFixer\Config()
@@ -44,14 +40,6 @@ return new PhpCsFixer\Config()
         'php_unit_attributes' => true,
         'php_unit_test_annotation' => false, // breaks "@depends App\Something::testFooBar()"
         'protected_to_private' => true,
-        'random_api_migration' => [
-            'replacements' => [
-                'mt_getrandmax' => 'getrandmax',
-                'mt_rand' => 'random_int',
-                'mt_srand' => 'srand',
-                'rand' => 'random_int',
-            ],
-        ],
         'simplified_null_return' => true,
         'single_line_throw' => false,
         'static_lambda' => true,
