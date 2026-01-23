@@ -44,7 +44,7 @@ return new PhpCsFixer\Config()
         'php_unit_attributes' => true,
         'php_unit_test_annotation' => false, // breaks "@depends App\Something::testFooBar()"
         'protected_to_private' => true,
-        'random_api_migration' =>  [
+        'random_api_migration' => [
             'replacements' => [
                 'mt_getrandmax' => 'getrandmax',
                 'mt_rand' => 'random_int',
