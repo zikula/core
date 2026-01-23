@@ -22,9 +22,9 @@ if (!file_exists(__DIR__)) {
 return new PhpCsFixer\Config()
     ->setParallelConfig(ParallelConfigFactory::detect())
     ->setRules([
-        '@PSR12' => true,
-        '@PHP84Migration' => true,
-        '@PHPUnit110Migration:risky' => true,
+        '@PER-CS' => true,
+        '@PHP8x5Migration' => true,
+        '@PHPUnit11x0Migration:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'combine_nested_dirname' => true,
