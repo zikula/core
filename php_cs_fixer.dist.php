@@ -39,7 +39,7 @@ return new PhpCsFixer\Config()
         'phpdoc_to_return_type' => true,
         'php_unit_attributes' => true,
         'php_unit_test_annotation' => false, // breaks "@depends App\Something::testFooBar()"
-        'protected_to_private' => true,
+        'protected_to_private' => false,
         'simplified_null_return' => true,
         'single_line_throw' => false,
         'static_lambda' => true,
