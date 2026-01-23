@@ -24,7 +24,7 @@ return new PhpCsFixer\Config()
     ->setRules([
         '@PSR12' => true,
         '@PHP84Migration' => true,
-        '@PHPUnit100Migration:risky' => true,
+        '@PHPUnit110Migration:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'combine_nested_dirname' => true,
@@ -35,14 +35,26 @@ return new PhpCsFixer\Config()
         'native_function_invocation' => false,
         'no_short_bool_cast' => true,
         'no_unreachable_default_argument_value' => false,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
         'nullable_type_declaration_for_default_null_value' => true,
         'phpdoc_align' => ['align' => 'left'],
         'phpdoc_to_param_type' => true,
         'phpdoc_to_return_type' => true,
+        'php_unit_attributes' => true,
         'php_unit_test_annotation' => false, // breaks "@depends App\Something::testFooBar()"
-        'protected_to_private' => false,
+        'protected_to_private' => true,
+        'random_api_migration' =>  [
+            'replacements' => [
+                'mt_getrandmax' => 'getrandmax',
+                'mt_rand' => 'random_int',
+                'mt_srand' => 'srand',
+                'rand' => 'random_int',
+            ],
+        ],
         'simplified_null_return' => true,
         'single_line_throw' => false,
+        'static_lambda' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
