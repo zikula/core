@@ -20,6 +20,7 @@ return new PhpCsFixer\Config()
     ->setRules([
         '@PER-CS' => true,
         '@PHP8x5Migration' => true,
+        '@PHP8x5Migration:risky' => true,
         '@PHPUnit11x0Migration:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
