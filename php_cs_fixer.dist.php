@@ -17,7 +17,7 @@ if (!file_exists(__DIR__)) {
     exit(0);
 }
 
-// see also https://github.com/symfony/symfony/blob/7.3/.php-cs-fixer.dist.php
+// see also https://github.com/symfony/symfony/blob/7.4/.php-cs-fixer.dist.php
 
 return new PhpCsFixer\Config()
     ->setParallelConfig(ParallelConfigFactory::detect())
