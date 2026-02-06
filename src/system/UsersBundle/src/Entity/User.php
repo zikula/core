@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\CoreBundle\Doctrine\DBAL\CustomTypes;
 use Zikula\LegalBundle\Entity\LegalAwareUserInterface;
 use Zikula\LegalBundle\Entity\LegalAwareUserTrait;
+use Zikula\UsersBundle\ProfileConstant;
 use Zikula\UsersBundle\Repository\UserRepository;
 use Zikula\UsersBundle\UsersConstant;
 
@@ -125,6 +126,17 @@ class User extends BaseUser implements LegalAwareUserInterface
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getFullName(): string
+    {
+        $firstName = $this->getAttributeValue(ProfileConstant::ATTRIBUTE_NAME_FIRST_NAME);
+        $lastName = $this->getAttributeValue(ProfileConstant::ATTRIBUTE_NAME_LAST_NAME);
+        if ('' !== $firstName && '' !== $lastName) {
+            return $firstName . ' ' . $lastName;
+        }
+
+        return '';
     }
 
     public function getActivated(): int

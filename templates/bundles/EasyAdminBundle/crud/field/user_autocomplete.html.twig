@@ -1,0 +1,17 @@
+{# based on EAB demo #}
+<div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+    <span class="avatar">{{ userAvatar(entity.id, {size: 32, rating: 'g', class: 'rounded-circle'}) }}</span>
+    <div style="min-width: 0; line-height: 1.3">
+        <div style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            {% if entity.fullName %}
+                {{ entity.fullName }}
+                <span style="font-weight: normal; color: #6c757d;">@{{ entity.username }}</span>
+            {% else %}
+                {{ entity.username }}
+            {% endif %}
+        </div>
+        <div style="font-size: 0.85em; color: #6c757d; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            {{ entity.email }}
+        </div>
+    </div>
+</div>
