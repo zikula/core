@@ -11,10 +11,12 @@
             <span class="avatar">{{ userAvatar(field.value.id, {size: 32, rating: 'g', class: 'rounded-circle'}) }}</span>
             <div class="user-info">
                 <span class="user-name">{{ user.id|profileLinkByUserId }}</span>
-                {% if 'ROLE_ADMIN' in user.roles %}
-                    <span class="badge badge-danger ms-1">{{ 'Admin'|trans }}</span>
+                {% if 'ROLE_SUPER_ADMIN' in user.roles %}
+                    <span class="badge badge-danger ms-1">{{ 'Super Admin'|trans }}</span>
+                {% elseif 'ROLE_ADMIN' in user.roles %}
+                    <span class="badge badge-warning ms-1">{{ 'Admin'|trans }}</span>
                 {% elseif 'ROLE_EDITOR' in user.roles %}
-                    <span class="badge badge-warning ms-1">{{ 'Editor'|trans }}</span>
+                    <span class="badge badge-info ms-1">{{ 'Editor'|trans }}</span>
                 {% endif %}
             </div>
         </div>
