@@ -37,7 +37,7 @@
         "doctrine/doctrine-bundle": "^3",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3",
-        "easycorp/easyadmin-bundle": "^4.26",
+        "easycorp/easyadmin-bundle": "^4.28",
         "egulias/email-validator": "^4",
         "friendsofsymfony/jsrouting-bundle": "^3",
         "liip/imagine-bundle": "^2",

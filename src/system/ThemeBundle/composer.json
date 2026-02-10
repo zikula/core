@@ -11,8 +11,8 @@
         }
     ],
     "require": {
-        "php": ">=8.3",
-        "easycorp/easyadmin-bundle": "^4.24",
+        "php": ">=8.4",
+        "easycorp/easyadmin-bundle": "^4.28",
         "symfony/config": "^7.4",
         "symfony/dependency-injection": "^7.4",
         "symfony/event-dispatcher": "^7.4",

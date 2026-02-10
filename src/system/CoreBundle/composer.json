@@ -13,7 +13,7 @@
     ],
     "bin": ["bin/console"],
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
 
         "symfony/config": "^7.4",
         "symfony/console": "^7.4",

@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "nucleos/profile-bundle": "^2",
         "nucleos/user-bundle": "^4",
