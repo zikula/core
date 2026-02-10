@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "da2d0c983e2638b7ccb0244b2e29c311",
+    "content-hash": "52c76cd20ca9213f2484704d43f468bd",
     "packages": [
         {
             "name": "components/jquery",
@@ -9905,16 +9905,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "35b8abcac712ba24814d7fe8908dfb5702efb39f"
+                "reference": "87f0ca577a7056016741af70e7a7de9246c52e67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/35b8abcac712ba24814d7fe8908dfb5702efb39f",
-                "reference": "35b8abcac712ba24814d7fe8908dfb5702efb39f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/87f0ca577a7056016741af70e7a7de9246c52e67",
+                "reference": "87f0ca577a7056016741af70e7a7de9246c52e67",
                 "shasum": ""
             },
             "require": {
@@ -9983,7 +9983,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.0.1"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.0.2"
             },
             "funding": [
                 {
@@ -10007,7 +10007,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-08T07:08:25+00:00"
+            "time": "2026-02-10T12:33:24+00:00"
         },
         {
             "name": "sebastian/cli-parser",
