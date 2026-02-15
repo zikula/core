@@ -16,8 +16,8 @@ namespace Zikula\UsersBundle\Menu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use Symfony\Bundle\SecurityBundle\Security;
 use Zikula\ThemeBundle\ExtensionMenu\AbstractExtensionMenu;
-use Zikula\UsersBundle\Entity\Group;
-use Zikula\UsersBundle\Entity\User;
+use Zikula\UsersBundle\Controller\GroupCrudController;
+use Zikula\UsersBundle\Controller\UserCrudController;
 use Zikula\UsersBundle\UsersConstant;
 use function Symfony\Component\Translation\t;
 
@@ -32,8 +32,8 @@ class ExtensionMenu extends AbstractExtensionMenu
 
     protected function getAdmin(): iterable
     {
-        yield MenuItem::linkToCrud(t('Users'), 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud(t('Groups'), 'fas fa-people-group', Group::class);
+        yield MenuItem::linkTo(UserCrudController::class, t('Users'), 'fas fa-user');
+        yield MenuItem::linkTo(GroupCrudController::class, t('Groups'), 'fas fa-people-group');
     }
 
     protected function getUser(): iterable
