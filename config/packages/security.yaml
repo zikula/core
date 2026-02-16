@@ -40,6 +40,11 @@ security:
         # admin dashboard - disabled in favor of #[IsGranted] attribute in AdminDashboardController
         # - { path: ^/admin, role: ROLE_ADMIN }
 
+    # https://symfony.com/doc/current/security/voters.html#changing-the-access-decision-strategy
+    # https://symfony.com/bundles/EasyAdminBundle/current/security.html#custom-security-voters
+    access_decision_manager:
+        strategy: unanimous
+
 when@test:
     security:
         password_hashers:
