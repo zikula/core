@@ -9905,16 +9905,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.0.2",
+            "version": "13.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "87f0ca577a7056016741af70e7a7de9246c52e67"
+                "reference": "a9c20642ffd2098c0f9e687c00849afbce2f23c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/87f0ca577a7056016741af70e7a7de9246c52e67",
-                "reference": "87f0ca577a7056016741af70e7a7de9246c52e67",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a9c20642ffd2098c0f9e687c00849afbce2f23c7",
+                "reference": "a9c20642ffd2098c0f9e687c00849afbce2f23c7",
                 "shasum": ""
             },
             "require": {
@@ -9983,7 +9983,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.0.2"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.0.3"
             },
             "funding": [
                 {
@@ -10007,7 +10007,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-10T12:33:24+00:00"
+            "time": "2026-02-16T08:38:33+00:00"
         },
         {
             "name": "sebastian/cli-parser",
