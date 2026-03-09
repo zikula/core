@@ -1261,16 +1261,16 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "0bd155748233b5bb77c463008813dec325a1ec82"
+                "reference": "75a421266c93e268849fcc9e97da47038fa09519"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/0bd155748233b5bb77c463008813dec325a1ec82",
-                "reference": "0bd155748233b5bb77c463008813dec325a1ec82",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/75a421266c93e268849fcc9e97da47038fa09519",
+                "reference": "75a421266c93e268849fcc9e97da47038fa09519",
                 "shasum": ""
             },
             "require": {
@@ -1308,6 +1308,7 @@
             "require-dev": {
                 "dama/doctrine-test-bundle": "^8.2",
                 "doctrine/doctrine-fixtures-bundle": "^3.4|3.5.x-dev|^4.0",
+                "moneyphp/money": "^4.8",
                 "phpstan/extension-installer": "^1.4",
                 "phpstan/phpstan": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0",
@@ -1355,7 +1356,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v5.0.1"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v5.0.2"
             },
             "funding": [
                 {
@@ -1363,7 +1364,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-01T18:53:23+00:00"
+            "time": "2026-03-08T19:34:29+00:00"
         },
         {
             "name": "egulias/email-validator",
